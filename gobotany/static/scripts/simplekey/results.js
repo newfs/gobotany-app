@@ -27,6 +27,8 @@ define([
 ) {return {
 
 results_page_init: function(args) {
+    var MAX_SMALLSCREEN_WIDTH = 600;
+
     var dev_flag = args.dev_flag;
     var key_name = args.key;
     var pile_slug = args.pile_slug;
@@ -46,7 +48,7 @@ results_page_init: function(args) {
     /* Set the initial view to Photos for a full-size page, or List for 
        small screens. */
 
-    if ($(window).width() > 600) {
+    if ($(window).width() > MAX_SMALLSCREEN_WIDTH) {
         App3.set('show_grid', true);
         App3.set('show_list', false);
     }
@@ -102,7 +104,7 @@ results_page_init: function(args) {
 
     /* Get the overlay started. */
 
-    if ($(window).width() > 600) {   // Skip overlay on small screens
+    if ($(window).width() > MAX_SMALLSCREEN_WIDTH) {  // Skip on small screens
         results_overlay_init(pile_slug, key_vector_ready, pile_taxa_ready);
     }
 
@@ -305,7 +307,11 @@ results_page_init: function(args) {
 
         didInsertElement: function() {
             var id = this.get('elementId');
-            glossarizer.glossarize($('#' + id + ' span.name'));
+            
+            // Omit glossarized filter "short" questions on small screens.
+            if ($(window).width() > MAX_SMALLSCREEN_WIDTH) {
+                glossarizer.glossarize($('#' + id + ' span.name'));
+            }
         },
 
         answered: function() {
