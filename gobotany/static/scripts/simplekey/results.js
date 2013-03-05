@@ -268,6 +268,8 @@ results_page_init: function(args) {
         // that is wired up to two different filters!
         dismiss_any_working_area();
 
+        var glossarize_mobile = $('body').hasClass('mobile-gloss');
+
         var C = working_area_module.select_working_area(filter);
 
         working_area = new C();
@@ -275,7 +277,8 @@ results_page_init: function(args) {
             div: $('div.working-area')[0],
             filter: filter,
             y: y,
-            max_smallscreen_width: MAX_SMALLSCREEN_WIDTH
+            max_smallscreen_width: MAX_SMALLSCREEN_WIDTH,
+            glossarize_mobile: glossarize_mobile
         });
     };
 

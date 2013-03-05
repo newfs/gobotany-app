@@ -71,6 +71,7 @@ define([
         this.div_map = null,   // map choice value -> <input> element
         this.filter = args.filter;
         this.max_smallscreen_width = args.max_smallscreen_width;
+        this.glossarize_mobile = args.glossarize_mobile;
 
         this._attach();
         this._draw_basics(args.y);
@@ -105,10 +106,26 @@ define([
         var p = function(s) {return s ? '<p>' + s + '</p>' : s}
 
         // Show the question, hint and Apply button.
-        glossarize($div.find('h4').html(f.info.question));
-        $div.find('h4').css('display', 'block');
-        glossarize($div.find('.hint').html(p(f.info.hint)));
-        $div.find('.info').css('display', 'block');
+        
+        var $question = $div.find('h4');
+        var $hint = $div.find('.hint');
+        var $info_section = $div.find('.info');
+
+        $question.html(f.info.question);
+        $hint.html(p(f.info.hint));
+
+        if ($(window).width() > this.max_smallscreen_width) {
+            glossarize($question);
+            glossarize($hint);
+        }
+        else if (this.glossarize_mobile) {
+            // TODO: glossarize differently/unobtrusively for mobile
+            glossarize($question);
+            glossarize($hint);
+        }
+        
+        $question.css('display', 'block');
+        $info_section.css('display', 'block');
 
         // Display character drawing, if an image is available.
         if (f.info.image_url) {
@@ -246,7 +263,13 @@ define([
                 });
             }
 
-            glossarize($('span.label', character_value_div));
+            if ($(window).width() > this.max_smallscreen_width) {
+                glossarize($('span.label', character_value_div));
+            }
+            else if (this.glossarize_mobile) {
+                // TODO: glossarize differently/unobtrusively for mobile
+                glossarize($('span.label', character_value_div));
+            }
         }
 
         // Call a method when radio button is clicked.
