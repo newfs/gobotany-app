@@ -726,9 +726,10 @@ body.skey {
             a.close {
                 background: url(/static/images/icons/close.png) no-repeat transparent;
                 display: block;
-                float: right;
+                float: left;
                 height: 16px;
                 margin: 5px 0 0 0;
+                padding: 12px 12px 0 0;
                 width: 16px;
             }
             h4 {

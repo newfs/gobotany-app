@@ -828,7 +828,7 @@ body.skey.results .working-area .choice img { height: 82px; }
 body.skey.results .working-area .choice img[id] { /* only border if image has id, not on empty */ border: 1px solid #dddddd; height: 80px; }
 body.skey.results .working-area .choice label { cursor: pointer; display: block; font-family: Tahoma, "Trebuchet MS", "Lucida Sans Unicode", sans-serif; font-size: 12px; line-height: 14px; max-width: 250px; min-width: 70px; padding-top: 0; word-wrap: break-word; /* can break mid-word */ }
 body.skey.results .working-area .choice input { margin: 0 3px 0 -18px; }
-body.skey.results .working-area a.close { background: url(/static/images/icons/close.png) no-repeat transparent; display: block; float: right; height: 16px; margin: 5px 0 0 0; width: 16px; }
+body.skey.results .working-area a.close { background: url(/static/images/icons/close.png) no-repeat transparent; display: block; float: left; height: 16px; margin: 5px 0 0 0; padding: 12px 12px 0 0; width: 16px; }
 body.skey.results .working-area h4 { color: #000; display: none; font-size: 18px; line-height: 130%; margin: 6px 0; width: 650px; }
 body.skey.results .working-area .intro-message h4 { display: block; font-weight: bold; }
 body.skey.results .working-area .intro-message p { font-size: 14px; margin-bottom: 5px; }
