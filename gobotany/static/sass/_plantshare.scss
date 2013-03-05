@@ -121,6 +121,13 @@ body.plantshare {
         text-transform: uppercase;
 
     }
+    a.close-btn {
+        background: transparent url(/static/images/icons/close.png) no-repeat;
+        display: block;
+        height: 16px;
+        width: 16px;
+        text-indent: -9999px;
+    }
     .profile {
         width: 471px;
         h2 {
@@ -808,6 +815,30 @@ body.plantshare {
               padding-right: 20px;
               text-align: right;
               width: 79px; 
+            }
+            .name {
+                width: 140px; 
+            }
+            .image {
+                width: 80px; 
+            }
+            .date-sighted, .date-posted {
+                width: 110px; 
+            }
+            .location {
+                width: 130px; 
+            }
+            .note {
+                width: 60px;
+                padding-right: 7px;
+                a {
+                    margin: 0;
+                }
+                a.row-btn {
+                    float: right;
+                    margin: 0 0 0 8px;
+                    text-indent: -9999px;
+                }
             }
 
             thead {
