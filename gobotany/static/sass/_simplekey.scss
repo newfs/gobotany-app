@@ -1365,7 +1365,7 @@ ul.get-more-questions-menu {
                     margin-bottom: 6px;
                     overflow: auto;
                     position: fixed;
-                    width: 95%;
+                    width: 100%;
                     -webkit-overflow-scrolling: touch;
                     &.has-drawings {
                         .row {
@@ -1433,7 +1433,7 @@ ul.get-more-questions-menu {
                     bottom: 0;
                     height: 50px;
                     position: fixed;
-                    width: 95%;
+                    width: 100%;
                 }
             } /* end .working-area */
             
