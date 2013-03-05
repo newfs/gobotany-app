@@ -346,8 +346,21 @@ results_page_init: function(args) {
         },
 
         click: function(event) {
-            if ($(event.target).hasClass('clear-filter'))
+            
+            /* Cancel this click event if either the filter clear button
+               was pressed, or the event happened in the filter working
+               area (for small screens with "inline" choices). */
+
+            if ($(event.target).hasClass('clear-filter')) {
                 return;
+            }
+
+            var $working_area = $(event.target).closest('.working-area');
+            if ($working_area && $working_area.length > 0) {
+                return;
+            }
+
+            /* Handle the click event. */
 
             var filter = this.get('filter');
             var $target = $(event.target).closest('li');
