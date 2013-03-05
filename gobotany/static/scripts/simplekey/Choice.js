@@ -70,7 +70,7 @@ define([
         this.div = args.div;
         this.div_map = null,   // map choice value -> <input> element
         this.filter = args.filter;
-        this.is_mobile_wide = $('body').hasClass('mobile-wide');
+        this.max_smallscreen_width = args.max_smallscreen_width;
 
         this._attach();
         this._draw_basics(args.y);
@@ -339,13 +339,12 @@ define([
         this._apply_filter_value();
         this.dismiss();
         
-        if (this.is_mobile_wide) {
+        if ($(window).width() <= this.max_smallscreen_width) {
             $('#question-nav').addClass('closed'); // Collapse questions list
 
-            // Scroll to the top of the page and then just to the
-            // relevant navigation in order to be sure the results count
-            // is visible, and to trigger lazy image loading.
-            // TODO: do for *any* small-screen view, not just mobile-wide
+            // Scroll to the top of the page and then just to the relevant
+            // navigation in order to be sure the results count is visible,
+            // and to trigger lazy image loading if photos are shown.
             window.scrollTo(0, 0);
             window.scrollTo(0, 90);
         }

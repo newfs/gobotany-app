@@ -274,7 +274,8 @@ results_page_init: function(args) {
         working_area.init({
             div: $('div.working-area')[0],
             filter: filter,
-            y: y
+            y: y,
+            max_smallscreen_width: MAX_SMALLSCREEN_WIDTH
         });
     };
 
