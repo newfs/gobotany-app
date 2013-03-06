@@ -35,6 +35,7 @@ class Page(models.Model):
 
     class Meta:
         verbose_name = 'dichotomous key page'
+        verbose_name_plural = 'dichotomous key pages'
 
     def __unicode__(self):
         return self.title

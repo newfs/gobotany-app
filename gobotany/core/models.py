@@ -75,6 +75,8 @@ class GlossaryTerm(models.Model):
                               null=True)
 
     class Meta:
+        verbose_name = 'glossary term'
+        verbose_name_plural = 'glossary terms'
         # Don't allow duplicate definitions
         unique_together = ('term', 'lay_definition')
 
@@ -429,6 +431,7 @@ class Family(models.Model):
     images = generic.GenericRelation(ContentImage)
 
     class Meta:
+        verbose_name = 'family'
         verbose_name_plural = 'families'
         ordering = ['name']
 
@@ -449,6 +452,7 @@ class Genus(models.Model):
     images = generic.GenericRelation(ContentImage)
 
     class Meta:
+        verbose_name = 'genus'
         verbose_name_plural = 'genera'
         ordering = ['name']
 
@@ -532,6 +536,7 @@ class Taxon(models.Model):
     # TODO: import descriptions!
 
     class Meta:
+        verbose_name = 'taxon'
         verbose_name_plural = 'taxa'
         ordering = ['scientific_name']
 
