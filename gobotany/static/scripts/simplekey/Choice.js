@@ -72,6 +72,7 @@ define([
         this.filter = args.filter;
         this.max_smallscreen_width = args.max_smallscreen_width;
         this.glossarize_mobile = args.glossarize_mobile;
+        this.terms_section = args.terms_section;
 
         this._attach();
         this._draw_basics(args.y);
@@ -105,6 +106,10 @@ define([
         var f = this.filter;
         var p = function(s) {return s ? '<p>' + s + '</p>' : s}
 
+        // Reset the small-screens glossary terms section.
+        $(this.terms_section).addClass('none');
+        $(this.terms_section).find('ul').empty();
+
         // Show the question, hint and Apply button.
         
         var $question = $div.find('h4');
@@ -119,9 +124,9 @@ define([
             glossarize($hint.find('p'));
         }
         else if (this.glossarize_mobile) {
-            // TODO: glossarize differently/unobtrusively for mobile
-            glossarize($question);
-            glossarize($hint.find('p'));
+            // List glossary terms in a separate section on small screens.
+            glossarize($question, this.terms_section);
+            glossarize($hint.find('p'), this.terms_section);
         }
         
         $question.css('display', 'block');
@@ -267,8 +272,9 @@ define([
                 glossarize($('span.label', character_value_div));
             }
             else if (this.glossarize_mobile) {
-                // TODO: glossarize differently/unobtrusively for mobile
-                glossarize($('span.label', character_value_div));
+                // List glossary terms in a separate section on small screens.
+                glossarizer.glossarize($('span.label', character_value_div),
+                                       this.terms_section);
             }
         }
 

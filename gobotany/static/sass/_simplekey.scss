@@ -436,7 +436,7 @@ body.skey {
                 margin: 0 0 8px 0;
             }
             .option-list {
-                 li {
+                 > li {
                     background: #fff;
                     border-top: 1px solid #c3d941;
                     cursor: pointer;
@@ -677,6 +677,9 @@ body.skey {
                 left: -15px;
                 position: absolute;
                 top: 16px;
+            }
+            .terms {
+                display: none;
             }
             .choices {
                 border-spacing: 6px 12px;
@@ -1194,7 +1197,7 @@ ul.get-more-questions-menu {
                             text-decoration: none;
                         }
                     }
-                    li {
+                    > li {
                         padding-left: $smallscreen-margin;
                         padding-right: $smallscreen-margin;
                         -webkit-tap-highlight-color: rgba(0,0,0,0);
@@ -1573,6 +1576,35 @@ ul.get-more-questions-menu {
             }
 
         } /* end &.results.mobile-inline */
+
+        &.results.mobile-gloss { /* Styles for mobile variant where working-
+                                    area glossary terms are shown in a list */
+            .working-area {
+                .gloss {
+                    color: inherit;
+                    cursor: default;
+                    &:hover {
+                        border-bottom: 0;
+                    }
+                }
+                .terms {
+                    display: block;
+                    &.none h5 {
+                        display: none;   
+                    }
+                    li {
+                        border: 0;
+                        line-height: 120%;
+                        margin-bottom: 4px;
+                        padding: 0;
+                        width: 100%;
+                        span {
+                            font-weight: bold;
+                        }
+                    }
+                }
+            }
+        } /* end &.results.mobile-gloss */
     }
 }
 /* Tablet-only styles */
@@ -1580,7 +1612,7 @@ ul.get-more-questions-menu {
     body.skey {
         &.results {
             #question-nav {
-                .option-list li.active:hover {
+                .option-list > li.active:hover {
                     background: #dce890;
                 }
             }
@@ -1592,7 +1624,7 @@ ul.get-more-questions-menu {
     body.skey {
         &.results {
             #question-nav {
-                .option-list li:hover {
+                .option-list > li:hover {
                     background: #fff;   /* No hover color */
                 }
             }

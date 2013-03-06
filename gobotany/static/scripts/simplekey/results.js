@@ -278,7 +278,8 @@ results_page_init: function(args) {
             filter: filter,
             y: y,
             max_smallscreen_width: MAX_SMALLSCREEN_WIDTH,
-            glossarize_mobile: glossarize_mobile
+            glossarize_mobile: glossarize_mobile,
+            terms_section: '.working-area .terms'
         });
     };
 
