@@ -1394,7 +1394,11 @@ ul.get-more-questions-menu {
                         width: 60px;
                     }
                     img, img[id] {
-                        height: 97%;
+                        height: auto;
+                        margin: auto;
+                        max-height: 56px;
+                        max-width: 56px;
+                        width: auto;
                     }
                     label {
                         display: table;
