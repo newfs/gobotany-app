@@ -43,7 +43,7 @@ requirements = [
 
     # Heroku and deployment
 
-    'gunicorn',
+    'gunicorn==0.17.2',
     'newrelic',
     's3cmd',
     ]
