@@ -308,7 +308,7 @@ results_page_init: function(args) {
         didInsertElement: function() {
             var id = this.get('elementId');
             
-            // Omit glossarized filter "short" questions on small screens.
+            // Skip glossarizing filter "short" questions on small screens.
             if ($(window).width() > MAX_SMALLSCREEN_WIDTH) {
                 glossarizer.glossarize($('#' + id + ' span.name'));
             }
