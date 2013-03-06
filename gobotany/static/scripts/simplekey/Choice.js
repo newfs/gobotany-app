@@ -116,12 +116,12 @@ define([
 
         if ($(window).width() > this.max_smallscreen_width) {
             glossarize($question);
-            glossarize($hint);
+            glossarize($hint.find('p'));
         }
         else if (this.glossarize_mobile) {
             // TODO: glossarize differently/unobtrusively for mobile
             glossarize($question);
-            glossarize($hint);
+            glossarize($hint.find('p'));
         }
         
         $question.css('display', 'block');
