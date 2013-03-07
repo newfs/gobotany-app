@@ -441,6 +441,7 @@ body.skey {
                     border-top: 1px solid #c3d941;
                     cursor: pointer;
                     display: block;
+                    height: auto;
                     line-height: normal;
                     margin: 0;
                     padding: 12px;
@@ -460,7 +461,7 @@ body.skey {
                     color: #1a2e11;
                     margin-left: 0;
                     text-decoration: none;
-                    span.name {
+                    .name {
                         display: block;
                         font-weight: bold;
                         margin: 0 0 3px 0;
@@ -1362,7 +1363,7 @@ ul.get-more-questions-menu {
                 .choices {
                     background: #fff;
                     border: 1px solid #999;
-                    border-radius: 8px;
+                    border-radius: $smallscreen-choices-border-radius;
                     border-spacing: 0;
                     height: 250px;
                     margin-bottom: 6px;
@@ -1397,7 +1398,10 @@ ul.get-more-questions-menu {
                             width: auto;
                         }
                         .choice label {
-                            width: 77%;
+                            width: 73%;
+                        }
+                        .choice:first-of-type .drawing {
+                            border-top-left-radius: $smallscreen-choices-border-radius;
                         }
                     }
                 }
@@ -1431,12 +1435,12 @@ ul.get-more-questions-menu {
                     background-position: 98% center;
                 }
                 .row:first-of-type .checked:first-of-type {
-                    border-top-left-radius: 8px;
-                    border-top-right-radius: 8px;
+                    border-top-left-radius: $smallscreen-choices-border-radius;
+                    border-top-right-radius: $smallscreen-choices-border-radius;
                 }
                 .row:last-of-type .checked:last-of-type {
-                    border-bottom-left-radius: 8px;
-                    border-bottom-right-radius: 8px;
+                    border-bottom-left-radius: $smallscreen-choices-border-radius;
+                    border-bottom-right-radius: $smallscreen-choices-border-radius;
                 }
                 .choice-label {
                     display: table-cell;
@@ -1553,6 +1557,10 @@ ul.get-more-questions-menu {
                     }
                 }
                 .option-list {
+                    .name {
+                        font-size: 11px;
+                        margin: 0;
+                    }
                     .clear-filter {
                         width: 50%;
                     }
@@ -1565,6 +1573,63 @@ ul.get-more-questions-menu {
                 width: 80%;
             }
         } /* end &.results.mobile-wide */
+
+        &.results.mobile-gloss { /* Styles for mobile variants where working-
+                                    area glossary terms are shown in a list */
+            .working-area {
+                h4 {
+                    padding-right: 50px;
+                }
+                .gloss {
+                    color: inherit;
+                    cursor: default;
+                    &:hover {
+                        border-bottom: 0;
+                    }
+                }
+                .terms {
+                    background: $light-green;
+                    border: 1px solid #666;
+                    display: block;
+                    padding: 6px 12px;
+                    position: absolute;
+                    right: 0;
+                    text-align: right;
+                    top: 0;
+                    width: 50%;
+                    &.closed {
+                        background: none;
+                        border: 0;
+                        ul {
+                            display: none;
+                        }
+                    }
+                    h5 {
+                        color: $link-green;
+                        padding: 4px 0 8px;
+                        text-decoration: underline;
+                    }
+                    &.none h5 {
+                        display: none;
+                    }
+                    ul {
+                        margin: 0;
+                        text-align: left;
+                    }
+                    li {
+                        border: 0;
+                        float: none;
+                        line-height: 120%;
+                        margin-bottom: 4px;
+                        padding: 0;
+                        width: 100%;
+                        span {
+                            font-weight: bold;
+                        }
+                    }
+                }
+            }
+        } /* end &.results.mobile-gloss */
 
         &.results.mobile-inline { /* Styles for testing: mobile variant where
                                      filter values appear inline */
@@ -1583,45 +1648,39 @@ ul.get-more-questions-menu {
                 .close {
                     display: none;
                 }
+                .info {
+                    float: none;
+                }
                 .choices {
                     height: auto;
                     overflow: visible;
                 }
-                .actions {
-                    margin-bottom: 30px;
+                .choice:last-of-type {
+                    border-bottom: 0;
                 }
             }
-
-        } /* end &.results.mobile-inline */
-
-        &.results.mobile-gloss { /* Styles for mobile variant where working-
-                                    area glossary terms are shown in a list */
-            .working-area {
-                .gloss {
-                    color: inherit;
-                    cursor: default;
-                    &:hover {
-                        border-bottom: 0;
-                    }
+            &.mobile-gloss .working-area {
+                h4 {
+                    padding-right: 0;
                 }
                 .terms {
-                    display: block;
-                    &.none h5 {
-                        display: none;   
+                    background: inherit;
+                    border: 0;
+                    padding: 4px;
+                    position: static;
+                    text-align: left;
+                    width: 100%;
+                    &.closed ul {
+                        display: block;
                     }
-                    li {
-                        border: 0;
-                        line-height: 120%;
-                        margin-bottom: 4px;
-                        padding: 0;
-                        width: 100%;
-                        span {
-                            font-weight: bold;
-                        }
+                    h5 {
+                        color: #000;
+                        padding: 4px 0;
+                        text-decoration: none;
                     }
                 }
             }
-        } /* end &.results.mobile-gloss */
+        } /* end &.results.mobile-inline */
     }
 }
 /* Tablet-only styles */
@@ -1641,8 +1700,10 @@ ul.get-more-questions-menu {
     body.skey {
         &.results {
             #question-nav {
-                .option-list > li:hover {
-                    background: #fff;   /* No hover color */
+                .option-list {
+                    > li:hover, > li.active, > li.answered.active {
+                        background: #fff;
+                    }
                 }
             }
         }

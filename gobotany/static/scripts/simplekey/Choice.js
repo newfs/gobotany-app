@@ -154,6 +154,21 @@ define([
         // Hook up the Apply button.
         $('.apply-btn', this.div).bind(
             'click', $.proxy(this, '_apply_button_clicked'));
+
+        // If applicable, hook up a handler to toggle glossary terms.
+        if ($(window).width() <= this.max_smallscreen_width &&
+            this.glossarize_mobile &&
+            !$('body').hasClass('mobile-inline')) {
+
+            var $terms_section = $div.find('.terms');
+            var $terms_heading = $terms_section.find('h5').eq(0);
+            $terms_section.addClass('closed'); // always start closed
+
+            $terms_heading.unbind('click');
+            $terms_heading.bind('click', function() {
+                $terms_section.toggleClass('closed');
+            });
+        }
     };
 
     Choice.prototype._draw_specifics = function() {
@@ -256,7 +271,8 @@ define([
                     width: 'auto'
                 });
 
-                // Make clicking the drawing select the choice if available.
+                // On full-size screens, need to explicitly make clicking the
+                // drawing select the choice if available.
                 $image.bind('click', function () {
                     $radio = $(this).closest('.choice').find('input').eq(0);
                     var $disabled = $radio.attr('disabled');

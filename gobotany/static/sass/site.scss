@@ -63,6 +63,7 @@ $smallscreen-portrait-box-width: 302px;
 $smallscreen-portrait-form-el-width: $smallscreen-portrait-box-width - 10px;
 $smallscreen-landscape-box-width: 462px;
 $smallscreen-current-section-color: #85c446;
+$smallscreen-choices-border-radius: 8px;
 
 @mixin offscreen {
     display: block;
