@@ -441,6 +441,7 @@ body.skey {
                     border-top: 1px solid #c3d941;
                     cursor: pointer;
                     display: block;
+                    height: auto;
                     line-height: normal;
                     margin: 0;
                     padding: 12px;
@@ -1362,7 +1363,7 @@ ul.get-more-questions-menu {
                 .choices {
                     background: #fff;
                     border: 1px solid #999;
-                    border-radius: 8px;
+                    border-radius: $smallscreen-choices-border-radius;
                     border-spacing: 0;
                     height: 250px;
                     margin-bottom: 6px;
@@ -1397,7 +1398,10 @@ ul.get-more-questions-menu {
                             width: auto;
                         }
                         .choice label {
-                            width: 77%;
+                            width: 73%;
+                        }
+                        .choice:first-of-type .drawing {
+                            border-top-left-radius: $smallscreen-choices-border-radius;
                         }
                     }
                 }
@@ -1431,12 +1435,12 @@ ul.get-more-questions-menu {
                     background-position: 98% center;
                 }
                 .row:first-of-type .checked:first-of-type {
-                    border-top-left-radius: 8px;
-                    border-top-right-radius: 8px;
+                    border-top-left-radius: $smallscreen-choices-border-radius;
+                    border-top-right-radius: $smallscreen-choices-border-radius;
                 }
                 .row:last-of-type .checked:last-of-type {
-                    border-bottom-left-radius: 8px;
-                    border-bottom-right-radius: 8px;
+                    border-bottom-left-radius: $smallscreen-choices-border-radius;
+                    border-bottom-right-radius: $smallscreen-choices-border-radius;
                 }
                 .choice-label {
                     display: table-cell;
@@ -1583,12 +1587,15 @@ ul.get-more-questions-menu {
                 .close {
                     display: none;
                 }
+                .info {
+                    float: none;
+                }
                 .choices {
                     height: auto;
                     overflow: visible;
                 }
-                .actions {
-                    margin-bottom: 30px;
+                .choice:last-of-type {
+                    border-bottom: 0;
                 }
             }
 
@@ -1606,11 +1613,18 @@ ul.get-more-questions-menu {
                 }
                 .terms {
                     display: block;
+                    h5 {
+                        padding: 4px 0;
+                    }
                     &.none h5 {
-                        display: none;   
+                        display: none;
+                    }
+                    ul {
+                        margin: 0;
                     }
                     li {
                         border: 0;
+                        float: none;
                         line-height: 120%;
                         margin-bottom: 4px;
                         padding: 0;
@@ -1641,8 +1655,10 @@ ul.get-more-questions-menu {
     body.skey {
         &.results {
             #question-nav {
-                .option-list > li:hover {
-                    background: #fff;   /* No hover color */
+                .option-list {
+                    > li:hover, > li.active, > li.answered.active {
+                        background: #fff;
+                    }
                 }
             }
         }
