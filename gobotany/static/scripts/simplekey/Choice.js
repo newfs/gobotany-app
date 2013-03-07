@@ -112,7 +112,7 @@ define([
 
         // Show the question, hint and Apply button.
         
-        var $question = $div.find('h4');
+        var $question = $div.find('.question');
         var $hint = $div.find('.hint');
         var $info_section = $div.find('.info');
 
