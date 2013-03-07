@@ -70,7 +70,9 @@ define([
         this.div = args.div;
         this.div_map = null,   // map choice value -> <input> element
         this.filter = args.filter;
-        this.is_mobile_wide = $('body').hasClass('mobile-wide');
+        this.max_smallscreen_width = args.max_smallscreen_width;
+        this.glossarize_mobile = args.glossarize_mobile;
+        this.terms_section = args.terms_section;
 
         this._attach();
         this._draw_basics(args.y);
@@ -104,11 +106,31 @@ define([
         var f = this.filter;
         var p = function(s) {return s ? '<p>' + s + '</p>' : s}
 
+        // Reset the small-screens glossary terms section.
+        $(this.terms_section).addClass('none');
+        $(this.terms_section).find('ul').empty();
+
         // Show the question, hint and Apply button.
-        glossarize($div.find('h4').html(f.info.question));
-        $div.find('h4').css('display', 'block');
-        glossarize($div.find('.hint').html(p(f.info.hint)));
-        $div.find('.info').css('display', 'block');
+        
+        var $question = $div.find('h4');
+        var $hint = $div.find('.hint');
+        var $info_section = $div.find('.info');
+
+        $question.html(f.info.question);
+        $hint.html(p(f.info.hint));
+
+        if ($(window).width() > this.max_smallscreen_width) {
+            glossarize($question);
+            glossarize($hint.find('p'));
+        }
+        else if (this.glossarize_mobile) {
+            // List glossary terms in a separate section on small screens.
+            glossarize($question, this.terms_section);
+            glossarize($hint.find('p'), this.terms_section);
+        }
+        
+        $question.css('display', 'block');
+        $info_section.css('display', 'block');
 
         // Display character drawing, if an image is available.
         if (f.info.image_url) {
@@ -246,7 +268,14 @@ define([
                 });
             }
 
-            glossarize($('span.label', character_value_div));
+            if ($(window).width() > this.max_smallscreen_width) {
+                glossarize($('span.label', character_value_div));
+            }
+            else if (this.glossarize_mobile) {
+                // List glossary terms in a separate section on small screens.
+                glossarizer.glossarize($('span.label', character_value_div),
+                                       this.terms_section);
+            }
         }
 
         // Call a method when radio button is clicked.
@@ -262,9 +291,7 @@ define([
     Choice.prototype._attach = function() {
         var $filter_list_item = $('#questions-go-here ul #' +
                                   this.filter.slug);
-        // Insert after rather than append, in to avoid interfering with
-        // the list item's event handlers.
-        $(this.div).insertAfter($filter_list_item);
+        $(this.div).appendTo($filter_list_item);
     };
 
     /* How to grab the currently-selected value from the DOM. */
@@ -341,13 +368,12 @@ define([
         this._apply_filter_value();
         this.dismiss();
         
-        if (this.is_mobile_wide) {
+        if ($(window).width() <= this.max_smallscreen_width) {
             $('#question-nav').addClass('closed'); // Collapse questions list
 
-            // Scroll to the top of the page and then just to the
-            // relevant navigation in order to be sure the results count
-            // is visible, and to trigger lazy image loading.
-            // TODO: do for *any* small-screen view, not just mobile-wide
+            // Scroll to the top of the page and then just to the relevant
+            // navigation in order to be sure the results count is visible,
+            // and to trigger lazy image loading if photos are shown.
             window.scrollTo(0, 0);
             window.scrollTo(0, 90);
         }

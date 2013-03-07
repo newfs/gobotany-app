@@ -27,6 +27,8 @@ define([
 ) {return {
 
 results_page_init: function(args) {
+    var MAX_SMALLSCREEN_WIDTH = 600;
+
     var dev_flag = args.dev_flag;
     var key_name = args.key;
     var pile_slug = args.pile_slug;
@@ -46,7 +48,7 @@ results_page_init: function(args) {
     /* Set the initial view to Photos for a full-size page, or List for 
        small screens. */
 
-    if ($(window).width() > 600) {
+    if ($(window).width() > MAX_SMALLSCREEN_WIDTH) {
         App3.set('show_grid', true);
         App3.set('show_list', false);
     }
@@ -102,7 +104,7 @@ results_page_init: function(args) {
 
     /* Get the overlay started. */
 
-    if ($(window).width() > 600) {   // Skip overlay on small screens
+    if ($(window).width() > MAX_SMALLSCREEN_WIDTH) {  // Skip on small screens
         results_overlay_init(pile_slug, key_vector_ready, pile_taxa_ready);
     }
 
@@ -183,12 +185,8 @@ results_page_init: function(args) {
         // Hide the "Loading..." spinner in the filters area.
         $('.loading').hide();
 
-        /* Set up some extra event handlers for a mobile smartphone view. */
-
-        var is_mobile_wide = $('body').hasClass('mobile-wide');
-        if (is_mobile_wide) {
-            /* Hide or show the filter questions area. */
-            // TODO: only do this on small screens (test screen width)
+        if ($(window).width() <= MAX_SMALLSCREEN_WIDTH) {
+            /* Hide or show the filter questions area on small screens. */
             $('#question-nav .instructions').bind('click', function() {
                 $(this).parent().toggleClass('closed');
             });
@@ -270,13 +268,18 @@ results_page_init: function(args) {
         // that is wired up to two different filters!
         dismiss_any_working_area();
 
+        var glossarize_mobile = $('body').hasClass('mobile-gloss');
+
         var C = working_area_module.select_working_area(filter);
 
         working_area = new C();
         working_area.init({
             div: $('div.working-area')[0],
             filter: filter,
-            y: y
+            y: y,
+            max_smallscreen_width: MAX_SMALLSCREEN_WIDTH,
+            glossarize_mobile: glossarize_mobile,
+            terms_section: '.working-area .terms'
         });
     };
 
@@ -305,7 +308,11 @@ results_page_init: function(args) {
 
         didInsertElement: function() {
             var id = this.get('elementId');
-            glossarizer.glossarize($('#' + id + ' span.name'));
+            
+            // Skip glossarizing filter "short" questions on small screens.
+            if ($(window).width() > MAX_SMALLSCREEN_WIDTH) {
+                glossarizer.glossarize($('#' + id + ' span.name'));
+            }
         },
 
         answered: function() {
@@ -340,8 +347,21 @@ results_page_init: function(args) {
         },
 
         click: function(event) {
-            if ($(event.target).hasClass('clear-filter'))
+            
+            /* Cancel this click event if either the filter clear button
+               was pressed, or the event happened in the filter working
+               area (for small screens with "inline" choices). */
+
+            if ($(event.target).hasClass('clear-filter')) {
                 return;
+            }
+
+            var $working_area = $(event.target).closest('.working-area');
+            if ($working_area && $working_area.length > 0) {
+                return;
+            }
+
+            /* Handle the click event. */
 
             var filter = this.get('filter');
             var $target = $(event.target).closest('li');

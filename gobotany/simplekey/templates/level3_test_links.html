@@ -12,7 +12,7 @@
                 border-bottom: 1px solid #c3d941;
                 text-decoration: none;
             }
-            h2 + p a, li a {
+            h2 + p a, h2 + p + p a, li a {
                 font-weight: bold;
             }
             dt {
@@ -60,7 +60,14 @@
             <a target="_blank"
                 href="/simple/woody-plants/woody-gymnosperms/?m=mobile-inline">inline</a>
         </p>
-
+        <p><del>split</del>
+            |
+            <a target="_blank"
+                href="/simple/woody-plants/woody-gymnosperms/?m=mobile-gloss">overlay+gloss</a>
+            |
+            <a target="_blank"
+                href="/simple/woody-plants/woody-gymnosperms/?m=mobile-inline%20mobile-gloss">inline+gloss</a>
+        </p>
         <h2>About the variations</h2>
 
         <dl>
@@ -75,6 +82,10 @@
             <dt>inline</dt>
             <dd>questions initially hidden but full width; choices are
             inline</dd>
+
+            <dt>+gloss</dt>
+            <dd>glossary terms are available within the question working
+            area</dd>
         </dl>
 
         <h2>All plant subgroups (Simple Key)</h2>
@@ -85,6 +96,11 @@
                 <a target="_blank" href="{{ pile_url }}">overlay</a>
                 |
                 <a target="_blank" href="{{ pile_url }}?m=mobile-inline">inline</a>
+                |
+                <a target="_blank" href="{{ pile_url }}?m=mobile-gloss">overlay+gloss</a>
+                |
+                <a target="_blank"
+                    href="{{ pile_url }}?m=mobile-inline%20mobile-gloss">inline+gloss</a>
             </li>
             {% endfor %}
         </ul>
