@@ -117,7 +117,7 @@ class SubgroupResultsPage(models.Model):
 
     class Meta:
         verbose_name = 'subgroup results page'
-        verbose_name_plural = 'subhgroup results page'
+        verbose_name_plural = 'subgroup results pages'
 
     def __unicode__(self):
         return u'%s' % self.title
