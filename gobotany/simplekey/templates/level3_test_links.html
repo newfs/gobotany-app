@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>Smartphone User Testing Level 3 Page Links</title>
+        <title>Level 3 Page Smartphone User Testing</title>
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link rel="stylesheet" href="/static/css/site.css">
         <style>
@@ -33,7 +33,7 @@
     <body>
         <p><a href="/">Go Botany Home</a></p>
 
-        <h1>Smartphone User Testing: Level 3 Page Links</h1>
+        <h1>Level 3 Page Smartphone User Testing</h1>
 
         <p>Here are links to some variations.</p>
 
@@ -49,6 +49,14 @@
             |
             <a target="_blank"
                 href="/simple/woody-plants/woody-angiosperms/?m=mobile-inline">inline</a>
+        </p>
+        <p><del>split</del>
+            |
+            <a target="_blank"
+                href="/simple/woody-plants/woody-angiosperms/?m=mobile-gloss">overlay+gloss</a>
+            |
+            <a target="_blank"
+                href="/simple/woody-plants/woody-angiosperms/?m=mobile-inline%20mobile-gloss">inline+gloss</a>
         </p>
 
         <h2>Needle-leaved woody plants</h2>
@@ -68,6 +76,7 @@
             <a target="_blank"
                 href="/simple/woody-plants/woody-gymnosperms/?m=mobile-inline%20mobile-gloss">inline+gloss</a>
         </p>
+
         <h2>About the variations</h2>
 
         <dl>
@@ -88,6 +97,7 @@
             area</dd>
         </dl>
 
+        {% comment %}
         <h2>All plant subgroups (Simple Key)</h2>
 
         <ul>
@@ -104,6 +114,7 @@
             </li>
             {% endfor %}
         </ul>
+        {% endcomment %}
 
     </body>
 </html>
