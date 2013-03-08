@@ -910,8 +910,7 @@ ul.get-more-questions-menu ul li[data-character] { color: black; }
   body.skey.results #question-nav .scroll + .section { margin: 0 0 32px; }
   body.skey.results .section + .section { margin-bottom: 16px; }
   body.skey.results #question-nav .section.family-genus h6, body.skey.results #question-nav .section button, body.skey.results #question-nav .section.clear h5, body.skey.results #question-nav .section.help h5 { display: none; }
-  body.skey.results #page-head { left: 8px; margin: 0 8px; /*h1 { display: none;
-}*/ }
+  body.skey.results #page-head { left: 8px; margin: 0 8px; }
   body.skey.results #question-nav { font-size: 10px; margin-right: 3px; margin-top: 0; min-height: 666px; width: 149px; }
   body.skey.results #question-nav .section { padding: 0 0 0 4px; }
   body.skey.results #question-nav .section.instructions { padding: 10px 0px 10px 12px; }
