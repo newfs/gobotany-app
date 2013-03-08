@@ -734,6 +734,7 @@ body.skey.results .already-know label { color: #807121; display: block; font-fam
 body.skey.results .already-know select { font-size: 13px; height: 21px; width: 143px; background: #ebf6df; border: 1px solid #9cc86b; font-family: "Trebuchet MS", Helvetica, Arial, "Lucida Sans Unicode", sans-serif; padding: 0; -webkit-appearance: menulist; }
 body.skey.results .already-know button { background: #ebf6df; border: 1px solid #9cc86b; font: -webkit-control; padding: 2px 6px; -webkit-appearance: button; }
 body.skey.results .show-me { float: right; margin: 0 0 15px 0; }
+body.skey.results #results-display { margin-bottom: 8px; }
 body.skey.results #results-display label { color: #000; font-family: "Trebuchet MS", Helvetica, Arial, "Lucida Sans Unicode", sans-serif; font-size: 15px; font-weight: normal; }
 body.skey.results #results-display select { font-size: 15px; background: #ebf6df; border: 1px solid #9cc86b; font-family: "Trebuchet MS", Helvetica, Arial, "Lucida Sans Unicode", sans-serif; padding: 0; -webkit-appearance: menulist; }
 body.skey.results #results-display img.icon { margin: 0 3px 0 0; vertical-align: -1px; }
