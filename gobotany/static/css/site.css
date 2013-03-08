@@ -994,6 +994,9 @@ ul.get-more-questions-menu ul li[data-character] { color: black; }
   body.skey.results.mobile-wide #question-nav .section a.get-choices { width: 139px; }
   body.skey.results.mobile-wide #question-nav .section.family-genus .already-know { margin-bottom: 25px; text-align: center; width: 100%; }
   body.skey.results.mobile-wide #question-nav .section.clear, body.skey.results.mobile-wide #question-nav .section.help { float: left; height: 40px; width: 98%; }
+  body.skey.results.mobile-wide #question-nav .option-list > li:active { background: #508e31; }
+  body.skey.results.mobile-wide #question-nav .option-list .option { cursor: pointer; display: block; position: relative; }
+  body.skey.results.mobile-wide #question-nav .option-list .option::after { border-color: #000; border-style: solid; border-width: 2px 2px 0 0; color: #000; content: " \a0"; display: inline-block; height: 8px; position: absolute; right: 8px; top: 2px; vertical-align: middle; width: 8px; -webkit-transform: rotate(45deg); -moz-transform: rotate(45deg); -ms-transform: rotate(45deg); -o-transform: rotate(45deg); transform: rotate(45deg); }
   body.skey.results.mobile-wide #question-nav .option-list .name { font-size: 11px; margin: 0; }
   body.skey.results.mobile-wide #question-nav .option-list .clear-filter { width: 50%; }
   body.skey.results.mobile-wide .species-count-heading { position: relative; text-align: center; top: -2px; width: 80%; }
@@ -1013,6 +1016,8 @@ ul.get-more-questions-menu ul li[data-character] { color: black; }
   body.skey.results.mobile-gloss .working-area .terms li { border: 0; float: none; line-height: 120%; margin-bottom: 4px; padding: 0; width: 100%; }
   body.skey.results.mobile-gloss .working-area .terms li span { font-weight: bold; }
   body.skey.results.mobile-inline { /* Styles for testing: mobile variant where filter values appear inline */ }
+  body.skey.results.mobile-inline #question-nav .option-list > li.active .option::after { right: 6px; top: 3px; -webkit-transform: rotate(-45deg); -moz-transform: rotate(-45deg); -ms-transform: rotate(-45deg); -o-transform: rotate(-45deg); transform: rotate(-45deg); }
+  body.skey.results.mobile-inline #question-nav .option-list .option::after { right: 7px; top: 0; -webkit-transform: rotate(135deg); -moz-transform: rotate(135deg); -ms-transform: rotate(135deg); -o-transform: rotate(135deg); transform: rotate(135deg); }
   body.skey.results.mobile-inline .working-area { background: #fff; border: 0; height: auto; padding: 8px 0 0; position: static; top: auto !important; width: 99%; -moz-box-shadow: none; -webkit-box-shadow: none; -o-box-shadow: none; box-shadow: none; }
   body.skey.results.mobile-inline .working-area .close { display: none; }
   body.skey.results.mobile-inline .working-area .info { float: none; }

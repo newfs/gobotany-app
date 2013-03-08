@@ -1554,6 +1554,29 @@ ul.get-more-questions-menu {
                     }
                 }
                 .option-list {
+                    > li:active {
+                        background: $link-green;
+                    }
+                    .option {
+                        cursor: pointer;
+                        display: block;
+                        position: relative;
+                        &::after {
+                            border-color: #000;
+                            border-style: solid;
+                            border-width: 2px 2px 0 0;
+                            color: #000;
+                            content: " \a0";
+                            display: inline-block;
+                            height: 8px;
+                            position: absolute;
+                            right: 8px;
+                            top: 2px;
+                            vertical-align: middle;
+                            width: 8px;
+                            @include rotate(45deg);
+                        }
+                    }
                     .name {
                         font-size: 11px;
                         margin: 0;
@@ -1653,6 +1676,20 @@ ul.get-more-questions-menu {
 
         &.results.mobile-inline { /* Styles for testing: mobile variant where
                                      filter values appear inline */
+            #question-nav {
+                .option-list {
+                    > li.active .option::after {
+                        right: 6px;
+                        top: 3px;
+                        @include rotate(-45deg);
+                    }
+                    .option::after {
+                        right: 7px;
+                        top: 0;
+                        @include rotate(135deg);
+                    }
+                }
+            }
             .working-area {
                 background: #fff;
                 border: 0;
