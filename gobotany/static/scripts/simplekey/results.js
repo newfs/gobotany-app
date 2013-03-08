@@ -367,15 +367,13 @@ results_page_init: function(args) {
             var filter = this.get('filter');
             var $target = $(event.target).closest('li');
 
-            //$('.option-list li').removeClass('active');
-
             if ($target.hasClass('active')) {
-                // Question is active, so close it.
+                // Question and working area open, so close.
                 $target.removeClass('active');
                 dismiss_any_working_area();
             }
             else {
-                // Activate the question.
+                // Question and working area closed, so open.
                 $target.addClass('active');
 
                 var y = $target.offset().top - 15;
