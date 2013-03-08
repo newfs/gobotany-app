@@ -1400,6 +1400,9 @@ ul.get-more-questions-menu {
                         .choice:first-of-type .drawing {
                             border-top-left-radius: $smallscreen-choices-border-radius;
                         }
+                        .choice:last-of-type .drawing {
+                            border-bottom-left-radius: $smallscreen-choices-border-radius;
+                        }
                     }
                 }
                 .choice {
@@ -1554,7 +1557,9 @@ ul.get-more-questions-menu {
                     }
                 }
                 .option-list {
-                    > li:active {
+                    > li:active:not(.active) { /* question-link active
+                                                  pseudoclass, only when
+                                                  question is closed */
                         background: $link-green;
                     }
                     .option {

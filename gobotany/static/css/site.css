@@ -964,6 +964,7 @@ ul.get-more-questions-menu ul li[data-character] { color: black; }
   body.skey.results .working-area .choices.has-drawings img, body.skey.results .working-area .choices.has-drawings img[id] { border: 0; height: auto; margin: auto; max-height: 56px; max-width: 56px; width: auto; }
   body.skey.results .working-area .choices.has-drawings .choice label { width: 73%; }
   body.skey.results .working-area .choices.has-drawings .choice:first-of-type .drawing { border-top-left-radius: 8px; }
+  body.skey.results .working-area .choices.has-drawings .choice:last-of-type .drawing { border-bottom-left-radius: 8px; }
   body.skey.results .working-area .choice { border-bottom: 1px solid #999999; margin: 0; height: 44px; position: relative; }
   body.skey.results .working-area .choice label { /*border-left: 1px solid orange;*/ /*border-right: 1px solid orange;*/ display: table; font-family: Verdana, sans-serif; /* No Tahoma on iOS */ font-size: 11px; height: 44px; margin: 0; max-width: none; min-width: none; padding-left: 4px; padding-right: 12px; width: 96%; -webkit-tap-highlight-color: rgba(0, 0, 0, 0); }
   body.skey.results .working-area .row:first-of-type .choice:first-of-type { border-top: none; }
@@ -994,7 +995,7 @@ ul.get-more-questions-menu ul li[data-character] { color: black; }
   body.skey.results.mobile-wide #question-nav .section a.get-choices { width: 139px; }
   body.skey.results.mobile-wide #question-nav .section.family-genus .already-know { margin-bottom: 25px; text-align: center; width: 100%; }
   body.skey.results.mobile-wide #question-nav .section.clear, body.skey.results.mobile-wide #question-nav .section.help { float: left; height: 40px; width: 98%; }
-  body.skey.results.mobile-wide #question-nav .option-list > li:active { background: #508e31; }
+  body.skey.results.mobile-wide #question-nav .option-list > li:active:not(.active) { /* question-link active pseudoclass, only when question is closed */ background: #508e31; }
   body.skey.results.mobile-wide #question-nav .option-list .option { cursor: pointer; display: block; position: relative; }
   body.skey.results.mobile-wide #question-nav .option-list .option::after { border-color: #000; border-style: solid; border-width: 2px 2px 0 0; color: #000; content: " \a0"; display: inline-block; height: 8px; position: absolute; right: 8px; top: 2px; vertical-align: middle; width: 8px; -webkit-transform: rotate(45deg); -moz-transform: rotate(45deg); -ms-transform: rotate(45deg); -o-transform: rotate(45deg); transform: rotate(45deg); }
   body.skey.results.mobile-wide #question-nav .option-list .name { font-size: 11px; margin: 0; }

@@ -366,15 +366,26 @@ results_page_init: function(args) {
             var filter = this.get('filter');
             var $target = $(event.target).closest('li');
 
-            $('.option-list li .active').removeClass('active');
-            $target.addClass('active');
+            //$('.option-list li').removeClass('active');
 
-            var y = $target.offset().top - 15;
-            var async = resources.character_vector(this.filter.slug);
-            $.when(pile_taxa_ready, async).done(function(pile_taxa, values) {
-                filter.install_values({pile_taxa: pile_taxa, values: values});
-                show_working_area(filter, y);
-            });
+            if ($target.hasClass('active')) {
+                // Question is active, so close it.
+                $target.removeClass('active');
+                dismiss_any_working_area();
+            }
+            else {
+                // Activate the question.
+                $target.addClass('active');
+
+                var y = $target.offset().top - 15;
+                var async = resources.character_vector(this.filter.slug);
+                $.when(pile_taxa_ready, async).done(function(pile_taxa,
+                                                             values) {
+                    filter.install_values({pile_taxa: pile_taxa,
+                                           values: values});
+                    show_working_area(filter, y);
+                });
+            }
         }
     });
 
