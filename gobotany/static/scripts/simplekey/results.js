@@ -41,7 +41,8 @@ results_page_init: function(args) {
         filtered_sorted_taxadata_ready,
         taxa_by_sciname_ready
     ).done(function() {
-        species_section.init(pile_slug, taxa_ready, plant_divs_ready);
+        species_section.init(pile_slug, taxa_ready, plant_divs_ready,
+                             MAX_SMALLSCREEN_WIDTH);
         species_section_ready.resolve();
     });
 
