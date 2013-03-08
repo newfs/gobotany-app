@@ -28,6 +28,7 @@ define([
 
 results_page_init: function(args) {
     var MAX_SMALLSCREEN_WIDTH = 600;
+    var DEFAULT_SMALLSCREEN_VIEW = 'list';
 
     var dev_flag = args.dev_flag;
     var key_name = args.key;
@@ -50,12 +51,19 @@ results_page_init: function(args) {
        small screens. */
 
     if ($(window).width() > MAX_SMALLSCREEN_WIDTH) {
+        // "Photos" view is the initial view on full-size screens.
         App3.set('show_grid', true);
         App3.set('show_list', false);
     }
     else {
-        App3.set('show_grid', false);
-        App3.set('show_list', true);
+        // "List" view is the usual initial view on small screens. (It can
+        // be overridden to be the "photos" view instead.)
+        var initial_smallscreen_view = DEFAULT_SMALLSCREEN_VIEW;
+        if ($('body').hasClass('mobile-photos')) {
+            initial_smallscreen_view = 'photos';
+        }
+        App3.set('show_grid', (initial_smallscreen_view === 'photos'));
+        App3.set('show_list', (initial_smallscreen_view === 'list'));
     }
 
     App3.set('matching_species_count', '...');
