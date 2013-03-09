@@ -42,6 +42,27 @@ results_page_init: function(args) {
         filtered_sorted_taxadata_ready,
         taxa_by_sciname_ready
     ).done(function() {
+        /* Set the initial view to Photos for a full-size page, or List for 
+           small screens. */
+
+        if ($(window).width() > MAX_SMALLSCREEN_WIDTH) {
+            // "Photos" view is the initial view on full-size screens.
+            App3.set('show_grid', true);
+            App3.set('show_list', false);
+        }
+        else {
+            // "List" view is the usual initial view on small screens. (It can
+            // be overridden to be the "photos" view instead.)
+            var initial_smallscreen_view = DEFAULT_SMALLSCREEN_VIEW;
+            if ($('body').hasClass('mobile-photos')) {
+                initial_smallscreen_view = 'photos';
+            }
+            App3.set('show_grid', (initial_smallscreen_view === 'photos'));
+            App3.set('show_list', (initial_smallscreen_view === 'list'));
+        }
+
+        /* Initialize the species results section. */
+
         species_section.init(pile_slug, taxa_ready, plant_divs_ready,
                              MAX_SMALLSCREEN_WIDTH);
         species_section_ready.resolve();
@@ -393,25 +414,6 @@ results_page_init: function(args) {
             itemViewClass: App3.FilterView
         });
         App3.filters_view.appendTo('#questions-go-here');
-
-        /* Set the initial view to Photos for a full-size page, or List for 
-           small screens. */
-
-        if ($(window).width() > MAX_SMALLSCREEN_WIDTH) {
-            // "Photos" view is the initial view on full-size screens.
-            App3.set('show_grid', true);
-            App3.set('show_list', false);
-        }
-        else {
-            // "List" view is the usual initial view on small screens. (It can
-            // be overridden to be the "photos" view instead.)
-            var initial_smallscreen_view = DEFAULT_SMALLSCREEN_VIEW;
-            if ($('body').hasClass('mobile-photos')) {
-                initial_smallscreen_view = 'photos';
-            }
-            App3.set('show_grid', (initial_smallscreen_view === 'photos'));
-            App3.set('show_list', (initial_smallscreen_view === 'list'));
-        }
 
         App3.species_view_tabs = Ember.View.create({
             templateName: 'species-view-tabs',
