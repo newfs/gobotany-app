@@ -673,7 +673,7 @@ body.taxa#species #species-images .scrollableArea a { border-right: 5px solid wh
 /* These styles are common to both smartphone widths */
 @media only screen and (max-width: 600px) { body.taxa #main { padding-bottom: 8px; }
   body.taxa #main h1 { margin-bottom: 0; }
-  body.taxa #main p.common { font-size: 20px; margin: 0; }
+  body.taxa #main p.common { font-size: 16px; margin: 0; }
   body.taxa#family #main p.description, body.taxa#genus #main p.description { margin: 4px 0; }
   body.taxa#family #main h4, body.taxa#genus #main h4 { padding-top: 12px; }
   body.taxa#species #species-images { border: 0; height: 120px; -webkit-box-shadow: none; -moz-box-shadow: none; box-shadow: none; }
