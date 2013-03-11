@@ -632,15 +632,6 @@ body.taxa#species ul.full-description > li:last-child { border-bottom: none; }
 body.taxa#species ul.full-description > li:hover { background-color: #fff; }
 body.taxa#species ul.full-description > li h5 { background: url(/static/images/icons/plus.png) left 50% no-repeat; cursor: pointer; padding-left: 28px; }
 body.taxa#species ul.full-description > li div { display: none; padding-left: 28px; }
-body.taxa#species table { border-collapse: collapse; font-size: 12px; margin-bottom: 14px; margin-top: 8px; width: 690px; }
-body.taxa#species table th, body.taxa#species table td { line-height: 105%; padding: 6px 4px; }
-body.taxa#species table th { background: #b4d57f; font-weight: normal; text-transform: uppercase; }
-body.taxa#species table td { border: 1px solid #c3d941; border-bottom: 0px; border-top: 0px; text-align: center; }
-body.taxa#species table thead th { border: 1px solid #c3d941; border-right: 1px solid #b4d57f; font-size: 10px; text-align: center; vertical-align: bottom; }
-body.taxa#species table thead th:last-child { border-right-color: #c3d941; }
-body.taxa#species table tbody th, body.taxa#species table thead td { background: inherit; border: 0; font-size: 10px; font-weight: bold; padding-right: 8px; text-align: right; width: 103px; }
-body.taxa#species table tbody th { padding-left: 0; white-space: nowrap; }
-body.taxa#species table tbody th.status { font-size: 12px; font-weight: normal; padding-left: 40px; text-align: left; text-transform: none; }
 body.taxa#species #sidebar dt, body.taxa#species #sidebar dd { display: inline; }
 body.taxa#species #sidebar .lookalikes dt { margin-top: 1em; display: block; }
 body.taxa#species #sidebar .lookalikes dd { margin-left: 0; }
@@ -685,12 +676,6 @@ body.taxa#species #species-images .scrollableArea a { border-right: 5px solid wh
   body.taxa#species .characteristics.full { margin-bottom: 0; }
   body.taxa#species .characteristics dl dt { clear: none; float: none; text-align: left; width: auto; }
   body.taxa#species .characteristics dl dd { margin-left: auto; padding-left: 28px; }
-  body.taxa#species #ne-status { /* Horiz. scroll for status table if too wide */ overflow-x: auto; width: 100%; }
-  body.taxa#species #ne-status table { margin-left: 2px; margin-top: 0; width: 99%; }
-  body.taxa#species #ne-status table th { text-transform: none; }
-  body.taxa#species #ne-status table td { font-size: 10px; }
-  body.taxa#species #ne-status table thead td { white-space: normal; width: auto; }
-  body.taxa#species #ne-status table tbody th.status { font-size: 10px; padding-left: 0; text-align: right; }
   body.taxa .visit-dkey { margin: 14px 0; }
   body.taxa .visit-dkey a { clear: left; display: inline-block; } }
 /* These styles apply to smartphones and tablets */

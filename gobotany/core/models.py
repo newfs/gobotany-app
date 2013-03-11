@@ -561,6 +561,18 @@ class Taxon(models.Model):
             mapping[settings.STATE_NAMES[row.region]].append(row.label)
         return odict(sorted(mapping.iteritems()))
 
+    def get_distribution_and_conservation_statuses(self):
+        # Order the conservation statuses such that a special value, the
+        # distribution (present/absent), always comes first.
+        mapping = defaultdict(list)
+        for row in self.conservation_statuses.all():
+            key = settings.STATE_NAMES[row.region]
+            if row.label in ['present', 'absent']:
+                mapping[key].insert(0, row.label)
+            else:
+                mapping[key].append(row.label)
+        return odict(sorted(mapping.iteritems()))
+
     def get_default_image(self):
         try:
             return self.images.get(rank=1, image_type__name='habit')

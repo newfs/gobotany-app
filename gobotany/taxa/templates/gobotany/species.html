@@ -162,54 +162,17 @@
                 <p>Exact status definitions can vary from state to
                 state. For details, please check with your state.</p>
                 <div id="ne-status">
-                {% with conservation_matrix=taxon.get_conservation_statuses %}
-                <table>
-                    <thead>
-                        <tr>
-                            <td></td>
-                            {% for state_name in conservation_matrix.keys %}
-                            <th>{{ state_name }}</th>
-                            {% endfor %}
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <th>Present?</th>
-                            {% for statuses in conservation_matrix.values %}
-                            <td>
-                                {% if 'present' in statuses %}
-                                present
-                                {% else %}
-                                -
-                                {% endif %}
-                            </td>
-                            {% endfor %}
-                        </tr>
-                        <tr>
-                            <th>Conservation Status:</th>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                        </tr>
-                        {% for status_name in conservation_status_rows %}
-                            <tr>
-                                <th class="status">{{ status_name|capfirst }}?</th>
-                                {% for statuses in conservation_matrix.values %}
-                                <td>
-                                    {% if status_name in statuses %}
-                                    {{ status_name }}
-                                    {% else %}
-                                    -
-                                    {% endif %}
-                                </td>
-                                {% endfor %}
-                            </tr>
-                        {% endfor %}
-                    </tbody>
-                </table>
+                {% with statuses=taxon.get_distribution_and_conservation_statuses %}
+                    <div class="characteristics">
+                    {% for state_name, values in statuses.items %}
+                        <dl>
+                            <dt>{{ state_name }}</dt>
+                            <dd>
+                            {{ values|join:", " }}
+                            </dd>
+                        </dl>
+                    {% endfor %}
+                </div>
                 {% endwith %}
                 </div>
 

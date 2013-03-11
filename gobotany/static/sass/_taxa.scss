@@ -177,63 +177,6 @@ body.taxa {
 
             }
         }
-        table {
-            border-collapse: collapse;
-            font-size: 12px;
-            margin-bottom: 14px;
-            margin-top: 8px;
-            width: 690px;
-            th, td {
-                line-height: 105%;
-                padding: 6px 4px;
-            }
-            th {
-
-                background: #b4d57f;
-                font-weight: normal;
-                text-transform: uppercase;
-            }
-            td {
-                border: 1px solid #c3d941;
-                border-bottom: 0px;
-                border-top: 0px;
-                text-align: center;
-            }
-            thead {
-                th {
-                    border: 1px solid #c3d941;
-                    border-right: 1px solid #b4d57f;
-                    font-size: 10px;
-                    text-align: center;
-                    vertical-align: bottom;
-                    &:last-child {
-                        border-right-color: #c3d941;
-                    }
-                }
-            }
-            tbody th, thead td {
-                background: inherit;
-                border: 0;
-                font-size: 10px;
-                font-weight: bold;
-                padding-right: 8px;
-                text-align: right;
-                width: 103px;
-            }
-            tbody {
-                th {
-                    padding-left: 0;
-                    white-space: nowrap;
-                    &.status {
-                        font-size: 12px;
-                        font-weight: normal;
-                        padding-left: 40px;
-                        text-align: left;
-                        text-transform: none;
-                    }
-                }
-            }
-        }
         #sidebar {
             dt, dd {
                 display: inline;
@@ -425,34 +368,6 @@ $mini-table-font-size: 10px;
                     dd {
                         margin-left: auto;
                         padding-left: 28px;
-                    }
-                }
-            }
-            #ne-status {   /* Horiz. scroll for status table if too wide */
-                overflow-x: auto;
-                width: 100%;
-                table {
-                    margin-left: 2px;
-                    margin-top: 0;
-                    width: 99%;
-                    th {
-                        text-transform: none;
-                    }
-                    td {
-                        font-size: $mini-table-font-size;
-                    }
-                    thead {
-                        td {
-                            white-space: normal;
-                            width: auto;
-                        }
-                    }
-                    tbody {
-                        th.status {
-                            font-size: $mini-table-font-size;
-                            padding-left: 0;
-                            text-align: right;
-                        }
                     }
                 }
             }
