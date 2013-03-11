@@ -1343,6 +1343,9 @@ ul.get-more-questions-menu {
                 position: fixed;
                 top: 0 !important;
                 width: 95%;
+                > div {
+                    height: 100%;
+                }
                 img.arrow {
                     display: none;
                 }
@@ -1351,8 +1354,15 @@ ul.get-more-questions-menu {
                     margin: 2px 0;
                     width: auto;
                 }
-                .info .hint p {
-                    font-size: 11px;
+                .info {
+                    height: 100%;
+                    .hint p {
+                        font-size: 11px;
+                        margin-bottom: 10px;
+                    }
+                }
+                .values {
+                    height: 60%;
                     margin-bottom: 10px;
                 }
                 .choices, .row, .choice {
@@ -1363,9 +1373,10 @@ ul.get-more-questions-menu {
                     border: 1px solid #999;
                     border-radius: $smallscreen-choices-border-radius;
                     border-spacing: 0;
-                    height: 250px;
+                    height: 100%;
                     margin-bottom: 6px;
-                    overflow: auto;
+                    overflow-x: hidden;
+                    overflow-y: auto;
                     position: fixed;
                     width: 100%;
                     -webkit-overflow-scrolling: touch;

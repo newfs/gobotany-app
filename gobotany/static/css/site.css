@@ -954,11 +954,14 @@ ul.get-more-questions-menu ul li[data-character] { color: black; }
   body.skey.results #results-display img.icon { margin-left: 1px; vertical-align: -3px; }
   body.skey.results a.get-choices { background: url(/static/images/layout/more-choices-btn.png) no-repeat scroll 0 0 transparent; height: 29px; }
   body.skey.results .working-area { height: 100%; left: 0; margin-left: 0; padding-left: 8px; padding-right: 8px; position: fixed; top: 0 !important; width: 95%; }
+  body.skey.results .working-area > div { height: 100%; }
   body.skey.results .working-area img.arrow { display: none; }
   body.skey.results .working-area h4 { font-size: 13px; margin: 2px 0; width: auto; }
+  body.skey.results .working-area .info { height: 100%; }
   body.skey.results .working-area .info .hint p { font-size: 11px; margin-bottom: 10px; }
+  body.skey.results .working-area .values { height: 60%; margin-bottom: 10px; }
   body.skey.results .working-area .choices, body.skey.results .working-area .row, body.skey.results .working-area .choice { display: block; }
-  body.skey.results .working-area .choices { background: #fff; border: 1px solid #999999; border-radius: 8px; border-spacing: 0; height: 250px; margin-bottom: 6px; overflow: auto; position: fixed; width: 100%; -webkit-overflow-scrolling: touch; }
+  body.skey.results .working-area .choices { background: #fff; border: 1px solid #999999; border-radius: 8px; border-spacing: 0; height: 100%; margin-bottom: 6px; overflow-x: hidden; overflow-y: auto; position: fixed; width: 100%; -webkit-overflow-scrolling: touch; }
   body.skey.results .working-area .choices.has-drawings .row { height: auto; }
   body.skey.results .working-area .choices.has-drawings .choice, body.skey.results .working-area .choices.has-drawings .choice label { height: 56px; }
   body.skey.results .working-area .choices.has-drawings .drawing { background-color: inherit; /*border-left: 1px solid blue;*/ /*border-right: 1px solid blue;*/ clear: left; float: left; height: 56px; margin: 0; text-align: center; width: 60px; }
