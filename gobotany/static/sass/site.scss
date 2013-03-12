@@ -831,6 +831,16 @@ footer {
     }
 }
 
+/* Glossary-term links */
+.gloss {
+    border-bottom: 1px dashed $border-green;
+    color: $link-green;
+    cursor: pointer;
+    &:hover {
+        border-bottom: 1px dashed $link-green;
+    }
+}
+
 /* Tooltips for working area images and highlighted glossary terms */
 .gb-tooltip {
     border: 1px solid $tooltip-border-color;

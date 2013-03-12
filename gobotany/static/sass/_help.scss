@@ -262,14 +262,6 @@ $image-box-shadow-color: rgba(0, 0, 0, 0.6);
 
 /* Glossary */
 
-.gloss {
-    color: $link-green;
-    cursor: pointer;
-    &:hover {
-        border-bottom: 1px dashed;
-    }
-}
-
 #glossary {
     #alphabet {
         height: 33px;

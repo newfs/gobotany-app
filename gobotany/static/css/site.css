@@ -411,6 +411,10 @@ footer .support { margin-right: 0; padding: 18px 0; }
 .plant-grid .missing-image { position: relative; background: -webkit-gradient(linear, 0% 0%, 100% 100%, color-stop(0%, #eaf2e2), color-stop(100%, #d6e6c5)); background: -webkit-linear-gradient(left top, #eaf2e2, #d6e6c5); background: -moz-linear-gradient(left top, #eaf2e2, #d6e6c5); background: -o-linear-gradient(left top, #eaf2e2, #d6e6c5); background: linear-gradient(left top, #eaf2e2, #d6e6c5); width: 160px; height: 149px; color: #354d1e; }
 .plant-grid .missing-image:after { display: block; position: absolute; top: 50%; left: 50%; margin: -20px 0 0 -50px; width: 100px; height: 40px; font-size: 12px; line-height: 130%; text-align: center; content: 'Image not available yet'; }
 
+/* Glossary-term links */
+.gloss { border-bottom: 1px dashed #c3d941; color: #508e31; cursor: pointer; }
+.gloss:hover { border-bottom: 1px dashed #508e31; }
+
 /* Tooltips for working area images and highlighted glossary terms */
 .gb-tooltip { border: 1px solid #c3d941; display: none; /* initially invisible, fades in */ padding: 8px; position: absolute; width: 300px; z-index: 1000; background: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #eaf2e2), color-stop(100%, #d6e6c5)); background: -webkit-linear-gradient(top center, #eaf2e2, #d6e6c5); background: -moz-linear-gradient(top center, #eaf2e2, #d6e6c5); background: -o-linear-gradient(top center, #eaf2e2, #d6e6c5); background: linear-gradient(top center, #eaf2e2, #d6e6c5); -webkit-box-shadow: 0px 1px 4px #333333; -moz-box-shadow: 0px 1px 4px #333333; box-shadow: 0px 1px 4px #333333; -webkit-border-radius: 2px; -moz-border-radius: 2px; -ms-border-radius: 2px; -o-border-radius: 2px; border-radius: 2px; }
 .gb-tooltip .arrow { background: #d6e6c5; border: 1px solid #c3d941; /* rotated borders, same color as bottom of tooltip */ border-bottom-color: #d6e6c5; border-right-color: #d6e6c5; bottom: -7px; height: 11px; left: 10px; position: absolute; width: 11px; -webkit-box-shadow: -1px -1px 1px #333333; -moz-box-shadow: -1px -1px 1px #333333; box-shadow: -1px -1px 1px #333333; -webkit-transform: rotate(225deg); -moz-transform: rotate(225deg); -ms-transform: rotate(225deg); -o-transform: rotate(225deg); transform: rotate(225deg); }
@@ -1369,9 +1373,6 @@ body.search-results .search-navigation a { text-decoration: underline; }
 #advanced-map .choose-btn:active { background-position: 0 -64px; }
 
 /* Glossary */
-.gloss { color: #508e31; cursor: pointer; }
-.gloss:hover { border-bottom: 1px dashed; }
-
 #glossary #alphabet { height: 33px; list-style-type: none; margin: 7px 0; padding: 0; width: 712px; /* 2px wider than its parent box so no wrap in Moz */ }
 #glossary #alphabet li { border-left: 1px solid #e1e1dc; float: left; font-size: 18px; margin: 0; padding: 0 7px; }
 #glossary #alphabet li:first-child { border-left: 0; }
