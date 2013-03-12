@@ -161,7 +161,7 @@ class CharacterHandler(BaseHandler):
 
 
 class BasePileHandler(BaseHandler):
-    methods_allowed = ('GET', 'PUT', 'DELETE')
+    methods_allowed = ('GET',)
     fields = ('name', 'friendly_name', 'description', 'resource_uri',
               'youtube_id', 'key_characteristics', 'notable_exceptions',
               'question', 'hint', 'default_image')
@@ -171,19 +171,6 @@ class BasePileHandler(BaseHandler):
             return self.model.objects.get(slug=slug)
         except (models.PileGroup.DoesNotExist, models.Pile.DoesNotExist):
             return rc.NOT_FOUND
-
-    def update(self, request, slug):
-        obj = self.model.objects.get(slug=slug)
-        for k, v in request.PUT.items():
-            if k in self.fields:
-                setattr(obj, k, v)
-        obj.save()
-        return obj
-
-    def delete(self, request, slug):
-        obj = self.model.objects.get(slug=slug)
-        obj.delete()
-        return rc.DELETED
 
     @staticmethod
     def default_image(pile=None):

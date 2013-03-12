@@ -1,16 +1,18 @@
 {% load dkey_filters %}
-You are here:
-{% for ancestor in page|breadcrumbs %}
-  {% if forloop.counter0 == 0 %}
-    <a href="{% url dkey %}">Dichotomous Key</a>
-  {% else %}
-    &gt; <a data-rank="{{ ancestor.rank }}" data-title="{{ ancestor.title }}"
-            href="{% url dkey_page ancestor|slug %}"
-            >{{ ancestor|display_title|expand_group_title }}</a>
-  {% endif %}
-{% endfor %}
-{% if page.title == 'Key to the Families' %}
-  <span>Dichotomous Key</span>
-{% else %}
-  &gt; <span>{{ page.title|expand_group_title }}</span>
-{% endif %}
+<ul>
+    <li class="label nogloss">You are here:</li>
+    {% for ancestor in page|breadcrumbs %}
+      {% if forloop.counter0 == 0 %}
+        <li class="nogloss"><a href="{% url 'dkey' %}">Dichotomous Key</a></li>
+      {% else %}
+        <li class="nogloss"><a data-rank="{{ ancestor.rank }}" data-title="{{ ancestor.title }}"
+                href="{% url 'dkey_page' ancestor|slug %}"
+                >{{ ancestor|display_title|expand_group_title }}</a></li>
+      {% endif %}
+    {% endfor %}
+    {% if page.title == 'Key to the Families' %}
+        <li class="this-page nogloss">Dichotomous Key</li>
+    {% else %}
+        <li class="this-page nogloss">{{ page.title|expand_group_title }}</li>
+    {% endif %}
+</ul>

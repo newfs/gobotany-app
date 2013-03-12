@@ -1,9 +1,12 @@
-from django.conf.urls.defaults import patterns, url
+from django.conf.urls import patterns, url
 
 from gobotany.simplekey import views
 
 urlpatterns = patterns(
     '',
+
+    # Temporary page for mobile smartphone user testing links
+    url('level3test', views.level3_test_links, name='level3-test-links'),
 
     # Levels 1 (groups), 2 (subgroups), and 3 (filterable results) pages
 

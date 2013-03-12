@@ -12,7 +12,8 @@
 <div class="section-container">
   {% include "_image_upload_form.html" with image_form=avatar_form %}
 
-  <form id="edit-profile-form" class="ajax-partial" method="POST" action="{% url ps-ajax-profile-edit %}">
+  <form id="edit-profile-form" class="ajax-partial" method="POST"
+      action="{% url 'ps-ajax-profile-edit' %}">
     <section class="info-section">
       {% csrf_token %}
       <div class="info box">

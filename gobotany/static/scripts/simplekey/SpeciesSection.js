@@ -18,7 +18,8 @@ define([
     var glossarize = glossarizer.glossarize;
     var methods = SpeciesSection.prototype = {};
 
-    methods.init = function(pile_slug, taxa_ready, plant_divs_ready) {
+    methods.init = function(pile_slug, taxa_ready, plant_divs_ready,
+                            max_smallscreen_width) {
         // summary:
         //   Manages the species section of the results page
 
@@ -27,6 +28,7 @@ define([
         this.plant_data = [];
         this.plant_divs = [];
         this.plant_divs_ready = plant_divs_ready;
+        this.max_smallscreen_width = max_smallscreen_width;
 
         taxa_ready.done(
             $.proxy(this, 'create_plant_divs')
@@ -122,8 +124,20 @@ define([
            list format. */
         $('.plant-list').removeAttr('style');
 
-        Shadowbox.setup('.plant-list table td.scientific-name a',
-                        {title: ''});
+        if ($(window).width() > this.max_smallscreen_width) {
+            /* On desktop screens, an icon links to an lightboxed image. */
+            Shadowbox.setup('.plant-list table td.scientific-name a',
+                            {title: ''});
+        }
+        else {
+            /* On small screens, the entire row links to the species page. */
+            $('.plant-list table tr').each(function() {
+                $(this).bind('click', function() {
+                    var $species_link = $(this).find('.details a').eq(0);
+                    window.location.href = $species_link.attr('href');
+                });
+            });
+        }
     };
 
     methods.create_plant_divs = function(species_list) {

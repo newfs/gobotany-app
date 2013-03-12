@@ -16,10 +16,10 @@
     <h2>For the Simple Key</h2>
 
     <ul>
-        <li><a href="{% url site-getting-started %}">Getting Started
+        <li><a href="{% url 'site-getting-started' %}">Getting Started
             with the Simple Key</a></li>
-        <li><a href="{% url site-video %}">Video Help Topics</a></li>
-        <li><a href="{% url site-advanced-map %}">Advanced Map to Groups</a></li>
+        <li><a href="{% url 'site-video' %}">Video Help Topics</a></li>
+        <li><a href="{% url 'site-advanced-map' %}">Advanced Map to Groups</a></li>
     </ul>
 
     <h2>For the Full Key</h2>
@@ -37,7 +37,7 @@
 
     <h2>Overall</h2>
 	
-    <p>You may find the <a href="{% url site-glossary 'a' %}">Glossary</a> of
+    <p>You may find the <a href="{% url 'site-glossary' 'a' %}">Glossary</a> of
     botanical terms with images helpful.</p>
 
 {% endblock %}

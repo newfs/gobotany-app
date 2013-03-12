@@ -1,5 +1,5 @@
-from django.conf.urls.defaults import patterns, url
-from django.views.generic.simple import redirect_to
+from django.conf.urls import patterns, url
+from django.views.generic import RedirectView
 
 from gobotany.site import views
 
@@ -56,17 +56,17 @@ urlpatterns = patterns(
         name='dich-key-placeholder'),
 
     # Redirects for old URLs
-    url('^teaching-tools/$', redirect_to, {'url': '/teaching/'}),
-    url(r'^help/about/$', redirect_to, {'url': '/about/'}),
-    url(r'^help/start/$', redirect_to, {'url': '/start/'}),
-    url('^help/map/$', redirect_to, {'url': '/map/'}),
-    url('^help/glossary/(?P<letter>[1a-z])/$', redirect_to,
-        {'url': '/glossary/%(letter)s/'}),
-    url('^help/glossary/$', redirect_to, {'url': '/glossary/'}),
-    url('^help/video/$', redirect_to, {'url': '/video/'}),
-    url('^help/contributors/$', redirect_to, {'url': '/contributors/'}),
-    url('^legal/privacy-policy/$', redirect_to, {'url': '/privacy/'}),
-    url('^legal/terms-of-use/$', redirect_to, {'url': '/terms/'}),
+    url('^teaching-tools/$', RedirectView.as_view(url='/teaching/')),
+    url(r'^help/about/$', RedirectView.as_view(url='/about/')),
+    url(r'^help/start/$', RedirectView.as_view(url='/start/')),
+    url('^help/map/$', RedirectView.as_view(url='/map/')),
+    url('^help/glossary/(?P<letter>[1a-z])/$',
+        RedirectView.as_view(url='/glossary/%(letter)s/')),
+    url('^help/glossary/$', RedirectView.as_view(url='/glossary/')),
+    url('^help/video/$', RedirectView.as_view(url='/video/')),
+    url('^help/contributors/$', RedirectView.as_view(url='/contributors/')),
+    url('^legal/privacy-policy/$', RedirectView.as_view(url='/privacy/')),
+    url('^legal/terms-of-use/$', RedirectView.as_view(url='/terms/')),
 
     # Unlinked pages for development and testing: even though unlinked,
     # comment out at release time anyway

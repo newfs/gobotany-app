@@ -20,7 +20,7 @@ class SmartAppendSlashMiddleware(object):
         """
 
         # Check for a redirect based on settings.SMART_APPEND_SLASH
-        host = http.get_host(request)
+        host = request.get_host()
         old_url = [host, request.path]
         new_url = old_url[:]
         # Append a slash if SMART_APPEND_SLASH is set and the resulting URL

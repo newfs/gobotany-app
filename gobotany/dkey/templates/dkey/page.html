@@ -45,7 +45,7 @@
   <div id="breadcrumb">
     {% include "dkey/_breadcrumbs.html" %}
     {% if title == 'List of Family Groups' %}
-      <a href="{% url dkey %}">« Return to the dichotomous key</a>
+      <a href="{% url 'dkey' %}">« Return to the dichotomous key</a>
     {% endif %}
   </div>
 {% endif %}
@@ -53,10 +53,10 @@
 {% if title == 'Key to the Families' %}
   <h1>Dichotomous Key to Families</h1>
 {% elif page.rank == 'family' %}
-  <h1><a href="{% url taxa-family page.title|lastword|slugify %}"
+  <h1><a href="{% url 'taxa-family' page.title|lastword|slugify %}"
          >{{ title }}</a></h1>
 {% elif page.rank == 'genus' %}
-  <h1><a href="{% url taxa-genus page.title|slugify %}"
+  <h1><a href="{% url 'taxa-genus' page.title|slugify %}"
          ><i>{{ title }}</i></a></h1>
 {% else %}
   <h1>{{ title }}</h1>
@@ -122,12 +122,12 @@
           {% elif lead.goto_num %}
             href="#c{{ lead.goto_num }}">JUMP TO {{ lead.goto_num }}
           {% elif p.rank == 'species' %}
-            href="{% url taxa-species p.title|genus_slug p.title|species_slug %}?key=dichotomous#dkey"
+            href="{% url 'taxa-species' p.title|genus_slug p.title|species_slug %}?key=dichotomous#dkey"
               ><i>{{ p.title|abbreviate_title }}</i>
           {% elif not p %}
             >—
           {% else %}
-            href="{% url dkey_page p|slug %}"
+            href="{% url 'dkey_page' p|slug %}"
             {% if p.rank == 'group' %}
               >{{ p.title|upper }}
             {% elif p.rank == 'subkey' %}

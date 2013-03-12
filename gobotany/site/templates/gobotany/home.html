@@ -36,7 +36,7 @@
                     New England plants! Observe closely, collect a sample or
                     take a photo, answer some questions, and narrow down to
                     the correct identification.</p>
-                    <a href="{% url level1 'simple' %}" id="cta">Get Started</a>
+                    <a href="{% url 'level1' 'simple' %}" id="cta">Get Started</a>
                 </div>
             </div>
             <div class="three-col">
@@ -47,7 +47,7 @@
                 discoveries, get help identifying plants, make maps, and
                 develop checklists of plants for particular sites you are
                 exploring.</p>
-                <a class="learn-more" href="{% url plantshare-placeholder %}">Learn More</a>
+                <a class="learn-more" href="{% url 'plantshare-placeholder' %}">Learn More</a>
             </div>
             <div class="three-col">
                 <h3>Advanced ID Tools</h3>
@@ -57,7 +57,7 @@
                 dichotomous keys to families, genera, and species. Also learn
                 about subspecies and varieties native to our region.</p>
                 <a class="learn-more"
-                    href="{% url advanced-id-tools %}">Learn More</a>
+                    href="{% url 'advanced-id-tools' %}">Learn More</a>
             </div>
             <div class="three-col last">
                 <h3>Teaching Tools</h3>
@@ -66,7 +66,7 @@
                 botany for science students and beginning and amateur
                 botanists. Professors, teachers, and environmental educators
                 can share curricula and teaching ideas.</p>
-                <a class="learn-more" href="{% url site-teaching %}" >Learn More</a>
+                <a class="learn-more" href="{% url 'site-teaching' %}" >Learn More</a>
             </div>
             <div id="potd">
             {% if plant_of_the_day %}

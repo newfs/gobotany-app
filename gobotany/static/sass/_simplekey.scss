@@ -21,7 +21,7 @@ body.skey {
                 padding: 0;
             }
             &.tip {
-                color: #519136;
+                color: $heading-green;
                 font-size: 18px;
                 margin: 8px 0 0;
                 padding: 0;
@@ -170,6 +170,7 @@ body.skey {
             margin: 0 0 15px 0;
         }
         #results-display {
+            margin-bottom: 8px;
             label {
                 color: #000;
                 font-family: $headings-font;
@@ -190,7 +191,6 @@ body.skey {
         }
 
         .plant-list {
-            margin-top: 8px;
             position: relative;
             width: 99%;
             .plant {
@@ -268,6 +268,7 @@ body.skey {
 
             /* List view styles */
             table {
+                font-family: $headings-font;
                 width: 100%;
                 tr {
                     height: 20px;
@@ -280,9 +281,6 @@ body.skey {
                     padding: 10px 0;
                     vertical-align: middle;
                 }
-                .genus, .scientific-name {
-                    font-family: $headings-font;
-                }
                 .genus {
                     color: #1a2e11;
                     font-size: 18px;
@@ -293,6 +291,7 @@ body.skey {
                 }
                 .scientific-name {
                     font-size: 15px;
+                    font-style: italic;
                     font-weight: normal;
                     line-height: 155%;
                     padding: 10px 0 8px 0;
@@ -438,11 +437,12 @@ body.skey {
                 margin: 0 0 8px 0;
             }
             .option-list {
-                 li {
+                 > li {
                     background: #fff;
                     border-top: 1px solid #c3d941;
                     cursor: pointer;
                     display: block;
+                    height: auto;
                     line-height: normal;
                     margin: 0;
                     padding: 12px;
@@ -462,7 +462,7 @@ body.skey {
                     color: #1a2e11;
                     margin-left: 0;
                     text-decoration: none;
-                    span.name {
+                    .name {
                         display: block;
                         font-weight: bold;
                         margin: 0 0 3px 0;
@@ -635,7 +635,7 @@ body.skey {
                     margin-left: 10px;
                 }
                 a.current, a.current:hover {
-                    background: #fbfaf5;
+                    background: #fff;
                     background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#ffffff), color-stop(100%,#f0f0c0));
                     background: -moz-linear-gradient(center top, #ffffff, #f0f0c0);
                     border-bottom: 0;
@@ -664,6 +664,7 @@ body.skey {
             background: #fff;
             border: 1px solid #c3d941;
             display: none;
+            line-height: 100%;
             margin-left: 214px;
             padding: 10px 15px;
             position: absolute;
@@ -679,48 +680,61 @@ body.skey {
                 position: absolute;
                 top: 16px;
             }
+            .terms {
+                display: none;
+            }
             .choices {
                 border-spacing: 6px 12px;
                 display: table;
-                .row {
-                    display: table-row;
-                    div {
-                        display: table-cell;
-                        margin: 0 0.5em 1em 0;
-                        min-height: 50px;
-                        &.disabled span {
-                            color: #aaa;
-                        }
-                        label {
-                            cursor: pointer;
-                            display: inline-block;
-                            font-family: $narrower-body-font;
-                            font-size: 12px;
-                            margin-left: 18px;
-                            min-width: 70px;
-                            vertical-align: top;
-                            word-wrap: break-word; /* can break mid-word */
-                        }
-                        input {
-                            float: left;
-                            margin: 3px 3px 0 -18px;
-                            + img {
-                                background: #fff;
-                                border: 1px solid #ddd;
-                                display: inline-block;
-                                height: 80px;
-                            }
-                        }
-                    }
+                &.has-drawings .row {
+                    height: 130px;
                 }
-            } /* end .choices */
+            }
+            .row {
+                display: table-row;
+            }
+            .choice {
+                display: table-cell;
+                margin: 0 0.5em 1em 0;
+                &.disabled span {
+                    color: #aaa;
+                }
+                .drawing {
+                    height: 82px;
+                }
+                img, label {
+                    margin-left: 18px;
+                }
+                img {
+                    height: 82px;
+                }
+                img[id] {   /* only border if image has id, not on empty */
+                    border: 1px solid #ddd;
+                    height: 80px;
+                }
+                label {
+                    cursor: pointer;
+                    display: block;
+                    font-family: $narrower-body-font;
+                    font-size: 12px;
+                    line-height: 14px;
+                    max-width: 250px;
+                    min-width: 70px;
+                    padding-top: 0;
+                    word-wrap: break-word; /* can break mid-word */
+                }
+                input {
+                    margin: 0 3px 0 -18px;
+                }
+            } /* end .choice */
             
             a.close {
                 background: url(/static/images/icons/close.png) no-repeat transparent;
                 display: block;
-                float: right;
+                float: left;
                 height: 16px;
                 margin: 5px 0 0 0;
+                padding: 12px 12px 0 0;
                 width: 16px;
             }
             h4 {
@@ -1003,8 +1017,8 @@ ul.get-more-questions-menu {
         }
         &.results {
             #intro-overlay {
-                left: 16% !important;
-                top: 150px !important;
+                left: 12% !important;
+                top: 100px !important;
             }
             #results-display label {
                 display: none;
@@ -1022,6 +1036,11 @@ ul.get-more-questions-menu {
             }
             .species-count-heading {
                 left: -235px;
+            }
+            #results-tabs {
+                li:first-child a {
+                    margin-left: 32px;
+                }
             }
         } /* end &.results.mobile-wide */
     }
@@ -1046,6 +1065,11 @@ ul.get-more-questions-menu {
             }
             .species-count-heading {
                 left: -310px;
+            }
+            #results-tabs {
+                li:first-child a {
+                    margin-left: 112px;
+                }
             }
         } /* end &.results.mobile-wide */
     }
@@ -1094,13 +1118,14 @@ ul.get-more-questions-menu {
             }
             #main {
                 margin-left: 0;
+                margin-right: 0;
                 width: auto;
             }
             .content .container {
                 padding: 0;
                 width: auto;
             }
-            #question-nav {
+            #question-nav { /* TODO: resolve with #question-nav section below */
                 float: left;
                 margin: 0;
                 padding: 0;
@@ -1112,7 +1137,7 @@ ul.get-more-questions-menu {
             .section + .section {
                 margin-bottom: 16px;
             }
-            #results-tabs, #question-nav .section.family-genus h6,
+            #question-nav .section.family-genus h6,
             #question-nav .section button, #question-nav .section.clear h5,
             #question-nav .section.help h5 {
                 display: none;
@@ -1120,9 +1145,6 @@ ul.get-more-questions-menu {
             #page-head {
                 left: 8px;
                 margin: 0 $smallscreen-margin;
-                h1 {
-                    display: none;
-                }
             }
             #question-nav {
                 font-size: 10px;
@@ -1133,9 +1155,9 @@ ul.get-more-questions-menu {
                 .section {
                     padding: 0 0 0 4px;
                     &.instructions {
-                        padding: 12px;
+                        padding: 10px 0px 10px 12px;
                         h5 {
-                            font-size: 12px;
+                            font-size: 14px;
                         }
                     }
                     &.family-genus {
@@ -1162,18 +1184,47 @@ ul.get-more-questions-menu {
                     height: 261px;
                     width: 149px;
                 }
-                .option-list .clear-filter {
-                    margin: 8px 0 4px;
+                .option-list {
+                    .clear-filter {
+                        background-color: #ddd;
+                        border-radius: 8px;
+                        margin: 8px 0 0;
+                        padding: 6px 0;
+                        text-align: center;
+                        width: 100%;
+                        &:hover, &:active {
+                            text-decoration: none;
+                        }
+                    }
+                    > li {
+                        padding-left: $smallscreen-margin;
+                        padding-right: $smallscreen-margin;
+                        -webkit-tap-highlight-color: rgba(0,0,0,0);
+                    }
                 }
-            }
+            } /* end #question-nav */
             #results-section {
                 float: none;
                 margin: 0 0 28px;
                 width: 100%;
             }
+            #results-tabs {
+                height: 26px;
+                margin-bottom: 0;
+                li + li a.current, li + li a.current:hover {
+                    background: #fff;
+                }
+                a {
+                    font-size: 16px;
+                    line-height: 16px;
+                }
+            }
             .plant-list {
                 height: auto !important;
                 width: 100%;
+                .wait {
+                    background-position: center 10%;
+                }
                 .plant {
                     float: left;
                     font-size: 10px;
@@ -1195,13 +1246,69 @@ ul.get-more-questions-menu {
                         width: 140px;
                     }
                 }
+                table {
+                    tr {
+                        cursor: pointer;
+                        height: 44px;
+                        background: #fff;
+                        /*background: -webkit-gradient(linear, left top,
+                            left bottom, color-stop(0%, white),
+                            color-stop(100%, #f0f0c0));*/
+                        -webkit-tap-highlight-color: rgba(0,0,0,0);
+                        &:last-of-type {
+                            border-bottom: 1px solid #e1e1dc;
+                        }
+                        &:active {
+                            background: $link-green;
+                            color: #fff;
+                            .common-name::after {
+                                border-color: #fff;
+                            }
+                        }
+                    }
+                    td {
+                        padding: 8px 0;
+                    }
+                    .genus, .details, .scientific-name a {
+                        display: none;
+                    }
+                    .scientific-name, .common-name {
+                        font-size: 12px;
+                        line-height: 14px;
+                        padding-bottom: 8px;
+                        padding-top: 8px;
+                    }
+                    .scientific-name {
+                        padding-left: 8px;
+                        padding-right: 4px;
+                    }
+                    .common-name {
+                        padding-right: 20px;
+                        position: relative;
+                        &::after {
+                            border-color: #000;
+                            border-style: solid;
+                            border-width: 2px 2px 0 0;
+                            color: #000;
+                            content: " \a0";
+                            display: inline-block;
+                            height: 7px;
+                            position: absolute;
+                            right: 10px;
+                            top: 17px;
+                            vertical-align: middle;
+                            width: 7px;
+                            @include rotate(45deg);
+                        }
+                    }
+                }
             }
             .missing-image p {
                 font-size: 11px;
                 margin-left: -60px;
             }
             h3.species-count-heading {
-                font-size: 17px;
+                font-size: 16px;
                 padding-bottom: 4px;
                 position: static;
                 text-align: center;
@@ -1213,6 +1320,7 @@ ul.get-more-questions-menu {
                 }
             }
             #results-display {
+                margin: 12px 0 8px;
                 text-align: center;
                 label, select {
                     font-size: 13px;
@@ -1223,39 +1331,161 @@ ul.get-more-questions-menu {
                 }
             }
             a.get-choices {
-                background: url("/static/images/layout/more-choices-btn.png") no-repeat scroll 0 0 transparent;
+                background: url(/static/images/layout/more-choices-btn.png) no-repeat scroll 0 0 transparent;
                 height: 29px;
             }
             .working-area {
-                height: 375px;
+                height: 100%;
+                left: 0;
                 margin-left: 0;
-                top: 4px !important;
-                width: 280px;
+                padding-left: $smallscreen-margin;
+                padding-right: $smallscreen-margin;
+                position: fixed;
+                top: 0 !important;
+                width: 95%;
+                > div {
+                    height: 100%;
+                }
                 img.arrow {
                     display: none;
                 }
                 h4 {
-                    font-size: 15px;
+                    font-size: 13px;
                     margin: 2px 0;
                     width: auto;
                 }
-                .info .hint p {
-                    font-size: 12px;
-                    margin-bottom: 12px;
+                .info {
+                    height: 100%;
+                    .hint p {
+                        font-size: 11px;
+                        margin-bottom: 10px;
+                    }
+                }
+                .values {
+                    height: 60%;
+                    margin-bottom: 10px;
+                }
+                .choices, .row, .choice {
+                    display: block;
                 }
                 .choices {
                     background: #fff;
-                    border: 1px solid #ccc;
-                    border-left: 1px solid #000;
-                    border-top: 1px solid #000;
-                    display: block;
-                    height: 230px;
+                    border: 1px solid #999;
+                    border-radius: $smallscreen-choices-border-radius;
+                    border-spacing: 0;
+                    height: 100%;
                     margin-bottom: 6px;
-                    overflow: scroll;
+                    overflow-x: hidden;
+                    overflow-y: auto;
+                    position: fixed;
+                    width: 100%;
                     -webkit-overflow-scrolling: touch;
-                    .row div {
-                        display: block;
-                        min-height: 30px;
+                    &.has-drawings {
+                        .row {
+                            height: auto;
+                        }
+                        .choice, .choice label {
+                            height: 56px;
+                        }
+                        .drawing {
+                            background-color: inherit;
+                            /*border-left: 1px solid blue;*/
+                            /*border-right: 1px solid blue;*/
+                            clear: left;
+                            float: left;
+                            height: 56px;
+                            margin: 0;
+                            text-align: center;
+                            width: 60px;
+                        }
+                        img, img[id] {
+                            border: 0;
+                            height: auto;
+                            margin: auto;
+                            max-height: 56px;
+                            max-width: 56px;
+                            width: auto;
+                        }
+                        .choice label {
+                            width: 73%;
+                        }
+                        .choice:first-of-type .drawing {
+                            border-top-left-radius: $smallscreen-choices-border-radius;
+                        }
+                        .choice:last-of-type .drawing {
+                            border-bottom-left-radius: $smallscreen-choices-border-radius;
+                        }
+                    }
+                }
+                .choice {
+                    border-bottom: 1px solid #999;
+                    margin: 0;
+                    height: 44px;
+                    position: relative;
+                    label {
+                        /*border-left: 1px solid orange;*/
+                        /*border-right: 1px solid orange;*/
+                        display: table;
+                        font-family: Verdana, sans-serif; /* No Tahoma on iOS */
+                        font-size: 11px;
+                        height: 44px;
+                        margin: 0;
+                        max-width: none;
+                        min-width: none;
+                        padding-left: 4px;
+                        padding-right: 12px;
+                        width: 96%;
+                        -webkit-tap-highlight-color: rgba(0,0,0,0);
+                    }
+                }
+                .row:first-of-type .choice:first-of-type {
+                    border-top: none;
+                }
+                .checked {
+                    background: #eef2e9 url(/static/images/layout/check.png) no-repeat;
+                    background-size: auto 20px;
+                    background-position: 98% center;
+                }
+                .row:first-of-type .checked:first-of-type {
+                    border-top-left-radius: $smallscreen-choices-border-radius;
+                    border-top-right-radius: $smallscreen-choices-border-radius;
+                }
+                .row:last-of-type .checked:last-of-type {
+                    border-bottom-left-radius: $smallscreen-choices-border-radius;
+                    border-bottom-right-radius: $smallscreen-choices-border-radius;
+                }
+                .choice-label {
+                    display: table-cell;
+                    vertical-align: middle;
+                }
+                input {
+                    margin: 4px 0;
+                    opacity: 0;
+                    position: absolute;
+                }
+                .actions {
+                    bottom: 0;
+                    height: 50px;
+                    position: fixed;
+                    width: 100%;
+                }
+            } /* end .working-area */
+            
+            .modal-wrap .inner { /* More Questions dialog */
+                h4.heading {
+                    font-size: 13px;
+                    padding-left: 10px;
+                    padding-right: 10px;
+                    padding-top: 8px;
+                }
+                p {
+                    display: none;
+                }
+                #choices {
+                    font-size: 10px;
+                    padding-left: 10px;
+                    li {
+                        margin-bottom: 8px;
                     }
                 }
             }
@@ -1263,9 +1493,55 @@ ul.get-more-questions-menu {
 
         &.results.mobile-wide {  /* Styles for testing: mobile variant where
                                     filters list is full width of screen */
+            #intro-overlay {
+                .number-of-questions:before {
+                    display: none;            
+                }
+            }
             #question-nav {
-                margin: 25px 0 12px;
-                width: 100%;
+                margin: 25px $smallscreen-margin 12px;
+                width: 95%;
+                &.closed {
+                    background: none;
+                    border: 0;
+                    min-height: 0;
+                    div:not([class="section instructions"]) {
+                        display: none;
+                    }
+                    .instructions {
+                        border-radius: 18px;
+                        h5::after {
+                            right: 12px;
+                            top: 10px;
+                            @include rotate(135deg);
+                        }
+                    }
+                }
+                .instructions {
+                    @include background($orange_gradient); 
+                    @include single-box-shadow(darken($inactive_bg, 30), 0px, 1px, 4px);
+                    border-radius: 0;
+                    cursor: pointer;
+                    position: relative;
+                    h5::after {
+                        border-color: #fff;
+                        border-style: solid;
+                        border-width: 3px 3px 0 0;
+                        color: #fff;
+                        content: " \a0";
+                        display: inline-block;
+                        height: 9px;
+                        position: absolute;
+                        right: 12px;
+                        top: 15px;
+                        vertical-align: middle;
+                        width: 9px;
+                        @include rotate(-45deg);
+                    }
+                }
+                .choices, .actions {
+                    position: static;
+                }
                 .scroll {
                     border: 0;
                     border-bottom: 1px solid $border-green;
@@ -1292,14 +1568,213 @@ ul.get-more-questions-menu {
                         width: 98%;
                     }
                 }
+                .option-list {
+                    > li:active:not(.active) { /* question-link active
+                                                  pseudoclass, only when
+                                                  question is closed */
+                        background: $link-green;
+                    }
+                    .option {
+                        cursor: pointer;
+                        display: block;
+                        position: relative;
+                        &::after {
+                            border-color: #000;
+                            border-style: solid;
+                            border-width: 2px 2px 0 0;
+                            color: #000;
+                            content: " \a0";
+                            display: inline-block;
+                            height: 8px;
+                            position: absolute;
+                            right: 8px;
+                            top: 2px;
+                            vertical-align: middle;
+                            width: 8px;
+                            @include rotate(45deg);
+                        }
+                    }
+                    .name {
+                        font-size: 11px;
+                        margin: 0;
+                    }
+                    .clear-filter {
+                        width: 50%;
+                    }
+                }
             }
             .species-count-heading {
                 position: relative;
                 text-align: center;
-                top: -10px;
+                top: -2px;
                 width: 80%;
             }
         } /* end &.results.mobile-wide */
+
+        &.results.mobile-gloss { /* Styles for mobile variants where working-
+                                    area glossary terms are shown in a list */
+            .working-area {
+                h4 {
+                    padding-right: 50px;
+                }
+                .gloss {
+                    color: inherit;
+                    cursor: default;
+                    &:hover {
+                        border-bottom: 0;
+                    }
+                }
+                .terms {
+                    background: $light-green;
+                    border: 1px solid #666;
+                    display: block;
+                    padding: 6px 12px;
+                    position: absolute;
+                    right: 0;
+                    text-align: right;
+                    top: 0;
+                    width: 50%;
+                    @include single-box-shadow(darken($inactive_bg, 30), 0px, 1px, 4px);
+                    &.closed {
+                        background: none;
+                        border: 0;
+                        @include single-box-shadow(none);
+                        h5 {
+                            padding: 5px 6px 8px;
+                            &::after {
+                                top: 16px;
+                                @include rotate(135deg);
+                            }
+                        }
+                        ul {
+                            display: none;
+                        }
+                    }
+                    h5 {
+                        color: $link-green;
+                        padding: 4px 5px 8px 6px;
+                        &::after {
+                            border-color: $link-green;
+                            border-style: solid;
+                            border-width: 2px 2px 0 0;
+                            color: #fff;
+                            content: " \a0";
+                            display: inline-block;
+                            height: 4px;
+                            position: absolute;
+                            right: 6px;
+                            top: 17px;
+                            vertical-align: middle;
+                            width: 4px;
+                            @include rotate(-45deg);
+                        }
+                    }
+                    &.none h5 {
+                        display: none;
+                    }
+                    ul {
+                        margin: 0;
+                        text-align: left;
+                    }
+                    li {
+                        border: 0;
+                        float: none;
+                        line-height: 120%;
+                        margin-bottom: 4px;
+                        padding: 0;
+                        width: 100%;
+                        span {
+                            font-weight: bold;
+                        }
+                    }
+                }
+            }
+        } /* end &.results.mobile-gloss */
+
+        &.results.mobile-inline { /* Styles for testing: mobile variant where
+                                     filter values appear inline */
+            #question-nav {
+                .option-list {
+                    > li.active .option::after {
+                        right: 6px;
+                        top: 3px;
+                        @include rotate(-45deg);
+                    }
+                    .option::after {
+                        right: 7px;
+                        top: 0;
+                        @include rotate(135deg);
+                    }
+                }
+            }
+            .working-area {
+                background: #fff;
+                border: 0;
+                height: auto;
+                padding: 8px 0 0;
+                position: static;
+                top: auto !important;
+                width: 99%;
+                -moz-box-shadow: none;
+                -webkit-box-shadow: none;
+                -o-box-shadow: none;
+                box-shadow: none;
+                .close {
+                    display: none;
+                }
+                .info {
+                    float: none;
+                }
+                .choices {
+                    height: auto;
+                    overflow: visible;
+                }
+                .choice:last-of-type {
+                    border-bottom: 0;
+                }
+            }
+            &.mobile-gloss .working-area {
+                h4 {
+                    padding-right: 0;
+                }
+                .terms {
+                    background: inherit;
+                    border: 0;
+                    padding: 4px;
+                    position: static;
+                    text-align: left;
+                    width: 100%;
+                    &.closed {
+                        h5::after {
+                            display: none;
+                        }
+                        ul {
+                            display: block;
+                        }
+                    }
+                    h5 {
+                        color: #000;
+                        padding: 5px 0;
+                        text-decoration: none;
+                        &::after {
+                            display: none;
+                        }
+                    }
+                }
+            }
+        } /* end &.results.mobile-inline */
+    }
+}
+/* Tablet-only styles */
+@media only screen and (min-width: 601px) and (max-width: 1024px) {
+    body.skey {
+        &.results {
+            #question-nav {
+                .option-list > li.active:hover {
+                    background: #dce890;
+                }
+            }
+        }
     }
 }
 /* These styles apply to smartphones and tablets */
@@ -1307,11 +1782,10 @@ ul.get-more-questions-menu {
     body.skey {
         &.results {
             #question-nav {
-                ul.option-list li:hover {
-                    background: #fff;   /* No hover color */
-                }
-                ul.option-list li.active:hover {
-                    background: #dce890;   /* Except active-filter hover color */
+                .option-list {
+                    > li:hover, > li.active, > li.answered.active {
+                        background: #fff;
+                    }
                 }
             }
         }

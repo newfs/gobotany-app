@@ -9,14 +9,14 @@
 
 {% include "_ask_botanist_section.html" %}
 
-<h2>All <a href="{% url ps-all-questions %}">Questions and Answers</a></h2>
+<h2>All <a href="{% url 'ps-all-questions' %}">Questions and Answers</a></h2>
 
 {% if questions|length > 0 %}
     <h2 id="recent">Recently Answered Questions</h2>
     {% include "_recent_questions.html" %}
 
     <p class="more"><a 
-        href="{% url ps-all-questions %}">All Questions and Answers »</a><p>
+        href="{% url 'ps-all-questions' %}">All Questions and Answers »</a><p>
 {% endif %}
 
 {% endblock %}

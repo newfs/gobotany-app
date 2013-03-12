@@ -116,8 +116,8 @@ var SpeciesPageHelper = {
         this.toggle_characters_full_list();
 
         // Link glossary terms.
-        var selectors = '#sidebar dd, #main p:not(.nogloss), #main dt, ' +
-            '#main dd, #main li, #main th, #main td';
+        var selectors = '#sidebar dd, #main p:not(.nogloss), ' +
+            '#main li:not(.nogloss), #main dt, #main dd, #main th, #main td';
         glossarizer.glossarize($(selectors));
 
         // Make image gallery able to show larger images.

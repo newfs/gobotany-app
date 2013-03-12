@@ -8,7 +8,7 @@
 /dev/node/
 /dev/nohup.out
 /dev/requirejs/build/
-/dev/usr/apache-solr-3.6.1*
+/dev/usr/apache-solr-*
 /dev/venv/
 
 # SASS

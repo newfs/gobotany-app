@@ -16,7 +16,7 @@
 {% endblock %}
 
 {% block body_attributes %}class="skey results {{ key|title|lower }}
-    {{ request.GET.m }}"{% endblock %}
+    mobile-wide {{ request.GET.m }}"{% endblock %}
 
 {% block main_content %}
     {% include "simplekey/_results_modal_dialogs.html" %}
@@ -24,11 +24,13 @@
                 <div id="page-head">
 
                     <div id="breadcrumb">
-                        You are here:
-                          <a href="{% url level1 key %}">{{ key|title }} Key</a>
-                        &gt; <a href="{% url level2 key pilegroup.slug %}"
-                            >{{ pilegroup.friendly_title|lower|capfirst }}</a>
-                        &gt; <span>{{ pile.friendly_title }}</span>
+                        <ul>
+                            <li class="label nogloss">You are here:</li>
+                            <li class="nogloss"><a href="{% url 'level1' key %}">{{ key|title }} Key</a></li>
+                            <li class="nogloss"><a href="{% url 'level2' key pilegroup.slug %}"
+                            >{{ pilegroup.friendly_title|lower|capfirst }}</a></li>
+                            <li class="this-page nogloss">{{ pile.friendly_title }}</li>
+                        </ul>
                     </div>
 
                     <h1>{{ subgroup_results_page.main_heading|capfirst }}</h1>
@@ -36,10 +38,10 @@
                 </div>
 
 
-                <div id="question-nav">
+                <div id="question-nav" class="closed">
 
                     <div class="section instructions">
-                        <h5>Questions for filtering:</h5>
+                        <h5>Questions (<span>0</span> answered)</h5>
                     </div>
                     <div class="scroll">
                       <div class="loading">Loading questions…</div>
@@ -82,7 +84,7 @@
             
                     <div class="section help">
                         <h5 class="left help last">Need Help?</h5>
-                        <a href="{% url site-getting-started %}"
+                        <a href="{% url 'site-getting-started' %}"
                             class="get-help-btn left">Get Help</a>
                     </div>
 
@@ -96,7 +98,7 @@
                         src="/static/images/layout/working-area-arrow.png">
                     <a href="#" class="close"></a>
 
-                    <h4></h4>
+                    <h4 class="question"></h4>
                     <div>
                         <div class="info">
                             <div class="character-drawing"></div>
@@ -105,6 +107,13 @@
                             <div class="actions">
                               <a class="apply-btn" href="#">Apply</a>
                             </div>
+                        </div>
+                        <div class="terms none closed">
+                            <h5>Terms</h5>
+                            <ul>
+                                <li><span>term 1</span> definition 1</li>
+                                <li><span>term 2</span> definition 2</li>
+                            </dl>
                         </div>
                     </div>
                 </div>

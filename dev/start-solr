@@ -8,13 +8,13 @@ set -e
 DEV=$(dirname "${BASH_SOURCE[0]}")
 cd $DEV
 
-EXAMPLE=usr/apache-solr-3.6.1/example
+EXAMPLE=usr/apache-solr-3.6.2/example
 
 if [ ! -d $EXAMPLE ]
 then
     cd usr
-    curl -OL http://www.apache.org/dist/lucene/solr/3.6.1/apache-solr-3.6.1.tgz
-    tar xzf apache-solr-3.6.1.tgz
+    curl -OL http://www.apache.org/dist/lucene/solr/3.6.2/apache-solr-3.6.2.tgz
+    tar xzf apache-solr-3.6.2.tgz
     patch -p0 < patch-solrconfig
     cd ..
 fi

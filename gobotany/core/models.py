@@ -75,6 +75,8 @@ class GlossaryTerm(models.Model):
                               null=True)
 
     class Meta:
+        verbose_name = 'glossary term'
+        verbose_name_plural = 'glossary terms'
         # Don't allow duplicate definitions
         unique_together = ('term', 'lay_definition')
 
@@ -429,6 +431,7 @@ class Family(models.Model):
     images = generic.GenericRelation(ContentImage)
 
     class Meta:
+        verbose_name = 'family'
         verbose_name_plural = 'families'
         ordering = ['name']
 
@@ -449,6 +452,7 @@ class Genus(models.Model):
     images = generic.GenericRelation(ContentImage)
 
     class Meta:
+        verbose_name = 'genus'
         verbose_name_plural = 'genera'
         ordering = ['name']
 
@@ -532,6 +536,7 @@ class Taxon(models.Model):
     # TODO: import descriptions!
 
     class Meta:
+        verbose_name = 'taxon'
         verbose_name_plural = 'taxa'
         ordering = ['scientific_name']
 
@@ -554,6 +559,18 @@ class Taxon(models.Model):
         mapping = defaultdict(list)
         for row in self.conservation_statuses.all():
             mapping[settings.STATE_NAMES[row.region]].append(row.label)
+        return odict(sorted(mapping.iteritems()))
+
+    def get_distribution_and_conservation_statuses(self):
+        # Order the conservation statuses such that a special value, the
+        # distribution (present/absent), always comes first.
+        mapping = defaultdict(list)
+        for row in self.conservation_statuses.all():
+            key = settings.STATE_NAMES[row.region]
+            if row.label in ['present', 'absent']:
+                mapping[key].insert(0, row.label)
+            else:
+                mapping[key].append(row.label)
         return odict(sorted(mapping.iteritems()))
 
     def get_default_image(self):
@@ -743,8 +760,9 @@ class Distribution(models.Model):
     status = models.CharField(max_length=100)
 
     def __unicode__(self):
-        return '%s: %s County, %s (%s)' % (self.scientific_name, self.county,
-                                           self.state, self.status)
+        county = ' (%s County)' % self.county if len(self.county) > 0 else ''
+        return '%s: %s%s: %s' % (self.scientific_name, self.state,
+                                 county, self.status)
 
 
 class CopyrightHolder(models.Model):

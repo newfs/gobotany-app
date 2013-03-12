@@ -2,7 +2,7 @@ from distutils.core import setup
 from setuptools import find_packages
 
 requirements = [
-    'django==1.4',
+    'django==1.5',
 
     'PIL',
     'South==0.7.6',
@@ -16,6 +16,7 @@ requirements = [
     'psycopg2>=2.3',
     'python-memcached',
     'pytz',
+    'tablib==0.9.11',
     'xlrd',
 
     # The way we use pysolr introduces an extra dependency
@@ -42,7 +43,7 @@ requirements = [
 
     # Heroku and deployment
 
-    'gunicorn',
+    'gunicorn==0.17.2',
     'newrelic',
     's3cmd',
     ]

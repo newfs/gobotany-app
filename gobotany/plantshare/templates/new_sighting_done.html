@@ -9,9 +9,9 @@
 
 <p>Thank you for posting your sighting to PlantShare.</p>
 
-{% url ps-sighting request.GET.s as sighting_url %}
+{% url 'ps-sighting' request.GET.s as sighting_url %}
 <p>You can <a href="{{ sighting_url }}">review your sighting</a>
-or <a href="{% url ps-new-sighting %}">post another sighting</a>.</p>
+or <a href="{% url 'ps-new-sighting' %}">post another sighting</a>.</p>
 
 {% endblock %}
 

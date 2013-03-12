@@ -130,17 +130,14 @@ class UserProfile(models.Model):
 
         return avatar_info
 
+    def checklists(self):
+        """Retrieve the list of all checklists this user has created
+        or has been added as a collaborator on, including those editable due
+        to Pod membership."""
+        return self.pods.all().checklists
 
-class SharingGroup(models.Model):
-    name = models.CharField(max_length=100)
-    members = models.ManyToManyField(UserProfile, through='SharingGroupMember',
-        related_name='groups')
-
-
-class SharingGroupMember(models.Model):
-    member = models.ForeignKey(UserProfile)
-    group = models.ForeignKey(SharingGroup)
-    is_owner = models.BooleanField(default=False)
+    def get_user_pod(self):
+        return self.pods.get(podmembership__is_self_pod=True)
 
 
 class Sighting(models.Model):
@@ -259,3 +256,99 @@ class Question(models.Model):
         if self.answer:
             self.answered = datetime.datetime.now()
         super(Question, self).save()
+
+
+class Pod(models.Model):
+    name = models.CharField(max_length=100)
+    members = models.ManyToManyField(UserProfile, through='PodMembership',
+            related_name='pods')
+
+    def get_owner(self):
+        return self.members.get(podmembership__is_owner=True)
+
+
+class PodMembership(models.Model):
+    member = models.ForeignKey(UserProfile)
+    pod = models.ForeignKey(Pod)
+    # Is this the pod owner?
+    is_owner = models.BooleanField(default=False)
+    # Is this this user's personal pod (for sharing purposes)
+    is_self_pod = models.BooleanField(default=False)
+
+
+class Checklist(models.Model):
+    """A container of checklist items which represent plants to search for."""
+    name = models.CharField(max_length=100)
+    comments = models.TextField(blank=True)
+
+    """Pods that can view and update this actual Checklist instance.
+    Any members of these Pods can collaborate on adding or editing items 
+    on this Checklist. If the owner flag is set, the Pod members may also
+    delete items."""
+    collaborators = models.ManyToManyField('Pod', related_name='checklists',
+            through='ChecklistCollaborator')
+
+    def copy_to_user(self, user):
+        """Send a copy of this checklist to another user. The user will
+        have full privledges to edit the copy as if they created it. The
+        list of collaborators will be cleared in the copy."""
+        user_pod = user.profile.get_user_pod()
+        checklist_copy = self
+        checklist_copy.pk = None
+        checklist_copy.collaborators.clear()
+        checklist_copy.save()
+
+        # Copy all the checklist entries, but don't save the checked
+        # state or any of the optional details - the new checklist
+        # should be "blank"
+        copied_entries = []
+        for entry in self.entries:
+            item_copy = ChecklistEntry(plant_name=entry.plant_name,
+                    checklist=checklist_copy)
+            copied_entries.append(item_copy)
+
+        ChecklistEntry.objects.bulk_create(copied_entries)
+
+        # Assign ownership of the new checklist to the user
+        ownership = ChecklistCollaborator(collaborator=user_pod,
+                checklist=checklist_copy, is_owner=True)
+        ownership.save()
+
+    def share_to_user(self, user):
+        """Allow another user to collaborate and edit this checklist"""
+        user_pod = user.profile.get_user_pod()
+        user_access = ChecklistCollaborator(collaborator=user_pod,
+                checklist=self, is_owner=False)
+        user_access.save()
+
+    def share_to_pod(self, pod):
+        """Allow members of a pod to collaborate and edit this checklist"""
+        pod_access = ChecklistCollaborator(collaborator=pod,
+                checklist=self, is_owner=False)
+        pod_access.save()
+
+
+class ChecklistEntry(models.Model):
+    """An individual entry on a checklist. An entry on a checklist represents
+    a taxon to be searched for, and which can later be "checked off" when
+    found."""
+    checklist = models.ForeignKey(Checklist, related_name='entries')
+
+    plant_name = models.CharField(max_length=100, blank=False)
+
+    is_checked = models.BooleanField(default=False)
+    plant_photo = models.ForeignKey(ScreenedImage, null=True, blank=True)
+    location = models.CharField(max_length=100, blank=True)
+
+    date_found = models.DateTimeField(null=True)
+    date_posted = models.DateTimeField(null=True)
+
+    note = models.TextField(blank=True)
+
+
+class ChecklistCollaborator(models.Model):
+    collaborator = models.ForeignKey(Pod)
+    checklist = models.ForeignKey(Checklist)
+
+    is_owner = models.BooleanField(default=False)
+

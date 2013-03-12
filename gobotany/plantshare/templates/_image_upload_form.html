@@ -3,7 +3,7 @@
     <img src="/static/images/icons/no-image.png" alt="image">
     <h4>Upload Image</h4>
     <form id="upload-image-form" method="POST" 
-        action="{% url ps-ajax-image-upload %}">
+        action="{% url 'ps-ajax-image-upload' %}">
         {% csrf_token %}
         <div class="screening-notify">
             <p>All images are screened by Plantshare Staff before being displayed publicly.</p>

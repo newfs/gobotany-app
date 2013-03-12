@@ -17,8 +17,6 @@ from operator import attrgetter
 # The GoBotany settings have to be imported before most of Django.
 from django.conf import settings
 from gobotany.core import rebuild
-from django.core import management
-management.setup_environ(settings)
 
 from django.contrib.contenttypes.models import ContentType
 from django.core.files.storage import default_storage
@@ -1322,7 +1320,7 @@ class Importer(object):
         models.HomePageImage.objects.all().delete()
 
         log.info('Loading home page images')
-        field = models.HomePageImage._meta._name_map['image'][0]
+        field = models.HomePageImage._meta.get_field('image')
         directories, image_names = default_storage.listdir(field.upload_to)
         image_paths = [ field.upload_to + '/' + name
                         for name in image_names if name ]

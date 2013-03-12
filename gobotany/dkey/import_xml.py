@@ -80,6 +80,8 @@ def norm(u):
 
 re_number = re.compile('\d+')
 re_genus_letter = re.compile(ur'\b([A-Z]\.)(<[^>]+>|)[ \n]+')
+re_newline_and_indent = re.compile(ur'\n *$', re.M)
+re_preceding_punctuation = re.compile(ur'[;.][\s\u2002\u2028 ]*$')
 
 def p(text):
     return u'<p>{}</p>'.format(text)
@@ -87,12 +89,15 @@ def p(text):
 def extract_html(x, skip=0, endskip=0):
     """Convert the xml children of `x` to html, skipping `skip` children."""
     s = x[skip-1].tail if skip else x.text
-    for i in range(skip, len(x) - endskip):
+    end = len(x) - endskip
+    for i in range(skip, end):
         tag = x[i].tag
         text = x[i].text or u''
         tail = x[i].tail or u''
         tail0 = tail[0:1]
         space = ' ' if tail0.isalpha() or tail0 in '(' else ''
+        last = (i + 1) >= end
+        plus1 = None if last else x[i + 1]
 
         if tag in (u'bold_L', u'light_var', u'more_or_less_sign'):
             s += u'%s%s%s' % (text, space, tail)
@@ -121,8 +126,15 @@ def extract_html(x, skip=0, endskip=0):
         elif tag == u'italic':
             s += u'<i>%s</i>%s%s' % (text, space, tail)
         elif tag in (u'lead_number_letter', u'lead_number_letter_inner'):
-            if i+1 < len(x) and x[i+1].tag.startswith('mult'):
+            if not last and plus1.tag == 'multiplication_sign_bold':
                 s += u'<b>%s</b>' % text
+            elif (tag == u'lead_number_letter_inner'
+                  and not re_preceding_punctuation.search(s)):
+                # Put an ellipsis in front of a variety name that
+                # concludes a paragraph describing that variety, to
+                # resemble the long line of periods that right-justifies
+                # such variety names in the printed book.
+                s += u'… <b>%s</b>%s%s' % (text, space, tail)
             else:
                 s += u'<b>%s</b>%s%s' % (text, space, tail)
         elif tag == 'multiplication_sign_bold':
@@ -130,8 +142,16 @@ def extract_html(x, skip=0, endskip=0):
         elif tag == u'small_caps':
             s += u'<small>%s</small>%s%s' % (text, space, tail)
 
-        elif tag in (u'multiplication_sign_light',):
-            s += text + space + tail.strip()
+        elif tag == 'multiplication_sign_light':
+            hybrid_name_follows = (not last) and (
+                text.endswith(u'\u200c')
+                or plus1.text.startswith(u'\u200c')
+                or plus1.text[1:2] == u'.'
+                )
+            if hybrid_name_follows:
+                s += text + space + tail.strip()
+            else:
+                s += text + space + re_newline_and_indent.sub('', tail)
         elif tag in ('bullet',):
             s += text + tail
         elif tag in ('trailing_group_designation',
@@ -500,11 +520,6 @@ def parse_subchapter(info, page, prefix, xchildren, i):
                 lead.goto_num = int(taxon_name.split()[-1])
             else:
                 lead.goto_page = info.get_or_create_page(taxon_name)
-
-        if not (xchild[-1].text or '').strip() and xchild[-1].tag in (
-            'italic', 'lead_number_letter', 'lead_number_letter_inner',
-            ):
-            del xchild[-1]  # 'I. hieroglyphica' has a stray empty <italic>
 
         if xchild[-1].tag == 'bold_italic' and xchild[-1].text.strip():
             taxon_name = trailing_taxon_name(prefix, xchild)

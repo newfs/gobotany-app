@@ -15,7 +15,7 @@
 {% if user.is_authenticated %}
 <div class="profile box">
     <h2>My Profile</h2>
-    <a href="{% url ps-profile %}" class="edit">Edit Profile</a>
+    <a href="{% url 'ps-profile' %}" class="edit">Edit Profile</a>
     <div>
         <img src="{{ avatar.thumb_url }}" alt="">
         <h3>{{ user.first_name|default:user.username }}</h3>
@@ -45,7 +45,7 @@
                 <li>Ask one of our expert botanists questions</li>
                 <li>Share your thoughts and musings with others</li>
             </li>
-            <a href="{% url registration_register %}">Get Started</a>
+            <a href="{% url 'registration_register' %}">Get Started</a>
         </div>
     {% endif %}
 {% endif %}
@@ -62,7 +62,7 @@
                 id="plant-name"
                 placeholder="scientific or common name"
                 class="suggest"
-                data-suggest-url="{% url site-plant-name-suggestions %}?q=%s"
+                data-suggest-url="{% url 'site-plant-name-suggestions' %}?q=%s"
                 data-align-menu-inside-input="true"
                 data-submit-on-select="true">
             <input type="submit" value="Go">
@@ -79,7 +79,7 @@
             to. Rare and endangered plants will not be displayed.</p>
         
             <p class="full-link"><a
-                href="{% url ps-sightings-locator %}">View full page »</a></p>
+                href="{% url 'ps-sightings-locator' %}">View full page »</a></p>
         </form>
 
         {% sightings_map latitude=map.latitude longitude=map.longitude center_title=map.center_title height="297px" width="481px" zoom="6" id="mini-sightings-map" %}       
@@ -96,7 +96,7 @@
         {% include "_recent_questions.html" %}
             
         <p class="more"><a
-            href="{% url ps-questions %}#q{{ max_questions|add:'1' }}">More 
+            href="{% url 'ps-questions' %}#q{{ max_questions|add:'1' }}">More 
             Recently Answered Questions »</a><p>
     {% endif %}
 

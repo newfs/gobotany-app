@@ -69,7 +69,7 @@ define([
        Any terms found are replaced with a <span> to which a tooltip is
        then attached. */
 
-    exports.Glossarizer.prototype.markup = function(node) {
+    exports.Glossarizer.prototype.markup = function(node, terms_section) {
 
         /* Place any glossary terms in the node inside spans. */
 
@@ -91,39 +91,64 @@ define([
             );
         });
 
-        /* Attach the new spans to tooltips. */
-
         var defs = this.glossaryblob.definitions;
-        var images = this.glossaryblob.images;
 
-        $('.gloss', node).each(function(i, span) {
-            self.n++;
-            var gloss_id = 'gloss' + self.n;
-            var term = span.innerHTML.toLowerCase();
-            var imgsrc = images[term];
-            span.id = gloss_id;
+        if (terms_section === undefined) {
+            /* Attach the new spans to tooltips. */
 
-            var definition = defs[term];
-            if (definition === undefined) {
-                // If the definition was not found, try looking it up
-                // without converting the term to lowercase. This will
-                // allow finding all-uppercase terms (ex.: the wetland
-                // indicator code FACW). Converting the term to lower case
-                // is still desirable as the default because it allows
-                // markup of terms that appear in mixed case on the pages.
-                definition = defs[span.innerHTML];
-            }
+            var images = this.glossaryblob.images;
 
-            $(span).tooltip({
-                content: '<p class="glosstip">' +
-                    (imgsrc ? '<img src="' + imgsrc + '">' : '') +
-                    definition + '</p>'
+            $('.gloss', node).each(function(i, span) {
+                self.n++;
+                var gloss_id = 'gloss' + self.n;
+                var term = span.innerHTML.toLowerCase();
+                var imgsrc = images[term];
+                span.id = gloss_id;
+
+                var definition = defs[term];
+                if (definition === undefined) {
+                    // If the definition was not found, try looking it up
+                    // without converting the term to lowercase. This will
+                    // allow finding all-uppercase terms (ex.: the wetland
+                    // indicator code FACW). Converting the term to lower case
+                    // is still desirable as the default because it allows
+                    // markup of terms that appear in mixed case on the pages.
+                    definition = defs[span.innerHTML];
+                }
+
+                $(span).tooltip({
+                    content: '<p class="glosstip">' +
+                        (imgsrc ? '<img src="' + imgsrc + '">' : '') +
+                        definition + '</p>'
+                });
             });
-        });
+        }
+        else {
+            /* Add this node's terms to a list that can be shown on small
+               screens. */
+
+            var terms_list = terms_section + ' ul';
+            $('.gloss', node).each(function(i, span) {
+                var term = span.innerHTML.toLowerCase();
+
+                // List a term unless it has already been listed.
+                var is_already_listed =
+                    $(terms_list).find('li').hasClass(term);
+                if (!is_already_listed) {
+                    $(terms_list).append('<li class="' + term + '"><span>' +
+                        term + ':</span> ' + defs[term] + '</li>');
+                    // Signal that the list has at least one term.
+                    $(terms_section).removeClass('none');
+                }
+            });
+        }
     };
 
     /* Convenience routine that glossarizes elements as soon as the
-       glossary blob has arrived from the API. */
+       glossary blob has arrived from the API.
+       
+       An optional argument 'terms_section' can be passed, which adds the
+       terms and definitions to a list instead of making tooltips. */
 
     var glossarizer = null;
     var kickoff = $.Deferred();
@@ -136,11 +161,11 @@ define([
         });
     });
 
-    exports.glossarize = function($nodes) {
+    exports.glossarize = function($nodes, terms_section) {
         kickoff.resolve();
         ready.done(function() {
             $nodes.each(function(i, node) {
-                glossarizer.markup(node);
+                glossarizer.markup(node, terms_section);
             });
         });
     };

@@ -70,7 +70,11 @@ define([
         this.div = args.div;
         this.div_map = null,   // map choice value -> <input> element
         this.filter = args.filter;
+        this.max_smallscreen_width = args.max_smallscreen_width;
+        this.glossarize_mobile = args.glossarize_mobile;
+        this.terms_section = args.terms_section;
 
+        this._attach();
         this._draw_basics(args.y);
         this._draw_specifics();
         this._on_filter_change();
@@ -102,11 +106,31 @@ define([
         var f = this.filter;
         var p = function(s) {return s ? '<p>' + s + '</p>' : s}
 
+        // Reset the small-screens glossary terms section.
+        $(this.terms_section).addClass('none');
+        $(this.terms_section).find('ul').empty();
+
         // Show the question, hint and Apply button.
-        glossarize($('h4').html(f.info.question));
-        $('h4').css('display', 'block');
-        glossarize($('.hint').html(p(f.info.hint)));
-        $('.info').css('display', 'block');
+        
+        var $question = $div.find('.question');
+        var $hint = $div.find('.hint');
+        var $info_section = $div.find('.info');
+
+        $question.html(f.info.question);
+        $hint.html(p(f.info.hint));
+
+        if ($(window).width() > this.max_smallscreen_width) {
+            glossarize($question);
+            glossarize($hint.find('p'));
+        }
+        else if (this.glossarize_mobile) {
+            // List glossary terms in a separate section on small screens.
+            glossarize($question, this.terms_section);
+            glossarize($hint.find('p'), this.terms_section);
+        }
+        
+        $question.css('display', 'block');
+        $info_section.css('display', 'block');
 
         // Display character drawing, if an image is available.
         if (f.info.image_url) {
@@ -130,10 +154,27 @@ define([
         // Hook up the Apply button.
         $('.apply-btn', this.div).bind(
             'click', $.proxy(this, '_apply_button_clicked'));
+
+        // If applicable, hook up a handler to toggle glossary terms.
+        if ($(window).width() <= this.max_smallscreen_width &&
+            this.glossarize_mobile &&
+            !$('body').hasClass('mobile-inline')) {
+
+            var $terms_section = $div.find('.terms');
+            var $terms_heading = $terms_section.find('h5').eq(0);
+            $terms_section.addClass('closed'); // always start closed
+
+            $terms_heading.unbind('click');
+            $terms_heading.bind('click', function() {
+                $terms_section.toggleClass('closed');
+            });
+        }
     };
 
     Choice.prototype._draw_specifics = function() {
+        var BLANK_IMAGE = '/static/images/layout/transparent.png';
         var CHOICES_PER_ROW = 5;
+        var choices_class = 'choices';
         var checked = function(cond) {return cond ? ' checked' : ''};
         var f = this.filter;
 
@@ -144,13 +185,34 @@ define([
         var values = utils.clone(f.values);
         values.sort(_compare_filter_choices);
 
-        var $choices = $('<div>', {'class': 'choices'}).appendTo($div);
+        // Find out whether there are any drawing images for this filter.
+        var has_drawings = false;
+        for (var i = 0; i < values.length; i++) {
+            var image_path = values[i].image_url;
+            if (image_path.length > 0) {
+                has_drawings = true;
+                choices_class += ' has-drawings';
+                break;
+           }
+        }
+
+        // Create the container for the choices.
+        var $choices = $('<div>', {'class': choices_class}).appendTo($div);
         var $row = $('<div>', {'class': 'row'}).appendTo($choices);
 
         // Create a Don't Know radio button item.
-        var item_html = '<div><label><input name="char_name"' +
+        var item_html = '<div class="choice' +
+            checked(f.value === null) + '">';
+        if (has_drawings === true) {
+            // Include a blank image to keep the layout intact.
+            item_html += '<div class="drawing"><img ' + 
+            'src="' + BLANK_IMAGE + '" ' +
+            'alt=""></div>';
+        }
+        item_html += '<label><input name="char_name"' +
             checked(f.value === null) +
-            ' type="radio" value=""> ' + _format_value() + '</label></div>';
+            ' type="radio" value=""> <span class="choice-label">' +
+            _format_value() + '</span></label></div>';
 
         this.div_map = {};
         this.div_map[''] = $(item_html).appendTo($row)[0];
@@ -161,23 +223,33 @@ define([
         for (i = 0; i < values.length; i++) {
             var v = values[i];
 
-            var item_html =
-                '<div><label><input name="char_name" type="radio"' +
+            var item_html = '<div class="choice' +
+                checked(f.value === v.choice) + '">';
+
+            if (has_drawings === true) {
+                // Add a drawing image if present. If there is no drawing,
+                // add a blank image to keep the layout intact.
+                item_html += '<div class="drawing">';
+                var image_path = v.image_url;
+                if (image_path.length > 0) {
+                    var image_id = this._get_image_id_from_path(image_path);
+                    item_html += '<img id="' + image_id +
+                        '" src="' + image_path + '" alt="drawing ' +
+                        'showing ' + v.friendly_text + '">';
+                }
+                else {
+                    item_html += '<img src="' + BLANK_IMAGE + '" alt="">';
+                }
+                item_html += '</div>';
+            }
+
+            item_html += '<label><input name="char_name" type="radio"' +
                 checked(f.value === v.choice) +
                 ' value="' + v.choice + '">';
 
-            // Add a drawing image if present.
-            var image_path = v.image_url;
-            if (image_path.length > 0) {
-                var image_id = this._get_image_id_from_path(image_path);
-                item_html += '<img id="' + image_id +
-                    '" src="' + image_path + '" alt="drawing ' +
-                    'showing ' + v.friendly_text + '"><br>';
-            }
-
-            item_html += ' <span class="label">' + _format_value(v) +
-                '</span> <span class="count">(n)</span>' +
-                '</label></div>';
+            item_html += ' <span class="choice-label"><span class="label">' +
+                _format_value(v) + '</span> <span class="count">(n)</span>' +
+                '</span></label>';
 
             // Start a new row, if necessary, to fit this choice.
             if (choices_count % CHOICES_PER_ROW === 0)
@@ -193,13 +265,33 @@ define([
                 var image_html = '<img class="char-value-larger" id="' +
                     image_id + '" src="' + image_path +
                     '" alt="drawing showing ' + v.friendly_text + '">';
-                $('#' + image_id).tooltip({
+                var $image = $('#' + image_id);
+                $image.tooltip({
                     content: image_html,
                     width: 'auto'
                 });
+
+                // On full-size screens, need to explicitly make clicking the
+                // drawing select the choice if available.
+                $image.bind('click', function () {
+                    $radio = $(this).closest('.choice').find('input').eq(0);
+                    var $disabled = $radio.attr('disabled');
+                    if (typeof $disabled === 'undefined' ||
+                        $disabled === false) {
+                        $radio.attr('checked', 'true');
+                        $radio.trigger('click');
+                    }
+                });
             }
 
-            glossarize($('span.label', character_value_div));
+            if ($(window).width() > this.max_smallscreen_width) {
+                glossarize($('span.label', character_value_div));
+            }
+            else if (this.glossarize_mobile) {
+                // List glossary terms in a separate section on small screens.
+                glossarizer.glossarize($('span.label', character_value_div),
+                                       this.terms_section);
+            }
         }
 
         // Call a method when radio button is clicked.
@@ -209,6 +301,15 @@ define([
         this._on_choice_change();
     };
 
+    /* Place the working-area element after the selected filter so that it
+       will be possible to allow displaying filter values "inline." */
+    
+    Choice.prototype._attach = function() {
+        var $filter_list_item = $('#questions-go-here ul #' +
+                                  this.filter.slug);
+        $(this.div).appendTo($filter_list_item);
+    };
+
     /* How to grab the currently-selected value from the DOM. */
 
     Choice.prototype._current_value = function() {
@@ -216,9 +317,17 @@ define([
         return value || null;
     };
 
-    /* Update whether the "Apply Selection" button is gray or not. */
+    /* Update some aspects of the working area when the choice changes. */
 
     Choice.prototype._on_choice_change = function(e) {
+        // Set a class of "selected" on the now-selected choice.
+        $('.choice', this.div).each(function() {
+            $(this).removeClass('checked');
+        });
+        var $checked_input = $('input:checked', this.div);
+        $checked_input.closest('.choice').addClass('checked');
+
+        // Update whether the "Apply Selection" button is gray or not.
         var $apply_button = $('.apply-btn', this.div);
         if (this._current_value() === this.filter.value)
             $apply_button.addClass('disabled');
@@ -274,6 +383,17 @@ define([
         apply_button.removeClass('disabled');
         this._apply_filter_value();
         this.dismiss();
+        
+        if ($(window).width() <= this.max_smallscreen_width) {
+            $('#question-nav').addClass('closed'); // Collapse questions list
+
+            // Scroll to the top of the page and then just to the relevant
+            // navigation in order to be sure the results count is visible,
+            // and to trigger lazy image loading if photos are shown.
+            window.scrollTo(0, 0);
+            window.scrollTo(0, 90);
+        }
+        
         return false;
     };
 

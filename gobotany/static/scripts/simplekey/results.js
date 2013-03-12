@@ -27,6 +27,9 @@ define([
 ) {return {
 
 results_page_init: function(args) {
+    var MAX_SMALLSCREEN_WIDTH = 600;
+    var DEFAULT_SMALLSCREEN_VIEW = 'list';
+
     var dev_flag = args.dev_flag;
     var key_name = args.key;
     var pile_slug = args.pile_slug;
@@ -39,12 +42,32 @@ results_page_init: function(args) {
         filtered_sorted_taxadata_ready,
         taxa_by_sciname_ready
     ).done(function() {
-        species_section.init(pile_slug, taxa_ready, plant_divs_ready);
+        /* Set the initial view to Photos for a full-size page, or List for 
+           small screens. */
+
+        if ($(window).width() > MAX_SMALLSCREEN_WIDTH) {
+            // "Photos" view is the initial view on full-size screens.
+            App3.set('show_grid', true);
+            App3.set('show_list', false);
+        }
+        else {
+            // "List" view is the usual initial view on small screens. (It can
+            // be overridden to be the "photos" view instead.)
+            var initial_smallscreen_view = DEFAULT_SMALLSCREEN_VIEW;
+            if ($('body').hasClass('mobile-photos')) {
+                initial_smallscreen_view = 'photos';
+            }
+            App3.set('show_grid', (initial_smallscreen_view === 'photos'));
+            App3.set('show_list', (initial_smallscreen_view === 'list'));
+        }
+
+        /* Initialize the species results section. */
+
+        species_section.init(pile_slug, taxa_ready, plant_divs_ready,
+                             MAX_SMALLSCREEN_WIDTH);
         species_section_ready.resolve();
     });
 
-    App3.set('show_grid', true);
-    App3.set('show_list', false);
     App3.set('matching_species_count', '...');
 
     App3.image_types = Ember.ArrayProxy.create({
@@ -92,7 +115,9 @@ results_page_init: function(args) {
 
     /* Get the overlay started. */
 
-    results_overlay_init(pile_slug, key_vector_ready, pile_taxa_ready);
+    if ($(window).width() > MAX_SMALLSCREEN_WIDTH) {  // Skip on small screens
+        results_overlay_init(pile_slug, key_vector_ready, pile_taxa_ready);
+    }
 
     /* Various parts of the page need random access to taxa. */
 
@@ -170,6 +195,13 @@ results_page_init: function(args) {
     $.when(filter_controller_is_built, document_is_ready).done(function() {
         // Hide the "Loading..." spinner in the filters area.
         $('.loading').hide();
+
+        if ($(window).width() <= MAX_SMALLSCREEN_WIDTH) {
+            /* Hide or show the filter questions area on small screens. */
+            $('#question-nav .instructions').bind('click', function() {
+                $(this).parent().toggleClass('closed');
+            });
+        }
     });
 
     /* The Family and Genus filters are Ember-powered <select> elements
@@ -247,13 +279,18 @@ results_page_init: function(args) {
         // that is wired up to two different filters!
         dismiss_any_working_area();
 
+        var glossarize_mobile = $('body').hasClass('mobile-gloss');
+
         var C = working_area_module.select_working_area(filter);
 
         working_area = new C();
         working_area.init({
             div: $('div.working-area')[0],
             filter: filter,
-            y: y
+            y: y,
+            max_smallscreen_width: MAX_SMALLSCREEN_WIDTH,
+            glossarize_mobile: glossarize_mobile,
+            terms_section: '.working-area .terms'
         });
     };
 
@@ -282,7 +319,11 @@ results_page_init: function(args) {
 
         didInsertElement: function() {
             var id = this.get('elementId');
-            glossarizer.glossarize($('#' + id + ' span.name'));
+            
+            // Skip glossarizing filter "short" questions on small screens.
+            if ($(window).width() > MAX_SMALLSCREEN_WIDTH) {
+                glossarizer.glossarize($('#' + id + ' span.name'));
+            }
         },
 
         answered: function() {
@@ -317,21 +358,43 @@ results_page_init: function(args) {
         },
 
         click: function(event) {
-            if ($(event.target).hasClass('clear-filter'))
+            
+            /* Cancel this click event if either the filter clear button
+               was pressed, or the event happened in the filter working
+               area (for small screens with "inline" choices). */
+
+            if ($(event.target).hasClass('clear-filter')) {
                 return;
+            }
+
+            var $working_area = $(event.target).closest('.working-area');
+            if ($working_area && $working_area.length > 0) {
+                return;
+            }
+
+            /* Handle the click event. */
 
             var filter = this.get('filter');
             var $target = $(event.target).closest('li');
 
-            $('.option-list li .active').removeClass('active');
-            $target.addClass('active');
+            if ($target.hasClass('active')) {
+                // Question and working area open, so close.
+                $target.removeClass('active');
+                dismiss_any_working_area();
+            }
+            else {
+                // Question and working area closed, so open.
+                $target.addClass('active');
 
-            var y = $target.offset().top - 15;
-            var async = resources.character_vector(this.filter.slug);
-            $.when(pile_taxa_ready, async).done(function(pile_taxa, values) {
-                filter.install_values({pile_taxa: pile_taxa, values: values});
-                show_working_area(filter, y);
-            });
+                var y = $target.offset().top - 15;
+                var async = resources.character_vector(this.filter.slug);
+                $.when(pile_taxa_ready, async).done(function(pile_taxa,
+                                                             values) {
+                    filter.install_values({pile_taxa: pile_taxa,
+                                           values: values});
+                    show_working_area(filter, y);
+                });
+            }
         }
     });
 
@@ -618,8 +681,8 @@ results_page_init: function(args) {
 
             Shadowbox.open({
                 content: $('#modal').html(),
+                height: 500,
                 player: 'html',
-                height: 450,
                 options: {
                     fadeDuration: 0.1,
                     onFinish: function() {
@@ -754,6 +817,10 @@ results_page_init: function(args) {
         $spans.stop();
         animation.bright_change($spans, {end_color: '#F0F0C0',
                                          duration: 2000});
+
+        // The questions list shows the number of answered questions.
+        var num_answered = $('.answered').length;
+        $('#question-nav .instructions span').html(num_answered);
     };
 
     /* How we load images into the species area. */

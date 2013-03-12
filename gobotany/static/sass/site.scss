@@ -28,10 +28,11 @@ $body-font: Verdana, Geneva, "Lucida Sans Unicode", sans-serif;
 $narrower-body-font: Tahoma, "Trebuchet MS", "Lucida Sans Unicode", sans-serif;
 
 $link-green: #508e31;
-$heading-green: #519136;
+$heading-green: #437829;
 $border-green: #c3d941;
 $light-green: #e1f0d1;
 $green-yellow: #ccdf53;
+$medium-brown: #807121;
 
 $text-color: #000;
 $footer-background-color: #b4d57f;
@@ -62,6 +63,7 @@ $smallscreen-portrait-box-width: 302px;
 $smallscreen-portrait-form-el-width: $smallscreen-portrait-box-width - 10px;
 $smallscreen-landscape-box-width: 462px;
 $smallscreen-current-section-color: #85c446;
+$smallscreen-choices-border-radius: 8px;
 
 @mixin offscreen {
     display: block;
@@ -659,13 +661,23 @@ footer {
 
 /* Breadcrumb trails */
 #breadcrumb {
-    color: #807121;
+    color: #000;
     font-family: $headings-font;
     font-size: 14px;
-    line-height: 160%;
-    margin: 0 0 14px;
-    span {
-        color: #000;
+    margin: 0 0 6px;
+    li {
+        display: inline-block;
+        list-style-type: none;
+        margin-bottom: 8px;
+    }
+    .label {
+        color: $medium-brown;
+    }
+    a {
+        &::after {
+            color: $medium-brown;
+            content: ' >';
+        }
     }
 }
 

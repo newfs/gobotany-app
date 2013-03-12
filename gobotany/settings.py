@@ -13,6 +13,18 @@ THIS_DIRECTORY = os.path.dirname(__file__)
 PROJECT_ROOT = os.path.abspath(THIS_DIRECTORY)
 gettext = lambda s: s
 
+# Django Secret Key (required in Django >= 1.5)
+SECRET_KEY = os.environ.get('GOBOTANY_DJANGO_SECRET_KEY', '')
+
+# New in Django 1.5: allowed hosts required for production-like deployments
+ALLOWED_HOSTS = ['.newenglandwild.org', # any subdomain of newenglandwild.org
+                 'gobotany-dev.herokuapp.com',
+                ]
+
+TEMPLATE_DIRS = (
+    os.path.join(PROJECT_ROOT, 'templates')
+)
+
 # We define these database specifications as constants, so that we can
 # retrieve whichever one we need from our test suites.
 
@@ -135,13 +147,13 @@ MIDDLEWARE_CLASSES = (
     'gobotany.middleware.ChromeFrameMiddleware',
 )
 TEMPLATE_CONTEXT_PROCESSORS = (
-        "django.contrib.auth.context_processors.auth",
+    'django.contrib.auth.context_processors.auth',
     'django.contrib.messages.context_processors.messages',
-        "django.core.context_processors.i18n",
-        "django.core.context_processors.request",
-        "django.core.context_processors.media",
-        "django.core.context_processors.static",
-        "gobotany.core.context_processors.gobotany_specific_context",
+    'django.core.context_processors.i18n',
+    'django.core.context_processors.request',
+    'django.core.context_processors.media',
+    'django.core.context_processors.static',
+    'gobotany.core.context_processors.gobotany_specific_context',
 )
 
 DEBUG_TOOLBAR_CONFIG = {
