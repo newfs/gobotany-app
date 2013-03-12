@@ -16,7 +16,7 @@ var SpeciesPageHelper = {
     set_active_main_navigation: function() {
         // Set the active main navigation based on the breadcrumb links.
         var key = 'dkey';
-        var breadcrumb_text = $('#breadcrumb p').text();
+        var breadcrumb_text = $('#breadcrumb').text();
         if (breadcrumb_text.indexOf('Simple Key') > -1) {
             key = 'simple';
         }
