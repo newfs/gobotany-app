@@ -466,7 +466,7 @@ header {
     }
 }
 
-/* Main content and sidebar */
+/* Main content */
 
 .content {
     padding: 8px 0 0;
@@ -502,6 +502,10 @@ header {
         }
     }
 }
+
+/* Sidebar (usually in a #sidebar section, but sometimes not, being
+   arranged by floating and positioning content) */
+
 #sidebar {
     border-top: 1px solid $border-green;
     float: left;
@@ -543,20 +547,6 @@ header {
         &.video {
             margin-left: 0;
         }
-        &.get-help-btn {
-            background: url(/static/images/layout/get-help-btn-orange.png) 0 0 no-repeat transparent;
-            display: block;
-            height: 32px;
-            margin: 10px 0 20px;
-            text-indent: -9000px;
-            width: 104px;
-            &:hover {
-                background-position: 0 -32px;
-            }
-            &:active {
-                background-position: 0 -64px;
-            }
-        }
         &.view-map-btn {
             background: url(/static/images/layout/view-map-btn-orange.png) 0 0 no-repeat transparent;
             display: block;
@@ -590,6 +580,20 @@ header {
             margin: 0 0 4px 0;
             padding: 0 15px 16px;
         }
+    }
+}
+a.get-help-btn {
+    background: url(/static/images/layout/get-help-btn-orange.png) 0 0 no-repeat transparent;
+    display: block;
+    height: 32px;
+    margin: 10px 0 20px;
+    text-indent: -9000px;
+    width: 104px;
+    &:hover {
+        background-position: 0 -32px;
+    }
+    &:active {
+        background-position: 0 -64px;
     }
 }
 

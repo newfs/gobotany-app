@@ -101,7 +101,68 @@ body.taxa {
         }
     }
     &#species {
+        
+        $species-sidebar-margin: 250px;
+
         #main {
+            background: url(/static/images/layout/sidebar-bg.png) repeat-y;
+
+            /* layout: right-side content sections */
+            #breadcrumb, #name, #species-images, #partner, #facts,
+            #habitat, #chars, #wetland, #status, #info-dkey {
+                clear: left;
+                margin-left: $species-sidebar-margin;
+            }
+            /* left-side content sections */
+            .section {
+                padding: 16px 16px 0;
+                width: 197px;
+                h4 {
+                    font-size: 14px;
+                    margin: 0;
+                    padding: 0;
+                }
+                p {
+                    margin-bottom: 0;
+                }
+            }
+            #maps, #side {
+                position: absolute;
+            }
+            #maps {
+                border-top: 1px solid $border-green;
+                top: 128px;
+            }
+            #side {
+                top: 668px;
+                dt, dd {
+                    display: inline;
+                }
+                .lookalikes {
+                    dt {
+                        margin-top: 1em;
+                        display: block;
+                    }
+                    dd {
+                        margin-left: 0;
+                    }
+                }
+                .help {
+                    float: left;
+                    line-height: 28px;
+                }
+                .get-help-btn {
+                    margin: 0 0 0 90px;
+                }
+                li {
+                    line-height: 16px;
+                    list-style-type: none;
+                }
+                a {
+                    margin-left: 0;
+                }
+            }
+
             h1 {
                 margin-bottom: 0;
                 span.origin {
@@ -175,33 +236,6 @@ body.taxa {
                     padding-left: 28px;
                 }
 
-            }
-        }
-        #sidebar {
-            dt, dd {
-                display: inline;
-            }
-            .lookalikes {
-                dt {
-                    margin-top: 1em;
-                    display: block;
-                }
-                dd {
-                    margin-left: 0;
-                }
-            }
-            .help {
-                line-height: 28px;
-            }
-            .get-help-btn {
-                margin: 0 0 0 10px;
-            }
-            li {
-                line-height: 16px;
-                list-style-type: none;
-            }
-            a {
-                margin-left: 0;
             }
         }
         a {
@@ -287,10 +321,14 @@ $mini-table-font-size: 10px;
     body.taxa {
         &#species {
             #species-images {
-                width: 292px;
+                width: 304px;
             }
             #sidebar {
                 padding-bottom: 30px;
+            }
+            #maps {
+                margin-left: 36px;
+                width: 200px;
             }
         }
     }
@@ -298,13 +336,23 @@ $mini-table-font-size: 10px;
 /* Landscape-orientation styles */
 @media only screen and (min-width: 401px) and (max-width: 600px) {
     body.taxa {
-        &#species {
+        &#species #main {
             #species-images {
-                width: 452px;
+                width: 462px;
             }
             #sidebar {
                 margin-bottom: 14px;
                 padding-bottom: 14px;
+            }
+            #maps {
+                height: 380px;
+                width: 428px;
+                .nemap {
+                    float: left;
+                }
+                .namap {
+                    float: right;
+                }
             }
         }
     }
@@ -332,7 +380,35 @@ $mini-table-font-size: 10px;
                 }
             }
         }
-        &#species {
+        &#species #main {
+            background: none;
+
+            /* layout for smartphones: sections in document sequence */
+            #breadcrumb, #name, #species-images, #partner, #facts,
+            #habitat, #chars, #wetland, #status, #info-dkey {
+                margin-left: 0;
+            }
+            h2 {
+                margin-top: 14px;
+                line-height: 18px;
+            }
+            .section {
+                padding: 12px 0 0;
+                width: auto;
+                &.help {
+                    display: none;
+                }
+            }
+            #maps, #side {
+                position: static;
+            }
+            #maps {
+                background: #fff;
+                border: 1px solid $border-green;
+                padding-left: 16px;
+                padding-right: 16px;
+            }
+
             #species-images {
                 border: 0;
                 height: 120px;
@@ -345,7 +421,7 @@ $mini-table-font-size: 10px;
                     }
                 }
             }
-            #main p {
+            p {
                 margin-bottom: 10px;
             }
             .note {

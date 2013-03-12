@@ -328,7 +328,7 @@ header nav #search-suggest .menu a { color: black; cursor: default; height: inhe
 header nav #search-suggest .menu a:hover, header nav #search-suggest .menu li:hover { background: #c4e2ff; }
 header nav #search-suggest .menu span { font-weight: normal; }
 
-/* Main content and sidebar */
+/* Main content */
 .content { padding: 8px 0 0; }
 .content .container { margin: 0 auto; padding: 0 10px; width: 960px; }
 .content #main { background: url(/static/images/layout/sidebar-bg.png) repeat-y; float: right; min-height: 545px; padding-bottom: 24px; padding-left: 250px; width: 710px; }
@@ -337,6 +337,7 @@ header nav #search-suggest .menu span { font-weight: normal; }
 .content .container.free-sidebar #sidebar { border-top: 0; height: auto; padding: 0; }
 .content .container.no-sidebar #main { background: none; float: none; min-height: none; padding-left: 0; width: auto; }
 
+/* Sidebar (usually in a #sidebar section, but sometimes not, being arranged by floating and positioning content) */
 #sidebar { border-top: 1px solid #c3d941; float: left; height: 100%; margin-right: -230px; padding: 16px 0 0; width: 230px; }
 #sidebar .section { padding: 0 17px 16px; }
 #sidebar .section h4 { margin: 0 0 5px 0; }
@@ -348,9 +349,6 @@ header nav #search-suggest .menu span { font-weight: normal; }
 #sidebar a:not(.jspArrow) { display: inline-block; margin-left: 10px; }
 #sidebar a:hover { text-decoration: none; }
 #sidebar a.video { margin-left: 0; }
-#sidebar a.get-help-btn { background: url(/static/images/layout/get-help-btn-orange.png) 0 0 no-repeat transparent; display: block; height: 32px; margin: 10px 0 20px; text-indent: -9000px; width: 104px; }
-#sidebar a.get-help-btn:hover { background-position: 0 -32px; }
-#sidebar a.get-help-btn:active { background-position: 0 -64px; }
 #sidebar a.view-map-btn { background: url(/static/images/layout/view-map-btn-orange.png) 0 0 no-repeat transparent; display: block; height: 32px; margin: 10px 0 20px; text-indent: -9000px; width: 113px; }
 #sidebar a.view-map-btn:hover { background-position: 0 -32px; }
 #sidebar a.view-map-btn:active { background-position: 0 -64px; }
@@ -358,6 +356,10 @@ header nav #search-suggest .menu span { font-weight: normal; }
 #sidebar nav { font-family: "Trebuchet MS", Helvetica, Arial, "Lucida Sans Unicode", sans-serif; font-size: 14px; }
 #sidebar nav h3 { margin-bottom: 16px; padding-left: 26px; }
 #sidebar nav li { line-height: 150%; margin: 0 0 4px 0; padding: 0 15px 16px; }
+
+a.get-help-btn { background: url(/static/images/layout/get-help-btn-orange.png) 0 0 no-repeat transparent; display: block; height: 32px; margin: 10px 0 20px; text-indent: -9000px; width: 104px; }
+a.get-help-btn:hover { background-position: 0 -32px; }
+a.get-help-btn:active { background-position: 0 -64px; }
 
 /* Footer */
 footer { background: #b4d57f; clear: both; height: 140px; position: relative; width: 100%; }
@@ -622,6 +624,21 @@ body.taxa#genus ul.species li { margin: 0 0 5px 0; }
 body.taxa#genus p.family { font-size: 14px; margin: 0; }
 body.taxa#genus .genus-species-btn { background: url(/static/images/layout/genus-btn.png) no-repeat scroll 0 0 transparent; clear: both; display: block; float: left; height: 32px; margin: 15px 0 0; text-indent: -9000px; width: 280px; }
 body.taxa#species { /* Larger gallery styles */ /* Smooth Div Scroll image area */ }
+body.taxa#species #main { background: url(/static/images/layout/sidebar-bg.png) repeat-y; /* layout: right-side content sections */ /* left-side content sections */ }
+body.taxa#species #main #breadcrumb, body.taxa#species #main #name, body.taxa#species #main #species-images, body.taxa#species #main #partner, body.taxa#species #main #facts, body.taxa#species #main #habitat, body.taxa#species #main #chars, body.taxa#species #main #wetland, body.taxa#species #main #status, body.taxa#species #main #info-dkey { clear: left; margin-left: 250px; }
+body.taxa#species #main .section { padding: 16px 16px 0; width: 197px; }
+body.taxa#species #main .section h4 { font-size: 14px; margin: 0; padding: 0; }
+body.taxa#species #main .section p { margin-bottom: 0; }
+body.taxa#species #main #maps, body.taxa#species #main #side { position: absolute; }
+body.taxa#species #main #maps { border-top: 1px solid #c3d941; top: 128px; }
+body.taxa#species #main #side { top: 668px; }
+body.taxa#species #main #side dt, body.taxa#species #main #side dd { display: inline; }
+body.taxa#species #main #side .lookalikes dt { margin-top: 1em; display: block; }
+body.taxa#species #main #side .lookalikes dd { margin-left: 0; }
+body.taxa#species #main #side .help { float: left; line-height: 28px; }
+body.taxa#species #main #side .get-help-btn { margin: 0 0 0 90px; }
+body.taxa#species #main #side li { line-height: 16px; list-style-type: none; }
+body.taxa#species #main #side a { margin-left: 0; }
 body.taxa#species #main h1 { margin-bottom: 0; }
 body.taxa#species #main h1 span.origin { font-size: 14px; line-height: 100%; }
 body.taxa#species #main h5 { font-size: 14px; }
@@ -636,13 +653,6 @@ body.taxa#species ul.full-description > li:last-child { border-bottom: none; }
 body.taxa#species ul.full-description > li:hover { background-color: #fff; }
 body.taxa#species ul.full-description > li h5 { background: url(/static/images/icons/plus.png) left 50% no-repeat; cursor: pointer; padding-left: 28px; }
 body.taxa#species ul.full-description > li div { display: none; padding-left: 28px; }
-body.taxa#species #sidebar dt, body.taxa#species #sidebar dd { display: inline; }
-body.taxa#species #sidebar .lookalikes dt { margin-top: 1em; display: block; }
-body.taxa#species #sidebar .lookalikes dd { margin-left: 0; }
-body.taxa#species #sidebar .help { line-height: 28px; }
-body.taxa#species #sidebar .get-help-btn { margin: 0 0 0 10px; }
-body.taxa#species #sidebar li { line-height: 16px; list-style-type: none; }
-body.taxa#species #sidebar a { margin-left: 0; }
 body.taxa#species a.enlarge { color: #1a2e11; display: block; margin: 0 0 8px 0; }
 body.taxa#species a.enlarge:hover { text-decoration: none; }
 body.taxa#species a.enlarge img { vertical-align: middle; }
@@ -660,26 +670,37 @@ body.taxa#species #species-images .scrollableArea a { border-right: 5px solid wh
 
 /* Begin media queries styles for taxa pages. */
 /* Portrait-orientation styles */
-@media only screen and (max-width: 400px) { body.taxa#species #species-images { width: 292px; }
-  body.taxa#species #sidebar { padding-bottom: 30px; } }
+@media only screen and (max-width: 400px) { body.taxa#species #species-images { width: 304px; }
+  body.taxa#species #sidebar { padding-bottom: 30px; }
+  body.taxa#species #maps { margin-left: 36px; width: 200px; } }
 /* Landscape-orientation styles */
-@media only screen and (min-width: 401px) and (max-width: 600px) { body.taxa#species #species-images { width: 452px; }
-  body.taxa#species #sidebar { margin-bottom: 14px; padding-bottom: 14px; } }
+@media only screen and (min-width: 401px) and (max-width: 600px) { body.taxa#species #main #species-images { width: 462px; }
+  body.taxa#species #main #sidebar { margin-bottom: 14px; padding-bottom: 14px; }
+  body.taxa#species #main #maps { height: 380px; width: 428px; }
+  body.taxa#species #main #maps .nemap { float: left; }
+  body.taxa#species #main #maps .namap { float: right; } }
 /* These styles are common to both smartphone widths */
 @media only screen and (max-width: 600px) { body.taxa #main { padding-bottom: 8px; }
   body.taxa #main h1 { margin-bottom: 0; }
   body.taxa #main p.common { font-size: 16px; margin: 0; }
   body.taxa#family #main p.description, body.taxa#genus #main p.description { margin: 4px 0; }
   body.taxa#family #main h4, body.taxa#genus #main h4 { padding-top: 12px; }
-  body.taxa#species #species-images { border: 0; height: 120px; -webkit-box-shadow: none; -moz-box-shadow: none; box-shadow: none; }
-  body.taxa#species #species-images .scrollableArea a { border-right: 20px solid #f0f0c0; }
-  body.taxa#species #species-images .scrollableArea a img { height: 120px; width: 120px; }
+  body.taxa#species #main { background: none; /* layout for smartphones: sections in document sequence */ }
+  body.taxa#species #main #breadcrumb, body.taxa#species #main #name, body.taxa#species #main #species-images, body.taxa#species #main #partner, body.taxa#species #main #facts, body.taxa#species #main #habitat, body.taxa#species #main #chars, body.taxa#species #main #wetland, body.taxa#species #main #status, body.taxa#species #main #info-dkey { margin-left: 0; }
+  body.taxa#species #main h2 { margin-top: 14px; line-height: 18px; }
+  body.taxa#species #main .section { padding: 12px 0 0; width: auto; }
+  body.taxa#species #main .section.help { display: none; }
+  body.taxa#species #main #maps, body.taxa#species #main #side { position: static; }
+  body.taxa#species #main #maps { background: #fff; border: 1px solid #c3d941; padding-left: 16px; padding-right: 16px; }
+  body.taxa#species #main #species-images { border: 0; height: 120px; -webkit-box-shadow: none; -moz-box-shadow: none; box-shadow: none; }
+  body.taxa#species #main #species-images .scrollableArea a { border-right: 20px solid #f0f0c0; }
+  body.taxa#species #main #species-images .scrollableArea a img { height: 120px; width: 120px; }
   body.taxa#species #main p { margin-bottom: 10px; }
-  body.taxa#species .note { font-size: 18px; }
-  body.taxa#species ul.full-description > li div { padding-left: 0; }
-  body.taxa#species .characteristics.full { margin-bottom: 0; }
-  body.taxa#species .characteristics dl dt { clear: none; float: none; text-align: left; width: auto; }
-  body.taxa#species .characteristics dl dd { margin-left: auto; padding-left: 28px; }
+  body.taxa#species #main .note { font-size: 18px; }
+  body.taxa#species #main ul.full-description > li div { padding-left: 0; }
+  body.taxa#species #main .characteristics.full { margin-bottom: 0; }
+  body.taxa#species #main .characteristics dl dt { clear: none; float: none; text-align: left; width: auto; }
+  body.taxa#species #main .characteristics dl dd { margin-left: auto; padding-left: 28px; }
   body.taxa .visit-dkey { margin: 14px 0; }
   body.taxa .visit-dkey a { clear: left; display: inline-block; } }
 /* These styles apply to smartphones and tablets */
