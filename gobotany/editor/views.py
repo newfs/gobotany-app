@@ -22,14 +22,14 @@ def e404(request):
     raise Http404()
 
 
-@permission_required('botanist')
+@permission_required('core.botanist')
 def piles_view(request):
     return render_to_response('gobotany/edit_piles.html', {
         'piles' : models.Pile.objects.all(),
         }, context_instance=RequestContext(request))
 
 
-@permission_required('botanist')
+@permission_required('core.botanist')
 def pile_characters(request, pile_slug):
     return render_to_response('gobotany/pile_characters.html', {
         'common_characters': models.Character.objects.filter(
@@ -38,7 +38,7 @@ def pile_characters(request, pile_slug):
         }, context_instance=RequestContext(request))
 
 
-@permission_required('botanist')
+@permission_required('core.botanist')
 def edit_pile_character(request, pile_slug, character_slug):
 
     pile = get_object_or_404(models.Pile, slug=pile_slug)
@@ -178,14 +178,14 @@ def _edit_pile_string_character(request, pile, character, taxa):
         }, context_instance=RequestContext(request))
 
 
-@permission_required('botanist')
+@permission_required('core.botanist')
 def pile_taxa(request, pile_slug):
     return render_to_response('gobotany/pile_taxa.html', {
         'pile' : get_object_or_404(models.Pile, slug=pile_slug),
         }, context_instance=RequestContext(request))
 
 
-@permission_required('botanist')
+@permission_required('core.botanist')
 def edit_pile_taxon(request, pile_slug, taxon_slug):
 
     name = taxon_slug.capitalize().replace('-', ' ')
@@ -351,7 +351,7 @@ def character_value_key(cv):
 
 tcvfieldname_re = re.compile('tcv([0-9]+)$')
 
-@permission_required('botanist')
+@permission_required('core.botanist')
 def edit_lit_sources(request, dotted_datetime):
 
     return_to = request.REQUEST.get('return_to', '.')
