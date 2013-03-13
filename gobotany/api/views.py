@@ -104,11 +104,15 @@ def glossary_blob(request):
     for gt in glossaryterms:
         gt.image_path = gt.__dict__['image']
         if gt.image_path is not None and prefix is None:
-            url = gt.image.url
-            prefix = url[:-len(gt.image_path)]
+            try:
+                url = gt.image.url
+                prefix = url[:-len(gt.image_path)]
+                break
+            except ValueError:  # Image not found in storage.
+                pass
 
     images = { gt.term: prefix + gt.image_path for gt in glossaryterms
-               if gt.image_path is not None }
+               if gt.image_path is not None and prefix is not None}
 
     return jsonify({'definitions': definitions, 'images': images})
 
