@@ -40,16 +40,9 @@ class Legend(object):
     """Class for configuring the legend on a SVG plant distribution map."""
 
     # This list controls the order, label and color of legend items.
-    #
-    # Some of the items are currently no longer shown on the maps, due
-    # to simpler and more accurate data in use. These items are left
-    # here in case it is desired to make the maps more elaborate again.
     ITEMS = [('native', '#78bf47'),
              ('non-native', '#fa9691'),
              ('absent', '#fff'),
-             #('rare', '#a7e37d'),       # Currently not shown on the maps.
-             #('invasive', '#f00'),      # Currently not shown on the maps.
-             #('historic', '#ccc'),      # Currently not shown on the maps.
              ]
     COLORS = dict(ITEMS)  # Color lookup for labels, ex.: COLORS['rare'].
                           # This does not preserve the order of items.
@@ -151,17 +144,6 @@ class PlantDistributionMap(ChloroplethMap):
                 'questionable', # Covers: "Questionable presence
                                 #          (cross-hatched)"
                 ]
-        PRESENCE_INDICATORS = [
-            'present',   # From adjusted New England data, covers "present"
-            'exotic',    # Covers: "Species present in state and exotic"
-                         #     and "Species exotic and present"
-            'waif',      # Covers: "Species waif"
-            'noxious',   # Covers: "Species noxious"
-            'and rare',  # Covers: "Species present and rare"
-            'native',    # Covers: "Species present in state and native"
-            'species present', # Covers: "Species present in state and
-                               #          not rare"
-            ]
 
         NON_NATIVE_PRESENCE_INDICATORS = [
             'present, non-native',   # From adjusted New England data
