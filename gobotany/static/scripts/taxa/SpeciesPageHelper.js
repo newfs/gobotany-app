@@ -16,7 +16,7 @@ var SpeciesPageHelper = {
     set_active_main_navigation: function() {
         // Set the active main navigation based on the breadcrumb links.
         var key = 'dkey';
-        var breadcrumb_text = $('#breadcrumb p').text();
+        var breadcrumb_text = $('#breadcrumb').text();
         if (breadcrumb_text.indexOf('Simple Key') > -1) {
             key = 'simple';
         }
@@ -92,12 +92,12 @@ var SpeciesPageHelper = {
         // is needed to make it clickable. Make this div cover the link
         // that appears below the map, too, for one large clickable area.
         var transparent_div =
-            $('#sidebar .section.namap div.trans').first();
+            $('.section.namap div.trans').first();
         transparent_div.click($.proxy(function(event) {
             event.preventDefault();
             // Open the North America distribution map in a lightbox.
             var content_element =
-                $('#sidebar .section.namap div').first();
+                $('.section.namap div').first();
             Shadowbox.open({
                 content: content_element.html(),
                 player: 'html',
