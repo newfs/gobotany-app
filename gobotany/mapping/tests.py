@@ -378,14 +378,11 @@ class NewEnglandPlantDistributionMapTestCase(TestCase):
                          self.distribution_map.get_title())
 
     def test_get_distribution_records(self):
-        NEW_ENGLAND_STATES = ['CT', 'MA', 'ME', 'NH', 'RI', 'VT']
         SCIENTIFIC_NAME = 'Dendrolycopodium dendroideum'
         self.distribution_map.set_plant(SCIENTIFIC_NAME)
         records = (self.distribution_map._get_distribution_records(
                    SCIENTIFIC_NAME))
         self.assertTrue(len(records) > 0)
-        [self.assertTrue(record.state in NEW_ENGLAND_STATES)
-         for record in records]
 
 
 class UnitedStatesPlantDistributionMapTestCase(TestCase):

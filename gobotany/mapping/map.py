@@ -1,3 +1,4 @@
+import re
 from os.path import abspath, dirname
 from django.core.exceptions import ObjectDoesNotExist
 from lxml import etree
@@ -9,6 +10,8 @@ NAMESPACES = {'svg': 'http://www.w3.org/2000/svg'}
 class Path(object):
     """Class for operating on a SVG path node."""
     STYLE_ATTR = 'style'
+    FILL_PATTERN = re.compile(r'(.*fill:)#[a-f0-9]{3,6}(;.*|$)')
+    STROKE_PATTERN = re.compile(r'(.*stroke:)#[a-f0-9]{3,6}(;.*|$)')
 
     def __init__(self, path_node):
         self.path_node = path_node
@@ -21,10 +24,12 @@ class Path(object):
 
     def color(self, fill_color, stroke_color=None):
         style = self.get_style()
-        shaded_style = style.replace('fill:#fff', 'fill:%s' % fill_color)
+        replacement = r'\1%s\2' % fill_color
+        shaded_style = re.sub(Path.FILL_PATTERN, replacement, style)
         if stroke_color:
-            shaded_style = shaded_style.replace('stroke:#000',
-                'stroke:%s;' % str(stroke_color))
+            replacement = r'\1%s\2' % stroke_color
+            shaded_style = re.sub(Path.STROKE_PATTERN, replacement,
+                                  shaded_style)
         self.set_style(shaded_style)
 
     def __str__(self):
@@ -209,13 +214,9 @@ class PlantDistributionMap(ChloroplethMap):
 
     def _get_distribution_records(self, scientific_name):
         """Look up the plant and get its distribution records.
-        Exclude county-level records seen in the New England data.
         """
         return models.Distribution.objects.filter(
-                    scientific_name=scientific_name
-               ).exclude(
-                    county__gt=''
-               )
+                    scientific_name=scientific_name)
 
     def set_plant(self, scientific_name):
         """Set the plant to be shown and gather its data."""
@@ -225,7 +226,7 @@ class PlantDistributionMap(ChloroplethMap):
             # Distribution records might be listed under one of the
             # synonyms for this plant instead.
             try:
-                taxon = models.Taxon.objects.get( \
+                taxon = models.Taxon.objects.get(
                     scientific_name=self.scientific_name)
                 if taxon.synonyms:
                     for synonym in taxon.synonyms.all():
@@ -257,13 +258,36 @@ class PlantDistributionMap(ChloroplethMap):
         if self.distribution_records:
             path_nodes = self.svg_map.xpath(self.PATH_NODES_XPATH,
                 namespaces=NAMESPACES)
-            for record in self.distribution_records.all():
+
+            # When shading a map area, iterate over the nodes rather
+            # than selecting a node via XPath. Iterating is around twice
+            # as fast as XPath, at least when breaking after finding a node
+            # as is done for the county-level records.
+
+            # Take a pass through the nodes and shade any
+            # state-/province-/territory-level records.
+            state_records = self.distribution_records.filter(county='')
+            for record in state_records:
+                state_id_piece = '%s_' % record.state.lower()
+                for node in path_nodes:
+                    node_id = node.get('id').lower()
+                    if node_id.startswith(state_id_piece):
+                        label = self._get_label_for_status(record.status)
+                        if label not in legend_labels_found:
+                            legend_labels_found.append(label)
+                        box = Path(node)
+                        box.color(Legend.COLORS[label])
+                        # Keep going rather than break, because for each
+                        # state-level record there will be multiple
+                        # counties to shade.
+
+            # Take a pass through the nodes and shade any county-level
+            # records.
+            county_records = self.distribution_records.exclude(county='')
+            for record in county_records:
                 state_and_county = '%s_%s' % (record.state.lower(),
                                               record.county.replace(
                                                   ' ', '_').lower())
-                # Look through all the path nodes until the one for this
-                # state and county is found. (Note: this is at least
-                # twice as fast as selecting each node via XPath.)
                 for node in path_nodes:
                     node_id = node.get('id').lower()
                     if node_id == state_and_county:
@@ -301,21 +325,6 @@ class NewEnglandPlantDistributionMap(PlantDistributionMap):
         super(NewEnglandPlantDistributionMap, self).__init__(blank_map_path)
 
 
-    def _get_distribution_records(self, scientific_name):
-        """Look up the plant and get its New England distribution records.
-        Exclude state-level records seen in the North America data.
-        """
-        NEW_ENGLAND_STATES = ['CT', 'MA', 'ME', 'NH', 'RI', 'VT']
-        records = models.Distribution.objects.filter(
-                        scientific_name=scientific_name
-                  ).filter(
-                        state__in=NEW_ENGLAND_STATES
-                  ).exclude(
-                        county__exact=''
-                  )
-        return records
-
-
 class UnitedStatesPlantDistributionMap(PlantDistributionMap):
     """Class for a map that shows United States county-level distribution
     data for a plant.
@@ -343,6 +352,16 @@ class NorthAmericanPlantDistributionMap(PlantDistributionMap):
         blank_map_path = GRAPHICS_ROOT + '/north-america-scoured.svg'
         super(NorthAmericanPlantDistributionMap, self).__init__(
             blank_map_path)
+
+    def _get_distribution_records(self, scientific_name):
+        """Look up the plant and get its distribution records.
+        Exclude county-level records seen in the New England data.
+        """
+        return models.Distribution.objects.filter(
+                    scientific_name=scientific_name
+                ).exclude(
+                    county__gt=''
+                )
 
     def _shade_areas(self):
         """Set the colors of the states, provinces, or territories.
