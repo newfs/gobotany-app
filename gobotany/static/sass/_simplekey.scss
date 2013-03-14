@@ -954,6 +954,10 @@ body.skey {
         }
 
     } /* end &.results */
+
+    .toplink {
+        display: none;
+    }
 }
 
 /* Experiment by Brandon */
@@ -1043,6 +1047,18 @@ ul.get-more-questions-menu {
                 }
             }
         } /* end &.results.mobile-wide */
+
+        &.results.mobile-toplink {  /* Mobile variant with floating
+                                        'back to top' link */
+            .toplink {
+                position: fixed;
+                left: 0;
+                bottom: 0;
+                width: 100%;
+                text-align: right;
+            }
+        }
+
     }
 }
 /* Landscape-orientation styles */

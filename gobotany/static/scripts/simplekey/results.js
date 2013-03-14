@@ -66,6 +66,18 @@ results_page_init: function(args) {
         species_section.init(pile_slug, taxa_ready, plant_divs_ready,
                              MAX_SMALLSCREEN_WIDTH);
         species_section_ready.resolve();
+
+        /* Initialize the 'back to top' link */
+        if ($('body').hasClass('mobile-toplink')) {
+            var $results = $('#results-section');
+            $(window).scroll(function () {
+                if ($(this).scrollTop() > $results.offset().top) {
+                    $('.toplink').fadeIn();
+                } else {
+                    $('.toplink').fadeOut();
+                }
+            });
+        }
     });
 
     App3.set('matching_species_count', '...');
