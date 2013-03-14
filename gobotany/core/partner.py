@@ -18,3 +18,7 @@ def partner_short_name(request):
     if partner is None:
         return None
     return partner.short_name
+
+def per_partner_template(request, template_path):
+    partner = which_partner(request)
+    return '{0}/{1}'.format(partner.short_name, template_path)

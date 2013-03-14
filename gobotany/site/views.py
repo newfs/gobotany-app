@@ -19,14 +19,10 @@ from gobotany.core.models import (
     Family, Genus,
     GlossaryTerm, HomePageImage, Pile, Taxon, Video,
     )
-from gobotany.core.partner import which_partner
+from gobotany.core.partner import which_partner, per_partner_template
 from gobotany.plantoftheday.models import PlantOfTheDay
 from gobotany.simplekey.groups_order import ordered_pilegroups, ordered_piles
 from gobotany.site.models import PlantNameSuggestion, SearchSuggestion
-
-def per_partner_template(request, template_path):
-    partner = which_partner(request)
-    return '{0}/{1}'.format(partner.short_name, template_path)
 
 # Home page
 

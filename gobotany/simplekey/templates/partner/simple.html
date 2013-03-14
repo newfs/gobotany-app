@@ -7,7 +7,7 @@
 
 {% block js_top %}
     {# TODO: eventually move elsewhere #}
-    {% include "simplekey/_partner_site_js.html" %}
+    {% include "gobotany/_partner_site_js.html" %}
 {% endblock %}
 
 {% block js_require %}
@@ -59,7 +59,7 @@
                             {% if pilegroup.video %}
                             <p class="vid">
                                 {% with pilegroup.video.youtube_id as youtube_id %}
-                                {% include "simplekey/_simplekey_video_link.html" with item_type="group" %}
+                                {% include "gobotany/_simplekey_video_link.html" with item_type="group" %}
                                 {% endwith %}
                             </p>
                             {% endif %}

@@ -8,7 +8,7 @@ from django.views.decorators.cache import cache_control, cache_page
 from django.views.decorators.vary import vary_on_headers
 
 from gobotany.core.models import ContentImage, Pile, PileGroup
-from gobotany.core.partner import which_partner, partner_short_name
+from gobotany.core.partner import (partner_short_name, per_partner_template)
 from gobotany.search.models import (GroupsListPage,
                                     SubgroupResultsPage,
                                     SubgroupsListPage)
@@ -21,15 +21,6 @@ def add_query_string(request, url):
     full = request.get_full_path()
     i = full.find('?')
     return url if (i == -1) else url + full[i:]
-
-#
-
-def per_partner_template(request, template_path):
-    partner = which_partner(request)
-    if partner and partner.short_name != 'gobotany':
-        return '{0}/{1}'.format(partner.short_name, template_path)
-    else:
-        return template_path
 
 #
 
