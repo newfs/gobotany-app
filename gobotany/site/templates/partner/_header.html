@@ -1,0 +1,30 @@
+    <header>
+        <div class="container">
+            {% if page = "home" %}
+                <h1>Partner (Go Botany):
+                    Discover thousands of New England plants</h1>
+            {% else %}
+                <p class="go-botany"><a 
+                {% ifnotequal request.path "/" %}href="/"{% endifnotequal %}>(Partner) Go
+                    Botany: Discover thousands of New England plants</a></p>
+            {% endif %}
+            <p class="newfs"><a href="http://www.newenglandwild.org/">New
+                England Wild Flower Society</a></p>
+            <nav>
+                <a href="javascript:document.getElementById('footer-nav').scrollIntoView();"><span>sections</span></a>
+                <ul>
+                    {% include "partner/_primary_navigation.html" %}
+                </ul>
+                <div id="search">
+                    <form id="search-suggest" action="/search/" autocomplete="off">
+                        <input type="text" name="q" placeholder="Search..."
+                            value="{{ request.GET.q }}">
+                        <button>Search</button>
+                        <div class="menu hidden">
+                            <ul></ul>
+                        </div>
+                    </form>
+                </div>
+            </nav>
+        </div>
+    </header>
