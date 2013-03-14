@@ -6,13 +6,14 @@ from operator import itemgetter
 from django.db.models import Q
 from django.shortcuts import get_object_or_404, render_to_response
 from django.template import RequestContext
+from django.views.decorators.vary import vary_on_headers
 
 from gobotany.core import botany
 from gobotany.core.models import (
     CopyrightHolder, Family, Genus, PartnerSpecies, Pile,
     PlantPreviewCharacter, Taxon
     )
-from gobotany.core.partner import which_partner
+from gobotany.core.partner import which_partner, per_partner_template
 from gobotany.dkey import models as dkey_models
 
 def _images_with_copyright_holders(images):
@@ -44,6 +45,7 @@ def _images_with_copyright_holders(images):
     return images
 
 
+@vary_on_headers('Host')
 def family_view(request, family_slug):
 
     family_name = family_slug.capitalize()
@@ -72,7 +74,8 @@ def family_view(request, family_slug):
     pile = family.taxa.all()[0].piles.all()[0]
     pilegroup = pile.pilegroup
 
-    return render_to_response('gobotany/family.html', {
+    return render_to_response(
+        per_partner_template(request, 'family.html'), {
            'family': family,
            'common_name': common_name,
            'family_drawings': family_drawings,
@@ -81,6 +84,7 @@ def family_view(request, family_slug):
            }, context_instance=RequestContext(request))
 
 
+@vary_on_headers('Host')
 def genus_view(request, genus_slug):
 
     genus_name = genus_slug.capitalize()
@@ -108,7 +112,8 @@ def genus_view(request, genus_slug):
     pile = genus.taxa.all()[0].piles.all()[0]
     pilegroup = pile.pilegroup
 
-    return render_to_response('gobotany/genus.html', {
+    return render_to_response(
+        per_partner_template(request, 'genus.html'), {
            'genus': genus,
            'common_name': common_name,
            'genus_drawings': genus_drawings,
@@ -167,6 +172,7 @@ def _format_character_value(character_value):
         return ''
 
 
+@vary_on_headers('Host')
 def species_view(request, genus_slug, epithet):
 
     COMPACT_MULTIVALUE_CHARACTERS = ['Habitat', 'New England state',
@@ -282,7 +288,8 @@ def species_view(request, genus_slug, epithet):
 
     native_to_north_america = _native_to_north_america_status(taxon)
 
-    return render_to_response('gobotany/species.html', {
+    return render_to_response(
+        per_partner_template(request, 'species.html'), {
            'pilegroup': pilegroup,
            'pile': pile,
            'scientific_name': scientific_name,
