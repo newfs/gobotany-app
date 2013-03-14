@@ -30,21 +30,24 @@ def per_partner_template(request, template_path):
 
 # Home page
 
+@vary_on_headers('Host')
 def home_view(request):
     """View for the home page of the Go Botany site."""
 
     home_page_images = HomePageImage.objects.all()
-    # Get or generate today's Plant of the Day.
+
+    # Get or generate today's Plant of the Day, if appropriate.
     partner = which_partner(request)
     plant_of_the_day = PlantOfTheDay.get_by_date.for_day(
         date.today(), partner.short_name)
-    # Get the Taxon record of the Plant of the Day.
     plant_of_the_day_taxon = None
-    try:
-        plant_of_the_day_taxon = Taxon.objects.get(
-            scientific_name=plant_of_the_day.scientific_name)
-    except ObjectDoesNotExist:
-        pass
+    if plant_of_the_day:
+        # Get the Taxon record of the Plant of the Day.
+        try:
+            plant_of_the_day_taxon = Taxon.objects.get(
+                scientific_name=plant_of_the_day.scientific_name)
+        except ObjectDoesNotExist:
+            pass
 
     plant_of_the_day_image = None
     species_images = botany.species_images(plant_of_the_day_taxon)
@@ -52,7 +55,8 @@ def home_view(request):
         plant_of_the_day_image = botany.species_images(
             plant_of_the_day_taxon)[0]
 
-    return render_to_response('gobotany/home.html', {
+    return render_to_response(
+        per_partner_template(request, 'home.html'), {
             'home_page_images': home_page_images,
             'plant_of_the_day': plant_of_the_day_taxon,
             'plant_of_the_day_image': plant_of_the_day_image,

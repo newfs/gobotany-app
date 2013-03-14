@@ -93,7 +93,12 @@ class SpeciesReader(object):
         # we have a taxon object or id
         if isinstance(species, basestring):
             species = models.Taxon.objects.get(scientific_name__iexact=species)
-        return species.images.filter(**query)
+
+        species_images = None
+        if species:
+            species_images = species.images.filter(**query)
+
+        return species_images
 
 _species_reader = SpeciesReader()
 query_species = _species_reader.query_species
