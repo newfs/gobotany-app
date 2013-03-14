@@ -67,7 +67,8 @@ def teaching_view(request):
 # Help section
 
 def help_view(request):
-    return render_to_response('gobotany/help.html', {
+    return render_to_response(
+        per_partner_template(request, 'help.html'), {
            }, context_instance=RequestContext(request))
 
 def help_dkey_view(request):
