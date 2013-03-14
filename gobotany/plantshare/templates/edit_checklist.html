@@ -1,0 +1,97 @@
+{% extends "gobotany/_page_free_sidebar.html" %}
+{% load mapping_tags %}
+
+{% block title %}Checklists: Plantshare{% endblock %}
+
+{% block js_require %}
+    require(['util/suggester_init', 'plantshare/plantshare']);
+{% endblock %}
+
+{% block body_attributes %}id="checklists" class="plantshare checklists"{% endblock %}
+
+{% block main_content %}
+<h1>Checklists</h1>
+
+<div class="checklists-section">
+    <form name="checklist-fillout" id="checklist-fillout" action="ps-checklistdetail.php" method="post">
+        <header>
+            <h4>Edit Checklist</h4>
+            <input type="text" id="checklist-name" placeholder="Enter Checklist Name" />
+            <textarea id="checklist-description" placeholder="Comments about checklist..."></textarea>
+        </header>
+        <a class="import-sightings-link" href="#">Import from Sightings &#43;</a>
+        <table id="add-sightings-table">
+            <thead>
+                <tr>
+                    <th class="name">Name <span>(Required)</span></th>
+                    <th class="image">Image</th>
+                    <th class="date-sighted">Date Sighted</th>
+                    <th class="location">Location</th>
+                    <th class="date-posted">Date Posted</th>
+                    <th class="note">Note</th>
+                    <th class="close">&nbsp;</th>
+                </tr>
+            </thead>
+            <tfoot>
+                <tr>
+                    <td colspan="7">
+                        <a href="#" class="add-new-row">Add New Row &#43;</a>
+                    </td>
+                </tr>
+            </tfoot>
+            <tbody>
+                <tr>
+                    <td class="name">
+                        <input type="text" id="sighting-name" placeholder="Enter Plant Name" />
+                    </td><!-- /.name -->
+                    <td class="image">
+                        <a href="#" class="upload-image-thumb btn">Upload Image</a>
+                    </td><!-- /.image -->
+                    <td class="date-sighted">
+                        <input type="text" id="sighting-date-sighted-05" class="datepicker"  placeholder="dd/mm/yy" />
+                    </td><!-- /.date-sighted -->
+                    <td class="location">
+                        <input type="text" id="sighting-location" placeholder="Enter Location" />
+                    </td><!-- /.location -->
+                    <td class="date-posted">
+                        <input type="text" id="sighting-date-posted-05" class="datepicker"  placeholder="dd/mm/yy" />
+                    </td><!-- /.date-posted -->
+                    <td class="note">
+                        <a href="modals/add-notes.html" rel="shadowbox;width=550;height=240">Add<br>Note</a>
+                        <a href="modals/delete-confirm-item.html" rel="shadowbox;height=200;width=550;" class="close-btn row-btn">Close</a>
+                    </td><!-- /.note -->
+                </tr>
+                <tr>
+                    <td class="name">
+                        <input type="text" id="sighting-name" placeholder="Enter Plant Name" />
+                    </td><!-- /.name -->
+                    <td class="image">
+                        <a href="#" class="upload-image-thumb btn">Upload Image</a>
+                    </td><!-- /.image -->
+                    <td class="date-sighted">
+                        <input type="text" id="sighting-date-sighted-06" class="datepicker"  placeholder="dd/mm/yy" />
+                    </td><!-- /.date-sighted -->
+                    <td class="location">
+                        <input type="text" id="sighting-location" placeholder="Enter Location" />
+                    </td><!-- /.location -->
+                    <td class="date-posted">
+                        <input type="text" id="sighting-date-posted-06" class="datepicker"  placeholder="dd/mm/yy" />
+                    </td><!-- /.date-posted -->
+                    <td class="note">
+                        <a href="modals/add-notes.html" rel="shadowbox;width=550;height=240">Add<br>Note</a>
+                        <a href="modals/delete-confirm-item.html" rel="shadowbox;height=200;width=550;" class="close-btn row-btn">Close</a>
+                    </td><!-- /.note -->
+                </tr>
+            </tbody>
+        </table><!-- /#add-sightings-table -->
+        <div class="form-actions">
+            <input type="submit" class="ps-button" id="save-btn" value="Save" />
+            <a href="ps-checklistaction.php" class="cancel-link">Cancel</a>
+        </div><!-- /.form-actions -->
+    </form><!-- /#checklist-fillout -->
+</div><!-- /.ps-section -->
+{% endblock %}
+
+{% block sidebar_content %}
+    {% include "_plantshare_navigation.html" %}
+{% endblock %}

@@ -224,6 +224,12 @@ def new_checklist_view(request):
            }, context_instance=RequestContext(request))
 
 @login_required
+def edit_checklist_view(request, checklist_id):
+    """Edit a checklist"""
+    return render_to_response('edit_checklist.html', {
+           }, context_instance=RequestContext(request))
+
+@login_required
 def checklist_view(request, checklist_id):
     """Display the details of a checklist"""
     return render_to_response('checklist_detail.html', {
