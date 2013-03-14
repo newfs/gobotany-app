@@ -798,7 +798,7 @@ body.plantshare {
             border: 1px solid #C3D941;
             margin: 20px 0;
             width: 100%;
-            
+
             .first {
               width: 15px; 
             }
@@ -876,7 +876,142 @@ body.plantshare {
                 }
             }
         }
+        .checklists-section {
+            background-color: #fff;
+            border: 1px solid #c3d941;
+            margin: 20px 0;
+            min-height: 140px;
+            padding: 10px 15px 20px;
+            position: relative;
+            
+            input, textarea {
+                border: 1px solid #ababab;
+                box-shadow: inset 1px 1px 2px #ccc;
+                -moz-box-shadow: inset 1px 1px 2px #ccc;
+                -webkit-box-shadow: inset 1px 1px 2px #ccc;
+                display: block;
+                font-size: inherit;
+                line-height: 1em;
+                padding: 7px 5px 5px;
+            }
+            
+            h4 {
+                margin: 0 0 15px;
+                font-size: 18px;
+            }
 
+            header {
+                margin: 0 0 10px;
+                height: auto !important;
+                
+                input, textarea {
+                    margin: 5px 0 10px;
+                    width: 95%;
+                    height: auto;
+                }
+            }
+
+            .import-sightings-link {
+                background-color: #e0f0d1;
+                display: block;
+                font-weight: bold;
+                margin: 0 0 25px;
+                padding: 5px 10px;
+            }
+
+            table#add-sightings-table {
+                width: 678px;
+
+                th, td {
+                    padding: 15px 10px 5px 0;
+                }
+            
+                td input {
+                    padding: 7px 5px 5px;
+                    margin: 0;
+                }
+
+                .name input {
+                    width: 160px;
+                }
+                .image {
+                    font-size: 0.9em;
+                }
+                .date-sighted input {
+                    width: 70px;
+                }
+                .location input {
+                    width: 150px;
+                }
+                .date-posted input {
+                    width: 70px;
+                }
+                .note {
+                    padding-right: 0;
+                    width: 60px;
+                    a {
+                        display: inline-block;
+                    }
+                    a.row-btn {
+                        float: right;
+                        margin: 5px 0 0 8px;
+                    }
+                }
+
+                thead { 
+                    border-bottom: 1px solid #ccc;
+                    width: 678px; 
+                    
+                    th {
+                        text-transform: uppercase;
+                        
+                        span {
+                            color: #999;
+                            font-style: italic;
+                            text-transform: none;
+                        }
+                    }
+                }
+                tfoot {
+                    border-bottom: 1px solid #ccc;
+                    
+                    td {
+                        font-size: .9em;
+                        padding-bottom: 10px;
+                        padding-top: 10px;
+                    }
+                }
+            }
+            .form-actions {
+                padding: 15px 0 0;
+
+                a {
+                    margin: 7px 20px 0 0;
+                    display: block;
+                    float: left;
+                    vertical-align: middle;
+                }
+                #save-btn {
+                    height: 32px;
+                    width: 99px;
+                    border: 0 none;
+                    margin: 0 20px 0 0;
+                    box-shadow: none;
+                    -moz-box-shadow: none;
+                    -webkit-box-shadow: none;
+                    white-space: nowrap;
+                    display: block;
+                    float: left;
+                    vertical-align: middle;
+                }
+
+                &::after {
+                  display: block;
+                  content: " ";
+                  clear: both;
+                }
+            }
+        }
     }
 
     &#screen-images {
