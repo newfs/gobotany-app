@@ -1,0 +1,19 @@
+{% extends "concord/_base.html" %}
+
+{% block header %}
+    {% include "concord/_header.html" %}
+{% endblock %}
+
+{% block body_content %}
+<div class="content">
+    <div class="container no-sidebar">
+        <div id="main" class> 
+            {% block main_content %}{% endblock %}
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block footer %}
+    {% include "concord/_footer.html" %}
+{% endblock %}

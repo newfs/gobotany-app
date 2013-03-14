@@ -1,9 +1,9 @@
-{% extends "partner/_base.html" %}
+{% extends "concord/_base.html" %}
 {% load simplekey_extras %}
 
 {# Home page template for a sample partner site, overriding Go Botany #}
 
-{% block title %}Partner: sample Go Botany partner site{% endblock %}
+{% block title %}Concord: sample Go Botany partner site{% endblock %}
 {% block title_suffix %}{% endblock %}
 
 {% comment %}
@@ -22,7 +22,7 @@ Disable the Plant of the Day feed.
 {% endblock %}
 
 {% block header %}
-    {% include "partner/_header.html" with page="home" %}
+    {% include "concord/_header.html" with page="home" %}
 {% endblock %}
 
 {% block body_content %}
@@ -110,5 +110,5 @@ Disable the Plant of the Day feed.
 {% endblock %}
 
 {% block footer %}
-    {% include "partner/_footer.html" %}
+    {% include "concord/_footer.html" %}
 {% endblock %}
