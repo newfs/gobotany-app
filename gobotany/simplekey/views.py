@@ -72,12 +72,13 @@ def level1(request, key):
             .select_related('image_type'))
         pilegroups.append((pilegroup, images, get_simple_url(key, pilegroup)))
 
-    return render_to_response('simplekey/simple.html', {
-            'partner_site': short_name,
-            'groups_list_page': groups_list_page,
-            'key': key,
-            'pilegroups': pilegroups
-            }, context_instance=RequestContext(request))
+    return render_to_response(
+            per_partner_template(request, 'simple.html'), {
+                'partner_site': short_name,
+                'groups_list_page': groups_list_page,
+                'key': key,
+                'pilegroups': pilegroups
+                }, context_instance=RequestContext(request))
 
 @vary_on_headers('Host')
 @cache_control(max_age=60 * 60)
