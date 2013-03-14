@@ -66,6 +66,7 @@ def teaching_view(request):
 
 # Help section
 
+@vary_on_headers('Host')
 def help_view(request):
     return render_to_response(
         per_partner_template(request, 'help.html'), {
@@ -91,14 +92,17 @@ def getting_started_view(request):
             'getting_started_youtube_id': youtube_id,
             }, context_instance=RequestContext(request))
 
+@vary_on_headers('Host')
 def advanced_map_view(request):
     pilegroups = [(pilegroup, ordered_piles(pilegroup))
                   for pilegroup in ordered_pilegroups()]
 
-    return render_to_response('gobotany/advanced_map.html', {
+    return render_to_response(
+        per_partner_template(request, 'advanced_map.html'), {
             'pilegroups': pilegroups
             }, context_instance=RequestContext(request))
 
+@vary_on_headers('Host')
 def glossary_view(request, letter):
     glossary = GlossaryTerm.objects.filter(visible=True).extra(
         select={'lower_term': 'lower(term)'}).order_by('lower_term')
@@ -110,7 +114,8 @@ def glossary_view(request, letter):
     # desired letter.
     glossary = glossary.filter(term__gte='a', term__startswith=letter)
 
-    return render_to_response('gobotany/glossary.html', {
+    return render_to_response(
+        per_partner_template(request, 'glossary.html'), {
             'this_letter': letter,
             'letters': string.ascii_lowercase,
             'letters_in_glossary': letters_in_glossary,
