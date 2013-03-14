@@ -104,14 +104,15 @@ def level3(request, key, pilegroup_slug, pile_slug):
     short_name = partner_short_name(request)
     subgroup_results_page = SubgroupResultsPage.objects.get(subgroup=pile)
 
-    return render_to_response('simplekey/results.html', {
-           'dev_flag': 1 if request.GET.has_key('dev') else 0,
-           'key': key,
-           'partner_site': short_name,
-           'subgroup_results_page': subgroup_results_page,
-           'pilegroup': pile.pilegroup,
-           'pile': pile,
-           }, context_instance=RequestContext(request))
+    return render_to_response(
+            per_partner_template(request, 'results.html'), {
+                'dev_flag': 1 if request.GET.has_key('dev') else 0,
+                'key': key,
+                'partner_site': short_name,
+                'subgroup_results_page': subgroup_results_page,
+                'pilegroup': pile.pilegroup,
+                'pile': pile,
+                }, context_instance=RequestContext(request))
 
 
 # We have moved the 2nd and 3rd level Simple Key pages beneath /simple/
