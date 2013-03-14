@@ -209,10 +209,17 @@ class PlantDistributionMapTestCase(TestCase):
         statuses = [
             'Species present in state and native',
             'Species present and not rare',
-            'Species native, but adventive in state',
             ]
         for status in statuses:
             self.assertEqual('native',
+                self.distribution_map._get_label_for_status(status))
+
+    def test_get_label_for_status_adventive(self):
+        statuses = [
+            'Species native, but adventive in state',
+            ]
+        for status in statuses:
+            self.assertEqual('non-native',
                 self.distribution_map._get_label_for_status(status))
 
     def test_get_label_for_status_rare(self):
