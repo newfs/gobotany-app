@@ -7,7 +7,7 @@
 
 {% block js_top %}
     {# TODO: eventually move elsewhere #}
-    {% include "simplekey/_partner_site_js.html" %}
+    {% include "gobotany/_partner_site_js.html" %}
 {% endblock %}
 
 {% block js_require %}
@@ -72,7 +72,7 @@
                             {% if pile.video %}
                             <p class="vid">
                                 {% with pile.video.youtube_id as youtube_id %}
-                                {% include "simplekey/_simplekey_video_link.html" with item_type="subgroup" %}
+                                {% include "gobotany/_simplekey_video_link.html" with item_type="subgroup" %}
                                 {% endwith %}
                             </p>
                             {% endif %}
@@ -82,7 +82,7 @@
                     {% endif %}
                 {% endfor %}
 
-                {% include "simplekey/_plant_not_in_subgroup.html" %}
+                {% include "gobotany/_plant_not_in_subgroup.html" %}
 {% endblock %}
 
 {% block sidebar_content %}

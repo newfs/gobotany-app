@@ -87,13 +87,14 @@ def level2(request, key, pilegroup_slug):
             .select_related('image_type'))
         piles.append((pile, images, get_simple_url(key, pilegroup, pile)))
 
-    return render_to_response('simplekey/pilegroup.html', {
-            'partner_site': short_name,
-            'subgroups_list_page': subgroups_list_page,
-            'key': key,
-            'pilegroup': pilegroup,
-            'piles': piles
-            }, context_instance=RequestContext(request))
+    return render_to_response(
+            per_partner_template(request, 'pilegroup.html'), {
+                'partner_site': short_name,
+                'subgroups_list_page': subgroups_list_page,
+                'key': key,
+                'pilegroup': pilegroup,
+                'piles': piles
+                }, context_instance=RequestContext(request))
 
 def level3(request, key, pilegroup_slug, pile_slug):
     pile = get_object_or_404(Pile, slug=pile_slug)
