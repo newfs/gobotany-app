@@ -8,7 +8,8 @@ from django.views.decorators.cache import cache_control, cache_page
 from django.views.decorators.vary import vary_on_headers
 
 from gobotany.core.models import ContentImage, Pile, PileGroup
-from gobotany.core.partner import (partner_short_name, per_partner_template)
+from gobotany.core.partner import (partner_short_name, per_partner_template,
+                                   render_to_response_per_partner)
 from gobotany.search.models import (GroupsListPage,
                                     SubgroupResultsPage,
                                     SubgroupsListPage)
@@ -63,13 +64,12 @@ def level1(request, key):
             .select_related('image_type'))
         pilegroups.append((pilegroup, images, get_simple_url(key, pilegroup)))
 
-    return render_to_response(
-            per_partner_template(request, 'simple.html'), {
+    return render_to_response_per_partner('simple.html', {
                 'partner_site': short_name,
                 'groups_list_page': groups_list_page,
                 'key': key,
                 'pilegroups': pilegroups
-                }, context_instance=RequestContext(request))
+                }, request)
 
 @vary_on_headers('Host')
 @cache_control(max_age=60 * 60)
@@ -87,15 +87,15 @@ def level2(request, key, pilegroup_slug):
             .select_related('image_type'))
         piles.append((pile, images, get_simple_url(key, pilegroup, pile)))
 
-    return render_to_response(
-            per_partner_template(request, 'pilegroup.html'), {
+    return render_to_response_per_partner('pilegroup.html', {
                 'partner_site': short_name,
                 'subgroups_list_page': subgroups_list_page,
                 'key': key,
                 'pilegroup': pilegroup,
                 'piles': piles
-                }, context_instance=RequestContext(request))
+                }, request)
 
+@vary_on_headers('Host')
 def level3(request, key, pilegroup_slug, pile_slug):
     pile = get_object_or_404(Pile, slug=pile_slug)
     if pile.pilegroup.slug != pilegroup_slug:
@@ -104,15 +104,14 @@ def level3(request, key, pilegroup_slug, pile_slug):
     short_name = partner_short_name(request)
     subgroup_results_page = SubgroupResultsPage.objects.get(subgroup=pile)
 
-    return render_to_response(
-            per_partner_template(request, 'results.html'), {
+    return render_to_response_per_partner('results.html', {
                 'dev_flag': 1 if request.GET.has_key('dev') else 0,
                 'key': key,
                 'partner_site': short_name,
                 'subgroup_results_page': subgroup_results_page,
                 'pilegroup': pile.pilegroup,
                 'pile': pile,
-                }, context_instance=RequestContext(request))
+                }, request)
 
 
 # We have moved the 2nd and 3rd level Simple Key pages beneath /simple/
