@@ -524,7 +524,7 @@ body.teaching #main li { list-style-type: none; }
 #home #potd .details h3 span.latin { font-style: italic; }
 #home #potd .details h3 span.english { font-size: 12px; color: #807121; }
 #home #potd .details p { height: 72px; margin: 0; overflow: hidden; }
-#home .donate { padding: 0; margin: 15px 0; border: 3px solid white; background: #f1ebae; -webkit-box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.3); -moz-box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.3); box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.3); }
+#home .donate { clear: left; border: 3px solid white; background: #f1ebae; margin: 15px 0; padding: 0; -webkit-box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.3); -moz-box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.3); box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.3); }
 #home .donate p { margin: 14px; position: relative; }
 #home .donate a { background: url(/static/images/layout/donate-btn.png) 0 0 no-repeat transparent; cursor: pointer; display: block; float: right; height: 32px; padding: 0; position: absolute; right: 0; text-indent: -9000px; top: -6px; width: 104px; }
 #home .donate a:hover { background-position: 0 -32px; }
@@ -883,6 +883,7 @@ body.skey.results .working-area #slider .bar div { background: -webkit-gradient(
 body.skey.results .working-area #slider .thumb { background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #c1d9a7), color-stop(100%, white)); background: -moz-linear-gradient(center top, #c1d9a7, white); border: 1px solid white; cursor: pointer; height: 30px; left: 3px; position: absolute; text-align: center; top: 35px; width: 30px; -moz-border-radius: 16px; -webkit-border-radius: 16px; -o-border-radius: 16px; -ms-border-radius: 16px; -khtml-border-radius: 16px; border-radius: 16px; -moz-box-shadow: 0 1px 6px 1px #333333; -webkit-box-shadow: 0 1px 6px 1px #333333; -o-box-shadow: 0 1px 6px 1px #333333; box-shadow: 0 1px 6px 1px #333333; }
 body.skey.results .working-area #slider .label { font-size: 16px; position: relative; top: -36px; -moz-user-select: -moz-none; -khtml-user-select: none; -webkit-user-select: none; -ms-user-select: none; user-select: none; }
 body.skey.results img.char-value-larger { height: 160px !important; /* Consistent height for popup character value drawings */ }
+body.skey .toplink { display: none; }
 
 /* Experiment by Brandon */
 ul.get-more-questions-menu { -webkit-box-shadow: 0px 1px 4px rgba(0, 0, 0, 0.6); -moz-box-shadow: 0px 1px 4px rgba(0, 0, 0, 0.6); box-shadow: 0px 1px 4px rgba(0, 0, 0, 0.6); z-index: 200; position: absolute; right: 0; display: block; bottom: 110%; border: 1px solid black; font-size: 12px; text-indent: 0px; /* undo the -9000px */ white-space: nowrap; }
@@ -902,7 +903,9 @@ ul.get-more-questions-menu ul li[data-character] { color: black; }
   body.skey.results.mobile-wide { /* Styles for testing: mobile variant where filters list is full width of screen */ }
   body.skey.results.mobile-wide #question-nav .section a.clear-all-btn, body.skey.results.mobile-wide #question-nav .section a.get-help-btn { margin: 0 100px; }
   body.skey.results.mobile-wide .species-count-heading { left: -235px; }
-  body.skey.results.mobile-wide #results-tabs li:first-child a { margin-left: 32px; } }
+  body.skey.results.mobile-wide #results-tabs li:first-child a { margin-left: 32px; }
+  body.skey.results.mobile-toplink { /* Mobile variant with floating 'back to top' link */ }
+  body.skey.results.mobile-toplink .toplink { position: fixed; left: 0; bottom: 0; width: 100%; text-align: right; } }
 /* Landscape-orientation styles */
 @media only screen and (min-width: 401px) and (max-width: 600px) { body.skey { /* end &.results.mobile-wide */ }
   body.skey.results #intro-overlay { left: 26% !important; }

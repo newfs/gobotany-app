@@ -193,10 +193,11 @@
         }
     }
     .donate {
-        padding: 0;
-        margin: 15px 0;
+        clear: left;
         border: 3px solid #fff;
         background: #f1ebae;
+        margin: 15px 0;
+        padding: 0;
         @include single-box-shadow(rgba(0, 0, 0, 0.3), 0px, 0px, 4px);
         p {
             margin: 14px;

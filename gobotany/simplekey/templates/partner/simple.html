@@ -1,13 +1,13 @@
-{% extends "gobotany/_page_full_sidebar.html" %}
+{% extends "partner/_page_full_sidebar.html" %}
 {% load simplekey_extras %}
 
-{% block title %}{{ key|title }} Key for Plant Identification{% endblock %}
+{% block title %}Partner {{ key|title }} Key for Plant Identification{% endblock %}
 
 {% block body_attributes %}class="skey groups-subgroups {{ key|title|lower }}"{% endblock %}
 
 {% block js_top %}
     {# TODO: eventually move elsewhere #}
-    {% include "simplekey/_partner_site_js.html" %}
+    {% include "gobotany/_partner_site_js.html" %}
 {% endblock %}
 
 {% block js_require %}
@@ -15,7 +15,7 @@
 {% endblock %}
 
 {% block main_content %}
-                <h1>{{ key|title }} Key</h1>
+                <h1>Partner {{ key|title }} Key</h1>
 
                 <p class="question">{{ groups_list_page.main_heading }}</p>
                 <p class="tip">Please go through the groups in order.</p>
@@ -59,7 +59,7 @@
                             {% if pilegroup.video %}
                             <p class="vid">
                                 {% with pilegroup.video.youtube_id as youtube_id %}
-                                {% include "simplekey/_simplekey_video_link.html" with item_type="group" %}
+                                {% include "gobotany/_simplekey_video_link.html" with item_type="group" %}
                                 {% endwith %}
                             </p>
                             {% endif %}
@@ -70,5 +70,5 @@
 {% endblock %}
 
 {% block sidebar_content %}
-    {% include "gobotany/_sidebar_items.html" %}
+    {% include "partner/_sidebar_items.html" %}
 {% endblock %}

@@ -1,4 +1,4 @@
-{% extends "gobotany/_page_full_sidebar.html" %}
+{% extends "partner/_page_full_sidebar.html" %}
 {% load simplekey_extras %}
 
 {% block title %}
@@ -10,7 +10,7 @@ Family: {{ family.name }} {% if common_name %}({{ common_name|cut:"The "|lower }
     </script>
 
     {# TODO: eventually move elsewhere #}
-    {% include "simplekey/_partner_site_js.html" %}
+    {% include "gobotany/_partner_site_js.html" %}
 {% endblock %}
 
 {% block js_require %}
@@ -25,7 +25,7 @@ Family: {{ family.name }} {% if common_name %}({{ common_name|cut:"The "|lower }
 {% block body_attributes %}id="family" class="taxa"{% endblock %}
 
 {% block main_content %}
-                <h1>Family: {{ family.name }}</h1>
+                <h1>Partner: Family: {{ family.name }}</h1>
                 {% if common_name %}
                     <p class="common">{{ common_name|cut:"The "|lower }}</p>
                 {% endif %}
@@ -61,13 +61,15 @@ Family: {{ family.name }} {% if common_name %}({{ common_name|cut:"The "|lower }
                 {% endfor %}
                 </ul>
 
+                {% comment %}
                 <p class="visit-dkey">
-                  Visit this family in the
-                  <a href="{% url 'dkey_page' family.name.lower %}"
-                     >Dichotomous Key</a>
+                    Visit this family in the
+                    <a href="{% url 'dkey_page' family.name.lower %}"
+                        >Dichotomous Key</a>
                 </p>
+                {% endcomment %}
 {% endblock %}
 
 {% block sidebar_content %}
-    {% include "gobotany/_sidebar_items.html" %}
+    {% include "partner/_sidebar_items.html" %}
 {% endblock %}

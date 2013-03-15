@@ -193,6 +193,6 @@ def repeat(value, arg):
 
 # Inclusion tag for formatting a combined title/credit/copyright string
 # for use with a photo.
-@register.inclusion_tag('simplekey/_photo_credit.html')
+@register.inclusion_tag('gobotany/_photo_credit.html')
 def photo_credit(image, image_name):
     return {'image': image, 'image_name': image_name}

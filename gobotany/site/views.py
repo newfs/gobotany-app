@@ -19,32 +19,32 @@ from gobotany.core.models import (
     Family, Genus,
     GlossaryTerm, HomePageImage, Pile, Taxon, Video,
     )
-from gobotany.core.partner import which_partner
+from gobotany.core.partner import (which_partner, per_partner_template,
+                                   render_to_response_per_partner)
 from gobotany.plantoftheday.models import PlantOfTheDay
 from gobotany.simplekey.groups_order import ordered_pilegroups, ordered_piles
 from gobotany.site.models import PlantNameSuggestion, SearchSuggestion
 
-def per_partner_template(request, template_path):
-    partner = which_partner(request)
-    return '{0}/{1}'.format(partner.short_name, template_path)
-
 # Home page
 
+@vary_on_headers('Host')
 def home_view(request):
     """View for the home page of the Go Botany site."""
 
     home_page_images = HomePageImage.objects.all()
-    # Get or generate today's Plant of the Day.
+
+    # Get or generate today's Plant of the Day, if appropriate.
     partner = which_partner(request)
     plant_of_the_day = PlantOfTheDay.get_by_date.for_day(
         date.today(), partner.short_name)
-    # Get the Taxon record of the Plant of the Day.
     plant_of_the_day_taxon = None
-    try:
-        plant_of_the_day_taxon = Taxon.objects.get(
-            scientific_name=plant_of_the_day.scientific_name)
-    except ObjectDoesNotExist:
-        pass
+    if plant_of_the_day:
+        # Get the Taxon record of the Plant of the Day.
+        try:
+            plant_of_the_day_taxon = Taxon.objects.get(
+                scientific_name=plant_of_the_day.scientific_name)
+        except ObjectDoesNotExist:
+            pass
 
     plant_of_the_day_image = None
     species_images = botany.species_images(plant_of_the_day_taxon)
@@ -52,7 +52,8 @@ def home_view(request):
         plant_of_the_day_image = botany.species_images(
             plant_of_the_day_taxon)[0]
 
-    return render_to_response('gobotany/home.html', {
+    return render_to_response(
+        per_partner_template(request, 'home.html'), {
             'home_page_images': home_page_images,
             'plant_of_the_day': plant_of_the_day_taxon,
             'plant_of_the_day_image': plant_of_the_day_image,
@@ -60,23 +61,27 @@ def home_view(request):
 
 # Teaching page
 
+@vary_on_headers('Host')
 def teaching_view(request):
-    return render_to_response('gobotany/teaching.html', {
-            }, context_instance=RequestContext(request))
+    return render_to_response_per_partner('teaching.html', {
+            }, request)
 
 # Help section
 
+@vary_on_headers('Host')
 def help_view(request):
-    return render_to_response('gobotany/help.html', {
-           }, context_instance=RequestContext(request))
+    return render_to_response_per_partner('help.html', {
+           }, request)
 
+@vary_on_headers('Host')
 def help_dkey_view(request):
-    return render_to_response('gobotany/help_dkey.html', {
-           }, context_instance=RequestContext(request))
+    return render_to_response_per_partner('help_dkey.html', {
+           }, request)
 
+@vary_on_headers('Host')
 def about_view(request):
-    return render_to_response('gobotany/about.html', {
-           }, context_instance=RequestContext(request))
+    return render_to_response_per_partner('about.html', {
+           }, request)
 
 @vary_on_headers('Host')
 def getting_started_view(request):
@@ -90,14 +95,17 @@ def getting_started_view(request):
             'getting_started_youtube_id': youtube_id,
             }, context_instance=RequestContext(request))
 
+@vary_on_headers('Host')
 def advanced_map_view(request):
     pilegroups = [(pilegroup, ordered_piles(pilegroup))
                   for pilegroup in ordered_pilegroups()]
 
-    return render_to_response('gobotany/advanced_map.html', {
+    return render_to_response(
+        per_partner_template(request, 'advanced_map.html'), {
             'pilegroups': pilegroups
             }, context_instance=RequestContext(request))
 
+@vary_on_headers('Host')
 def glossary_view(request, letter):
     glossary = GlossaryTerm.objects.filter(visible=True).extra(
         select={'lower_term': 'lower(term)'}).order_by('lower_term')
@@ -109,7 +117,8 @@ def glossary_view(request, letter):
     # desired letter.
     glossary = glossary.filter(term__gte='a', term__startswith=letter)
 
-    return render_to_response('gobotany/glossary.html', {
+    return render_to_response(
+        per_partner_template(request, 'glossary.html'), {
             'this_letter': letter,
             'letters': string.ascii_lowercase,
             'letters_in_glossary': letters_in_glossary,
@@ -132,6 +141,7 @@ def _get_video_dict(title, video):
         'youtube_id': youtube_id
     }
 
+@vary_on_headers('Host')
 def video_view(request):
     # The Getting Started video is first, followed by videos for the pile
     # groups and piles in the order that they are presented in the stepwise
@@ -148,28 +158,28 @@ def video_view(request):
         for pile in ordered_piles(pilegroup):
             videos.append(_get_video_dict(pile.friendly_title, pile.video))
 
-    return render_to_response('gobotany/video.html', {
+    return render_to_response_per_partner('video.html', {
            'videos': videos,
-           }, context_instance=RequestContext(request))
+           }, request)
 
-
+@vary_on_headers('Host')
 def contributors_view(request):
-    return render_to_response('gobotany/contributors.html', {
-       }, context_instance=RequestContext(request))
+    return render_to_response_per_partner('contributors.html', {
+       }, request)
 
 def contact_view(request):
-    return render_to_response('gobotany/contact.html',
-                              context_instance=RequestContext(request))
+    return render_to_response_per_partner('contact.html', {}, request)
 
+@vary_on_headers('Host')
 def privacy_view(request):
-    return render_to_response('gobotany/privacy.html',
-            context_instance=RequestContext(request))
+    return render_to_response_per_partner('privacy.html', {}, request)
 
+@vary_on_headers('Host')
 def terms_of_use_view(request):
     site_url = request.build_absolute_uri(reverse('site-home'))
-    return render_to_response('gobotany/terms.html', {
+    return render_to_response_per_partner('terms.html', {
             'site_url': site_url,
-            }, context_instance=RequestContext(request))
+            }, request)
 
 # API calls for input suggestions (search, plant names, etc.)
 
@@ -247,15 +257,17 @@ def plant_name_suggestions_view(request):
 
 # Maps test page
 
+@vary_on_headers('Host')
 def maps_test_view(request):
-    return render_to_response('gobotany/maps_test.html', {
-           }, context_instance=RequestContext(request))
+    return render_to_response('maps_test.html', {
+           }, request)
 
 # Input suggest test page
 
+@vary_on_headers('Host')
 def suggest_test_view(request):
-    return render_to_response('gobotany/suggest_test.html', {
-           }, context_instance=RequestContext(request))
+    return render_to_response('suggest_test.html', {
+           }, request)
 
 
 # Placeholder views
@@ -282,15 +294,18 @@ def sitemap_view(request):
     urls.extend(['http://%s/genera/%s/' % (host, genus_name)
                  for genus_name in genera])
     return render_to_response('gobotany/sitemap.txt', {
-           'urls': urls,
-           }, mimetype='text/plain; charset=utf-8')
+            'urls': urls,
+            },
+            context_instance=RequestContext(request),
+            content_type='text/plain; charset=utf-8')
 
 def robots_view(request):
     return render_to_response('gobotany/robots.txt', {},
                               context_instance=RequestContext(request),
-                              mimetype='text/plain')
+                              content_type='text/plain')
 
 
+@vary_on_headers('Host')
 def checkup_view(request):
 
     # Do some checks that can be presented on an unlinked page to be
@@ -316,12 +331,13 @@ def checkup_view(request):
             #                                             image_url)
     images_copyright = total_images - len(images_without_copyright)
 
-    return render_to_response('gobotany/checkup.html', {
+    return render_to_response_per_partner('checkup.html', {
             'images_copyright': images_copyright,
             'total_images': total_images,
-        }, context_instance=RequestContext(request))
+        }, request)
 
 
+@vary_on_headers('Host')
 def species_list_view(request):
     plants_list = list(Taxon.objects.values(
         'id', 'scientific_name', 'family__name', 'north_american_native',
@@ -365,6 +381,6 @@ def species_list_view(request):
     for plantdict in plants_list:
         plantdict['states'] = ' '.join(sorted(plantdict['states'])).upper()
 
-    return render_to_response('gobotany/species_list.html', {
+    return render_to_response_per_partner('species_list.html', {
         'plants': plants_list,
-        }, context_instance=RequestContext(request))
+        }, request)

@@ -1,0 +1,114 @@
+{% extends "partner/_base.html" %}
+{% load simplekey_extras %}
+
+{# Home page template for a sample partner site, overriding Go Botany #}
+
+{% block title %}Partner: sample Go Botany partner site{% endblock %}
+{% block title_suffix %}{% endblock %}
+
+{% comment %}
+Disable the Plant of the Day feed.
+{% block more_meta_link %}
+    <link rel="alternate" type="application/atom+xml"
+        title="Atom feed: Plant of the Day"
+        href="http://{{ request.META.HTTP_HOST }}/plantoftheday/atom.xml">
+{% endblock %}
+{% endcomment %}
+
+{% block body_attributes %}id="home"{% endblock %}
+
+{% block js_require %}
+    require(['site/home']);
+{% endblock %}
+
+{% block header %}
+    {% include "partner/_header.html" with page="home" %}
+{% endblock %}
+
+{% block body_content %}
+    <div class="content">
+        <div class="container">
+            <div id="banner">
+            {% for image in home_page_images %}
+                <img src="{{ image.image.url }}" alt="">
+            {% endfor %}
+                <div id="overlay">
+                    <h2>Simple ID Key</h2>
+                    <img src="/static/images/layout/separator.png"
+                        alt="Go Botany">
+                    <p>Want to know what that plant is? With our Simple Key,
+                    you can identify over 1,200 common native and naturalized
+                    New England plants! Observe closely, collect a sample or
+                    take a photo, answer some questions, and narrow down to
+                    the correct identification.</p>
+                    <a href="{% url 'level1' 'simple' %}" id="cta">Get Started</a>
+                </div>
+            </div>
+            <div class="three-col">
+                <h3>PlantShare</h3>
+                <h4>Connect with other plant fans!</h4>
+                <p>Join our on-line community of plant enthusiasts! Find
+                friends, collaborate on field surveys for plants, share your
+                discoveries, get help identifying plants, make maps, and
+                develop checklists of plants for particular sites you are
+                exploring.</p>
+                <a class="learn-more" href="{% url 'plantshare-placeholder' %}">Learn More</a>
+            </div>
+            <div class="three-col">
+                <h3>Advanced ID Tools</h3>
+                <h4>For experienced botanists!</h4>
+                <p>Identify over 3,000 New England plants by using our Full
+                Identification Key, including technical multiple-access and
+                dichotomous keys to families, genera, and species. Also learn
+                about subspecies and varieties native to our region.</p>
+                <a class="learn-more"
+                    href="{% url 'advanced-id-tools' %}">Learn More</a>
+            </div>
+            <div class="three-col last">
+                <h3>Teaching Tools</h3>
+                <h4>New: a useful teaching resource!</h4>
+                <p>Go Botany encourages informal, self-directed education in
+                botany for science students and beginning and amateur
+                botanists. Professors, teachers, and environmental educators
+                can share curricula and teaching ideas.</p>
+                <a class="learn-more" href="{% url 'site-teaching' %}" >Learn More</a>
+            </div>
+
+            {% comment %}
+            Omit the Plant of the Day section.
+            <div id="potd">
+            {% if plant_of_the_day %}
+                <a href="/species/{{ plant_of_the_day.genus_name|lower }}/{{ plant_of_the_day.epithet }}/"
+                    title="Learn more about {{ plant_of_the_day.scientific_name }}">
+                  <img src="{{ plant_of_the_day_image.image_medium }}"
+                       alt="{{ plant_of_the_day.scientific_name }}">
+                </a>
+                <div class="details">
+                    <h3>Plant of the Day:
+                        <span class="latin">{{ plant_of_the_day.scientific_name|italicize_plant|safe }}</span>
+                        <span class="english">{{ plant_of_the_day.common_names.all.0 }}</span>
+                    </h3>
+                    <p>{{ plant_of_the_day.factoid|slice:":274"}}
+                    {% if plant_of_the_day.factoid|length > 274 %}...{% endif %}</p>
+                    <a class="learn-more" href="/species/{{ plant_of_the_day.genus_name|lower }}/{{ plant_of_the_day.epithet }}/">Learn More</a>
+                </div>
+            {% else %}
+                <p>Error: Plant of the Day information missing</p>
+            {% endif %}
+            </div>
+            {% endcomment %}
+
+            <div class="donate">
+                <p>Please contribute to our mission to conserve and promote
+                the region&#8217;s plants by donating to New England Wild
+                Flower Society.
+                <a href="http://www.newenglandwild.org/support/">Donate</a>
+                </p>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block footer %}
+    {% include "partner/_footer.html" %}
+{% endblock %}

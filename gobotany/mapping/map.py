@@ -151,6 +151,8 @@ class PlantDistributionMap(ChloroplethMap):
                          #     and "Species exotic and present"
             'waif',      # Covers: "Species waif"
             'noxious',   # Covers: "Species noxious"
+            'native, but adventive', # Covers: "Species native, but adventive
+                                     #          in state"
             ]
 
         NATIVE_PRESENCE_INDICATORS = [
