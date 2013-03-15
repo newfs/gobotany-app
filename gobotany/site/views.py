@@ -300,8 +300,8 @@ def sitemap_view(request):
 
 @vary_on_headers('Host')
 def robots_view(request):
-    return render_to_response('robots.txt', {}, request,
-                              content_type='text/plain')
+    return render_to_response_per_partner('robots.txt', {}, request,
+                                          content_type='text/plain')
 
 
 @vary_on_headers('Host')
