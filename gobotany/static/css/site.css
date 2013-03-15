@@ -1027,8 +1027,8 @@ ul.get-more-questions-menu ul li[data-character] { color: black; }
   body.skey.results.mobile-wide .species-count-heading { position: relative; text-align: center; top: -2px; width: 80%; }
   body.skey.results.mobile-gloss { /* Styles for mobile variants where working- area glossary terms are shown in a list */ }
   body.skey.results.mobile-gloss .working-area h4 { padding-right: 50px; }
-  body.skey.results.mobile-gloss .working-area .gloss { color: inherit; cursor: default; }
-  body.skey.results.mobile-gloss .working-area .gloss:hover { border-bottom: 0; }
+  body.skey.results.mobile-gloss .working-area .gloss { border-bottom: 0; color: inherit; cursor: default; }
+  text-decor body.skey.results.mobile-gloss .working-area .gloss:hover { border-bottom: 0; }
   body.skey.results.mobile-gloss .working-area .terms { background: #e1f0d1; border: 1px solid #666666; display: block; padding: 6px 12px; position: absolute; right: 0; text-align: right; top: 0; width: 50%; -webkit-box-shadow: 0px 1px 4px #a2a64d; -moz-box-shadow: 0px 1px 4px #a2a64d; box-shadow: 0px 1px 4px #a2a64d; }
   body.skey.results.mobile-gloss .working-area .terms.closed { background: none; border: 0; -webkit-box-shadow: none; -moz-box-shadow: none; box-shadow: none; }
   body.skey.results.mobile-gloss .working-area .terms.closed h5 { padding: 5px 6px 8px; }
