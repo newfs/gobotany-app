@@ -199,11 +199,11 @@ class Importer(object):
 
     def import_partner_sites(self, db):
         """Create 'gobotany' and 'montshire' partner site objects, and
-        a demo partner site named 'sample'."""
+        a demo partner site named 'partner'."""
         log.info('Setting up partner sites')
         partnersite = db.table('core_partnersite')
 
-        for short_name in ['gobotany', 'montshire', 'sample']:
+        for short_name in ['gobotany', 'montshire', 'partner']:
             partnersite.get(short_name=short_name)
 
         partnersite.save()
@@ -1963,7 +1963,7 @@ def import_partner_species(partner_short_name, excel_file):
     knowns = theirs & ours
     unknowns = theirs - ours
 
-    print 'Partner site:', partner_short_name
+    print 'Partner site:', partner_short_name, 'Data file:', excel_file
     print 'We list', len(ours), 'species'
     print 'They list', len(theirs), 'species'
     print 'We know about', len(knowns), 'of their species'
@@ -2052,7 +2052,7 @@ full_import_steps = (
      ),
 
     (import_partner_species, '!montshire', 'montshire-species-list.xls'),
-    (import_partner_species, '!sample', 'partersite-sample-species-lists.xls'),
+    (import_partner_species, '!partner', 'partersite-sample-species-lists.xls'),
     (rebuild.rebuild_default_filters, 'characters.csv'),
     (rebuild.rebuild_plant_of_the_day, '!SIMPLEKEY'),
 
