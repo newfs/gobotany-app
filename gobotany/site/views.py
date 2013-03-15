@@ -8,9 +8,9 @@ from datetime import date
 
 from django.core.exceptions import ObjectDoesNotExist
 from django.core.urlresolvers import reverse
-from django.http import HttpResponse
+from django.http import Http404, HttpResponse
 from django.shortcuts import render_to_response, redirect
-from django.template import RequestContext
+from django.template import RequestContext, TemplateDoesNotExist
 from django.views.decorators.vary import vary_on_headers
 
 from gobotany.core import botany
@@ -19,7 +19,8 @@ from gobotany.core.models import (
     Family, Genus,
     GlossaryTerm, HomePageImage, Pile, Taxon, Video,
     )
-from gobotany.core.partner import which_partner, per_partner_template
+from gobotany.core.partner import (which_partner, per_partner_template,
+                                   render_to_response_per_partner)
 from gobotany.plantoftheday.models import PlantOfTheDay
 from gobotany.simplekey.groups_order import ordered_pilegroups, ordered_piles
 from gobotany.site.models import PlantNameSuggestion, SearchSuggestion
@@ -68,17 +69,17 @@ def teaching_view(request):
 
 @vary_on_headers('Host')
 def help_view(request):
-    return render_to_response(
-        per_partner_template(request, 'help.html'), {
-           }, context_instance=RequestContext(request))
+    return render_to_response_per_partner('help.html', {
+           }, request)
 
 def help_dkey_view(request):
     return render_to_response('gobotany/help_dkey.html', {
            }, context_instance=RequestContext(request))
 
+@vary_on_headers('Host')
 def about_view(request):
-    return render_to_response('gobotany/about.html', {
-           }, context_instance=RequestContext(request))
+    return render_to_response_per_partner('about.html', {
+           }, request)
 
 @vary_on_headers('Host')
 def getting_started_view(request):
