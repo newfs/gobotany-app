@@ -958,6 +958,9 @@ body.skey {
     .toplink {
         display: none;
     }
+    #filters-preview {
+        display: none;
+    }
 }
 
 /* Experiment by Brandon */
@@ -1056,6 +1059,24 @@ ul.get-more-questions-menu {
                 bottom: 0;
                 width: 100%;
                 text-align: right;
+            }
+        }
+
+        &.mobile-preview-filters #filters-preview {
+            display: block;
+            border-bottom: solid 1px #000;
+            li {
+                list-item-type: none;
+                display: none;
+                &.answered {
+                    display: inline;
+                }
+                .name {
+                    font-weight: bold;
+                }
+            }
+            .clear-filter {
+                display: none;
             }
         }
 
