@@ -282,7 +282,6 @@ def placeholder_view(request, template):
 
 # Sitemap.txt and robots.txt views
 
-@vary_on_headers('Host')
 def sitemap_view(request):
     host = request.get_host()
     plant_names = Taxon.objects.values_list('scientific_name', flat=True)
@@ -294,14 +293,16 @@ def sitemap_view(request):
                  for family_name in families])
     urls.extend(['http://%s/genera/%s/' % (host, genus_name)
                  for genus_name in genera])
-    return render_to_response_per_partner('sitemap.txt', {
-           'urls': urls,
-           }, request, content_type='text/plain; charset=utf-8')
+    return render_to_response('gobotany/sitemap.txt', {
+            'urls': urls,
+            },
+            context_instance=RequestContext(request),
+            content_type='text/plain; charset=utf-8')
 
-@vary_on_headers('Host')
 def robots_view(request):
-    return render_to_response_per_partner('robots.txt', {}, request,
-                                          content_type='text/plain')
+    return render_to_response('gobotany/robots.txt', {},
+                              context_instance=RequestContext(request),
+                              content_type='text/plain')
 
 
 @vary_on_headers('Host')
