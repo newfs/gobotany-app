@@ -410,6 +410,40 @@ results_page_init: function(args) {
         }
     });
 
+    App3.FilterPreview = Ember.View.extend({
+        templateName: 'filter-preview',
+        filterBinding: 'content',  // 'this.filter' makes more readable code
+        classNameBindings: ['answered'],
+
+        answered: function() {
+            // Return whether to assign the "answered" CSS class.
+            return !! this.filter.value;
+        }.property('filter.value'),
+
+        display_value: function() {
+            var filter = this.get('filter');
+            var value = filter.get('value');
+
+            if (value === null)
+                return '';   // Do not display a "don't know" value
+
+            if (value === 'NA')
+                return 'N/A';
+
+            if (filter.value_type === 'TEXT')
+                return value;
+
+            if (filter.is_length) {
+                var units = filter.display_units || 'mm';
+                return utils.pretty_length(units, value);
+            }
+
+            return value + '';
+        }.property('filter.value')
+
+    });
+
+
     /* The FilterView above is automatically instantiated and managed by
        this CollectionView, which is careful to use the 'plain_filters'
        attribute that omits the family and genus filters. */
@@ -426,6 +460,15 @@ results_page_init: function(args) {
             itemViewClass: App3.FilterView
         });
         App3.filters_view.appendTo('#questions-go-here');
+
+        if ($('body').hasClass('mobile-preview-filters')) {
+            App3.filters_preview = Ember.CollectionView.create({
+                tagName: 'ul',
+                contentBinding: 'App3.filter_controller.plain_filters',
+                itemViewClass: App3.FilterPreview
+            });
+            App3.filters_preview.appendTo('#filters-preview');
+        }
 
         App3.species_view_tabs = Ember.View.create({
             templateName: 'species-view-tabs',
