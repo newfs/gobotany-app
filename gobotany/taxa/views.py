@@ -13,7 +13,8 @@ from gobotany.core.models import (
     CopyrightHolder, Family, Genus, PartnerSpecies, Pile,
     PlantPreviewCharacter, Taxon
     )
-from gobotany.core.partner import which_partner, per_partner_template
+from gobotany.core.partner import (which_partner, per_partner_template,
+                                   render_to_response_per_partner)
 from gobotany.dkey import models as dkey_models
 
 def _images_with_copyright_holders(images):
@@ -74,14 +75,13 @@ def family_view(request, family_slug):
     pile = family.taxa.all()[0].piles.all()[0]
     pilegroup = pile.pilegroup
 
-    return render_to_response(
-        per_partner_template(request, 'family.html'), {
+    return render_to_response_per_partner('family.html', {
            'family': family,
            'common_name': common_name,
            'family_drawings': family_drawings,
            'pilegroup': pilegroup,
            'pile': pile,
-           }, context_instance=RequestContext(request))
+           }, request)
 
 
 @vary_on_headers('Host')
@@ -112,14 +112,13 @@ def genus_view(request, genus_slug):
     pile = genus.taxa.all()[0].piles.all()[0]
     pilegroup = pile.pilegroup
 
-    return render_to_response(
-        per_partner_template(request, 'genus.html'), {
+    return render_to_response_per_partner('genus.html', {
            'genus': genus,
            'common_name': common_name,
            'genus_drawings': genus_drawings,
            'pilegroup': pilegroup,
            'pile': pile,
-           }, context_instance=RequestContext(request))
+           }, request)
 
 
 def _native_to_north_america_status(taxon):
