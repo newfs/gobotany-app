@@ -1,4 +1,3 @@
-@charset "UTF-8";
 /* *** Go Botany master styles file ***
  Please edit only the .scss source and use Compass to auto-generate the .css.
  The generated .css is kept in the repository to allow easy deployment.
@@ -905,14 +904,7 @@ ul.get-more-questions-menu ul li[data-character] { color: black; }
   body.skey.results.mobile-wide { /* Styles for testing: mobile variant where filters list is full width of screen */ }
   body.skey.results.mobile-wide #question-nav .section a.clear-all-btn, body.skey.results.mobile-wide #question-nav .section a.get-help-btn { margin: 0 100px; }
   body.skey.results.mobile-wide .species-count-heading { left: -235px; }
-  body.skey.results.mobile-wide #results-tabs li:first-child a { margin-left: 32px; }
-  body.skey.results.mobile-toplink { /* Mobile variant with floating 'back to top' link */ }
-  body.skey.results.mobile-toplink .toplink { position: fixed; left: 0; bottom: 0; width: 100%; text-align: right; }
-  body.skey.mobile-preview-filters #filters-preview { display: block; border-bottom: solid 1px black; }
-  body.skey.mobile-preview-filters #filters-preview li { list-item-type: none; display: none; }
-  body.skey.mobile-preview-filters #filters-preview li.answered { display: inline; }
-  body.skey.mobile-preview-filters #filters-preview li .name { font-weight: bold; }
-  body.skey.mobile-preview-filters #filters-preview .clear-filter { display: none; } }
+  body.skey.results.mobile-wide #results-tabs li:first-child a { margin-left: 32px; } }
 /* Landscape-orientation styles */
 @media only screen and (min-width: 401px) and (max-width: 600px) { body.skey { /* end &.results.mobile-wide */ }
   body.skey.results #intro-overlay { left: 26% !important; }
@@ -1061,7 +1053,16 @@ ul.get-more-questions-menu ul li[data-character] { color: black; }
   body.skey.results.mobile-inline.mobile-gloss .working-area .terms.closed h5::after { display: none; }
   body.skey.results.mobile-inline.mobile-gloss .working-area .terms.closed ul { display: block; }
   body.skey.results.mobile-inline.mobile-gloss .working-area .terms h5 { color: #000; padding: 5px 0; text-decoration: none; }
-  body.skey.results.mobile-inline.mobile-gloss .working-area .terms h5::after { display: none; } }
+  body.skey.results.mobile-inline.mobile-gloss .working-area .terms h5::after { display: none; }
+  body.skey.results.mobile-toplink { /* Mobile variant with floating 'back to top' link */ }
+  body.skey.results.mobile-toplink .toplink { position: fixed; left: 0; bottom: 0; width: 100%; text-align: right; }
+  body.skey.mobile-preview-filters #filters-preview { display: block; border-bottom: solid 1px black; }
+  body.skey.mobile-preview-filters #filters-preview li { list-item-type: none; display: none; }
+  body.skey.mobile-preview-filters #filters-preview li.answered { display: inline; }
+  body.skey.mobile-preview-filters #filters-preview li .name { font-weight: bold; }
+  body.skey.mobile-preview-filters #filters-preview .clear-filter { display: none; }
+  /* end body.skey */ }
+/* End of styles common to both smartphone widths */
 /* Tablet-only styles */
 @media only screen and (min-width: 601px) and (max-width: 1024px) { body.skey.results #question-nav .option-list > li.active:hover { background: #dce890; } }
 /* These styles apply to smartphones and tablets */

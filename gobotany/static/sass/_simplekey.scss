@@ -1050,36 +1050,6 @@ ul.get-more-questions-menu {
                 }
             }
         } /* end &.results.mobile-wide */
-
-        &.results.mobile-toplink {  /* Mobile variant with floating
-                                        'back to top' link */
-            .toplink {
-                position: fixed;
-                left: 0;
-                bottom: 0;
-                width: 100%;
-                text-align: right;
-            }
-        }
-
-        &.mobile-preview-filters #filters-preview {
-            display: block;
-            border-bottom: solid 1px #000;
-            li {
-                list-item-type: none;
-                display: none;
-                &.answered {
-                    display: inline;
-                }
-                .name {
-                    font-weight: bold;
-                }
-            }
-            .clear-filter {
-                display: none;
-            }
-        }
-
     }
 }
 /* Landscape-orientation styles */
@@ -1800,8 +1770,39 @@ ul.get-more-questions-menu {
                 }
             }
         } /* end &.results.mobile-inline */
-    }
-}
+
+        &.results.mobile-toplink {  /* Mobile variant with floating
+                                        'back to top' link */
+            .toplink {
+                position: fixed;
+                left: 0;
+                bottom: 0;
+                width: 100%;
+                text-align: right;
+            }
+        }
+
+        &.mobile-preview-filters #filters-preview {
+            display: block;
+            border-bottom: solid 1px #000;
+            li {
+                list-item-type: none;
+                display: none;
+                &.answered {
+                    display: inline;
+                }
+                .name {
+                    font-weight: bold;
+                }
+            }
+            .clear-filter {
+                display: none;
+            }
+        }
+
+    } /* end body.skey */
+} /* End of styles common to both smartphone widths */
+
 /* Tablet-only styles */
 @media only screen and (min-width: 601px) and (max-width: 1024px) {
     body.skey {
