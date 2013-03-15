@@ -8,9 +8,9 @@ from datetime import date
 
 from django.core.exceptions import ObjectDoesNotExist
 from django.core.urlresolvers import reverse
-from django.http import Http404, HttpResponse
+from django.http import HttpResponse
 from django.shortcuts import render_to_response, redirect
-from django.template import RequestContext, TemplateDoesNotExist
+from django.template import RequestContext
 from django.views.decorators.vary import vary_on_headers
 
 from gobotany.core import botany
@@ -61,9 +61,10 @@ def home_view(request):
 
 # Teaching page
 
+@vary_on_headers('Host')
 def teaching_view(request):
-    return render_to_response('gobotany/teaching.html', {
-            }, context_instance=RequestContext(request))
+    return render_to_response_per_partner('teaching.html', {
+            }, request)
 
 # Help section
 
@@ -72,9 +73,10 @@ def help_view(request):
     return render_to_response_per_partner('help.html', {
            }, request)
 
+@vary_on_headers('Host')
 def help_dkey_view(request):
-    return render_to_response('gobotany/help_dkey.html', {
-           }, context_instance=RequestContext(request))
+    return render_to_response_per_partner('help_dkey.html', {
+           }, request)
 
 @vary_on_headers('Host')
 def about_view(request):
@@ -139,6 +141,7 @@ def _get_video_dict(title, video):
         'youtube_id': youtube_id
     }
 
+@vary_on_headers('Host')
 def video_view(request):
     # The Getting Started video is first, followed by videos for the pile
     # groups and piles in the order that they are presented in the stepwise
@@ -155,18 +158,17 @@ def video_view(request):
         for pile in ordered_piles(pilegroup):
             videos.append(_get_video_dict(pile.friendly_title, pile.video))
 
-    return render_to_response('gobotany/video.html', {
+    return render_to_response_per_partner('video.html', {
            'videos': videos,
-           }, context_instance=RequestContext(request))
+           }, request)
 
-
+@vary_on_headers('Host')
 def contributors_view(request):
-    return render_to_response('gobotany/contributors.html', {
-       }, context_instance=RequestContext(request))
+    return render_to_response_per_partner('contributors.html', {
+       }, request)
 
 def contact_view(request):
-    return render_to_response('gobotany/contact.html',
-                              context_instance=RequestContext(request))
+    return render_to_response_per_partner('contact.html', {}, request)
 
 @vary_on_headers('Host')
 def privacy_view(request):
@@ -255,15 +257,17 @@ def plant_name_suggestions_view(request):
 
 # Maps test page
 
+@vary_on_headers('Host')
 def maps_test_view(request):
-    return render_to_response('gobotany/maps_test.html', {
-           }, context_instance=RequestContext(request))
+    return render_to_response('maps_test.html', {
+           }, request)
 
 # Input suggest test page
 
+@vary_on_headers('Host')
 def suggest_test_view(request):
-    return render_to_response('gobotany/suggest_test.html', {
-           }, context_instance=RequestContext(request))
+    return render_to_response('suggest_test.html', {
+           }, request)
 
 
 # Placeholder views
@@ -278,6 +282,7 @@ def placeholder_view(request, template):
 
 # Sitemap.txt and robots.txt views
 
+@vary_on_headers('Host')
 def sitemap_view(request):
     host = request.get_host()
     plant_names = Taxon.objects.values_list('scientific_name', flat=True)
@@ -289,16 +294,17 @@ def sitemap_view(request):
                  for family_name in families])
     urls.extend(['http://%s/genera/%s/' % (host, genus_name)
                  for genus_name in genera])
-    return render_to_response('gobotany/sitemap.txt', {
+    return render_to_response_per_partner('sitemap.txt', {
            'urls': urls,
-           }, mimetype='text/plain; charset=utf-8')
+           }, request, content_type='text/plain; charset=utf-8')
 
+@vary_on_headers('Host')
 def robots_view(request):
-    return render_to_response('gobotany/robots.txt', {},
-                              context_instance=RequestContext(request),
-                              mimetype='text/plain')
+    return render_to_response('robots.txt', {}, request,
+                              content_type='text/plain')
 
 
+@vary_on_headers('Host')
 def checkup_view(request):
 
     # Do some checks that can be presented on an unlinked page to be
@@ -324,12 +330,13 @@ def checkup_view(request):
             #                                             image_url)
     images_copyright = total_images - len(images_without_copyright)
 
-    return render_to_response('gobotany/checkup.html', {
+    return render_to_response_per_partner('checkup.html', {
             'images_copyright': images_copyright,
             'total_images': total_images,
-        }, context_instance=RequestContext(request))
+        }, request)
 
 
+@vary_on_headers('Host')
 def species_list_view(request):
     plants_list = list(Taxon.objects.values(
         'id', 'scientific_name', 'family__name', 'north_american_native',
@@ -373,6 +380,6 @@ def species_list_view(request):
     for plantdict in plants_list:
         plantdict['states'] = ' '.join(sorted(plantdict['states'])).upper()
 
-    return render_to_response('gobotany/species_list.html', {
+    return render_to_response_per_partner('species_list.html', {
         'plants': plants_list,
-        }, context_instance=RequestContext(request))
+        }, request)
