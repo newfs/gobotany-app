@@ -168,15 +168,16 @@ def contact_view(request):
     return render_to_response('gobotany/contact.html',
                               context_instance=RequestContext(request))
 
+@vary_on_headers('Host')
 def privacy_view(request):
-    return render_to_response('gobotany/privacy.html',
-            context_instance=RequestContext(request))
+    return render_to_response_per_partner('privacy.html', {}, request)
 
+@vary_on_headers('Host')
 def terms_of_use_view(request):
     site_url = request.build_absolute_uri(reverse('site-home'))
-    return render_to_response('gobotany/terms.html', {
+    return render_to_response_per_partner('terms.html', {
             'site_url': site_url,
-            }, context_instance=RequestContext(request))
+            }, request)
 
 # API calls for input suggestions (search, plant names, etc.)
 
