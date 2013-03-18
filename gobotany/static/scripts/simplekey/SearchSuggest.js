@@ -25,19 +25,8 @@ define([
         this.stored_search_box_value = initial_search_box_value;
 
         this.search_box = $('#search-suggest input').first();
-        if (this.search_box.length == 0) {
-            console.error('SearchSuggest.js: Search box not found.');
-        }
-
         this.menu = $('#search-suggest .menu').first();
-        if (this.menu.length == 0) {
-            console.error('SearchSuggest.js: Menu not found.');
-        }
-
         this.menu_list = $('#search-suggest .menu ul').first();
-        if (this.menu_list.length == 0) {
-            console.error('SearchSuggest.js: Menu list not found.');
-        }
 
         this.result_cache = {};  // for caching results for each search queried
     };
