@@ -1533,7 +1533,7 @@ header.partner-site nav li a { padding: 5px 32px 0; /* fewer sections, more hori
 /* Landscape-orientation styles */
 /* These styles are common to both smartphone widths */
 @media only screen and (max-width: 600px) { #home.partner-site header.partner-site h1 { background-position: -58px -17px; height: 56px; margin-left: 0; width: 200px; }
-  #home.partner-site header.partner-site .partner { font-size: 14px; left: 43px; top: 36px; }
+  #home.partner-site header.partner-site .partner { font-size: 14px; left: 43px; top: 36px; width: 200px; }
   header.partner-site { /* Show full-size sections button for now (search is omitted) */ }
   header.partner-site .container { position: relative; }
   header.partner-site .partner { float: none; font-size: 12px; left: 66px; line-height: 12px; position: absolute; top: 42px; width: 150px; }
