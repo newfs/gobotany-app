@@ -1,11 +1,11 @@
+{% load gobotany_tags %}
+
     <header>
         <div class="container">
             {% if page = "home" %}
                 <h1>Go Botany: Discover thousands of New England plants</h1>
             {% else %}
-                <p class="go-botany"><a 
-                {% ifnotequal request.path "/" %}href="/"{% endifnotequal %}>Go
-                    Botany: Discover thousands of New England plants</a></p>
+                <p class="go-botany">{% nav_item 'Go Botany: Discover thousands of New England plants' site-home %}</p>
             {% endif %}
             <p class="newfs"><a href="http://www.newenglandwild.org/">New
                 England Wild Flower Society</a></p>

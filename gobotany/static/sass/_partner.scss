@@ -1,0 +1,25 @@
+/* Additional styles and overrides for partner sites */
+
+header.partner-site {
+    .go-botany, .go-botany a {
+        /*border: 1px dashed green;*/
+        width: 170px;
+    }
+    .partner {
+        /*border: 1px solid red;*/
+        color: $heading-green;
+        float: left;
+        font-family: $headings-font;
+        font-size: 14px;
+        position: relative;
+        top: 45px;
+        width: 380px;
+        b {
+            margin-right: 10px;
+        }
+        a {
+            padding-left: 10px;
+            text-decoration: none;
+        }
+    }
+}

@@ -1028,7 +1028,7 @@ ul.get-more-questions-menu ul li[data-character] { color: black; }
   body.skey.results.mobile-gloss { /* Styles for mobile variants where working- area glossary terms are shown in a list */ }
   body.skey.results.mobile-gloss .working-area h4 { padding-right: 50px; }
   body.skey.results.mobile-gloss .working-area .gloss { border-bottom: 0; color: inherit; cursor: default; }
-  text-decor body.skey.results.mobile-gloss .working-area .gloss:hover { border-bottom: 0; }
+  body.skey.results.mobile-gloss .working-area .gloss:hover { border-bottom: 0; }
   body.skey.results.mobile-gloss .working-area .terms { background: #e1f0d1; border: 1px solid #666666; display: block; padding: 6px 12px; position: absolute; right: 0; text-align: right; top: 0; width: 50%; -webkit-box-shadow: 0px 1px 4px #a2a64d; -moz-box-shadow: 0px 1px 4px #a2a64d; box-shadow: 0px 1px 4px #a2a64d; }
   body.skey.results.mobile-gloss .working-area .terms.closed { background: none; border: 0; -webkit-box-shadow: none; -moz-box-shadow: none; box-shadow: none; }
   body.skey.results.mobile-gloss .working-area .terms.closed h5 { padding: 5px 6px 8px; }
@@ -1514,6 +1514,12 @@ body.search-results .search-navigation a { text-decoration: underline; }
 .modal-wrap a.go-to-species-page:active { background-position: 0 -62px; }
 
 /* end .modal-wrap */
+/* Additional styles and overrides for partner sites */
+header.partner-site .go-botany, header.partner-site .go-botany a { /*border: 1px dashed green;*/ width: 170px; }
+header.partner-site .partner { /*border: 1px solid red;*/ color: #437829; float: left; font-family: "Trebuchet MS", Helvetica, Arial, "Lucida Sans Unicode", sans-serif; font-size: 14px; position: relative; top: 45px; width: 380px; }
+header.partner-site .partner b { margin-right: 10px; }
+header.partner-site .partner a { padding-left: 10px; text-decoration: none; }
+
 /* Finally, include global media queries for smartphones and tablets. These should be last. */
 /* Begin global media queries styles.  So far there are three sections for smartphones (two fixed-width layouts to cover portrait and landscape orientations, with a section common to both orientations) and some additional styles for tablets. Using fixed-width layouts allows some pages to have a wider central content area for now. Various SASS "partials" (_home.scss, _help.scss, etc.) have their own media queries arranged like the ones below. Think of those as modular extensions to these. */
 /* Portrait-orientation styles */
