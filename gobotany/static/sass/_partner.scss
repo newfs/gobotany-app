@@ -1,5 +1,12 @@
 /* Additional styles and overrides for partner sites */
 
+#home.partner-site {
+    .three-col {
+        background: none;
+        height: 10px;
+    }
+}
+
 header.partner-site {
     .go-botany, .go-botany a {
         /*border: 1px dashed green;*/

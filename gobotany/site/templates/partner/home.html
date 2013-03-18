@@ -15,7 +15,7 @@ Disable the Plant of the Day feed.
 {% endblock %}
 {% endcomment %}
 
-{% block body_attributes %}id="home"{% endblock %}
+{% block body_attributes %}id="home" class="partner-site"{% endblock %}
 
 {% comment %}
 Disable the fading image carousel. Show just one non-changing image for now.
@@ -53,6 +53,9 @@ Disable the fading image carousel. Show just one non-changing image for now.
                     <a href="{% url 'level1' 'simple' %}" id="cta">Get Started</a>
                 </div>
             </div>
+
+            {% comment %}
+            Omit section introductions.
             <div class="three-col">
                 <h3>PlantShare</h3>
                 <h4>Connect with other plant fans!</h4>
@@ -82,6 +85,8 @@ Disable the fading image carousel. Show just one non-changing image for now.
                 can share curricula and teaching ideas.</p>
                 <a class="learn-more" href="{% url 'site-teaching' %}" >Learn More</a>
             </div>
+            {% endcomment %}
+            <div class="three-col"></div>
 
             {% comment %}
             Omit the Plant of the Day section.

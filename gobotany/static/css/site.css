@@ -1515,6 +1515,8 @@ body.search-results .search-navigation a { text-decoration: underline; }
 
 /* end .modal-wrap */
 /* Additional styles and overrides for partner sites */
+#home.partner-site .three-col { background: none; height: 10px; }
+
 header.partner-site .go-botany, header.partner-site .go-botany a { /*border: 1px dashed green;*/ width: 170px; }
 header.partner-site .partner { /*border: 1px solid red;*/ color: #437829; float: left; font-family: "Trebuchet MS", Helvetica, Arial, "Lucida Sans Unicode", sans-serif; font-size: 14px; position: relative; top: 45px; width: 380px; }
 header.partner-site .partner b { margin-right: 10px; }
