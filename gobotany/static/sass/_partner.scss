@@ -20,6 +20,9 @@
                 font-size: 16px;
             }
         }
+        nav li.home a {
+            padding: 5px 8px 0;  /* consistent padding in 'separated' area */
+        }
     }
     .three-col {
         background: none;
@@ -46,5 +49,8 @@ header.partner-site {
             padding-left: 10px;
             text-decoration: none;
         }
+    }
+    nav li a {
+        padding: 5px 32px 0;  /* fewer sections, more horizontal padding */
     }
 }

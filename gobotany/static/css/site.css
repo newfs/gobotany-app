@@ -1519,12 +1519,14 @@ body.search-results .search-navigation a { text-decoration: underline; }
 #home.partner-site header.partner-site h1 { width: 260px; }
 #home.partner-site header.partner-site .partner { float: none; font-size: 22px; left: 178px; position: absolute; top: 60px; width: 495px; }
 #home.partner-site header.partner-site .partner i { color: #fff; font-size: 16px; }
+#home.partner-site header.partner-site nav li.home a { padding: 5px 8px 0; /* consistent padding in 'separated' box */ }
 #home.partner-site .three-col { background: none; height: 10px; }
 
 header.partner-site .go-botany, header.partner-site .go-botany a { width: 170px; }
 header.partner-site .partner { color: #508e31; float: left; font-family: "Trebuchet MS", Helvetica, Arial, "Lucida Sans Unicode", sans-serif; font-size: 14px; position: relative; top: 45px; width: 380px; }
 header.partner-site .partner b { margin-right: 10px; }
 header.partner-site .partner a { padding-left: 10px; text-decoration: none; }
+header.partner-site nav li a { padding: 5px 32px 0; /* fewer sections, more horizontal padding */ }
 
 /* Finally, include global media queries for smartphones and tablets. These should be last. */
 /* Begin global media queries styles.  So far there are three sections for smartphones (two fixed-width layouts to cover portrait and landscape orientations, with a section common to both orientations) and some additional styles for tablets. Using fixed-width layouts allows some pages to have a wider central content area for now. Various SASS "partials" (_home.scss, _help.scss, etc.) have their own media queries arranged like the ones below. Think of those as modular extensions to these. */

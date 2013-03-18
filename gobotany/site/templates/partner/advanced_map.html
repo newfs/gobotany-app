@@ -28,6 +28,7 @@
                             {% endif %}
                         {% endfor %}
                     </div>
+                    {% comment %}
                     <p class="list">
                         <a href="/list/#group={{ group.friendly_title }}{% if group.friendly_title|lower = 'woody plants' %} not non{% endif %}"
                             >Species list</a>
@@ -38,6 +39,7 @@
                             href="http://www.youtube.com/embed/{{ group.video.youtube_id }}?autoplay=1&amp;rel=0&amp;hd=1&amp;modestbranding=1">Video</a>
                     </p>
                     {% endif %}
+                    {% endcomment %}
                 </div>
             </div>
         {% endfor %}
@@ -65,6 +67,7 @@
                             </div>
                             <a class="choose-btn"
                                 href="/{{ group.slug }}/{{ subgroup.slug }}/"></a>
+                            {% comment %}
                             <p class="list">
                                 <a href="/list/#subgroup={{ subgroup.friendly_title }}"
                                     >Species list</a>
@@ -75,6 +78,7 @@
                                     href="http://www.youtube.com/embed/{{ subgroup.video.youtube_id }}?autoplay=1&amp;rel=0&amp;hd=1&amp;modestbranding=1">Video</a>
                             </p>
                             {% endif %}
+                            {% endcomment %}
                         </div>
                     {% endif %}
                 {% endfor %}
