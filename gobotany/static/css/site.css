@@ -1515,10 +1515,14 @@ body.search-results .search-navigation a { text-decoration: underline; }
 
 /* end .modal-wrap */
 /* Additional styles and overrides for partner sites */
+#home.partner-site header.partner-site .container { position: relative; }
+#home.partner-site header.partner-site h1 { width: 260px; }
+#home.partner-site header.partner-site .partner { float: none; font-size: 22px; left: 178px; position: absolute; top: 60px; width: 495px; }
+#home.partner-site header.partner-site .partner i { color: #fff; font-size: 16px; }
 #home.partner-site .three-col { background: none; height: 10px; }
 
-header.partner-site .go-botany, header.partner-site .go-botany a { /*border: 1px dashed green;*/ width: 170px; }
-header.partner-site .partner { /*border: 1px solid red;*/ color: #437829; float: left; font-family: "Trebuchet MS", Helvetica, Arial, "Lucida Sans Unicode", sans-serif; font-size: 14px; position: relative; top: 45px; width: 380px; }
+header.partner-site .go-botany, header.partner-site .go-botany a { width: 170px; }
+header.partner-site .partner { color: #508e31; float: left; font-family: "Trebuchet MS", Helvetica, Arial, "Lucida Sans Unicode", sans-serif; font-size: 14px; position: relative; top: 45px; width: 380px; }
 header.partner-site .partner b { margin-right: 10px; }
 header.partner-site .partner a { padding-left: 10px; text-decoration: none; }
 

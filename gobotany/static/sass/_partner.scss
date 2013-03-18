@@ -1,6 +1,26 @@
 /* Additional styles and overrides for partner sites */
 
 #home.partner-site {
+    header.partner-site {
+        .container {
+            position: relative;
+        }
+        h1 {
+            width: 260px;
+        }
+        .partner {
+            float: none;
+            font-size: 22px;
+            left: 178px;
+            position: absolute;
+            top: 60px;
+            width: 495px;
+            i {
+                color: #fff;
+                font-size: 16px;
+            }
+        }
+    }
     .three-col {
         background: none;
         height: 10px;
@@ -9,12 +29,10 @@
 
 header.partner-site {
     .go-botany, .go-botany a {
-        /*border: 1px dashed green;*/
         width: 170px;
     }
     .partner {
-        /*border: 1px solid red;*/
-        color: $heading-green;
+        color: $link-green;
         float: left;
         font-family: $headings-font;
         font-size: 14px;
