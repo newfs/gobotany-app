@@ -54,3 +54,51 @@ header.partner-site {
         padding: 5px 32px 0;  /* fewer sections, more horizontal padding */
     }
 }
+
+/* Begin media queries styles for partner site customizations */
+
+/* Portrait-orientation styles */
+@media only screen and (max-width: 400px) {
+
+}
+
+/* Landscape-orientation styles */
+@media only screen and (min-width: 401px) and (max-width: 600px) {
+
+}
+
+/* These styles are common to both smartphone widths */
+@media only screen and (max-width: 600px) {
+    #home.partner-site {
+        header.partner-site {
+            h1 {
+                background-position: -58px -17px;
+                height: 56px;
+                margin-left: 0;
+                width: 200px;
+            }
+            .partner {
+                font-size: 14px;
+                left: 43px;
+                top: 30px;
+                width: 200px;
+                i {
+                    display: none;
+                }
+            }
+            /* Show full-size sections button for now (search is omitted) */
+            nav > a {
+                width: 80px;
+                span {
+                    display: inline;
+                    font-size: 14px;
+                    line-height: 160%;
+                    padding-left: 23px;
+                    position: absolute;
+                }
+            }
+        }
+    }
+}
+
+/* Begin media queries styles for partner site customizations */

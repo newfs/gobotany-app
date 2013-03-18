@@ -1519,7 +1519,7 @@ body.search-results .search-navigation a { text-decoration: underline; }
 #home.partner-site header.partner-site h1 { width: 260px; }
 #home.partner-site header.partner-site .partner { float: none; font-size: 22px; left: 178px; position: absolute; top: 60px; width: 495px; }
 #home.partner-site header.partner-site .partner i { color: #fff; font-size: 16px; }
-#home.partner-site header.partner-site nav li.home a { padding: 5px 8px 0; /* consistent padding in 'separated' box */ }
+#home.partner-site header.partner-site nav li.home a { padding: 5px 8px 0; /* consistent padding in 'separated' area */ }
 #home.partner-site .three-col { background: none; height: 10px; }
 
 header.partner-site .go-botany, header.partner-site .go-botany a { width: 170px; }
@@ -1528,6 +1528,17 @@ header.partner-site .partner b { margin-right: 10px; }
 header.partner-site .partner a { padding-left: 10px; text-decoration: none; }
 header.partner-site nav li a { padding: 5px 32px 0; /* fewer sections, more horizontal padding */ }
 
+/* Begin media queries styles for partner site customizations */
+/* Portrait-orientation styles */
+/* Landscape-orientation styles */
+/* These styles are common to both smartphone widths */
+@media only screen and (max-width: 600px) { #home.partner-site header.partner-site { /* Show full-size sections button for now (search is omitted) */ }
+  #home.partner-site header.partner-site h1 { background-position: -58px -17px; height: 56px; margin-left: 0; width: 200px; }
+  #home.partner-site header.partner-site .partner { font-size: 14px; left: 43px; top: 30px; width: 200px; }
+  #home.partner-site header.partner-site .partner i { display: none; }
+  #home.partner-site header.partner-site nav > a { width: 80px; }
+  #home.partner-site header.partner-site nav > a span { display: inline; font-size: 14px; line-height: 160%; padding-left: 23px; position: absolute; } }
+/* Begin media queries styles for partner site customizations */
 /* Finally, include global media queries for smartphones and tablets. These should be last. */
 /* Begin global media queries styles.  So far there are three sections for smartphones (two fixed-width layouts to cover portrait and landscape orientations, with a section common to both orientations) and some additional styles for tablets. Using fixed-width layouts allows some pages to have a wider central content area for now. Various SASS "partials" (_home.scss, _help.scss, etc.) have their own media queries arranged like the ones below. Think of those as modular extensions to these. */
 /* Portrait-orientation styles */
