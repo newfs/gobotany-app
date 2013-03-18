@@ -1600,8 +1600,8 @@ header.partner-site nav li a { padding: 5px 32px 0; /* fewer sections, more hori
   footer p { margin: 0; }
   footer a { font-size: 11px; }
   footer .publisher, footer .navigation { float: none; margin: 0; padding: 0; }
-  footer .publisher { margin: 14px 0 0; padding: 12px 8px 20px; }
-  footer .navigation h6:first-child { display: none; }
+  footer .publisher { margin: 14px 0 0; padding: 12px 8px 10px; }
+  footer .navigation h6:first-child { padding: 8px 0 8px 14px; }
   footer .navigation > ul.sections li { display: block; margin: 0 0 1px 0; }
   footer .navigation > ul.sections li:after { content: none; }
   footer .navigation > ul.sections li a { background: #508e31; color: #fff; display: block; font-family: "Trebuchet MS", Helvetica, Arial, "Lucida Sans Unicode", sans-serif; font-size: 14px; padding: 14px 14px; position: relative; text-decoration: none; }
