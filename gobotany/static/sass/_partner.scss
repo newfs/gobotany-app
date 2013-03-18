@@ -80,22 +80,41 @@ header.partner-site {
             .partner {
                 font-size: 14px;
                 left: 43px;
-                top: 30px;
-                width: 200px;
-                i {
-                    display: none;
-                }
+                top: 36px;
             }
-            /* Show full-size sections button for now (search is omitted) */
-            nav > a {
-                width: 80px;
-                span {
-                    display: inline;
-                    font-size: 14px;
-                    line-height: 160%;
-                    padding-left: 23px;
-                    position: absolute;
-                }
+        }
+    }
+    header.partner-site {
+        .container {
+            position: relative;
+        }
+        .partner {
+            float: none;
+            font-size: 12px;
+            left: 66px;
+            line-height: 12px;
+            position: absolute;
+            top: 42px;
+            width: 150px;
+            b {
+                margin-right: 0;
+            }
+            i {
+                display: none;
+            }
+        }
+        .go-botany a {
+            background-position: left -9px;
+        }
+        /* Show full-size sections button for now (search is omitted) */
+        nav > a {
+            width: 80px;
+            span {
+                display: inline;
+                font-size: 14px;
+                line-height: 160%;
+                padding-left: 23px;
+                position: absolute;
             }
         }
     }
