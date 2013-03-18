@@ -17,9 +17,12 @@ Disable the Plant of the Day feed.
 
 {% block body_attributes %}id="home"{% endblock %}
 
+{% comment %}
+Disable the fading image carousel. Show just one non-changing image for now.
 {% block js_require %}
     require(['site/home']);
 {% endblock %}
+{% endcomment %}
 
 {% block header %}
     {% include "partner/_header.html" with page="home" %}
@@ -29,9 +32,15 @@ Disable the Plant of the Day feed.
     <div class="content">
         <div class="container">
             <div id="banner">
-            {% for image in home_page_images %}
-                <img src="{{ image.image.url }}" alt="">
-            {% endfor %}
+
+                {% comment %}
+                Use a single image for now instead of a fading carousel.
+                {% for image in home_page_images %}
+                    <img src="{{ image.image.url }}" alt="">
+                {% endfor %}
+                {% endcomment %}
+                <img src="" alt="">
+
                 <div id="overlay">
                     <h2>Simple ID Key</h2>
                     <img src="/static/images/layout/separator.png"
