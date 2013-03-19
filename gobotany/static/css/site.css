@@ -1517,15 +1517,15 @@ body.search-results .search-navigation a { text-decoration: underline; }
 /* Additional styles and overrides for partner sites */
 #home.partner-site header.partner-site .container { position: relative; }
 #home.partner-site header.partner-site h1 { width: 260px; }
-#home.partner-site header.partner-site .partner { float: none; font-size: 22px; left: 178px; position: absolute; top: 60px; width: 495px; }
-#home.partner-site header.partner-site .partner i { color: #fff; font-size: 16px; }
+#home.partner-site header.partner-site .site-name { float: none; font-size: 22px; left: 178px; position: absolute; top: 60px; width: 495px; }
+#home.partner-site header.partner-site .site-name i { color: #fff; font-size: 16px; }
 #home.partner-site header.partner-site nav li.home a { padding: 5px 8px 0; /* consistent padding in 'separated' area */ }
 #home.partner-site .three-col { background: none; height: 10px; }
 
 header.partner-site .go-botany, header.partner-site .go-botany a { width: 170px; }
-header.partner-site .partner { color: #508e31; float: left; font-family: "Trebuchet MS", Helvetica, Arial, "Lucida Sans Unicode", sans-serif; font-size: 14px; position: relative; top: 45px; width: 380px; }
-header.partner-site .partner b { margin-right: 10px; }
-header.partner-site .partner a { padding-left: 10px; text-decoration: none; }
+header.partner-site .site-name { color: #508e31; float: left; font-family: "Trebuchet MS", Helvetica, Arial, "Lucida Sans Unicode", sans-serif; font-size: 14px; position: relative; top: 45px; width: 380px; }
+header.partner-site .site-name b { margin-right: 10px; }
+header.partner-site .site-name a { padding-left: 10px; text-decoration: none; }
 header.partner-site nav li a { padding: 5px 32px 0; /* fewer sections, more horizontal padding */ }
 
 /* Begin media queries styles for partner site customizations */
@@ -1533,12 +1533,12 @@ header.partner-site nav li a { padding: 5px 32px 0; /* fewer sections, more hori
 /* Landscape-orientation styles */
 /* These styles are common to both smartphone widths */
 @media only screen and (max-width: 600px) { #home.partner-site header.partner-site h1 { background-position: -58px -17px; height: 56px; margin-left: 0; width: 200px; }
-  #home.partner-site header.partner-site .partner { font-size: 14px; left: 43px; top: 36px; width: 200px; }
+  #home.partner-site header.partner-site .site-name { font-size: 14px; left: 43px; top: 36px; width: 200px; }
   header.partner-site { /* Show full-size sections button for now (search is omitted) */ }
   header.partner-site .container { position: relative; }
-  header.partner-site .partner { float: none; font-size: 12px; left: 66px; line-height: 12px; position: absolute; top: 42px; width: 150px; }
-  header.partner-site .partner b { margin-right: 0; }
-  header.partner-site .partner i { display: none; }
+  header.partner-site .site-name { float: none; font-size: 12px; left: 66px; line-height: 12px; position: absolute; top: 42px; width: 150px; }
+  header.partner-site .site-name b { margin-right: 0; }
+  header.partner-site .site-name i { display: none; }
   header.partner-site .go-botany a { background-position: left -9px; }
   header.partner-site nav > a { width: 80px; }
   header.partner-site nav > a span { display: inline; font-size: 14px; line-height: 160%; padding-left: 23px; position: absolute; } }
