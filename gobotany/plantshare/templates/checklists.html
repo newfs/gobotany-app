@@ -23,6 +23,7 @@
 </div>
 <div class="ps-section">
     <h2 class="left">Checklists</h2>
+    {% if all_checklists %}
     <table id="checklists-view" class="checklists-list">
         <thead>
             <tr>
@@ -34,27 +35,15 @@
             </tr>
         </thead>
         <tbody>
+            {% for checklist in all_checklists %}
             <tr>
                 <td class="first"><input type="checkbox" /></td>
-                <td class="checklistview-name">My First List</td>
-                <td class="date">12/21/2011</td>
-                <td class="owner">Greenie</td>
+                <td class="checklistview-name">{{ checklist.name }}</td>
+                <td class="date">???</td>
+                <td class="owner">{{ checklist.owner.name }}</td>
                 <td class="last"><a href="ps-checklistdetail.php">View List</a></td>
             </tr>
-            <tr>
-                <td class="first"><input type="checkbox" /></td>
-                <td class="checklistview-name">Orchids</td>
-                <td class="date">09/14/2011</td>
-                <td class="owner">Me</td>
-                <td class="last"><a href="ps-checklistedit.php">Edit List</a></td>
-            </tr>
-            <tr>
-                <td class="first"><input type="checkbox" /></td>
-                <td class="checklistview-name">River Plants</td>
-                <td class="date">10/21/2010</td>
-                <td class="owner">Townsend</td>
-                <td class="last"><a href="ps-checklistdetail.php">View List</a></td>
-            </tr>
+            {% endfor %}
         </tbody>
     </table><!-- /.checklists-list -->
     <div class="form-actions small-margin-top">
@@ -62,6 +51,9 @@
         <a class="ps-button" href="#" class="export-btn inactive btn">Export</a>
         <a class="ps-button" href="modals/delete-confirm.html" rel="shadowbox;width=600;height=180;" class="delete-btn inactive btn">Delete</a>
     </div><!-- /.form-actions -->
+    {% else %}
+        <span>You currently have no checklists</span>
+    {% endif %}
 </div><!-- /.ps-section -->
 {% endblock %}
 

@@ -14,7 +14,7 @@ from django.forms.models import modelformset_factory
 from gobotany.plantshare.forms import (NewSightingForm, UserProfileForm,
                                        ScreenedImageForm)
 from gobotany.plantshare.models import (Location, Sighting, UserProfile,
-                                        ScreenedImage, Question)
+                                        ScreenedImage, Question, Checklist)
 
 SIGHTINGS_MAP_DEFAULTS = {
     'latitude': '44.53599',
@@ -214,7 +214,11 @@ def new_question_done_view(request):
 @login_required
 def checklist_index_view(request):
     """List of all of a user's visible checklists"""
+    profile = request.user.userprofile
+    all_checklists = profile.checklists
+
     return render_to_response('checklists.html', {
+                'checklists': all_checklists,
            }, context_instance=RequestContext(request))
 
 @login_required

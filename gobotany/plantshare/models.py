@@ -130,11 +130,12 @@ class UserProfile(models.Model):
 
         return avatar_info
 
+    @property
     def checklists(self):
         """Retrieve the list of all checklists this user has created
         or has been added as a collaborator on, including those editable due
         to Pod membership."""
-        return self.pods.all().checklists
+        return Checklist.objects.filter(collaborators__members=self)
 
     def get_user_pod(self):
         return self.pods.get(podmembership__is_self_pod=True)
@@ -299,6 +300,10 @@ class Checklist(models.Model):
     delete items."""
     collaborators = models.ManyToManyField('Pod', related_name='checklists',
             through='ChecklistCollaborator')
+
+    @property
+    def owner(self):
+        self.collaborators.get(checklistcollaborator__is_owner=True)
 
     def copy_to_user(self, user):
         """Send a copy of this checklist to another user. The user will
