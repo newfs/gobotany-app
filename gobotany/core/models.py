@@ -715,6 +715,10 @@ class PartnerSite(models.Model):
     def __unicode__(self):
         return '%s' % self.short_name
 
+    def has_species(self, scientific_name):
+        species = self.species.filter(scientific_name=scientific_name)
+        return True if species else False
+
 class PartnerSpecies(models.Model):
     """A binary relation putting taxa in `TaxonGroup` collections."""
     species = models.ForeignKey(Taxon)
