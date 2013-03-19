@@ -33,13 +33,13 @@
                         <a href="/list/#group={{ group.friendly_title }}{% if group.friendly_title|lower = 'woody plants' %} not non{% endif %}"
                             >Species list</a>
                     </p>
+                    {% endcomment %}
                     {% if group.video.youtube_id %}
                     <p class="video">
                         <a class="video"
                             href="http://www.youtube.com/embed/{{ group.video.youtube_id }}?autoplay=1&amp;rel=0&amp;hd=1&amp;modestbranding=1">Video</a>
                     </p>
                     {% endif %}
-                    {% endcomment %}
                 </div>
             </div>
         {% endfor %}
@@ -72,13 +72,13 @@
                                 <a href="/list/#subgroup={{ subgroup.friendly_title }}"
                                     >Species list</a>
                             </p>
+                            {% endcomment %}
                             {% if subgroup.video.youtube_id %}
                             <p class="video">
                                 <a class="video"
                                     href="http://www.youtube.com/embed/{{ subgroup.video.youtube_id }}?autoplay=1&amp;rel=0&amp;hd=1&amp;modestbranding=1">Video</a>
                             </p>
                             {% endif %}
-                            {% endcomment %}
                         </div>
                     {% endif %}
                 {% endfor %}
