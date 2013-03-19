@@ -52,12 +52,11 @@ def home_view(request):
         plant_of_the_day_image = botany.species_images(
             plant_of_the_day_taxon)[0]
 
-    return render_to_response(
-        per_partner_template(request, 'home.html'), {
+    return render_to_response_per_partner('home.html', {
             'home_page_images': home_page_images,
             'plant_of_the_day': plant_of_the_day_taxon,
             'plant_of_the_day_image': plant_of_the_day_image,
-            }, context_instance=RequestContext(request))
+            }, request)
 
 # Teaching page
 
@@ -90,20 +89,18 @@ def getting_started_view(request):
     if getting_started_video:
         youtube_id = getting_started_video.youtube_id
 
-    return render_to_response(
-        per_partner_template(request, 'getting_started.html'), {
+    return render_to_response_per_partner('getting_started.html', {
             'getting_started_youtube_id': youtube_id,
-            }, context_instance=RequestContext(request))
+            }, request)
 
 @vary_on_headers('Host')
 def advanced_map_view(request):
     pilegroups = [(pilegroup, ordered_piles(pilegroup))
                   for pilegroup in ordered_pilegroups()]
 
-    return render_to_response(
-        per_partner_template(request, 'advanced_map.html'), {
+    return render_to_response_per_partner('advanced_map.html', {
             'pilegroups': pilegroups
-            }, context_instance=RequestContext(request))
+            }, request)
 
 @vary_on_headers('Host')
 def glossary_view(request, letter):
@@ -117,13 +114,12 @@ def glossary_view(request, letter):
     # desired letter.
     glossary = glossary.filter(term__gte='a', term__startswith=letter)
 
-    return render_to_response(
-        per_partner_template(request, 'glossary.html'), {
+    return render_to_response_per_partner('glossary.html', {
             'this_letter': letter,
             'letters': string.ascii_lowercase,
             'letters_in_glossary': letters_in_glossary,
             'glossary': glossary,
-            }, context_instance=RequestContext(request))
+            }, request)
 
 def glossary_main_view(request):
     return redirect('site-glossary', letter='a')
