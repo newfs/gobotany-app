@@ -22,7 +22,6 @@ class LookalikeItemNode(template.Node):
     def render(self, context):
         scientific_name = self.scientific_name.resolve(context)
         partner = which_partner(context['request'])
-        print 'partner:', partner
 
         partner_site = PartnerSite.objects.get(short_name=partner)
         partner_has_species = partner_site.has_species(scientific_name)
