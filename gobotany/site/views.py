@@ -279,6 +279,8 @@ def placeholder_view(request, template):
 # Sitemap.txt and robots.txt views
 
 def sitemap_view(request):
+    URL_FORMAT = '%s://%s%s'
+    PROTOCOL = 'http'   # TODO: change when moving to https
     host = request.get_host()
 
     partner_short_name = which_partner(request)
@@ -287,18 +289,24 @@ def sitemap_view(request):
         partner=partner_site).values_list('species__scientific_name',
                                           'species__family__name',
                                           'species__genus__name')
-    plant_names = sorted([species
+    plant_names = sorted([species.lower()
                           for (species, family, genus) in partner_species])
-    families = sorted(set([family
+    families = sorted(set([family.lower()
                            for (species, family, genus) in partner_species]))
-    genera = sorted(set([genus
+    genera = sorted(set([genus.lower()
                          for (species, family, genus) in partner_species]))
-    urls = ['http://%s/species/%s/' % (host,
-                                       plant_name.lower().replace(' ', '/'))
+    urls = [URL_FORMAT % (
+                PROTOCOL,
+                host,
+                reverse('taxa-species', args=(plant_name.split(' '))))
             for plant_name in plant_names]
-    urls.extend(['http://%s/family/%s/' % (host, family_name.lower())
+    urls.extend([URL_FORMAT % (PROTOCOL,
+                               host,
+                               reverse('taxa-family', args=([family_name])))
                  for family_name in families])
-    urls.extend(['http://%s/genus/%s/' % (host, genus_name.lower())
+    urls.extend([URL_FORMAT % (PROTOCOL,
+                               host,
+                               reverse('taxa-genus', args=([genus_name])))
                  for genus_name in genera])
     return render_to_response('gobotany/sitemap.txt', {
             'urls': urls,
