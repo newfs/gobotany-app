@@ -2,11 +2,11 @@ from datetime import date, datetime, timedelta
 
 from django.core.exceptions import ObjectDoesNotExist
 from django.core.urlresolvers import reverse
-from django.shortcuts import render_to_response
-from django.template import RequestContext
 
 from gobotany.core import botany
 from gobotany.core.models import Taxon
+from gobotany.core.partner import (which_partner,
+                                   render_to_response_per_partner)
 from gobotany.plantoftheday.models import PlantOfTheDay
 
 
@@ -77,13 +77,11 @@ def _get_plants_of_the_day(max_number_plants, partner_name):
 
 def atom_view(request):
     MAX_NUMBER_PLANTS = 15
-    partner_short_name = 'gobotany'
+    partner_short_name = which_partner(request)
 
     plants_of_the_day = _get_plants_of_the_day(MAX_NUMBER_PLANTS,
                                                partner_short_name)
 
-    return render_to_response('atom.xml', {
+    return render_to_response_per_partner('atom.xml', {
             'plants_of_the_day': plants_of_the_day
-        },
-        context_instance=RequestContext(request),
-        mimetype='application/atom+xml')
+        }, request, content_type='application/atom+xml')
