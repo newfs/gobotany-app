@@ -285,13 +285,13 @@ p.meta + p { margin-top: 2px; }
 
 /* Navigation highlighting */
 /* Global navigation (header) */
-body#home header nav li.home { background: url(/static/images/layout/active-nav-home.png) bottom center no-repeat transparent; text-decoration: none; }
-body.simple header nav li.simple { background: url(/static/images/layout/active-nav-app.png) bottom center no-repeat; text-decoration: none; }
-body.plantshare header nav li.plantshare { background: url(/static/images/layout/active-nav-app.png) bottom center no-repeat; text-decoration: none; }
-body.full header nav li.full { background: url(/static/images/layout/active-nav-app.png) bottom center no-repeat; text-decoration: none; }
-body.dkey header nav li.dkey { background: url(/static/images/layout/active-nav-app.png) bottom center no-repeat; text-decoration: none; }
-body.teaching header nav li.teaching { background: url(/static/images/layout/active-nav-app.png) bottom center no-repeat; text-decoration: none; }
-body.help header nav li.help { background: url(/static/images/layout/active-nav-app.png) bottom center no-repeat; text-decoration: none; }
+body#home header nav li.home { background: url(/static/images/layout/active-nav-home.png) bottom center no-repeat transparent; }
+body.simple header nav li.simple { background: url(/static/images/layout/active-nav-app.png) bottom center no-repeat; }
+body.plantshare header nav li.plantshare { background: url(/static/images/layout/active-nav-app.png) bottom center no-repeat; }
+body.full header nav li.full { background: url(/static/images/layout/active-nav-app.png) bottom center no-repeat; }
+body.dkey header nav li.dkey { background: url(/static/images/layout/active-nav-app.png) bottom center no-repeat; }
+body.teaching header nav li.teaching { background: url(/static/images/layout/active-nav-app.png) bottom center no-repeat; }
+body.help header nav li.help { background: url(/static/images/layout/active-nav-app.png) bottom center no-repeat; }
 
 /* Section navigation (sidebar, only in some sections) */
 body { /* Handle pages beneath subsections so they will have a "you are here" marker. Each of these must be set up individually where needed. */ }
@@ -315,7 +315,7 @@ header nav a { color: #fff; display: block; height: 35px; padding: 5px 8px 0; }
 header nav > a { display: none; /* Omit the 'sections' link by default */ }
 header nav ul { clear: both; }
 header nav li { display: block; float: left; font-size: 14px; line-height: normal; margin: 0 12px 0 0; padding: 0; }
-header nav li a:hover { background: url(/static/images/layout/active-nav-app.png) bottom center no-repeat; text-decoration: none; }
+header nav li a:hover { text-decoration: none; }
 header nav #search { background: white url(/static/images/layout/search-left.png) left center no-repeat; float: right; height: 20px; margin: 4px 4px 0 0; padding: 0 0 0 11px; }
 header nav #search form { display: block; margin: 0; padding: 0; width: 262px; }
 header nav #search input { background: #fff; border: 0; float: left; font-family: "Trebuchet MS", Helvetica, Arial, "Lucida Sans Unicode", sans-serif; font-size: 14px; height: 20px; margin: 0; padding: 0; width: 219px; }
@@ -492,7 +492,7 @@ body.teaching #main li { list-style-type: none; }
 #home header nav li { margin-right: 9px; }
 #home header nav li.home { margin: 0 63px 0 0; }
 #home header nav li.home a { color: #fff; }
-#home header nav li a:hover { background: url(/static/images/layout/active-nav-home.png) bottom center no-repeat transparent; text-decoration: none; }
+#home header nav li a:hover { background: url(/static/images/layout/active-nav-home.png) bottom center no-repeat transparent; }
 #home header #search-suggest .menu { top: 133px; }
 #home .content { clear: left; margin-top: 18px; }
 #home #banner { margin: 10px 0 0; position: absolute; }
