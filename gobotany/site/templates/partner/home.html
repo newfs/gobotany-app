@@ -6,14 +6,11 @@
 {% block title %}Partner Site Sample: Go Botany{% endblock %}
 {% block title_suffix %}{% endblock %}
 
-{% comment %}
-Disable the Plant of the Day feed.
 {% block more_meta_link %}
     <link rel="alternate" type="application/atom+xml"
         title="Atom feed: Plant of the Day"
         href="http://{{ request.META.HTTP_HOST }}/plantoftheday/atom.xml">
 {% endblock %}
-{% endcomment %}
 
 {% block body_attributes %}id="home" class="partner-site"{% endblock %}
 
