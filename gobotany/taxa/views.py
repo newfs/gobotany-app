@@ -10,7 +10,7 @@ from django.views.decorators.vary import vary_on_headers
 
 from gobotany.core import botany
 from gobotany.core.models import (
-    CopyrightHolder, Family, Genus, PartnerSpecies, Pile,
+    CopyrightHolder, Family, Genus, PartnerSite, PartnerSpecies, Pile,
     PlantPreviewCharacter, Taxon
     )
 from gobotany.core.partner import (which_partner, per_partner_template,
@@ -224,6 +224,15 @@ def species_view(request, genus_slug, epithet):
         ppc.character_id: ppc.order for ppc in
         PlantPreviewCharacter.objects.filter(pile=pile, partner_site=partner)
         }
+    # If no preview characteristics are defined for a partner, use the
+    # ones defined for Go Botany.
+    if len(plant_preview_characters) == 0:
+        gobotany = PartnerSite.objects.get(short_name='gobotany')
+        plant_preview_characters = {
+            ppc.character_id: ppc.order for ppc in
+            PlantPreviewCharacter.objects.filter(pile=pile,
+                                                 partner_site=gobotany)
+            }
 
     # Select ALL character values for this taxon.
 
