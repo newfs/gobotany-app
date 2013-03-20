@@ -88,8 +88,6 @@ Disable the fading image carousel. Show just one non-changing image for now.
             {% endcomment %}
             <div class="three-col"></div>
 
-            {% comment %}
-            Omit the Plant of the Day section.
             <div id="potd">
             {% if plant_of_the_day %}
                 <a href="/species/{{ plant_of_the_day.genus_name|lower }}/{{ plant_of_the_day.epithet }}/"
@@ -110,7 +108,6 @@ Disable the fading image carousel. Show just one non-changing image for now.
                 <p>Error: Plant of the Day information missing</p>
             {% endif %}
             </div>
-            {% endcomment %}
 
             <div class="donate">
                 <p>Please contribute to our mission to conserve and promote

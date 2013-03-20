@@ -37,6 +37,7 @@ def home_view(request):
     partner = which_partner(request)
     plant_of_the_day = PlantOfTheDay.get_by_date.for_day(
         date.today(), partner.short_name)
+    print 'plant of the day:', plant_of_the_day
     plant_of_the_day_taxon = None
     if plant_of_the_day:
         # Get the Taxon record of the Plant of the Day.

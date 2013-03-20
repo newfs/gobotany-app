@@ -74,8 +74,6 @@ Disable the Plant of the Day feed.
                 <a class="learn-more" href="{% url 'site-teaching' %}" >Learn More</a>
             </div>
 
-            {% comment %}
-            Omit the Plant of the Day section.
             <div id="potd">
             {% if plant_of_the_day %}
                 <a href="/species/{{ plant_of_the_day.genus_name|lower }}/{{ plant_of_the_day.epithet }}/"
@@ -96,7 +94,6 @@ Disable the Plant of the Day feed.
                 <p>Error: Plant of the Day information missing</p>
             {% endif %}
             </div>
-            {% endcomment %}
 
             <div class="donate">
                 <p>Please contribute to our mission to conserve and promote
