@@ -290,11 +290,12 @@ def sitemap_view(request):
 
     families = Family.objects.values_list('name', flat=True)
     genera = Genus.objects.values_list('name', flat=True)
-    urls = ['http://%s/species/%s/' % (host, plant_name.lower().replace(' ', '/'))
+    urls = ['http://%s/species/%s/' % (host,
+                                       plant_name.lower().replace(' ', '/'))
             for plant_name in plant_names]
-    urls.extend(['http://%s/families/%s/' % (host, family_name)
+    urls.extend(['http://%s/family/%s/' % (host, family_name.lower())
                  for family_name in families])
-    urls.extend(['http://%s/genera/%s/' % (host, genus_name)
+    urls.extend(['http://%s/genus/%s/' % (host, genus_name.lower())
                  for genus_name in genera])
     return render_to_response('gobotany/sitemap.txt', {
             'urls': urls,
