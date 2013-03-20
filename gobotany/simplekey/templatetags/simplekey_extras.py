@@ -123,6 +123,15 @@ def italicize_plant(value):
 
 
 @register.filter
+@stringfilter
+def italicize_infraspecific_names(value):
+    """Italicize any infraspecific names found in the text."""
+    pattern = re.compile(r'(subsp.|ssp.|var.|subvar.|f.|subf.)\s(\w+)')
+    italicized_value = re.sub(pattern, r'\1 <i>\2</i>', value)
+    return italicized_value
+
+
+@register.filter
 def habitat_names(character_values):
     """For each habitat character-value, create a pretty name.
 

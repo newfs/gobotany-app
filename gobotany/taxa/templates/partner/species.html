@@ -129,7 +129,7 @@
         {% if partner_blurb %}
             <div id="partner">
                 <h2>{{ partner_heading|default:'At Partner Site' }}</h2>
-                <p>{{ partner_blurb }}</p>
+                <p>{{ partner_blurb|italicize_infraspecific_names|safe }}</p>
             </div>
         {% endif %}
 
