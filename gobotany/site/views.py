@@ -284,12 +284,15 @@ def sitemap_view(request):
     partner_short_name = which_partner(request)
     partner_site = PartnerSite.objects.get(short_name=partner_short_name)
     partner_species = PartnerSpecies.objects.filter(
-                        partner=partner_site).values_list(
-                        'species__scientific_name', flat=True)
-    plant_names = sorted(partner_species)
-
-    families = Family.objects.values_list('name', flat=True)
-    genera = Genus.objects.values_list('name', flat=True)
+        partner=partner_site).values_list('species__scientific_name',
+                                          'species__family__name',
+                                          'species__genus__name')
+    plant_names = sorted([species
+                          for (species, family, genus) in partner_species])
+    families = sorted(set([family
+                           for (species, family, genus) in partner_species]))
+    genera = sorted(set([genus
+                         for (species, family, genus) in partner_species]))
     urls = ['http://%s/species/%s/' % (host,
                                        plant_name.lower().replace(' ', '/'))
             for plant_name in plant_names]
