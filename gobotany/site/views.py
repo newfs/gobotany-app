@@ -16,8 +16,8 @@ from django.views.decorators.vary import vary_on_headers
 from gobotany.core import botany
 from gobotany.core.models import (
     CommonName, ConservationStatus, ContentImage, CopyrightHolder,
-    Family, Genus,
-    GlossaryTerm, HomePageImage, Pile, Taxon, Video,
+    Family, Genus, GlossaryTerm, HomePageImage, PartnerSite, PartnerSpecies,
+    Pile, Taxon, Video,
     )
 from gobotany.core.partner import (which_partner, per_partner_template,
                                    render_to_response_per_partner)
@@ -280,10 +280,17 @@ def placeholder_view(request, template):
 
 def sitemap_view(request):
     host = request.get_host()
-    plant_names = Taxon.objects.values_list('scientific_name', flat=True)
+
+    partner_short_name = which_partner(request)
+    partner_site = PartnerSite.objects.get(short_name=partner_short_name)
+    partner_species = PartnerSpecies.objects.filter(
+                        partner=partner_site).values_list(
+                        'species__scientific_name', flat=True)
+    plant_names = sorted(partner_species)
+
     families = Family.objects.values_list('name', flat=True)
     genera = Genus.objects.values_list('name', flat=True)
-    urls = ['http://%s/species/%s/' % (host, plant_name.replace(' ', '/'))
+    urls = ['http://%s/species/%s/' % (host, plant_name.lower().replace(' ', '/'))
             for plant_name in plant_names]
     urls.extend(['http://%s/families/%s/' % (host, family_name)
                  for family_name in families])
