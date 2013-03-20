@@ -126,10 +126,10 @@
             </div>
         </div>
 
-        {% if partner_heading or partner_blurb %}
+        {% if partner_blurb %}
             <div id="partner">
-                <h2>{{ partner_heading }}</h2>
-                <p>{{ partner_blurb }} </p>
+                <h2>{{ partner_heading|default:'At Partner Site' }}</h2>
+                <p>{{ partner_blurb }}</p>
             </div>
         {% endif %}
 
