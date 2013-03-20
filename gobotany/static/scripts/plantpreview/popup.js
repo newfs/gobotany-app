@@ -121,8 +121,20 @@ define([
            character with how we should display its value. */
 
         var plant = this.plant;
-        if (character.partner_site != gobotany_sk_partner_site)
-            return false;
+
+        /* Display any character regardless of partner for now, because we
+         * are not yet importing preview characters for partner sites.
+         * (They are likely configurable in the Admin, though.)
+         * TODO: make the API return only the preview characters for the
+         * partner specified in the URL rather than having a
+         * .partner_site field with the character. It looks like it will
+         * be easier to accomplish this if moving the API code out of
+         * handlers.py, because the Piston-based static method for
+         * plant_preview_characters will need to have the request object
+         * handy in order to call which_partner for the partner name.
+         */
+        //if (character.partner_site != gobotany_sk_partner_site)
+        //    return false;
 
         var short_name = character.character_short_name
         var value = plant[short_name];
