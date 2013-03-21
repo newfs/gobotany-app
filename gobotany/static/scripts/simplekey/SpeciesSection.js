@@ -134,7 +134,7 @@ define([
             $('.plant-list table tr').each(function() {
                 $(this).bind('click', function() {
                     var $species_link = $(this).find('.details a').eq(0);
-                    window.location.href = $species_link.attr('href');
+                    $species_link.click();
                 });
             });
         }
