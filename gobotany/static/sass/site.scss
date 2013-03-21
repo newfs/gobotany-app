@@ -33,6 +33,7 @@ $border-green: #c3d941;
 $light-green: #e1f0d1;
 $green-yellow: #ccdf53;
 $medium-brown: #807121;
+$pale-lime-green: #defcb3;
 
 $text-color: #000;
 $footer-background-color: #b4d57f;
@@ -444,7 +445,7 @@ header {
                 padding: 3px;
                 width: 250px;
                 &.highlighted {
-                    background-color: #abd6ff;
+                    background-color: $pale-lime-green;
                 }
             }
             a {
@@ -455,7 +456,7 @@ header {
                 text-decoration: none;
             }
             a:hover, li:hover {
-                background: #c4e2ff;
+                background: $pale-lime-green;
             }
             span {
                 font-weight: normal;
