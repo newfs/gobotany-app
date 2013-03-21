@@ -296,8 +296,7 @@ def species_view(request, genus_slug, epithet):
 
     native_to_north_america = _native_to_north_america_status(taxon)
 
-    return render_to_response(
-        per_partner_template(request, 'species.html'), {
+    return render_to_response_per_partner('species.html', {
            'pilegroup': pilegroup,
            'pile': pile,
            'scientific_name': scientific_name,
@@ -322,4 +321,4 @@ def species_view(request, genus_slug, epithet):
            'all_characteristics': all_characteristics,
            'epithet': epithet,
            'native_to_north_america': native_to_north_america
-           }, context_instance=RequestContext(request))
+           }, request)
