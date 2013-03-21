@@ -1,0 +1,81 @@
+{% extends "concord/_page_full_sidebar.html" %}
+{% load simplekey_extras %}
+
+{% block title %}
+Genus: {{ genus.name }} {% if common_name %}({{ common_name }}){% endif %}
+{% endblock %}
+
+{% block js_top %}
+    <script>
+        API_URL = '{% url 'api-base' %}';
+    </script>
+
+    {# TODO: eventually move elsewhere #}
+    {% include "gobotany/_partner_site_js.html" %}
+{% endblock %}
+
+{% block js_require %}
+    var args = {
+        genus_slug: '{{ genus.slug }}'
+    };
+    require(['taxa/genus'], function(genus) {
+        genus.init(args);
+    });
+{% endblock %}
+
+{% block body_attributes %}id="genus" class="taxa"{% endblock %}
+
+{% block main_content %}
+                <h1>Partner: Genus: <i>{{ genus.name }}</i></h1>
+                {% if common_name %}
+                    <p class="common">{{ common_name|cut:"The "|lower }}</p>
+                {% endif %}
+                <p class="description">
+                {% if genus.description %}
+                    {{ genus.description }}
+                {% else %}
+                    (Description coming soon)
+                {% endif %}
+                </p>
+
+                <div class="pics">
+                    {% for drawing in genus_drawings %}
+                        <div class="img-gallery">
+                            <div class="plant">
+                                <div class="frame"></div>
+                                <a href="{{ drawing.image_medium }}"
+                                    title="{% photo_credit drawing drawing.content_object.scientific_name %}">
+                                    <img class="map"
+                                        src="{{ drawing.thumb_large }}"
+                                        alt="{% photo_credit drawing drawing.content_object.scientific_name %}"></a>
+                                </a>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+
+                <h4>Family</h4>
+                <p class="family">
+                    <a href="{% url 'taxa-family' genus.family.slug %}"
+                    >{{ genus.family.name }}{% if genus.family.common_name %} ({{ genus.family.common_name|cut:"The "|lower }}){% endif %}</a></p>
+
+                <h4>This Genus&#8217;s Species in New England:</h4>
+                <ul class="species">
+                {% for species in genus.taxa.all %}
+                    <li><i><a href="{% url 'taxa-species' genus.slug species.epithet %}"
+                    >{{ species.scientific_name }}</a></i></li>
+                {% endfor %}
+                </ul>
+
+                {% comment %}
+                <p class="visit-dkey">
+                    Visit this genus in the
+                    <a href="{% url 'dkey_page' genus.name.lower %}"
+                        >Dichotomous Key</a>
+                </p>
+                {% endcomment %}
+{% endblock %}
+
+{% block sidebar_content %}
+    {% include "concord/_sidebar_items.html" %}
+{% endblock %}

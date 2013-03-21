@@ -1,20 +1,24 @@
-    <header>
+{% load gobotany_tags %}
+
+    <header class="partner-site">
         <div class="container">
             {% if page = "home" %}
-                <h1>Concord (Go Botany):
-                    Discover thousands of New England plants</h1>
+                <h1>Concord Flora: Go Botany</h1>
+                <p class="site-name"><b>Concord Flora</b>
+                    <i>brief partner site tagline here</i></p>
             {% else %}
-                <p class="go-botany"><a 
-                {% ifnotequal request.path "/" %}href="/"{% endifnotequal %}>(Concord) Go
-                    Botany: Discover thousands of New England plants</a></p>
+                <p class="go-botany">{% nav_item 'Go Botany: Discover thousands of New England plants' site-home %}</p>
+                <p class="site-name"><b>{% nav_item 'Partner Site Sample' site-home %}</b>
+                    <i>brief partner site tagline here</i></p>
             {% endif %}
             <p class="newfs"><a href="http://www.newenglandwild.org/">New
                 England Wild Flower Society</a></p>
             <nav>
                 <a href="javascript:document.getElementById('footer-nav').scrollIntoView();"><span>sections</span></a>
                 <ul>
-                    {% include "partner/_primary_navigation.html" %}
+                    {% include "concord/_primary_navigation.html" %}
                 </ul>
+                {% comment %}
                 <div id="search">
                     <form id="search-suggest" action="/search/" autocomplete="off">
                         <input type="text" name="q" placeholder="Search..."
@@ -25,6 +29,7 @@
                         </div>
                     </form>
                 </div>
+                {% endcomment %}
             </nav>
         </div>
     </header>

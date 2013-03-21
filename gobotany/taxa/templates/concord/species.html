@@ -1,0 +1,312 @@
+{% extends "concord/_page_no_sidebar.html" %}
+{% load dkey_filters %}
+{% load simplekey_extras %}
+{% load taxa_tags %}
+
+{% block title %}{{ scientific_name }} 
+({% for common_name in common_names %}{% if not forloop.first %}, {% endif %}{{ common_name }}{% endfor %}){% endblock %}
+
+{% block body_attributes %}id="species" class="taxa"{% endblock %}
+
+{% block js_top %}
+    {# SVGWeb script: must be first of all JS, must have data-path. #}
+    {# Also, SVG must be served from same domain as the page. #}
+    <script src="/static/svgweb/svg.js"
+        data-path="/static/svgweb/"></script>
+
+    {# TODO: eventually move elsewhere #}
+    {% include "gobotany/_partner_site_js.html" %}
+
+{% endblock %}
+
+{% block js_require %}
+    require(['taxa/species']);
+{% endblock %}
+
+{% block top_content %}
+    {% if not species_in_simple_key %}
+        <div class="note">
+          Data collection in progress.
+          Complete data coming soon.
+        </div>
+    {% endif %}
+{% endblock %}
+
+{% block main_content %}
+        <div id="breadcrumb">
+            {% if key == 'dichotomous' %}
+                {% include "dkey/_breadcrumbs.html" with page=dkey_page %}
+            {% else %}
+                <ul>
+                    <li class="label nogloss">You are here:</li>
+                    <li class="nogloss"><a href="{% url 'level1' key %}">{{ key|title }} Key</a></li>
+                    <li class="nogloss"><a href="{% url 'level2' key pilegroup.slug %}"
+                    >{{ pilegroup.friendly_title|lower|capfirst }}</a></li>
+                    <li class="nogloss">
+                    <a href="{% if last_plant_id_url and pile.slug in last_plant_id_url %}{{ last_plant_id_url }}/{% else %}{% url 'level3' key pilegroup.slug pile.slug %}{% endif %}"
+                    >{{ pile.friendly_title|lower|capfirst }}</a></li>
+                    <li class="this-page nogloss">{{ scientific_name|italicize_plant|safe }}
+                        {# If the above is too long, can use scientific_name_short #}
+                    </li>
+                </ul>
+            {% endif %}
+        </div>
+
+        <div id="name">
+            <h1>Partner: <span class="scientific">{{ scientific_name|italicize_plant|safe }}</span>
+            <span class="origin">{{ taxon.taxonomic_authority }}</span></h1>
+            {% if common_names %}
+                <p class="common nogloss">{% for common_name in common_names %}{% if not forloop.first %}, {% endif %}{{ common_name }}{% endfor %}</p>
+            {% endif %}
+        </div>
+
+        <div id="species-images">
+            {% for i in images %}
+                <a href="{{ i.image_medium }}"
+                    {% if forloop.counter == 1 %}id="startimage"{% endif %}
+                    title="{% photo_credit i scientific_name %}">
+                    <img src="{{ i.thumb_large }}"
+                        alt="{% photo_credit i scientific_name %}">
+                </a>
+            {% endfor %}
+        </div>
+
+        <div id="maps">
+            <div class="section map nemap">
+                <h4>New England Distribution</h4>
+                {% include "gobotany/_map_attribution.html" %}
+                <!--[if !IE]>-->
+                <object
+                    data="/api/maps/{{taxon.genus|lower}}-{{epithet}}-ne-distribution-map.svg"
+                    type="image/svg+xml"
+                    title="distribution map for {{ scientific_name }}"
+                    id="ne-dist-county-map"> <!--<![endif]-->
+                <!--[if lt IE 9]>
+                <object
+                    src="/api/maps/{{taxon.genus|lower}}-{{epithet}}-ne-distribution-map.svg"
+                    classid="image/svg+xml"
+                    title="distribution map for {{ scientific_name }}"
+                    id="ne-dist-county-map"> <![endif]-->
+                <!--[if gte IE 9]>
+                <object
+                    data="/api/maps/{{taxon.genus|lower}}-{{epithet}}-ne-distribution-map.svg"
+                    type="image/svg+xml"
+                    title="distribution map for {{ scientific_name }}"
+                    id="ne-dist-county-map"> <![endif]-->
+                </object>
+            </div>
+
+            <div class="section map namap">
+                <h4>North America Distribution</h4>
+                {% include "gobotany/_map_attribution.html" %}
+                <div>
+                    <object
+                        data="/api/maps/{{taxon.genus|lower}}-{{epithet}}-na-distribution-map.svg"
+                        type="image/svg+xml"
+                        title="distribution map for {{ scientific_name }}"
+                        id="na-dist-county-map"> <!--<![endif]-->
+                    <!--[if lt IE 9]>
+                    <object
+                        src="/api/maps/{{taxon.genus|lower}}-{{epithet}}-na-distribution-map.svg"
+                        classid="image/svg+xml"
+                        title="distribution map for {{ scientific_name }}"
+                        id="na-dist-county-map"> <![endif]-->
+                    <!--[if gte IE 9]>
+                    <object
+                        data="/api/maps/{{taxon.genus|lower}}-{{epithet}}-na-distribution-map.svg"
+                        type="image/svg+xml"
+                        title="distribution map for {{ scientific_name }}"
+                        id="na-dist-county-map"> <![endif]-->
+                    </object>
+                </div>
+                <div class="trans"></div>
+                <a class="enlarge" href="#">
+                    <img src="/static/images/icons/zoom.png" alt="">
+                    Enlarge</a>
+            </div>
+        </div>
+
+        {% if partner_heading or partner_blurb %}
+            <div id="partner">
+                <h2>{{ partner_heading }}</h2>
+                <p>{{ partner_blurb }} </p>
+            </div>
+        {% endif %}
+
+        <div id="facts">
+            <h2>Facts About</h2>
+            <p>
+                {% if taxon.factoid|length > 0 %}
+                    {{ taxon.factoid }}
+                {% else %}
+                    N/A
+                {% endif %}
+            </p>
+        </div>
+
+        <div id="habitat">
+            <h2>Habitat</h2>
+            <p>
+              {% with habitats=taxon.get_habitats %}
+              {% if habitats|length > 0 %}
+                {{ habitats|habitat_names|join:", "|capfirst }}
+              {% else %}
+                (missing)
+              {% endif %}
+              {% endwith %}
+            </p>
+        </div>
+
+            <div id="chars">
+                <h2>Characteristics</h2>
+                <div class="characteristics">
+                    {% if brief_characteristics %}
+                        {% for character in brief_characteristics %}
+                            <dl>
+                                <dt>{{ character.name }}</dt>
+                                <dd>
+                                    {% if character.values|length_is:"1" %}
+                                        {{ character.values.0 }}
+                                    {% else %}
+                                        <ul{% if character.name in compact_multivalue_characters %} class="compact"{% endif %}>
+                                        {% for val in character.values %}
+                                            <li{% if forloop.last %} class="last"{% endif %}>{{ val }}</li>
+                                        {% endfor %}
+                                        </ul>
+                                    {% endif %}
+                                </dd>
+                            </dl>
+                        {% endfor %}
+                    {% else %}
+                        <p>No “plant preview characters” have been established
+                          for the “{{ pile.friendly_name }}” ({{ pile.name }})
+                          pile.</p>
+                    {% endif %}
+                </div>
+                <a class="description-control" href="#" 
+                    style="background-image: url(/static/images/icons/plus.png)">Show 
+                    All Characteristics</a>
+                <ul class="full-description">
+                    {% for character_group in all_characteristics %}
+				        <li>
+                            <h5>{{ character_group.name|capfirst }}</h5>
+                            <div class="characteristics full">
+                                {% for character in character_group.characters %}
+                                <dl>
+                                    <dt>{{ character.name }}</dt>
+                                    <dd>
+                                {% if character.values|length_is:"1" %}
+                                    {{ character.values.0 }}
+                                {% else %}
+                                    <ul{% if character.name in compact_multivalue_characters %} class="compact"{% endif %}>
+                                    {% for val in character.values %}
+                                        <li{% if forloop.last %} class="last"{% endif %}>{{ val }}</li>
+                                    {% endfor %}
+                                    </ul>
+                                {% endif %}
+                                </dd>
+                            </dl>
+                            {% endfor %}
+                        </div>
+                    </li>
+                {% endfor %}
+            </ul>
+        </div>
+
+        <div id="wetland">
+            <h2>Wetland Status</h2>
+            {% if taxon.wetland_indicator_code %}
+                <p>
+                    {{ taxon.get_wetland_indicator_text }}
+                    (Wetland indicator code:
+                    {{ taxon.wetland_indicator_code }})
+                </p>
+            {% else %}
+                <p>Not classified</p>
+            {% endif %}
+        </div>
+
+        <div id="status">
+            <h2>New England Distribution and Conservation Status</h2>
+            <p>Exact status definitions can vary from state to
+            state. For details, please check with your state.</p>
+            <div id="ne-status">
+            {% with statuses=taxon.get_distribution_and_conservation_statuses %}
+                <div class="characteristics">
+                {% for state_name, values in statuses.items %}
+                    <dl>
+                        <dt>{{ state_name }}</dt>
+                        <dd>
+                        {{ values|join:", " }}
+                        </dd>
+                    </dl>
+                {% endfor %}
+                </div>
+            {% endwith %}
+            </div>
+        </div>
+
+        <div id="side">
+            <div class="section">
+                <h4>Native to North America?</h4>
+                <p>{{ native_to_north_america }}</p>
+            </div>
+
+            {% with lookalikes=taxon.lookalikes.all %}
+            {% if lookalikes|length > 0 %}
+            <div class="section lookalikes">
+                <h4>Sometimes Confused With</h4>
+                <dl>
+                {% for lookalike in lookalikes %}
+                    <dt>{% lookalike_item lookalike.lookalike_scientific_name %}{% if lookalike.lookalike_characteristic %}:{% endif %}</dt>
+                    <dd>{{ lookalike.lookalike_characteristic }}</dd>
+                {% endfor %}
+                </dl>
+            </div>
+            {% endif %}
+            {% endwith %}
+
+            {% with taxon.synonyms.all as synonyms %}
+            {% if synonyms|length > 0 %}
+            <div class="section">
+                <h4>Synonyms</h4>
+                <ul>
+                {% for synonym in synonyms %}
+                    <li>{{ synonym.full_name|italicize_plant|safe }}</li>
+                {% endfor %}
+                </ul>
+            </div>
+            {% endif %}
+            {% endwith %}
+
+            <div class="section">
+                <h4>Family</h4>
+                <p><a href="{% url 'taxa-family' taxon.family.slug %}"
+                    >{{ taxon.family }}</a></p>
+            </div>
+
+            <div class="section">
+                <h4>Genus</h4>
+                <p><em><a href="{% url 'taxa-genus' taxon.genus.slug %}"
+                    >{{ taxon.genus }}</a></em></p>
+            </div>
+
+            {% if taxon.variety_notes %}
+            <div class="section">
+                <h4>Notes on Subspecies and Varieties in New England</h4>
+                <p>{{ taxon.variety_notes|italicize_plant|safe }}</p>
+            </div>
+            {% endif %}
+            
+            <div class="section help">
+                <h4 class="left help">Need Help?</h4>
+                <a href="{% url 'site-getting-started' %}"
+                    class="get-help-btn left">Get Help</a>
+            </div>
+        </div>
+
+        {% comment %}
+        {% include "gobotany/_info_from_flora.html" %}
+        {% endcomment %}
+
+{% endblock %}

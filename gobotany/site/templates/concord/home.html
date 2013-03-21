@@ -3,7 +3,7 @@
 
 {# Home page template for a sample partner site, overriding Go Botany #}
 
-{% block title %}Concord: sample Go Botany partner site{% endblock %}
+{% block title %}Concord Flora: Go Botany{% endblock %}
 {% block title_suffix %}{% endblock %}
 
 {% block more_meta_link %}
@@ -12,7 +12,7 @@
         href="http://{{ request.META.HTTP_HOST }}/plantoftheday/atom.xml">
 {% endblock %}
 
-{% block body_attributes %}id="home"{% endblock %}
+{% block body_attributes %}id="home" class="partner-site"{% endblock %}
 
 {% block js_require %}
     require(['site/home']);
@@ -33,7 +33,7 @@
                     <h2>Simple ID Key</h2>
                     <img src="/static/images/layout/separator.png"
                         alt="Go Botany">
-                    <p>Want to know what that plant is? With our Simple Key,
+                    <p>Want to know what that plant is? With the Concord Flora Simple Key,
                     you can identify over 1,200 common native and naturalized
                     New England plants! Observe closely, collect a sample or
                     take a photo, answer some questions, and narrow down to
@@ -41,6 +41,9 @@
                     <a href="{% url 'level1' 'simple' %}" id="cta">Get Started</a>
                 </div>
             </div>
+            
+            {% comment %}
+            Omit section introductions.
             <div class="three-col">
                 <h3>PlantShare</h3>
                 <h4>Connect with other plant fans!</h4>
@@ -70,6 +73,8 @@
                 can share curricula and teaching ideas.</p>
                 <a class="learn-more" href="{% url 'site-teaching' %}" >Learn More</a>
             </div>
+            {% endcomment %}
+            <div class="three-col"></div>
 
             <div id="potd">
             {% if plant_of_the_day %}

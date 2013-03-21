@@ -13,15 +13,17 @@
                     180 Hemenway Road, Framingham, MA 01701</p>
                 </div>
                 <div class="navigation">
-                    <h6>Concord (based on
-                        Go Botany [{% gobotany_version %}])</h6>
+                    <h6>Partner Site Sample
+                        (Go Botany [{% gobotany_version %}])</h6>
                     <ul id="footer-nav" class="sections">
-                        {% include "partner/_primary_navigation.html" %}
+                        {% include "concord/_primary_navigation.html" %}
                     </ul>
                     <ul class="prime-items">
                         <li>{% nav_item 'Privacy Policy' site-privacy %}</li>
                         <li>{% nav_item 'Terms of Use' site-terms-of-use %}</li>
+                        {% comment %}
                         <li>{% nav_item 'Contact Us' site-contact %}</li>
+                        {% endcomment %}
                     </ul>
                 </div>
                 <div class="support">

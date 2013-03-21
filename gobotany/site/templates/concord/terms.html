@@ -1,0 +1,21 @@
+{% extends "concord/_page_full_sidebar.html" %}
+
+{% block title %}Terms of Use{% endblock %}
+
+{% block body_attributes %}id="terms-of-use" class="help legal"{% endblock %}
+
+{% block js_require %}
+    require(['util/mailto'], function (mailto) {
+        $(document).ready(function () {
+            mailto.make_link('.email');
+        });
+    });
+{% endblock %}
+
+{% block main_content %}
+    {% include "gobotany/_terms_content.html" %}
+{% endblock %}
+
+{% block sidebar_content %}
+    {% include "concord/_help_navigation.html" %}
+{% endblock %}
