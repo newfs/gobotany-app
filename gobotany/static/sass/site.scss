@@ -536,10 +536,6 @@ header {
         }
     }
     a {
-        &:not(.jspArrow) {
-            display: inline-block;
-            margin-left: 10px;
-        }
         &:hover {
             text-decoration: none;
         }
