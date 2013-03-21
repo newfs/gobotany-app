@@ -1,6 +1,7 @@
 {% extends "partner/_page_no_sidebar.html" %}
 {% load dkey_filters %}
 {% load simplekey_extras %}
+{% load taxa_tags %}
 
 {% block title %}{{ scientific_name }} 
 ({% for common_name in common_names %}{% if not forloop.first %}, {% endif %}{{ common_name }}{% endfor %}){% endblock %}
@@ -125,10 +126,10 @@
             </div>
         </div>
 
-        {% if partner_heading or partner_blurb %}
+        {% if partner_blurb %}
             <div id="partner">
-                <h2>{{ partner_heading }}</h2>
-                <p>{{ partner_blurb }} </p>
+                <h2>{{ partner_heading|default:'At Partner Site' }}</h2>
+                <p>{{ partner_blurb|italicize_infraspecific_names|safe }}</p>
             </div>
         {% endif %}
 
@@ -257,7 +258,7 @@
                 <h4>Sometimes Confused With</h4>
                 <dl>
                 {% for lookalike in lookalikes %}
-                    <dt><a href="/species/{{ lookalike.lookalike_scientific_name|lower|replace:' ,/' }}/"><em>{{ lookalike.lookalike_scientific_name }}</em></a>{% if lookalike.lookalike_characteristic %}:{% endif %}</dt>
+                    <dt>{% lookalike_item lookalike.lookalike_scientific_name %}{% if lookalike.lookalike_characteristic %}:{% endif %}</dt>
                     <dd>{{ lookalike.lookalike_characteristic }}</dd>
                 {% endfor %}
                 </dl>
@@ -292,7 +293,7 @@
 
             {% if taxon.variety_notes %}
             <div class="section">
-                <h4>Notes on Subspecies and Varieties</h4>
+                <h4>Notes on Subspecies and Varieties in New England</h4>
                 <p>{{ taxon.variety_notes|italicize_plant|safe }}</p>
             </div>
             {% endif %}
@@ -304,6 +305,8 @@
             </div>
         </div>
 
+        {% comment %}
         {% include "gobotany/_info_from_flora.html" %}
+        {% endcomment %}
 
 {% endblock %}

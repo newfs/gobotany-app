@@ -198,11 +198,12 @@ class Importer(object):
         wetland_indicator.save()
 
     def import_partner_sites(self, db):
-        """Create 'gobotany' and 'montshire' partner site objects"""
+        """Create 'gobotany', 'concord', and 'montshire' partner sites.
+        Also create a demo partner site named 'partner'."""
         log.info('Setting up partner sites')
         partnersite = db.table('core_partnersite')
 
-        for short_name in ['gobotany', 'montshire']:
+        for short_name in ['gobotany', 'concord', 'montshire', 'partner']:
             partnersite.get(short_name=short_name)
 
         partnersite.save()
@@ -1944,6 +1945,7 @@ def pipe_split(text):
     words = [ word.lower() for word in words if word ]
     return words
 
+
 # Import a partner species list Excel spreadsheet.
 
 def import_partner_species(partner_short_name, excel_file):
@@ -1962,6 +1964,7 @@ def import_partner_species(partner_short_name, excel_file):
     knowns = theirs & ours
     unknowns = theirs - ours
 
+    print 'Partner site:', partner_short_name, 'Data file:', excel_file
     print 'We list', len(ours), 'species'
     print 'They list', len(theirs), 'species'
     print 'We know about', len(knowns), 'of their species'
@@ -1969,17 +1972,40 @@ def import_partner_species(partner_short_name, excel_file):
         print 'That leaves', len(unknowns), 'species we have not heard of:'
         for name in sorted(unknowns):
             print '   ', repr(name)
-
     print
+
+    # Each species for a partner site can define a "blurb" of notes, such
+    # as the varieties or subspecies particular to that partner site, etc.
+    blurbs = defaultdict(dict)
+    for row in range(1, sheet.nrows -1):
+        species = sheet.cell(rowx=row, colx=1).value.strip()
+        blurbs[species] = sheet.cell(rowx=row, colx=2).value.strip()
+
+    # Go through all the Go Botany taxa and add and remove PartnerSpecies
+    # records as appropriate.
     for species in specieslist:
+        blurb = blurbs.get(species.scientific_name)
+        # Look for a PartnerSpecies record for this Go Botany taxon.
         ps = models.PartnerSpecies.objects.filter(
             species=species, partner=partner)
-        if ps and species.scientific_name not in theirs:
-            print 'Removing', species.scientific_name
-            ps[0].delete()
+        if ps:
+            # If this record's species is no longer in the latest list of
+            # partner species, remove the record.
+            if species.scientific_name not in theirs:
+                print 'Removing partner species', species.scientific_name
+                ps[0].delete()
+            else:
+                # Update this PartnerSpecies record (blurb, etc.).
+                print 'Updating partner species', species.scientific_name
+                ps[0].species_page_blurb = blurb
+                ps[0].save()
         elif not ps and species.scientific_name in theirs:
-            print 'Adding', species.scientific_name
-            models.PartnerSpecies(species=species, partner=partner).save()
+            # Otherwise, if no PartnerSpecies record exists but the species
+            # is in the latest list of partner species, add a record.
+            print 'Adding partner species', species.scientific_name
+            models.PartnerSpecies(species=species, partner=partner,
+                                  species_page_blurb=blurb).save()
+
 
 # Routines for doing full import.
 
@@ -2049,7 +2075,9 @@ full_import_steps = (
      'pile_thalloid_aquatics.csv',
      ),
 
+    (import_partner_species, '!concord', 'concord-species-list-and-blurbs.xlsx'),
     (import_partner_species, '!montshire', 'montshire-species-list.xls'),
+    (import_partner_species, '!partner', 'partersite-sample-species-lists.xls'),
     (rebuild.rebuild_default_filters, 'characters.csv'),
     (rebuild.rebuild_plant_of_the_day, '!SIMPLEKEY'),
 

@@ -1,14 +1,18 @@
-{% extends "simplekey/_help.html" %}
+{% extends "concord/_page_full_sidebar.html" %}
 
-{% block pagetitle %}Getting Started with the Simple Key at Montshire{% endblock %}
+{% block title %}Getting Started with the Simple Key: Help{% endblock %}
 
-{% block body_attributes %}id="getting-started" class="app getting-started"{% endblock %}
+{% block js_require %}
+    require(['site/help']);
+{% endblock %}
 
-{% block main_content %}			
-    <h2>Getting Started with the Simple Key at Montshire</h2>
+{% block body_attributes %}id="getting-started" class="help"{% endblock %}
+
+{% block main_content %}
+    <h1>Partner: Getting Started with the Simple Key</h1>
 
     <div class="first question">
-        <h4>What kinds of plants can I identify at Montshire?</h4>
+        <h2>What kinds of plants can I identify?</h2>
         <p>The Go Botany Simple Key helps you identify thousands of
         native and naturalized plant species in New England. You can also
         identify subspecies and varieties. Many of these plants grow outside
@@ -17,7 +21,7 @@
     </div>
     
     <div class="second question">
-        <h4>What should I notice about my plant?</h4>
+        <h2>What should I notice about my plant?</h2>
         <ul>
             <li>Choose a plant that you can look at closely enough to answer
             some questions about its characteristics.</li> 
@@ -29,7 +33,7 @@
     </div>
 
     <div class="third question">
-        <h4>How do I get started using the Simple Key at Montshire?</h4>
+        <h2>How do I get started using the Simple Key?</h2>
         <a class="screenshot"
             href="/static/images/layout/screenshot-3.jpg"
             rel="shadowbox">
@@ -38,7 +42,7 @@
             class="screenshot-thumb"
             alt="How to get started: small screenshot">
             <img src="/static/images/icons/zoom.png"
-            alt=""> Click to enlarge</a>
+            alt=""> Enlarge</a>
         <ul>
             <li>Choose the plant group you think your plant is in.
             To do this, compare the features of your plant with
@@ -53,15 +57,15 @@
         <div class="clearit"></div>
     </div>
                         
-    <div class="fourth question"> <h4>What's a plant group?</h4> <a
-            class="screenshot"
+    <div class="fourth question"> 
+        <h2>What's a plant group?</h2> 
+        <a class="screenshot"
             href="/static/images/layout/screenshot-4.jpg"
             rel="shadowbox"> <img
             src="/static/images/layout/screenshot-4-small.jpg"
             class="screenshot-thumb" alt="What's a plant group: small
             screenshot">
-            <img src="/static/images/icons/zoom.png" alt=""> Click to
-            enlarge</a>
+            <img src="/static/images/icons/zoom.png" alt=""> Enlarge</a>
         <ul>
             <li>It's a set of plants that share some
             common traits that would cause many people to think of them
@@ -76,7 +80,7 @@
         </ul>
     </div>    
     <div class="fifth question">
-        <h4>Once I select a group, what happens next?</h4>
+        <h2>Once I select a group, what happens next?</h2>
         <a class="screenshot"
             href="/static/images/layout/screenshot-5.jpg"
             rel="shadowbox">
@@ -85,7 +89,7 @@
             class="screenshot-thumb"
             alt="What happens next: small screenshot">
             <img src="/static/images/icons/zoom.png"
-            alt=""> Click to enlarge</a>
+            alt=""> Enlarge</a>
         <ul>
             <li>Next, choose which subgroup your plant belongs to. For
             example, if your plant is woody like a tree, you'll be asked if
@@ -104,7 +108,7 @@
     </div>
 
     <div class="sixth question">
-        <h4>I've chosen my plant subgroup. What's next?</h4>
+        <h2>I've chosen my plant subgroup. What's next?</h2>
         <a class="screenshot"
             href="/static/images/layout/screenshot-6.jpg"
             rel="shadowbox">
@@ -114,7 +118,7 @@
             alt="What's next: small screenshot">
             <img
             src="/static/images/icons/zoom.png"
-            alt=""> Click to enlarge</a>
+            alt=""> Enlarge</a>
         <ul>
             <li>On the left side of the new page is a list of questions to
             help
@@ -149,13 +153,14 @@
         </ul>
     </div>
 
-    <a href="{% url level1 'simple' %}"
+    <a href="{% url 'level1' 'simple' %}"
         class="onward-btn">Onward to the Simple Key</a>
 {% endblock %}
 
-{% block more_sidebar_content %}
+{% block sidebar_content %}
+    {% include "concord/_help_navigation.html" %}
     <div class="section separate">
-        <h5>Watch Video:</h5>
+        <h4>Watch Video:</h4>
         <div class="video-topic">
             <a class="video"
                 href="http://www.youtube.com/embed/{{ getting_started_youtube_id }}?autoplay=1&amp;rel=0&amp;hd=1&amp;modestbranding=1">

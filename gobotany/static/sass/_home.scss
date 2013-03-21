@@ -32,7 +32,7 @@
                     }
                 }
                 a:hover {
-                    @include highlight-global-nav-home;
+                    text-decoration: none;
                 }
             }
         }

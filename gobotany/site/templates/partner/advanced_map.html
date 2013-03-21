@@ -28,10 +28,12 @@
                             {% endif %}
                         {% endfor %}
                     </div>
+                    {% comment %}
                     <p class="list">
                         <a href="/list/#group={{ group.friendly_title }}{% if group.friendly_title|lower = 'woody plants' %} not non{% endif %}"
                             >Species list</a>
                     </p>
+                    {% endcomment %}
                     {% if group.video.youtube_id %}
                     <p class="video">
                         <a class="video"
@@ -65,10 +67,12 @@
                             </div>
                             <a class="choose-btn"
                                 href="/{{ group.slug }}/{{ subgroup.slug }}/"></a>
+                            {% comment %}
                             <p class="list">
                                 <a href="/list/#subgroup={{ subgroup.friendly_title }}"
                                     >Species list</a>
                             </p>
+                            {% endcomment %}
                             {% if subgroup.video.youtube_id %}
                             <p class="video">
                                 <a class="video"

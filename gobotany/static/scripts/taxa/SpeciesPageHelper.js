@@ -13,6 +13,30 @@ var SpeciesPageHelper = {
         this.photo_helper = PhotoHelper();
     },
 
+    position_footer: function() {
+        // On desktop or tablet screens, ensure that the footer appears
+        // beneath the content of the page.
+        //
+        // This is needed because some of the sidebar content is
+        // absolutely positioned in order to support some re-ordering of
+        // elements on small screens, and if the sidebar content is very
+        // long, the main content area and the footer may not be tall
+        // enough to display it all.
+        
+        var MAX_SMALLSCREEN_WIDTH = 600;
+
+        if ($(window).width() > MAX_SMALLSCREEN_WIDTH) {
+            var SIDEBAR_MAPS_HEIGHT = 550;
+            var sidebar_below_maps_height = $('#side').height();
+            var sidebar_height = SIDEBAR_MAPS_HEIGHT + sidebar_below_maps_height;
+            var $main_content = $('#main');
+            var main_content_height = $main_content.height();
+            if (sidebar_height > main_content_height) {
+                $main_content.height(sidebar_height);
+            }
+        }
+    },
+
     set_active_main_navigation: function() {
         // Set the active main navigation based on the breadcrumb links.
         var key = 'dkey';
@@ -108,6 +132,10 @@ var SpeciesPageHelper = {
     },
 
     setup: function() {
+        // For desktop or tablet screens, ensure that the footer appears
+        // beneath the content of the page.
+        this.position_footer();
+
         // Set the active main navigation state depending on which key
         // is shown in the breadcrumb trail.
         this.set_active_main_navigation();

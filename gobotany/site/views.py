@@ -16,8 +16,8 @@ from django.views.decorators.vary import vary_on_headers
 from gobotany.core import botany
 from gobotany.core.models import (
     CommonName, ConservationStatus, ContentImage, CopyrightHolder,
-    Family, Genus,
-    GlossaryTerm, HomePageImage, Pile, Taxon, Video,
+    Family, Genus, GlossaryTerm, HomePageImage, PartnerSite, PartnerSpecies,
+    Pile, Taxon, Video,
     )
 from gobotany.core.partner import (which_partner, per_partner_template,
                                    render_to_response_per_partner)
@@ -37,6 +37,7 @@ def home_view(request):
     partner = which_partner(request)
     plant_of_the_day = PlantOfTheDay.get_by_date.for_day(
         date.today(), partner.short_name)
+    print 'plant of the day:', plant_of_the_day
     plant_of_the_day_taxon = None
     if plant_of_the_day:
         # Get the Taxon record of the Plant of the Day.
@@ -52,12 +53,11 @@ def home_view(request):
         plant_of_the_day_image = botany.species_images(
             plant_of_the_day_taxon)[0]
 
-    return render_to_response(
-        per_partner_template(request, 'home.html'), {
+    return render_to_response_per_partner('home.html', {
             'home_page_images': home_page_images,
             'plant_of_the_day': plant_of_the_day_taxon,
             'plant_of_the_day_image': plant_of_the_day_image,
-            }, context_instance=RequestContext(request))
+            }, request)
 
 # Teaching page
 
@@ -90,20 +90,18 @@ def getting_started_view(request):
     if getting_started_video:
         youtube_id = getting_started_video.youtube_id
 
-    return render_to_response(
-        per_partner_template(request, 'getting_started.html'), {
+    return render_to_response_per_partner('getting_started.html', {
             'getting_started_youtube_id': youtube_id,
-            }, context_instance=RequestContext(request))
+            }, request)
 
 @vary_on_headers('Host')
 def advanced_map_view(request):
     pilegroups = [(pilegroup, ordered_piles(pilegroup))
                   for pilegroup in ordered_pilegroups()]
 
-    return render_to_response(
-        per_partner_template(request, 'advanced_map.html'), {
+    return render_to_response_per_partner('advanced_map.html', {
             'pilegroups': pilegroups
-            }, context_instance=RequestContext(request))
+            }, request)
 
 @vary_on_headers('Host')
 def glossary_view(request, letter):
@@ -117,13 +115,12 @@ def glossary_view(request, letter):
     # desired letter.
     glossary = glossary.filter(term__gte='a', term__startswith=letter)
 
-    return render_to_response(
-        per_partner_template(request, 'glossary.html'), {
+    return render_to_response_per_partner('glossary.html', {
             'this_letter': letter,
             'letters': string.ascii_lowercase,
             'letters_in_glossary': letters_in_glossary,
             'glossary': glossary,
-            }, context_instance=RequestContext(request))
+            }, request)
 
 def glossary_main_view(request):
     return redirect('site-glossary', letter='a')
@@ -283,15 +280,34 @@ def placeholder_view(request, template):
 # Sitemap.txt and robots.txt views
 
 def sitemap_view(request):
+    URL_FORMAT = '%s://%s%s'
+    PROTOCOL = 'http'   # TODO: change when moving to https
     host = request.get_host()
-    plant_names = Taxon.objects.values_list('scientific_name', flat=True)
-    families = Family.objects.values_list('name', flat=True)
-    genera = Genus.objects.values_list('name', flat=True)
-    urls = ['http://%s/species/%s/' % (host, plant_name.replace(' ', '/'))
+
+    partner_short_name = which_partner(request)
+    partner_site = PartnerSite.objects.get(short_name=partner_short_name)
+    partner_species = PartnerSpecies.objects.filter(
+        partner=partner_site).values_list('species__scientific_name',
+                                          'species__family__name',
+                                          'species__genus__name')
+    plant_names = sorted([species.lower()
+                          for (species, family, genus) in partner_species])
+    families = sorted(set([family.lower()
+                           for (species, family, genus) in partner_species]))
+    genera = sorted(set([genus.lower()
+                         for (species, family, genus) in partner_species]))
+    urls = [URL_FORMAT % (
+                PROTOCOL,
+                host,
+                reverse('taxa-species', args=(plant_name.split(' '))))
             for plant_name in plant_names]
-    urls.extend(['http://%s/families/%s/' % (host, family_name)
+    urls.extend([URL_FORMAT % (PROTOCOL,
+                               host,
+                               reverse('taxa-family', args=([family_name])))
                  for family_name in families])
-    urls.extend(['http://%s/genera/%s/' % (host, genus_name)
+    urls.extend([URL_FORMAT % (PROTOCOL,
+                               host,
+                               reverse('taxa-genus', args=([genus_name])))
                  for genus_name in genera])
     return render_to_response('gobotany/sitemap.txt', {
             'urls': urls,

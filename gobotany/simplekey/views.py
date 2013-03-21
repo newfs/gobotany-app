@@ -3,12 +3,11 @@
 from django.core.urlresolvers import reverse
 from django.http import Http404
 from django.shortcuts import get_object_or_404, render_to_response, redirect
-from django.template import RequestContext
 from django.views.decorators.cache import cache_control, cache_page
 from django.views.decorators.vary import vary_on_headers
 
 from gobotany.core.models import ContentImage, Pile, PileGroup
-from gobotany.core.partner import (partner_short_name, per_partner_template,
+from gobotany.core.partner import (partner_short_name,
                                    render_to_response_per_partner)
 from gobotany.search.models import (GroupsListPage,
                                     SubgroupResultsPage,

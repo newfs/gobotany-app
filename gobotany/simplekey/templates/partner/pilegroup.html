@@ -72,7 +72,7 @@
                             {% if pile.video %}
                             <p class="vid">
                                 {% with pile.video.youtube_id as youtube_id %}
-                                {% include "partner/_simplekey_video_link.html" with item_type="subgroup" %}
+                                {% include "gobotany/_simplekey_video_link.html" with item_type="subgroup" %}
                                 {% endwith %}
                             </p>
                             {% endif %}
@@ -82,7 +82,7 @@
                     {% endif %}
                 {% endfor %}
 
-                {% include "partner/_plant_not_in_subgroup.html" %}
+                {% include "gobotany/_plant_not_in_subgroup.html" %}
 {% endblock %}
 
 {% block sidebar_content %}

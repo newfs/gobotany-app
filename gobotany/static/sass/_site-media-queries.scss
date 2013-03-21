@@ -231,11 +231,11 @@ $search-suggest-menu-top: 83px;
         }
         .publisher {
             margin: 14px 0 0;
-            padding: 12px $smallscreen-margin 20px;
+            padding: 12px $smallscreen-margin 10px;
         }
         .navigation {
             h6:first-child {
-                display: none;
+                padding: $smallscreen-margin 0 $smallscreen-margin 14px;
             }
             > ul.sections {
                 li {
@@ -340,20 +340,19 @@ $search-suggest-menu-top: 83px;
         .dk-landing-section {
             height: auto;
             margin-top: 14px;
+            padding: 0;
             width: auto;
             > a {
                 margin-left: 16px;
                 position: static;
             }
-            &:first-child {
+            &:first-of-type {
+                border-right: 0;
                 height: auto;
                 margin-right: 0;
                 margin-top: 0;
                 width: auto;
             }
-        }
-        .landing-divider {
-            display: none;
         }
         a.go-dichkey-btn {
             margin-bottom: 14px;

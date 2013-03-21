@@ -40,9 +40,9 @@ class Legend(object):
     """Class for configuring the legend on a SVG plant distribution map."""
 
     # This list controls the order, label and color of legend items.
-    ITEMS = [('native', '#78bf47'),
-             ('non-native', '#fa9691'),
-             ('absent', '#fff'),
+    ITEMS = [('native', '#78bf47'),     # green
+             ('non-native', '#c091fa'), # purple: avoid red for colorblindness
+             ('absent', '#fff'),        # white
              ]
     COLORS = dict(ITEMS)  # Color lookup for labels, ex.: COLORS['rare'].
                           # This does not preserve the order of items.

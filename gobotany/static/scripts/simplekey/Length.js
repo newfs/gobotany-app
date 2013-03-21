@@ -125,11 +125,11 @@ define([
         var $div = $('.instructions', this.div);
         var $apply_button = $('.apply-btn', this.div);
         if (mm_old === mm) {
-            instructions = 'Change the value to narrow your selection to a' +
+            instructions = 'Change the value to get a' +
                 ' new set of matching species.';
             $apply_button.addClass('disabled');
         } else if (vector.length > 0) {
-            instructions = 'Press “Apply” to narrow your selection to the ' +
+            instructions = 'Apply your selection to get ' +
                 vector.length + ' matching species.';
             $apply_button.removeClass('disabled');
         } else {

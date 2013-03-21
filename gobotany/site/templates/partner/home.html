@@ -3,23 +3,23 @@
 
 {# Home page template for a sample partner site, overriding Go Botany #}
 
-{% block title %}Partner: sample Go Botany partner site{% endblock %}
+{% block title %}Partner Site Sample: Go Botany{% endblock %}
 {% block title_suffix %}{% endblock %}
 
-{% comment %}
-Disable the Plant of the Day feed.
 {% block more_meta_link %}
     <link rel="alternate" type="application/atom+xml"
         title="Atom feed: Plant of the Day"
         href="http://{{ request.META.HTTP_HOST }}/plantoftheday/atom.xml">
 {% endblock %}
-{% endcomment %}
 
-{% block body_attributes %}id="home"{% endblock %}
+{% block body_attributes %}id="home" class="partner-site"{% endblock %}
 
+{% comment %}
+Disable the fading image carousel. Show just one non-changing image for now.
 {% block js_require %}
     require(['site/home']);
 {% endblock %}
+{% endcomment %}
 
 {% block header %}
     {% include "partner/_header.html" with page="home" %}
@@ -29,9 +29,15 @@ Disable the Plant of the Day feed.
     <div class="content">
         <div class="container">
             <div id="banner">
-            {% for image in home_page_images %}
-                <img src="{{ image.image.url }}" alt="">
-            {% endfor %}
+
+                {% comment %}
+                Use a single image for now instead of a fading carousel.
+                {% for image in home_page_images %}
+                    <img src="{{ image.image.url }}" alt="">
+                {% endfor %}
+                {% endcomment %}
+                <img src="" alt="">
+
                 <div id="overlay">
                     <h2>Simple ID Key</h2>
                     <img src="/static/images/layout/separator.png"
@@ -44,6 +50,9 @@ Disable the Plant of the Day feed.
                     <a href="{% url 'level1' 'simple' %}" id="cta">Get Started</a>
                 </div>
             </div>
+
+            {% comment %}
+            Omit section introductions.
             <div class="three-col">
                 <h3>PlantShare</h3>
                 <h4>Connect with other plant fans!</h4>
@@ -73,9 +82,9 @@ Disable the Plant of the Day feed.
                 can share curricula and teaching ideas.</p>
                 <a class="learn-more" href="{% url 'site-teaching' %}" >Learn More</a>
             </div>
+            {% endcomment %}
+            <div class="three-col"></div>
 
-            {% comment %}
-            Omit the Plant of the Day section.
             <div id="potd">
             {% if plant_of_the_day %}
                 <a href="/species/{{ plant_of_the_day.genus_name|lower }}/{{ plant_of_the_day.epithet }}/"
@@ -96,7 +105,6 @@ Disable the Plant of the Day feed.
                 <p>Error: Plant of the Day information missing</p>
             {% endif %}
             </div>
-            {% endcomment %}
 
             <div class="donate">
                 <p>Please contribute to our mission to conserve and promote

@@ -1,0 +1,37 @@
+{% load simplekey_extras %}<?xml version="1.0" encoding="UTF-8"?>
+{# Note: No space above between load and XML dec.: avoid FF parse error. #}
+<!DOCTYPE feed [
+    <!ENTITY copy   "&#169;"> <!-- copyright sign, U+00A9 ISOnum -->
+    ]>
+<feed xmlns="http://www.w3.org/2005/Atom" xml:lang="en-us">
+    <title>Plant of the Day: Flora of Concord, MA</title>
+    <link rel="self" type="application/atom+xml"
+        href="http://{{ request.META.HTTP_HOST }}/plantoftheday/atom.xml" />
+    <id>http://{{ request.META.HTTP_HOST }}/plantoftheday/</id>
+    <updated>{{ plants_of_the_day.0.post_datetime }}</updated>
+    <author><name>New England Wild Flower Society</name></author>
+    <rights>All images and text copyright (c) 2011-2012 New England Wild 
+        Flower Society or respective copyright holders. All rights 
+        reserved.</rights> 
+
+    {% for plant in plants_of_the_day %}
+        <entry>
+            <title>{{ plant.scientific_name }} ({% for common_name in plant.common_names.all %}{% if not forloop.first %}, {% endif %}{{ common_name }}{% endfor %})</title>
+            <id>http://{{ request.META.HTTP_HOST }}{{ plant.url }}</id>
+            <published>{{ plant.post_datetime }}</published>
+            <updated>{{ plant.post_datetime }}</updated>
+            <content type="xhtml">
+                <div xmlns="http://www.w3.org/1999/xhtml">
+                    {% if plant.image %}
+                        <img src="{{ plant.image.thumb_large }}"
+                            alt="{% photo_credit plant.image plant.scientific_name %}"
+                            style="float: left; margin-right: 10px" />
+                    {% endif %}
+                    <p>{{ plant.facts }}</p>
+                    <p><a href="http://{{ request.META.HTTP_HOST }}{{ plant.url }}">Learn more about this plant</a></p>
+                </div>
+            </content>
+        </entry>    
+    {% endfor %}
+
+</feed>

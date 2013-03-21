@@ -10,6 +10,7 @@ from gobotany.core.models import PartnerSite
 def which_partner(request):
     """Determine which partner site is being viewed."""
     short_name = request.get_host().split('.', 1)[0]  # the 'foo' of 'foo.com'
+    short_name = short_name.split('-', 1)[0]  # 'foo' if 'foo-dev.com'
     possibilities = (short_name, 'gobotany')
     matches = list(PartnerSite.objects.filter(short_name__in=(possibilities)))
     if len(matches) > 1 and matches[1].short_name == short_name:

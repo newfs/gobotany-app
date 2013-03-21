@@ -66,7 +66,7 @@ urlpatterns = patterns(
     url('^help/video/$', RedirectView.as_view(url='/video/')),
     url('^help/contributors/$', RedirectView.as_view(url='/contributors/')),
     url('^legal/privacy-policy/$', RedirectView.as_view(url='/privacy/')),
-    url('^legal/terms-of-use/$', RedirectView.as_view(url='/terms/')),
+    url('^legal/terms-of-use/$', RedirectView.as_view(url='/terms-of-use/')),
 
     # Unlinked pages for development and testing: even though unlinked,
     # comment out at release time anyway

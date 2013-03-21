@@ -862,6 +862,19 @@ results_page_init: function(args) {
         }
     });
 
+    // The questions list shows the number of answered questions.
+    var update_answered_questions_count = function() {
+        var num_answered = 0;
+        var plains = App3.filter_controller.get('plain_filters');
+        _.each(plains, function(filter) {
+            if (filter.value) {
+                num_answered += 1;
+            }
+        });
+        var label = '(' + num_answered + ' answered)';
+        $('#question-nav .instructions span').html(label);
+    };
+
     // Several places on the page display how many species there are.
 
     var update_count_animation = null;
@@ -873,9 +886,7 @@ results_page_init: function(args) {
         animation.bright_change($spans, {end_color: '#F0F0C0',
                                          duration: 2000});
 
-        // The questions list shows the number of answered questions.
-        var num_answered = $('.answered').length;
-        $('#question-nav .instructions span').html(num_answered);
+        update_answered_questions_count();
     };
 
     /* How we load images into the species area. */
