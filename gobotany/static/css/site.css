@@ -492,7 +492,7 @@ body.teaching #main li { list-style-type: none; }
 #home header nav li { margin-right: 9px; }
 #home header nav li.home { margin: 0 63px 0 0; }
 #home header nav li.home a { color: #fff; }
-#home header nav li a:hover { background: url(/static/images/layout/active-nav-home.png) bottom center no-repeat transparent; }
+#home header nav li a:hover { text-decoration: none; }
 #home header #search-suggest .menu { top: 133px; }
 #home .content { clear: left; margin-top: 18px; }
 #home #banner { margin: 10px 0 0; position: absolute; }
