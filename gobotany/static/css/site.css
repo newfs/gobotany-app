@@ -458,8 +458,8 @@ input.suggest + div li span { font-weight: normal; }
 body.teaching #main li { list-style-type: none; }
 
 /* "Advanced ID Tools" placeholder page (delete after tools release) */
-#advanced-id #main .dk-landing-section { float: left; font-family: Verdana, Geneva, "Lucida Sans Unicode", sans-serif; height: 410px; position: relative; width: 330px; }
-#advanced-id #main .dk-landing-section:first-child { margin-right: 50px; }
+#advanced-id #main .dk-landing-section { float: left; font-family: Verdana, Geneva, "Lucida Sans Unicode", sans-serif; height: 410px; padding-left: 20px; position: relative; width: 328px; }
+#advanced-id #main .dk-landing-section:first-of-type { border-right: 1px solid #b4d57f; padding-left: 0; padding-right: 10px; }
 #advanced-id #main .dk-landing-section h2 { font-size: 18px; line-height: 20px; }
 #advanced-id #main .dk-landing-section section { margin: 10px 0 0; }
 #advanced-id #main .dk-landing-section section p { margin: 10px 0; }
@@ -468,7 +468,6 @@ body.teaching #main li { list-style-type: none; }
 #advanced-id #main .dk-landing-section > a { bottom: 10px; display: block; height: 41px; margin: 0 0 0 43px; position: absolute; text-indent: -9999px; width: 244px; }
 #advanced-id #main .dk-landing-section > a:hover { background-position: 0 -41px; }
 #advanced-id #main .dk-landing-section > a:active { background-position: 0 -82px; }
-#advanced-id #main .landing-divider { background-color: #b4d57f; height: 400px; left: 660px; position: absolute; top: 180px; width: 1px; }
 #advanced-id #main a.go-fullkey-btn { background: url(/static/images/layout/go-fullkey-btn.png) 0 0 no-repeat transparent; }
 #advanced-id #main a.go-dichkey-btn { background: url(/static/images/layout/go-dichkey-btn.png) 0 0 no-repeat transparent; }
 

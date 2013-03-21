@@ -1016,10 +1016,13 @@ body.teaching #main li {
 	    float: left;
 	    font-family: $body-font;
         height: 410px;
+        padding-left: 20px;
         position: relative;
-	    width: 330px;
-        &:first-child {
-            margin-right: 50px;
+	    width: 328px;
+        &:first-of-type {
+            border-right: 1px solid #b4d57f;
+            padding-left: 0;
+            padding-right: 10px;
         }
         h2 {
             font-size: 18px;
@@ -1055,14 +1058,6 @@ body.teaching #main li {
                 background-position: 0 -82px;
             }
         }
-    }
-    .landing-divider {
-        background-color: #b4d57f;
-        height: 400px;
-        left: 660px;
-        position: absolute;
-        top: 180px;
-        width: 1px;	
     }
     a.go-fullkey-btn {
     	background: url(/static/images/layout/go-fullkey-btn.png) 0 0 no-repeat transparent;
