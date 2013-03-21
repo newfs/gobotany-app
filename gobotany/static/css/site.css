@@ -346,11 +346,13 @@ header nav #search-suggest .menu span { font-weight: normal; }
 #sidebar .section.plant-map { background: url(/static/images/layout/plant-map.png) 95% 1% no-repeat; padding: 0 25px 16px 16px; }
 #sidebar .section .left { float: left; }
 #sidebar .section p { margin: 0; }
+#sidebar a:not(.jspArrow) { display: inline-block; margin-left: 10px; }
 #sidebar a:hover { text-decoration: none; }
 #sidebar a.video { margin-left: 0; }
 #sidebar a.view-map-btn { background: url(/static/images/layout/view-map-btn-orange.png) 0 0 no-repeat transparent; display: block; height: 32px; margin: 10px 0 20px; text-indent: -9000px; width: 113px; }
 #sidebar a.view-map-btn:hover { background-position: 0 -32px; }
 #sidebar a.view-map-btn:active { background-position: 0 -64px; }
+#sidebar nav a { display: inline-block; margin-left: 10px; }
 #sidebar .box { background: #fff; border: 1px solid #c3d941; margin-bottom: 16px; padding: 16px 0 0; }
 #sidebar nav { font-family: "Trebuchet MS", Helvetica, Arial, "Lucida Sans Unicode", sans-serif; font-size: 14px; }
 #sidebar nav h3 { margin-bottom: 16px; padding-left: 26px; }

@@ -557,6 +557,10 @@ header {
             }
         }
     }
+    nav a {
+        display: inline-block;
+        margin-left: 10px;
+    }
     .box {
         background: #fff;
         border: 1px solid $border-green;
