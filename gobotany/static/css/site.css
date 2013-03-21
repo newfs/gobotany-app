@@ -1,3 +1,4 @@
+@charset "UTF-8";
 /* *** Go Botany master styles file ***
  Please edit only the .scss source and use Compass to auto-generate the .css.
  The generated .css is kept in the repository to allow easy deployment.
@@ -1068,6 +1069,13 @@ ul.get-more-questions-menu ul li[data-character] { color: black; }
   body.skey.mobile-preview-filters #filters-preview li.answered { display: inline; }
   body.skey.mobile-preview-filters #filters-preview li .name { font-weight: bold; }
   body.skey.mobile-preview-filters #filters-preview .clear-filter { display: none; }
+  body.skey.mobile-quickapply { /* Variant that applies immediately */ }
+  body.skey.mobile-quickapply .actions { display: none; }
+  body.skey.mobile-quickapply .working-area .choice label { width: 70%; }
+  body.skey.mobile-quickapply .working-area .choice label:after { content: "Apply"; position: absolute; right: 0; border: solid 1px #cccccc; margin: 8px 5px 2px 0; padding: 5px 1em; line-height: 14px; }
+  body.skey.mobile-quickapply .working-area .choice.checked { background: none; }
+  body.skey.mobile-quickapply .working-area .choice.checked label:after { background: url(/static/images/layout/check.png) no-repeat; background-size: auto 20px; background-position: 5px center; content: "Applied"; padding-left: 30px; }
+  body.skey.mobile-quickapply .working-area .choice.disabled label:after { content: none; }
   /* end body.skey */ }
 /* End of styles common to both smartphone widths */
 /* Tablet-only styles */
