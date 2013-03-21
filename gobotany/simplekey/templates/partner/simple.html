@@ -1,7 +1,7 @@
 {% extends "partner/_page_full_sidebar.html" %}
 {% load simplekey_extras %}
 
-{% block title %}Partner {{ key|title }} Key for Plant Identification{% endblock %}
+{% block title %}{{ key|title }} Key for Plant Identification{% endblock %}
 
 {% block body_attributes %}class="skey groups-subgroups {{ key|title|lower }}"{% endblock %}
 
@@ -15,7 +15,7 @@
 {% endblock %}
 
 {% block main_content %}
-                <h1>Partner {{ key|title }} Key</h1>
+                <h1>{{ key|title }} Key</h1>
 
                 <p class="question">{{ groups_list_page.main_heading }}</p>
                 <p class="tip">Please go through the groups in order.</p>
