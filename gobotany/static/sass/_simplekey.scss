@@ -1368,6 +1368,9 @@ ul.get-more-questions-menu {
                         margin-bottom: 10px;
                     }
                 }
+                .character-drawing img {
+                    max-height: 100px;
+                }
                 .values {
                     height: 60%;
                     margin-bottom: 10px;
@@ -1429,6 +1432,11 @@ ul.get-more-questions-menu {
                     margin: 0;
                     height: 44px;
                     position: relative;
+                    input {
+                        margin: 4px 0;
+                        opacity: 0;
+                        position: absolute;
+                    }
                     label {
                         /*border-left: 1px solid orange;*/
                         /*border-right: 1px solid orange;*/
@@ -1464,11 +1472,6 @@ ul.get-more-questions-menu {
                 .choice-label {
                     display: table-cell;
                     vertical-align: middle;
-                }
-                input {
-                    margin: 4px 0;
-                    opacity: 0;
-                    position: absolute;
                 }
                 .actions {
                     bottom: 0;
@@ -1515,7 +1518,7 @@ ul.get-more-questions-menu {
                     div:not([class="section instructions"]) {
                         display: none;
                     }
-                    .instructions {
+                    > .instructions {
                         border-radius: 18px;
                         h5::after {
                             right: 12px;
@@ -1524,7 +1527,7 @@ ul.get-more-questions-menu {
                         }
                     }
                 }
-                .instructions {
+                > .instructions {
                     @include background($orange_gradient); 
                     @include single-box-shadow(darken($inactive_bg, 30), 0px, 1px, 4px);
                     border-radius: 0;
@@ -1605,6 +1608,11 @@ ul.get-more-questions-menu {
                         font-size: 11px;
                         margin: 0;
                     }
+                    .answered .value {
+                        display: inline-block;
+                        line-height: 14px;
+                        padding-top: 8px;
+                    }
                     .clear-filter {
                         width: 50%;
                     }
@@ -1614,6 +1622,21 @@ ul.get-more-questions-menu {
                 .close {
                     float: left;
                     padding-right: 12px;
+                }
+                .values.numeric {
+                    font-size: 12px;
+                    line-height: 14px;
+                    margin-top: 18px;
+                }
+                .measurement {
+                    margin: 18px 0;
+                    input[type='text'] {
+                        margin-right: 10px;    
+                        width: 60px;
+                    }
+                    label {
+                        padding-right: 10px;
+                    }
                 }
             }
             .species-count-heading {
