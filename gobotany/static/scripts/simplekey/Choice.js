@@ -157,8 +157,7 @@ define([
 
         // If applicable, hook up a handler to toggle glossary terms.
         if ($(window).width() <= this.max_smallscreen_width &&
-            this.glossarize_mobile &&
-            !$('body').hasClass('mobile-inline')) {
+            this.glossarize_mobile) {
 
             var $terms_section = $div.find('.terms');
             var $terms_heading = $terms_section.find('h5').eq(0);
