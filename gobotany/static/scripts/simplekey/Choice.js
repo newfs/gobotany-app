@@ -331,8 +331,12 @@ define([
         var $apply_button = $('.apply-btn', this.div);
         if (this._current_value() === this.filter.value)
             $apply_button.addClass('disabled');
-        else
+        else {
             $apply_button.removeClass('disabled');
+            if ($('body').hasClass('mobile-quickapply')) {
+                this._apply_button_clicked();
+            }
+        }
     };
 
     /* Get a value suitable for use as an image element id from the

@@ -1830,6 +1830,44 @@ ul.get-more-questions-menu {
             }
         }
 
+        &.mobile-quickapply {  /* Variant that applies immediately */
+          .actions {
+            display: none;
+          }
+          .working-area {
+            .choice {
+              label {
+                width: 70%;
+                &:after {
+                  content: "Apply";
+                  position: absolute;
+                  right: 0;
+                  border: solid 1px #ccc;
+                  margin: 8px 5px 2px 0;
+                  padding: 5px 1em;
+                  line-height: 14px;
+                }
+              }
+              &.checked {
+                background: none;
+                label:after {
+                  background: url(/static/images/layout/check.png) no-repeat;
+                  background-size: auto 20px;
+                  background-position: 5px center;
+                  content: "Applied";
+                  padding-left: 30px;
+                }
+              }
+              &.disabled {
+                label:after {
+                  content: none;
+                }
+              }
+            }
+          }
+        }
+
+
     } /* end body.skey */
 } /* End of styles common to both smartphone widths */
 
