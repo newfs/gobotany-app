@@ -86,20 +86,15 @@
                 web site.</p>
 
                 <p><a href="http://www.ray-a.com/">Ray Angelo</a> former 
-				Curator of Vascular Plants for the 
-				<a href="http://www.rhodora.org/">New England Botanical Club</a>, 
+				Curator of Vascular Plants for the New England Botanical Club, 
 				kindly provided the list of Concord plants, with additional 
 				contributions by Bryan Connolly, Massachusetts State Botanist,
 				and Charles Davis, Curator of Vascular Plants at Harvard University 
-				Department of Organismic and Evolutionary Biology.</p>
-
-				
-				<p>The nomenclature is from 
+				Department of Organismic and Evolutionary Biology. The nomenclature
+				is from 
 				<a href="http://www.newenglandwild.org/store/flora-novae-angliae/">Flora
                 Novae Angliae</a> by Arthur Haines, Research Botanist at
-                New England Wild Flower Society. Flora Novae Angliae is the first 
-				comprehensive scientific reference on the region's plant species 
-				published in the last 25 years.</p>
+                New England Wild Flower Society.</p>
             </div>
 
             <div id="potd">
@@ -123,6 +118,8 @@
             {% endif %}
             </div>
 
+			{% comment %}
+			Ommit our donation section for Concord.
             <div class="donate">
                 <p>Please contribute to our mission to conserve and promote
                 the region&#8217;s plants by donating to New England Wild
@@ -130,6 +127,7 @@
                 <a href="http://www.newenglandwild.org/support/">Donate</a>
                 </p>
             </div>
+			{% endcomment %}
         </div>
     </div>
 {% endblock %}
