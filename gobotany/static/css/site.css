@@ -1,4 +1,3 @@
-@charset "UTF-8";
 /* *** Go Botany master styles file ***
  Please edit only the .scss source and use Compass to auto-generate the .css.
  The generated .css is kept in the repository to allow easy deployment.
@@ -347,7 +346,6 @@ header nav #search-suggest .menu span { font-weight: normal; }
 #sidebar .section.plant-map { background: url(/static/images/layout/plant-map.png) 95% 1% no-repeat; padding: 0 25px 16px 16px; }
 #sidebar .section .left { float: left; }
 #sidebar .section p { margin: 0; }
-#sidebar a:not(.jspArrow) { display: inline-block; margin-left: 10px; }
 #sidebar a:hover { text-decoration: none; }
 #sidebar a.video { margin-left: 0; }
 #sidebar a.view-map-btn { background: url(/static/images/layout/view-map-btn-orange.png) 0 0 no-repeat transparent; display: block; height: 32px; margin: 10px 0 20px; text-indent: -9000px; width: 113px; }
@@ -1532,13 +1530,13 @@ body.search-results .search-navigation a { text-decoration: underline; }
 /* Additional styles and overrides for partner sites */
 #home.partner-site header.partner-site .container { position: relative; }
 #home.partner-site header.partner-site h1 { width: 260px; }
-#home.partner-site header.partner-site .site-name { float: none; font-size: 22px; left: 178px; position: absolute; top: 60px; width: 495px; }
+#home.partner-site header.partner-site .site-name { float: none; font-size: 22px; left: 178px; position: absolute; top: 60px; }
 #home.partner-site header.partner-site .site-name i { color: #fff; font-size: 16px; }
 #home.partner-site header.partner-site nav li.home a { padding: 5px 8px 0; /* consistent padding in 'separated' area */ }
 #home.partner-site .three-col { background: none; height: 10px; }
 
 header.partner-site .go-botany, header.partner-site .go-botany a { width: 170px; }
-header.partner-site .site-name { color: #508e31; float: left; font-family: "Trebuchet MS", Helvetica, Arial, "Lucida Sans Unicode", sans-serif; font-size: 14px; position: relative; top: 45px; width: 380px; }
+header.partner-site .site-name { color: #508e31; float: left; font-family: "Trebuchet MS", Helvetica, Arial, "Lucida Sans Unicode", sans-serif; font-size: 14px; position: relative; top: 45px; width: 550px; }
 header.partner-site .site-name b { margin-right: 10px; }
 header.partner-site .site-name a { padding-left: 10px; text-decoration: none; }
 header.partner-site nav li a { padding: 5px 32px 0; /* fewer sections, more horizontal padding */ }
