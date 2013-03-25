@@ -523,8 +523,8 @@ body.teaching #main li { list-style-type: none; }
 #home #potd .details h3 span.latin { font-style: italic; }
 #home #potd .details h3 span.english { font-size: 12px; color: #807121; }
 #home #potd .details p { height: 72px; margin: 0; overflow: hidden; }
-#home .donate { clear: left; border: 3px solid white; background: #f1ebae; margin: 15px 0; padding: 0; -webkit-box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.3); -moz-box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.3); box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.3); }
-#home .donate p { margin: 14px; position: relative; }
+#home .donate, #home .intro { clear: left; border: 3px solid white; background: #f1ebae; margin: 15px 0; padding: 0; -webkit-box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.3); -moz-box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.3); box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.3); }
+#home .donate p, #home .intro p { margin: 14px; position: relative; }
 #home .donate a { background: url(/static/images/layout/donate-btn.png) 0 0 no-repeat transparent; cursor: pointer; display: block; float: right; height: 32px; padding: 0; position: absolute; right: 0; text-indent: -9000px; top: -6px; width: 104px; }
 #home .donate a:hover { background-position: 0 -32px; }
 #home .donate a:active { background-position: 0 -64px; }
@@ -569,8 +569,8 @@ body.teaching #main li { list-style-type: none; }
   #home #potd .details h4 { line-height: 140%; }
   #home #potd .details p { height: inherit; overflow: inherit; }
   #home #potd .details a { margin-top: 4px; position: inherit; top: 0; }
-  #home .donate { margin: 0; }
-  #home .donate p { margin: 8px; padding: 0; }
+  #home .donate, #home .intro { margin: 0; }
+  #home .donate p, #home .intro p { margin: 8px; padding: 0; }
   #home .donate a { float: none; margin: 6px 0; position: static; } }
 /* End media queries styles for the Home page */
 /* Styles for maps */
