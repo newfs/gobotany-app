@@ -1359,14 +1359,14 @@ body.search-results .search-navigation a { text-decoration: underline; }
 @media only screen and (max-width: 600px) { body.search-results .search-navigation { font-size: 18px; line-height: 200%; text-align: center; } }
 /* These styles apply to smartphones and tablets */
 /* End media queries styles for Search results */
-/* Help */
-#help #main ul { padding: 0 0 0 16px; }
-#help #main ul li { margin: 0 0 5px 0; }
+/* Help section */
+/* styles for all Help-section pages */
+.help #main > ul { padding-left: 18px; padding-right: 5px; }
 
+/* styles for individual pages */
 /* About */
 #about #main img { float: right; margin: 5px 0 20px 20px; }
 #about #main img .bookcover { margin-right: 89px; }
-#about #main ul { margin: 0 5px 0 18px; }
 
 /* Getting Started */
 #getting-started h2 { margin-top: 0; padding-top: 0; }
@@ -1439,7 +1439,7 @@ body.search-results .search-navigation a { text-decoration: underline; }
 #video .video-topic .missing-image p { left: auto; margin: 55px 0; position: absolute; text-align: center; top: auto; white-space: nowrap; width: 100%; }
 
 /* Contributors */
-#contributors #main ul { list-style-type: none; }
+#contributors #main ul { list-style-type: none; padding-left: 0; }
 #contributors #main li { margin: 0; }
 
 /* Species List */
