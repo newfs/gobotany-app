@@ -1371,7 +1371,6 @@ body.search-results .search-navigation a { text-decoration: underline; }
 /* Getting Started */
 #getting-started h2 { margin-top: 0; padding-top: 0; }
 #getting-started .question { padding: 18px 0 18px 45px; background-position: left 22px; background-repeat: no-repeat; border-bottom: 1px solid #e2dfcb; }
-#getting-started .question ul { padding: 0 0 0 15px; }
 #getting-started .first.question { margin: 11px 0 0 0; border-top: 1px solid #e2dfcb; background-image: url(/static/images/icons/1.png); }
 #getting-started .second.question { background-image: url(/static/images/icons/2.png); }
 #getting-started .third.question { background-image: url(/static/images/icons/3.png); }
