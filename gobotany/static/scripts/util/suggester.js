@@ -39,6 +39,9 @@ define([
 
         this.$menu_list = this.$menu.children('ul').eq(0);
 
+        // Disable browser autocomplete
+        this.$input_box.attr('autocomplete', 'off');
+
         // Set the width of the menu to match that of the box.
         var menu_width = this.$input_box.outerWidth(true) - 2;
         if (this.align_menu_inside_input === "true") {
