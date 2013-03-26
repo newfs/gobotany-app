@@ -77,7 +77,7 @@ var PhotoHelper = {
 
         var html = '<div><h6>' + title + '</h6><span>' + copyright_holder +
             ' ' + copyright + ' <a href="/terms-of-use/#ip" ' +
-            'target="_blank">Terms of Use' + '</a></span>';
+            '">Terms of Use' + '</a></span>';
         if (source !== '') {
             html += '<br><span>' + parts[3] + '</span>';
         }

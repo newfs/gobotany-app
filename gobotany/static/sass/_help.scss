@@ -1,17 +1,19 @@
-/* Help */
+/* Help section */
 
 $advanced-map-frame-border: 5px solid rgba(255, 255, 255, 0.8);
 $advanced-map-active-color: #1a2e12;
 $image-box-shadow-color: rgba(0, 0, 0, 0.6);
 
-#help #main {
-    ul {
-        padding: 0 0 0 16px;
-        li {
-            margin: 0 0 5px 0;
-        }
+/* styles for all Help-section pages */
+
+.help {
+    #main > ul {
+        padding-left: 18px;
+        padding-right: 5px;
     }
 }
+
+/* styles for individual pages */
 
 /* About */
 
@@ -22,9 +24,6 @@ $image-box-shadow-color: rgba(0, 0, 0, 0.6);
         .bookcover {
             margin-right: 89px;
         }
-    }
-    ul {
-        margin: 0 5px 0 18px;
     }
 }
 
@@ -40,9 +39,6 @@ $image-box-shadow-color: rgba(0, 0, 0, 0.6);
         background-position: left 22px;
         background-repeat: no-repeat;
         border-bottom: 1px solid #e2dfcb;
-        ul {
-            padding: 0 0 0 15px;
-        }
     }
     .first.question {
         margin: 11px 0 0 0;
@@ -365,6 +361,7 @@ $image-box-shadow-color: rgba(0, 0, 0, 0.6);
 #contributors #main {
     ul {
         list-style-type: none;
+        padding-left: 0;
     }
     li {
         margin: 0;
