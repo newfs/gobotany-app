@@ -53,7 +53,7 @@
         </div>
 
         <div id="name">
-            <h1>Partner: <span class="scientific">{{ scientific_name|italicize_plant|safe }}</span>
+            <h1><span class="scientific">{{ scientific_name|italicize_plant|safe }}</span>
             <span class="origin">{{ taxon.taxonomic_authority }}</span></h1>
             {% if common_names %}
                 <p class="common nogloss">{% for common_name in common_names %}{% if not forloop.first %}, {% endif %}{{ common_name }}{% endfor %}</p>

@@ -1,4 +1,3 @@
-@charset "UTF-8";
 /* *** Go Botany master styles file ***
  Please edit only the .scss source and use Compass to auto-generate the .css.
  The generated .css is kept in the repository to allow easy deployment.
@@ -347,12 +346,12 @@ header nav #search-suggest .menu span { font-weight: normal; }
 #sidebar .section.plant-map { background: url(/static/images/layout/plant-map.png) 95% 1% no-repeat; padding: 0 25px 16px 16px; }
 #sidebar .section .left { float: left; }
 #sidebar .section p { margin: 0; }
-#sidebar a:not(.jspArrow) { display: inline-block; margin-left: 10px; }
 #sidebar a:hover { text-decoration: none; }
 #sidebar a.video { margin-left: 0; }
 #sidebar a.view-map-btn { background: url(/static/images/layout/view-map-btn-orange.png) 0 0 no-repeat transparent; display: block; height: 32px; margin: 10px 0 20px; text-indent: -9000px; width: 113px; }
 #sidebar a.view-map-btn:hover { background-position: 0 -32px; }
 #sidebar a.view-map-btn:active { background-position: 0 -64px; }
+#sidebar nav a { display: inline-block; margin-left: 10px; }
 #sidebar .box { background: #fff; border: 1px solid #c3d941; margin-bottom: 16px; padding: 16px 0 0; }
 #sidebar nav { font-family: "Trebuchet MS", Helvetica, Arial, "Lucida Sans Unicode", sans-serif; font-size: 14px; }
 #sidebar nav h3 { margin-bottom: 16px; padding-left: 26px; }
@@ -524,8 +523,8 @@ body.teaching #main li { list-style-type: none; }
 #home #potd .details h3 span.latin { font-style: italic; }
 #home #potd .details h3 span.english { font-size: 12px; color: #807121; }
 #home #potd .details p { height: 72px; margin: 0; overflow: hidden; }
-#home .donate { clear: left; border: 3px solid white; background: #f1ebae; margin: 15px 0; padding: 0; -webkit-box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.3); -moz-box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.3); box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.3); }
-#home .donate p { margin: 14px; position: relative; }
+#home .donate, #home .intro { clear: left; border: 3px solid white; background: #f1ebae; margin: 15px 0; padding: 0; -webkit-box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.3); -moz-box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.3); box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.3); }
+#home .donate p, #home .intro p { margin: 14px; position: relative; }
 #home .donate a { background: url(/static/images/layout/donate-btn.png) 0 0 no-repeat transparent; cursor: pointer; display: block; float: right; height: 32px; padding: 0; position: absolute; right: 0; text-indent: -9000px; top: -6px; width: 104px; }
 #home .donate a:hover { background-position: 0 -32px; }
 #home .donate a:active { background-position: 0 -64px; }
@@ -570,8 +569,8 @@ body.teaching #main li { list-style-type: none; }
   #home #potd .details h4 { line-height: 140%; }
   #home #potd .details p { height: inherit; overflow: inherit; }
   #home #potd .details a { margin-top: 4px; position: inherit; top: 0; }
-  #home .donate { margin: 0; }
-  #home .donate p { margin: 8px; padding: 0; }
+  #home .donate, #home .intro { margin: 0; }
+  #home .donate p, #home .intro p { margin: 8px; padding: 0; }
   #home .donate a { float: none; margin: 6px 0; position: static; } }
 /* End media queries styles for the Home page */
 /* Styles for maps */
@@ -1531,13 +1530,13 @@ body.search-results .search-navigation a { text-decoration: underline; }
 /* Additional styles and overrides for partner sites */
 #home.partner-site header.partner-site .container { position: relative; }
 #home.partner-site header.partner-site h1 { width: 260px; }
-#home.partner-site header.partner-site .site-name { float: none; font-size: 22px; left: 178px; position: absolute; top: 60px; width: 495px; }
+#home.partner-site header.partner-site .site-name { float: none; font-size: 22px; left: 178px; position: absolute; top: 60px; }
 #home.partner-site header.partner-site .site-name i { color: #fff; font-size: 16px; }
 #home.partner-site header.partner-site nav li.home a { padding: 5px 8px 0; /* consistent padding in 'separated' area */ }
 #home.partner-site .three-col { background: none; height: 10px; }
 
 header.partner-site .go-botany, header.partner-site .go-botany a { width: 170px; }
-header.partner-site .site-name { color: #508e31; float: left; font-family: "Trebuchet MS", Helvetica, Arial, "Lucida Sans Unicode", sans-serif; font-size: 14px; position: relative; top: 45px; width: 380px; }
+header.partner-site .site-name { color: #508e31; float: left; font-family: "Trebuchet MS", Helvetica, Arial, "Lucida Sans Unicode", sans-serif; font-size: 14px; position: relative; top: 45px; width: 550px; }
 header.partner-site .site-name b { margin-right: 10px; }
 header.partner-site .site-name a { padding-left: 10px; text-decoration: none; }
 header.partner-site nav li a { padding: 5px 32px 0; /* fewer sections, more horizontal padding */ }

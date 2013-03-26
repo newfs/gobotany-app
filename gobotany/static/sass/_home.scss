@@ -192,7 +192,7 @@
             }
         }
     }
-    .donate {
+    .donate, .intro {
         clear: left;
         border: 3px solid #fff;
         background: #f1ebae;
@@ -203,6 +203,8 @@
             margin: 14px;
             position: relative;
         }
+    }
+    .donate {
         a {
             background: url(/static/images/layout/donate-btn.png) 0 0 no-repeat transparent;
             cursor: pointer;
@@ -388,12 +390,14 @@
                 }
             }
         }
-        .donate {
+        .donate, .intro {
             margin: 0;
             p {
                 margin: 8px;
                 padding: 0;
             }
+        }
+        .donate {
             a {
                 float: none;
                 margin: 6px 0;

@@ -1,0 +1,85 @@
+{% extends "concord/_page_full_sidebar.html" %}
+
+{% block title %}About Go Botany: Help{% endblock %}
+
+{% block js_require %}
+    require(['site/help']);
+{% endblock %}
+
+{% block body_attributes %}id="about" class="help"{% endblock %}
+
+{% block main_content %}
+    <img class="bookcover" 
+        src="/static/images/layout/about_page_bookcover.jpg" alt="Book
+        cover: Flora Novae Angliae">
+        
+    <h1>About Go Botany</h1>
+        
+    <h2>A New Flora for New England</h2>
+    
+    <ul>
+        <li>Go Botany is a four-year project funded by the 
+        <a href="http://www.nsf.gov/awardsearch/showAward.do?AwardNumber=0840186" 
+            target="_blank">National Science Foundation</a>.</li>
+        <li>This web-based project builds on the Flora Novae Angliae
+        by Arthur Haines (available at the <a
+            href="http://www.newenglandwild.org/store/flora-novae-angliae"
+            target="_blank">Garden Shop</a>), the first
+        comprehensive scientific reference on the region's plant
+        species published in the last 25 years.</li>
+    </ul>
+
+    <h2>Concord Flora</h2>
+        
+    <img src="/static/images/layout/about_page_photo1.jpg"
+        alt="Two people inspecting and photographing a plant in the woods">
+        
+    <ul>
+        <li>The Go Botany Concord Flora
+		<a href="{% url 'level1' 'simple' %}">Simple Key</a> is an interactive
+        key to 1,200 species in Concord, Massachusetts. Answer some questions
+	 	to narrow down to the plant you want to identify. 
+		<a href="{% url 'level1' 'simple' %}">Get Started!</a>
+        </li>
+        <li>Learn about the habitats, characteristics, and uses of plants, 
+        view photos and maps of its distribution, and much more.</li>
+		<li>The Concord Flora is a <a href="/contact/">customized version</a> of Go Botany. To learn about
+		all of the plants of New England, visit the main 
+		<a href="http://gobotany.newenglandwild.org/" target="_blank">Go Botany</a>
+		web site.</li>
+		
+    </ul>
+
+	{% comment %}
+    <h2>Resources for Teachers</h2>
+        
+    <img src="/static/images/layout/about_page_photo2.jpg"
+        alt="An instructor showing a blooming plant to a group of
+        children in the garden">
+        
+    <ul>
+        <li>Go Botany is designed for students and informal learners age 15
+        and older, from beginners to professionals. But educators can
+        incorporate our tools into lessons for all ages! Develop your own
+        curricula, lab modules, and field workshops using Go Botany.</li>
+        <li>New England Wild Flower Society is teaming up with three partners,
+        <a href="http://www.montshire.org/"
+            target="_blank">Montshire Museum of Science</a>, <a
+            href="http://peabody.yale.edu/" target="_blank">Yale Peabody 
+            Museum of Natural History</a>, and the 
+        <a href="http://www.chewonki.org/" target="_blank">Chewonki 
+            Foundation</a> to create customized floras, educational displays,
+        and teaching tools!</li>
+        <li>Share your ideas with other educators using 
+        <a href="{% url 'plantshare-placeholder' %}">PlantShare</a> and posting
+        to our <a href="{% url 'site-teaching' %}">Teaching</a> page.</li>
+        <li>During 2012-2013, New England Wild Flower Society will offer free 
+        training for educators throughout New England on how to use Go
+        Botany.</li>
+    </ul>
+	{% endcomment %}
+{% endblock %}
+
+{% block sidebar_content %}
+    {% include "concord/_help_navigation.html" %}
+{% endblock %}

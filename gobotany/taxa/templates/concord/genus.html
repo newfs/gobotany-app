@@ -26,7 +26,7 @@ Genus: {{ genus.name }} {% if common_name %}({{ common_name }}){% endif %}
 {% block body_attributes %}id="genus" class="taxa"{% endblock %}
 
 {% block main_content %}
-                <h1>Partner: Genus: <i>{{ genus.name }}</i></h1>
+                <h1>Genus: <i>{{ genus.name }}</i></h1>
                 {% if common_name %}
                     <p class="common">{{ common_name|cut:"The "|lower }}</p>
                 {% endif %}
