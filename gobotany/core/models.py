@@ -555,6 +555,14 @@ class Taxon(models.Model):
         # convenience for forming URLs
         return self.scientific_name.split(' ', 1)[1].lower()
 
+    def all_scientific_names(self):
+        """Return a list of all the scientific names for this taxon,
+        including the currently accepted scientific name and any synonyms.
+        """
+        names = [synonym.scientific_name for synonym in self.synonyms.all()]
+        names.append(self.scientific_name)
+        return names
+
     def get_conservation_statuses(self):
         mapping = defaultdict(list)
         for row in self.conservation_statuses.all():

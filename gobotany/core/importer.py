@@ -19,6 +19,7 @@ from django.conf import settings
 from gobotany.core import rebuild
 
 from django.contrib.contenttypes.models import ContentType
+from django.core.exceptions import ObjectDoesNotExist
 from django.core.files.storage import default_storage
 from django.core.urlresolvers import reverse
 from django.db import connection, transaction
@@ -1946,7 +1947,40 @@ def pipe_split(text):
     return words
 
 
-# Import a partner species list Excel spreadsheet.
+# Routines for importing a partner species list Excel spreadsheet follow.
+
+def _set_partner_species(taxon, partner, blurb, current_species_list):
+    """Add, update, or delete the PartnerSpecies record for a taxon,
+    depending on its inclusion in the current list of partner species.
+    """
+    # Get the full list of our names for this taxon, including any synonyms.
+    taxon_names = taxon.all_scientific_names()
+    taxon_in_current_species_list = len(
+        set(taxon_names).intersection(set(current_species_list))) > 0
+
+    # Look for a PartnerSpecies record for this Go Botany taxon.
+    ps = models.PartnerSpecies.objects.filter(
+        species=taxon, partner=partner)
+    if ps:
+        # If this species, accounting also for synonyms, is no longer in
+        # the current list of partner species, delete the PartnerSpecies
+        # record (this also automatically deletes any associated blurb).
+        if not taxon_in_current_species_list:
+            print 'Deleting partner species', taxon.scientific_name
+            ps[0].delete()
+        else:
+            # Update this PartnerSpecies record (blurb, etc.).
+            print 'Updating partner species', taxon.scientific_name
+            ps[0].species_page_blurb = blurb
+            ps[0].save()
+    elif not ps and taxon_in_current_species_list:
+        # Otherwise, if no PartnerSpecies record exists, but the species
+        # (again, accounting also for synonyms) is in the current list of
+        # partner species, add a record.
+        print 'Adding partner species', taxon.scientific_name
+        models.PartnerSpecies(species=taxon, partner=partner,
+                              species_page_blurb=blurb).save()
+
 
 def import_partner_species(partner_short_name, excel_file):
     """Load a partner species list from an Excel file"""
@@ -1969,7 +2003,8 @@ def import_partner_species(partner_short_name, excel_file):
     print 'They list', len(theirs), 'species'
     print 'We know about', len(knowns), 'of their species'
     if unknowns:
-        print 'That leaves', len(unknowns), 'species we have not heard of:'
+        print 'That leaves', len(unknowns), ' that do not match our names'
+        print '(will try to match against synonyms):'
         for name in sorted(unknowns):
             print '   ', repr(name)
     print
@@ -1981,30 +2016,28 @@ def import_partner_species(partner_short_name, excel_file):
         species = sheet.cell(rowx=row, colx=1).value.strip()
         blurbs[species] = sheet.cell(rowx=row, colx=2).value.strip()
 
-    # Go through all the Go Botany taxa and add and remove PartnerSpecies
-    # records as appropriate.
-    for species in specieslist:
-        blurb = blurbs.get(species.scientific_name)
-        # Look for a PartnerSpecies record for this Go Botany taxon.
-        ps = models.PartnerSpecies.objects.filter(
-            species=species, partner=partner)
-        if ps:
-            # If this record's species is no longer in the latest list of
-            # partner species, remove the record.
-            if species.scientific_name not in theirs:
-                print 'Removing partner species', species.scientific_name
-                ps[0].delete()
-            else:
-                # Update this PartnerSpecies record (blurb, etc.).
-                print 'Updating partner species', species.scientific_name
-                ps[0].species_page_blurb = blurb
-                ps[0].save()
-        elif not ps and species.scientific_name in theirs:
-            # Otherwise, if no PartnerSpecies record exists but the species
-            # is in the latest list of partner species, add a record.
-            print 'Adding partner species', species.scientific_name
-            models.PartnerSpecies(species=species, partner=partner,
-                                  species_page_blurb=blurb).save()
+    # Go through all of the Go Botany taxa and add, update, or delete
+    # PartnerSpecies records as appropriate.
+
+    for taxon in specieslist:
+        blurb = blurbs.get(taxon.scientific_name)
+        _set_partner_species(taxon, partner, blurb, theirs)
+
+    # Try matching any "unknown" species to synonyms.
+    if len(unknowns) > 0:
+        print 'Looking for synonyms:'
+        for unknown_name in unknowns:
+            try:
+                synonym = models.Synonym.objects.get(
+                    scientific_name=unknown_name)
+            except ObjectDoesNotExist:
+                continue
+            taxon = synonym.taxon
+            print 'Found synonym: %s --> %s' % (synonym.scientific_name,
+                                                taxon.scientific_name)
+            blurb = blurbs.get(taxon.scientific_name)
+            _set_partner_species(taxon, partner, blurb, theirs)
+        print 'Done looking for synonyms'
 
 
 # Routines for doing full import.
