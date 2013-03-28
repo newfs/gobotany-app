@@ -259,3 +259,13 @@ STATE_NAMES = {
     'ri': u'Rhode Island',
     'vt': u'Vermont',
     }
+
+CONTENT_IMAGE_LOCATIONS = {
+    u'pilegroup': 'taxon-images',
+    u'pile': 'taxon-images',
+    u'family': lambda i,f: 'taxon-images/%s/%s'%(i.content_object.name, f),
+    u'genus': lambda i,f: 'taxon-images/%s/%s'%(i.content_object.family.name,
+                                                f),
+    u'taxon': lambda i,f: 'taxon-images/%s/%s'%(i.content_object.family.name,
+                                                f),
+}
