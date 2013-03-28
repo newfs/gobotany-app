@@ -32,16 +32,19 @@ define([
     };
 
     SearchSuggest.prototype.setup = function() {
-        // Set up a handler that runs every so often to check for
-        // search box changes.
-        this.set_timer();
+        // If the search box exists, set up handlers for it.
+        if (this.search_box) {
+            // Set up a handler that runs every so often to check for
+            // search box changes.
+            this.set_timer();
 
-        // Set up keyboard event handlers.
-        this.search_box.keyup($.proxy(this.handle_keys, this));
+            // Set up keyboard event handlers.
+            this.search_box.keyup($.proxy(this.handle_keys, this));
 
-        // Adjust the horizontal position of the menu when the browser
-        // window is resized.
-        $(window).resize($.proxy(this.set_horizontal_position, this));
+            // Adjust the horizontal position of the menu when the browser
+            // window is resized.
+            $(window).resize($.proxy(this.set_horizontal_position, this));
+        }
     };
 
     SearchSuggest.prototype.get_highlighted_menu_item_index = function() {
