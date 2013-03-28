@@ -719,10 +719,17 @@ class DefaultFilter(models.Model):
 
 # Call this PartnerSite instead of just Site in order to avoid confusion
 # with the Django "sites" framework.
+class PartnerSiteManager(models.Manager):
+    """Allow import by natural keys for partner sites"""
+    def get_by_natural_key(self, short_name):
+        return self.get(short_name=short_name)
+
 class PartnerSite(models.Model):
     """An indicator of to which site--the default main site, or one of the
        partner sites--the associated record pertains.
     """
+    objects = PartnerSiteManager()
+
     short_name = models.CharField(max_length=30)
     species = models.ManyToManyField(Taxon, through='PartnerSpecies')
     users = models.ManyToManyField(User)
@@ -736,6 +743,9 @@ class PartnerSite(models.Model):
     def has_species(self, scientific_name):
         species = self.species.filter(scientific_name=scientific_name)
         return True if species else False
+
+    def natural_key(self):
+        return (self.short_name,)
 
 class PartnerSpecies(models.Model):
     """A binary relation putting taxa in `TaxonGroup` collections."""
