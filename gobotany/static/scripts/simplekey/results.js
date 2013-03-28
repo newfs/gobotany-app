@@ -837,8 +837,8 @@ results_page_init: function(args) {
 
         var last_plant_id_url = $.cookie('last_plant_id_url');
         if (last_plant_id_url === null) {
-            // The cookie request returned null, so cookie support must
-            // be unavailable. Consequently, cannot support the Back button.
+            // The cookie request returned null, so cookie support seems
+            // unavailable and the Back button cannot be supported.
             return;
         }
         else {
@@ -852,7 +852,7 @@ results_page_init: function(args) {
             if (current_url !== last_plant_id_url) {
                 // Now reload the current URL, which reloads the page
                 // and sets everything up again. Although it arguably
-                // would be slicker to restore withou a page reload,
+                // would be slicker to restore without a page reload,
                 // reloading is still fairly quick and avoids the code
                 // having to manange history lists. It also makes it
                 // easy to support coming back to a Level 3 page from
