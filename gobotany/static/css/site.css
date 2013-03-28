@@ -1577,13 +1577,13 @@ header.partner-site nav li a { padding: 5px 32px 0; /* fewer sections, more hori
 /* These styles are common to both smartphone widths */
 @media only screen and (max-width: 600px) { body { margin: 0 auto; padding: 0; }
   body#home header nav #search-suggest .menu { top: 83px; }
-  body#home footer .navigation ul.sections li.home a { background-color: #85c446; }
-  body.simple footer .navigation ul.sections li.simple a { background-color: #85c446; }
-  body.plantshare footer .navigation ul.sections li.plantshare a { background-color: #85c446; }
-  body.full footer .navigation ul.sections li.full a { background-color: #85c446; }
-  body.dkey footer .navigation ul.sections li.dkey a { background-color: #85c446; }
-  body.teaching footer .navigation ul.sections li.teaching a { background-color: #85c446; }
-  body.help footer .navigation ul.sections li.help a { background-color: #85c446; }
+  body#home footer .navigation ul.sections li.home a { background-color: #85c446; color: #000; }
+  body.simple footer .navigation ul.sections li.simple a { background-color: #85c446; color: #000; }
+  body.plantshare footer .navigation ul.sections li.plantshare a { background-color: #85c446; color: #000; }
+  body.full footer .navigation ul.sections li.full a { background-color: #85c446; color: #000; }
+  body.dkey footer .navigation ul.sections li.dkey a { background-color: #85c446; color: #000; }
+  body.teaching footer .navigation ul.sections li.teaching a { background-color: #85c446; color: #000; }
+  body.help footer .navigation ul.sections li.help a { background-color: #85c446; color: #000; }
   #breadcrumb { font-size: 11px; margin: 6px 0; }
   #breadcrumb li { display: inline-block; height: 32px; list-style-type: none; margin: 0 2px 0 0; }
   #breadcrumb .label, #breadcrumb .this-page { display: none; /* Hide 'You are Here' and current page title */ }
