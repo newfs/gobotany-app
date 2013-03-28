@@ -25,7 +25,6 @@ define([
     /* Order filter choices for display. */
 
     var _compare_filter_choices = function(a, b) {
-
         var friendly_text_a = a.friendly_text.toLowerCase();
         var friendly_text_b = b.friendly_text.toLowerCase();
         var choice_a = a.choice.toLowerCase();
@@ -180,81 +179,81 @@ define([
         var $div = $('div.working-area .values');
         $div.empty().addClass('multiple').removeClass('numeric');
 
-        // Apply a custom sort to the filter values.
         var values = utils.clone(f.values);
-        values.sort(_compare_filter_choices);
+            // Apply a custom sort to the filter values.
+            values.sort(_compare_filter_choices);
 
-        // Find out whether there are any drawing images for this filter.
-        var has_drawings = false;
-        for (var i = 0; i < values.length; i++) {
-            var image_path = values[i].image_url;
-            if (image_path.length > 0) {
-                has_drawings = true;
-                choices_class += ' has-drawings';
-                break;
-           }
-        }
-
-        // Create the container for the choices.
-        var $choices = $('<div>', {'class': choices_class}).appendTo($div);
-        var $row = $('<div>', {'class': 'row'}).appendTo($choices);
-
-        // Create a Don't Know radio button item.
-        var item_html = '<div class="choice' +
-            checked(f.value === null) + '">';
-        if (has_drawings === true) {
-            // Include a blank image to keep the layout intact.
-            item_html += '<div class="drawing"><img ' + 
-            'src="' + BLANK_IMAGE + '" ' +
-            'alt=""></div>';
-        }
-        item_html += '<label><input name="char_name"' +
-            checked(f.value === null) +
-            ' type="radio" value=""> <span class="choice-label">' +
-            _format_value() + '</span></label></div>';
-
-        this.div_map = {};
-        this.div_map[''] = $(item_html).appendTo($row)[0];
-
-        // Create radio button items for each character value.
-        var choices_count = 1;
-
-        for (i = 0; i < values.length; i++) {
-            var v = values[i];
-
-            var item_html = '<div class="choice' +
-                checked(f.value === v.choice) + '">';
-
-            if (has_drawings === true) {
-                // Add a drawing image if present. If there is no drawing,
-                // add a blank image to keep the layout intact.
-                item_html += '<div class="drawing">';
-                var image_path = v.image_url;
+            // Find out whether there are any drawing images for this filter.
+            var has_drawings = false;
+            for (var i = 0; i < values.length; i++) {
+                var image_path = values[i].image_url;
                 if (image_path.length > 0) {
-                    var image_id = this._get_image_id_from_path(image_path);
-                    item_html += '<img id="' + image_id +
-                        '" src="' + image_path + '" alt="drawing ' +
-                        'showing ' + v.friendly_text + '">';
-                }
-                else {
-                    item_html += '<img src="' + BLANK_IMAGE + '" alt="">';
-                }
-                item_html += '</div>';
+                    has_drawings = true;
+                    choices_class += ' has-drawings';
+                    break;
+               }
             }
 
-            item_html += '<label><input name="char_name" type="radio"' +
-                checked(f.value === v.choice) +
-                ' value="' + v.choice + '">';
+            // Create the container for the choices.
+            var $choices = $('<div>', {'class': choices_class}).appendTo($div);
+            var $row = $('<div>', {'class': 'row'}).appendTo($choices);
 
-            item_html += ' <span class="choice-label"><span class="label">' +
-                _format_value(v) + '</span> <span class="count">(n)</span>' +
-                '</span></label>';
+            // Create a Don't Know radio button item.
+            var item_html = '<div class="choice' +
+                checked(f.value === null) + '">';
+            if (has_drawings === true) {
+                // Include a blank image to keep the layout intact.
+                item_html += '<div class="drawing"><img ' + 
+                'src="' + BLANK_IMAGE + '" ' +
+                'alt=""></div>';
+            }
+            item_html += '<label><input name="char_name"' +
+                checked(f.value === null) +
+                ' type="radio" value=""> <span class="choice-label">' +
+                _format_value() + '</span></label></div>';
 
-            // Start a new row, if necessary, to fit this choice.
-            if (choices_count % CHOICES_PER_ROW === 0)
-                var $row = $('<div>', {'class': 'row'}).appendTo($choices);
+            this.div_map = {};
+            this.div_map[''] = $(item_html).appendTo($row)[0];
 
-            choices_count += 1;
+            // Create radio button items for each character value.
+            var choices_count = 1;
+
+            for (i = 0; i < values.length; i++) {
+                var v = values[i];
+
+                var item_html = '<div class="choice' +
+                    checked(f.value === v.choice) + '">';
+
+                if (has_drawings === true) {
+                    // Add a drawing image if present. If there is no drawing,
+                    // add a blank image to keep the layout intact.
+                    item_html += '<div class="drawing">';
+                    var image_path = v.image_url;
+                    if (image_path.length > 0) {
+                        var image_id = this._get_image_id_from_path(image_path);
+                        item_html += '<img id="' + image_id +
+                            '" src="' + image_path + '" alt="drawing ' +
+                            'showing ' + v.friendly_text + '">';
+                    }
+                    else {
+                        item_html += '<img src="' + BLANK_IMAGE + '" alt="">';
+                    }
+                    item_html += '</div>';
+                }
+
+                item_html += '<label><input name="char_name" type="radio"' +
+                    checked(f.value === v.choice) +
+                    ' value="' + v.choice + '">';
+
+                item_html += ' <span class="choice-label"><span class="label">' +
+                    _format_value(v) + '</span> <span class="count">(n)</span>' +
+                    '</span></label>';
+
+                // Start a new row, if necessary, to fit this choice.
+                if (choices_count % CHOICES_PER_ROW === 0)
+                    var $row = $('<div>', {'class': 'row'}).appendTo($choices);
+
+                choices_count += 1;
 
             var character_value_div = $(item_html).appendTo($row)[0];
             this.div_map[v.choice] = character_value_div;
@@ -291,7 +290,7 @@ define([
                 glossarizer.glossarize($('span.label', character_value_div),
                                        this.terms_section);
             }
-        }
+        } // end for each value
 
         // Call a method when radio button is clicked.
         $div.find('input').bind('click', $.proxy(this, '_on_choice_change'));

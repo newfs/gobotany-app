@@ -49,8 +49,8 @@ def level3_test_links(request):
 
 
 @vary_on_headers('Host')
-@cache_control(max_age=60 * 60)
-@cache_page(60 * 60)
+#@cache_control(max_age=60 * 60)
+#@cache_page(60 * 60)   # disable caching due to partner-sites Issue #420
 def level1(request, key):
     short_name = partner_short_name(request)
     groups_list_page = GroupsListPage.objects.get()
@@ -71,8 +71,8 @@ def level1(request, key):
                 }, request)
 
 @vary_on_headers('Host')
-@cache_control(max_age=60 * 60)
-@cache_page(60 * 60)
+#@cache_control(max_age=60 * 60)
+#@cache_page(60 * 60)   # disable caching due to partner-sites Issue #420
 def level2(request, key, pilegroup_slug):
     pilegroup = get_object_or_404(PileGroup, slug=pilegroup_slug)
 

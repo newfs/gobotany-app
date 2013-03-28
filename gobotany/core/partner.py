@@ -1,5 +1,7 @@
 """Routines that help adapt Go Botany sites for different partners."""
 
+import sys
+
 from django.conf import settings
 from django.http import Http404
 from django.shortcuts import render_to_response
@@ -13,11 +15,23 @@ def which_partner(request):
     short_name = short_name.split('-', 1)[0]  # 'foo' if 'foo-dev.com'
     possibilities = (short_name, 'gobotany')
     matches = list(PartnerSite.objects.filter(short_name__in=(possibilities)))
+
+    #message = ('which_partner: request.get_host()=%s short_name=%s '
+    #           'len(possibilities)=%d len(matches)=%d') % (
+    #            request.get_host(), short_name, len(possibilities),
+    #            len(matches))
+    #print >> sys.stderr, message
+    #matches_names = [match.short_name for match in matches]
+    #print >> sys.stderr, 'matches_names:', ' '.join(matches_names)
+
+    match = None
     if len(matches) > 1 and matches[1].short_name == short_name:
-        return matches[1]
+        match = matches[1]
     elif len(matches):
-        return matches[0]
-    return None
+        match = matches[0]
+
+    #print >> sys.stderr, 'about to return match:', match
+    return match
 
 def partner_short_name(request):
     partner = which_partner(request)

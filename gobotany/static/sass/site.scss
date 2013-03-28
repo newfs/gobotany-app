@@ -27,13 +27,16 @@ $headings-font: "Trebuchet MS", Helvetica, Arial, "Lucida Sans Unicode", sans-se
 $body-font: Verdana, Geneva, "Lucida Sans Unicode", sans-serif;
 $narrower-body-font: Tahoma, "Trebuchet MS", "Lucida Sans Unicode", sans-serif;
 
-$link-green: #508e31;
+$link-green: #317b0c;
 $heading-green: #437829;
 $border-green: #c3d941;
 $light-green: #e1f0d1;
 $green-yellow: #ccdf53;
 $medium-brown: #807121;
 $pale-lime-green: #defcb3;
+
+$visited-link-color: #666e0b;
+$active-link-color: #45aC11;
 
 $text-color: #000;
 $footer-background-color: #b4d57f;
@@ -150,20 +153,25 @@ html, button, input, select, textarea {
 a {
     color: $link-green;
     text-decoration: none;
+    &:visited {
+        color: $visited-link-color;
+    }
+    &:hover {
+        text-decoration: underline;
+    }
+    &:active {
+        color: $active-link-color;
+    }
+    &:not([href]) {
+        color: $text-color;
+    }
 }
-a:not([href]) {
-    color: $text-color;
-}
-header nav a:not([href]) {
-    color: #fff;
-}
-a:hover {
-    text-decoration: underline;
-}
+
 *|*:-moz-any-link:active, *|*:-moz-any-link:focus {
     border: 0;
     outline: 0;
 }
+
 h1, h2, h3, h4, h5, h6 {
     font-family: $headings-font;
     font-weight: normal;
@@ -367,6 +375,9 @@ header {
             display: block;
             height: 35px;
             padding: 5px 8px 0;
+            &:visited, &:not([href]) {
+                color: #fff;
+            }
         }
         > a {
             display: none;  /* Omit the 'sections' link by default */
