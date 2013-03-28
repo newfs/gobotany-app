@@ -1594,7 +1594,7 @@ header.partner-site nav li a { padding: 5px 32px 0; /* fewer sections, more hori
   h2 { font-size: 16px; }
   h3 { font-size: 14px; }
   header { height: 90px; }
-  header nav { background: #317b0c; clear: left; height: 32px; padding: 0; }
+  header nav { background: #508e31; clear: left; height: 32px; padding: 0; }
   header nav > a { background: #437829 url(/static/images/icons/menu-icon.png) 7px 5px no-repeat; border: 1px solid #437829; display: inline-block; font-size: 30px; height: 24px; line-height: 68%; margin: 3px 0 0 4px; padding: 0 2px 0 7px; position: relative; -webkit-border-radius: 5px; -moz-border-radius: 5px; -ms-border-radius: 5px; -o-border-radius: 5px; border-radius: 5px; }
   header nav #search { margin-top: 6px; padding-left: 10px; }
   header nav > ul { display: none; /* will use bottom navigation instead of top */ }
