@@ -340,6 +340,12 @@ $search-suggest-menu-top: 83px;
         width: 200px;
     }
 
+    #sb-overlay {
+        /* Fix: make the Shadowbox overlay cover the entire background
+         * on small screens in iOS. */
+        height: 120%;
+    }
+
     /* Advanced ID placeholder page: delete after tools release */
     #advanced-id #main {
         .dk-landing-section {

@@ -1635,6 +1635,7 @@ header.partner-site nav li a { padding: 5px 32px 0; /* fewer sections, more hori
   .content #sidebar { background: #fff; border: 1px solid #c3d941; clear: left; height: auto; margin-left: 8px; margin-right: 8px; }
   .content #sidebar .section { padding-bottom: 16px; }
   .gb-tooltip { width: 200px; }
+  #sb-overlay { /* Fix: make the Shadowbox overlay cover the entire background on small screens in iOS. */ height: 120%; }
   /* Advanced ID placeholder page: delete after tools release */
   #advanced-id #main .dk-landing-section { height: auto; margin-top: 14px; padding: 0; width: auto; }
   #advanced-id #main .dk-landing-section > a { margin-left: 16px; position: static; }
