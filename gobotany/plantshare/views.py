@@ -3,6 +3,7 @@ from random import randint
 
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.core.urlresolvers import reverse, reverse_lazy
+from django.conf import settings
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render, render_to_response
 from django.template import RequestContext
@@ -437,8 +438,10 @@ def ajax_sightings(request):
                 num_photos = len(DUMMY_PHOTOS[plant_name])
                 photo_index = randint(0, num_photos - 1)
                 photos.append(
-                    'http://newfs.s3.amazonaws.com/taxon-images-160x149/%s' \
-                        % DUMMY_PHOTOS[plant_name][photo_index])
+                    'http://%s.s3.amazonaws.com/taxon-images-160x149/%s' \
+                        % (
+                    getattr(settings, 'AWS_STORAGE_BUCKET_NAME', 'newfs'),
+                    DUMMY_PHOTOS[plant_name][photo_index]))
 
         sightings_json.append({
             'id': sighting.id,

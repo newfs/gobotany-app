@@ -8,6 +8,7 @@ from django.db.models import Q
 from django.template import Context, Library
 from django.template.loader import get_template
 from django.utils.safestring import SafeUnicode, mark_safe
+from django.conf import settings
 from gobotany.dkey import models
 
 register = Library()
@@ -79,7 +80,8 @@ def expand_group_title(title):
 
 @register.filter
 def figure_url(figure):
-    return 'http://newfs.s3.amazonaws.com/dkey-figures/figure-{}.png'.format(
+    return 'http://{}.s3.amazonaws.com/dkey-figures/figure-{}.png'.format(
+        getattr(settings, 'AWS_STORAGE_BUCKET_NAME', 'newfs'),
         figure.number)
 
 @register.filter
