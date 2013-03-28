@@ -86,6 +86,7 @@ define([
     };
 
     Choice.prototype.dismiss = function(e) {
+        console.log('inside Choice dismiss');
         if (e) {
             e.preventDefault();
         }

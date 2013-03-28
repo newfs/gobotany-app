@@ -24,12 +24,13 @@ define([
     };
 
     Slider.prototype.dismiss = function () {
+        console.log('inside Slider dismiss');
         if (this.slider_container_node) {
             $(this.slider_container_node).empty();
         }
         this.horizontal_slider = this.slider_container_node = null;
-        //this.inherited(arguments);   // no longer works, but working
-                                       // area does not dismiss
+        
+        Choice.prototype.dismiss.call(this);
     };
 
     Slider.prototype._compute_min_and_max = function () {
@@ -75,26 +76,26 @@ define([
     };
 
     Slider.prototype._value_changed = function () {
-        /* Disable the apply button when we're on either the default
-           value or the value that was previous selected */
+        /* Disable the apply button when on either the default value or
+           the value that was previously selected. */
         this._compute_min_and_max();
 
         var $apply_button = $('.apply-btn', this.div);
         var slider_value = this._current_value();
         var filter_value = this.filter.get('value');
-        // Allow type coersion in this comparison, since we're
-        // comparing text from the filter to a numerical slider value
+
+        // Allow type coersion in this comparison because it is
+        // comparing text from the filter to a numerical slider value.
         if (slider_value == filter_value)
             $apply_button.addClass('disabled');
         else
             $apply_button.removeClass('disabled');
     };
 
-    /* Sliders only have one filter value, so we don't need to compute
-       number of taxa for each "choice."  We also don't want to get
-       javascript errors from the parent version of this function, so
-       just override it with an empty function. */
-
+    /* Sliders only have one filter value, so there is no need to
+       compute taxa counts for choices. In order to avoid getting
+       JavaScript errors from the parent version of this function,
+       override it with an empty function. */
     Slider.prototype._on_filter_change = function () {
     };
 
