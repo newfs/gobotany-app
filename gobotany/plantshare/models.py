@@ -190,7 +190,7 @@ if settings.DEBUG:
 elif settings.IS_AWS_AUTHENTICATED:
     # Direct upload to S3
     upload_storage = S3BotoStorage(location='/upload_images',
-            bucket='newfs')
+            bucket=getattr(settings, 'AWS_STORAGE_BUCKET_NAME', 'newfs'))
 else:
     # Direct upload to S3
     upload_storage = Storage()
