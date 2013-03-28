@@ -1226,7 +1226,7 @@ class Importer(object):
         already_seen = set()
 
         for line in ls:
-            image_path = line.split(' s3://newfs/')[1].strip()
+            image_path = re.split(' s3://\w+/', line)[1].strip()
             dirname, filename = image_path.rsplit('/', 1)
             if '.' not in filename:
                 log.error('  file lacks an extension: %s', filename)
