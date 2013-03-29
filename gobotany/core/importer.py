@@ -2337,6 +2337,14 @@ def takes_single_filename(callable):
         del spec.args[0]
     return spec.args == ['filename']
 
+def takes_single_csv(callable):
+    spec = inspect.getargspec(callable)
+    if spec.args[0:1] == ['self']:
+        del spec.args[0]
+    if spec.args[0:1] == ['db']:
+        del spec.args[0]
+    return spec.args and spec.args[0].endswith('_csv')
+
 def takes_many_filenames(callable):
     spec = inspect.getargspec(callable)
     if spec.args[0:1] == ['self']:
@@ -2353,6 +2361,10 @@ def add_subcommand(subs, name, function):
                          help='S3 zipfile, local zipfile, or local directory')
     elif takes_single_filename(function):
         sub.add_argument('filename', help='name of the file to load')
+    elif takes_single_csv(function):
+        sub.add_argument('csv_filename', help='name of the csv file to load')
+        sub.add_argument('csv_data_source', nargs='?',
+                         help='S3 zipfile, local zipfile, or local directory')
     elif takes_many_filenames(function):
         sub.add_argument('filenames', help='one or more files to load',
                          nargs='*')
@@ -2410,6 +2422,9 @@ def main():
         function_args.append(args.data_source)
     if hasattr(args, 'filename'):
         function_args.append(PlainFile('.', args.filename))
+    if hasattr(args, 'csv_filename'):
+        function_args.append(get_data_fileopener(args.csv_data_source)(
+            args.csv_filename))
     if hasattr(args, 'filenames'):
         function_args.extend(PlainFile('.', f) for f in args.filenames)
 
