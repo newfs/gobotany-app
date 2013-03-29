@@ -549,6 +549,7 @@ class Taxon(models.Model):
         verbose_name = 'taxon'
         verbose_name_plural = 'taxa'
         ordering = ['scientific_name']
+        permissions = (('botanist', 'botanist'),)
 
     def __unicode__(self):
         return u'%s id=%s' % (self.scientific_name, self.id)

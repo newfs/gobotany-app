@@ -402,7 +402,7 @@ def edit_lit_sources(request, dotted_datetime):
         }, context_instance=RequestContext(request))
 
 
-@permission_required('botanist')
+@permission_required('core.botanist')
 def partner_plants(request, idnum):
     partner = get_object_or_404(models.PartnerSite, id=idnum)
     plants = list(models.PartnerSpecies.objects
@@ -418,7 +418,7 @@ def partner_plants(request, idnum):
 
 
 
-@permission_required('botanist')
+@permission_required('core.botanist')
 def partner_plants_upload(request, idnum):
     partner = get_object_or_404(models.PartnerSite, id=idnum)
     return_url = '..'
@@ -519,7 +519,7 @@ def partner_plants_upload(request, idnum):
         }, context_instance=RequestContext(request))
 
 
-@permission_required('botanist')
+@permission_required('core.botanist')
 def partner_plants_csv(request, idnum):
     partner = get_object_or_404(models.PartnerSite, id=idnum)
     wrangler = wranglers.PartnerPlants(partner)
