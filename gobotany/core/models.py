@@ -342,6 +342,16 @@ class ImageType(models.Model):
         return self.name
 
 
+def _content_image_path(instance, filename):
+    ctype = instance.content_type
+    dirname = 'content_images'
+    if ctype is not None:
+        dirname = settings.CONTENT_IMAGE_LOCATIONS.get(ctype.model,
+                                                       'content_images')
+        if callable(dirname):
+            return dirname(instance, filename)
+    return '%s/%s'%(dirname, filename)
+
 class ContentImage(models.Model):
     """An image of a taxon, pile, or other element of botany content.
 
@@ -356,7 +366,7 @@ class ContentImage(models.Model):
     """
     image = models.ImageField('content image',
                               max_length=300,  # long filenames
-                              upload_to='content_images')
+                              upload_to=_content_image_path)
     alt = models.CharField(max_length=300,
                            verbose_name=u'title (alt text)')
     rank = models.PositiveSmallIntegerField(
@@ -402,7 +412,7 @@ class ContentImage(models.Model):
 
     def __unicode__(self):
         name = '"%s" - %s image for ' % (self.alt, self.image_type)
-        if self.content_type.name == 'taxon':
+        if self.content_type.name == 'taxon' and self.content_object:
             name += self.content_object.scientific_name
         else:
             name += '%s: %s' % (self.content_type.name, self.object_id)
