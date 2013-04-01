@@ -97,9 +97,9 @@ define([
                 parseInt(this.$input_box.css('padding-left')) - 3;
         }
         this.$menu.css('left',
-                       $input_box_position.left + input_box_left_padding);
+            $input_box_position.left + input_box_left_padding);
         this.$menu.css('top',
-                       $input_box_position.top + this.$input_box.outerHeight());
+            $input_box_position.top + this.$input_box.outerHeight());
     };
 
     Suggester.prototype.handle_keys_up = function (e) {

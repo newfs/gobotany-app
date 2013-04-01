@@ -234,7 +234,13 @@ div.scrollWrapper { position: relative; overflow: hidden; width: 100%; height: 1
 
 div.scrollableArea { position: relative; width: auto; height: 100%; }
 
-/* Definitions */
+/* Import for Go Botany common definitions */
+/* Go Botany common definitions */
+/* for gradient, etc. */
+.orange-button, body.taxa .visit-dkey a, body.plantshare.sighting .modal-container .image-modal a.button, body.plantshare#ask #main .submit, body.plantshare#plantshare #ask .submit, body.plantshare#profile div.section-container .image-modal a.button, #dkey #main .offer-help-aside a.button, #dkey #main ul.couplets a.button, #dkey #main a.show-all-button { min-width: 10em; -webkit-border-radius: 1em; -moz-border-radius: 1em; -ms-border-radius: 1em; -o-border-radius: 1em; border-radius: 1em; -webkit-box-shadow: 0px 1px 4px #a2a64d; -moz-box-shadow: 0px 1px 4px #a2a64d; box-shadow: 0px 1px 4px #a2a64d; border: 1px solid #dc9402; background: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #dc9402), color-stop(40%, #f0b448), color-stop(100%, #dc9402)); background: -webkit-linear-gradient(top, #dc9402 0%, #f0b448 40%, #dc9402 100%); background: -moz-linear-gradient(top, #dc9402 0%, #f0b448 40%, #dc9402 100%); background: -o-linear-gradient(top, #dc9402 0%, #f0b448 40%, #dc9402 100%); background: linear-gradient(top, #dc9402 0%, #f0b448 40%, #dc9402 100%); padding: 0.3em 0.5em; color: white; text-align: center; text-decoration: none; font-family: "Trebuchet MS", Helvetica, Arial, "Lucida Sans Unicode", sans-serif; font-weight: bold; line-height: 1.5em; letter-spacing: 0.08333em; }
+.orange-button:hover, body.taxa .visit-dkey a:hover, body.plantshare.sighting .modal-container .image-modal a.button:hover, body.plantshare#ask #main .submit:hover, body.plantshare#plantshare #ask .submit:hover, body.plantshare#profile div.section-container .image-modal a.button:hover, #dkey #main .offer-help-aside a.button:hover, #dkey #main ul.couplets a.button:hover, #dkey #main a.show-all-button:hover { background: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #e29b0b), color-stop(32%, #f6be59), color-stop(50%, #f6be59), color-stop(100%, #e39d0e)); background: -webkit-linear-gradient(top, #e29b0b 0%, #f6be59 32%, #f6be59 50%, #e39d0e 100%); background: -moz-linear-gradient(top, #e29b0b 0%, #f6be59 32%, #f6be59 50%, #e39d0e 100%); background: -o-linear-gradient(top, #e29b0b 0%, #f6be59 32%, #f6be59 50%, #e39d0e 100%); background: linear-gradient(top, #e29b0b 0%, #f6be59 32%, #f6be59 50%, #e39d0e 100%); }
+.orange-button.disabled, body.taxa .visit-dkey a.disabled, body.plantshare.sighting .modal-container .image-modal a.disabled.button, body.plantshare#ask #main .disabled.submit, body.plantshare#plantshare #ask .disabled.submit, body.plantshare#profile div.section-container .image-modal a.disabled.button, #dkey #main .offer-help-aside a.disabled.button, #dkey #main ul.couplets a.disabled.button, #dkey #main a.disabled.show-all-button { border-color: #ecda92; background: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #ecda92), color-stop(32%, #f1e3a6), color-stop(50%, #f1e3a6), color-stop(100%, #ecdb93)); background: -webkit-linear-gradient(top, #ecda92 0%, #f1e3a6 32%, #f1e3a6 50%, #ecdb93 100%); background: -moz-linear-gradient(top, #ecda92 0%, #f1e3a6 32%, #f1e3a6 50%, #ecdb93 100%); background: -o-linear-gradient(top, #ecda92 0%, #f1e3a6 32%, #f1e3a6 50%, #ecdb93 100%); background: linear-gradient(top, #ecda92 0%, #f1e3a6 32%, #f1e3a6 50%, #ecdb93 100%); }
+
 /* Site-wide styles */
 body { background: #f0f0c0; color: black; font-family: Verdana, Geneva, "Lucida Sans Unicode", sans-serif; font-size: 12px; }
 
@@ -320,13 +326,7 @@ header nav #search { background: white url(/static/images/layout/search-left.png
 header nav #search form { display: block; margin: 0; padding: 0; width: 262px; }
 header nav #search input { background: #fff; border: 0; float: left; font-family: "Trebuchet MS", Helvetica, Arial, "Lucida Sans Unicode", sans-serif; font-size: 14px; height: 20px; margin: 0; padding: 0; width: 219px; }
 header nav #search input:focus { outline: none; }
-header nav #search button { background: #317b0c url(/static/images/layout/search-btn.png) 0 0 no-repeat; border: none; cursor: pointer; float: right; height: 20px; margin: 0; outline: none; padding: 0; width: 43px; display: block; text-indent: -9000px; }
-header nav #search-suggest .menu { background: #fff; border: 1px solid #cccccc; border-bottom-color: #999; border-right-color: #999; font-family: "Trebuchet MS", Helvetica, Arial, "Lucida Sans Unicode", sans-serif; margin: 0 auto; position: absolute; text-align: left; top: 105px; width: 256px; z-index: 101; }
-header nav #search-suggest .menu li { clear: left; display: block; float: left; font-weight: bold; margin: 0; padding: 3px; width: 250px; }
-header nav #search-suggest .menu li.highlighted { background-color: #defcb3; }
-header nav #search-suggest .menu a { color: black; cursor: default; height: inherit; padding: 0; text-decoration: none; }
-header nav #search-suggest .menu a:hover, header nav #search-suggest .menu li:hover { background: #defcb3; }
-header nav #search-suggest .menu span { font-weight: normal; }
+header nav #search button { background: #317b0c url(/static/images/layout/search-btn.png) 0 0 no-repeat; border: none; cursor: pointer; float: right; height: 20px; margin: 0; outline: none; padding: 0; width: 42px; display: block; text-indent: -9000px; }
 
 /* Main content */
 .content { padding: 8px 0 0; }
@@ -449,10 +449,16 @@ footer .support { margin-right: 0; padding: 18px 0; }
 .errorlist li:before { content: "× "; font-size: 22px; font-weight: bold; margin: 0 0 20px; padding: 0; vertical-align: text-top; }
 
 /* Text input with suggestions */
-input.suggest + div { background: #fff; border: 1px solid #999999; position: absolute; z-index: 100; }
+input.suggest + div { background: #fff; border: 1px solid #999999; position: absolute; z-index: 150; -webkit-box-shadow: 0px 1px 2px #a2a64d; -moz-box-shadow: 0px 1px 2px #a2a64d; box-shadow: 0px 1px 2px #a2a64d; }
 input.suggest + div li { clear: both; font-weight: bold; list-style-type: none; margin: 0; padding: 3px; }
 input.suggest + div li.selected { background-color: #defcb3; }
 input.suggest + div li span { font-weight: normal; }
+
+/* Adjustments for site search box */
+header nav #search input { padding-left: 4px; width: 215px; }
+
+#search-suggest + div { width: 253px !important; /* widen a bit, beneath wide orange button */ }
+#search-suggest + div li { width: 247px; }
 
 /* Teaching page */
 body.teaching #main li { list-style-type: none; }
@@ -502,7 +508,7 @@ body.teaching #main li { list-style-type: none; }
 #home #banner #cta { height: 41px; margin: 21px 2px 0; background: url(/static/images/layout/get-started-btn-orange.png) 0 0 no-repeat transparent; display: block; text-indent: -9000px; }
 #home #banner #cta:hover { background-position: 0 -41px; }
 #home #banner #cta:active { background-position: 0 -82px; }
-#home #overlay { background: rgba(255, 255, 255, 0.8); height: 318px; padding: 15px 30px 0; position: absolute; left: 646px; text-align: center; top: 6px; width: 248px; z-index: 100; }
+#home #overlay { background: rgba(255, 255, 255, 0.8); height: 318px; padding: 15px 30px 0; position: absolute; left: 646px; text-align: center; top: 6px; width: 248px; z-index: 50; }
 #home .three-col { background: url(/static/images/layout/dot.png) right top repeat-y; float: left; height: 240px; margin: 354px 23px 5px 0; padding: 8px 23px 0 0; width: 289px; }
 #home .three-col.last { background: 0; margin-right: 0; padding: 8px 0 0 0; }
 #home .three-col.last a.learn-more { margin: 33px 0 0 0; }
@@ -592,12 +598,6 @@ body.teaching #main li { list-style-type: none; }
 .section #na-dist-county-map { /* SVG map: WebKit needs height and width set */ height: 109px; width: 187px; }
 
 /* Styles for taxa (family, genus, species) pages */
-/* Definitions */
-/* for gradient, etc. */
-.orange-button, body.taxa .visit-dkey a, body.plantshare.sighting .modal-container .image-modal a.button, body.plantshare#ask #main .submit, body.plantshare#plantshare #ask .submit, body.plantshare#profile div.section-container .image-modal a.button, #dkey #main .offer-help-aside a.button, #dkey #main ul.couplets a.button, #dkey #main a.show-all-button { min-width: 10em; -webkit-border-radius: 1em; -moz-border-radius: 1em; -ms-border-radius: 1em; -o-border-radius: 1em; border-radius: 1em; -webkit-box-shadow: 0px 1px 4px #a2a64d; -moz-box-shadow: 0px 1px 4px #a2a64d; box-shadow: 0px 1px 4px #a2a64d; border: 1px solid #dc9402; background: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #dc9402), color-stop(40%, #f0b448), color-stop(100%, #dc9402)); background: -webkit-linear-gradient(top, #dc9402 0%, #f0b448 40%, #dc9402 100%); background: -moz-linear-gradient(top, #dc9402 0%, #f0b448 40%, #dc9402 100%); background: -o-linear-gradient(top, #dc9402 0%, #f0b448 40%, #dc9402 100%); background: linear-gradient(top, #dc9402 0%, #f0b448 40%, #dc9402 100%); padding: 0.3em 0.5em; color: white; text-align: center; text-decoration: none; font-family: "Trebuchet MS", Helvetica, Arial, "Lucida Sans Unicode", sans-serif; font-weight: bold; line-height: 1.5em; letter-spacing: 0.08333em; }
-.orange-button:hover, body.taxa .visit-dkey a:hover, body.plantshare.sighting .modal-container .image-modal a.button:hover, body.plantshare#ask #main .submit:hover, body.plantshare#plantshare #ask .submit:hover, body.plantshare#profile div.section-container .image-modal a.button:hover, #dkey #main .offer-help-aside a.button:hover, #dkey #main ul.couplets a.button:hover, #dkey #main a.show-all-button:hover { background: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #e29b0b), color-stop(32%, #f6be59), color-stop(50%, #f6be59), color-stop(100%, #e39d0e)); background: -webkit-linear-gradient(top, #e29b0b 0%, #f6be59 32%, #f6be59 50%, #e39d0e 100%); background: -moz-linear-gradient(top, #e29b0b 0%, #f6be59 32%, #f6be59 50%, #e39d0e 100%); background: -o-linear-gradient(top, #e29b0b 0%, #f6be59 32%, #f6be59 50%, #e39d0e 100%); background: linear-gradient(top, #e29b0b 0%, #f6be59 32%, #f6be59 50%, #e39d0e 100%); }
-.orange-button.disabled, body.taxa .visit-dkey a.disabled, body.plantshare.sighting .modal-container .image-modal a.disabled.button, body.plantshare#ask #main .disabled.submit, body.plantshare#plantshare #ask .disabled.submit, body.plantshare#profile div.section-container .image-modal a.disabled.button, #dkey #main .offer-help-aside a.disabled.button, #dkey #main ul.couplets a.disabled.button, #dkey #main a.disabled.show-all-button { border-color: #ecda92; background: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #ecda92), color-stop(32%, #f1e3a6), color-stop(50%, #f1e3a6), color-stop(100%, #ecdb93)); background: -webkit-linear-gradient(top, #ecda92 0%, #f1e3a6 32%, #f1e3a6 50%, #ecdb93 100%); background: -moz-linear-gradient(top, #ecda92 0%, #f1e3a6 32%, #f1e3a6 50%, #ecdb93 100%); background: -o-linear-gradient(top, #ecda92 0%, #f1e3a6 32%, #f1e3a6 50%, #ecdb93 100%); background: linear-gradient(top, #ecda92 0%, #f1e3a6 32%, #f1e3a6 50%, #ecdb93 100%); }
-
 body.taxa { /* Override Shadowbox styles to allow multiple title lines for showing a photo title, photographer credit, and copyright. */ /* For family and genus pages */ }
 body.taxa #main h3 { color: #807121; font-size: 30px; line-height: 90%; }
 body.taxa #main h4 { clear: left; font-size: 18px; padding-top: 30px; }
@@ -706,12 +706,6 @@ body.taxa#species #species-images .scrollableArea a { border-right: 5px solid wh
 @media only screen and (max-width: 1024px) { /* styles here */ }
 /* End media queries styles for taxa pages */
 /* Simple and Full Keys (simplekey Django app) */
-/* Definitions */
-/* for gradient, etc. */
-.orange-button, body.taxa .visit-dkey a, body.plantshare.sighting .modal-container .image-modal a.button, body.plantshare#ask #main .submit, body.plantshare#plantshare #ask .submit, body.plantshare#profile div.section-container .image-modal a.button, #dkey #main .offer-help-aside a.button, #dkey #main ul.couplets a.button, #dkey #main a.show-all-button { min-width: 10em; -webkit-border-radius: 1em; -moz-border-radius: 1em; -ms-border-radius: 1em; -o-border-radius: 1em; border-radius: 1em; -webkit-box-shadow: 0px 1px 4px #a2a64d; -moz-box-shadow: 0px 1px 4px #a2a64d; box-shadow: 0px 1px 4px #a2a64d; border: 1px solid #dc9402; background: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #dc9402), color-stop(40%, #f0b448), color-stop(100%, #dc9402)); background: -webkit-linear-gradient(top, #dc9402 0%, #f0b448 40%, #dc9402 100%); background: -moz-linear-gradient(top, #dc9402 0%, #f0b448 40%, #dc9402 100%); background: -o-linear-gradient(top, #dc9402 0%, #f0b448 40%, #dc9402 100%); background: linear-gradient(top, #dc9402 0%, #f0b448 40%, #dc9402 100%); padding: 0.3em 0.5em; color: white; text-align: center; text-decoration: none; font-family: "Trebuchet MS", Helvetica, Arial, "Lucida Sans Unicode", sans-serif; font-weight: bold; line-height: 1.5em; letter-spacing: 0.08333em; }
-.orange-button:hover, body.taxa .visit-dkey a:hover, body.plantshare.sighting .modal-container .image-modal a.button:hover, body.plantshare#ask #main .submit:hover, body.plantshare#plantshare #ask .submit:hover, body.plantshare#profile div.section-container .image-modal a.button:hover, #dkey #main .offer-help-aside a.button:hover, #dkey #main ul.couplets a.button:hover, #dkey #main a.show-all-button:hover { background: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #e29b0b), color-stop(32%, #f6be59), color-stop(50%, #f6be59), color-stop(100%, #e39d0e)); background: -webkit-linear-gradient(top, #e29b0b 0%, #f6be59 32%, #f6be59 50%, #e39d0e 100%); background: -moz-linear-gradient(top, #e29b0b 0%, #f6be59 32%, #f6be59 50%, #e39d0e 100%); background: -o-linear-gradient(top, #e29b0b 0%, #f6be59 32%, #f6be59 50%, #e39d0e 100%); background: linear-gradient(top, #e29b0b 0%, #f6be59 32%, #f6be59 50%, #e39d0e 100%); }
-.orange-button.disabled, body.taxa .visit-dkey a.disabled, body.plantshare.sighting .modal-container .image-modal a.disabled.button, body.plantshare#ask #main .disabled.submit, body.plantshare#plantshare #ask .disabled.submit, body.plantshare#profile div.section-container .image-modal a.disabled.button, #dkey #main .offer-help-aside a.disabled.button, #dkey #main ul.couplets a.disabled.button, #dkey #main a.disabled.show-all-button { border-color: #ecda92; background: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #ecda92), color-stop(32%, #f1e3a6), color-stop(50%, #f1e3a6), color-stop(100%, #ecdb93)); background: -webkit-linear-gradient(top, #ecda92 0%, #f1e3a6 32%, #f1e3a6 50%, #ecdb93 100%); background: -moz-linear-gradient(top, #ecda92 0%, #f1e3a6 32%, #f1e3a6 50%, #ecdb93 100%); background: -o-linear-gradient(top, #ecda92 0%, #f1e3a6 32%, #f1e3a6 50%, #ecdb93 100%); background: linear-gradient(top, #ecda92 0%, #f1e3a6 32%, #f1e3a6 50%, #ecdb93 100%); }
-
 body.skey { /* Styles for groups and subgroups (Levels 1 and 2) pages */ /* end &.groups-subgroups */ /* Styles for results (Level 3) page */ /* end &.results */ }
 body.skey.groups-subgroups { /* Override Shadowbox styles to allow multiple title lines for showing a photo title, photographer credit, and copyright. */ }
 body.skey.groups-subgroups .img-gallery .frame { cursor: pointer; }
@@ -1082,12 +1076,6 @@ ul.get-more-questions-menu ul li[data-character] { color: black; }
 @media only screen and (max-width: 1024px) { body.skey.results #question-nav .option-list > li:hover, body.skey.results #question-nav .option-list > li.active, body.skey.results #question-nav .option-list > li.answered.active { background: #fff; } }
 /* End media queries styles for Simple and Full Keys */
 /* PlantShare */
-/* Definitions */
-/* for gradient, etc. */
-.orange-button, body.taxa .visit-dkey a, body.plantshare.sighting .modal-container .image-modal a.button, body.plantshare#ask #main .submit, body.plantshare#plantshare #ask .submit, body.plantshare#profile div.section-container .image-modal a.button, #dkey #main .offer-help-aside a.button, #dkey #main ul.couplets a.button, #dkey #main a.show-all-button { min-width: 10em; -webkit-border-radius: 1em; -moz-border-radius: 1em; -ms-border-radius: 1em; -o-border-radius: 1em; border-radius: 1em; -webkit-box-shadow: 0px 1px 4px #a2a64d; -moz-box-shadow: 0px 1px 4px #a2a64d; box-shadow: 0px 1px 4px #a2a64d; border: 1px solid #dc9402; background: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #dc9402), color-stop(40%, #f0b448), color-stop(100%, #dc9402)); background: -webkit-linear-gradient(top, #dc9402 0%, #f0b448 40%, #dc9402 100%); background: -moz-linear-gradient(top, #dc9402 0%, #f0b448 40%, #dc9402 100%); background: -o-linear-gradient(top, #dc9402 0%, #f0b448 40%, #dc9402 100%); background: linear-gradient(top, #dc9402 0%, #f0b448 40%, #dc9402 100%); padding: 0.3em 0.5em; color: white; text-align: center; text-decoration: none; font-family: "Trebuchet MS", Helvetica, Arial, "Lucida Sans Unicode", sans-serif; font-weight: bold; line-height: 1.5em; letter-spacing: 0.08333em; }
-.orange-button:hover, body.taxa .visit-dkey a:hover, body.plantshare.sighting .modal-container .image-modal a.button:hover, body.plantshare#ask #main .submit:hover, body.plantshare#plantshare #ask .submit:hover, body.plantshare#profile div.section-container .image-modal a.button:hover, #dkey #main .offer-help-aside a.button:hover, #dkey #main ul.couplets a.button:hover, #dkey #main a.show-all-button:hover { background: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #e29b0b), color-stop(32%, #f6be59), color-stop(50%, #f6be59), color-stop(100%, #e39d0e)); background: -webkit-linear-gradient(top, #e29b0b 0%, #f6be59 32%, #f6be59 50%, #e39d0e 100%); background: -moz-linear-gradient(top, #e29b0b 0%, #f6be59 32%, #f6be59 50%, #e39d0e 100%); background: -o-linear-gradient(top, #e29b0b 0%, #f6be59 32%, #f6be59 50%, #e39d0e 100%); background: linear-gradient(top, #e29b0b 0%, #f6be59 32%, #f6be59 50%, #e39d0e 100%); }
-.orange-button.disabled, body.taxa .visit-dkey a.disabled, body.plantshare.sighting .modal-container .image-modal a.disabled.button, body.plantshare#ask #main .disabled.submit, body.plantshare#plantshare #ask .disabled.submit, body.plantshare#profile div.section-container .image-modal a.disabled.button, #dkey #main .offer-help-aside a.disabled.button, #dkey #main ul.couplets a.disabled.button, #dkey #main a.disabled.show-all-button { border-color: #ecda92; background: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #ecda92), color-stop(32%, #f1e3a6), color-stop(50%, #f1e3a6), color-stop(100%, #ecdb93)); background: -webkit-linear-gradient(top, #ecda92 0%, #f1e3a6 32%, #f1e3a6 50%, #ecdb93 100%); background: -moz-linear-gradient(top, #ecda92 0%, #f1e3a6 32%, #f1e3a6 50%, #ecdb93 100%); background: -o-linear-gradient(top, #ecda92 0%, #f1e3a6 32%, #f1e3a6 50%, #ecdb93 100%); background: linear-gradient(top, #ecda92 0%, #f1e3a6 32%, #f1e3a6 50%, #ecdb93 100%); }
-
 body.plantshare { /* end #sightings-locator */ /* end .info-section, .location-section */ }
 body.plantshare .content li { list-style-type: none; }
 body.plantshare .content form p { margin: 0; }
@@ -1269,13 +1257,6 @@ body.plantshare#screen-images .save-btn { background: transparent url(/static/im
 /* These styles apply to smartphones and tablets */
 /* End media queries styles for PlantShare */
 /* Dichotomous Key */
-/* Definitions */
-/* for gradient, etc. */
-.orange-button, body.taxa .visit-dkey a, body.plantshare.sighting .modal-container .image-modal a.button, body.plantshare#ask #main .submit, body.plantshare#plantshare #ask .submit, body.plantshare#profile div.section-container .image-modal a.button, #dkey #main .offer-help-aside a.button, #dkey #main ul.couplets a.button, #dkey #main a.show-all-button { min-width: 10em; -webkit-border-radius: 1em; -moz-border-radius: 1em; -ms-border-radius: 1em; -o-border-radius: 1em; border-radius: 1em; -webkit-box-shadow: 0px 1px 4px #a2a64d; -moz-box-shadow: 0px 1px 4px #a2a64d; box-shadow: 0px 1px 4px #a2a64d; border: 1px solid #dc9402; background: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #dc9402), color-stop(40%, #f0b448), color-stop(100%, #dc9402)); background: -webkit-linear-gradient(top, #dc9402 0%, #f0b448 40%, #dc9402 100%); background: -moz-linear-gradient(top, #dc9402 0%, #f0b448 40%, #dc9402 100%); background: -o-linear-gradient(top, #dc9402 0%, #f0b448 40%, #dc9402 100%); background: linear-gradient(top, #dc9402 0%, #f0b448 40%, #dc9402 100%); padding: 0.3em 0.5em; color: white; text-align: center; text-decoration: none; font-family: "Trebuchet MS", Helvetica, Arial, "Lucida Sans Unicode", sans-serif; font-weight: bold; line-height: 1.5em; letter-spacing: 0.08333em; }
-.orange-button:hover, body.taxa .visit-dkey a:hover, body.plantshare.sighting .modal-container .image-modal a.button:hover, body.plantshare#ask #main .submit:hover, body.plantshare#plantshare #ask .submit:hover, body.plantshare#profile div.section-container .image-modal a.button:hover, #dkey #main .offer-help-aside a.button:hover, #dkey #main ul.couplets a.button:hover, #dkey #main a.show-all-button:hover { background: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #e29b0b), color-stop(32%, #f6be59), color-stop(50%, #f6be59), color-stop(100%, #e39d0e)); background: -webkit-linear-gradient(top, #e29b0b 0%, #f6be59 32%, #f6be59 50%, #e39d0e 100%); background: -moz-linear-gradient(top, #e29b0b 0%, #f6be59 32%, #f6be59 50%, #e39d0e 100%); background: -o-linear-gradient(top, #e29b0b 0%, #f6be59 32%, #f6be59 50%, #e39d0e 100%); background: linear-gradient(top, #e29b0b 0%, #f6be59 32%, #f6be59 50%, #e39d0e 100%); }
-.orange-button.disabled, body.taxa .visit-dkey a.disabled, body.plantshare.sighting .modal-container .image-modal a.disabled.button, body.plantshare#ask #main .disabled.submit, body.plantshare#plantshare #ask .disabled.submit, body.plantshare#profile div.section-container .image-modal a.disabled.button, #dkey #main .offer-help-aside a.disabled.button, #dkey #main ul.couplets a.disabled.button, #dkey #main a.disabled.show-all-button { border-color: #ecda92; background: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #ecda92), color-stop(32%, #f1e3a6), color-stop(50%, #f1e3a6), color-stop(100%, #ecdb93)); background: -webkit-linear-gradient(top, #ecda92 0%, #f1e3a6 32%, #f1e3a6 50%, #ecdb93 100%); background: -moz-linear-gradient(top, #ecda92 0%, #f1e3a6 32%, #f1e3a6 50%, #ecdb93 100%); background: -o-linear-gradient(top, #ecda92 0%, #f1e3a6 32%, #f1e3a6 50%, #ecdb93 100%); background: linear-gradient(top, #ecda92 0%, #f1e3a6 32%, #f1e3a6 50%, #ecdb93 100%); }
-
-/* Styles */
 #dkey #main .offer-help-aside { float: right; margin: 1em 1em 0.5em 1em; text-align: right; color: #606060; }
 #dkey #main .offer-help-aside span { font-size: 12px; }
 #dkey #main .offer-help-aside a.button { display: inline-block; margin: 0.8em 1em; font-weight: normal; font-size: 12px; text-transform: uppercase; }
@@ -1468,7 +1449,7 @@ body.search-results .search-navigation a { text-decoration: underline; }
 .legal #main ol.terms li p, .legal #main ol.terms li li { font-family: Verdana, Geneva, "Lucida Sans Unicode", sans-serif; font-size: 12px; }
 .legal #main ol.terms li li { line-height: 20px; }
 
-/* Begin media queries styles for the About section. */
+/* Begin media queries styles for the Help section. */
 /* Portrait-orientation styles */
 @media only screen and (max-width: 400px) { #about #main > img { width: 57%; }
   #about #main img.bookcover { width: auto; }
@@ -1502,7 +1483,7 @@ body.search-results .search-navigation a { text-decoration: underline; }
   #advanced-map .plant-group:hover .frame { border: 5px solid rgba(255, 255, 255, 0.8); }
   #advanced-map .plant-group:hover h3 { background: inherit; color: #317b0c; }
   .legal #main ol.terms { font-size: 18px; padding-left: 32px; } }
-/* End media queries styles for the About section */
+/* End media queries styles for the Help section */
 .modal-wrap { border: 5px solid rgba(255, 255, 255, 0.5); -moz-border-radius: 5px; -webkit-border-radius: 5px; border-radius: 5px; /* end a */ }
 .modal-wrap .inner { background: #fff; padding: 0 0 20px 0; }
 .modal-wrap .inner h4.heading, .modal-wrap .inner h3.heading { margin: 0; padding: 13px 0 0 20px; }

@@ -108,7 +108,7 @@ class Character(models.Model):
     name = models.CharField(max_length=100)
     friendly_name = models.CharField(max_length=100)
     character_group = models.ForeignKey(CharacterGroup)
-    pile = models.ForeignKey('Pile', null=True, related_name='characters')
+    pile = models.ForeignKey('Pile', null=True, related_name='characters', blank=True)
     ease_of_observability = models.PositiveSmallIntegerField(null=True,
         blank=True, choices=zip(range(1, 6), range(1, 6)))
 
