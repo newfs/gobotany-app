@@ -14,6 +14,27 @@
             h3, h4 {
                 padding: 0.5em 0;
             }
+
+            /* overrides for this test page */
+            header, header nav {
+                height: auto;
+            }
+
+            /* overrides to integrate when upgrading the control: */
+            /* left-pad the input area a bit, to align with menu items */
+            header nav #search input {
+                padding-left: 4px;
+                width: 215px;
+            }
+            /* widen the suggestions menu a bit */
+            #search-suggest + div {
+                width: 253px !important;
+            }
+            /* widen the menu items for the main nav search box (may not
+            have to do this once upgraded */
+            #search-suggest + div li {
+                width: 247px;
+            }
         </style>
 
         <script src="/static/scripts/lib/require.js"></script>
@@ -61,7 +82,7 @@
                     id="id_identification"
                     placeholder="scientific or common name"
                     class="suggest"
-                    data-suggest-url="{% url site-plant-name-suggestions %}?q=%s">
+                    data-suggest-url="{% url 'site-plant-name-suggestions' %}?q=%s">
                 <input type="text" name="title" id="id_title"
                     autocomplete="off"
                     placeholder="title (datalist test)" list="titles">
@@ -85,7 +106,7 @@
                     value="Acer pensylvanicum"
                     placeholder="scientific or common name"
                     class="suggest"
-                    data-suggest-url="{% url site-plant-name-suggestions %}?q=%s">
+                    data-suggest-url="{% url 'site-plant-name-suggestions' %}?q=%s">
                 <input type="text" name="title" id="id_title2"
                         autocomplete="off"
                         placeholder="title (datalist test)" list="titles2">
@@ -115,7 +136,7 @@
                     id="id_identification3"
                     placeholder="scientific or common name"
                     class="suggest"
-                    data-suggest-url="{% url site-plant-name-suggestions %}?q=%s"
+                    data-suggest-url="{% url 'site-plant-name-suggestions' %}?q=%s"
                     data-align-menu-inside-input="true"
                     style="padding-left: 10px; padding-right: 10px;">
                 <input type="text" name="title" id="id_title"
@@ -132,16 +153,25 @@
 
         <h3>Go Botany Site Search</h3>
 
-        <form action="/search/" method="get">
-            <input type="text" autocomplete="off"
-                name="q"
-                id="search-box"
-                placeholder="Search..."
-                class="suggest"
-                data-suggest-url="{% url site-search-suggestions %}?q=%s"
-                data-submit-on-select="true">
-            <button type="submit">Search</button>
-        </form>
+        <p>Test for replacement of the older search suggest control in the
+        navigation bar:</p>
+
+        <header>
+            <nav>
+                <div id="search">
+                    <form action="/search/" method="get">
+                        <input type="text" autocomplete="off"
+                            name="q"
+                            id="search-suggest"
+                            placeholder="Search..."
+                            class="suggest"
+                            data-suggest-url="{% url 'site-search-suggestions' %}?q=%s"
+                            data-submit-on-select="true">
+                        <button type="submit">Search</button>
+                    </form>
+                </div>
+            </nav>
+        </header>
 
         <h4>Variation with only default styling</h4>
 
@@ -151,7 +181,7 @@
                 id="search-box"
                 placeholder="Search..."
                 class="suggest"
-                data-suggest-url="{% url site-search-suggestions %}?q=%s"
+                data-suggest-url="{% url 'site-search-suggestions' %}?q=%s"
                 data-submit-on-select="true">
             <button type="submit">Search</button>
         </form>

@@ -88,7 +88,7 @@ define([
 
     Suggester.prototype.set_menu_position = function () {
         // Position the menu under the box.
-        var $input_box_offset = this.$input_box.offset();
+        var $input_box_position = this.$input_box.position();
         var input_box_left_padding = 0;
         if (this.align_menu_inside_input === "true") {
             // If the option to align the menu to the inside of a padded
@@ -97,9 +97,9 @@ define([
                 parseInt(this.$input_box.css('padding-left')) - 3;
         }
         this.$menu.css('left',
-                       $input_box_offset.left + input_box_left_padding);
+                       $input_box_position.left + input_box_left_padding);
         this.$menu.css('top',
-                       $input_box_offset.top + this.$input_box.outerHeight());
+                       $input_box_position.top + this.$input_box.outerHeight());
     };
 
     Suggester.prototype.handle_keys_up = function (e) {

@@ -45,11 +45,18 @@ results_page_init: function(args) {
         /* Set the initial view to Photos for a full-size page, or List for 
            small screens. */
 
-        if ($(window).width() > MAX_SMALLSCREEN_WIDTH) {
+        /* Disable for now the code that makes the list view the
+         * default on small screens. It is causing trouble with maintaining
+         * state upon pressing the Back button, because the hash does
+         * not seem to be initializing like it should, and does, when
+         * photos is the initial view. */
+        //if ($(window).width() > MAX_SMALLSCREEN_WIDTH) {
+        if ($(window).width() > 0) {
             // "Photos" view is the initial view on full-size screens.
             App3.set('show_grid', true);
             App3.set('show_list', false);
         }
+        /*
         else {
             // "List" view is the usual initial view on small screens. (It can
             // be overridden to be the "photos" view instead.)
@@ -60,6 +67,7 @@ results_page_init: function(args) {
             App3.set('show_grid', (initial_smallscreen_view === 'photos'));
             App3.set('show_list', (initial_smallscreen_view === 'list'));
         }
+        */
 
         /* Initialize the species results section. */
 
@@ -736,7 +744,7 @@ results_page_init: function(args) {
 
             Shadowbox.open({
                 content: $('#modal').html(),
-                height: 500,
+                height: 550,
                 player: 'html',
                 options: {
                     fadeDuration: 0.1,
@@ -834,11 +842,10 @@ results_page_init: function(args) {
     // user to "undo" actions via the Back button.
     $(window).bind('hashchange', function() {
         var current_url = window.location.href;
-
         var last_plant_id_url = $.cookie('last_plant_id_url');
         if (last_plant_id_url === null) {
-            // The cookie request returned null, so cookie support must
-            // be unavailable. Consequently, cannot support the Back button.
+            // The cookie request returned null, so cookie support seems
+            // unavailable and the Back button cannot be supported.
             return;
         }
         else {
@@ -852,7 +859,7 @@ results_page_init: function(args) {
             if (current_url !== last_plant_id_url) {
                 // Now reload the current URL, which reloads the page
                 // and sets everything up again. Although it arguably
-                // would be slicker to restore withou a page reload,
+                // would be slicker to restore without a page reload,
                 // reloading is still fairly quick and avoids the code
                 // having to manange history lists. It also makes it
                 // easy to support coming back to a Level 3 page from

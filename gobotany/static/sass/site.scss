@@ -39,6 +39,7 @@ $visited-link-color: #666e0b;
 $active-link-color: #45aC11;
 
 $text-color: #000;
+$navbar-color: #508e31;
 $footer-background-color: #b4d57f;
 $login-box-background-color: #d3eaad;
 
@@ -164,6 +165,9 @@ a {
     }
     &:not([href]) {
         color: $text-color;
+        &:hover {
+            text-decoration: none;
+        }
     }
 }
 
@@ -999,13 +1003,13 @@ input.suggest {
         position: absolute;
         z-index: 100;
         li {
+            clear: both;
             font-weight: bold;
             list-style-type: none;
             margin: 0;
-            padding: 2px;
+            padding: 3px;
             &.selected {
-                background-color: #666;
-                color: #fff;
+                background-color: $pale-lime-green;
             }
             span {
                 font-weight: normal;

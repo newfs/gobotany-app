@@ -11,6 +11,11 @@
 
 $search-suggest-menu-top: 83px;
 
+@mixin nav-current-section {
+    background-color: $smallscreen-current-section-color;
+    color: #000;
+}
+
 /* Portrait-orientation styles */
 @media only screen and (max-width: 400px) {
     body, header .container, .content .container, footer .container {
@@ -84,37 +89,37 @@ $search-suggest-menu-top: 83px;
                 top: $search-suggest-menu-top;
             }
             footer .navigation ul.sections li.home a {
-                background-color: $smallscreen-current-section-color;
+                @include nav-current-section;
             }
         }
         &.simple {
             footer .navigation ul.sections li.simple a {
-                background-color: $smallscreen-current-section-color;
+                @include nav-current-section;
             }
         }
         &.plantshare {
             footer .navigation ul.sections li.plantshare a {
-                background-color: $smallscreen-current-section-color;
+                @include nav-current-section;
             }
         }
         &.full {
             footer .navigation ul.sections li.full a {
-                background-color: $smallscreen-current-section-color;
+                @include nav-current-section;
             }
         }
         &.dkey {
             footer .navigation ul.sections li.dkey a {
-                background-color: $smallscreen-current-section-color;
+                @include nav-current-section;
             }
         }
         &.teaching {
             footer .navigation ul.sections li.teaching a {
-                background-color: $smallscreen-current-section-color;
+                @include nav-current-section;
             }
         }
         &.help {
             footer .navigation ul.sections li.help a {
-                background-color: $smallscreen-current-section-color;
+                @include nav-current-section;
             }
         }
     }
@@ -156,7 +161,7 @@ $search-suggest-menu-top: 83px;
     header {
         height: 90px;
         nav {
-            background: $link-green;
+            background: $navbar-color;
             clear: left;
             height: 32px;
             padding: 0;
@@ -333,6 +338,12 @@ $search-suggest-menu-top: 83px;
     }
     .gb-tooltip {
         width: 200px;
+    }
+
+    #sb-overlay {
+        /* Fix: make the Shadowbox overlay cover the entire background
+         * on small screens in iOS. */
+        height: 120%;
     }
 
     /* Advanced ID placeholder page: delete after tools release */

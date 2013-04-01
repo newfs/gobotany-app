@@ -245,6 +245,7 @@ a:visited { color: #666e0b; }
 a:hover { text-decoration: underline; }
 a:active { color: #45ac11; }
 a:not([href]) { color: black; }
+a:not([href]):hover { text-decoration: none; }
 
 *|*:-moz-any-link:active, *|*:-moz-any-link:focus { border: 0; outline: 0; }
 
@@ -449,8 +450,8 @@ footer .support { margin-right: 0; padding: 18px 0; }
 
 /* Text input with suggestions */
 input.suggest + div { background: #fff; border: 1px solid #999999; position: absolute; z-index: 100; }
-input.suggest + div li { font-weight: bold; list-style-type: none; margin: 0; padding: 2px; }
-input.suggest + div li.selected { background-color: #666; color: #fff; }
+input.suggest + div li { clear: both; font-weight: bold; list-style-type: none; margin: 0; padding: 3px; }
+input.suggest + div li.selected { background-color: #defcb3; }
 input.suggest + div li span { font-weight: normal; }
 
 /* Teaching page */
@@ -1545,6 +1546,7 @@ header.partner-site nav li a { padding: 5px 32px 0; /* fewer sections, more hori
 /* These styles are common to both smartphone widths */
 @media only screen and (max-width: 600px) { #home.partner-site header.partner-site h1 { background-position: -58px -17px; height: 56px; margin-left: 0; width: 200px; }
   #home.partner-site header.partner-site .site-name { font-size: 14px; left: 43px; top: 36px; width: 200px; }
+  #home.partner-site .three-col { height: 0; margin-bottom: 0; }
   header.partner-site { /* Show full-size sections button for now (search is omitted) */ }
   header.partner-site .container { position: relative; }
   header.partner-site .site-name { float: none; font-size: 12px; left: 66px; line-height: 12px; position: absolute; top: 42px; width: 150px; }
@@ -1577,13 +1579,13 @@ header.partner-site nav li a { padding: 5px 32px 0; /* fewer sections, more hori
 /* These styles are common to both smartphone widths */
 @media only screen and (max-width: 600px) { body { margin: 0 auto; padding: 0; }
   body#home header nav #search-suggest .menu { top: 83px; }
-  body#home footer .navigation ul.sections li.home a { background-color: #85c446; }
-  body.simple footer .navigation ul.sections li.simple a { background-color: #85c446; }
-  body.plantshare footer .navigation ul.sections li.plantshare a { background-color: #85c446; }
-  body.full footer .navigation ul.sections li.full a { background-color: #85c446; }
-  body.dkey footer .navigation ul.sections li.dkey a { background-color: #85c446; }
-  body.teaching footer .navigation ul.sections li.teaching a { background-color: #85c446; }
-  body.help footer .navigation ul.sections li.help a { background-color: #85c446; }
+  body#home footer .navigation ul.sections li.home a { background-color: #85c446; color: #000; }
+  body.simple footer .navigation ul.sections li.simple a { background-color: #85c446; color: #000; }
+  body.plantshare footer .navigation ul.sections li.plantshare a { background-color: #85c446; color: #000; }
+  body.full footer .navigation ul.sections li.full a { background-color: #85c446; color: #000; }
+  body.dkey footer .navigation ul.sections li.dkey a { background-color: #85c446; color: #000; }
+  body.teaching footer .navigation ul.sections li.teaching a { background-color: #85c446; color: #000; }
+  body.help footer .navigation ul.sections li.help a { background-color: #85c446; color: #000; }
   #breadcrumb { font-size: 11px; margin: 6px 0; }
   #breadcrumb li { display: inline-block; height: 32px; list-style-type: none; margin: 0 2px 0 0; }
   #breadcrumb .label, #breadcrumb .this-page { display: none; /* Hide 'You are Here' and current page title */ }
@@ -1594,7 +1596,7 @@ header.partner-site nav li a { padding: 5px 32px 0; /* fewer sections, more hori
   h2 { font-size: 16px; }
   h3 { font-size: 14px; }
   header { height: 90px; }
-  header nav { background: #317b0c; clear: left; height: 32px; padding: 0; }
+  header nav { background: #508e31; clear: left; height: 32px; padding: 0; }
   header nav > a { background: #437829 url(/static/images/icons/menu-icon.png) 7px 5px no-repeat; border: 1px solid #437829; display: inline-block; font-size: 30px; height: 24px; line-height: 68%; margin: 3px 0 0 4px; padding: 0 2px 0 7px; position: relative; -webkit-border-radius: 5px; -moz-border-radius: 5px; -ms-border-radius: 5px; -o-border-radius: 5px; border-radius: 5px; }
   header nav #search { margin-top: 6px; padding-left: 10px; }
   header nav > ul { display: none; /* will use bottom navigation instead of top */ }
@@ -1634,6 +1636,7 @@ header.partner-site nav li a { padding: 5px 32px 0; /* fewer sections, more hori
   .content #sidebar { background: #fff; border: 1px solid #c3d941; clear: left; height: auto; margin-left: 8px; margin-right: 8px; }
   .content #sidebar .section { padding-bottom: 16px; }
   .gb-tooltip { width: 200px; }
+  #sb-overlay { /* Fix: make the Shadowbox overlay cover the entire background on small screens in iOS. */ height: 120%; }
   /* Advanced ID placeholder page: delete after tools release */
   #advanced-id #main .dk-landing-section { height: auto; margin-top: 14px; padding: 0; width: auto; }
   #advanced-id #main .dk-landing-section > a { margin-left: 16px; position: static; }
