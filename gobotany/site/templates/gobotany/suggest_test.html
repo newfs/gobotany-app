@@ -14,6 +14,11 @@
             h3, h4 {
                 padding: 0.5em 0;
             }
+
+            /* overrides for this test page */
+            header, header nav {
+                height: auto;
+            }
         </style>
 
         <script src="/static/scripts/lib/require.js"></script>
@@ -132,16 +137,25 @@
 
         <h3>Go Botany Site Search</h3>
 
-        <form action="/search/" method="get">
-            <input type="text" autocomplete="off"
-                name="q"
-                id="search-box"
-                placeholder="Search..."
-                class="suggest"
-                data-suggest-url="{% url 'site-search-suggestions' %}?q=%s"
-                data-submit-on-select="true">
-            <button type="submit">Search</button>
-        </form>
+        <p>Test for replacement of the older search suggest control in the
+        navigation bar:</p>
+
+        <header>
+            <nav>
+                <div id="search">
+                    <form action="/search/" method="get">
+                        <input type="text" autocomplete="off"
+                            name="q"
+                            id="search-suggest"
+                            placeholder="Search..."
+                            class="suggest"
+                            data-suggest-url="{% url 'site-search-suggestions' %}?q=%s"
+                            data-submit-on-select="true">
+                        <button type="submit">Search</button>
+                    </form>
+                </div>
+            </nav>
+        </header>
 
         <h4>Variation with only default styling</h4>
 
