@@ -255,14 +255,14 @@ def plant_name_suggestions_view(request):
 
 @vary_on_headers('Host')
 def maps_test_view(request):
-    return render_to_response('maps_test.html', {
+    return render_to_response('gobotany/maps_test.html', {
            }, request)
 
 # Input suggest test page
 
 @vary_on_headers('Host')
 def suggest_test_view(request):
-    return render_to_response('suggest_test.html', {
+    return render_to_response('gobotany/suggest_test.html', {
            }, request)
 
 
