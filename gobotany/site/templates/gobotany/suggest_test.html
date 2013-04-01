@@ -19,6 +19,22 @@
             header, header nav {
                 height: auto;
             }
+
+            /* overrides to integrate when upgrading the control: */
+            /* left-pad the input area a bit, to align with menu items */
+            header nav #search input {
+                padding-left: 4px;
+                width: 215px;
+            }
+            /* widen the suggestions menu a bit */
+            #search-suggest + div {
+                width: 253px !important;
+            }
+            /* widen the menu items for the main nav search box (may not
+            have to do this once upgraded */
+            #search-suggest + div li {
+                width: 247px;
+            }
         </style>
 
         <script src="/static/scripts/lib/require.js"></script>

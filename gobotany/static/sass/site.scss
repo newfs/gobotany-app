@@ -1003,13 +1003,13 @@ input.suggest {
         position: absolute;
         z-index: 100;
         li {
+            clear: both;
             font-weight: bold;
             list-style-type: none;
             margin: 0;
-            padding: 2px;
+            padding: 3px;
             &.selected {
-                background-color: #666;
-                color: #fff;
+                background-color: $pale-lime-green;
             }
             span {
                 font-weight: normal;
