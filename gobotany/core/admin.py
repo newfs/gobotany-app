@@ -183,8 +183,8 @@ class CharacterAdmin(_Base):
     <p>
     You can edit the value of this character
     for all of the plants in its pile here:<br>
-    <a href="/edit/cv/{{ obj.pile.slug }}/{{ obj.short_name }}/"
-            >/edit/cv/{{ obj.pile.slug }}/{{ obj.short_name }}/</a>
+    <a href="/edit/cv/{{ obj.pile.slug }}-characters/{{ obj.short_name }}/"
+            >/edit/cv/{{ obj.pile.slug }}-characters/{{ obj.short_name }}/</a>
     </p>
     {% else %}
     <p>
@@ -194,8 +194,8 @@ class CharacterAdmin(_Base):
     <p>
     {% for pile in piles.all %}
     {{ pile.name }} —
-    <a href="/edit/cv/{{ pile.slug }}/{{ obj.short_name }}/"
-            >/edit/cv/{{ pile.slug }}/{{ obj.short_name }}/</a><br>
+    <a href="/edit/cv/{{ pile.slug }}-characters/{{ obj.short_name }}/"
+            >/edit/cv/{{ pile.slug }}-characters/{{ obj.short_name }}/</a><br>
     {% endfor %}
     </p>
     {% endif %}
