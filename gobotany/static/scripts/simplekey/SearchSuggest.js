@@ -162,7 +162,7 @@ define([
     SearchSuggest.prototype.set_horizontal_position = function() {
         // Adjust the menu's horizontal position so it lines up with
         // the search box regardless of window width.
-        var box_position = this.search_box.offset();
+        var box_position = this.search_box.position();
         this.menu.css('left', (box_position.left - 3) + 'px');
     };
 
