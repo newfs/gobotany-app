@@ -39,8 +39,6 @@
 
         <script>
             API_URL = '{% url 'api-base' %}';
-            SEARCH_URL = '{% url 'search' %}';
-            SUGGEST_URL = '{% url 'site-search-suggestions' %}';
 
             /* Get rid of Ember 0.9.8.1 warnings by telling it to go ahead and
                behave like the future. */
@@ -68,7 +66,6 @@
 
         <script>
             require(['util/suggester_init']);
-            require(['util/activate_search_suggest']);
             {% block js_require %}{% endblock %}
         </script>
 

@@ -21,122 +21,8 @@
 @import "shadowbox";
 @import "smoothDivScroll";
 
-/* Definitions */
-
-$headings-font: "Trebuchet MS", Helvetica, Arial, "Lucida Sans Unicode", sans-serif;
-$body-font: Verdana, Geneva, "Lucida Sans Unicode", sans-serif;
-$narrower-body-font: Tahoma, "Trebuchet MS", "Lucida Sans Unicode", sans-serif;
-
-$link-green: #317b0c;
-$heading-green: #437829;
-$border-green: #c3d941;
-$light-green: #e1f0d1;
-$green-yellow: #ccdf53;
-$medium-brown: #807121;
-$pale-lime-green: #defcb3;
-
-$visited-link-color: #666e0b;
-$active-link-color: #45aC11;
-
-$text-color: #000;
-$navbar-color: #508e31;
-$footer-background-color: #b4d57f;
-$login-box-background-color: #d3eaad;
-
-$base-font-size: 12px;
-$nav-font-size: 14px;
-
-$text-line-height: 170%;
-
-$sidebar-box-vertical-padding: 16px;
-
-$tooltip-border-color: #c3d941;
-$tooltip-background-top-color: #eaf2e2;
-$tooltip-background-bottom-color: #d6e6c5;
-$tooltip-shadow-color: #333333;
-$tooltip-arrow-rotation: 225deg;
-
-$smallscreen-portrait-width: 320px;
-$smallscreen-landscape-width: 480px;
-
-$nav-button-color: #437829;
-$error-icon-offset: -20px;
-
-$smallscreen-margin: 8px;
-$smallscreen-potd-image-width: 297px;
-$smallscreen-portrait-box-width: 302px;
-$smallscreen-portrait-form-el-width: $smallscreen-portrait-box-width - 10px;
-$smallscreen-landscape-box-width: 462px;
-$smallscreen-current-section-color: #85c446;
-$smallscreen-choices-border-radius: 8px;
-
-@mixin offscreen {
-    display: block;
-    text-indent: -9000px;
-}
-
-@mixin container-div {
-    .container {
-        margin: 0 auto;
-        padding: 0 10px;
-        width: 960px;
-    }
-}
-
-@mixin smallscreen-side-margins {
-    margin-left: $smallscreen-margin;
-    margin-right: $smallscreen-margin;
-}
-
-@mixin highlight-global-nav {
-    background: url(/static/images/layout/active-nav-app.png) bottom center no-repeat;
-}
-
-@mixin highlight-global-nav-home {
-    background: url(/static/images/layout/active-nav-home.png) bottom center no-repeat transparent;
-}
-
-@mixin highlight-sidebar-nav-item {
-    color: #000;
-	content: "\25b8";
-	margin-left: -14px;
-    padding-bottom: 5px;
-	padding-right: 5px;
-}
-
-@mixin shadowbox-photo-titles-credits {
-    /* Override Shadowbox styles to allow multiple title lines for
-     * showing a photo title, photographer credit, and copyright. */
-    #sb-title, #sb-title-inner {
-        height: 76px;
-        line-height: 70%;
-        position: relative;
-    }
-    #sb-title-inner {
-        div {
-            bottom: 6px;
-            position: absolute;
-        }
-        h6 {
-            font-size: 16px;
-            line-height: 110%;
-            margin: 0 0 2px;
-            padding: 0;
-        }
-        span {
-            font-family: $headings-font;
-            font-size: 10px;
-        }
-        a {
-            color: #fff;
-            text-decoration: underline;
-        }
-    }
-    #sb-nav-close {
-        top: 56px !important;
-    }
-}
-
+/* Import for Go Botany common definitions */
+@import "common";
 
 /* Site-wide styles */
 
@@ -435,46 +321,8 @@ header {
                 margin: 0;
                 outline: none;
                 padding: 0;
-                width: 43px;
+                width: 42px;
                 @include offscreen;
-            }
-        }
-        #search-suggest .menu {
-            background: #fff;
-            border: 1px solid #ccc;
-            border-bottom-color: #999;
-            border-right-color: #999;
-            font-family: $headings-font;
-            margin: 0 auto;
-            position: absolute;
-            text-align: left;
-            top: 105px;
-            width: 256px;
-            z-index: 101;
-            li {
-                clear: left;
-                display: block;
-                float: left;
-                font-weight: bold;
-                margin: 0;
-                padding: 3px;
-                width: 250px;
-                &.highlighted {
-                    background-color: $pale-lime-green;
-                }
-            }
-            a {
-                color: $text-color;
-                cursor: default;
-                height: inherit;
-                padding: 0;
-                text-decoration: none;
-            }
-            a:hover, li:hover {
-                background: $pale-lime-green;
-            }
-            span {
-                font-weight: normal;
             }
         }
     }
@@ -994,6 +842,7 @@ footer {
     }
 }
 
+
 /* Text input with suggestions */
 
 input.suggest {
@@ -1001,7 +850,8 @@ input.suggest {
         background: #fff;
         border: 1px solid #999;
         position: absolute;
-        z-index: 100;
+        z-index: 150;
+        @include single-box-shadow(darken($inactive_bg, 30), 0px, 1px, 2px);
         li {
             clear: both;
             font-weight: bold;
@@ -1017,6 +867,18 @@ input.suggest {
         }
     }
 }
+/* Adjustments for site search box */
+header nav #search input {
+    padding-left: 4px;
+    width: 215px;
+}
+#search-suggest + div {
+    width: 253px !important;  /* widen a bit, beneath wide orange button */
+    li {
+        width: 247px;
+    }
+}
+
 
 /* Teaching page */
 

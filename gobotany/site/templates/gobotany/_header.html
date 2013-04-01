@@ -15,13 +15,15 @@
                     {% include "gobotany/_primary_navigation.html" %}
                 </ul>
                 <div id="search">
-                    <form id="search-suggest" action="/search/" autocomplete="off">
-                        <input type="text" name="q" placeholder="Search..."
-                            value="{{ request.GET.q }}">
-                        <button>Search</button>
-                        <div class="menu hidden">
-                            <ul></ul>
-                        </div>
+                    <form action="/search/" method="get">
+                        <input type="text" autocomplete="off"
+                            name="q"
+                            id="search-suggest"
+                            placeholder="Search..."
+                            class="suggest"
+                            data-suggest-url="{% url 'site-search-suggestions' %}?q=%s"
+                            data-submit-on-select="true">
+                        <button type="submit">Search</button>
                     </form>
                 </div>
             </nav>
