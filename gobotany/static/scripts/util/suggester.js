@@ -35,9 +35,9 @@ define([
         this.$menu = this.$input_box.next();
         this.$menu.hide();
 
-        this.$menu_list = this.$menu.children('ul').eq(0);
+        this.$menu_list = this.$menu.children('ul').first();
 
-        // Disable browser autocomplete
+        // Disable browser autocomplete.
         this.$input_box.attr('autocomplete', 'off');
 
         // Set the width of the menu to match that of the box.
@@ -198,11 +198,6 @@ define([
             for (i = 0; i < suggestions.length; i += 1) {
                 var suggestion = suggestions[i];
 
-                // Replace any hyphens because the current search
-                // configuration does not fully support querying with them.
-                // TODO: probably do this elsewhere given use beyond search
-                var query_value = suggestion.toLowerCase().replace(/\-/g,
-                                                                   ' ');
                 var label = this.format_suggestion(suggestion, input_value);
                 var $item = $(document.createElement('li'));
                 $item.append(label);
