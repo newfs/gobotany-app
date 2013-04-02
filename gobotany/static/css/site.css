@@ -624,7 +624,6 @@ body.taxa#genus p.family { font-size: 14px; margin: 0; }
 body.taxa#genus .genus-species-btn { background: url(/static/images/layout/genus-btn.png) no-repeat scroll 0 0 transparent; clear: both; display: block; float: left; height: 32px; margin: 15px 0 0; text-indent: -9000px; width: 280px; }
 body.taxa#species { /* Larger gallery styles */ /* Smooth Div Scroll image area */ }
 body.taxa#species #main { background: url(/static/images/layout/sidebar-bg.png) repeat-y; /* layout: right-side content sections */ /* left-side content sections */ }
-body.taxa#species #main .common { margin: 6px 0 12px; }
 body.taxa#species #main #breadcrumb, body.taxa#species #main #name, body.taxa#species #main #species-images, body.taxa#species #main #partner, body.taxa#species #main #facts, body.taxa#species #main #habitat, body.taxa#species #main #chars, body.taxa#species #main #wetland, body.taxa#species #main #status, body.taxa#species #main #info-dkey { clear: left; margin-left: 250px; }
 body.taxa#species #main .section { padding: 16px 16px 0; width: 197px; }
 body.taxa#species #main .section h4 { font-size: 14px; margin: 0; padding: 0; }
@@ -682,9 +681,11 @@ body.taxa#species #species-images .scrollableArea a { border-right: 5px solid wh
 /* These styles are common to both smartphone widths */
 @media only screen and (max-width: 600px) { body.taxa #main { padding-bottom: 8px; }
   body.taxa #main h1 { margin-bottom: 0; }
-  body.taxa #main .common { font-size: 16px; }
+  body.taxa #main .common { font-size: 16px; margin: 6px 0 12px; }
   body.taxa#family #main p.description, body.taxa#genus #main p.description { margin: 4px 0; }
-  body.taxa#family #main h4, body.taxa#genus #main h4 { padding-top: 12px; }
+  body.taxa#family #main h2, body.taxa#genus #main h2 { font-size: 15px; padding-top: 12px; }
+  body.taxa#family ul.genera, body.taxa#genus ul.species { line-height: 24px; margin-bottom: 18px; }
+  body.taxa .visit-dkey { font-size: 12px; }
   body.taxa#species #main { background: none; /* layout for smartphones: sections in document sequence */ }
   body.taxa#species #main #breadcrumb, body.taxa#species #main #name, body.taxa#species #main #species-images, body.taxa#species #main #partner, body.taxa#species #main #facts, body.taxa#species #main #habitat, body.taxa#species #main #chars, body.taxa#species #main #wetland, body.taxa#species #main #status, body.taxa#species #main #info-dkey { margin-left: 0; }
   body.taxa#species #main h2 { margin-top: 14px; line-height: 18px; }

@@ -107,9 +107,6 @@ body.taxa {
         #main {
             background: url(/static/images/layout/sidebar-bg.png) repeat-y;
 
-            .common {
-                margin: 6px 0 12px;
-            }
             /* layout: right-side content sections */
             #breadcrumb, #name, #species-images, #partner, #facts,
             #habitat, #chars, #wetland, #status, #info-dkey {
@@ -370,6 +367,7 @@ $mini-table-font-size: 10px;
             }
             .common {
                 font-size: 16px;
+                margin: 6px 0 12px;
             }
         }
         &#family, &#genus {
@@ -377,10 +375,18 @@ $mini-table-font-size: 10px;
                 p.description {
                     margin: 4px 0;
                 }
-                h4 {
+                h2 {
+                    font-size: 15px;
                     padding-top: 12px;
                 }
             }
+        }
+        &#family ul.genera, &#genus ul.species {
+            line-height: 24px;
+            margin-bottom: 18px;
+        }
+        .visit-dkey {
+            font-size: $base-font-size;
         }
         &#species #main {
             background: none;
