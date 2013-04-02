@@ -8,26 +8,22 @@
     }
 }
 
+@mixin family-genus-subheading {
+    clear: left;
+    font-size: 18px;
+    padding-top: 30px;
+}
+
 body.taxa {
     #main {
-        h3 {
-            color: #807121;
-            font-size: 30px;
-            line-height: 90%;
-        }
-        h4 {
-            clear: left;
-            font-size: 18px;
-            padding-top: 30px;
-        }
         ol, ul {
             line-height: inherit;
         }
-        p.common {
-            color: #807121;
+        .common {
+            color: $medium-brown;
             font-family: $headings-font;
-            font-size: 30px;
-            line-height: 155%;
+            font-size: 28px;
+            line-height: 105%;
             margin: 0 0 12px 0;
         }
     }
@@ -65,6 +61,9 @@ body.taxa {
     }
 
     &#family {
+        h2 {
+            @include family-genus-subheading;
+        }
         ul.genera {
             @include taxa-list;
         }
@@ -80,6 +79,9 @@ body.taxa {
         }
     }
     &#genus {
+        h2 {
+            @include family-genus-subheading;
+        }
         ul.species {
             @include taxa-list;
         }
@@ -105,6 +107,9 @@ body.taxa {
         #main {
             background: url(/static/images/layout/sidebar-bg.png) repeat-y;
 
+            .common {
+                margin: 6px 0 12px;
+            }
             /* layout: right-side content sections */
             #breadcrumb, #name, #species-images, #partner, #facts,
             #habitat, #chars, #wetland, #status, #info-dkey {
@@ -363,9 +368,8 @@ $mini-table-font-size: 10px;
             h1 {
                 margin-bottom: 0;
             }
-            p.common {
+            .common {
                 font-size: 16px;
-                margin: 0;
             }
         }
         &#family, &#genus {

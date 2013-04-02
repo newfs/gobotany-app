@@ -54,12 +54,12 @@ Genus: {{ genus.name }} {% if common_name %}({{ common_name }}){% endif %}
                     {% endfor %}
                 </div>
 
-                <h4>Family</h4>
+                <h2>Family</h2>
                 <p class="family">
                     <a href="{% url 'taxa-family' genus.family.slug %}"
                     >{{ genus.family.name }}{% if genus.family.common_name %} ({{ genus.family.common_name|cut:"The "|lower }}){% endif %}</a></p>
 
-                <h4>This Genus&#8217;s Species in New England:</h4>
+                <h2>This Genus&#8217;s Species in New England:</h2>
                 <ul class="species">
                 {% for species in genus.taxa.all %}
                     <li><i><a href="{% url 'taxa-species' genus.slug species.epithet %}"

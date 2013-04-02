@@ -54,7 +54,7 @@ Genus: {{ genus.name }} {% if common_name %}({{ common_name }}){% endif %}
                     {% endfor %}
                 </div>
 
-                <h4>Family</h4>
+                <h2>Family</h2>
                 <p class="family">
                     <a href="{% url 'taxa-family' genus.family.slug %}"
                     >{{ genus.family.name }}{% if genus.family.common_name %} ({{ genus.family.common_name|cut:"The "|lower }}){% endif %}</a></p>

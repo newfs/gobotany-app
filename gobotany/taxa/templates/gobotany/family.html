@@ -53,7 +53,7 @@ Family: {{ family.name }} {% if common_name %}({{ common_name|cut:"The "|lower }
                     {% endfor %}
                 </div>
 
-                <h4>This Family&#8217;s Genera in New England:</h4>
+                <h2>This Family&#8217;s Genera in New England:</h2>
                 <ul class="genera">
                 {% for genus in family.genera.all %}
                     <li><i><a href="{% url 'taxa-genus' genus.slug %}"
