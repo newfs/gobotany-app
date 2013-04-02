@@ -27,9 +27,7 @@ define([
     };
 
     Suggester.prototype.setup = function () {
-        this.$form = this.$input_box.parent(); // TODO: more reliable way
-                                               // in case form fields
-                                               // are wrapped in divs
+        this.$form = this.$input_box.parents('form').first();
 
         // Add an element for the suggestions menu.
         this.$input_box.after('<div><ul></ul></div>');
