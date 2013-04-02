@@ -23,6 +23,7 @@
                     <form action="/search/" method="get">
                         <input type="text" autocomplete="off"
                             name="q"
+                            value="{% if query %}{{ query }}{% endif %}"
                             id="search-suggest"
                             placeholder="Search..."
                             class="suggest"
