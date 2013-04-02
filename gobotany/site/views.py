@@ -258,13 +258,6 @@ def maps_test_view(request):
     return render_to_response_per_partner('maps_test.html', {
            }, request)
 
-# Input suggest test page
-
-@vary_on_headers('Host')
-def suggest_test_view(request):
-    return render_to_response_per_partner('suggest_test.html', {
-           }, request)
-
 
 # Placeholder views
 # This generic view basically does the same thing as direct_to_template,
