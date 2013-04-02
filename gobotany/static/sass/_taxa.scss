@@ -107,6 +107,9 @@ body.taxa {
         #main {
             background: url(/static/images/layout/sidebar-bg.png) repeat-y;
 
+            .common {
+                margin: 6px 0 12px;
+            }
             /* layout: right-side content sections */
             #breadcrumb, #name, #species-images, #partner, #facts,
             #habitat, #chars, #wetland, #status, #info-dkey {
