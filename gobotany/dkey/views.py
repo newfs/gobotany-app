@@ -53,7 +53,8 @@ class _Proxy(object):
             else:
                 lead.taxa_beneath = set()
                 for child in lead.childlist:
-                    lead.rank_beneath = child.rank_beneath
+                    if hasattr(child, 'rank_beneath'):
+                        lead.rank_beneath = child.rank_beneath
                     lead.taxa_beneath.update(child.taxa_beneath)
 
         self.rank_beneath = tops[0].rank_beneath if tops else ''
