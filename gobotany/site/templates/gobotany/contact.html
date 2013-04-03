@@ -2,24 +2,20 @@
 
 {% block title %}Contact Us: Help{% endblock %}
 
-{% block more_meta_link %}<meta name="robots" content="noindex">{% endblock %}
-
-{% block js_require %}
-    require(['site/help']);
+{% block more_meta_link %}
+    {% include "gobotany/_meta_robots_noindex.html" %}
 {% endblock %}
 
-{% block body_attributes %}id="contact" class="help"{% endblock %}
+{% block js_require %}
+    {% include "gobotany/_help_js_require.html" %}
+{% endblock %}
+
+{% block body_attributes %}
+    {% include "gobotany/_contact_body_attributes.html" %}
+{% endblock %}
 
 {% block main_content %}
-    <h1>Contact Us</h1>
-
-    <p>Would you like to find out more about the project? Report
-    a bug or erroneous data? We'd like to know!</p>
-    
-    <p>Send us an 
-        email at
-        <a class="email">gobotany [at] newenglandwild [dot] org</a>.</p>
-
+    {% include "gobotany/_contact_main_content.html" %}
 {% endblock %}
 
 {% block sidebar_content %}
