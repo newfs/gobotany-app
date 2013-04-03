@@ -3,49 +3,15 @@
 {% block title %}Help{% endblock %}
 
 {% block js_require %}
-    require(['site/help']);
+    {% include "gobotany/_help_js_require.html" %}
 {% endblock %}
 
-{% block body_attributes %}id="help" class="help"{% endblock %}
+{% block body_attributes %}
+    {% include "gobotany/_help_body_attributes.html" %}
+{% endblock %}
 
 {% block main_content %}
-    <h1>Help</h1>
-
-    <p>Here is an overview of help resources available for the site.</p>
-
-    <h2>For the Simple Key</h2>
-
-    <ul>
-        <li><a href="{% url 'site-getting-started' %}">Getting Started
-            with the Simple Key</a></li>
-        
-        {% comment %}
-        <li><a href="{% url 'site-video' %}">Video Help Topics</a></li>
-        {% endcomment %}
-
-        <li><a href="{% url 'site-advanced-map' %}">Advanced Map to Groups</a></li>
-    </ul>
-
-    {% comment %}
-    <h2>For the Full Key</h2>
-    
-    <p>Because the Full Key works like the Simple Key only with
-    more plants, see the Simple Key help above.</p>
-		
-    <h2>For the Dichotomous Key</h2>
-	
-    <p><a href="dkey/">What’s a Dichotomous Key?</a></p>
-		
-    <h2>For PlantShare</h2>
-    
-    <p>Help will be posted soon.</p>
-    {% endcomment %}
-
-    <h2>Overall</h2>
-	
-    <p>You may find the <a href="{% url 'site-glossary' 'a' %}">Glossary</a> of
-    botanical terms with images helpful.</p>
-
+    {% include "partner/_help_main_content.html" %}
 {% endblock %}
 
 {% block sidebar_content %}
