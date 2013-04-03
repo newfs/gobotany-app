@@ -1,67 +1,17 @@
 {% extends "partner/_page_full_sidebar.html" %}
-{% load simplekey_extras %}
 
 {% block title %}{{ key|title }} Key for Plant Identification{% endblock %}
 
-{% block body_attributes %}class="skey groups-subgroups {{ key|title|lower }}"{% endblock %}
+{% block body_attributes %}
+    {% include "gobotany/_simple_body_attributes.html" %}
+{% endblock %}
 
 {% block js_require %}
-    require(['simplekey/simple']);
+    {% include "gobotany/_simple_js_require.html" %}
 {% endblock %}
 
 {% block main_content %}
-                <h1>{{ key|title }} Key</h1>
-
-                <p class="question">{{ groups_list_page.main_heading }}</p>
-                <p class="tip">Please go through the groups in order.</p>
-
-                {% for pilegroup, pilegroup_images, pilegroup_url in pilegroups %}
-                    <div class="list-item{% if forloop.last %} last{% endif %}">
-                        <div class="img-gallery">
-                            <div class="frame"></div>
-                            <div class="img-container">
-                                <div class="images">
-                                    {% for content_image in pilegroup_images %}
-                                        {% with content_image as i %}
-                                            {% with i.creator as photographer %}
-                                            <a href="{{ i.image_medium }}"
-                                                rel="shadowbox[{{ pilegroup.slug }}]"
-                                                title="{% photo_credit i i.scientific_name %}">
-                                                <img src="{{ i.thumb_large }}"
-                                                    alt="{% photo_credit i i.scientific_name %}">
-                                            </a>
-                                            {% endwith %}
-                                        {% endwith %}
-                                    {% endfor %}
-                                </div>
-                            </div>
-                            <div class="controls">
-                                <a class="prev">Prev</a>
-                                <a class="next">Next</a>
-                            </div>
-                        </div>
-                        <div class="details">
-                            <h2>{{ pilegroup.friendly_title|lower|capfirst }}</h2>
-                            <p>{{ pilegroup.friendly_name|capfirst }}</p>
-                            <p class="key-char">
-                                <span class="section-title">Key Characteristics</span>
-                                {{ pilegroup.key_characteristics|removetags:"div"|safe|capfirst }}
-                            </p>
-                            <p class="exceptions">
-                                <span class="section-title">Exceptions</span>
-                                {{ pilegroup.notable_exceptions|removetags:"div"|safe|capfirst }}
-                            </p>
-                            {% if pilegroup.video %}
-                            <p class="vid">
-                                {% with pilegroup.video.youtube_id as youtube_id %}
-                                {% include "gobotany/_simplekey_video_link.html" with item_type="group" %}
-                                {% endwith %}
-                            </p>
-                            {% endif %}
-                            <a class="plant-in-group" href="{{ pilegroup_url }}">My plant is in this group</a>
-                        </div>
-                    </div>
-                {% endfor %}
+    {% include "gobotany/_simple_main_content.html" %}
 {% endblock %}
 
 {% block sidebar_content %}

@@ -1,0 +1,70 @@
+{% load simplekey_extras %}
+
+    <div id="breadcrumb">
+        <ul>
+            <li class="label nogloss">You are here:</li>
+            <li class="nogloss"><a href="{% url 'level1' key %}">{{ key|title }} Key</a></li>
+            <li class="this-page nogloss">{{ pilegroup.friendly_title|lower|capfirst }}</li>
+        </ul>
+    </div>
+    
+    <h1>{{ pilegroup.friendly_title|lower|capfirst }}</h1>
+
+    <p class="question">{{ subgroups_list_page.main_heading }}</p>
+    <p class="tip">Please go through the subgroups in order.</p>
+
+    {% for pile, pile_images, pile_url in piles %}
+        {% if pilegroup.slug == 'non-monocots' and piles|length == 4 and pile.slug == 'remaining-non-monocots' %}
+            {# Exclude the big Remaining Non-Monocots pile if #}
+            {# it has been split in two new piles at import.  #}
+        {% else %}
+        <div class="list-item{% if forloop.last %} last{% endif %}">
+            <div class="img-gallery">
+                <div class="frame"></div>
+                <div class="img-container">
+                    <div class="images">
+                        {% for content_image in pile_images %}
+                            {% with content_image as i %}
+                                {% with i.creator as photographer %}
+                                <a href="{{ i.image_medium }}"
+                                    rel="shadowbox[{{ pile.slug }}]"
+                                    title="{% photo_credit i i.scientific_name %}">
+                                    <img src="{{ i.thumb_large }}"
+                                        alt="{% photo_credit i i.scientific_name %}">
+                                </a>
+                                {% endwith %}
+                            {% endwith %}
+                        {% endfor %}
+                    </div>
+                </div>
+                <div class="controls">
+                    <a class="prev">Prev</a>
+                    <a class="next">Next</a>
+                </div>
+            </div>
+            <div class="details">
+                <h2>{{ pile.friendly_title|capfirst }}</h2>
+                <p>{{ pile.friendly_name|capfirst }}</p>
+
+                <p class="key-char">
+                    <span class="section-title">Key Characteristics</span>
+                    {{ pile.key_characteristics|removetags:"div ul li"|safe }}
+                </p>
+                <p class="exceptions">
+                    <span class="section-title">Exceptions</span>
+                    {{ pile.notable_exceptions|removetags:"div ul li"|safe }}
+                </p>
+                {% if pile.video %}
+                <p class="vid">
+                    {% with pile.video.youtube_id as youtube_id %}
+                    {% include "gobotany/_simplekey_video_link.html" with item_type="subgroup" %}
+                    {% endwith %}
+                </p>
+                {% endif %}
+                <a class="plant-in-subgroup" href="{{ pile_url }}">My plant is in this subgroup</a>
+            </div>
+        </div>
+        {% endif %}
+    {% endfor %}
+
+    {% include "gobotany/_plant_not_in_subgroup.html" %}
