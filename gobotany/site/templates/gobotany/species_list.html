@@ -4,61 +4,14 @@
 
 {% block title %}Species List{% endblock %}
 
-{% block body_attributes %}id="list"{% endblock %}
+{% block body_attributes %}
+    {% include "gobotany/_species_list_body_attributes.html" %}
+{% endblock %}
 
 {% block js_require %}
-    require(['site/species_list']);
+    {% include "gobotany/_species_list_js_require.html" %}
 {% endblock %}
 
 {% block main_content %}
-
-<h1>Species List</h1>
-<p>To filter the list, type in the box under any column name.</p>
-
-<table id="species">
-  <thead>
-    <tr>
-      <th class="name">Scientific Name</th>
-      <th class="common">Common Name</th>
-      <th class="family">Family</th>
-      <th class="dist">New England Distribution</th>
-      <th class="native">North American Native</th>
-      <th class="wetland">Wetland Code</th>
-      <th class="group">Group</th>
-      <th class="subgroup">Subgroup</th>
-    </tr>
-  </thead>
-  <tbody>
-    {% for plant in plants %}
-    <tr>
-      <td>
-        <a href="/species/{{ plant.lowgenus }}/{{ plant.epithet }}/">
-          <i>{{ plant.scientific_name }}</i>
-        </a>
-      </td>
-      <td>{{ plant.common_names|join:", " }}</td>
-      <td>{{ plant.family__name }}</td>
-      <td>{{ plant.states }}</td>
-      <td>
-        {% if plant.north_american_native == None %}
-        {% else %}
-        {% if not plant.north_american_native %}
-        No
-        {% else %}
-        {% if plant.north_american_native %}
-        Yes
-        {% if plant.north_american_introduced %}
-        and no (some introduced)
-        {% endif %}
-        {% endif %}
-        {% endif %}
-        {% endif %}
-      </td>
-      <td>{{ plant.wetland_indicator_code|default_if_none:"" }}</td>
-      <td>{{ plant.pilegroup_titles|join:";<br>" }}</td>
-      <td>{{ plant.pile_titles|join:";<br>" }}</td>
-    </tr>
-    {% endfor %}
-  </tbody>
-</table>
+    {% include "gobotany/_species_list_main_content.html" %}
 {% endblock %}
