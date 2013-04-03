@@ -1,0 +1,62 @@
+{% extends "partner/_page_full_sidebar.html" %}
+
+{% block title %}About Go Botany: Help{% endblock %}
+
+{% block js_require %}
+    require(['site/help']);
+{% endblock %}
+
+{% block body_attributes %}id="about" class="help"{% endblock %}
+
+{% block main_content %}
+    <img class="bookcover" 
+        src="/static/images/layout/about_page_bookcover.jpg" alt="Book
+        cover: Flora Novae Angliae">
+        
+    <h1>About Go Botany</h1>
+        
+    <h2>A New Flora for New England</h2>
+    
+    <ul>
+        <li>Go Botany is a four-year project funded by the 
+        <a href="http://www.nsf.gov/awardsearch/showAward.do?AwardNumber=0840186" 
+            >National Science Foundation</a>.</li>
+        <li>This web-based project builds on the Flora Novae Angliae
+        by Arthur Haines (available at the <a
+            href="http://www.newenglandwild.org/store/flora-novae-angliae"
+            >Garden Shop</a>), the first
+        comprehensive scientific reference on the region's plant
+        species published in the last 25 years.</li>
+    </ul>
+
+    <h2>Resources for Teachers</h2>
+        
+    <img src="/static/images/layout/about_page_photo2.jpg"
+        alt="An instructor showing a blooming plant to a group of
+        children in the garden">
+        
+    <ul>
+        <li>Go Botany is designed for students and informal learners age 15
+        and older, from beginners to professionals. But educators can
+        incorporate our tools into lessons for all ages! Develop your own
+        curricula, lab modules, and field workshops using Go Botany.</li>
+        <li>New England Wild Flower Society is teaming up with three partners,
+        <a href="http://www.montshire.org/"
+            >Montshire Museum of Science</a>, <a
+            href="http://peabody.yale.edu/">Yale Peabody 
+            Museum of Natural History</a>, and the 
+        <a href="http://www.chewonki.org/">Chewonki 
+            Foundation</a> to create customized floras, educational displays,
+        and teaching tools!</li>
+        <li>Share your ideas with other educators using 
+        <a href="{% url 'plantshare-placeholder' %}">PlantShare</a> and posting
+        to our <a href="{% url 'site-teaching' %}">Teaching</a> page.</li>
+        <li>During 2012-2013, New England Wild Flower Society will offer free 
+        training for educators throughout New England on how to use Go
+        Botany.</li>
+    </ul>
+{% endblock %}
+
+{% block sidebar_content %}
+    {% include "partner/_help_navigation.html" %}
+{% endblock %}

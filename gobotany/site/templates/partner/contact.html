@@ -1,0 +1,33 @@
+{% extends "partner/_page_full_sidebar.html" %}
+
+{% block title %}Contact Us: Help{% endblock %}
+
+{% block more_meta_link %}<meta name="robots" content="noindex">{% endblock %}
+
+{% block js_require %}
+    require(['site/help']);
+{% endblock %}
+
+{% block body_attributes %}id="contact" class="help"{% endblock %}
+
+{% block main_content %}
+    <h1>Contact Us</h1>
+
+	<h2>Email</h2>
+    
+    <p>Would you like to:</p>
+    <ul>
+		<li>Find out more about the project?</li>
+		<li>Report a bug or erroneous data?</li>
+		<li>Find out about customized versions of Go Botany?</li>
+	</ul>
+	
+    <p>We'd like to know! Send us an 
+        email at
+        <a class="email">gobotany [at] newenglandwild [dot] org</a>.</p>
+
+{% endblock %}
+
+{% block sidebar_content %}
+    {% include "partner/_help_navigation.html" %}
+{% endblock %}
