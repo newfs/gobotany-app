@@ -2,14 +2,12 @@
 
 {% block title %}Terms of Use{% endblock %}
 
-{% block body_attributes %}id="terms-of-use" class="help legal"{% endblock %}
+{% block body_attributes %}
+    {% include "gobotany/_terms_body_attributes.html" %}
+{% endblock %}
 
 {% block js_require %}
-    require(['util/mailto'], function (mailto) {
-        $(document).ready(function () {
-            mailto.make_link('.email');
-        });
-    });
+    {% include "gobotany/_mailto_js_require.html" %}
 {% endblock %}
 
 {% block main_content %}

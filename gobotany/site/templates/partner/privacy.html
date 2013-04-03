@@ -2,7 +2,9 @@
 
 {% block title %}Privacy Policy{% endblock %}
 
-{% block body_attributes %}id="privacy-policy" class="help legal"{% endblock %}
+{% block body_attributes %}
+    {% include "gobotany/_privacy_body_attributes.html" %}
+{% endblock %}
 
 {% block main_content %}
     {% include "gobotany/_privacy_main_content.html" %}
