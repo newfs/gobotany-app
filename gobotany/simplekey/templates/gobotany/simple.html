@@ -5,11 +5,6 @@
 
 {% block body_attributes %}class="skey groups-subgroups {{ key|title|lower }}"{% endblock %}
 
-{% block js_top %}
-    {# TODO: eventually move elsewhere #}
-    {% include "gobotany/_partner_site_js.html" %}
-{% endblock %}
-
 {% block js_require %}
     require(['simplekey/simple']);
 {% endblock %}

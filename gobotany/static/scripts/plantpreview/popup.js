@@ -133,6 +133,8 @@ define([
          * plant_preview_characters will need to have the request object
          * handy in order to call which_partner for the partner name.
          */
+        /* Update: gobotany_sk_partner_site has now been removed, so
+         * partner name will need to be gotten differently if needed */
         //if (character.partner_site != gobotany_sk_partner_site)
         //    return false;
 
