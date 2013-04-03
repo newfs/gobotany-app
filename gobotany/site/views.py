@@ -347,12 +347,21 @@ def checkup_view(request):
 
 @vary_on_headers('Host')
 def species_list_view(request):
-    plants_list = list(Taxon.objects.values(
-        'id', 'scientific_name', 'family__name', 'north_american_native',
-        'north_american_introduced', 'wetland_indicator_code',
-      ).order_by(
-        'scientific_name',
-      ))
+    partner = which_partner(request)
+
+    plants_list = list(PartnerSpecies.objects.values(
+            'species__id', 'species__scientific_name',
+            'species__family__name', 'species__north_american_native',
+            'species__north_american_introduced',
+            'species__wetland_indicator_code',
+        ).filter(partner=partner).order_by('species__scientific_name'))
+
+    # Strip off the species__ prefix from the list's dictionary keys.
+    for plant in plants_list:
+        for key in plant:
+            if '__' in key:
+                new_key = key.replace('species__', '')
+                plant[new_key] = plant.pop(key)
 
     # We build these three related lists manually instead of tempting
     # _get_plants() to return N * M copies of each plant.
@@ -367,24 +376,34 @@ def species_list_view(request):
         plantdict['genus'], plantdict['epithet'] = scientific_name.split()[:2]
         plantdict['lowgenus'] = plantdict['genus'].lower()
 
-    plantmap = {plantdict['id']: plantdict for plantdict in plants_list}
+    plantmap = {
+        plantdict['id']: plantdict for plantdict in plants_list
+    }
 
     q = CommonName.objects.values_list('common_name', 'taxon_id')
     for common_name, taxon_id in q:
-        plantmap[taxon_id]['common_names'].append(common_name)
+        if taxon_id in plantmap:
+            plantmap[taxon_id]['common_names'].append(common_name)
 
     q = ConservationStatus.objects.filter(label='present').values_list(
         'taxon_id', 'region',
         )
     for taxon_id, region in q:
-        plantmap[taxon_id]['states'].add(region)
+        if taxon_id in plantmap:
+            plantmap[taxon_id]['states'].add(region)
 
     q = Pile.species.through.objects.values_list(
         'taxon_id', 'pile__friendly_title', 'pile__pilegroup__friendly_title',
         )
     for taxon_id, pile_title, pilegroup_title in q:
-        plantmap[taxon_id]['pile_titles'].append(pile_title)
-        plantmap[taxon_id]['pilegroup_titles'].append(pilegroup_title)
+        if taxon_id in plantmap:
+            # Skip adding the "big Remaining Non-Monocots" pile's title,
+            # since that pile has been split from the user's standpoint.
+            # (Once the pile is fully split in the database, this check
+            # can be removed.) 
+            if pile_title != 'All other herbaceous, flowering dicots':
+                plantmap[taxon_id]['pile_titles'].append(pile_title)
+                plantmap[taxon_id]['pilegroup_titles'].append(pilegroup_title)
 
     for plantdict in plants_list:
         plantdict['states'] = ' '.join(sorted(plantdict['states'])).upper()
