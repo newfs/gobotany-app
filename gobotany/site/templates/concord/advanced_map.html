@@ -3,99 +3,15 @@
 {% block title %}Advanced Map to Groups: Help{% endblock %}
 
 {% block js_require %}
-    require(['site/advanced_map']);
+    {% include "gobotany/_advanced_map_js_require.html" %}
 {% endblock %}
 
-{% block body_attributes %}id="advanced-map" class="help"{% endblock %}
+{% block body_attributes %}
+    {% include "gobotany/_advanced_map_body_attributes.html" %}
+{% endblock %}
 
-{% block main_content %}     
-<div>
-    <h1>Advanced Map to Groups</h1>
-    <h2>For a shortcut through the plant groups, you can start here.</h1>
-
-    <div id="plant-map-list">
-        <div id="group-section">
-        {% for group, subgroups in pilegroups %}
-            <div class="plant-group{% if forloop.first %} first{% else %}{% if forloop.last %} last{% endif %}{% endif %}">
-                <h3>{{ group.friendly_title|lower|capfirst }}</h3>
-                <div class="image">
-                    <div class="frame"></div>
-                    <div class="img-container">
-                        {% for i in group.sample_species_images.all %}
-                            {% if forloop.first %}
-                                <img src="{{ i.thumb_small }}"
-                                    alt="{{ i.alt }}">
-                            {% endif %}
-                        {% endfor %}
-                    </div>
-                    {% comment %}
-                    <p class="list">
-                        <a href="/list/#group={{ group.friendly_title }}{% if group.friendly_title|lower = 'woody plants' %} not non{% endif %}"
-                            >Species list</a>
-                    </p>
-                    {% endcomment %}
-                    {% if group.video.youtube_id %}
-                    <p class="video">
-                        <a class="video"
-                            href="http://www.youtube.com/embed/{{ group.video.youtube_id }}?autoplay=1&amp;rel=0&amp;hd=1&amp;modestbranding=1">Video</a>
-                    </p>
-                    {% endif %}
-                </div>
-            </div>
-        {% endfor %}
-        </div>
-        <div id="subgroup-section">
-        {% for group, subgroups in pilegroups %}
-            <div class="subgroups hidden">
-                {% for subgroup in subgroups %}
-                    {% if group.slug == 'non-monocots' and subgroups|length == 4 and subgroup.slug == 'remaining-non-monocots' %}
-                        {# Exclude the big Remaining Non-Monocots pile if #}
-                        {# it has been split in two new piles at import.  #}
-                    {% else %}
-                        <div class="plant-subgroup{% if forloop.last %} last{% endif %}">
-                            <h3>{{ subgroup.friendly_title|lower|capfirst }}</h3>
-                            <div class="image">
-                                <div class="frame"></div>
-                                <div class="img-container">
-                                    {% for i in subgroup.sample_species_images.all %}
-                                        {% if forloop.first %}
-                                            <img src="{{ i.thumb_small }}"
-                                                alt="{{ i.alt }}">
-                                        {% endif %}
-                                    {% endfor %}
-                                </div>
-                            </div>
-                            <a class="choose-btn"
-                                href="/{{ group.slug }}/{{ subgroup.slug }}/"></a>
-                            {% comment %}
-                            <p class="list">
-                                <a href="/list/#subgroup={{ subgroup.friendly_title }}"
-                                    >Species list</a>
-                            </p>
-                            {% endcomment %}
-                            {% if subgroup.video.youtube_id %}
-                            <p class="video">
-                                <a class="video"
-                                    href="http://www.youtube.com/embed/{{ subgroup.video.youtube_id }}?autoplay=1&amp;rel=0&amp;hd=1&amp;modestbranding=1">Video</a>
-                            </p>
-                            {% endif %}
-                        </div>
-                    {% endif %}
-                {% endfor %}
-            </div>
-        {% endfor %}
-        </div>
-    </div>
-
-    <h2>About Plant Groups and Subgroups</h2>
-
-    <p>The boxes above show how we have grouped over 1,200
-    plants in Concord, Massachusetts, into six major categories, which we call
-    <em>groups.</em> These groups contain smaller subsets of species we
-    have organized into <em>subgroups.</em> These are not scientific
-    categories, but rather groupings of superficially similar plants that
-    seem to belong together. The goal is to make identification easier.</p>
-</div>
+{% block main_content %}
+    {% include "gobotany/_advanced_map_main_content.html" %}
 {% endblock %}
 
 {% block sidebar_content %}
