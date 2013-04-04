@@ -3,7 +3,7 @@
 {% block title %}Family: {{ family.name }} {% if common_name %}({{ common_name|cut:"The "|lower }}){% endif %}{% endblock %}
 
 {% block js_top %}
-    {% include "gobotany/_taxa_js_top.html" %}
+    {% include "gobotany/_api_url_js.html" %}
 {% endblock %}
 
 {% block js_require %}
