@@ -13,9 +13,12 @@
                     180 Hemenway Road, Framingham, MA 01701</p>
                 </div>
                 <div class="navigation">
-                    <h6>Go Botany [{% gobotany_version %}]</h6>
+                    <h6>{% block site_name %}Go Botany{% endblock %}
+                        [{% gobotany_version %}]</h6>
                     <ul id="footer-nav" class="sections">
-                        {% include "gobotany/_primary_navigation.html" %}
+                        {% block footer_navigation %}
+                            {% include "gobotany/_primary_navigation.html" %}
+                        {% endblock %}
                     </ul>
                     <ul class="prime-items">
                         <li>{% nav_item 'Privacy Policy' site-privacy %}</li>

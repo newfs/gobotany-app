@@ -2,7 +2,8 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>{% block title %}{% endblock %}{% block title_suffix %}: Go Botany{% endblock %}</title>
+        <title>{% block title %}{% endblock %}:
+            {% block title_suffix %}Go Botany{% endblock %}</title>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width,
         initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
@@ -94,11 +95,15 @@
         {% include "gobotany/_chrome_frame.html" %}
 
         <div id="all">
-            {% block header %}{% endblock %}
+            {% block header %}
+                {% include "gobotany/_header.html" %}
+            {% endblock %}
 
             {% block body_content %}{% endblock %}
 
-            {% block footer %}{% endblock %}
+            {% block footer %}
+                {% include "gobotany/_footer.html" %}
+            {% endblock %}
         </div>
     </body>
 </html>

@@ -1,38 +1,25 @@
+{% extends "gobotany/_header.html" %}
 {% load gobotany_tags %}
 
-    <header class="partner-site">
-        <div class="container">
-            {% if page = "home" %}
-                <h1>Partner Site Sample: Go Botany</h1>
-                <p class="site-name"><b>Partner Site Sample</b>
-                    <i>brief partner site tagline here</i></p>
-            {% else %}
-                <p class="go-botany">{% nav_item 'Go Botany: Discover thousands of New England plants' site-home %}</p>
-                <p class="site-name"><b>{% nav_item 'Partner Site Sample' site-home %}</b>
-                    <i>brief partner site tagline here</i></p>
-            {% endif %}
-            <p class="newfs"><a href="http://www.newenglandwild.org/">New
-                England Wild Flower Society</a></p>
-            <nav>
-                <a href="javascript:document.getElementById('footer-nav').scrollIntoView();"><span>sections</span></a>
-                <ul>
-                    {% include "partner/_primary_navigation.html" %}
-                </ul>
-                {% comment %}
-                <div id="search">
-                    <form action="/search/" method="get">
-                        <input type="text" autocomplete="off"
-                            name="q"
-                            value="{% if query %}{{ query }}{% endif %}"
-                            id="search-suggest"
-                            placeholder="Search..."
-                            class="suggest"
-                            data-suggest-url="{% url 'site-search-suggestions' %}?q=%s"
-                            data-submit-on-select="true">
-                        <button type="submit">Search</button>
-                    </form>
-                </div>
-                {% endcomment %}
-            </nav>
-        </div>
-    </header>
+{# Use CSS class 'partner-site' for all partner sites #}
+{% block header_css_class %}partner-site{% endblock %}
+
+{% block home_page_main_heading %}Partner Site Sample: Go Botany{% endblock %}
+
+{% block home_page_partner_site_name_tagline %}
+    <p class="site-name"><b>Partner Site Sample</b>
+        <i>brief partner site tagline here</i></p>
+{% endblock %}
+
+{% block partner_site_name_tagline %}
+    <p class="site-name"><b>{% nav_item 'Partner Site Sample' site-home %}</b>
+        <i>brief partner site tagline here</i></p>
+{% endblock %}
+
+{% block primary_navigation %}
+    {% include "partner/_primary_navigation.html" %}
+{% endblock %}
+
+{% block search %}
+    {# Omit for now. To enable search, remove this override. #}
+{% endblock %}
