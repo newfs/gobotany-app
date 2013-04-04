@@ -44,19 +44,18 @@ results_page_init: function(args) {
     ).done(function() {
         /* Set the initial view to Photos for a full-size page, or List for 
            small screens. */
-
         /* Disable for now the code that makes the list view the
          * default on small screens. It is causing trouble with maintaining
          * state upon pressing the Back button, because the hash does
          * not seem to be initializing like it should, and does, when
-         * photos is the initial view. */
-        //if ($(window).width() > MAX_SMALLSCREEN_WIDTH) {
-        if ($(window).width() > 0) {
+         * photos is the initial view. Perhaps this needs to be done
+         * *after* the species section is initialized and resolved, below. */
+        /*
+        if ($(window).width() > MAX_SMALLSCREEN_WIDTH) {
             // "Photos" view is the initial view on full-size screens.
             App3.set('show_grid', true);
             App3.set('show_list', false);
         }
-        /*
         else {
             // "List" view is the usual initial view on small screens. (It can
             // be overridden to be the "photos" view instead.)
@@ -75,7 +74,16 @@ results_page_init: function(args) {
                              MAX_SMALLSCREEN_WIDTH);
         species_section_ready.resolve();
 
-        /* Initialize the 'back to top' link */
+        /* Initialize the tab view to its initial default view, unless the
+         * desired stab view was supplied on the hash. */
+        if (App3.get('show_grid') === undefined) {
+            App3.set('show_grid', true);
+        }
+        if (App3.get('show_list') === undefined) {
+            App3.set('show_list', false);
+        }
+
+        /* Initialize the 'back to top' link. */
         if ($('body').hasClass('mobile-toplink')) {
             var $results = $('#results-section');
             $(window).scroll(function () {
