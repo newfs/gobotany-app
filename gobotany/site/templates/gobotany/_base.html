@@ -38,17 +38,7 @@
             src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
         <![endif]-->
 
-        <script>
-            API_URL = '{% url 'api-base' %}';
-
-            /* Get rid of Ember 0.9.8.1 warnings by telling it to go ahead and
-               behave like the future. */
-
-            ENV = {
-                CP_DEFAULT_CACHEABLE: true,
-                VIEW_PRESERVES_CONTEXT: true
-            };
-        </script>
+        {% include "gobotany/_script_constants.html" %}
 
         {% if not in_production %}
 
