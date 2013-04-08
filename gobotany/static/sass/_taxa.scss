@@ -210,6 +210,9 @@ body.taxa {
             display: block;
             margin: 10px 0 12px 0;
             padding: 3px 0 3px 25px;
+            &.expanded {
+                background: url(/static/images/icons/minus.png) left 50% no-repeat;
+            }
         }
         ul.full-description {
             background: #fbfbf8;	
@@ -232,7 +235,9 @@ body.taxa {
                 	background: url(/static/images/icons/plus.png) left 50% no-repeat;
                     cursor: pointer;
                     padding-left: 28px;
-                    
+                    &.expanded {
+                        background: url(/static/images/icons/minus.png) left 50% no-repeat;
+                    }
                 }
                 div {
                     display: none;
