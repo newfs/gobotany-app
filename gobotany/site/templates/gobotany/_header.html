@@ -1,23 +1,30 @@
 {% load gobotany_tags %}
 
-    <header>
+    <header class="{% block header_css_class %}{% endblock %}">
         <div class="container">
             {% if page = "home" %}
-                <h1>Go Botany: Discover thousands of New England plants</h1>
+                <h1>{% block home_page_main_heading %}Go Botany: Discover
+                    thousands of New England plants{% endblock %}</h1>
+                {% block home_page_partner_site_name_tagline %}{% endblock %}
             {% else %}
                 <p class="go-botany">{% nav_item 'Go Botany: Discover thousands of New England plants' site-home %}</p>
+                {% block partner_site_name_tagline %}{% endblock %}
             {% endif %}
             <p class="newfs"><a href="http://www.newenglandwild.org/">New
                 England Wild Flower Society</a></p>
             <nav>
                 <a href="javascript:document.getElementById('footer-nav').scrollIntoView();"><span>sections</span></a>
                 <ul>
-                    {% include "gobotany/_primary_navigation.html" %}
+                    {% block primary_navigation %}
+                        {% include "gobotany/_primary_navigation.html" %}
+                    {% endblock %}
                 </ul>
+                {% block search %}
                 <div id="search">
                     <form action="/search/" method="get">
                         <input type="text" autocomplete="off"
                             name="q"
+                            value="{% if query %}{{ query }}{% endif %}"
                             id="search-suggest"
                             placeholder="Search..."
                             class="suggest"
@@ -26,6 +33,7 @@
                         <button type="submit">Search</button>
                     </form>
                 </div>
+                {% endblock %}
             </nav>
         </div>
     </header>

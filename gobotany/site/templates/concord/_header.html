@@ -1,37 +1,25 @@
+{% extends "gobotany/_header.html" %}
 {% load gobotany_tags %}
 
-    <header class="partner-site">
-        <div class="container">
-            {% if page = "home" %}
-                <h1>Concord Flora: Go Botany</h1>
-                <p class="site-name"><b>Concord Flora</b>
-                    <i>Discover the plants of Concord, Massachusetts</i></p>
-            {% else %}
-                <p class="go-botany">{% nav_item 'Go Botany' site-home %}</p>
-                <p class="site-name"><b>{% nav_item 'Concord Flora' site-home %}</b>
-                    <i>Discover the plants of Concord, Massachusetts</i></p>
-            {% endif %}
-            <p class="newfs"><a href="http://www.newenglandwild.org/">New
-                England Wild Flower Society</a></p>
-            <nav>
-                <a href="javascript:document.getElementById('footer-nav').scrollIntoView();"><span>sections</span></a>
-                <ul>
-                    {% include "concord/_primary_navigation.html" %}
-                </ul>
-                {% comment %}
-                <div id="search">
-                    <form action="/search/" method="get">
-                        <input type="text" autocomplete="off"
-                            name="q"
-                            id="search-suggest"
-                            placeholder="Search..."
-                            class="suggest"
-                            data-suggest-url="{% url 'site-search-suggestions' %}?q=%s"
-                            data-submit-on-select="true">
-                        <button type="submit">Search</button>
-                    </form>
-                </div>
-                {% endcomment %}
-            </nav>
-        </div>
-    </header>
+{# Use CSS class 'partner-site' for all partner sites #}
+{% block header_css_class %}partner-site{% endblock %}
+
+{% block home_page_main_heading %}Concord Flora: Go Botany{% endblock %}
+
+{% block home_page_partner_site_name_tagline %}
+    <p class="site-name"><b>Concord Flora</b>
+        <i>Discover the plants of Concord, Massachusetts</i></p>
+{% endblock %}
+
+{% block partner_site_name_tagline %}
+    <p class="site-name"><b>{% nav_item 'Concord Flora' site-home %}</b>
+        <i>Discover the plants of Concord, Massachusetts</i></p>
+{% endblock %}
+
+{% block primary_navigation %}
+    {% include "concord/_primary_navigation.html" %}
+{% endblock %}
+
+{% block search %}
+    {# Omit for now. To enable search, remove this override. #}
+{% endblock %}

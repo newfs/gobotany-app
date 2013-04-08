@@ -1,0 +1,41 @@
+{% extends "gobotany/_home_body_content.html" %}
+{% load simplekey_extras %}
+
+{% block images %}
+    {# Use a single image (add URL) for now instead of a fading carousel. #}
+    <img src="" alt="">
+{% endblock %}
+
+{% block images_overlay %}
+    <div id="overlay">
+        <h2>Simple ID Key</h2>
+        <img src="/static/images/layout/separator.png" alt="">
+        <p>Want to know what that plant is? With the 
+        Go Botany Partner Site <b>Simple Key</b>,
+        you can identify over 1,200 common
+        New England plants! Observe closely, collect a sample or
+        take a photo, answer some questions, and narrow down to
+        the correct identification.</p>
+        <a href="{% url 'level1' 'simple' %}" id="cta">Get Started</a>
+    </div>
+{% endblock %}
+
+{% block section_introductions %}
+    {# Omit. #}
+    <div class="three-col"></div>
+{% endblock %}
+
+{% block partner_introduction %}
+    <div class="intro">
+        <p>This <b>Go Botany Partner Site</b> web site contains a
+        comprehensive list of the <b>plants at Partner Site</b>,
+        and is a customized version of Go Botany.
+        To learn about all of the plants of New England, visit the main
+        <a href="http://gobotany.newenglandwild.org/">Go Botany</a>
+        web site.</p>
+    </div>
+{% endblock %}
+
+{% block donate %}
+    {# Omit. #}
+{% endblock %}

@@ -1,0 +1,43 @@
+{% load simplekey_extras %}
+
+    <h1>Family: {{ family.name }}</h1>
+    {% if common_name %}
+        <p class="common">{{ common_name|cut:"The "|lower }}</p>
+    {% endif %}
+    <p class="description">
+    {% if family.description %}
+        {{ family.description }}
+    {% else %}
+        (Description coming soon)
+    {% endif %}
+    </p>
+    
+    <div class="pics">
+        {% for drawing in family_drawings %}
+            <div class="img-gallery">
+                <div class="plant">
+                    <div class="frame"></div>
+                    <a href="{{ drawing.image_medium }}"
+                        title="{% photo_credit drawing drawing.content_object.scientific_name %}">
+                        <img class="map"
+                            src="{{ drawing.thumb_large }}"
+                            alt="{% photo_credit drawing drawing.content_object.scientific_name %}">
+                    </a>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+
+    <h2>This Family&#8217;s Genera in New England:</h2>
+    <ul class="genera">
+    {% for genus in family.genera.all %}
+        <li><i><a href="{% url 'taxa-genus' genus.slug %}"
+        >{{ genus.name }}</a></i></li>
+    {% endfor %}
+    </ul>
+
+    <p class="visit-dkey">
+      Visit this family in the
+      <a href="{% url 'dkey_page' family.name.lower %}"
+         >Dichotomous Key</a>
+    </p>

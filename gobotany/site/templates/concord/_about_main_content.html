@@ -1,0 +1,27 @@
+{% extends "gobotany/_about_main_content.html" %}
+
+{% block section2 %}
+    <h2>Concord Flora</h2>
+        
+    <img src="/static/images/layout/about_page_photo1.jpg"
+        alt="Two people inspecting and photographing a plant in the woods">
+        
+    <ul>
+        <li>The Go Botany Concord Flora
+		<a href="{% url 'level1' 'simple' %}">Simple Key</a> is an interactive
+        key to 1,200 species in Concord, Massachusetts. Answer some questions
+	 	to narrow down to the plant you want to identify. 
+		<a href="{% url 'level1' 'simple' %}">Get Started!</a>
+        </li>
+        <li>Learn about the habitats, characteristics, and uses of plants, 
+        view photos and maps of its distribution, and much more.</li>
+        <li>The Concord Flora is a <a href="/contact/">customized version</a>
+        of Go Botany. To learn about all of the plants of New England, visit
+        the main <a href="http://gobotany.newenglandwild.org/">Go Botany</a>
+		web site.</li>
+    </ul>
+{% endblock %}
+
+{% block section3 %}
+    {# Omit. #}
+{% endblock %}

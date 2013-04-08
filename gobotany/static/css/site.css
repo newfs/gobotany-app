@@ -599,10 +599,8 @@ body.teaching #main li { list-style-type: none; }
 
 /* Styles for taxa (family, genus, species) pages */
 body.taxa { /* Override Shadowbox styles to allow multiple title lines for showing a photo title, photographer credit, and copyright. */ /* For family and genus pages */ }
-body.taxa #main h3 { color: #807121; font-size: 30px; line-height: 90%; }
-body.taxa #main h4 { clear: left; font-size: 18px; padding-top: 30px; }
 body.taxa #main ol, body.taxa #main ul { line-height: inherit; }
-body.taxa #main p.common { color: #807121; font-family: "Trebuchet MS", Helvetica, Arial, "Lucida Sans Unicode", sans-serif; font-size: 30px; line-height: 155%; margin: 0 0 12px 0; }
+body.taxa #main .common { color: #807121; font-family: "Trebuchet MS", Helvetica, Arial, "Lucida Sans Unicode", sans-serif; font-size: 28px; line-height: 105%; margin: 0 0 12px 0; }
 body.taxa .frame { cursor: pointer; }
 body.taxa #sb-title, body.taxa #sb-title-inner { height: 76px; line-height: 70%; position: relative; }
 body.taxa #sb-title-inner div { bottom: 6px; position: absolute; }
@@ -615,15 +613,18 @@ body.taxa .pics { margin-top: 20px; }
 body.taxa .pics div { float: left; margin-right: 20px; }
 body.taxa .pics p { display: inline-block; float: left; font-size: 14px; }
 body.taxa img.zoom { display: inline-block; float: right; }
+body.taxa#family h2 { clear: left; font-size: 18px; padding-top: 30px; }
 body.taxa#family ul.genera { font-size: 14px; list-style: none; }
 body.taxa#family ul.genera li { margin: 0 0 5px 0; }
 body.taxa#family .family-genera-btn { background: url(/static/images/layout/family-btn.png) no-repeat scroll 0 0 transparent; clear: both; display: block; float: left; height: 32px; margin: 15px 0 0; text-indent: -9000px; width: 280px; }
+body.taxa#genus h2 { clear: left; font-size: 18px; padding-top: 30px; }
 body.taxa#genus ul.species { font-size: 14px; list-style: none; }
 body.taxa#genus ul.species li { margin: 0 0 5px 0; }
 body.taxa#genus p.family { font-size: 14px; margin: 0; }
 body.taxa#genus .genus-species-btn { background: url(/static/images/layout/genus-btn.png) no-repeat scroll 0 0 transparent; clear: both; display: block; float: left; height: 32px; margin: 15px 0 0; text-indent: -9000px; width: 280px; }
 body.taxa#species { /* Larger gallery styles */ /* Smooth Div Scroll image area */ }
 body.taxa#species #main { background: url(/static/images/layout/sidebar-bg.png) repeat-y; /* layout: right-side content sections */ /* left-side content sections */ }
+body.taxa#species #main .common { margin: 6px 0 12px; }
 body.taxa#species #main #breadcrumb, body.taxa#species #main #name, body.taxa#species #main #species-images, body.taxa#species #main #partner, body.taxa#species #main #facts, body.taxa#species #main #habitat, body.taxa#species #main #chars, body.taxa#species #main #wetland, body.taxa#species #main #status, body.taxa#species #main #info-dkey { clear: left; margin-left: 250px; }
 body.taxa#species #main .section { padding: 16px 16px 0; width: 197px; }
 body.taxa#species #main .section h4 { font-size: 14px; margin: 0; padding: 0; }
@@ -681,9 +682,11 @@ body.taxa#species #species-images .scrollableArea a { border-right: 5px solid wh
 /* These styles are common to both smartphone widths */
 @media only screen and (max-width: 600px) { body.taxa #main { padding-bottom: 8px; }
   body.taxa #main h1 { margin-bottom: 0; }
-  body.taxa #main p.common { font-size: 16px; margin: 0; }
+  body.taxa #main .common { font-size: 16px; margin: 6px 0 12px; }
   body.taxa#family #main p.description, body.taxa#genus #main p.description { margin: 4px 0; }
-  body.taxa#family #main h4, body.taxa#genus #main h4 { padding-top: 12px; }
+  body.taxa#family #main h2, body.taxa#genus #main h2 { font-size: 15px; padding-top: 12px; }
+  body.taxa#family ul.genera, body.taxa#genus ul.species { line-height: 24px; margin-bottom: 18px; }
+  body.taxa .visit-dkey { font-size: 12px; }
   body.taxa#species #main { background: none; /* layout for smartphones: sections in document sequence */ }
   body.taxa#species #main #breadcrumb, body.taxa#species #main #name, body.taxa#species #main #species-images, body.taxa#species #main #partner, body.taxa#species #main #facts, body.taxa#species #main #habitat, body.taxa#species #main #chars, body.taxa#species #main #wetland, body.taxa#species #main #status, body.taxa#species #main #info-dkey { margin-left: 0; }
   body.taxa#species #main h2 { margin-top: 14px; line-height: 18px; }
@@ -849,7 +852,7 @@ body.skey.results .working-area .info { display: none; float: left; font-family:
 body.skey.results .working-area .info .hint { font-size: 12px; margin: 6px 0; }
 body.skey.results .working-area .info .hint p { font-size: 14px; line-height: 120%; margin: 0; }
 body.skey.results .working-area .character-drawing { float: right; }
-body.skey.results .working-area .character-drawing img { max-height: 200px; }
+body.skey.results .working-area .character-drawing img { max-height: 90px; }
 body.skey.results .working-area ul { margin: 15px 0 0 0; }
 body.skey.results .working-area ul li { display: block; float: left; margin: 0 8px 15px 0; }
 body.skey.results .working-area ul li label { display: block; float: left; margin: 0 9px 0 0; }
@@ -972,7 +975,6 @@ ul.get-more-questions-menu ul li[data-character] { color: black; }
   body.skey.results .working-area h4 { font-size: 13px; margin: 2px 0; width: auto; }
   body.skey.results .working-area .info { height: 100%; }
   body.skey.results .working-area .info .hint p { font-size: 11px; margin-bottom: 10px; }
-  body.skey.results .working-area .character-drawing img { max-height: 100px; }
   body.skey.results .working-area .values { height: 60%; margin-bottom: 10px; }
   body.skey.results .working-area .choices, body.skey.results .working-area .row, body.skey.results .working-area .choice { display: block; }
   body.skey.results .working-area .choices { background: #fff; border: 1px solid #999999; border-radius: 8px; border-spacing: 0; height: 100%; margin-bottom: 6px; overflow-x: hidden; overflow-y: auto; position: fixed; width: 100%; -webkit-overflow-scrolling: touch; }

@@ -52,9 +52,9 @@ define([
         var $values_div = $('div.working-area .values');
 
         $values_div.addClass('multiple').removeClass('numeric').
-            html('<label>Select a number between<br>' +
+            html('<label>Select a number between ' +
                  this.min + ' and ' +
-                 this.max + '</label>');
+                 this.max + '.</label>');
 
         this.slider_container_node = $values_div.append('<div></div>');
 

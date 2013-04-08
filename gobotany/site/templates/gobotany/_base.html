@@ -2,7 +2,8 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>{% block title %}{% endblock %}{% block title_suffix %}: Go Botany{% endblock %}</title>
+        <title>{% block title %}{% endblock %}:
+            {% block title_suffix %}Go Botany{% endblock %}</title>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width,
         initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
@@ -37,17 +38,7 @@
             src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
         <![endif]-->
 
-        <script>
-            API_URL = '{% url 'api-base' %}';
-
-            /* Get rid of Ember 0.9.8.1 warnings by telling it to go ahead and
-               behave like the future. */
-
-            ENV = {
-                CP_DEFAULT_CACHEABLE: true,
-                VIEW_PRESERVES_CONTEXT: true
-            };
-        </script>
+        {% include "gobotany/_script_constants.html" %}
 
         {% if not in_production %}
 
@@ -94,11 +85,15 @@
         {% include "gobotany/_chrome_frame.html" %}
 
         <div id="all">
-            {% block header %}{% endblock %}
+            {% block header %}
+                {% include "gobotany/_header.html" %}
+            {% endblock %}
 
             {% block body_content %}{% endblock %}
 
-            {% block footer %}{% endblock %}
+            {% block footer %}
+                {% include "gobotany/_footer.html" %}
+            {% endblock %}
         </div>
     </body>
 </html>

@@ -1,0 +1,6 @@
+    var args = {
+        genus_slug: '{{ genus.slug }}'
+    };
+    require(['taxa/genus'], function (genus) {
+        genus.init(args);
+    });

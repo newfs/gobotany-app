@@ -3,35 +3,15 @@
 {% block title %}Video Help Topics: Help{% endblock %}
 
 {% block js_require %}
-    require(['site/help']);
+    {% include "gobotany/_help_js_require.html" %}
 {% endblock %}
 
-{% block body_attributes %}id="video" class="help"{% endblock %}
+{% block body_attributes %}
+    {% include "gobotany/_video_body_attributes.html" %}
+{% endblock %}
 
 {% block main_content %}
-    <h1>Video Help Topics</h1>
-    {% for video in videos %}
-        {% if video.title == 'All other herbaceous, flowering dicots' and videos|length > 21 %}
-            {# Exclude the big Remaining Non-Monocots pile if #}
-            {# it has been split in two new piles at import.  #}
-        {% else %}
-        <div class="video-topic">
-            {% if video.youtube_id %}
-                <a class="video"
-                    href="http://www.youtube.com/embed/{{ video.youtube_id }}?autoplay=1&amp;rel=0&amp;hd=1&amp;modestbranding=1">
-                    <img class="shadow"
-                        src="http://img.youtube.com/vi/{{ video.youtube_id }}/0.jpg"
-                        alt="">
-                </a>
-            {% else %}
-                <div class="missing-image">
-                  <p>Video not available yet</p>
-                </div>
-            {% endif %}
-            <p>{{ video.title }}</p>
-        </div>
-        {% endif %}
-    {% endfor %}
+    {% include "gobotany/_video_main_content.html" %}
 {% endblock %}
 
 {% block sidebar_content %}

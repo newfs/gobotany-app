@@ -1,5 +1,19 @@
 /* Support showing a list of suggestions for a text input field. */
 
+/* Rationale: Support for search suggestions is needed in different places
+ * throughout the site, with some varying appearances. Safari does not
+ * yet support HTML5 datalist, and Safari is especially important for
+ * iOS use, so using the native HTML5 datalist instead is not yet an option.
+ *
+ * Use: The goal is that with the basic JS and CSS loaded, only simple
+ * declarative HTML is needed to add a suggestions menu to a search box,
+ * i.e., no additional code is needed. An example, with options set:
+ * <input type="text" name="identification" value="" id="id_identification3"
+ *        placeholder="scientific or common name" class="suggest"
+ *        data-suggest-url="/plant-name-suggestions/?q=%s"
+ *        data-submit-on-select="true" data-align-menu-inside-input="true">
+ */
+
 define([
     'bridge/jquery'
 ], function ($) {
@@ -19,17 +33,30 @@ define([
         this.SELECTED_CLASS = 'selected';
 
         this.$input_box = $(input_box);
+        this.cached_suggestions = {};
+
+        /* Settings that can be set with HTML5 data- attributes: */
+
+        /* Required: URL of the service that supplies search suggestions.
+         * Include a placeholder (%s) for the query value.
+         * Example: data-suggest-url="/plant-name-suggestions/?q=%s"
+         */
         this.suggestions_url = this.$input_box.attr('data-suggest-url');
+
+        /* Set this to "true" if the form should automatically submit on
+         * selecting a suggestion, such as for a search feature. */
         this.submit_on_select = this.$input_box.attr('data-submit-on-select');
+
+        /* Set this to "true" to align the left edge of the menu with the
+         * padded inside left of the input box. This is for handling an
+         * input box that is styled to have curved corners outside its
+         * rectangular input area. */
         this.align_menu_inside_input =
             this.$input_box.attr('data-align-menu-inside-input');
-        this.cached_suggestions = {};
     };
 
     Suggester.prototype.setup = function () {
-        this.$form = this.$input_box.parent(); // TODO: more reliable way
-                                               // in case form fields
-                                               // are wrapped in divs
+        this.$form = this.$input_box.parents('form').first();
 
         // Add an element for the suggestions menu.
         this.$input_box.after('<div><ul></ul></div>');
@@ -37,9 +64,9 @@ define([
         this.$menu = this.$input_box.next();
         this.$menu.hide();
 
-        this.$menu_list = this.$menu.children('ul').eq(0);
+        this.$menu_list = this.$menu.children('ul').first();
 
-        // Disable browser autocomplete
+        // Disable browser autocomplete.
         this.$input_box.attr('autocomplete', 'off');
 
         // Set the width of the menu to match that of the box.
@@ -200,11 +227,6 @@ define([
             for (i = 0; i < suggestions.length; i += 1) {
                 var suggestion = suggestions[i];
 
-                // Replace any hyphens because the current search
-                // configuration does not fully support querying with them.
-                // TODO: probably do this elsewhere given use beyond search
-                var query_value = suggestion.toLowerCase().replace(/\-/g,
-                                                                   ' ');
                 var label = this.format_suggestion(suggestion, input_value);
                 var $item = $(document.createElement('li'));
                 $item.append(label);

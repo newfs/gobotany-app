@@ -1,105 +1,12 @@
+{% extends "gobotany/_base.html" %}
 {% load gobotany_tags %}
-<!DOCTYPE html>
-<html>
-    <head>
-        <title>{% block title %}{% endblock %}{% block title_suffix %}:
-            Partner Site Sample{% endblock %}</title>
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width,
-        initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
-        {# No meta tag for Google Chrome Frame: use middleware HTTP header #}
+{% block title_suffix %}Partner Site Sample{% endblock %}
 
-        <link rel="shortcut icon" href="/static/images/branding/favicon.png">
+{% block header %}
+    {% include "partner/_header.html" %}
+{% endblock %}
 
-        {# This block is for any additional meta or link elements. #}
-        {% block more_meta_link %}{% endblock %}
-
-        {# CSS goes here. #}
-        {% block css %}
-
-        {% with '/static/css/site.css' as file_path %}
-        <link rel="stylesheet"
-            href="{{ file_path }}?v={% file_version file_path %}">
-        {% endwith %}
-        
-        {% endblock %}
-
-        {# JS goes here. #}
-
-        {# This block is for adding any JS that *has* to come first, #}
-        {# such as SVGWeb. #}
-        {% block js_top %}{% endblock %}
-
-        {# This HTML5 fix for old IE will only apply if the user views #}
-        {# the site in IE without the required Chrome Frame plug-in.   #}
-        <!--[if lt IE 9]>
-        <script
-            src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
-        <![endif]-->
-
-        <script>
-            API_URL = '{% url 'api-base' %}';
-
-            /* Get rid of Ember 0.9.8.1 warnings by telling it to go ahead and
-               behave like the future. */
-
-            ENV = {
-                CP_DEFAULT_CACHEABLE: true,
-                VIEW_PRESERVES_CONTEXT: true
-            };
-        </script>
-
-        {% if not in_production %}
-
-        <!-- DEVELOPMENT FILES -->
-        <script src="/static/scripts/lib/require.js"></script>
-        <script src="/static/scripts/require_config.js"></script>
-
-        {% else %}
-
-        <!-- PRODUCTION / DEPLOYMENT FILES -->
-        {% with '/static/js/gobotany.application.js' as file_path %}
-        <script src="{{ file_path }}?v={% file_version file_path %}"></script>
-        {% endwith %}
-
-        {% endif %}
-
-        <script>
-            require(['util/suggester_init']);
-            {% block js_require %}{% endblock %}
-        </script>
-
-        {% if in_production %}
-
-		{# Google analytics tracking code #}
-		<script type="text/javascript">
-		  var _gaq = _gaq || [];
-		  _gaq.push(['_setAccount', 'UA-30436748-1']);
-		  _gaq.push(['_trackPageview']);
-
-		  (function() {
-		    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
-		    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
-		    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
-		  })();
-        </script>
-
-        {% endif %}
-
-        {% block ember_templates %}{% endblock %}
-    </head>
-
-    <body {% block body_attributes %}{% endblock %}>
-
-        {% include "gobotany/_chrome_frame.html" %}
-
-        <div id="all">
-            {% block header %}{% endblock %}
-
-            {% block body_content %}{% endblock %}
-
-            {% block footer %}{% endblock %}
-        </div>
-    </body>
-</html>
+{% block footer %}
+    {% include "partner/_footer.html" %}
+{% endblock %}

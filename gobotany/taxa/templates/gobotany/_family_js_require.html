@@ -1,0 +1,6 @@
+    var args = {
+        family_slug: '{{ family.slug }}'
+    };
+    require(['taxa/family'], function (family) {
+        family.init(args);
+    });

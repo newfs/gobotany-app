@@ -1,0 +1,48 @@
+{% load simplekey_extras %}
+
+    <h1>Genus: <i>{{ genus.name }}</i></h1>
+    {% if common_name %}
+        <p class="common">{{ common_name|cut:"The "|lower }}</p>
+    {% endif %}
+    <p class="description">
+    {% if genus.description %}
+        {{ genus.description }}
+    {% else %}
+        (Description coming soon)
+    {% endif %}
+    </p>
+
+    <div class="pics">
+        {% for drawing in genus_drawings %}
+            <div class="img-gallery">
+                <div class="plant">
+                    <div class="frame"></div>
+                    <a href="{{ drawing.image_medium }}"
+                        title="{% photo_credit drawing drawing.content_object.scientific_name %}">
+                        <img class="map"
+                            src="{{ drawing.thumb_large }}"
+                            alt="{% photo_credit drawing drawing.content_object.scientific_name %}"></a>
+                    </a>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+
+    <h2>Family</h2>
+    <p class="family">
+        <a href="{% url 'taxa-family' genus.family.slug %}"
+        >{{ genus.family.name }}{% if genus.family.common_name %} ({{ genus.family.common_name|cut:"The "|lower }}){% endif %}</a></p>
+
+    <h2>This Genus&#8217;s Species in New England:</h2>
+    <ul class="species">
+    {% for species in genus.taxa.all %}
+        <li><i><a href="{% url 'taxa-species' genus.slug species.epithet %}"
+        >{{ species.scientific_name }}</a></i></li>
+    {% endfor %}
+    </ul>
+
+    <p class="visit-dkey">
+      Visit this genus in the
+      <a href="{% url 'dkey_page' genus.name.lower %}"
+         >Dichotomous Key</a>
+    </p>

@@ -143,7 +143,7 @@ define([
     };
 
     Length.prototype._redraw_permitted_ranges = function() {
-        var p = 'Please enter a measurement in the range ';
+        var p = 'Enter a measurement in the range ';
         var truncate = function(value, precision) {
             var power = Math.pow(10, precision || 0);
             return String(Math.round(value * power) / power);
@@ -155,6 +155,7 @@ define([
                 '&nbsp;–&nbsp;' +  // en-dash for numeric ranges
                 truncate(pr.max / this.factor, 2) + '&nbsp;' + this.unit;
         }
+        p += '.';
         $('.permitted_ranges', this.div).html(p);
     };
 
