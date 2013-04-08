@@ -4,9 +4,11 @@ import urlparse
 import hashlib
 
 from django.db import models
+from django.db.models.signals import post_save
 from django.conf import settings
 from django.contrib.auth.models import User
 from django.core.files.storage import Storage, FileSystemStorage
+from django.dispatch import receiver
 
 from storages.backends.s3boto import S3BotoStorage
 from imagekit.models import ProcessedImageField, ImageSpecField
@@ -139,6 +141,21 @@ class UserProfile(models.Model):
 
     def get_user_pod(self):
         return self.pods.get(podmembership__is_self_pod=True)
+
+@receiver(post_save, sender=User, dispatch_uid='create_profile_for_user')
+def create_user_profile(sender, **kwargs):
+    user = kwargs['instance']
+    created = kwargs['created']
+    # Only when a user is first created, we should create his UserProfile
+    # and his personal Pod.
+    if created:
+        profile = UserProfile(user=user)
+        profile.save()
+        user_pod = Pod(name=user.username)
+        user_pod.save()
+        membership = PodMembership(member=profile, pod=user_pod, is_owner=True,
+            is_self_pod=True)
+        membership.save()
 
 
 class Sighting(models.Model):
