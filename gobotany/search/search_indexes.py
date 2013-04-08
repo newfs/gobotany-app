@@ -1,13 +1,9 @@
 from haystack import indexes
 from haystack import site
 
+import gobotany.core.models as core_models
 import gobotany.dkey.models as dkey_models
-
-from gobotany.core.models import Taxon, Family, Genus, GlossaryTerm
-
-from gobotany.search.models import (PlainPage,
-                                    GroupsListPage, SubgroupResultsPage,
-                                    SubgroupsListPage)
+import gobotany.search.models as search_models
 
 class CharacterCharField(indexes.CharField):
     '''A CharField that understands how to get the character value
@@ -252,12 +248,14 @@ class DichotomousKeyPageIndex(BaseIndex):
         return data
 
 
-site.register(Taxon, TaxonIndex)
-site.register(Family, FamilyIndex)
-site.register(Genus, GenusIndex)
-site.register(GlossaryTerm, GlossaryTermIndex)
-site.register(PlainPage, PlainPageIndex)
-site.register(GroupsListPage, GroupsListPageIndex)
-site.register(SubgroupsListPage, SubgroupsListPageIndex)
-site.register(SubgroupResultsPage, SubgroupResultsPageIndex)
+site.register(core_models.Taxon, TaxonIndex)
+site.register(core_models.Family, FamilyIndex)
+site.register(core_models.Genus, GenusIndex)
+site.register(core_models.GlossaryTerm, GlossaryTermIndex)
+
+site.register(search_models.PlainPage, PlainPageIndex)
+site.register(search_models.GroupsListPage, GroupsListPageIndex)
+site.register(search_models.SubgroupsListPage, SubgroupsListPageIndex)
+site.register(search_models.SubgroupResultsPage, SubgroupResultsPageIndex)
+
 site.register(dkey_models.Page, DichotomousKeyPageIndex)
