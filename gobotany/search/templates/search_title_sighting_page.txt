@@ -1,0 +1,1 @@
+Sighting: {{ object.identification }} at {{ object.location }}

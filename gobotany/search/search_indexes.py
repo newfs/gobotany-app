@@ -3,6 +3,7 @@ from haystack import site
 
 import gobotany.core.models as core_models
 import gobotany.dkey.models as dkey_models
+import gobotany.plantshare.models as plantshare_models
 import gobotany.search.models as search_models
 
 class CharacterCharField(indexes.CharField):
@@ -55,6 +56,21 @@ class BaseIndex(indexes.SearchIndex):
 
         return self.model._default_manager.all()
 
+
+class BaseRealTimeIndex(indexes.RealTimeSearchIndex):
+    """ A document that already knows its URL, so searches render faster.
+    This is like BaseIndex, but for a RealTimeSearchIndex instead of a
+    regular SearchIndex.
+    """
+    url = indexes.CharField(use_template=True,
+                            template_name='search_url.txt')
+
+    def read_queryset(self):
+        """Bypass `index_queryset()` when we just need to read a model."""
+        return self.model._default_manager.all()
+
+
+# Taxa, Simple-/Full-Key, and Help-section pages
 
 class TaxonIndex(BaseIndex):
     # Index
@@ -221,6 +237,8 @@ class SubgroupResultsPageIndex(BaseIndex):
                 .prefetch_related('subgroup__species__common_names'))
 
 
+# Dichotomous Key pages
+
 class DichotomousKeyPageIndex(BaseIndex):
     # Index
 
@@ -248,6 +266,23 @@ class DichotomousKeyPageIndex(BaseIndex):
         return data
 
 
+# PlantShare pages
+
+class SightingPageIndex(BaseRealTimeIndex):
+    # Index
+
+    text = indexes.CharField(
+        document=True, use_template=True,
+        template_name='search_text_sighting_page.txt')
+
+    # Display
+
+    title = indexes.CharField(use_template=True,
+        template_name='search_title_sighting_page.txt')
+
+
+# Register indexes for all desired page/model types.
+
 site.register(core_models.Taxon, TaxonIndex)
 site.register(core_models.Family, FamilyIndex)
 site.register(core_models.Genus, GenusIndex)
@@ -259,3 +294,5 @@ site.register(search_models.SubgroupsListPage, SubgroupsListPageIndex)
 site.register(search_models.SubgroupResultsPage, SubgroupResultsPageIndex)
 
 site.register(dkey_models.Page, DichotomousKeyPageIndex)
+
+site.register(plantshare_models.Sighting, SightingPageIndex)

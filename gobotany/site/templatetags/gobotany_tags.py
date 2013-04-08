@@ -8,8 +8,9 @@ from django.template.defaultfilters import slugify, stringfilter
 
 from gobotany import settings
 from gobotany.version import get_version
-from gobotany.core import models
+from gobotany.core import models as core_models
 from gobotany.dkey import models as dkey_models
+from gobotany.plantshare import models as plantshare_models
 from gobotany.search import models as search_models
 
 register = template.Library()
@@ -37,21 +38,24 @@ def gobotany_version():
 def url(obj):
     """Return the canonical URL in Go Botany for the given object."""
 
-    # Core models.
+    # Core and PlantShare models.
 
-    if isinstance(obj, models.Taxon):
+    if isinstance(obj, core_models.Taxon):
         genus_slug = obj.genus_name().lower()
         return reverse('taxa-species', args=(genus_slug, obj.epithet))
 
-    if isinstance(obj, models.Family):
+    if isinstance(obj, core_models.Family):
         return reverse('taxa-family', args=(obj.name.lower(),))
 
-    if isinstance(obj, models.Genus):
+    if isinstance(obj, core_models.Genus):
         return reverse('taxa-genus', args=(obj.name.lower(),))
 
-    if isinstance(obj, models.GlossaryTerm):
+    if isinstance(obj, core_models.GlossaryTerm):
         url = reverse('site-glossary', args=(obj.term[0].lower(),))
         return url + '#' + slugify(obj.term)
+
+    if isinstance(obj, plantshare_models.Sighting):
+        return reverse('ps-sighting', args=(obj.id,))
 
     # Pages.
 

@@ -156,6 +156,8 @@ class Sighting(models.Model):
 
     class Meta:
         ordering = ['-created']
+        verbose_name = 'sighting'
+        verbose_name_plural = 'sightings'
 
     def __unicode__(self):
         sighting_id = ''
