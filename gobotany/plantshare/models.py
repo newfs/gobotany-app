@@ -374,8 +374,8 @@ class ChecklistEntry(models.Model):
     plant_photo = models.ForeignKey(ScreenedImage, null=True, blank=True)
     location = models.CharField(max_length=100, blank=True)
 
-    date_found = models.DateTimeField(null=True)
-    date_posted = models.DateTimeField(null=True)
+    date_found = models.DateTimeField(null=True, blank=True)
+    date_posted = models.DateTimeField(null=True, blank=True)
 
     note = models.TextField(blank=True)
 
