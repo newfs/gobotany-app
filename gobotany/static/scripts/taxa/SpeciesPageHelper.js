@@ -55,14 +55,12 @@ var SpeciesPageHelper = {
         $('ul.full-description li h5').toggle(function() {
             var $heading = $(this);
             $heading.siblings('div').show();
-            $heading.css('background-image',
-                'url("/static/images/icons/minus.png")');
+            $heading.addClass('expanded');
             return false;
         }, function() {
             var $heading = $(this);
             $heading.siblings('div').hide();
-            $heading.css('background-image',
-                'url("/static/images/icons/plus.png")');
+            $heading.removeClass('expanded');
             return false;
         });
     },
@@ -74,16 +72,14 @@ var SpeciesPageHelper = {
             $('ul.full-description').show();
             $(this).text('Hide ' + 
                 $(this).text().substr($(this).text().indexOf(' ')));
-            $(this).css('background-image',
-                'url("/static/images/icons/minus.png")');
+            $(this).addClass('expanded');
             that.toggle_character_group();
             return false;
         }, function() {
             $('ul.full-description').hide();
             $(this).text('Show ' + 
                 $(this).text().substr($(this).text().indexOf(' ')));
-            $(this).css('background-image',
-                'url("/static/images/icons/plus.png")');
+            $(this).removeClass('expanded');
             return false;
         });
     },
