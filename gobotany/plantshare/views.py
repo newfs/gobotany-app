@@ -174,6 +174,12 @@ def new_sighting_done_view(request):
     return render_to_response('new_sighting_done.html', {
            }, context_instance=RequestContext(request))
 
+@login_required
+def manage_sightings_view(request):
+    """View for a page where the user can review and edit their sightings."""
+    return render_to_response('manage_sightings.html', {
+        }, context_instance=RequestContext(request))
+
 def questions_view(request):
     """View for the main Ask the Botanist page and the questions collection:
     showing a list of recent questions (GET) as well as handling adding a new

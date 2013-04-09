@@ -6,6 +6,7 @@
 
             {% if user.is_authenticated %}
                 <li class="post-sighting">{% nav_item 'Post a Sighting' ps-new-sighting %}</li>
+                <li class="manage-sightings">{% nav_item 'Manage Sightings' ps-manage-sightings %}</li>
             {% endif %}
             
             <li class="sightings-locator">{% nav_item 'Sightings Locator' ps-sightings-locator %}</li>
