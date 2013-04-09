@@ -80,9 +80,8 @@
                                     alt="" title="sighting">
                             {% endif %}
                             {% if result.model_name == 'question' %}
-                                {# TODO: consider changing icon #}
                                 <img
-                                    src="/static/images/icons/icon-groups-list.png"
+                                    src="/static/images/icons/icon-question.png"
                                     alt="" title="question and answer">
                             {% endif %}
                             {{ result.title|quick_highlight:query|safe }}
