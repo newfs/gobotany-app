@@ -23,7 +23,7 @@
             {{ checklist_form.comments }}
             {{ checklist_form.comments.errors }}
         </header>
-        <a class="import-sightings-link" href="#">Import from Sightings &#43;</a>
+        <a class="import-sightings-link" href="javascript:alert('Coming soon!');">Import from Sightings &#43;</a>
         <table id="add-sightings-table">
             <thead>
                 <tr>
@@ -53,7 +53,7 @@
                         {{ entry_form.plant_name.errors }}
                     </td><!-- /.name -->
                     <td class="image">
-                        <a href="#" class="upload-image-thumb btn">Upload Image</a>
+                        <a href="javascript:alert('Coming soon!');" class="upload-image-thumb btn">Upload Image</a>
                     </td><!-- /.image -->
                     <td class="date-sighted">
                         {{ entry_form.date_found }}
@@ -68,8 +68,8 @@
                         {{ entry_form.date_posted.errors }}
                     </td><!-- /.date-posted -->
                     <td class="note">
-                        <a href="modals/add-notes.html" rel="shadowbox;width=550;height=240">Add<br>Note</a>
-                        <a href="modals/delete-confirm-item.html" rel="shadowbox;height=200;width=550;" class="close-btn row-btn">Close</a>
+                        <a href="javascript:alert('Coming soon!');" rel="shadowbox;width=550;height=240">Add<br>Note</a>
+                        <a href="javascript:alert('Coming soon!');" rel="shadowbox;height=200;width=550;" class="close-btn row-btn">Close</a>
                     </td><!-- /.note -->
                 </tr>
                 {% endfor %}
@@ -77,7 +77,7 @@
         </table><!-- /#add-sightings-table -->
         <div class="form-actions">
             <input type="submit" class="ps-button" id="save-btn" value="Save" />
-            <a href="ps-checklistaction.php" class="cancel-link">Cancel</a>
+            <a href="{% url 'ps-checklists' %}" class="cancel-link">Cancel</a>
         </div><!-- /.form-actions -->
     </form><!-- /#checklist-fillout -->
 </div><!-- /.ps-section -->
