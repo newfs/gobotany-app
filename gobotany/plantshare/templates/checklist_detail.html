@@ -1,0 +1,55 @@
+{% extends "gobotany/_page_free_sidebar.html" %}
+{% load mapping_tags %}
+
+{% block title %}Checklists: Plantshare{% endblock %}
+
+{% block js_require %}
+    require(['util/suggester_init', 'plantshare/plantshare']);
+{% endblock %}
+
+{% block body_attributes %}id="checklists" class="plantshare checklists"{% endblock %}
+
+{% block main_content %}
+<h1>Checklists</h1>
+
+<div class="ps-section">
+    <h3>{{ checklist.name }}</h3>
+    <p><em>Comments: {{ checklist.comments }}</em></p>
+    {% if checklist.entries %}
+    <table id="checklist-detail" class="checklists-list">
+        <thead>
+            <tr>
+                <th class="name">Name<span></span></th>
+                <th class="image">Image</th>
+                <th class="date-sighted">Date Sighted</th>
+                <th class="location">Location</th>
+                <th class="date-posted">Date Posted</th>
+                <th class="note">Note</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for entry in checklist.entries.all %}
+            <tr>
+                
+                <td class="name"><em>{{ entry.plant_name }}</em></td>
+                <td class="image"><div class="thumb"></div></td>
+                <td class="date-sighted">{{ entry.date_found|date:"m/d/Y"|default:"N/A" }}</td>
+                <td class="location">{{ entry.location|default:"N/A" }}</td>
+                <td class="date-posted">{{ entry.date_posted|date:"m/d/Y"|default:"N/A" }}</td>
+                <td class="note">
+                    <a href="javascript:alert('Coming soon!');" rel="shadowbox;height=240;width=550">View</a>
+                    <a href="javascript:alert('Coming soon!');" rel="shadowbox;height=200;width=550;" class="close-btn row-btn">Close</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table><!-- /.checklists-list -->
+    {% else %}
+    <div>There are no entries for this checklist.</div>
+    {% endif %}
+</div><!-- /.ps-section -->
+{% endblock %}
+
+{% block sidebar_content %}
+    {% include "_plantshare_navigation.html" %}
+{% endblock %}

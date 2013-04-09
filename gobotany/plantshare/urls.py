@@ -32,6 +32,14 @@ urlpatterns = patterns(
     url(r'^questions/all/$', views.all_questions_view,
         name='ps-all-questions'),
 
+    # Checklists
+    url(r'^checklists/$', views.checklist_index_view, name='ps-checklists'),
+    url(r'^checklists/new/$', views.new_checklist_view, name='ps-checklist-new'),
+    url(r'^checklists/(?P<checklist_id>[0-9]+)/$', views.checklist_view,
+        name='ps-checklist'),
+    url(r'^checklists/(?P<checklist_id>[0-9]+)/edit$', views.edit_checklist_view,
+        name='ps-checklist-edit'),
+
     # My Profile page
     url(r'^profile/$', views.profile_view, name='ps-profile'),
 

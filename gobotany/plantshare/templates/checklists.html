@@ -1,0 +1,66 @@
+{% extends "gobotany/_page_free_sidebar.html" %}
+{% load mapping_tags %}
+
+{% block title %}Checklists: Plantshare{% endblock %}
+
+{% block js_require %}
+    require(['util/suggester_init', 'plantshare/plantshare']);
+{% endblock %}
+
+{% block body_attributes %}id="checklists" class="plantshare checklists"{% endblock %}
+
+{% block main_content %}
+<h1>Checklists</h1>
+
+<div class="notification box">
+    <p>Check out our checklists!<p>
+    <ul>
+        <li>Create your own list of plants you have seen.</li>
+        <li>Share checklists with friends, students, and colleagues.</li>
+        <li>To start a new list, click the "Create new list" button</li>
+    </li>
+    <a class="ps-button" href="{% url 'ps-checklist-new' %}">Create New Checklist</a>
+</div>
+<div class="ps-section">
+    <h2 class="left">Checklists</h2>
+    {% if checklists %}
+    <table id="checklists-view" class="checklists-list">
+        <thead>
+            <tr>
+                <th class="first"></th>
+                <th class="checklistview-name">Name<span></span></th>
+                <th class="date">Date Found</th>
+                <th class="owner">Owner</th>
+                <th class="last"></th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for checklist in checklists %}
+            <tr>
+                <td class="first"><input type="checkbox" /></td>
+                <td class="checklistview-name">{{ checklist.name }}</td>
+                <td class="date">{{ checklist.date_found|default:"N/A" }}</td>
+                {% ifequal user.username checklist.owner.name %}
+                <td class="owner">Me</td>
+                {% else %}
+                <td class="owner">{{ checklist.owner.name }}</td>
+                {% endifequal %}
+                <td class="last"><a href="{% url 'ps-checklist' checklist.pk %}">View List</a></td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table><!-- /.checklists-list -->
+    <div class="form-actions small-margin-top">
+        <a class="ps-button" href="javascript:alert('Coming soon!');" rel="shadowbox;height=440;width=750;" class="share-btn inactive btn">Share</a>
+        <a class="ps-button" href="javascript:alert('Coming soon!');" class="export-btn inactive btn">Export</a>
+        <a class="ps-button" href="javascript:alert('Coming soon!');" rel="shadowbox;width=600;height=180;" class="delete-btn inactive btn">Delete</a>
+    </div><!-- /.form-actions -->
+    {% else %}
+        <span>You currently have no checklists</span>
+    {% endif %}
+</div><!-- /.ps-section -->
+{% endblock %}
+
+{% block sidebar_content %}
+    {% include "_plantshare_navigation.html" %}
+{% endblock %}
