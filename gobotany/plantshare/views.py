@@ -250,7 +250,7 @@ def new_checklist_view(request):
                 return redirect('ps-checklists')
     else:
         checklist_form = ChecklistForm()
-        entry_formset = ChecklistEntryFormSet()
+        entry_formset = ChecklistEntryFormSet(queryset=ChecklistEntry.objects.none())
 
     return render_to_response('new_checklist.html', {
             'checklist_form': checklist_form,
