@@ -40,7 +40,7 @@ class BaseIndex(indexes.SearchIndex):
     """A document that already knows its URL, so searches render faster."""
 
     url = indexes.CharField(use_template=True,
-                            template_name='search_url.txt')
+                            template_name='search_result_url.txt')
 
     def read_queryset(self):
         """Bypass `index_queryset()` when we just need to read a model.
@@ -63,7 +63,7 @@ class BaseRealTimeIndex(indexes.RealTimeSearchIndex):
     regular SearchIndex.
     """
     url = indexes.CharField(use_template=True,
-                            template_name='search_url.txt')
+                            template_name='search_result_url.txt')
 
     def read_queryset(self):
         """Bypass `index_queryset()` when we just need to read a model."""
@@ -78,12 +78,12 @@ class TaxonIndex(BaseIndex):
     name = indexes.CharField(model_attr='scientific_name')
     text = indexes.CharField(
         document=True, use_template=True,
-        template_name='search_text_species.txt')
+        template_name='species_text_searchindex.txt')
 
     # Display
 
     title = indexes.CharField(use_template=True,
-        template_name='search_title_species.txt')
+        template_name='species_title_searchindex.txt')
 
     # Customization
 
@@ -111,12 +111,12 @@ class FamilyIndex(BaseIndex):
     name = indexes.CharField(model_attr='name')
     text = indexes.CharField(
         document=True, use_template=True,
-        template_name='search_text_family.txt')
+        template_name='family_text_searchindex.txt')
 
     # Display
 
     title = indexes.CharField(use_template=True,
-        template_name='search_title_family.txt')
+        template_name='family_title_searchindex.txt')
 
     # Customization
 
@@ -131,12 +131,12 @@ class GenusIndex(BaseIndex):
     name = indexes.CharField(model_attr='name')
     text = indexes.CharField(
         document=True, use_template=True,
-        template_name='search_text_genus.txt')
+        template_name='genus_text_searchindex.txt')
 
     # Display
 
     title = indexes.CharField(use_template=True,
-        template_name='search_title_genus.txt')
+        template_name='genus_title_searchindex.txt')
 
     # Customization
 
@@ -151,7 +151,7 @@ class PlainPageIndex(BaseIndex):
 
     text = indexes.CharField(
         document=True, use_template=True,
-        template_name='search_text_plain_page.txt')
+        template_name='plain_page_text_searchindex.txt')
 
     # Display
 
@@ -164,12 +164,12 @@ class GlossaryTermIndex(BaseIndex):
     name = indexes.CharField(model_attr='term')
     text = indexes.CharField(
         document=True, use_template=True,
-        template_name='search_text_glossary_term.txt')
+        template_name='glossary_term_text_searchindex.txt')
 
     # Display
 
     title = indexes.CharField(use_template=True,
-        template_name='search_title_glossary_term.txt')
+        template_name='glossary_term_title_searchindex.txt')
 
 
 class GroupsListPageIndex(BaseIndex):
@@ -177,7 +177,7 @@ class GroupsListPageIndex(BaseIndex):
 
     text = indexes.CharField(
         document=True, use_template=True,
-        template_name = 'search_text_groups_list_page.txt')
+        template_name = 'groups_list_page_text_searchindex.txt')
 
     # Display
 
@@ -198,7 +198,7 @@ class SubgroupsListPageIndex(BaseIndex):
 
     text = indexes.CharField(
         document=True, use_template=True,
-        template_name = 'search_text_subgroups_list_page.txt')
+        template_name = 'subgroups_list_page_text_searchindex.txt')
 
     # Display
 
@@ -223,7 +223,7 @@ class SubgroupResultsPageIndex(BaseIndex):
 
     text = indexes.CharField(
         document=True, use_template=True,
-        template_name = 'search_text_subgroup_results_page.txt')
+        template_name = 'subgroup_results_page_text_searchindex.txt')
 
     # Display
 
@@ -244,12 +244,12 @@ class DichotomousKeyPageIndex(BaseIndex):
 
     text = indexes.CharField(
         document=True, use_template=True,
-        template_name='search_text_dichotomous_key_page.txt')
+        template_name='dkey_page_text_searchindex.txt')
 
     # Display
 
     title = indexes.CharField(use_template=True,
-        template_name='search_title_dichotomous_key_page.txt')
+        template_name='dkey_page_title_searchindex.txt')
 
     # Customization
 
@@ -273,12 +273,12 @@ class SightingPageIndex(BaseRealTimeIndex):
 
     text = indexes.CharField(
         document=True, use_template=True,
-        template_name='search_text_sighting_page.txt')
+        template_name='sighting_page_text_searchindex.txt')
 
     # Display
 
     title = indexes.CharField(use_template=True,
-        template_name='search_title_sighting_page.txt')
+        template_name='sighting_page_title_searchindex.txt')
 
     # Customization
     # TODO: Index only publicly shared, non-rare-plant sightings
