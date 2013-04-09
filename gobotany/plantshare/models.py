@@ -239,6 +239,10 @@ class ScreenedImage(models.Model):
     deleted = models.BooleanField(default=False)
 
 
+class QuestionManager(models.Manager):
+    def answered(self):
+        return self.exclude(answer__isnull=True).exclude(answer__exact='')
+
 class Question(models.Model):
     question = models.CharField(max_length=300, blank=False)
     answer = models.CharField(max_length=3000, blank=True)
@@ -249,6 +253,10 @@ class Question(models.Model):
                                  related_name='questions_asked')
     answered = models.DateTimeField(null=True, editable=False)
 
+    class Meta:
+        verbose_name = 'question'
+        verbose_name_plural = 'questions'
+
     def __unicode__(self):
         return '%d: %s' % (self.id, self.question)
 
@@ -258,6 +266,8 @@ class Question(models.Model):
         if self.answer:
             self.answered = datetime.datetime.now()
         super(Question, self).save()
+
+    objects = QuestionManager()
 
 
 class Pod(models.Model):

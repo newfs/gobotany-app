@@ -280,6 +280,27 @@ class SightingPageIndex(BaseRealTimeIndex):
     title = indexes.CharField(use_template=True,
         template_name='search_title_sighting_page.txt')
 
+    # Customization
+    # TODO: Index only publicly shared, non-rare-plant sightings
+
+
+class QuestionIndex(BaseRealTimeIndex):
+    # Index
+
+    text = indexes.CharField(
+        document=True, use_template=True,
+        template_name='question_text_searchindex.txt')
+
+    # Display
+
+    title = indexes.CharField(use_template=True,
+        template_name='question_title_searchindex.txt')
+
+    # Customization
+
+    def index_queryset(self):
+        return plantshare_models.Question.objects.answered()
+
 
 # Register indexes for all desired page/model types.
 
@@ -296,3 +317,4 @@ site.register(search_models.SubgroupResultsPage, SubgroupResultsPageIndex)
 site.register(dkey_models.Page, DichotomousKeyPageIndex)
 
 site.register(plantshare_models.Sighting, SightingPageIndex)
+site.register(plantshare_models.Question, QuestionIndex)

@@ -1,0 +1,1 @@
+Question: {{ object.question|truncatewords:12 }}

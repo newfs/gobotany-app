@@ -77,7 +77,13 @@
                                 {# TODO: consider changing icon #}
                                 <img
                                     src="/static/images/icons/icon-groups-list.png"
-                                    alt="" title="PlantShare sighting">
+                                    alt="" title="sighting">
+                            {% endif %}
+                            {% if result.model_name == 'question' %}
+                                {# TODO: consider changing icon #}
+                                <img
+                                    src="/static/images/icons/icon-groups-list.png"
+                                    alt="" title="question and answer">
                             {% endif %}
                             {{ result.title|quick_highlight:query|safe }}
                             </a>

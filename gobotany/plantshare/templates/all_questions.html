@@ -23,7 +23,7 @@
     <h2 id="{{ category.grouper|lower }}">{{ category.grouper }}</h2>
     <ul class="questions">
         {% for question in category.list %}
-            <li>
+            <li id="q{{ question.id }}">
                 <dl>
                     <dt>Question</dt>
                     <dd>{{ question.question }}</dd>
