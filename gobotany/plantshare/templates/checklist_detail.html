@@ -13,8 +13,9 @@
 <h1>Checklists</h1>
 
 <div class="ps-section">
-    <h3>Vermont July Trip</h3>
-    <p><em>Comments: Challenging my tribe mates to find these plants when they visit Vermont in the summer.</em></p>
+    <h3>{{ checklist.name }}</h3>
+    <p><em>Comments: {{ checklist.comments }}</em></p>
+    {% if checklist.entries %}
     <table id="checklist-detail" class="checklists-list">
         <thead>
             <tr>
@@ -27,42 +28,25 @@
             </tr>
         </thead>
         <tbody>
+            {% for entry in checklist.entries.all %}
             <tr>
                 
-                <td class="name"><em>Acer negundo</em></td>
+                <td class="name"><em>{{ entry.plant_name }}</em></td>
                 <td class="image"><div class="thumb"></div></td>
-                <td class="date-sighted">04/03/12</td>
-                <td class="location">West Tisbury</td>
-                <td class="date-posted">04/03/12</td>
+                <td class="date-sighted">{{ entry.date_found|date:"m/d/Y"|default:"N/A" }}</td>
+                <td class="location">{{ entry.location|default:"N/A" }}</td>
+                <td class="date-posted">{{ entry.date_posted|date:"m/d/Y"|default:"N/A" }}</td>
                 <td class="note">
-                    <a href="modals/sightings-note.html" rel="shadowbox;height=240;width=550">View</a>
-                    <a href="modals/delete-confirm-item.html" rel="shadowbox;height=200;width=550;" class="close-btn row-btn">Close</a>
+                    <a href="javascript:alert('Coming soon!');" rel="shadowbox;height=240;width=550">View</a>
+                    <a href="javascript:alert('Coming soon!');" rel="shadowbox;height=200;width=550;" class="close-btn row-btn">Close</a>
                 </td>
             </tr>
-            <tr>
-                
-                <td class="name"><em>Acer saccharum</em></td>
-                <td class="image"><div class="thumb"></div></td>
-                <td class="date-sighted">04/03/12</td>
-                <td class="location">West Tisbury</td>
-                <td class="date-posted">04/03/12</td>
-                <td class="note">None
-                    <a href="modals/delete-confirm-item.html" rel="shadowbox;height=200;width=550;" class="close-btn row-btn">Close</a></td>
-            </tr>
-            <tr>
-                
-                <td class="name"><em>Liparis lillifolia</em></td>
-                <td class="image">No Image Uploaded</td>
-                <td class="date-sighted">Not Sighted</td>
-                <td class="location">No Location</td>
-                <td class="date-posted">Not Reported</td>
-                <td class="note">
-                    <a href="modals/sightings-note.html" rel="shadowbox;height=240;width=550">View</a>
-                    <a href="modals/delete-confirm-item.html" rel="shadowbox;height=200;width=550;" class="close-btn row-btn">Close</a>
-                </td>
-            </tr>
+            {% endfor %}
         </tbody>
     </table><!-- /.checklists-list -->
+    {% else %}
+    <div>There are no entries for this checklist.</div>
+    {% endif %}
 </div><!-- /.ps-section -->
 {% endblock %}
 

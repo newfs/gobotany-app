@@ -285,7 +285,9 @@ def edit_checklist_view(request, checklist_id):
 @login_required
 def checklist_view(request, checklist_id):
     """Display the details of a checklist"""
+    checklist = get_object_or_404(Checklist, pk=checklist_id)
     return render_to_response('checklist_detail.html', {
+            'checklist': checklist
            }, context_instance=RequestContext(request))
 
 @login_required
