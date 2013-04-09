@@ -320,7 +320,7 @@ class Checklist(models.Model):
 
     @property
     def owner(self):
-        self.collaborators.get(checklistcollaborator__is_owner=True)
+        return self.collaborators.get(checklistcollaborator__is_owner=True)
 
     def copy_to_user(self, user):
         """Send a copy of this checklist to another user. The user will
