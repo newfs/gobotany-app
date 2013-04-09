@@ -5,7 +5,8 @@ from django.contrib.auth.decorators import login_required, user_passes_test
 from django.core.urlresolvers import reverse, reverse_lazy
 from django.conf import settings
 from django.http import HttpResponse, HttpResponseRedirect
-from django.shortcuts import render, render_to_response, redirect
+from django.shortcuts import (render, render_to_response, redirect,
+        get_object_or_404)
 from django.template import RequestContext
 from django.utils import simplejson
 from django.forms import widgets
@@ -259,7 +260,26 @@ def new_checklist_view(request):
 @login_required
 def edit_checklist_view(request, checklist_id):
     """Edit a checklist"""
+    ChecklistEntryFormSet = _create_checklistentry_formset()
+    checklist = get_object_or_404(Checklist, pk=checklist_id)
+    if request.method == 'POST':
+        checklist_form = ChecklistForm(request.POST, instance=checklist)
+        if checklist_form.is_valid():
+            checklist_form.save()
+            entry_formset = ChecklistEntryFormSet(request.POST)
+            if entry_formset.is_valid():
+                for entry in entry_formset.save(commit=False):
+                    entry.checklist = checklist
+                    entry.save()
+                return redirect('ps-checklists')
+    else:
+        checklist_form = ChecklistForm(instance=checklist)
+        entry_formset = ChecklistEntryFormSet(
+            queryset=ChecklistEntry.objects.filter(checklist=checklist))
+
     return render_to_response('edit_checklist.html', {
+            'checklist_form': checklist_form,
+            'entry_formset': entry_formset
            }, context_instance=RequestContext(request))
 
 @login_required

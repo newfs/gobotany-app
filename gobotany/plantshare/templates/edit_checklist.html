@@ -13,13 +13,17 @@
 <h1>Checklists</h1>
 
 <div class="checklists-section">
-    <form name="checklist-fillout" id="checklist-fillout" action="ps-checklistdetail.php" method="post">
+    <form name="checklist-fillout" id="checklist-fillout" method="POST">
+        {% csrf_token %}
         <header>
             <h4>Edit Checklist</h4>
-            <input type="text" id="checklist-name" placeholder="Enter Checklist Name" />
-            <textarea id="checklist-description" placeholder="Comments about checklist..."></textarea>
+            {{ checklist_form.non_field_errors }}
+            {{ checklist_form.name }}
+            {{ checklist_form.name.errors }}
+            {{ checklist_form.comments }}
+            {{ checklist_form.comments.errors }}
         </header>
-        <a class="import-sightings-link" href="#">Import from Sightings &#43;</a>
+        <a class="import-sightings-link" href="javascript:alert('Coming soon!');">Import from Sightings &#43;</a>
         <table id="add-sightings-table">
             <thead>
                 <tr>
@@ -40,53 +44,41 @@
                 </tr>
             </tfoot>
             <tbody>
+                {{ entry_formset.management_form }}
+                {% for entry_form in entry_formset %}
+                {{ entry_form.non_field_errors }}
+                {{ entry_form.id }}
                 <tr>
                     <td class="name">
-                        <input type="text" id="sighting-name" placeholder="Enter Plant Name" />
+                        {{ entry_form.plant_name }}
+                        {{ entry_form.plant_name.errors }}
                     </td><!-- /.name -->
                     <td class="image">
-                        <a href="#" class="upload-image-thumb btn">Upload Image</a>
+                        <a href="javascript:alert('Coming soon!');" class="upload-image-thumb btn">Upload Image</a>
                     </td><!-- /.image -->
                     <td class="date-sighted">
-                        <input type="text" id="sighting-date-sighted-05" class="datepicker"  placeholder="dd/mm/yy" />
+                        {{ entry_form.date_found }}
+                        {{ entry_form.date_found.errors }}
                     </td><!-- /.date-sighted -->
                     <td class="location">
-                        <input type="text" id="sighting-location" placeholder="Enter Location" />
+                        {{ entry_form.location }}
+                        {{ entry_form.location.errors }}
                     </td><!-- /.location -->
                     <td class="date-posted">
-                        <input type="text" id="sighting-date-posted-05" class="datepicker"  placeholder="dd/mm/yy" />
+                        {{ entry_form.date_posted }}
+                        {{ entry_form.date_posted.errors }}
                     </td><!-- /.date-posted -->
                     <td class="note">
-                        <a href="modals/add-notes.html" rel="shadowbox;width=550;height=240">Add<br>Note</a>
-                        <a href="modals/delete-confirm-item.html" rel="shadowbox;height=200;width=550;" class="close-btn row-btn">Close</a>
+                        <a href="javascript:alert('Coming soon!');" rel="shadowbox;width=550;height=240">Add<br>Note</a>
+                        <a href="javascript:alert('Coming soon!');" rel="shadowbox;height=200;width=550;" class="close-btn row-btn">Close</a>
                     </td><!-- /.note -->
                 </tr>
-                <tr>
-                    <td class="name">
-                        <input type="text" id="sighting-name" placeholder="Enter Plant Name" />
-                    </td><!-- /.name -->
-                    <td class="image">
-                        <a href="#" class="upload-image-thumb btn">Upload Image</a>
-                    </td><!-- /.image -->
-                    <td class="date-sighted">
-                        <input type="text" id="sighting-date-sighted-06" class="datepicker"  placeholder="dd/mm/yy" />
-                    </td><!-- /.date-sighted -->
-                    <td class="location">
-                        <input type="text" id="sighting-location" placeholder="Enter Location" />
-                    </td><!-- /.location -->
-                    <td class="date-posted">
-                        <input type="text" id="sighting-date-posted-06" class="datepicker"  placeholder="dd/mm/yy" />
-                    </td><!-- /.date-posted -->
-                    <td class="note">
-                        <a href="modals/add-notes.html" rel="shadowbox;width=550;height=240">Add<br>Note</a>
-                        <a href="modals/delete-confirm-item.html" rel="shadowbox;height=200;width=550;" class="close-btn row-btn">Close</a>
-                    </td><!-- /.note -->
-                </tr>
+                {% endfor %}
             </tbody>
         </table><!-- /#add-sightings-table -->
         <div class="form-actions">
             <input type="submit" class="ps-button" id="save-btn" value="Save" />
-            <a href="ps-checklistaction.php" class="cancel-link">Cancel</a>
+            <a href="{% url 'ps-checklists' %}" class="cancel-link">Cancel</a>
         </div><!-- /.form-actions -->
     </form><!-- /#checklist-fillout -->
 </div><!-- /.ps-section -->
