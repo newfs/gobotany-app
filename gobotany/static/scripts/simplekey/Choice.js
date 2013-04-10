@@ -39,11 +39,15 @@ define([
             'seven', 'eight', 'nine'];
         var choice_a_1stword = choice_a.split(' ')[0];
         var choice_b_1stword = choice_b.split(' ')[0];
-        if (_.contains(months, choice_a_1stword) && _.contains(months, choice_b_1stword)) {
-            return _.indexOf(months, choice_a_1stword) - _.indexOf(months, choice_b_1stword);
+        if (_.contains(months, choice_a_1stword) &&
+            _.contains(months, choice_b_1stword)) {
+            return _.indexOf(months, choice_a_1stword) -
+                   _.indexOf(months, choice_b_1stword);
         }
-        if (_.contains(numbers, choice_a_1stword) && _.contains(numbers, choice_b_1stword)) {
-            return _.indexOf(numbers, choice_a_1stword) - _.indexOf(numbers, choice_b_1stword);
+        if (_.contains(numbers, choice_a_1stword) &&
+            _.contains(numbers, choice_b_1stword)) {
+            return _.indexOf(numbers, choice_a_1stword) -
+                   _.indexOf(numbers, choice_b_1stword);
         }
 
         // If both are a number or begin with one, sort numerically.
@@ -211,7 +215,8 @@ define([
             }
 
             // Create the container for the choices.
-            var $choices = $('<div>', {'class': choices_class}).appendTo($div);
+            var $choices = $('<div>',
+                             {'class': choices_class}).appendTo($div);
             var $row = $('<div>', {'class': 'row'}).appendTo($choices);
 
             // Create a Don't Know radio button item.
@@ -246,7 +251,8 @@ define([
                     item_html += '<div class="drawing">';
                     var image_path = v.image_url;
                     if (image_path.length > 0) {
-                        var image_id = this._get_image_id_from_path(image_path);
+                        var image_id = this._get_image_id_from_path(
+                            image_path);
                         item_html += '<img id="' + image_id +
                             '" src="' + image_path + '" alt="drawing ' +
                             'showing ' + v.friendly_text + '">';
@@ -261,13 +267,14 @@ define([
                     checked(f.value === v.choice) +
                     ' value="' + v.choice + '">';
 
-                item_html += ' <span class="choice-label"><span class="label">' +
-                    _format_value(v) + '</span> <span class="count">(n)</span>' +
-                    '</span></label>';
+                item_html += ' <span class="choice-label"><span ' +
+                    'class="label">' + _format_value(v) + '</span> <span ' +
+                    'class="count">(n)</span></span></label>';
 
                 // Start a new row, if necessary, to fit this choice.
                 if (choices_count % CHOICES_PER_ROW === 0)
-                    var $row = $('<div>', {'class': 'row'}).appendTo($choices);
+                    var $row = $('<div>',
+                                 {'class': 'row'}).appendTo($choices);
 
                 choices_count += 1;
 
