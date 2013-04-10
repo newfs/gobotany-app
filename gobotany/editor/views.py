@@ -58,6 +58,7 @@ def _edit_pile_length_character(request, pile, character, taxa):
 
     taxon_ids = {taxon.id for taxon in taxa}
     taxon_values = {}
+    lit_sources = {}
     minmaxes = {taxon.id: [None, None] for taxon in taxa}
 
     for tcv in models.TaxonCharacterValue.objects.filter(
@@ -66,12 +67,17 @@ def _edit_pile_length_character(request, pile, character, taxa):
         v = tcv.character_value
         taxon_values[tcv.taxon_id] = v
         minmaxes[tcv.taxon_id] = [v.value_min, v.value_max]
+        lit_sources[tcv.taxon_id] = tcv.lit_source or ''
 
     # Process a POST.
 
     if 'new_values' in request.POST:
         new_values = request.POST['new_values']
-        return _save(request, new_values, character=character)
+        lit_src = request.POST.get('default_lit_src', '')
+        # There is no need to redirect to the lit source edit screen from
+        # a length character page
+        return _save(request, new_values, character=character,
+                     default_lit_source=lit_src, skip_redirect=True)
 
     # Grabbing one copy of each family once is noticeably faster than
     # using select_related('family') up in the taxon fetch:
@@ -91,7 +97,8 @@ def _edit_pile_length_character(request, pile, character, taxa):
                 name = taxon.scientific_name
                 if taxon.id not in simple_ids:
                     name += ' (fk)'
-                yield 'taxon', name, minmaxes[taxon.id]
+                yield 'taxon', name, minmaxes[taxon.id], lit_sources.get(
+                    taxon.id, '')
 
     partner = which_partner(request)
     simple_ids = set(ps.species_id for ps in models.PartnerSpecies.objects
@@ -126,7 +133,9 @@ def _edit_pile_string_character(request, pile, character, taxa):
 
     if 'new_values' in request.POST:
         new_values = request.POST['new_values']
-        return _save(request, new_values, character=character)
+        lit_src = request.POST.get('default_lit_src', '')
+        return _save(request, new_values, character=character,
+                     default_lit_source=lit_src)
 
     # Grabbing one copy of each family once is noticeably faster than
     # using select_related('family') up in the taxon fetch:
@@ -197,7 +206,9 @@ def edit_pile_taxon(request, pile_slug, taxon_slug):
 
     if 'new_values' in request.POST:
         new_values = request.POST['new_values']
-        return _save(request, new_values, taxon=taxon)
+        lit_src = request.POST.get('default_lit_src', '')
+        return _save(request, new_values, taxon=taxon,
+                     default_lit_source=lit_src)
 
     # Yield a sequence of characters.
     # Each character has .values, a sorted list of character values
@@ -212,6 +223,8 @@ def edit_pile_taxon(request, pile_slug, taxon_slug):
     value_map1 = {tcv.character_value_id: tcv for tcv in tcvlist}
     value_map2 = {tcv.character_value.character_id: tcv.character_value
                   for tcv in tcvlist}
+    lit_source_map = {tcv.character_value.character_id: tcv.lit_source or ''
+                      for tcv in tcvlist}
 
     def annotated_characters(characters):
         def generator():
@@ -225,6 +238,7 @@ def edit_pile_taxon(request, pile_slug, taxon_slug):
                     else:
                         character.min = value.value_min
                         character.max = value.value_max
+                        character.lit_source = lit_source_map.get(character.id)
 
                 else:
                     character.values = list(character.character_values.all())
@@ -245,28 +259,31 @@ def edit_pile_taxon(request, pile_slug, taxon_slug):
         }, context_instance=RequestContext(request))
 
 
-def _save(request, new_values, character=None, taxon=None):
+def _save(request, new_values, character=None, taxon=None,
+          default_lit_source='', skip_redirect=False):
     dt = timezone.now()
     new_values = json.loads(new_values)
 
     if character is None:
         get_character = models.Character.objects.get
         character_taxon_value_tuples = [
-            (get_character(short_name=name), taxon, v)
-            for (name, v) in new_values
+            (get_character(short_name=name), taxon, v, lit_src)
+            for (name, v, lit_src) in new_values
             ]
     elif taxon is None:
         get_taxon = models.Taxon.objects.get
         character_taxon_value_tuples = [
-            (character, get_taxon(scientific_name=name), v)
-            for (name, v) in new_values
+            (character, get_taxon(scientific_name=name), v, lit_src)
+            for (name, v, lit_src) in new_values
             ]
 
-    for character, taxon, value in character_taxon_value_tuples:
+    for character, taxon, value, lit_src in character_taxon_value_tuples:
+        # Empty values are Nulls
+        lit_src = lit_src.strip() or default_lit_source.strip() or None
         if character.value_type == 'LENGTH':
-            old_value = _save_length(request, character, taxon, value)
+            old_value = _save_length(request, character, taxon, value, lit_src)
         else:
-            old_value = _save_textual(request, character, taxon, value)
+            old_value = _save_textual(request, character, taxon, value, lit_src)
 
         models.Edit(
             author=request.user.username,
@@ -277,11 +294,14 @@ def _save(request, new_values, character=None, taxon=None):
             old_value=json.dumps(old_value),
             ).save()
 
+    if skip_redirect:
+        return redirect(request.path)
+
     return redirect(dt.strftime(
         '/edit/cv/lit-sources/%Y.%m.%d.%H.%M.%S.%f/?return_to='
         + urllib.quote(request.path)))
 
-def _save_length(request, character, taxon, minmax):
+def _save_length(request, character, taxon, minmax, lit_source=None):
 
     tcvs = list(models.TaxonCharacterValue.objects
                 .filter(character_value__character=character, taxon=taxon)
@@ -289,6 +309,9 @@ def _save_length(request, character, taxon, minmax):
 
     if tcvs:
         tcv = tcvs[0]
+        if lit_source is not None:
+            tcv.lit_source = lit_source
+            tcv.save()
         value = tcv.character_value
         old_values = [value.value_min, value.value_max]
         is_value_shared = len(value.taxon_character_values.all())
@@ -310,17 +333,25 @@ def _save_length(request, character, taxon, minmax):
         )
     value.save()
 
-    models.TaxonCharacterValue(character_value=value, taxon=taxon).save()
+    models.TaxonCharacterValue(character_value=value, taxon=taxon,
+                               lit_source=lit_source).save()
     return old_values
 
 
-def _save_textual(request, character, taxon, vector):
+def _save_textual(request, character, taxon, vector, lit_source=''):
     values = list(character.character_values.all())
     values.sort(key=character_value_key)
 
     tcvs = list(models.TaxonCharacterValue.objects.filter(
         character_value__in=values, taxon=taxon))
     tcvmap = {tcv.character_value_id: tcv for tcv in tcvs}
+
+    # Modify any empty lit sources if a default lit source is provided
+    if lit_source:
+        for tcv in tcvs:
+            if not tcv.lit_source:
+                tcv.lit_source = lit_source
+                tcv.save()
 
     old_values = []
 
@@ -333,7 +364,8 @@ def _save_textual(request, character, taxon, vector):
 
         if needs_it and not has_it:
             models.TaxonCharacterValue(
-                taxon=taxon, character_value=value).save()
+                taxon=taxon, character_value=value,
+                lit_source=lit_source).save()
         elif not needs_it and has_it:
             tcvmap[value.id].delete()
 

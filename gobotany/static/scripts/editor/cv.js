@@ -186,6 +186,7 @@ define([
             no_values_selected = (ones_and_zeroes.indexOf('1') === -1);
             if (no_values_selected)
                 snippets.push('<span>!</span>');
+            snippets.push('<span class="char-lit-source">Taxon Def. Lit. Source: <input class="lit-source" /></span>');
             snippets.push('</div>');
         });
 
@@ -216,7 +217,7 @@ define([
 
     var vector_of_row = function($row) {
         /* Returns a string like '10001011...' showing the DOM state. */
-        $inputs = $row.find('input');
+        $inputs = $row.find('input.length');
         if ($inputs.length) {
             var vector = [
                 float_from($inputs.eq(0).val()),
@@ -228,6 +229,15 @@ define([
             }).join('');
         }
         return vector;
+    };
+
+    var lit_src_of_row = function($row) {
+        /* Returns a string like 'Reference, 1999' */
+        $input = $row.find('input.lit-source');
+        if (!$input.length) {
+            return ''
+        }
+        return $input.val()
     };
 
     /* Event handler that expects each of our widgets to operate in two
@@ -293,7 +303,7 @@ define([
 
             $(this).toggleClass('empty', !v);
             $(this).toggleClass('illegal', !m);
-            recompute_changed_tag($input.parent());
+            recompute_changed_tag($input.parents('div').eq(0));
         });
         return;
     };
@@ -319,10 +329,12 @@ define([
 
         /* Grabbing .firstChild avoids the "expand" button text. */
         var name = name_of_row($row);
-        var old_vector = original_values[name];
+        var old_vector = original_values[name][0];
         var new_vector = vector_of_row($row);
+        var old_lit_src = original_values[name][1];
+        var new_lit_src = vector_of_row($row);
 
-        if (old_vector == new_vector) {
+        if (old_vector == new_vector && old_lit_src == new_lit_src) {
             $row.find('.changed_tag').remove();
         } else {
             if ($row.find('.changed_tag').length === 0) {
@@ -482,7 +494,8 @@ define([
         var value_map = {};
         $grid.find('div').not('.column').each(function() {
             var $row = $(this);
-            value_map[name_of_row($row)] = vector_of_row($row);
+            value_map[name_of_row($row)] = [vector_of_row($row),
+                                            lit_src_of_row($row)];
         });
         return value_map;
     };
@@ -493,8 +506,9 @@ define([
         var $changed_divs = $grid.find('.changed_tag').parent();
         var vectors = _.map($changed_divs, function(div) {
             var $row = $(div);
-            return [name_of_row($row), vector_of_row($row)];
+            return [name_of_row($row), vector_of_row($row), lit_src_of_row($row)];
         });
+        var def_lit_src = $('input.default-lit-source').val();
 
         $('<form>', {
             action: '.',
@@ -502,6 +516,9 @@ define([
         }).append($('<input>', {
             name: 'new_values',
             value: JSON.stringify(vectors)
+        })).append($('<input>', {
+            name: 'default_lit_src',
+            value: def_lit_src
         })).append(
             $('input[name="csrfmiddlewaretoken"]').clone()
         ).appendTo(

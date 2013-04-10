@@ -40,3 +40,8 @@ span.all-species-button, span.simple-key-button, .save-button, .length-save-butt
 .taxon-character-grid :checked, .taxon-character-grid :checked + label { background-color: #519136; color: white; }
 
 .value-tips div { display: none; position: absolute; padding: 0.5em; background-color: #fafae9; border: 2px solid #dc9402; -webkit-border-radius: 1em; -moz-border-radius: 1em; -ms-border-radius: 1em; -o-border-radius: 1em; border-radius: 1em; -webkit-box-shadow: 0px 1px 4px #d3d344; -moz-box-shadow: 0px 1px 4px #d3d344; box-shadow: 0px 1px 4px #d3d344; }
+
+span.taxon-lit-source { float: right; background-color: transparent; color: black;}
+span.char-lit-source { padding-left: 2em; background-color: transparent; color: black; }
+input.lit-source {margin: 0; width: 20em;}
+.pile-character-grid > div { margin-bottom: 1em;}

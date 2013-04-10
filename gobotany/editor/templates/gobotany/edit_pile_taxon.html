@@ -19,12 +19,18 @@
 <p>
   <span class="save-button">SAVE CHANGES</span>
 </p>
+<div class="default-literature-source">
+  <label>Taxon Default Literature Source:</label> <input class="default-lit-source" />
+</div>
 
 <h2>Common characters</h2>
 
 <div class="pile-character-grid taxon-character-grid">
   {% for character in common_characters %}
     <div data-name="{{ character.short_name }}">
+      <span class="taxon-lit-source">
+        Character Default Lit. Source: <input class="lit-source" />
+      </span>
       <i class="character-name">{% if not character.is_any_value_checked %}
         <span>!</span> {% endif %}{{ character.name }}</i>
       {% for value in character.values %}
@@ -43,19 +49,25 @@
   {% for character in pile_characters %}
     {% if character.value_type == 'LENGTH' %}
       <div data-name="{{ character.short_name }}">
+        <span class="taxon-lit-source">
+          Character Lit. Source: <input class="lit-source" value="{{ character.lit_source }}"/>
+        </span>
         <i class="character-name">{{ character.name }}</i><br><i></i>
         {% with min=character.min max=character.max %}
         Min <input
-          {% if min == None %}class="empty"{% else %}value={{ min }}{% endif %}
+          class="{% if min == None %} empty"{% else %}" value={{ min }}{% endif %}
         >
         Max <input
-          {% if max == None %}class="empty"{% else %}value={{ max }}{% endif %}
+          class="{% if max == None %} empty"{% else %}" value={{ max }}{% endif %}
         >
         {{ character.unit }}
         {% endwith %}
       </div>
     {% else %}
       <div data-name="{{ character.short_name }}">
+        <span class="taxon-lit-source">
+          Character Default Lit. Source: <input class="lit-source" />
+        </span>
         <i class="character-name">{% if not character.is_any_value_checked %}
           <span>!</span> {% endif %}{{ character.name }}</i>
         {% for value in character.values %}

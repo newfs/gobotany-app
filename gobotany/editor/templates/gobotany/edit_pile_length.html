@@ -36,8 +36,12 @@
   <span class="save-button">SAVE CHANGES</span>
 </p>
 
+<div class="default-literature-source">
+  <label>Character Default Literature Source:</label> <input class="default-lit-source" />
+</div>
+
 <div class="pile-character-grid">
-  {% for kind, thing, minmax in grid %}
+  {% for kind, thing, minmax, lit_source in grid %}
     {% if kind == 'family' %}
       {% with family=thing %}
       <h3>{{ family.name }}</h3>
@@ -46,12 +50,16 @@
       {% with name=thing min=minmax.0 max=minmax.1 %}
       <div><i>{{ name }}</i>
         Min <input
-          {% if min == None %}class="empty"{% else %}value={{ min }}{% endif %}
+          class="length{% if min == None %} empty"{% else %}" value={{ min }}{% endif %}
         >
         Max <input
-          {% if max == None %}class="empty"{% else %}value={{ max }}{% endif %}
+          class="length{% if max == None %} empty"{% else %}" value={{ max }}{% endif %}
         >
         {{ character.unit }}
+        <span class="char-lit-source">
+          Taxon Lit. Source: <input class="lit-source" value="{{ lit_source }}" />
+        </span>
+
       </div>
       {% endwith %}
     {% endif %}
