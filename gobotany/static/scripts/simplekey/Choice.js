@@ -30,6 +30,22 @@ define([
         var choice_a = a.choice.toLowerCase();
         var choice_b = b.choice.toLowerCase();
 
+        // If both values are recognized as textual numbers
+        // or months, compare them naturally.
+        var months = ['january', 'february', 'march', 'april', 'may',
+            'june', 'july', 'august', 'september', 'october', 'november',
+            'december'];
+        var numbers = ['one', 'two', 'three', 'four', 'five', 'six',
+            'seven', 'eight', 'nine'];
+        var choice_a_1stword = choice_a.split(' ')[0];
+        var choice_b_1stword = choice_b.split(' ')[0];
+        if (_.contains(months, choice_a_1stword) && _.contains(months, choice_b_1stword)) {
+            return _.indexOf(months, choice_a_1stword) - _.indexOf(months, choice_b_1stword);
+        }
+        if (_.contains(numbers, choice_a_1stword) && _.contains(numbers, choice_b_1stword)) {
+            return _.indexOf(numbers, choice_a_1stword) - _.indexOf(numbers, choice_b_1stword);
+        }
+
         // If both are a number or begin with one, sort numerically.
 
         var int_friendly_text_a = parseInt(friendly_text_a, 10);
