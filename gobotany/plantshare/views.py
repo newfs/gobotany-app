@@ -177,7 +177,20 @@ def new_sighting_done_view(request):
 @login_required
 def manage_sightings_view(request):
     """View for a page where the user can review and edit their sightings."""
+    sightings_queryset = Sighting.objects.filter(user=request.user).\
+        select_related().prefetch_related('location')
+    sightings = []
+    for sighting in sightings_queryset:
+        sightings.append({
+            'id': sighting.id,
+            'identification': sighting.identification,
+            'location': sighting.location,
+            'user': _user_name(sighting.user),
+            'created': sighting.created.strftime("%A, %B %e"),
+        })
     return render_to_response('manage_sightings.html', {
+            'sightings': sightings,
+            'user_name': _user_name(request.user)
         }, context_instance=RequestContext(request))
 
 def questions_view(request):

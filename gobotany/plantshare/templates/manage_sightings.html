@@ -7,6 +7,13 @@
 {% block main_content %}
 <h1>Manage Sightings</h1>
 
+<p>Sightings posted by you, <b>{{ user_name }}</b>:</p>
+<ul>
+{% for sighting in sightings %}
+    <li>{{ sighting }}</li>
+{% endfor %}
+</ul>
+
 {% endblock %}
 
 {% block sidebar_content %}
