@@ -628,7 +628,7 @@ class TaxonCharacterValue(models.Model):
     taxon = models.ForeignKey(Taxon)
     character_value = models.ForeignKey(CharacterValue,
                                         related_name='taxon_character_values')
-    lit_source = models.CharField(max_length=1000,
+    lit_source = models.CharField(max_length=100,
                                   null=True, blank=True)
 
     class Meta:
