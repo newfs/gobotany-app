@@ -14,7 +14,7 @@
 
 {% if user.is_authenticated %}
 <div class="profile box">
-    <h2>My Profile</h2>
+    <h2>Your Profile</h2>
     <a href="{% url 'ps-profile' %}" class="edit">Edit Profile</a>
     <div>
         <img src="{{ avatar.thumb_url }}" alt="">

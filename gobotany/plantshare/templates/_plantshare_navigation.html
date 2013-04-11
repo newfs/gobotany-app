@@ -6,7 +6,7 @@
 
             {% if user.is_authenticated %}
                 <li class="post-sighting">{% nav_item 'Post a Sighting' ps-new-sighting %}</li>
-                <li class="manage-sightings">{% nav_item 'Manage Sightings' ps-manage-sightings %}</li>
+                <li class="manage-sightings">{% nav_item 'Manage Your Sightings' ps-manage-sightings %}</li>
             {% endif %}
             
             <li class="sightings-locator">{% nav_item 'Sightings Locator' ps-sightings-locator %}</li>
@@ -14,7 +14,7 @@
             <li class="ask">{% nav_item 'Ask the Botanist' ps-questions %}</li>
             
             {% if user.is_authenticated %}
-                <li class="profile">{% nav_item 'My Profile' ps-profile %}</li>
+                <li class="profile">{% nav_item 'Your Profile' ps-profile %}</li>
                 <li class="logout">{% nav_item 'Log Out' auth_logout %}</li>
             {% else %}
                 {% comment %}
