@@ -5,16 +5,19 @@ from django.contrib.auth.decorators import login_required, user_passes_test
 from django.core.urlresolvers import reverse, reverse_lazy
 from django.conf import settings
 from django.http import HttpResponse, HttpResponseRedirect
-from django.shortcuts import render, render_to_response
+from django.shortcuts import (render, render_to_response, redirect,
+        get_object_or_404)
 from django.template import RequestContext
 from django.utils import simplejson
 from django.forms import widgets
 from django.forms.models import modelformset_factory
 
 from gobotany.plantshare.forms import (NewSightingForm, UserProfileForm,
-                                       ScreenedImageForm)
+                                       ScreenedImageForm, ChecklistForm,
+                                       ChecklistEntryForm)
 from gobotany.plantshare.models import (Location, Sighting, UserProfile,
-                                        ScreenedImage, Question)
+                                        ScreenedImage, Question, Checklist,
+                                        ChecklistEntry, ChecklistCollaborator)
 
 SIGHTINGS_MAP_DEFAULTS = {
     'latitude': '44.53599',
@@ -35,6 +38,10 @@ def _new_sighting_form_page(request, form):
 
 def _user_name(user):
     return user.get_full_name() or user.username
+
+def _create_checklistentry_formset():
+    return modelformset_factory(ChecklistEntry, form=ChecklistEntryForm, extra=1)
+
 
 # Views
 
@@ -167,6 +174,25 @@ def new_sighting_done_view(request):
     return render_to_response('new_sighting_done.html', {
            }, context_instance=RequestContext(request))
 
+@login_required
+def manage_sightings_view(request):
+    """View for a page where the user can review and edit their sightings."""
+    sightings_queryset = Sighting.objects.filter(user=request.user).\
+        select_related().prefetch_related('location')
+    sightings = []
+    for sighting in sightings_queryset:
+        sightings.append({
+            'id': sighting.id,
+            'identification': sighting.identification,
+            'location': sighting.location,
+            'user': _user_name(sighting.user),
+            'created': sighting.created.strftime("%A, %B %e"),
+        })
+    return render_to_response('manage_sightings.html', {
+            'sightings': sightings,
+            'user_name': _user_name(request.user)
+        }, context_instance=RequestContext(request))
+
 def questions_view(request):
     """View for the main Ask the Botanist page and the questions collection:
     showing a list of recent questions (GET) as well as handling adding a new
@@ -209,6 +235,78 @@ def all_questions_view(request):
 def new_question_done_view(request):
     """View for a confirmation page upon asking a new question."""
     return render_to_response('new_question_done.html', {
+           }, context_instance=RequestContext(request))
+
+@login_required
+def checklist_index_view(request):
+    """List of all of a user's visible checklists"""
+    profile = request.user.userprofile
+    all_checklists = profile.checklists
+
+    return render_to_response('checklists.html', {
+                'checklists': all_checklists,
+           }, context_instance=RequestContext(request))
+
+@login_required
+def new_checklist_view(request):
+    """Create a new checklist"""
+    ChecklistEntryFormSet = _create_checklistentry_formset()
+    if request.method == 'POST':
+        profile = request.user.userprofile
+        user_pod = profile.get_user_pod()
+        checklist_form = ChecklistForm(request.POST)
+        if checklist_form.is_valid():
+            checklist = checklist_form.save()
+            # Set the current user's personal pod as the owner
+            owner = ChecklistCollaborator(collaborator=user_pod,
+                   checklist=checklist, is_owner=True) 
+            owner.save()
+            entry_formset = ChecklistEntryFormSet(request.POST)
+            if entry_formset.is_valid():
+                for entry in entry_formset.save(commit=False):
+                    entry.checklist = checklist
+                    entry.save()
+                return redirect('ps-checklists')
+    else:
+        checklist_form = ChecklistForm()
+        entry_formset = ChecklistEntryFormSet(queryset=ChecklistEntry.objects.none())
+
+    return render_to_response('new_checklist.html', {
+            'checklist_form': checklist_form,
+            'entry_formset': entry_formset
+           }, context_instance=RequestContext(request))
+
+@login_required
+def edit_checklist_view(request, checklist_id):
+    """Edit a checklist"""
+    ChecklistEntryFormSet = _create_checklistentry_formset()
+    checklist = get_object_or_404(Checklist, pk=checklist_id)
+    if request.method == 'POST':
+        checklist_form = ChecklistForm(request.POST, instance=checklist)
+        if checklist_form.is_valid():
+            checklist_form.save()
+            entry_formset = ChecklistEntryFormSet(request.POST)
+            if entry_formset.is_valid():
+                for entry in entry_formset.save(commit=False):
+                    entry.checklist = checklist
+                    entry.save()
+                return redirect('ps-checklists')
+    else:
+        checklist_form = ChecklistForm(instance=checklist)
+        entry_formset = ChecklistEntryFormSet(
+            queryset=ChecklistEntry.objects.filter(checklist=checklist))
+
+    return render_to_response('edit_checklist.html', {
+            'checklist_form': checklist_form,
+            'entry_formset': entry_formset
+           }, context_instance=RequestContext(request))
+
+@login_required
+def checklist_view(request, checklist_id):
+    """Display the details of a checklist"""
+    checklist = get_object_or_404(Checklist, pk=checklist_id)
+    return render_to_response('checklist_detail.html', {
+            'checklist': checklist
            }, context_instance=RequestContext(request))
 
 @login_required

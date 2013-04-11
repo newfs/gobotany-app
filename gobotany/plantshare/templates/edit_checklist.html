@@ -1,0 +1,89 @@
+{% extends "gobotany/_page_free_sidebar.html" %}
+{% load mapping_tags %}
+
+{% block title %}Checklists: Plantshare{% endblock %}
+
+{% block js_require %}
+    require(['util/suggester_init', 'plantshare/plantshare']);
+{% endblock %}
+
+{% block body_attributes %}id="checklists" class="plantshare checklists"{% endblock %}
+
+{% block main_content %}
+<h1>Checklists</h1>
+
+<div class="checklists-section">
+    <form name="checklist-fillout" id="checklist-fillout" method="POST">
+        {% csrf_token %}
+        <header>
+            <h4>Edit Checklist</h4>
+            {{ checklist_form.non_field_errors }}
+            {{ checklist_form.name }}
+            {{ checklist_form.name.errors }}
+            {{ checklist_form.comments }}
+            {{ checklist_form.comments.errors }}
+        </header>
+        <a class="import-sightings-link" href="javascript:alert('Coming soon!');">Import from Sightings &#43;</a>
+        <table id="add-sightings-table">
+            <thead>
+                <tr>
+                    <th class="name">Name <span>(Required)</span></th>
+                    <th class="image">Image</th>
+                    <th class="date-sighted">Date Sighted</th>
+                    <th class="location">Location</th>
+                    <th class="date-posted">Date Posted</th>
+                    <th class="note">Note</th>
+                    <th class="close">&nbsp;</th>
+                </tr>
+            </thead>
+            <tfoot>
+                <tr>
+                    <td colspan="7">
+                        <a href="#" class="add-new-row">Add New Row &#43;</a>
+                    </td>
+                </tr>
+            </tfoot>
+            <tbody>
+                {{ entry_formset.management_form }}
+                {% for entry_form in entry_formset %}
+                {{ entry_form.non_field_errors }}
+                {{ entry_form.id }}
+                <tr>
+                    <td class="name">
+                        {{ entry_form.plant_name }}
+                        {{ entry_form.plant_name.errors }}
+                    </td><!-- /.name -->
+                    <td class="image">
+                        <a href="javascript:alert('Coming soon!');" class="upload-image-thumb btn">Upload Image</a>
+                    </td><!-- /.image -->
+                    <td class="date-sighted">
+                        {{ entry_form.date_found }}
+                        {{ entry_form.date_found.errors }}
+                    </td><!-- /.date-sighted -->
+                    <td class="location">
+                        {{ entry_form.location }}
+                        {{ entry_form.location.errors }}
+                    </td><!-- /.location -->
+                    <td class="date-posted">
+                        {{ entry_form.date_posted }}
+                        {{ entry_form.date_posted.errors }}
+                    </td><!-- /.date-posted -->
+                    <td class="note">
+                        <a href="javascript:alert('Coming soon!');" rel="shadowbox;width=550;height=240">Add<br>Note</a>
+                        <a href="javascript:alert('Coming soon!');" rel="shadowbox;height=200;width=550;" class="close-btn row-btn">Close</a>
+                    </td><!-- /.note -->
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table><!-- /#add-sightings-table -->
+        <div class="form-actions">
+            <input type="submit" class="ps-button" id="save-btn" value="Save" />
+            <a href="{% url 'ps-checklists' %}" class="cancel-link">Cancel</a>
+        </div><!-- /.form-actions -->
+    </form><!-- /#checklist-fillout -->
+</div><!-- /.ps-section -->
+{% endblock %}
+
+{% block sidebar_content %}
+    {% include "_plantshare_navigation.html" %}
+{% endblock %}

@@ -205,6 +205,11 @@ body {
             li a:not([href])::before {
                 @include highlight-sidebar-nav-item;
             }
+            /* Show future nav. items that do not have a URL yet in gray. */
+            li > span {
+                color: #ccc;
+                padding-left: 10px;
+            }
         }
     }
     /* Handle pages beneath subsections so they will have a "you are

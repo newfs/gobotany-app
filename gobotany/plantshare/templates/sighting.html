@@ -1,7 +1,8 @@
 {% extends "gobotany/_page_free_sidebar.html" %}
 {% load mapping_tags %}
 
-{% block title %}Sighting: {{ sighting.title }}: PlantShare{% endblock %}
+{% block title %}Sighting: {{ sighting.identification }} at
+    {{ sighting.location|capfirst }}: PlantShare{% endblock %}
 
 {% block body_attributes %}id="sighting"
     class="plantshare sighting"{% endblock %}

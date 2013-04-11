@@ -1,7 +1,8 @@
 from django import forms
 from django.core.urlresolvers import reverse_lazy
 
-from models import UserProfile, ScreenedImage, Location
+from models import (UserProfile, ScreenedImage, Location, Checklist, 
+        ChecklistEntry)
 
 def plant_name_suggestions_url():
     return reverse_lazy('site-plant-name-suggestions') + '?q=%s'
@@ -119,3 +120,42 @@ class ScreenedImageForm(forms.ModelForm):
     class Meta:
         model = ScreenedImage
         fields = ('image', 'image_type')
+
+class ChecklistForm(forms.ModelForm):
+    class Meta:
+        model = Checklist
+        fields = ('name', 'comments')
+
+    def __init__(self, *args, **kwargs):
+        super(ChecklistForm, self).__init__(*args, **kwargs)
+        self.fields['name'].widget = forms.TextInput(attrs={
+            'placeholder': 'Enter Checklist Name'
+            })
+        self.fields['comments'].widget = forms.Textarea(attrs={
+            'placeholder': 'Comments about checklist...',
+            'rows': ''
+            })
+
+class ChecklistEntryForm(forms.ModelForm):
+    class Meta:
+        model = ChecklistEntry
+        fields = ('plant_name', 'date_found', 'location', 'date_posted', 'note')
+
+    def __init__(self, *args, **kwargs):
+        super(ChecklistEntryForm, self).__init__(*args, **kwargs)
+        self.fields['plant_name'].widget = forms.TextInput(attrs={
+            'placeholder': 'Enter Plant Name'
+            })
+        self.fields['date_found'].widget = forms.DateInput(attrs={
+            'placeholder': 'dd/mm/yy'
+            })
+        self.fields['location'].widget = forms.TextInput(attrs={
+            'placeholder': 'Enter Location'
+            })
+        self.fields['date_posted'].widget = forms.DateInput(attrs={
+            'placeholder': 'dd/mm/yy'
+            })
+        self.fields['note'].widget = forms.Textarea(attrs={
+            'placeholder': 'Write your notes here'
+            })
+

@@ -1,13 +1,12 @@
+from django.conf import settings
+
 from haystack import indexes
 from haystack import site
 
+import gobotany.core.models as core_models
 import gobotany.dkey.models as dkey_models
-
-from gobotany.core.models import Taxon, Family, Genus, GlossaryTerm
-
-from gobotany.search.models import (PlainPage,
-                                    GroupsListPage, SubgroupResultsPage,
-                                    SubgroupsListPage)
+import gobotany.plantshare.models as plantshare_models
+import gobotany.search.models as search_models
 
 class CharacterCharField(indexes.CharField):
     '''A CharField that understands how to get the character value
@@ -43,7 +42,7 @@ class BaseIndex(indexes.SearchIndex):
     """A document that already knows its URL, so searches render faster."""
 
     url = indexes.CharField(use_template=True,
-                            template_name='search_url.txt')
+                            template_name='search_result_url.txt')
 
     def read_queryset(self):
         """Bypass `index_queryset()` when we just need to read a model.
@@ -60,18 +59,33 @@ class BaseIndex(indexes.SearchIndex):
         return self.model._default_manager.all()
 
 
+class BaseRealTimeIndex(indexes.RealTimeSearchIndex):
+    """ A document that already knows its URL, so searches render faster.
+    This is like BaseIndex, but for a RealTimeSearchIndex instead of a
+    regular SearchIndex.
+    """
+    url = indexes.CharField(use_template=True,
+                            template_name='search_result_url.txt')
+
+    def read_queryset(self):
+        """Bypass `index_queryset()` when we just need to read a model."""
+        return self.model._default_manager.all()
+
+
+# Taxa, Simple-/Full-Key, and Help-section pages
+
 class TaxonIndex(BaseIndex):
     # Index
 
     name = indexes.CharField(model_attr='scientific_name')
     text = indexes.CharField(
         document=True, use_template=True,
-        template_name='search_text_species.txt')
+        template_name='species_text_searchindex.txt')
 
     # Display
 
     title = indexes.CharField(use_template=True,
-        template_name='search_title_species.txt')
+        template_name='species_title_searchindex.txt')
 
     # Customization
 
@@ -99,12 +113,12 @@ class FamilyIndex(BaseIndex):
     name = indexes.CharField(model_attr='name')
     text = indexes.CharField(
         document=True, use_template=True,
-        template_name='search_text_family.txt')
+        template_name='family_text_searchindex.txt')
 
     # Display
 
     title = indexes.CharField(use_template=True,
-        template_name='search_title_family.txt')
+        template_name='family_title_searchindex.txt')
 
     # Customization
 
@@ -119,12 +133,12 @@ class GenusIndex(BaseIndex):
     name = indexes.CharField(model_attr='name')
     text = indexes.CharField(
         document=True, use_template=True,
-        template_name='search_text_genus.txt')
+        template_name='genus_text_searchindex.txt')
 
     # Display
 
     title = indexes.CharField(use_template=True,
-        template_name='search_title_genus.txt')
+        template_name='genus_title_searchindex.txt')
 
     # Customization
 
@@ -139,7 +153,7 @@ class PlainPageIndex(BaseIndex):
 
     text = indexes.CharField(
         document=True, use_template=True,
-        template_name='search_text_plain_page.txt')
+        template_name='plain_page_text_searchindex.txt')
 
     # Display
 
@@ -152,12 +166,12 @@ class GlossaryTermIndex(BaseIndex):
     name = indexes.CharField(model_attr='term')
     text = indexes.CharField(
         document=True, use_template=True,
-        template_name='search_text_glossary_term.txt')
+        template_name='glossary_term_text_searchindex.txt')
 
     # Display
 
     title = indexes.CharField(use_template=True,
-        template_name='search_title_glossary_term.txt')
+        template_name='glossary_term_title_searchindex.txt')
 
 
 class GroupsListPageIndex(BaseIndex):
@@ -165,7 +179,7 @@ class GroupsListPageIndex(BaseIndex):
 
     text = indexes.CharField(
         document=True, use_template=True,
-        template_name = 'search_text_groups_list_page.txt')
+        template_name = 'groups_list_page_text_searchindex.txt')
 
     # Display
 
@@ -186,7 +200,7 @@ class SubgroupsListPageIndex(BaseIndex):
 
     text = indexes.CharField(
         document=True, use_template=True,
-        template_name = 'search_text_subgroups_list_page.txt')
+        template_name = 'subgroups_list_page_text_searchindex.txt')
 
     # Display
 
@@ -211,7 +225,7 @@ class SubgroupResultsPageIndex(BaseIndex):
 
     text = indexes.CharField(
         document=True, use_template=True,
-        template_name = 'search_text_subgroup_results_page.txt')
+        template_name = 'subgroup_results_page_text_searchindex.txt')
 
     # Display
 
@@ -225,17 +239,19 @@ class SubgroupResultsPageIndex(BaseIndex):
                 .prefetch_related('subgroup__species__common_names'))
 
 
+# Dichotomous Key pages
+
 class DichotomousKeyPageIndex(BaseIndex):
     # Index
 
     text = indexes.CharField(
         document=True, use_template=True,
-        template_name='search_text_dichotomous_key_page.txt')
+        template_name='dkey_page_text_searchindex.txt')
 
     # Display
 
     title = indexes.CharField(use_template=True,
-        template_name='search_title_dichotomous_key_page.txt')
+        template_name='dkey_page_title_searchindex.txt')
 
     # Customization
 
@@ -252,12 +268,57 @@ class DichotomousKeyPageIndex(BaseIndex):
         return data
 
 
-site.register(Taxon, TaxonIndex)
-site.register(Family, FamilyIndex)
-site.register(Genus, GenusIndex)
-site.register(GlossaryTerm, GlossaryTermIndex)
-site.register(PlainPage, PlainPageIndex)
-site.register(GroupsListPage, GroupsListPageIndex)
-site.register(SubgroupsListPage, SubgroupsListPageIndex)
-site.register(SubgroupResultsPage, SubgroupResultsPageIndex)
+# PlantShare pages
+
+class SightingPageIndex(BaseRealTimeIndex):
+    # Index
+
+    text = indexes.CharField(
+        document=True, use_template=True,
+        template_name='sighting_page_text_searchindex.txt')
+
+    # Display
+
+    title = indexes.CharField(use_template=True,
+        template_name='sighting_page_title_searchindex.txt')
+
+    # Customization
+    # TODO: Index only publicly shared, non-rare-plant sightings
+
+
+class QuestionIndex(BaseRealTimeIndex):
+    # Index
+
+    text = indexes.CharField(
+        document=True, use_template=True,
+        template_name='question_text_searchindex.txt')
+
+    # Display
+
+    title = indexes.CharField(use_template=True,
+        template_name='question_title_searchindex.txt')
+
+    # Customization
+
+    def index_queryset(self):
+        return plantshare_models.Question.objects.answered()
+
+
+# Register indexes for all desired page/model types.
+
+site.register(core_models.Taxon, TaxonIndex)
+site.register(core_models.Family, FamilyIndex)
+site.register(core_models.Genus, GenusIndex)
+site.register(core_models.GlossaryTerm, GlossaryTermIndex)
+
+site.register(search_models.PlainPage, PlainPageIndex)
+site.register(search_models.GroupsListPage, GroupsListPageIndex)
+site.register(search_models.SubgroupsListPage, SubgroupsListPageIndex)
+site.register(search_models.SubgroupResultsPage, SubgroupResultsPageIndex)
+
 site.register(dkey_models.Page, DichotomousKeyPageIndex)
+
+# Exclude PlantShare results in production until release.
+if settings.DEV_FEATURES == True:   # TODO: remove this line before release
+    site.register(plantshare_models.Sighting, SightingPageIndex)
+    site.register(plantshare_models.Question, QuestionIndex)

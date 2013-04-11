@@ -1,0 +1,11 @@
+Sighting: {{ object.identification }} at {{ object.location }}
+
+Posted {{ object.created }} by {{ object.user }} 
+
+{% if object.notes %}
+    Description or comments: {{ object.notes }}
+{% endif %}
+
+{% if object.location_notes %}
+    Location notes: {{ object.location_notes }}
+{% endif %}

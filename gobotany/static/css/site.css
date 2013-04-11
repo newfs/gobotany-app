@@ -237,9 +237,9 @@ div.scrollableArea { position: relative; width: auto; height: 100%; }
 /* Import for Go Botany common definitions */
 /* Go Botany common definitions */
 /* for gradient, etc. */
-.orange-button, body.taxa .visit-dkey a, body.plantshare.sighting .modal-container .image-modal a.button, body.plantshare#ask #main .submit, body.plantshare#plantshare #ask .submit, body.plantshare#profile div.section-container .image-modal a.button, #dkey #main .offer-help-aside a.button, #dkey #main ul.couplets a.button, #dkey #main a.show-all-button { min-width: 10em; -webkit-border-radius: 1em; -moz-border-radius: 1em; -ms-border-radius: 1em; -o-border-radius: 1em; border-radius: 1em; -webkit-box-shadow: 0px 1px 4px #a2a64d; -moz-box-shadow: 0px 1px 4px #a2a64d; box-shadow: 0px 1px 4px #a2a64d; border: 1px solid #dc9402; background: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #dc9402), color-stop(40%, #f0b448), color-stop(100%, #dc9402)); background: -webkit-linear-gradient(top, #dc9402 0%, #f0b448 40%, #dc9402 100%); background: -moz-linear-gradient(top, #dc9402 0%, #f0b448 40%, #dc9402 100%); background: -o-linear-gradient(top, #dc9402 0%, #f0b448 40%, #dc9402 100%); background: linear-gradient(top, #dc9402 0%, #f0b448 40%, #dc9402 100%); padding: 0.3em 0.5em; color: white; text-align: center; text-decoration: none; font-family: "Trebuchet MS", Helvetica, Arial, "Lucida Sans Unicode", sans-serif; font-weight: bold; line-height: 1.5em; letter-spacing: 0.08333em; }
-.orange-button:hover, body.taxa .visit-dkey a:hover, body.plantshare.sighting .modal-container .image-modal a.button:hover, body.plantshare#ask #main .submit:hover, body.plantshare#plantshare #ask .submit:hover, body.plantshare#profile div.section-container .image-modal a.button:hover, #dkey #main .offer-help-aside a.button:hover, #dkey #main ul.couplets a.button:hover, #dkey #main a.show-all-button:hover { background: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #e29b0b), color-stop(32%, #f6be59), color-stop(50%, #f6be59), color-stop(100%, #e39d0e)); background: -webkit-linear-gradient(top, #e29b0b 0%, #f6be59 32%, #f6be59 50%, #e39d0e 100%); background: -moz-linear-gradient(top, #e29b0b 0%, #f6be59 32%, #f6be59 50%, #e39d0e 100%); background: -o-linear-gradient(top, #e29b0b 0%, #f6be59 32%, #f6be59 50%, #e39d0e 100%); background: linear-gradient(top, #e29b0b 0%, #f6be59 32%, #f6be59 50%, #e39d0e 100%); }
-.orange-button.disabled, body.taxa .visit-dkey a.disabled, body.plantshare.sighting .modal-container .image-modal a.disabled.button, body.plantshare#ask #main .disabled.submit, body.plantshare#plantshare #ask .disabled.submit, body.plantshare#profile div.section-container .image-modal a.disabled.button, #dkey #main .offer-help-aside a.disabled.button, #dkey #main ul.couplets a.disabled.button, #dkey #main a.disabled.show-all-button { border-color: #ecda92; background: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #ecda92), color-stop(32%, #f1e3a6), color-stop(50%, #f1e3a6), color-stop(100%, #ecdb93)); background: -webkit-linear-gradient(top, #ecda92 0%, #f1e3a6 32%, #f1e3a6 50%, #ecdb93 100%); background: -moz-linear-gradient(top, #ecda92 0%, #f1e3a6 32%, #f1e3a6 50%, #ecdb93 100%); background: -o-linear-gradient(top, #ecda92 0%, #f1e3a6 32%, #f1e3a6 50%, #ecdb93 100%); background: linear-gradient(top, #ecda92 0%, #f1e3a6 32%, #f1e3a6 50%, #ecdb93 100%); }
+.orange-button, body.taxa .visit-dkey a, body.plantshare .ps-button, body.plantshare.sighting .modal-container .image-modal a.button, body.plantshare#ask #main .submit, body.plantshare#plantshare #ask .submit, body.plantshare#profile div.section-container .image-modal a.button, #dkey #main .offer-help-aside a.button, #dkey #main ul.couplets a.button, #dkey #main a.show-all-button { min-width: 10em; -webkit-border-radius: 1em; -moz-border-radius: 1em; -ms-border-radius: 1em; -o-border-radius: 1em; border-radius: 1em; -webkit-box-shadow: 0px 1px 4px #a2a64d; -moz-box-shadow: 0px 1px 4px #a2a64d; box-shadow: 0px 1px 4px #a2a64d; border: 1px solid #dc9402; background: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #dc9402), color-stop(40%, #f0b448), color-stop(100%, #dc9402)); background: -webkit-linear-gradient(top, #dc9402 0%, #f0b448 40%, #dc9402 100%); background: -moz-linear-gradient(top, #dc9402 0%, #f0b448 40%, #dc9402 100%); background: -o-linear-gradient(top, #dc9402 0%, #f0b448 40%, #dc9402 100%); background: linear-gradient(top, #dc9402 0%, #f0b448 40%, #dc9402 100%); padding: 0.3em 0.5em; color: white; text-align: center; text-decoration: none; font-family: "Trebuchet MS", Helvetica, Arial, "Lucida Sans Unicode", sans-serif; font-weight: bold; line-height: 1.5em; letter-spacing: 0.08333em; }
+.orange-button:hover, body.taxa .visit-dkey a:hover, body.plantshare .ps-button:hover, body.plantshare.sighting .modal-container .image-modal a.button:hover, body.plantshare#ask #main .submit:hover, body.plantshare#plantshare #ask .submit:hover, body.plantshare#profile div.section-container .image-modal a.button:hover, #dkey #main .offer-help-aside a.button:hover, #dkey #main ul.couplets a.button:hover, #dkey #main a.show-all-button:hover { background: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #e29b0b), color-stop(32%, #f6be59), color-stop(50%, #f6be59), color-stop(100%, #e39d0e)); background: -webkit-linear-gradient(top, #e29b0b 0%, #f6be59 32%, #f6be59 50%, #e39d0e 100%); background: -moz-linear-gradient(top, #e29b0b 0%, #f6be59 32%, #f6be59 50%, #e39d0e 100%); background: -o-linear-gradient(top, #e29b0b 0%, #f6be59 32%, #f6be59 50%, #e39d0e 100%); background: linear-gradient(top, #e29b0b 0%, #f6be59 32%, #f6be59 50%, #e39d0e 100%); }
+.orange-button.disabled, body.taxa .visit-dkey a.disabled, body.plantshare .disabled.ps-button, body.plantshare.sighting .modal-container .image-modal a.disabled.button, body.plantshare#ask #main .disabled.submit, body.plantshare#plantshare #ask .disabled.submit, body.plantshare#profile div.section-container .image-modal a.disabled.button, #dkey #main .offer-help-aside a.disabled.button, #dkey #main ul.couplets a.disabled.button, #dkey #main a.disabled.show-all-button { border-color: #ecda92; background: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #ecda92), color-stop(32%, #f1e3a6), color-stop(50%, #f1e3a6), color-stop(100%, #ecdb93)); background: -webkit-linear-gradient(top, #ecda92 0%, #f1e3a6 32%, #f1e3a6 50%, #ecdb93 100%); background: -moz-linear-gradient(top, #ecda92 0%, #f1e3a6 32%, #f1e3a6 50%, #ecdb93 100%); background: -o-linear-gradient(top, #ecda92 0%, #f1e3a6 32%, #f1e3a6 50%, #ecdb93 100%); background: linear-gradient(top, #ecda92 0%, #f1e3a6 32%, #f1e3a6 50%, #ecdb93 100%); }
 
 /* Site-wide styles */
 body { background: #f0f0c0; color: black; font-family: Verdana, Geneva, "Lucida Sans Unicode", sans-serif; font-size: 12px; }
@@ -300,10 +300,11 @@ body.help header nav li.help { background: url(/static/images/layout/active-nav-
 
 /* Section navigation (sidebar, only in some sections) */
 body { /* Handle pages beneath subsections so they will have a "you are here" marker. Each of these must be set up individually where needed. */ }
-body.help #sidebar nav, body.plantshare #sidebar nav { /* Place "you are here" marker next to a non-linked item. This is the top level of each sub-section. */ }
+body.help #sidebar nav, body.plantshare #sidebar nav { /* Place "you are here" marker next to a non-linked item. This is the top level of each sub-section. */ /* Show future nav. items that do not have a URL yet in gray. */ }
 body.help #sidebar nav li, body.plantshare #sidebar nav li { padding-left: 28px; }
 body.help #sidebar nav li:first-child, body.plantshare #sidebar nav li:first-child { padding-left: 15px; }
 body.help #sidebar nav li a:not([href])::before, body.plantshare #sidebar nav li a:not([href])::before { color: #000; content: "\25b8"; margin-left: -14px; padding-bottom: 5px; padding-right: 5px; }
+body.help #sidebar nav li > span, body.plantshare #sidebar nav li > span { color: #ccc; padding-left: 10px; }
 body.help#glossary #sidebar .glossary a::before, body.help#fullkey-placeholder #sidebar .advanced-id-tools a::before, body.help#dkey-placeholder #sidebar .advanced-id-tools a::before { color: #000; content: "\25b8"; margin-left: -14px; padding-bottom: 5px; padding-right: 5px; }
 body.plantshare#sighting #sidebar .sightings a::before, body.plantshare#questions #sidebar .ask a::before { color: #000; content: "\25b8"; margin-left: -14px; padding-bottom: 5px; padding-right: 5px; }
 
@@ -647,11 +648,13 @@ body.taxa#species #sb-player.html { background: #fff; overflow: hidden; /* Get r
 body.taxa#species #sb-player #na-dist-county-map { background: #fff; height: 100%; width: 100%; }
 body.taxa#species .note { background: #c4bd93; border-bottom: 1px solid #ad9f50; border-top: 1px solid #ad9f50; color: #000; font-family: "Trebuchet MS", Helvetica, Arial, "Lucida Sans Unicode", sans-serif; font-size: 24px; margin-bottom: 0.5em; padding: 0.5em 0; text-align: center; width: 100%; }
 body.taxa#species a.description-control { background: url(/static/images/icons/plus.png) left 50% no-repeat; display: block; margin: 10px 0 12px 0; padding: 3px 0 3px 25px; }
+body.taxa#species a.description-control.expanded { background: url(/static/images/icons/minus.png) left 50% no-repeat; }
 body.taxa#species ul.full-description { background: #fbfbf8; border: 1px solid #e1e1dc; display: none; margin: 0 0 15px 0; }
 body.taxa#species ul.full-description > li { border-bottom: 1px solid #e1e1dc; clear: left; display: block; padding: 18px; margin: 0 0 0 0; }
 body.taxa#species ul.full-description > li:last-child { border-bottom: none; }
 body.taxa#species ul.full-description > li:hover { background-color: #fff; }
 body.taxa#species ul.full-description > li h5 { background: url(/static/images/icons/plus.png) left 50% no-repeat; cursor: pointer; padding-left: 28px; }
+body.taxa#species ul.full-description > li h5.expanded { background: url(/static/images/icons/minus.png) left 50% no-repeat; }
 body.taxa#species ul.full-description > li div { display: none; padding-left: 28px; }
 body.taxa#species a.enlarge { color: #1a2e11; display: block; margin: 0 0 8px 0; }
 body.taxa#species a.enlarge:hover { text-decoration: none; }
@@ -1100,6 +1103,10 @@ body.plantshare .sign-up-call ul { line-height: 18px; list-style-position: insid
 body.plantshare .sign-up-call a { background: transparent url(/static/images/layout/plantshare-btns.png) no-repeat 0 -3px; height: 41px; margin: 12px auto; width: 244px; display: block; text-indent: -9000px; }
 body.plantshare .sign-up-call a:hover { background-position: 0 -88px; }
 body.plantshare .sign-up-call a:active { background-position: 0 -46px; }
+body.plantshare .notification { width: 475px; }
+body.plantshare .notification ul { line-height: 18px; list-style-position: inside; margin: 10px 0 0 24px; }
+body.plantshare .ps-button { display: inline-block; color: white; margin: 10px 0; text-transform: uppercase; }
+body.plantshare a.close-btn { background: transparent url(/static/images/icons/close.png) no-repeat; display: block; height: 16px; width: 16px; text-indent: -9999px; }
 body.plantshare .profile { width: 471px; }
 body.plantshare .profile h2 { float: left; }
 body.plantshare .profile a.edit { display: block; float: right; padding-top: 12px; }
@@ -1227,6 +1234,52 @@ body.plantshare #login.box h4 { font-size: 20px; padding: 16px 16px 10px; }
 body.plantshare #login.box div { border-top: 1px solid #317b0c; padding: 16px; }
 body.plantshare #login.box div a { margin-left: 0; }
 body.plantshare #login.box input[type='text'], body.plantshare #login.box input[type='password'] { width: 95%; }
+body.plantshare#checklists div.ps-section { margin: 20px 0; padding: 10px 0; }
+body.plantshare#checklists table.checklists-list { background: #fff; border: 1px solid #c3d941; margin: 20px 0; width: 100%; }
+body.plantshare#checklists table.checklists-list .first { width: 15px; }
+body.plantshare#checklists table.checklists-list .checklistview-name { width: 185px; }
+body.plantshare#checklists table.checklists-list .date { width: 174px; }
+body.plantshare#checklists table.checklists-list .owner { width: 174px; }
+body.plantshare#checklists table.checklists-list .last { padding-right: 20px; text-align: right; width: 79px; }
+body.plantshare#checklists table.checklists-list .name { width: 140px; }
+body.plantshare#checklists table.checklists-list .image { width: 80px; }
+body.plantshare#checklists table.checklists-list .date-sighted, body.plantshare#checklists table.checklists-list .date-posted { width: 110px; }
+body.plantshare#checklists table.checklists-list .location { width: 130px; }
+body.plantshare#checklists table.checklists-list .note { width: 60px; padding-right: 7px; }
+body.plantshare#checklists table.checklists-list .note a { margin: 0; }
+body.plantshare#checklists table.checklists-list .note a.row-btn { float: right; margin: 0 0 0 8px; text-indent: -9999px; }
+body.plantshare#checklists table.checklists-list thead { display: block; width: auto; }
+body.plantshare#checklists table.checklists-list thead tr th { display: block; float: left !important; padding: 7px 5px; text-align: left; text-transform: uppercase; }
+body.plantshare#checklists table.checklists-list tbody { display: block; height: 500px; overflow-y: scroll; }
+body.plantshare#checklists table.checklists-list tbody tr:nth-child(odd) { background-color: #e0f0d1; }
+body.plantshare#checklists table.checklists-list tbody tr td { display: block; float: left; padding: 10px 5px; width: auto; }
+body.plantshare#checklists table.checklists-list tbody tr td .thumb { background: url(../images/icons/flower-thumb.gif) no-repeat; height: 40px; width: 39px; }
+body.plantshare#checklists .checklists-section { background-color: #fff; border: 1px solid #c3d941; margin: 20px 0; min-height: 140px; padding: 10px 15px 20px; position: relative; }
+body.plantshare#checklists .checklists-section input, body.plantshare#checklists .checklists-section textarea { border: 1px solid #ababab; box-shadow: inset 1px 1px 2px #cccccc; -moz-box-shadow: inset 1px 1px 2px #cccccc; -webkit-box-shadow: inset 1px 1px 2px #cccccc; display: block; font-size: inherit; line-height: 1em; padding: 7px 5px 5px; }
+body.plantshare#checklists .checklists-section h4 { margin: 0 0 15px; font-size: 18px; }
+body.plantshare#checklists .checklists-section header { margin: 0 0 10px; height: auto !important; }
+body.plantshare#checklists .checklists-section header input, body.plantshare#checklists .checklists-section header textarea { margin: 5px 0 10px; width: 95%; height: auto; }
+body.plantshare#checklists .checklists-section .import-sightings-link { background-color: #e0f0d1; display: block; font-weight: bold; margin: 0 0 25px; padding: 5px 10px; }
+body.plantshare#checklists .checklists-section table#add-sightings-table { width: 678px; }
+body.plantshare#checklists .checklists-section table#add-sightings-table th, body.plantshare#checklists .checklists-section table#add-sightings-table td { padding: 15px 10px 5px 0; }
+body.plantshare#checklists .checklists-section table#add-sightings-table td input { padding: 7px 5px 5px; margin: 0; }
+body.plantshare#checklists .checklists-section table#add-sightings-table .name input { width: 160px; }
+body.plantshare#checklists .checklists-section table#add-sightings-table .image { font-size: 0.9em; }
+body.plantshare#checklists .checklists-section table#add-sightings-table .date-sighted input { width: 70px; }
+body.plantshare#checklists .checklists-section table#add-sightings-table .location input { width: 150px; }
+body.plantshare#checklists .checklists-section table#add-sightings-table .date-posted input { width: 70px; }
+body.plantshare#checklists .checklists-section table#add-sightings-table .note { padding-right: 0; width: 60px; }
+body.plantshare#checklists .checklists-section table#add-sightings-table .note a { display: inline-block; }
+body.plantshare#checklists .checklists-section table#add-sightings-table .note a.row-btn { float: right; margin: 5px 0 0 8px; }
+body.plantshare#checklists .checklists-section table#add-sightings-table thead { border-bottom: 1px solid #cccccc; width: 678px; }
+body.plantshare#checklists .checklists-section table#add-sightings-table thead th { text-transform: uppercase; }
+body.plantshare#checklists .checklists-section table#add-sightings-table thead th span { color: #999; font-style: italic; text-transform: none; }
+body.plantshare#checklists .checklists-section table#add-sightings-table tfoot { border-bottom: 1px solid #cccccc; }
+body.plantshare#checklists .checklists-section table#add-sightings-table tfoot td { font-size: .9em; padding-bottom: 10px; padding-top: 10px; }
+body.plantshare#checklists .checklists-section .form-actions { padding: 15px 0 0; }
+body.plantshare#checklists .checklists-section .form-actions a { margin: 7px 20px 0 0; display: block; float: left; vertical-align: middle; }
+body.plantshare#checklists .checklists-section .form-actions #save-btn { height: 32px; width: 99px; border: 0 none; margin: 0 20px 0 0; box-shadow: none; -moz-box-shadow: none; -webkit-box-shadow: none; white-space: nowrap; display: block; float: left; vertical-align: middle; }
+body.plantshare#checklists .checklists-section .form-actions::after { display: block; content: " "; clear: both; }
 body.plantshare#screen-images table.unscreened { margin: 20px 0; padding: 0; table-layout: fixed; overflow: hidden; width: 100%; text-align: center; }
 body.plantshare#screen-images table.unscreened tr.header { height: 20px; }
 body.plantshare#screen-images table.unscreened tr.header th { padding-bottom: 10px; }
@@ -1252,6 +1305,8 @@ body.plantshare#screen-images .save-btn { background: transparent url(/static/im
   body.plantshare .content #sidebar { background: none; border: 0; }
   body.plantshare#plantshare .sign-up-call { width: auto; }
   body.plantshare#plantshare .sign-up-call ul { margin-left: 0; }
+  body.plantshare#plantshare .notification { width: auto; }
+  body.plantshare#plantshare .notification ul { margin-left: 0; }
   body.plantshare.sighting form fieldset { width: auto; }
   body.plantshare.sighting form .location img { display: block; float: none; margin-bottom: 10px; }
   body.plantshare#profile .info.box img { padding: 16px; }

@@ -4,9 +4,11 @@ import urlparse
 import hashlib
 
 from django.db import models
+from django.db.models.signals import post_save
 from django.conf import settings
 from django.contrib.auth.models import User
 from django.core.files.storage import Storage, FileSystemStorage
+from django.dispatch import receiver
 
 from storages.backends.s3boto import S3BotoStorage
 from imagekit.models import ProcessedImageField, ImageSpecField
@@ -130,14 +132,30 @@ class UserProfile(models.Model):
 
         return avatar_info
 
+    @property
     def checklists(self):
         """Retrieve the list of all checklists this user has created
         or has been added as a collaborator on, including those editable due
         to Pod membership."""
-        return self.pods.all().checklists
+        return Checklist.objects.filter(collaborators__members=self)
 
     def get_user_pod(self):
         return self.pods.get(podmembership__is_self_pod=True)
+
+@receiver(post_save, sender=User, dispatch_uid='create_profile_for_user')
+def create_user_profile(sender, **kwargs):
+    user = kwargs['instance']
+    created = kwargs['created']
+    # Only when a user is first created, we should create his UserProfile
+    # and his personal Pod.
+    if created:
+        profile = UserProfile(user=user)
+        profile.save()
+        user_pod = Pod(name=user.username)
+        user_pod.save()
+        membership = PodMembership(member=profile, pod=user_pod, is_owner=True,
+            is_self_pod=True)
+        membership.save()
 
 
 class Sighting(models.Model):
@@ -156,6 +174,8 @@ class Sighting(models.Model):
 
     class Meta:
         ordering = ['-created']
+        verbose_name = 'sighting'
+        verbose_name_plural = 'sightings'
 
     def __unicode__(self):
         sighting_id = ''
@@ -237,6 +257,10 @@ class ScreenedImage(models.Model):
     deleted = models.BooleanField(default=False)
 
 
+class QuestionManager(models.Manager):
+    def answered(self):
+        return self.exclude(answer__isnull=True).exclude(answer__exact='')
+
 class Question(models.Model):
     question = models.CharField(max_length=300, blank=False)
     answer = models.CharField(max_length=3000, blank=True)
@@ -247,6 +271,10 @@ class Question(models.Model):
                                  related_name='questions_asked')
     answered = models.DateTimeField(null=True, editable=False)
 
+    class Meta:
+        verbose_name = 'question'
+        verbose_name_plural = 'questions'
+
     def __unicode__(self):
         return '%d: %s' % (self.id, self.question)
 
@@ -256,6 +284,8 @@ class Question(models.Model):
         if self.answer:
             self.answered = datetime.datetime.now()
         super(Question, self).save()
+
+    objects = QuestionManager()
 
 
 class Pod(models.Model):
@@ -287,6 +317,10 @@ class Checklist(models.Model):
     delete items."""
     collaborators = models.ManyToManyField('Pod', related_name='checklists',
             through='ChecklistCollaborator')
+
+    @property
+    def owner(self):
+        return self.collaborators.get(checklistcollaborator__is_owner=True)
 
     def copy_to_user(self, user):
         """Send a copy of this checklist to another user. The user will
@@ -340,8 +374,8 @@ class ChecklistEntry(models.Model):
     plant_photo = models.ForeignKey(ScreenedImage, null=True, blank=True)
     location = models.CharField(max_length=100, blank=True)
 
-    date_found = models.DateTimeField(null=True)
-    date_posted = models.DateTimeField(null=True)
+    date_found = models.DateTimeField(null=True, blank=True)
+    date_posted = models.DateTimeField(null=True, blank=True)
 
     note = models.TextField(blank=True)
 

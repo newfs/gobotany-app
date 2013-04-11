@@ -33,45 +33,55 @@
                             {% if result.model_name == 'taxon' %}
                                 <img
                                     src="/static/images/icons/icon-leaf.png"
-                                    alt="" title="Species page">
+                                    alt="" title="Species">
                             {% endif %}
                             {% if result.model_name == 'family' %}
                                 <img
                                     src="/static/images/icons/icon-family.png"
-                                    alt="" title="Family page">
+                                    alt="" title="Family">
                             {% endif %}
                             {% if result.model_name == 'genus' %}
                                 <img
                                     src="/static/images/icons/icon-genus.png"
-                                    alt="" title="Genus page">
+                                    alt="" title="Genus">
                             {% endif %}
                             {% if result.model_name == 'plainpage' %}
                                 <img
                                     src="/static/images/icons/icon-help.png"
-                                    alt="" title="Help page">
+                                    alt="" title="Help section">
                             {% endif %}
                             {% if result.model_name == 'glossaryterm' %}
                                 <img
                                     src="/static/images/icons/icon-glossary.png"
-                                    alt="" title="Glossary page">
+                                    alt="" title="Glossary term">
                             {% endif %}
                             {% if result.model_name == 'groupslistpage' %}
                                 <img
                                     src="/static/images/icons/icon-groups-list.png"
-                                    alt="" title="Simple Key plant groups page">
+                                    alt="" title="Simple Key plant groups">
                             {% endif %}
                             {% if result.model_name == 'subgroupslistpage' %}
                                 <img src="/static/images/icons/icon-groups-list.png"
-                                    alt="" title="Simple Key plant subgroups page">
+                                    alt="" title="Simple Key plant subgroups">
                             {% endif %}
                             {% if result.model_name == 'subgroupresultspage' %}
                                 <img src="/static/images/icons/icon-grid.png"
                                     alt=""
-                                    title="Simple Key plant group results page">
+                                    title="Simple Key results">
                             {% endif %}
                             {% if result.model_name == 'page' %}
                                 <img src="/static/images/icons/icon-groups-list.png"
-                                    alt="" title="Dichotomous Key page">
+                                    alt="" title="Dichotomous Key">
+                            {% endif %}
+                            {% if result.model_name == 'sighting' %}
+                                <img
+                                    src="/static/images/icons/icon-sighting.png"
+                                    alt="" title="sighting">
+                            {% endif %}
+                            {% if result.model_name == 'question' %}
+                                <img
+                                    src="/static/images/icons/icon-question.png"
+                                    alt="" title="question and answer">
                             {% endif %}
                             {{ result.title|quick_highlight:query|safe }}
                             </a>
