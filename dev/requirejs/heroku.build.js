@@ -20,6 +20,7 @@
                 'mapping/geocoder',
                 'mapping/google_maps',
                 'mapping/marker_map',
+                'plantshare/manage_sightings',
                 'plantshare/myprofile',
                 'plantshare/plantshare',
                 'plantshare/registration_complete',
