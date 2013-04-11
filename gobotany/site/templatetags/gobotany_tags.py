@@ -3,7 +3,7 @@
 from hashlib import md5
 
 from django import template
-from django.core.urlresolvers import reverse
+from django.core.urlresolvers import NoReverseMatch, reverse
 from django.template.defaultfilters import slugify, stringfilter
 
 from gobotany import settings
@@ -96,7 +96,9 @@ def nav_item(parser, token):
     """Return a navigation item, hyperlinked if appropriate."""
     token_parts = token.split_contents()
     label = token_parts[1]
-    named_url = token_parts[2]
+    named_url = None
+    if len(token_parts) > 2:
+        named_url = token_parts[2]
     extra_path_item = None
     if len(token_parts) > 3:
         extra_path_item = token_parts[3]
@@ -106,7 +108,9 @@ def nav_item(parser, token):
 class NavigationItemNode(template.Node):
     def __init__(self, label, named_url, extra_path_item=None):
         self.label = label[1:-1]
-        self.named_url = named_url
+        self.named_url = None
+        if named_url:
+            self.named_url = named_url
         self.extra_path_item = None
         if extra_path_item:
             self.extra_path_item = extra_path_item[1:-1]
@@ -123,5 +127,8 @@ class NavigationItemNode(template.Node):
                 href='href="%s"' % url_path
             html = '<a %s>%s</a>' % (href, self.label)
             return html
-        except template.VariableDoesNotExist:
+        except NoReverseMatch:
+            # No matching URL exists yet, so display just the text.
+            return '<span>%s</span>' % self.label
+        else:
             return ''
