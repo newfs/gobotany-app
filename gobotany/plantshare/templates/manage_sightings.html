@@ -1,24 +1,47 @@
 {% extends "gobotany/_page_free_sidebar.html" %}
+{% load humanize %}
 
 {% block title %}Manage Your Sightings: PlantShare{% endblock %}
 
 {% block body_attributes %}id="manage-sightings"
     class="plantshare"{% endblock %}
 
+{% block js_require %}
+    require(['plantshare/manage_sightings']);
+{% endblock %}
+
 {% block main_content %}
     <h1>Manage Your Sightings</h1>
 
     {% if sightings %}
-        <p><b>{{ user_name }}</b>, here are the sightings you've posted.</p>
+        <p><b>{{ user_name }}</b>, here
+        {% if sightings|length > 1 %}
+            are the {{ sightings|length|intcomma }} sightings
+        {% else %}
+            is the sighting
+        {% endif %}
+        you've posted.</p>
+
+        {% if sightings|length > 1 %}
+            <p>To filter the list, type in the box under a column name.</p>
+        {% endif %}
 
         <table class="list">
             <thead>
                 <tr>
-                    <th>Identification</th>
-                    <th>Location</th>
-                    <th>Posted</th>
-                    <th></th>
-                    <th></th>
+                    {% if sightings|length > 1 %}
+                        {# Label the columns, which will add filter boxes. #}
+                        <th>Identification</th>
+                        <th>Location</th>
+                        <th>Date Posted</th>
+                    {% else %}
+                        {# There is only one item, so omit filter boxes. #}
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                    {% endif %}
+                    <th class="action"></th>
+                    <th class="action"></th>
                 </tr>
             </thead>
             <tbody>
@@ -27,8 +50,8 @@
                     <td>{{ sighting.identification }}</td>
                     <td>{{ sighting.location }}</td>
                     <td>{{ sighting.created }}</td>
-                    <td><a href="#">Edit</a></td>
-                    <td><a href="#">Delete</a></td>
+                    <td class="action"><a href="#">Edit</a></td>
+                    <td class="action"><a href="#">Delete</a></td>
                 </tr>
             {% endfor %}
             </tbody>

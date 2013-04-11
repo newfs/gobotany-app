@@ -322,6 +322,12 @@ body.plantshare {
     &#manage-sightings {
         .content table {
             width: 100%;
+            th.action {
+                width: 10%;
+            }
+            td.action {
+                text-align: center;
+            }
         }
     }
 
