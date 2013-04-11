@@ -43,5 +43,9 @@ span.all-species-button, span.simple-key-button, .save-button, .length-save-butt
 
 span.taxon-lit-source { float: right; background-color: transparent; color: black;}
 span.char-lit-source { padding-left: 2em; background-color: transparent; color: black; }
-input.lit-source {margin: 0; width: 20em;}
-.pile-character-grid > div { margin-bottom: 1em;}
+input.lit-source, input.default-lit-source { margin: 0; width: 20em; }
+.pile-character-grid > div { margin-bottom: 1em; }
+
+textarea.lit-source, textarea.default-lit-source { position: absolute; height: 20em; width: 20em; z-index: 100; }
+
+span.taxon-lit-source textarea.lit-source { position: relative;}

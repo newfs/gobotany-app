@@ -252,6 +252,7 @@ define([
         install_species_button_handlers();
         watch_for_value_clicks();
         watch_for_input_edits();
+        expand_lit_source_fields();
 
         $('.save-button').on('click', function() {
             save_vectors();
@@ -321,6 +322,31 @@ define([
             });
         });
     };
+
+    var expand_lit_source_fields = function () {
+        var $lit_inputs = $('input.lit-source, input.default-lit-source');
+        function expand_on_focus (input) {
+            input.on('focus', function () {
+                var $input = $(this)
+                var value = $input.val();
+                var $new_input = $('<textarea wrap="soft" />')
+                $new_input.attr('class', $input.attr('class'));
+                $input.replaceWith($new_input);
+                $new_input.focus();
+                // Replace on blur
+                $new_input.val(value).blur(function () {
+                    $new_input.replaceWith($input);
+                    $input.val($new_input.val());
+                    // The event handler is detached when the input is
+                    // removed from the DOM, re-attach
+                    expand_on_focus($input);
+                });
+            });
+        }
+        $lit_inputs.each(function () {
+            expand_on_focus($(this));
+        });
+    }
 
     /* An orange "changed" flag, displayed on the right side of a row,
        that tells the user the row is not in its original state. */
