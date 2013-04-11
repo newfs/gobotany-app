@@ -1,3 +1,5 @@
+from django.conf import settings
+
 from haystack import indexes
 from haystack import site
 
@@ -316,5 +318,7 @@ site.register(search_models.SubgroupResultsPage, SubgroupResultsPageIndex)
 
 site.register(dkey_models.Page, DichotomousKeyPageIndex)
 
-site.register(plantshare_models.Sighting, SightingPageIndex)
-site.register(plantshare_models.Question, QuestionIndex)
+# Exclude PlantShare results in production until release.
+if settings.DEV_FEATURES == True:   # TODO: remove this line before release
+    site.register(plantshare_models.Sighting, SightingPageIndex)
+    site.register(plantshare_models.Question, QuestionIndex)
