@@ -377,22 +377,7 @@ $image-box-shadow-color: rgba(0, 0, 0, 0.6);
             padding-bottom: 12px;
         }
         table {
-            background: #f1fcde;
-            border-collapse: collapse;
-            color: #000;
-            font-size: 11px;
-            margin: 18px 0;
             width: 100%;
-            tbody tr:hover {
-                background: #e3fabe;
-            }
-            th, td {
-                padding: 4px;
-            }
-            th, tr.filters {
-                background: #b4d57f;
-                font-weight: normal;
-            }
             th {
                 text-align: center;
                 vertical-align: bottom;
@@ -420,10 +405,6 @@ $image-box-shadow-color: rgba(0, 0, 0, 0.6);
                 &.subgroup {
                     width: 16%;
                 }                
-            }
-            td:first-child {
-                font-family: $headings-font;
-                font-size: 13px;
             }
         }
     }

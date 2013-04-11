@@ -186,7 +186,7 @@ def manage_sightings_view(request):
             'identification': sighting.identification,
             'location': sighting.location,
             'user': _user_name(sighting.user),
-            'created': sighting.created.strftime("%A, %B %e"),
+            'created': sighting.created.strftime("%A, %B %e, %Y"),
         })
     return render_to_response('manage_sightings.html', {
             'sightings': sightings,

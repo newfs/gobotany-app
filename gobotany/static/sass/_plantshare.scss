@@ -318,6 +318,13 @@ body.plantshare {
             }
         }
     }
+
+    &#manage-sightings {
+        .content table {
+            width: 100%;
+        }
+    }
+
     &#locator #main {
         h3 {
             font-family: $body-font;
@@ -330,6 +337,7 @@ body.plantshare {
             line-height: 24px;
         }
     }
+
     &#sightings {
         #main > ul {
             margin-top: 14px;
@@ -346,6 +354,7 @@ body.plantshare {
             }
         }
     }
+
     &.sighting {
         .map {
             float: right;

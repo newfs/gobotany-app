@@ -464,6 +464,13 @@ header nav #search input { padding-left: 4px; width: 215px; }
 /* Teaching page */
 body.teaching #main li { list-style-type: none; }
 
+/* List-style tables (Species List page, Manage Your Sightings page, etc.) */
+table.list { background: #f1fcde; border-collapse: collapse; color: #000; font-size: 11px; margin: 18px 0; }
+table.list tbody tr:hover { background: #e3fabe; }
+table.list th, table.list td { padding: 4px; }
+table.list th, table.list tr.filters { background: #b4d57f; font-weight: normal; }
+table.list th td:first-child { font-family: "Trebuchet MS", Helvetica, Arial, "Lucida Sans Unicode", sans-serif; font-size: 13px; }
+
 /* "Advanced ID Tools" placeholder page (delete after tools release) */
 #advanced-id #main .dk-landing-section { float: left; font-family: Verdana, Geneva, "Lucida Sans Unicode", sans-serif; height: 410px; padding-left: 20px; position: relative; width: 328px; }
 #advanced-id #main .dk-landing-section:first-of-type { border-right: 1px solid #b4d57f; padding-left: 0; padding-right: 10px; }
@@ -1147,6 +1154,7 @@ body.plantshare#new-sighting .thumb-gallery .thumb-frame { display: inline-block
 body.plantshare#new-sighting .thumb-gallery .thumb-frame .thumb { vertical-align: bottom; }
 body.plantshare#new-sighting .thumb-gallery .thumb-frame .delete-link { width: 100%; text-align: center; margin: 2px 0; padding-top: 2px; }
 body.plantshare#new-sighting .thumb-gallery .thumb-frame .delete-link img { vertical-align: middle; margin-right: 4px; }
+body.plantshare#manage-sightings .content table { width: 100%; }
 body.plantshare#locator #main h3 { font-family: Verdana, Geneva, "Lucida Sans Unicode", sans-serif; font-size: 12px; line-height: 24px; }
 body.plantshare#locator #main #sightings-status { display: none; /* initially hide, until updating value via JS */ float: right; line-height: 24px; }
 body.plantshare#sightings #main > ul { margin-top: 14px; }
@@ -1483,10 +1491,7 @@ body.search-results .search-navigation a { text-decoration: underline; }
 /* Species List */
 #list .content { padding-bottom: 18px; }
 #list .content h1 { padding-bottom: 12px; }
-#list .content table { background: #f1fcde; border-collapse: collapse; color: #000; font-size: 11px; margin: 18px 0; width: 100%; }
-#list .content table tbody tr:hover { background: #e3fabe; }
-#list .content table th, #list .content table td { padding: 4px; }
-#list .content table th, #list .content table tr.filters { background: #b4d57f; font-weight: normal; }
+#list .content table { width: 100%; }
 #list .content table th { text-align: center; vertical-align: bottom; }
 #list .content table th.name { width: 16%; }
 #list .content table th.common { width: 15%; }
@@ -1496,7 +1501,6 @@ body.search-results .search-navigation a { text-decoration: underline; }
 #list .content table th.wetland { width: 5%; }
 #list .content table th.group { width: 12%; }
 #list .content table th.subgroup { width: 16%; }
-#list .content table td:first-child { font-family: "Trebuchet MS", Helvetica, Arial, "Lucida Sans Unicode", sans-serif; font-size: 13px; }
 
 /* Legal notification pages */
 .legal #main h3 { margin: 8px 0; }

@@ -891,6 +891,32 @@ body.teaching #main li {
     list-style-type: none;
 }
 
+/* List-style tables (Species List page, Manage Your Sightings page,
+ * etc.) */
+table.list {
+    background: #f1fcde;
+    border-collapse: collapse;
+    color: #000;
+    font-size: 11px;
+    margin: 18px 0;
+    tbody tr:hover {
+        background: #e3fabe;
+    }
+    th, td {
+        padding: 4px;
+    }
+    th, tr.filters {
+        background: #b4d57f;
+        font-weight: normal;
+    }
+    th {
+        td:first-child {
+            font-family: $headings-font;
+            font-size: 13px;
+        }
+    }
+}
+
 /* "Advanced ID Tools" placeholder page (delete after tools release) */
 
 #advanced-id #main {

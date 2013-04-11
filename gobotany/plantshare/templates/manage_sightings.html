@@ -2,17 +2,45 @@
 
 {% block title %}Manage Your Sightings: PlantShare{% endblock %}
 
-{% block body_attributes %}id="manage-sightings" class="plantshare"{% endblock %}
+{% block body_attributes %}id="manage-sightings"
+    class="plantshare"{% endblock %}
 
 {% block main_content %}
-<h1>Manage Your Sightings</h1>
+    <h1>Manage Your Sightings</h1>
 
-<p>Sightings posted by you, <b>{{ user_name }}</b>:</p>
-<ul>
-{% for sighting in sightings %}
-    <li>{{ sighting }}</li>
-{% endfor %}
-</ul>
+    {% if sightings %}
+        <p><b>{{ user_name }}</b>, here are the sightings you've posted.</p>
+
+        <table class="list">
+            <thead>
+                <tr>
+                    <th>Identification</th>
+                    <th>Location</th>
+                    <th>Posted</th>
+                    <th></th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for sighting in sightings %}
+                <tr>
+                    <td>{{ sighting.identification }}</td>
+                    <td>{{ sighting.location }}</td>
+                    <td>{{ sighting.created }}</td>
+                    <td><a href="#">Edit</a></td>
+                    <td><a href="#">Delete</a></td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <p>Here is where your sightings will be listed,
+        <b>{{ user_name }}</b>.</p>
+        
+        <p>You are welcome to
+        <a href="{% url 'ps-new-sighting' %}">post a sighting</a>
+        anytime.</p>
+    {% endif %}
 
 {% endblock %}
 
