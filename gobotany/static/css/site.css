@@ -1234,8 +1234,8 @@ body.plantshare#profile .info-section .info.box table .display .group-list, body
 body.plantshare#profile .info-section .info.box table .display .edit-link, body.plantshare#profile .location-section .info.box table .display .edit-link { float: right; }
 body.plantshare#profile .info-section .info.box table .display ul, body.plantshare#profile .location-section .info.box table .display ul { list-style: none; }
 body.plantshare#profile .info-section .info.box table .edit, body.plantshare#profile .location-section .info.box table .edit { display: none; }
-body.plantshare#profile .info-section { margin: 20px 0; }
-body.plantshare#profile .info-section .info.box { margin: 20px 0; padding: 10px 15px 20px; }
+body.plantshare#profile .info-section { margin: 0 0 20px; }
+body.plantshare#profile .info-section .info.box { margin: 0 0 20px; padding: 10px 15px 20px; }
 body.plantshare#profile .info-section .info.box table { margin: 0; }
 body.plantshare #login.box { background-color: #d3eaad; border-color: #317b0c; max-width: 475px; padding: 0; }
 body.plantshare #login.box h4 { font-size: 20px; padding: 16px 16px 10px; }
