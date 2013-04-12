@@ -4,7 +4,11 @@
 {% block title %}Checklists: Plantshare{% endblock %}
 
 {% block js_require %}
-    require(['util/suggester_init', 'plantshare/plantshare']);
+    require([
+        'util/suggester_init', 
+        'plantshare/plantshare',
+        'plantshare/new_checklist'
+    ]);
 {% endblock %}
 
 {% block body_attributes %}id="checklists" class="plantshare checklists"{% endblock %}
@@ -13,6 +17,35 @@
 <h1>Checklists</h1>
 
 <div class="checklists-section">
+    <div id="form-template">
+        <table>
+            <tbody>
+                {% with empty_form=entry_formset.empty_form %}
+                <tr>
+                    <td class="name">
+                        {{ empty_form.plant_name }}
+                    </td><!-- /.name -->
+                    <td class="image">
+                        <a href="javascript:alert('Coming soon!');" class="upload-image-thumb btn">Upload Image</a>
+                    </td><!-- /.image -->
+                    <td class="date-sighted">
+                        {{ empty_form.date_found }}
+                    </td><!-- /.date-sighted -->
+                    <td class="location">
+                        {{ empty_form.location }}
+                    </td><!-- /.location -->
+                    <td class="date-posted">
+                        {{ empty_form.date_posted }}
+                    </td><!-- /.date-posted -->
+                    <td class="note">
+                        <a href="javascript:alert('Coming soon!');" rel="shadowbox;width=550;height=240">Add<br>Note</a>
+                        <a href="#" class="close-btn row-btn">Close</a>
+                    </td><!-- /.note -->
+                </tr>
+                {% endwith %}
+            </tbody>
+        </table>
+    </div>
     <form name="checklist-fillout" id="checklist-fillout" method="POST">
         {% csrf_token %}
         <header>
@@ -43,7 +76,7 @@
                     </td>
                 </tr>
             </tfoot>
-            <tbody>
+            <tbody id="formset">
                 {{ entry_formset.management_form }}
                 {% for entry_form in entry_formset %}
                 {{ entry_form.non_field_errors }}
@@ -69,7 +102,7 @@
                     </td><!-- /.date-posted -->
                     <td class="note">
                         <a href="javascript:alert('Coming soon!');" rel="shadowbox;width=550;height=240">Add<br>Note</a>
-                        <a href="javascript:alert('Coming soon!');" rel="shadowbox;height=200;width=550;" class="close-btn row-btn">Close</a>
+                        <a href="#" class="close-btn row-btn">Close</a>
                     </td><!-- /.note -->
                 </tr>
                 {% endfor %}
