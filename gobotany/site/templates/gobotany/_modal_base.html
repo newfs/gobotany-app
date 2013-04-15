@@ -12,6 +12,13 @@
                     href="{{ file_path }}?v={% file_version file_path %}">
             {% endwith %}
         {% endblock %}
+            
+        {% include "gobotany/_js.html" %}
+
+        <script>
+            {% block js_require %}{% endblock %}
+        </script>
+
     </head>
 
     <body {% block body_attributes %}{% endblock %}>

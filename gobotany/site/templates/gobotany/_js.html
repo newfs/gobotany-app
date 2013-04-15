@@ -1,0 +1,16 @@
+{% load gobotany_tags %}
+
+        {% if not in_production %}
+
+        <!-- DEVELOPMENT FILES -->
+        <script src="/static/scripts/lib/require.js"></script>
+        <script src="/static/scripts/require_config.js"></script>
+
+        {% else %}
+
+        <!-- PRODUCTION / DEPLOYMENT FILES -->
+        {% with '/static/js/gobotany.application.js' as file_path %}
+        <script src="{{ file_path }}?v={% file_version file_path %}"></script>
+        {% endwith %}
+
+        {% endif %}

@@ -1,7 +1,13 @@
 {% extends "gobotany/_modal_base.html" %}
 
+{# This page appears in a lightbox dialog when deleting a sighting. #}
+
 {% block body_attributes %}id="delete-sighting"
     class="plantshare"{% endblock %}
+
+{% block js_require %}
+    require(['plantshare/delete_sighting']);
+{% endblock %}
 
 {% block body_content %}
     <div>

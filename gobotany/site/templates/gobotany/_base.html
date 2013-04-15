@@ -40,20 +40,7 @@
 
         {% include "gobotany/_script_constants.html" %}
 
-        {% if not in_production %}
-
-        <!-- DEVELOPMENT FILES -->
-        <script src="/static/scripts/lib/require.js"></script>
-        <script src="/static/scripts/require_config.js"></script>
-
-        {% else %}
-
-        <!-- PRODUCTION / DEPLOYMENT FILES -->
-        {% with '/static/js/gobotany.application.js' as file_path %}
-        <script src="{{ file_path }}?v={% file_version file_path %}"></script>
-        {% endwith %}
-
-        {% endif %}
+        {% include "gobotany/_js.html" %}
 
         <script>
             require(['util/suggester_init']);

@@ -4,7 +4,7 @@ define([
     'util/shadowbox_init'
 ], function ($, table_filter, Shadowbox) {
     $(document).ready(function () {
-        // Set up Delete dialogs.
+        // Set up Delete links.
         Shadowbox.setup('a.delete');
 
         // Set up table filtering.
