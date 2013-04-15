@@ -1,5 +1,6 @@
 {% extends "gobotany/_page_free_sidebar.html" %}
 {% load mapping_tags %}
+{% load plantshare_tags %}
 
 {% block title %}PlantShare{% endblock %}
 
@@ -18,7 +19,7 @@
     <a href="{% url 'ps-profile' %}" class="edit">Edit Profile</a>
     <div>
         <img src="{{ avatar.thumb_url }}" alt="">
-        <h3>{{ user.first_name|default:user.username }}</h3>
+        <h3>{% user_display_name user %}</h3>
     </div>
     <table>
         <tr><th>Total Species</th><td>None</td></tr>

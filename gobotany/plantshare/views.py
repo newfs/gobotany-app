@@ -36,9 +36,6 @@ def _new_sighting_form_page(request, form):
                'upload_photo_form': upload_photo_form,
            }, context_instance=RequestContext(request))
 
-def _user_name(user):
-    return user.get_full_name() or user.username
-
 def _create_checklistentry_formset():
     return modelformset_factory(ChecklistEntry, form=ChecklistEntryForm, extra=1)
 
@@ -129,7 +126,7 @@ def sightings_view(request):
                 'id': sighting.id,
                 'identification': sighting.identification,
                 'location': sighting.location,
-                'user': _user_name(sighting.user),
+                'user': sighting.user,
                 'created': sighting.created.strftime("%A, %B %e"),
             })
 
@@ -154,7 +151,7 @@ def sighting_view(request, sighting_id):
         'notes': s.notes,
         'location': s.location,
         'location_notes': s.location_notes,
-        'user': _user_name(s.user),
+        'user': s.user,
         'created': s.created,
         'photos': s.private_photos()
     }
@@ -185,12 +182,11 @@ def manage_sightings_view(request):
             'id': sighting.id,
             'identification': sighting.identification,
             'location': sighting.location,
-            'user': _user_name(sighting.user),
+            'user': sighting.user,
             'created': sighting.created.strftime("%A, %B %e, %Y"),
         })
     return render_to_response('manage_sightings.html', {
             'sightings': sightings,
-            'user_name': _user_name(request.user)
         }, context_instance=RequestContext(request))
 
 def questions_view(request):
@@ -259,7 +255,7 @@ def new_checklist_view(request):
             checklist = checklist_form.save()
             # Set the current user's personal pod as the owner
             owner = ChecklistCollaborator(collaborator=user_pod,
-                   checklist=checklist, is_owner=True) 
+                   checklist=checklist, is_owner=True)
             owner.save()
             entry_formset = ChecklistEntryFormSet(request.POST)
             if entry_formset.is_valid():
@@ -521,8 +517,6 @@ def ajax_sightings(request):
                     identification__iexact=plant_name)[:MAX_TO_RETURN]
     sightings_json = []
     for sighting in sightings:
-        name = _user_name(sighting.user)
-
         photos = []
         for photo in sighting.approved_photos():
             photos.append(photo.thumb.url)
@@ -547,7 +541,8 @@ def ajax_sightings(request):
             'location': sighting.location.user_input,
             'latitude': sighting.location.latitude,
             'longitude': sighting.location.longitude,
-            'user': name,
+            'user': sighting.user.username, # TODO: fast way of getting
+                                            #       user display name
             'description': sighting.notes,
             'photos': photos,
         })

@@ -142,6 +142,36 @@ class UserProfile(models.Model):
     def get_user_pod(self):
         return self.pods.get(podmembership__is_self_pod=True)
 
+    def user_display_name(self):
+        """Return the basic display name for a user, which is either the
+        chosen display name or, if no display name is set, the username.
+        """
+        display_name = self.user.username
+        if self.display_name:
+                display_name = self.display_name
+        return display_name
+
+    def unique_user_display_name(self):
+        """Return the unique display name for a user, which is either the
+        chosen display name or, if no display name is set, their username.
+        If the display name is not unique, that is, another user has the same
+        one, then add the username in parentheses after the display name.
+        """
+        display_name = self.user.username
+        if self.display_name:
+            display_name = self.display_name
+            num_users_with_name = UserProfile.objects.filter(
+                display_name=display_name).count()
+            if num_users_with_name > 1:
+                display_name = '%s (%s)' % (display_name, self.user.username)
+        return display_name
+
+    def user_first_name(self):
+        """Return the first part of the user's display name, if defined.
+        Otherwise, return the username.
+        """
+        return self.user_display_name().split(' ')[0]
+
 @receiver(post_save, sender=User, dispatch_uid='create_profile_for_user')
 def create_user_profile(sender, **kwargs):
     user = kwargs['instance']

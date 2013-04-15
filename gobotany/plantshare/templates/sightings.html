@@ -1,5 +1,6 @@
 {% extends "gobotany/_page_free_sidebar.html" %}
 {% load mapping_tags %}
+{% load plantshare_tags %}
 
 {% block title %}Sightings: PlantShare{% endblock %}
 
@@ -18,7 +19,7 @@
             <li><a
                 href="{% url 'ps-sighting' sighting.id %}"><i>{{ sighting.identification }}</i>
                 at {{ sighting.location|capfirst }}</a>
-                by {{ sighting.user }}</li>
+                by {% unique_user_display_name sighting.user %}</li>
         {% endfor %}
     </ul>
     </li>
