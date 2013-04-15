@@ -32,9 +32,9 @@
                 <tr>
                     {% if sightings|length > 1 %}
                         {# Label the columns, which will add filter boxes. #}
-                        <th>Identification</th>
-                        <th>Location</th>
-                        <th>Date Posted</th>
+                        <th class="identification">Identification</th>
+                        <th class="location">Location</th>
+                        <th class="posted">Date Posted</th>
                     {% else %}
                         {# There is only one item, so omit filter boxes. #}
                         <th></th>
@@ -52,7 +52,11 @@
                     <td>{{ sighting.location }}</td>
                     <td>{{ sighting.created }}</td>
                     <td class="action"><a href="#">Edit</a></td>
-                    <td class="action"><a href="#">Delete</a></td>
+                    <td class="action">
+                        <a class="delete"
+                            href="{% url 'ps-delete-sighting' sighting.id %}"
+                            rel="shadowbox;width=700;height=180">Delete</a>
+                    </td>
                 </tr>
             {% endfor %}
             </tbody>

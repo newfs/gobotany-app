@@ -322,11 +322,56 @@ body.plantshare {
     &#manage-sightings {
         .content table {
             width: 100%;
-            th.action {
-                width: 10%;
+            th {
+                &.identification {
+                    width: 40%;
+                }
+                &.location {
+                    width: 23%;
+                }
+                &.posted {
+                    width: 27%;
+                }
+                &.action {
+                    width: 5%;
+                }
             }
             td.action {
                 text-align: center;
+            }
+        }
+    }
+
+    &#delete-sighting {
+        background: none;
+        div {
+            background: #fff;
+            border: 5px solid #acac90;
+            height: 100%;
+            padding: 0 18px;
+            text-align: center;
+        }
+        h2 {
+            font-size: 18px;
+            text-align: left;
+        }
+        table {
+            width: 100%;
+            th {
+                font-weight: normal;
+            }
+        }
+        .cancel-btn {
+            background: url(/static/images/layout/plantshare2-btn.png) no-repeat -415px -297px;
+            cursor: pointer;
+            display: inline-block;
+            height: 32px;
+            margin: 0 10px 0 0;
+            text-indent: -9999px;
+            vertical-align: middle;
+            width: 143px;
+            &:hover {
+                background-position: -415px -336px;
             }
         }
     }

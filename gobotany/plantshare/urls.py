@@ -17,6 +17,8 @@ urlpatterns = patterns(
     url(r'^sightings/$', views.sightings_view, name='ps-sightings'),
     url(r'^sightings/manage/$', views.manage_sightings_view,
         name='ps-manage-sightings'),
+    url(r'^sightings/(?P<sighting_id>[0-9]+)/delete/$',
+        views.delete_sighting_view, name='ps-delete-sighting'),
     url(r'^sightings/locator/$', views.sightings_locator_view,
         name='ps-sightings-locator'),
     url(r'^sightings/(?P<sighting_id>[0-9]+)/$', views.sighting_view,

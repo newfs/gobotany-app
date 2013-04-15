@@ -1,0 +1,20 @@
+{% load gobotany_tags %}
+
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width,
+        initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+        {% block css %}
+            {% with '/static/css/site.css' as file_path %}
+                <link rel="stylesheet"
+                    href="{{ file_path }}?v={% file_version file_path %}">
+            {% endwith %}
+        {% endblock %}
+    </head>
+
+    <body {% block body_attributes %}{% endblock %}>
+        {% block body_content %}{% endblock %}
+    </body>
+</html>

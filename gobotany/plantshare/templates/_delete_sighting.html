@@ -1,0 +1,28 @@
+{% extends "gobotany/_modal_base.html" %}
+
+{% block body_attributes %}id="delete-sighting"
+    class="plantshare"{% endblock %}
+
+{% block body_content %}
+    <div>
+        <h2>Are you sure you want to permanently delete this sighting?</h2>
+
+        <table>
+            <thead>
+                <th>Identification</th>
+                <th>Location</th>
+                <th>Date Posted</th>
+            </thead>
+            <tbody>
+                <td>{{ sighting.identification }}</td>
+                <td>{{ sighting.location }}</td>
+                <td>{{ sighting.created }}</td>
+            </tbody>
+        </table>
+
+        <p>
+            <a class="cancel-btn">No, Cancel</a>
+            <a href="#">Yes, Delete</a>
+        </p>
+    </div>
+{% endblock %}

@@ -2,6 +2,7 @@ from datetime import datetime
 from random import randint
 
 from django.contrib.auth.decorators import login_required, user_passes_test
+from django.core.exceptions import ObjectDoesNotExist
 from django.core.urlresolvers import reverse, reverse_lazy
 from django.conf import settings
 from django.http import HttpResponse, HttpResponseRedirect
@@ -143,21 +144,34 @@ def sightings_locator_view(request):
            }, context_instance=RequestContext(request))
 
 def sighting_view(request, sighting_id):
-    """View for an individual sighting."""
-    s = Sighting.objects.get(id=sighting_id)
-    sighting = {
-        'id': s.id,
-        'identification': s.identification,
-        'notes': s.notes,
-        'location': s.location,
-        'location_notes': s.location_notes,
-        'user': s.user,
-        'created': s.created,
-        'photos': s.private_photos()
-    }
-    return render_to_response('sighting.html', {
-               'sighting': sighting,
-           }, context_instance=RequestContext(request))
+    """View for an individual sighting. Supported HTTP methods: GET (return
+    a sighting), and DELETE (delete a sighting)."""
+    try:
+        s = Sighting.objects.get(id=sighting_id)
+    except ObjectDoesNotExist:
+        return HttpResponse(status=404)
+    if request.method == 'GET':
+        sighting = {
+            'id': s.id,
+            'identification': s.identification,
+            'notes': s.notes,
+            'location': s.location,
+            'location_notes': s.location_notes,
+            'user': s.user,
+            'created': s.created,
+            'photos': s.private_photos()
+        }
+        return render_to_response('sighting.html', {
+                   'sighting': sighting,
+               }, context_instance=RequestContext(request))
+    elif request.method == 'DELETE':
+        s.delete()
+        # This response gets 200 OK, but subsequent responses will get 404
+        # Not Found due to the record being gone.
+        return HttpResponse(status=200)
+    else:
+        # For an unsupported HTTP method, return a Bad Request response.
+        return HttpResponse(status=400)
 
 @login_required
 def new_sighting_view(request):
@@ -188,6 +202,30 @@ def manage_sightings_view(request):
     return render_to_response('manage_sightings.html', {
             'sightings': sightings,
         }, context_instance=RequestContext(request))
+
+@login_required
+def delete_sighting_view(request, sighting_id):
+    """View for deleting a sighting: the contents of a lightbox dialog,
+    using HTTP GET. (The actual delete should be performed by sending a
+    HTTP DELETE request to the sighting URL.
+    """
+    s = Sighting.objects.get(id=sighting_id)
+    if request.method == 'GET':
+        sighting = {
+            'id': s.id,
+            'identification': s.identification,
+            'notes': s.notes,
+            'location': s.location,
+            'location_notes': s.location_notes,
+            'user': s.user,
+            'created': s.created.strftime("%A, %B %e, %Y"),
+        }
+        return render_to_response('_delete_sighting.html', {
+                'sighting': sighting
+            }, context_instance=RequestContext(request))
+    else:
+        # For an unsupported HTTP method, return a Bad Request response.
+        return HttpResponse(status=400)
 
 def questions_view(request):
     """View for the main Ask the Botanist page and the questions collection:
