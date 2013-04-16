@@ -30,6 +30,8 @@
                 'plantshare/sightings_map',
                 'plantshare/sign_up',
                 'plantshare/new_sighting',
+                'plantshare/new_checklist',
+                'plantshare/edit_checklist',
                 'simplekey/simple',
                 'simplekey/results',
                 'taxa/species',
@@ -42,6 +44,7 @@
                 'site/home',
                 'site/maps_test',
                 'util/suggester_init',
+                'util/formset',
                 'util/location_field_init'
             ],
             create: true
