@@ -1,7 +1,7 @@
 from django import forms
 from django.core.urlresolvers import reverse_lazy
 
-from models import (UserProfile, ScreenedImage, Location, Checklist, 
+from models import (UserProfile, ScreenedImage, Location, Checklist,
         ChecklistEntry)
 
 def plant_name_suggestions_url():
@@ -29,8 +29,8 @@ class LocationField(forms.RegexField):
         '(-?(\d{1,3}.?\d{1,6}? ?[wWeE]?))$)'
     )
     widget = LocationTextInput({'class': 'location',
-                              'placeholder': VALIDATION_MESSAGE,
-                              'pattern': VALIDATION_PATTERN})
+                                'placeholder': VALIDATION_MESSAGE,
+                                'pattern': VALIDATION_PATTERN})
     default_error_messages = {
         'invalid': 'Enter %s.' % VALIDATION_MESSAGE
     }
@@ -44,9 +44,9 @@ class LocationField(forms.RegexField):
             self.widget.attrs['required'] = 'required'
 
 
-class NewSightingForm(forms.Form):
+class SightingForm(forms.Form):
     def __init__(self, *args, **kwargs):
-        super(NewSightingForm, self).__init__(*args, **kwargs)
+        super(SightingForm, self).__init__(*args, **kwargs)
         # Set up a widget here instead of in its regular declaration in
         # order to work around an error regarding a 'reverse' URL.
         self.fields['identification'].widget=forms.TextInput({
@@ -87,12 +87,12 @@ class NewSightingForm(forms.Form):
     )
 
 
-class UserProfileForm(forms.ModelForm): 
+class UserProfileForm(forms.ModelForm):
     location = LocationField()
 
     class Meta:
         model = UserProfile
-        fields = ('sharing_visibility', 'display_name', 'saying', 
+        fields = ('sharing_visibility', 'display_name', 'saying',
             'location_visibility', 'location',)
 
     def __init__(self, *args, **kwargs):
@@ -103,7 +103,8 @@ class UserProfileForm(forms.ModelForm):
         if not 'location' in self.cleaned_data:
             return None
         user_text = self.cleaned_data['location']
-        location, created = Location.objects.get_or_create(user_input=user_text)
+        location, created = Location.objects.get_or_create(
+            user_input=user_text)
 
         return location
 
@@ -139,7 +140,8 @@ class ChecklistForm(forms.ModelForm):
 class ChecklistEntryForm(forms.ModelForm):
     class Meta:
         model = ChecklistEntry
-        fields = ('plant_name', 'date_found', 'location', 'date_posted', 'note')
+        fields = ('plant_name', 'date_found', 'location', 'date_posted',
+                  'note')
 
     def __init__(self, *args, **kwargs):
         super(ChecklistEntryForm, self).__init__(*args, **kwargs)
@@ -158,4 +160,3 @@ class ChecklistEntryForm(forms.ModelForm):
         self.fields['note'].widget = forms.Textarea(attrs={
             'placeholder': 'Write your notes here'
             })
-

@@ -19,8 +19,9 @@ define([
 
     LocationField.prototype.setup = function () {
         // If there is a map for this location input field, update the map
-        // when focus shifts away from the field.
+        // once now and also any time when focus shifts away from the field.
         if (this.$location_map !== undefined) {
+            this.update_map();
             this.$input_box.blur($.proxy(this.update_map, this));
         }
     };

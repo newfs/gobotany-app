@@ -51,7 +51,9 @@
                     <td>{{ sighting.identification }}</td>
                     <td>{{ sighting.location }}</td>
                     <td>{{ sighting.created }}</td>
-                    <td class="action"><a href="#">Edit</a></td>
+                    <td class="action">
+                        <a href="{% url 'ps-edit-sighting' sighting.id %}">Edit</a>
+                    </td>
                     <td class="action">
                         <a class="delete"
                             href="{% url 'ps-delete-sighting' sighting.id %}"

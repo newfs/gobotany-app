@@ -13,7 +13,7 @@ from django.utils import simplejson
 from django.forms import widgets
 from django.forms.models import modelformset_factory
 
-from gobotany.plantshare.forms import (NewSightingForm, UserProfileForm,
+from gobotany.plantshare.forms import (SightingForm, UserProfileForm,
                                        ScreenedImageForm, ChecklistForm,
                                        ChecklistEntryForm)
 from gobotany.plantshare.models import (Location, Sighting, UserProfile,
@@ -27,8 +27,8 @@ SIGHTINGS_MAP_DEFAULTS = {
 }
 
 
-def _new_sighting_form_page(request, form):
-    """Give a new-sighting form, either blank or with as-yet-invalid data."""
+def _sighting_form_page(request, form):
+    """Return a sighting form, either blank or with data."""
     upload_photo_form = ScreenedImageForm(initial={
         'image_type': 'SIGHTING'
     })
@@ -90,7 +90,7 @@ def sightings_view(request):
     if request.method == 'POST':
         # Handle posting a new sighting to the sightings collection.
         if request.user.is_authenticated():
-            form = NewSightingForm(request.POST)
+            form = SightingForm(request.POST)
             if form.is_valid():
                 location = Location(user_input=form.cleaned_data['location'],
                                     latitude=form.cleaned_data['latitude'],
@@ -115,8 +115,8 @@ def sightings_view(request):
                             % sighting.id)
                 return HttpResponseRedirect(done_url)
             else:
-                # Present the new-sighting form again for input correction.
-                return _new_sighting_form_page(request, form)
+                # Present the sighting form again for input correction.
+                return _sighting_form_page(request, form)
         else:
             return HttpResponse(status=401)   # 401 Unauthorized
     elif request.method == 'GET':
@@ -187,8 +187,8 @@ def sighting_view(request, sighting_id):
 @login_required
 def new_sighting_view(request):
     """View for a blank form for posting a new sighting."""
-    form = NewSightingForm()
-    return _new_sighting_form_page(request, form)
+    form = SightingForm()
+    return _sighting_form_page(request, form)
 
 
 @login_required
@@ -196,6 +196,7 @@ def new_sighting_done_view(request):
     """View for a confirmation page upon posting a new sighting."""
     return render_to_response('new_sighting_done.html', {
            }, context_instance=RequestContext(request))
+
 
 @login_required
 def manage_sightings_view(request):
@@ -214,6 +215,29 @@ def manage_sightings_view(request):
     return render_to_response('manage_sightings.html', {
             'sightings': sightings,
         }, context_instance=RequestContext(request))
+
+
+@login_required
+def edit_sighting_view(request, sighting_id):
+    """View for editing a sighting: the same form for posting a sighting,
+    but with the fields filled in.
+    """
+    try:
+        sighting = Sighting.objects.get(id=sighting_id)
+    except ObjectDoesNotExist:
+        return HttpResponse(status=404)
+    # Ensure this sighting belongs to the user requesting to edit it.
+    if sighting.user.id != request.user.id:
+        return HttpResponse(status=403)   # 401 Forbidden
+    form = SightingForm(initial={
+        'identification': sighting.identification,
+        'notes': sighting.notes,
+        'location': sighting.location.id, # Set foreign key of Location record
+        'location_notes': sighting.location_notes,
+    })
+    # TODO: restore any photos onto the page, but photos do not seem to
+    # be part of the form
+    return _sighting_form_page(request, form)
 
 
 @login_required

@@ -81,40 +81,41 @@ define([
         });
     });
 
-
-    $(window).load(function () {   // geocoder must be created at onload
-
-        var geocoder = new Geocoder();
+    function update_latitude_longitude(location, geocoder) {
+        // Geocode the location unless it already looks like a pair of
+        // coordinates.
         var lat_long_regex = new RegExp(
             '(^(-?(\\d{1,3}.?\\d{1,6}? ?[nNsS]?))([, ]+)' +
             '(-?(\\d{1,3}.?\\d{1,6}? ?[wWeE]?))$)');
-
-        // When the user enters a location, geocode it unless it already
-        // looks like a pair of coordinates.
-        $('#id_location').blur(function () {
-            var location = $(this).val();
-
-            var latitude, longitude = '';
-            if (lat_long_regex.test(location)) {
-                // TODO: handle more advanced lat/long formats (this
-                // currently only handles floats)
-                var coordinates = location.replace(' ', '').split(',');
-                latitude = coordinates[0];
-                longitude = coordinates[1];
+        var latitude, longitude = '';
+        if (lat_long_regex.test(location)) {
+            // TODO: handle more advanced lat/long formats (this
+            // currently only handles floats)
+            var coordinates = location.replace(' ', '').split(',');
+            latitude = coordinates[0];
+            longitude = coordinates[1];
+            $('#id_latitude').val(latitude);
+            $('#id_longitude').val(longitude);
+        }
+        else {
+            geocoder.geocode(location, function (results, status) {
+                var lat_lng = geocoder.handle_response(results, status);
+                latitude = lat_lng.lat();
+                longitude = lat_lng.lng();
                 $('#id_latitude').val(latitude);
                 $('#id_longitude').val(longitude);
-            }
-            else {
-                geocoder.geocode(location, function (results, status) {
-                    var lat_lng = geocoder.handle_response(results, status);
-                    latitude = lat_lng.lat();
-                    longitude = lat_lng.lng();
-                    $('#id_latitude').val(latitude);
-                    $('#id_longitude').val(longitude);
-                });
-            }
-        });
+            });
+        }
+    }
 
+    $(window).load(function () {   
+        var geocoder = new Geocoder(); // geocoder must be created at onload
+
+        // When the user enters a location, geocode it again if needed,
+        // and let the map update.
+        $('#id_location').blur(function () {
+            update_latitude_longitude($(this).val(), geocoder);
+        });
     });
 
 });
