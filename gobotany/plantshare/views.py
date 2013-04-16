@@ -135,8 +135,8 @@ def sightings_view(request):
                     'sightings': sightings
                }, context_instance=RequestContext(request))
     else:
-        # For an unsupported HTTP method, return a Bad Request response.
-        return HttpResponse(status=400)
+        # For an unsupported HTTP method, return Method Not Allowed.
+        return HttpResponse(status=405)
 
 def sightings_locator_view(request):
     return render_to_response('sightings_locator.html', {
@@ -170,8 +170,8 @@ def sighting_view(request, sighting_id):
         # Not Found due to the record being gone.
         return HttpResponse(status=200)
     else:
-        # For an unsupported HTTP method, return a Bad Request response.
-        return HttpResponse(status=400)
+        # For an unsupported HTTP method, return Method Not Allowed.
+        return HttpResponse(status=405)
 
 @login_required
 def new_sighting_view(request):
@@ -224,8 +224,8 @@ def delete_sighting_view(request, sighting_id):
                 'sighting': sighting
             }, context_instance=RequestContext(request))
     else:
-        # For an unsupported HTTP method, return a Bad Request response.
-        return HttpResponse(status=400)
+        # For an unsupported HTTP method, return Method Not Allowed.
+        return HttpResponse(status=405)
 
 def questions_view(request):
     """View for the main Ask the Botanist page and the questions collection:
@@ -252,8 +252,8 @@ def questions_view(request):
                     'questions': questions
             }, context_instance=RequestContext(request))
     else:
-        # For an unsupported HTTP method, return a Bad Request response.
-        return HttpResponse(status=400)
+        # For an unsupported HTTP method, return Method Not Allowed.
+        return HttpResponse(status=405)
 
 def all_questions_view(request):
     """View for the full list of Questions and Answers."""
