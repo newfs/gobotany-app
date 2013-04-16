@@ -987,6 +987,10 @@ body.plantshare {
             table#add-sightings-table {
                 width: 678px;
 
+                div.form-data {
+                    display: none;
+                }
+
                 th, td {
                     padding: 15px 10px 5px 0;
                 }

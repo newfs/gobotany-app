@@ -80,9 +80,12 @@
                 {{ entry_formset.management_form }}
                 {% for entry_form in entry_formset %}
                 {{ entry_form.non_field_errors }}
-                {{ entry_form.id }}
                 <tr>
                     <td class="name">
+                        <div class="form-data">
+                        {{ entry_form.id }}
+                        {{ entry_form.DELETE }}
+                        </div>
                         {{ entry_form.plant_name }}
                         {{ entry_form.plant_name.errors }}
                     </td><!-- /.name -->

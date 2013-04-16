@@ -10,7 +10,8 @@ define([
             'formSelector': '#formset tr',
             'formTemplateSelector': '#form-template tr',
             'addLinkSelector': '.add-new-row',
-            'removeLinkSelector': '.close-btn.row-btn'
+            'removeLinkSelector': '.close-btn.row-btn',
+            'canDelete': true
         });
 
     });

@@ -52,9 +52,9 @@ def _sighting_form_page(request, form, edit=False, sighting=None):
            }, context_instance=RequestContext(request))
 
 
-def _create_checklistentry_formset():
+def _create_checklistentry_formset(**kwargs):
     return modelformset_factory(ChecklistEntry, form=ChecklistEntryForm,
-                                extra=1)
+            extra=1, **kwargs)
 
 
 # Views
@@ -403,7 +403,7 @@ def new_checklist_view(request):
 @login_required
 def edit_checklist_view(request, checklist_id):
     """Edit a checklist"""
-    ChecklistEntryFormSet = _create_checklistentry_formset()
+    ChecklistEntryFormSet = _create_checklistentry_formset(can_delete=True)
     checklist = get_object_or_404(Checklist, pk=checklist_id)
     if request.method == 'POST':
         checklist_form = ChecklistForm(request.POST, instance=checklist)
