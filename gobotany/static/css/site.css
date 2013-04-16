@@ -1150,10 +1150,10 @@ body.plantshare #sightings-locator.mini .box form p#sightings-status { margin-le
 body.plantshare #sightings-locator.mini .box form p.full-link { margin-top: 10px; }
 body.plantshare #sightings-locator.mini .box .map { clear: none; border-bottom: 0; border-right: 0; border-top: 0; float: right; margin-top: 0; }
 body.plantshare#new-sighting h1 + div { background: #fff; border: 1px solid #c3d941; margin-bottom: 16px; padding: 5px 16px; }
-body.plantshare#new-sighting .thumb-gallery .thumb-frame { display: inline-block; margin: 0 5px; vertical-align: bottom; }
-body.plantshare#new-sighting .thumb-gallery .thumb-frame .thumb { vertical-align: bottom; }
-body.plantshare#new-sighting .thumb-gallery .thumb-frame .delete-link { width: 100%; text-align: center; margin: 2px 0; padding-top: 2px; }
-body.plantshare#new-sighting .thumb-gallery .thumb-frame .delete-link img { vertical-align: middle; margin-right: 4px; }
+body.plantshare#new-sighting .thumb-gallery .thumb-frame, body.plantshare#edit-sighting .thumb-gallery .thumb-frame { display: inline-block; margin: 0 5px; vertical-align: bottom; }
+body.plantshare#new-sighting .thumb-gallery .thumb-frame .thumb, body.plantshare#edit-sighting .thumb-gallery .thumb-frame .thumb { vertical-align: bottom; }
+body.plantshare#new-sighting .thumb-gallery .thumb-frame .delete-link, body.plantshare#edit-sighting .thumb-gallery .thumb-frame .delete-link { width: 100%; text-align: center; margin: 2px 0; padding-top: 2px; }
+body.plantshare#new-sighting .thumb-gallery .thumb-frame .delete-link img, body.plantshare#edit-sighting .thumb-gallery .thumb-frame .delete-link img { vertical-align: middle; margin-right: 4px; }
 body.plantshare#manage-sightings .content table { width: 100%; }
 body.plantshare#manage-sightings .content table th.identification { width: 40%; }
 body.plantshare#manage-sightings .content table th.location { width: 23%; }

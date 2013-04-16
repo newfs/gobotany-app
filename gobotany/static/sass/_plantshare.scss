@@ -293,7 +293,8 @@ body.plantshare {
             margin-bottom: $section-padding;
             padding: 5px $section-padding;
         }
-
+    }
+    &#new-sighting, &#edit-sighting {
         .thumb-gallery {
             .thumb-frame {
                 display: inline-block;

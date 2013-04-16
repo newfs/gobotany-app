@@ -110,10 +110,16 @@ define([
 
     $(window).load(function () {   
         var geocoder = new Geocoder(); // geocoder must be created at onload
+        var $location_box = $('#id_location');
+        
+        // Set the latitude and longitude for any initial location value.
+        if ($location_box.val() != '') {
+            update_latitude_longitude($location_box.val(), geocoder);
+        }
 
         // When the user enters a location, geocode it again if needed,
         // and let the map update.
-        $('#id_location').blur(function () {
+        $location_box.blur(function () {
             update_latitude_longitude($(this).val(), geocoder);
         });
     });

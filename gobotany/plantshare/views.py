@@ -27,15 +27,28 @@ SIGHTINGS_MAP_DEFAULTS = {
 }
 
 
-def _sighting_form_page(request, form):
+def _sighting_form_page(request, form, edit=False, sighting=None):
     """Return a sighting form, either blank or with data."""
+    template = 'new_sighting.html'
+    if edit == True:
+        template = 'edit_sighting.html'
+
     upload_photo_form = ScreenedImageForm(initial={
         'image_type': 'SIGHTING'
     })
+    created = None
+    if sighting:
+        created = sighting.created.strftime("%B %e, %Y")
+        # TODO: populate the photos with any existing photos.
+        upload_photo_form = ScreenedImageForm(initial={
+            'image_type': 'SIGHTING'
+        })
 
-    return render(request, 'new_sighting.html', {
+    return render(request, template, {
                'form': form,
                'upload_photo_form': upload_photo_form,
+               'sighting': sighting,
+               'created': created,
            }, context_instance=RequestContext(request))
 
 
@@ -154,7 +167,7 @@ def sighting_view(request, sighting_id):
         s = Sighting.objects.get(id=sighting_id)
     except ObjectDoesNotExist:
         return HttpResponse(status=404)
-    if request.method == 'GET':
+    if request.method == 'GET':   # Show a sighting
         sighting = {
             'id': s.id,
             'identification': s.identification,
@@ -168,6 +181,40 @@ def sighting_view(request, sighting_id):
         return render_to_response('sighting.html', {
                    'sighting': sighting,
                }, context_instance=RequestContext(request))
+    elif request.method == 'POST':   # Update an edited sighting
+        if not request.user.is_authenticated():
+            return HttpResponse(status=401)
+        # Ensure this sighting belongs to the user requesting to update it.
+        if s.user.id == request.user.id:
+            form = SightingForm(request.POST)
+            if form.is_valid():
+                location = Location(user_input=form.cleaned_data['location'],
+                                    latitude=form.cleaned_data['latitude'],
+                                    longitude=form.cleaned_data['longitude'])
+                location.save()
+                s.location = location
+                s.identification = form.cleaned_data['identification']
+                s.notes = form.cleaned_data['notes']
+                s.location_notes = form.cleaned_data['location_notes']
+                s.save()
+
+                photo_ids = request.POST.getlist('sightings_photos')
+                photos = ScreenedImage.objects.filter(id__in=photo_ids)
+                existing_photo_ids = [photo.id for photo in s.photos.all()]
+                for photo in photos.all():
+                    if photo.id not in existing_photo_ids:
+                        # This is a photo not included yet in the
+                        # sighting, so add it.
+                        s.photos.add(photo)
+                s.save()
+
+                done_url = (reverse('ps-new-sighting-done') + '?s=%d'
+                            % s.id)
+                return HttpResponseRedirect(done_url)
+            else:
+                # Present the sighting form again for input correction.
+                return _sighting_form_page(request, form, edit=True,
+                                           sighting=s)
     elif request.method == 'DELETE':
         if not request.user.is_authenticated():
             return HttpResponse(status=401)   # 401 Unauthorized
@@ -236,8 +283,8 @@ def edit_sighting_view(request, sighting_id):
         'location_notes': sighting.location_notes,
     })
     # TODO: restore any photos onto the page, but photos do not seem to
-    # be part of the form
-    return _sighting_form_page(request, form)
+    # be part of the form (actually, it's in the function below)
+    return _sighting_form_page(request, form, edit=True, sighting=sighting)
 
 
 @login_required

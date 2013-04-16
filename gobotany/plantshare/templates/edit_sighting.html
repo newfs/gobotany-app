@@ -1,0 +1,34 @@
+{% extends "gobotany/_page_free_sidebar.html" %}
+{% load plantshare_tags %}
+
+{% block title %}Edit Sighting: PlantShare{% endblock %}
+
+{% block js_require %}
+    require([
+        'util/location_field_init',
+        'plantshare/new_sighting',
+    ]);
+{% endblock %}
+
+{% block body_attributes %}id="edit-sighting"
+    class="plantshare sighting"{% endblock %}
+
+{% block main_content %}
+<h1>Edit Sighting</h1>
+
+<p>You posted this sighting on {{ created }},
+<b>{% user_first_name user %}</b>.</p>
+
+<div class="modal-container">
+  {% include "_image_upload_form.html" with image_form=upload_photo_form %}
+</div>
+
+<form method="post" action="{% url 'ps-sighting' sighting.id %}">
+    {% include "_sighting_form.html" %}
+</form>
+
+{% endblock %}
+
+{% block sidebar_content %}
+    {% include "_plantshare_navigation.html" %}
+{% endblock %}
