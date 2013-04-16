@@ -26,6 +26,7 @@ SIGHTINGS_MAP_DEFAULTS = {
     'center_title': 'Rumford, Maine'
 }
 
+
 def _new_sighting_form_page(request, form):
     """Give a new-sighting form, either blank or with as-yet-invalid data."""
     upload_photo_form = ScreenedImageForm(initial={
@@ -37,8 +38,10 @@ def _new_sighting_form_page(request, form):
                'upload_photo_form': upload_photo_form,
            }, context_instance=RequestContext(request))
 
+
 def _create_checklistentry_formset():
-    return modelformset_factory(ChecklistEntry, form=ChecklistEntryForm, extra=1)
+    return modelformset_factory(ChecklistEntry, form=ChecklistEntryForm,
+                                extra=1)
 
 
 # Views
@@ -48,6 +51,7 @@ def _get_recently_answered_questions(number_of_questions):
         answer__exact='').order_by(
         '-answered')[:number_of_questions]
     return questions
+
 
 def plantshare_view(request):
     """View for the main PlantShare page."""
@@ -75,6 +79,7 @@ def plantshare_view(request):
                'max_questions': MAX_RECENTLY_ANSWERED_QUESTIONS
            }, context_instance=RequestContext(request))
 
+
 def sightings_view(request):
     """View for the sightings collection: showing a list of recent sightings
     (GET) as well as handling adding a new sighting (the POST action from
@@ -99,12 +104,9 @@ def sightings_view(request):
                                     identification=identification, title='',
                                     notes=notes, location=location,
                                     location_notes=location_notes)
-
                 sighting.save()
 
-                #print 'saved:', sighting
                 photo_ids = request.POST.getlist('sightings_photos')
-                #print 'Got sightings photos: ', sighting_photos
                 photos = ScreenedImage.objects.filter(id__in=photo_ids)
                 sighting.photos.add(*photos)
                 sighting.save()
@@ -138,10 +140,12 @@ def sightings_view(request):
         # For an unsupported HTTP method, return Method Not Allowed.
         return HttpResponse(status=405)
 
+
 def sightings_locator_view(request):
     return render_to_response('sightings_locator.html', {
                 'map': SIGHTINGS_MAP_DEFAULTS
            }, context_instance=RequestContext(request))
+
 
 def sighting_view(request, sighting_id):
     """View for an individual sighting. Supported HTTP methods: GET (return
@@ -175,11 +179,13 @@ def sighting_view(request, sighting_id):
         # For an unsupported HTTP method, return Method Not Allowed.
         return HttpResponse(status=405)
 
+
 @login_required
 def new_sighting_view(request):
     """View for a blank form for posting a new sighting."""
     form = NewSightingForm()
     return _new_sighting_form_page(request, form)
+
 
 @login_required
 def new_sighting_done_view(request):
@@ -205,6 +211,7 @@ def manage_sightings_view(request):
             'sightings': sightings,
         }, context_instance=RequestContext(request))
 
+
 @login_required
 def delete_sighting_view(request, sighting_id):
     """View for deleting a sighting: the contents of a lightbox dialog,
@@ -228,6 +235,7 @@ def delete_sighting_view(request, sighting_id):
     else:
         # For an unsupported HTTP method, return Method Not Allowed.
         return HttpResponse(status=405)
+
 
 def questions_view(request):
     """View for the main Ask the Botanist page and the questions collection:
@@ -257,6 +265,7 @@ def questions_view(request):
         # For an unsupported HTTP method, return Method Not Allowed.
         return HttpResponse(status=405)
 
+
 def all_questions_view(request):
     """View for the full list of Questions and Answers."""
     questions = Question.objects.all().exclude(
@@ -273,6 +282,7 @@ def new_question_done_view(request):
     return render_to_response('new_question_done.html', {
            }, context_instance=RequestContext(request))
 
+
 @login_required
 def checklist_index_view(request):
     """List of all of a user's visible checklists"""
@@ -282,6 +292,7 @@ def checklist_index_view(request):
     return render_to_response('checklists.html', {
                 'checklists': all_checklists,
            }, context_instance=RequestContext(request))
+
 
 @login_required
 def new_checklist_view(request):
@@ -305,12 +316,14 @@ def new_checklist_view(request):
                 return redirect('ps-checklists')
     else:
         checklist_form = ChecklistForm()
-        entry_formset = ChecklistEntryFormSet(queryset=ChecklistEntry.objects.none())
+        entry_formset = ChecklistEntryFormSet(
+            queryset=ChecklistEntry.objects.none())
 
     return render_to_response('new_checklist.html', {
             'checklist_form': checklist_form,
             'entry_formset': entry_formset
            }, context_instance=RequestContext(request))
+
 
 @login_required
 def edit_checklist_view(request, checklist_id):
@@ -337,6 +350,7 @@ def edit_checklist_view(request, checklist_id):
             'entry_formset': entry_formset
            }, context_instance=RequestContext(request))
 
+
 @login_required
 def checklist_view(request, checklist_id):
     """Display the details of a checklist"""
@@ -344,6 +358,7 @@ def checklist_view(request, checklist_id):
     return render_to_response('checklist_detail.html', {
             'checklist': checklist
            }, context_instance=RequestContext(request))
+
 
 @login_required
 def profile_view(request):
@@ -365,6 +380,7 @@ def profile_view(request):
     return render_to_response('profile.html', context,
             context_instance=RequestContext(request))
 
+
 @login_required
 @user_passes_test(lambda u: u.is_staff, login_url=reverse_lazy('ps-main'))
 def screen_images(request):
@@ -373,10 +389,10 @@ def screen_images(request):
     def override_is_approved(field):
         if field.name == 'is_approved':
             return field.formfield(widget=widgets.RadioSelect(choices=[
-                (True, 'Yes'), 
+                (True, 'Yes'),
                 (False, 'No')]))
 
-    ScreeningFormSet = modelformset_factory(ScreenedImage, extra=0, 
+    ScreeningFormSet = modelformset_factory(ScreenedImage, extra=0,
             fields=('is_approved',), formfield_callback=override_is_approved)
 
     if request.method == 'POST':
@@ -421,7 +437,8 @@ def ajax_profile_edit(request):
         }), mimetype='application/json')
 
     if request.method == 'POST':
-        profile, created = UserProfile.objects.get_or_create(user=request.user)
+        profile, created = UserProfile.objects.get_or_create(
+            user=request.user)
         profile_form = UserProfileForm(request.POST, instance=profile)
         if profile_form.is_valid():
             profile = profile_form.save(commit=False)
@@ -432,10 +449,13 @@ def ajax_profile_edit(request):
         else:
             return HttpResponse(simplejson.dumps({
                 'error': True,
-                'info': 'Form Validation error:\n{0}'.format(profile_form.errors.as_text())
+                'info': 'Form Validation error:\n{0}'.format(
+                    profile_form.errors.as_text())
             }), mimetype='application/json')
 
-    return HttpResponse(simplejson.dumps({'success': True}), mimetype='application/json')
+    return HttpResponse(simplejson.dumps({'success': True}),
+                                         mimetype='application/json')
+
 
 def ajax_image_upload(request):
     """ Ajax form submission of image upload form """
@@ -486,8 +506,9 @@ def ajax_image_upload(request):
                 'url': new_image.image.url,
             })
 
+    return HttpResponse(simplejson.dumps(response),
+                        mimetype='application/json')
 
-    return HttpResponse(simplejson.dumps(response), mimetype='application/json')
 
 def ajax_image_reject(request, image_id):
     """ Reject an image that was previously uploaded. """
@@ -517,6 +538,7 @@ def ajax_image_reject(request, image_id):
     }
 
     return HttpResponse(simplejson.dumps(response), mimetype='application/json')
+
 
 def ajax_sightings(request):
     """Return sightings data for a plant."""
