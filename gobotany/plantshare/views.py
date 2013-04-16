@@ -165,6 +165,8 @@ def sighting_view(request, sighting_id):
                    'sighting': sighting,
                }, context_instance=RequestContext(request))
     elif request.method == 'DELETE':
+        if not request.user.is_authenticated():
+            return HttpResponse(status=401)   # 401 Unauthorized
         s.delete()
         # This response gets 200 OK, but subsequent responses will get 404
         # Not Found due to the record being gone.
