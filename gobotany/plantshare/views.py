@@ -171,10 +171,14 @@ def sighting_view(request, sighting_id):
     elif request.method == 'DELETE':
         if not request.user.is_authenticated():
             return HttpResponse(status=401)   # 401 Unauthorized
-        s.delete()
-        # This response gets 200 OK, but subsequent responses will get 404
-        # Not Found due to the record being gone.
-        return HttpResponse(status=200)
+        # Ensure this sighting belongs to the user requesting its deletion.
+        if s.user.id == request.user.id:
+            s.delete()
+            # This response gets 200 OK, but subsequent responses will get 404
+            # Not Found due to the record being gone.
+            return HttpResponse(status=200)
+        else:
+            return HttpResponse(status=403)   # 401 Forbidden
     else:
         # For an unsupported HTTP method, return Method Not Allowed.
         return HttpResponse(status=405)
