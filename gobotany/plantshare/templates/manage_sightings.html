@@ -47,7 +47,7 @@
             </thead>
             <tbody>
             {% for sighting in sightings %}
-                <tr>
+                <tr id="sighting-{{ sighting.id }}">
                     <td>{{ sighting.identification }}</td>
                     <td>{{ sighting.location }}</td>
                     <td>{{ sighting.created }}</td>

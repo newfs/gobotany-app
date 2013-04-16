@@ -1163,8 +1163,7 @@ body.plantshare#manage-sightings .content table td.action { text-align: center; 
 body.plantshare#delete-sighting { background: none; }
 body.plantshare#delete-sighting div { background: #fff; border: 5px solid #acac90; height: 100%; padding: 0 18px; text-align: center; }
 body.plantshare#delete-sighting h2 { font-size: 18px; text-align: left; }
-body.plantshare#delete-sighting table { width: 100%; }
-body.plantshare#delete-sighting table th { font-weight: normal; }
+body.plantshare#delete-sighting table { margin: 18px 0; width: 100%; }
 body.plantshare#delete-sighting .cancel-btn { background: url(/static/images/layout/plantshare2-btn.png) no-repeat -415px -297px; cursor: pointer; display: inline-block; height: 32px; margin: 0 10px 0 0; text-indent: -9999px; vertical-align: middle; width: 143px; }
 body.plantshare#delete-sighting .cancel-btn:hover { background-position: -415px -336px; }
 body.plantshare#locator #main h3 { font-family: Verdana, Geneva, "Lucida Sans Unicode", sans-serif; font-size: 12px; line-height: 24px; }
