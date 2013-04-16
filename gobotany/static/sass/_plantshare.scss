@@ -359,6 +359,9 @@ body.plantshare {
             margin: 18px 0;
             width: 100%;
         }
+        thead {
+            display: none;
+        }
         .cancel-btn {
             background: url(/static/images/layout/plantshare2-btn.png) no-repeat -415px -297px;
             cursor: pointer;
