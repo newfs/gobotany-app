@@ -41,7 +41,8 @@ def _images_with_copyright_holders(images):
             continue
         image.copyright_holder_name = copyright_holder.expanded_name
         image.copyright = copyright_holder.copyright
-        image.source = copyright_holder.source
+        image.source = copyright_holder.source.replace(
+            'http://', '').replace('University', 'U.')
 
     return images
 
