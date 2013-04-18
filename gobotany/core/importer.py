@@ -176,7 +176,7 @@ class Importer(object):
                 coded_name=row['coded_name'],
                 ).set(
                 expanded_name=row['expanded_name'],
-                copyright=row['copyright'],
+                copyright=row['copyright holder'],
                 source=row['image_source'],
                 )
 
