@@ -102,7 +102,8 @@ var PhotoHelper = {
             var $contact_link = $('.contact', title_element);
             $contact_link.tooltip({
                 content: contact_info,
-                css_class: 'gb-tooltip dark photo'
+                css_class: 'gb-tooltip dark photo',
+                vertical_adjust_px: 26,
             });
         }
     }
