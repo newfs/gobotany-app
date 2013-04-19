@@ -109,14 +109,16 @@ define([
                 do_fade = 'true';   // default for optional parameter
             }
 
-            var tooltip = '.' + this.options.css_class;
+            var css_selector = '.' +
+                this.options.css_class.split(' ').join('.');
+            var $tooltip = $(css_selector);
             if (do_fade) {
-                $(tooltip).fadeOut(this.options.fade_speed, function () {
-                    $(tooltip).remove();
+                $tooltip.fadeOut(this.options.fade_speed, function () {
+                    $tooltip.remove();
                 });
             }
             else {
-                $(tooltip).remove();
+                $tooltip.remove();
             }
         },
 

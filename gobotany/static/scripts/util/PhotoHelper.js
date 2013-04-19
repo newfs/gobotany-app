@@ -3,15 +3,16 @@
  */
 define([
     'bridge/jquery',
-    'util/shadowbox_init'
-], function($, shadowbox_init) {
+    'util/shadowbox_init',
+    'util/tooltip'
+], function($, shadowbox_init, tooltip) {
 
 var PhotoHelper = {
 
     init: function() {
     },
 
-    prepare_to_enlarge: function() {
+    prepare_to_enlarge: function () {
         // Do a few things before enlarging the photo on the screen.
         // Intended to be called using the Shadowbox onOpen handler.
 
@@ -28,7 +29,7 @@ var PhotoHelper = {
         shadowbox_on_open();
     },
 
-    process_credit: function() {
+    process_credit: function () {
         // Format the title text for a better presentation atop the photo.
         // Intended to be called using the Shadowbox onFinish handler.
 
@@ -49,17 +50,22 @@ var PhotoHelper = {
         if (parts[2] && $.trim(parts[2]).length > 0) {
             copyright = parts[2];
         }
+
+        var contact_info = '';
+        if (parts[3]) {
+            contact_info = parts[3];
+        }
         
         var source = '';
-        if (parts[3]) {
-            source = parts[3];
+        if (parts[4]) {
+            source = parts[4];
         }
 
         var title_parts = image_title.split(':');
         var image_type = title_parts[0];
         var title = image_type;
         var name = '';
-        // Get the properly-italicized scientific name from the page heading,
+        // Get the properly italicized scientific name from the page heading,
         // if available, such as on the species page. Otherwise, just
         // italicize the entire plant name portion of the title for now. This
         // will generally be correct for the groups and subgroups pages'
@@ -77,15 +83,28 @@ var PhotoHelper = {
 
         var html = '<div><h6>' + title + '</h6><span>' + copyright_holder +
             ' ' + copyright + ' <a href="/terms-of-use/#ip" ' +
-            '">Terms of Use' + '</a></span>';
+            '">Terms of Use' + '</a>';
+        if (contact_info !== '') {
+            html += ', <a class="contact">Contact</a>';
+        }            
+        html += '</span>';
         if (source !== '') {
-            html += '<br><span>' + parts[3] + '</span>';
+            html += '<br><span>' + source + '</span>';
         }
         html += '</div>';
         title_element.html(html);
 
         // Show the title element again.
         title_element.removeClass('hidden');
+
+        // Connect a tooltip for copyright holder contact information.
+        if (contact_info !== '') {
+            var $contact_link = $('.contact', title_element);
+            $contact_link.tooltip({
+                content: contact_info,
+                css_class: 'gb-tooltip dark photo'
+            });
+        }
     }
 
 };

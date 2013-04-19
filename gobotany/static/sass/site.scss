@@ -738,6 +738,25 @@ footer {
         @include single-box-shadow($tooltip-shadow-color, -1px, -1px, 1px);
         @include rotate($tooltip-arrow-rotation);
     }
+    &.dark {
+        $tooltip-dark-background-top-color: darken($tooltip-background-top-color, 60%);
+        $tooltip-dark-background-bottom-color: darken($tooltip-background-bottom-color, 60%);
+        $tooltip-dark-border-color: darken($tooltip-border-color, 60%);
+        border-color: $tooltip-dark-border-color;
+        @include background(linear-gradient(top center,
+            $tooltip-dark-background-top-color,
+            $tooltip-dark-background-bottom-color));
+        color: #fff;
+        .arrow {
+            background: $tooltip-dark-background-bottom-color;
+            border-color: $tooltip-dark-border-color;
+            border-bottom-color: $tooltip-dark-background-bottom-color;
+            border-right-color: $tooltip-dark-background-bottom-color;
+        }
+        &.photo {
+            font-family: $headings-font;
+        }
+    }
 }
 
 /* Glossary tooltip */

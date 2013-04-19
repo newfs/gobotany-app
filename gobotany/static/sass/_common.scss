@@ -161,8 +161,16 @@ $disabled_orange_gradient: linear-gradient(
             font-size: 10px;
         }
         a {
+            border-bottom: 1px solid #ccc;
             color: #fff;
-            text-decoration: underline;
+            &:hover {
+                text-decoration: none;
+            }
+            &.contact {
+                border-bottom: 1px dashed #ccc;
+                cursor: pointer;
+                text-decoration: none;
+            }
         }
     }
     #sb-nav-close {
