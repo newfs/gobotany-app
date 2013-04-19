@@ -29,7 +29,8 @@ define([
 
     $(document).ready(function() {
         Shadowbox.init({
-            onOpen: shadowbox_on_open
+            onOpen: shadowbox_on_open,
+            overlayOpacity: 0.8
         });
     });
 
