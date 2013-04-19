@@ -793,11 +793,14 @@ class CopyrightHolder(models.Model):
     expanded_name = models.CharField(max_length=100)
     copyright = models.CharField(max_length=300)
     source = models.CharField(max_length=300)
+    contact_info = models.CharField(max_length=300)
 
     def __unicode__(self):
         unicode_string = u'%s: %s. Copyright: %s.' % (self.coded_name,
                                                       self.expanded_name,
                                                       self.copyright)
+        if self.contact_info:
+            unicode_string += u' Contact Info: %s' % self.contact_info
         if self.source:
             unicode_string += u' Source: %s' % self.source
         return unicode_string

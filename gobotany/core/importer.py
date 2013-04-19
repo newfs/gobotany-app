@@ -178,6 +178,7 @@ class Importer(object):
                 expanded_name=row['expanded_name'],
                 copyright=row['copyright holder'],
                 source=row['image_source'],
+                contact_info=row['contact_information'],
                 )
 
         copyright_holder.save()
