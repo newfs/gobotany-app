@@ -129,7 +129,15 @@ def italicize_if_scientific(plant_name):
         is_scientific_name = False
 
     if is_scientific_name:
-        return '<i>' + plant_name + '</i>' # TODO: handle var., ssp. etc.
+        CONNECTING_TERMS = ['subsp.', 'ssp.', 'var.', 'subvar.', 'f.',
+                            'forma', 'subf.']
+        words = []
+        for word in plant_name.split(' '):
+            if word not in CONNECTING_TERMS:
+                words.append('<i>%s</i>' % word)
+            else:
+                words.append(word)
+        return ' '.join(words)
     else:
         return plant_name
 
