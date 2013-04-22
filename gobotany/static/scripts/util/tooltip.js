@@ -184,16 +184,24 @@ define([
                                 var offset = $(element).offset();
                                 self.show_tooltip(element, offset.left,
                                                   offset.top);
-
                                 // Stop events from propagating onward to the
                                 // document body. Otherwise the code that
                                 // dismisses the tooltip would always run, and
-                                // the tooltip would not show upon click
-                                // because it would immediately be hidden.
-                                //event.stopPropagation();
-                                // Ensure the tooltip can be dismissed on the
-                                // next touch following a touch with movement.
-                                //just_moved = false;
+                                // the tooltip would not show on click because
+                                // it would immediately be hidden.
+                                event.stopPropagation();
+                            }
+                        });
+                        $('body').bind({
+                            'click.Tooltip_dismiss': function (event) {
+                                var $target = $(event.target);
+                                var tooltip_selector = '.' +
+                                    self.options.css_class.split(
+                                        ' ').join('.');
+                                // Only hide if click was outside tooltip.
+                                if ($target.is(tooltip_selector) === false) {
+                                    self.hide_tooltip();
+                                }
                             }
                         });
                     }
