@@ -1,4 +1,5 @@
 {% extends "gobotany/_page_free_sidebar.html" %}
+{% load gobotany_tags %}
 {% load humanize %}
 {% load plantshare_tags %}
 
@@ -48,7 +49,7 @@
             <tbody>
             {% for sighting in sightings %}
                 <tr id="sighting-{{ sighting.id }}">
-                    <td>{{ sighting.identification }}</td>
+                    <td>{{ sighting.identification|italicize_if_scientific|safe }}</td>
                     <td>{{ sighting.location }}</td>
                     <td>{{ sighting.created }}</td>
                     <td class="action">
