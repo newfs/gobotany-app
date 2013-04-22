@@ -1,4 +1,5 @@
 {% extends "gobotany/_page_free_sidebar.html" %}
+{% load gobotany_tags %}
 {% load mapping_tags %}
 {% load plantshare_tags %}
 
@@ -17,7 +18,7 @@
     <ul>
         {% for sighting in sightings.list %}
             <li><a
-                href="{% url 'ps-sighting' sighting.id %}"><i>{{ sighting.identification }}</i>
+                href="{% url 'ps-sighting' sighting.id %}">{{ sighting.identification|italicize_if_scientific|safe }}
                 at {{ sighting.location|capfirst }}</a>
                 by {% unique_user_display_name sighting.user %}</li>
         {% endfor %}
