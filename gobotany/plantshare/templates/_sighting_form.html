@@ -36,7 +36,22 @@
         <div id="sighting-photos">
             <input type="hidden" name="__template__sightings_photos" class="template-photo"></input>
         </div>
-        <div class="thumb-gallery"><p>&nbsp;</p></div>
+        <div class="thumb-gallery">
+            {% if sighting.private_photos %}
+                {# When editing a sighting, photos may already be present. #}
+                {% for photo in sighting.private_photos.all %}
+                    <div class="thumb-frame">
+                        <a href="{{ photo.image.url }}"><img class="thumb"
+                            src="{{ photo.thumb.url }}"></a>
+                        <div class="delete-link">
+                            <a href="{{ photo.id }}"><img
+                                src="/static/images/icons/close.png"
+                                alt=""> Remove</a>
+                        </div>
+                    </div>
+                {% endfor %}
+            {% endif %}
+        </div>
 
         <input type="submit" class="post-sighting-btn"
             alt="Post a Sighting">{# add class 'inactive' for disabled look #}

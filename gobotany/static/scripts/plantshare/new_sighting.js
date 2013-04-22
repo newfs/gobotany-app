@@ -49,7 +49,7 @@ define([
 
         function startUpload() {
             // Add the spinner to the gallery
-            $('.thumb-gallery p').before('<div class="thumb-frame"><img class="thumb" src="' + 
+            $('.thumb-gallery').append('<div class="thumb-frame"><img class="thumb" src="' + 
                 UPLOAD_SPINNER + '"></div>');
         }
 

@@ -39,7 +39,6 @@ def _sighting_form_page(request, form, edit=False, sighting=None):
     created = None
     if sighting:
         created = sighting.created.strftime("%B %e, %Y")
-        # TODO: populate the photos with any existing photos.
         upload_photo_form = ScreenedImageForm(initial={
             'image_type': 'SIGHTING'
         })
@@ -282,8 +281,6 @@ def edit_sighting_view(request, sighting_id):
         'location': sighting.location.id, # Set foreign key of Location record
         'location_notes': sighting.location_notes,
     })
-    # TODO: restore any photos onto the page, but photos do not seem to
-    # be part of the form (actually, it's in the function below)
     return _sighting_form_page(request, form, edit=True, sighting=sighting)
 
 
