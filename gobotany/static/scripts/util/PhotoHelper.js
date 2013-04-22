@@ -82,10 +82,10 @@ var PhotoHelper = {
         }
 
         var html = '<div><h6>' + title + '</h6><span>' + copyright_holder +
-            ' ' + copyright + ' <a href="/terms-of-use/#ip" ' +
-            '">Terms of Use' + '</a>';
+            ' ' + copyright + ' Use: <a href="/terms-of-use/#ip" ' +
+            '">Terms' + '</a>';
         if (contact_info !== '') {
-            html += ', <a class="contact">Contact</a>';
+            html += ', <a class="contact">Permission</a>';
         }            
         html += '</span>';
         if (source !== '') {
