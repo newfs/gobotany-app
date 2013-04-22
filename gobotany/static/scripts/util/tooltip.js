@@ -15,6 +15,7 @@ define([
             arrow_css_class: 'arrow',
             arrow_edge_margin: 10,
             css_class: 'gb-tooltip',
+            cursor_activation: 'hover',  // 'click' also supported
             fade_speed: 'fast',
             horizontal_adjust_px: 20,
             hover_delay: 400,
@@ -148,29 +149,58 @@ define([
                     });
                 }
                 else {
-                    // For point-and-click interfaces, activate on hover.
-                    $(element).bind({
-                        'mouseenter.Tooltip': function () {
-                            var offset = $(element).offset();
-                            // Delay the hover a bit to avoid accidental
-                            // activation when moving the cursor quickly by.
-                            this.timeout_id = window.setTimeout(
-                                function (element) {
-                                    self.show_tooltip(element, offset.left, 
-                                                      offset.top);
-                                },
-                                self.options.hover_delay, element);
-                        },
-                        'mouseleave.Tooltip': function () {
-                            // Clear any timeout set for delaying the hover.
-                            if (typeof this.timeout_id === 'number') {  
-                                window.clearTimeout(this.timeout_id);  
-                                delete this.timeout_id;  
+                    // For point-and-click interfaces, activate on hover
+                    // or optionally on click.
+                    if (self.options.cursor_activation === 'hover') {
+                        $(element).bind({
+                            'mouseenter.Tooltip': function () {
+                                var offset = $(element).offset();
+                                // Delay the hover a bit to avoid accidental
+                                // activation when moving the cursor quickly
+                                // by.
+                                this.timeout_id = window.setTimeout(
+                                    function (element) {
+                                        self.show_tooltip(element,
+                                                          offset.left, 
+                                                          offset.top);
+                                    },
+                                    self.options.hover_delay, element);
+                            },
+                            'mouseleave.Tooltip': function () {
+                                // Clear any timeout set for delaying the
+                                // hover.
+                                if (typeof this.timeout_id === 'number') {  
+                                    window.clearTimeout(this.timeout_id);  
+                                    delete this.timeout_id;  
+                                }
+                                
+                                self.hide_tooltip();
                             }
-                            
-                            self.hide_tooltip();
-                        }
-                    });
+                        });
+                    }
+                    else if (self.options.cursor_activation === 'click') {
+                        $(element).bind({
+                            'click.Tooltip': function () {
+                                var offset = $(element).offset();
+                                self.show_tooltip(element, offset.left,
+                                                  offset.top);
+
+                                // Stop events from propagating onward to the
+                                // document body. Otherwise the code that
+                                // dismisses the tooltip would always run, and
+                                // the tooltip would not show upon click
+                                // because it would immediately be hidden.
+                                //event.stopPropagation();
+                                // Ensure the tooltip can be dismissed on the
+                                // next touch following a touch with movement.
+                                //just_moved = false;
+                            }
+                        });
+                    }
+                    else {
+                        console.error('Unknown cursor_activation option:',
+                                      self.options.cursor_activation);
+                    }
                 }
             });   // end loop through elements
 
