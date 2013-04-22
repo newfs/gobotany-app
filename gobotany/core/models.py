@@ -20,6 +20,19 @@ def add_suffix_to_base_directory(image, suffix):
     name = image.name.replace('/', '-' + suffix + '/', 1)
     return image.storage.url(name)
 
+
+class NameManager(models.Manager):
+    """Allow import by natural keys for partner sites"""
+    def get_by_natural_key(self, name):
+        return self.get(name=name)
+
+
+class ShortNameManager(models.Manager):
+    """Allow import by natural keys for partner sites"""
+    def get_by_natural_key(self, short_name):
+        return self.get(short_name=short_name)
+
+
 class Parameter(models.Model):
     """An admin-configurable value."""
     #
@@ -48,11 +61,16 @@ class CharacterGroup(models.Model):
     """
     name = models.CharField(max_length=100, unique=True)
 
+    objects = NameManager()
+
     class Meta:
         ordering = ['name']
 
     def __unicode__(self):
         return u'%s id=%s' % (self.name, self.id)
+
+    def natural_key(self):
+        return (self.name,)
 
 
 class GlossaryTerm(models.Model):
@@ -138,6 +156,8 @@ class Character(models.Model):
                               blank=True,
                               null=True)  # the famous "DLD"
 
+    objects = ShortNameManager()
+
     class Meta:
         ordering = ['short_name']
 
@@ -146,6 +166,9 @@ class Character(models.Model):
             return u'%s (%s)' % (self.name, self.short_name[-2:])
         else:
             return u'%s' % (self.name)
+
+    def natural_key(self):
+        return (self.short_name,)
 
 
 class CharacterValue(models.Model):
@@ -254,6 +277,8 @@ class PileInfo(models.Model):
     key_characteristics = tinymce_models.HTMLField(blank=True)
     notable_exceptions = tinymce_models.HTMLField(blank=True)
 
+    objects = NameManager()
+
     class Meta:
         abstract = True
         ordering = ['name']
@@ -272,6 +297,9 @@ class PileInfo(models.Model):
         if not self.slug:
             self.slug = slugify(self.name)
         super(PileInfo, self).save(*args, **kw)
+
+    def natural_key(self):
+        return (self.name,)
 
 
 class Pile(PileInfo):
@@ -338,8 +366,13 @@ class ImageType(models.Model):
     name = models.CharField(max_length=100,
                             verbose_name=u'image type', unique=True)
 
+    objects = NameManager()
+
     def __unicode__(self):
         return self.name
+
+    def natural_key(self):
+        return (self.name,)
 
 
 def _content_image_path(instance, filename):
@@ -440,6 +473,8 @@ class Family(models.Model):
     # We use 'example image' and 'example drawing' for the image types here
     images = generic.GenericRelation(ContentImage)
 
+    objects = NameManager()
+
     class Meta:
         verbose_name = 'family'
         verbose_name_plural = 'families'
@@ -452,6 +487,10 @@ class Family(models.Model):
     def slug(self):
         return self.name.lower()
 
+    def natural_key(self):
+        return (self.name,)
+
+
 class Genus(models.Model):
     """A biological genus."""
     name = models.CharField(max_length=100, unique=True)
@@ -460,6 +499,8 @@ class Genus(models.Model):
     family = models.ForeignKey(Family, related_name='genera')
     # We use 'example image' and 'example drawing' for the image types here
     images = generic.GenericRelation(ContentImage)
+
+    objects = NameManager()
 
     class Meta:
         verbose_name = 'genus'
@@ -472,6 +513,10 @@ class Genus(models.Model):
     @property
     def slug(self):
         return self.name.lower()
+
+    def natural_key(self):
+        return (self.name,)
+
 
 class Synonym(models.Model):
     """Other (generally previous) scientific names for species."""
@@ -523,6 +568,11 @@ class WetlandIndicator(models.Model):
         return '%s (%s)' % (self.code, self.name)
 
 
+class TaxonManager(models.Manager):
+    """Allow import by natural keys for partner sites"""
+    def get_by_natural_key(self, scientific_name):
+        return self.get(scientific_name=scientific_name)
+
 class Taxon(models.Model):
     """Despite its general name, this currently represents a single species."""
 
@@ -544,6 +594,8 @@ class Taxon(models.Model):
     description = models.CharField(max_length=500, blank=True)
     variety_notes = models.CharField(max_length=1000, blank=True)
     # TODO: import descriptions!
+
+    objects = TaxonManager()
 
     class Meta:
         verbose_name = 'taxon'
@@ -615,6 +667,9 @@ class Taxon(models.Model):
         for site in self.partners():
             users.extend(site.users.all())
         return users
+
+    def natural_key(self):
+        return (self.scientific_name,)
 
 
 class TaxonCharacterValue(models.Model):
@@ -720,20 +775,15 @@ class DefaultFilter(models.Model):
 
 # Call this PartnerSite instead of just Site in order to avoid confusion
 # with the Django "sites" framework.
-class PartnerSiteManager(models.Manager):
-    """Allow import by natural keys for partner sites"""
-    def get_by_natural_key(self, short_name):
-        return self.get(short_name=short_name)
-
 class PartnerSite(models.Model):
     """An indicator of to which site--the default main site, or one of the
        partner sites--the associated record pertains.
     """
-    objects = PartnerSiteManager()
-
     short_name = models.CharField(max_length=30)
     species = models.ManyToManyField(Taxon, through='PartnerSpecies')
     users = models.ManyToManyField(User)
+
+    objects = ShortNameManager()
 
     class Meta:
         ordering = ['short_name']
