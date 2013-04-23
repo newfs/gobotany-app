@@ -26,6 +26,7 @@ SIGHTINGS_MAP_DEFAULTS = {
     'center_title': 'Rumford, Maine'
 }
 
+SIGHTING_DATE_TIME_FORMAT = "%A, %e %B %Y"
 
 def _sighting_form_page(request, form, edit=False, sighting=None):
     """Return a sighting form, either blank or with data."""
@@ -38,7 +39,7 @@ def _sighting_form_page(request, form, edit=False, sighting=None):
     })
     created = None
     if sighting:
-        created = sighting.created.strftime("%B %e, %Y")
+        created = sighting.created.strftime(SIGHTING_DATE_TIME_FORMAT)
         upload_photo_form = ScreenedImageForm(initial={
             'image_type': 'SIGHTING'
         })
@@ -142,7 +143,8 @@ def sightings_view(request):
                 'identification': sighting.identification,
                 'location': sighting.location,
                 'user': sighting.user,
-                'created': sighting.created.strftime("%A, %B %e"),
+                'created': sighting.created.strftime(
+                           SIGHTING_DATE_TIME_FORMAT),
             })
 
         return render_to_response('sightings.html', {
@@ -256,7 +258,7 @@ def manage_sightings_view(request):
             'identification': sighting.identification,
             'location': sighting.location,
             'user': sighting.user,
-            'created': sighting.created.strftime("%A, %B %e, %Y"),
+            'created': sighting.created.strftime(SIGHTING_DATE_TIME_FORMAT),
         })
     return render_to_response('manage_sightings.html', {
             'sightings': sightings,
@@ -299,7 +301,7 @@ def delete_sighting_view(request, sighting_id):
             'location': s.location,
             'location_notes': s.location_notes,
             'user': s.user,
-            'created': s.created.strftime("%A, %B %e, %Y"),
+            'created': s.created.strftime(SIGHTING_DATE_TIME_FORMAT),
         }
         return render_to_response('_delete_sighting.html', {
                 'sighting': sighting
@@ -671,7 +673,8 @@ def ajax_sightings(request):
 
         sightings_json.append({
             'id': sighting.id,
-            'created': unicode(sighting.created.strftime("%A, %B %e, %Y")),
+            'created': unicode(sighting.created.strftime(
+                               SIGHTING_DATE_TIME_FORMAT)),
             'location': sighting.location.user_input,
             'latitude': sighting.location.latitude,
             'longitude': sighting.location.longitude,
