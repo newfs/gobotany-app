@@ -1162,14 +1162,17 @@ body.plantshare#new-sighting .thumb-gallery .thumb-frame, body.plantshare#edit-s
 body.plantshare#new-sighting .thumb-gallery .thumb-frame .thumb, body.plantshare#edit-sighting .thumb-gallery .thumb-frame .thumb { vertical-align: bottom; }
 body.plantshare#new-sighting .thumb-gallery .thumb-frame .delete-link, body.plantshare#edit-sighting .thumb-gallery .thumb-frame .delete-link { width: 100%; text-align: center; margin: 2px 0; padding-top: 2px; }
 body.plantshare#new-sighting .thumb-gallery .thumb-frame .delete-link img, body.plantshare#edit-sighting .thumb-gallery .thumb-frame .delete-link img { vertical-align: middle; margin-right: 4px; }
+body.plantshare#manage-sightings { /* Hide the regular Shadowbox close button for the Delete dialog, because the delete dialog will have its own interior close button as seen on various PlantShare dialogs. */ }
 body.plantshare#manage-sightings .content table { width: 100%; }
 body.plantshare#manage-sightings .content table th.identification { width: 40%; }
 body.plantshare#manage-sightings .content table th.location { width: 23%; }
 body.plantshare#manage-sightings .content table th.posted { width: 27%; }
 body.plantshare#manage-sightings .content table th.action { width: 5%; }
 body.plantshare#manage-sightings .content table td.action { text-align: center; }
+body.plantshare#manage-sightings #sb-nav-close { display: none; }
 body.plantshare#delete-sighting { background: none; }
 body.plantshare#delete-sighting div { background: #fff; border: 5px solid #acac90; height: 100%; padding: 0 18px; text-align: center; }
+body.plantshare#delete-sighting .close { background: transparent url(/static/images/icons/close.png) no-repeat; cursor: pointer; display: block; height: 16px; position: absolute; right: 15px; text-indent: -9999px; top: 15px; width: 16px; }
 body.plantshare#delete-sighting h2 { font-size: 18px; text-align: left; }
 body.plantshare#delete-sighting table { margin: 18px 0; width: 100%; }
 body.plantshare#delete-sighting thead { display: none; }
@@ -1199,7 +1202,7 @@ body.plantshare.sighting .modal-container .image-modal a.button { display: inlin
 body.plantshare.sighting .modal-container .image-modal a.disabled { display: none; }
 body.plantshare.sighting .modal-container .image-modal div.modal-footer { display: block; position: relative; float: left; width: 100%; color: #888; }
 body.plantshare.sighting .modal-container .image-modal div.modal-footer div.file-path { margin: 2px 0 auto; border: 1px solid #888888; padding: 2px; color: #888; }
-body.plantshare.sighting .modal-container .image-modal a.close { background: transparent url(/static/images/icons/close.png) no-repeat; display: block; height: 16px; position: absolute; top: 15px; right: 15px; width: 16px; text-indent: -9999px; }
+body.plantshare.sighting .modal-container .image-modal a.close { background: transparent url(/static/images/icons/close.png) no-repeat; cursor: pointer; display: block; height: 16px; position: absolute; right: 15px; text-indent: -9999px; top: 15px; width: 16px; }
 body.plantshare.sighting .modal-container .image-modal h4 { margin: 0 0 5px; font-size: 18px; }
 body.plantshare.sighting .modal-container .image-modal form { float: right; width: 290px; }
 body.plantshare.sighting .modal-container .image-modal input { border: 0 none !important; box-shadow: inset 0 0 0 white !important; }

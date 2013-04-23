@@ -342,6 +342,12 @@ body.plantshare {
                 text-align: center;
             }
         }
+        /* Hide the regular Shadowbox close button for the Delete
+         * dialog, because the delete dialog will have its own interior
+         * close button as seen on various PlantShare dialogs. */
+        #sb-nav-close {
+            display: none;
+        }
     }
 
     &#delete-sighting {
@@ -352,6 +358,9 @@ body.plantshare {
             height: 100%;
             padding: 0 18px;
             text-align: center;
+        }
+        .close {
+            @include dialog-close-button;
         }
         h2 {
             font-size: 18px;
@@ -520,14 +529,7 @@ body.plantshare {
                 }
 
                 a.close {
-                    background: transparent url(/static/images/icons/close.png) no-repeat;
-                    display: block;
-                    height: 16px;
-                    position: absolute;
-                    top: 15px;
-                    right: 15px;
-                    width: 16px;
-                    text-indent: -9999px;
+                    @include dialog-close-button;    
                 }
 
                 h4 {

@@ -4,9 +4,6 @@ define([
     'util/shadowbox_init'
 ], function ($, table_filter, Shadowbox) {
     $(document).ready(function () {
-        // Set up Delete links.
-        Shadowbox.setup('a.delete');
-
         // Set up table filtering.
         var options = {
             enableCookies: true,

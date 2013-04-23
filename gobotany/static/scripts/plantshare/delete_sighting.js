@@ -13,7 +13,6 @@ define([
         var sighting_id = url_parts[url_parts.length - 3];
         var url = url_parts.slice(0, url_parts.length - 2).join('/') + '/';
         var csrf_token = $.cookie('csrftoken');
-        
         $('.actions .delete').click(function () {
             $.ajax({
                 beforeSend: function(xhr) {
@@ -30,6 +29,11 @@ define([
                 }
             });
             return false;
+        });
+
+        // Set up Close button.
+        $('.close').click(function () {
+            window.parent.Shadowbox.close();
         });
     });
 });
