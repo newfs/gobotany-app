@@ -10,15 +10,14 @@ define([
             filterDelay: 400,
             filteredRows: function () {
                 // Update the message indicating how many sightings are shown.
-                var num_rows = $('.list tbody tr').length;
+                var ROWS_SELECTOR = '.list tbody tr';
+                var num_rows = $(ROWS_SELECTOR).length;
                 var num_hidden_rows = $(
-                    '.list tbody tr[style="display: none;"]').length;
+                    ROWS_SELECTOR + '[style="display: none;"]').length;
                 var num_showing = num_rows - num_hidden_rows;
-                var message = 'are all';
+                var message = '.';
                 if (num_showing < num_rows) {
-                    var verb = (num_showing === 1) ? 'is': 'are';
-                    var showing = (num_showing === 0) ? 'none': num_showing;
-                    message = verb + ' ' + showing + ' of the';
+                    message = ', filtered to ' + num_showing + '.';
                 }
                 $('.showing').html(message);
             }

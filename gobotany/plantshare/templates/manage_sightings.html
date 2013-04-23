@@ -18,12 +18,12 @@
     {% if sightings %}
         <p>{% user_first_name user %}, here
         {% if sightings|length > 1 %}
-            <span class="showing">are all</span>
+            are the
             {{ sightings|length|intcomma }} sightings
         {% else %}
             is the sighting
         {% endif %}
-        you've posted.</p>
+        you've posted<span class="showing">.</span></p>
 
         {% if sightings|length > 1 %}
             <p>To filter the list, type in the box under a column name.</p>
