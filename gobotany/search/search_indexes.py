@@ -5,7 +5,6 @@ from haystack import site
 
 import gobotany.core.models as core_models
 import gobotany.dkey.models as dkey_models
-import gobotany.plantshare.models as plantshare_models
 import gobotany.search.models as search_models
 
 class CharacterCharField(indexes.CharField):
@@ -268,42 +267,6 @@ class DichotomousKeyPageIndex(BaseIndex):
         return data
 
 
-# PlantShare pages
-
-class SightingPageIndex(BaseRealTimeIndex):
-    # Index
-
-    text = indexes.CharField(
-        document=True, use_template=True,
-        template_name='sighting_page_text_searchindex.txt')
-
-    # Display
-
-    title = indexes.CharField(use_template=True,
-        template_name='sighting_page_title_searchindex.txt')
-
-    # Customization
-    # TODO: Index only publicly shared, non-rare-plant sightings
-
-
-class QuestionIndex(BaseRealTimeIndex):
-    # Index
-
-    text = indexes.CharField(
-        document=True, use_template=True,
-        template_name='question_text_searchindex.txt')
-
-    # Display
-
-    title = indexes.CharField(use_template=True,
-        template_name='question_title_searchindex.txt')
-
-    # Customization
-
-    def index_queryset(self):
-        return plantshare_models.Question.objects.answered()
-
-
 # Register indexes for all desired page/model types.
 
 site.register(core_models.Taxon, TaxonIndex)
@@ -319,6 +282,44 @@ site.register(search_models.SubgroupResultsPage, SubgroupResultsPageIndex)
 site.register(dkey_models.Page, DichotomousKeyPageIndex)
 
 # Exclude PlantShare results in production until release.
-if settings.DEV_FEATURES == True:   # TODO: remove this line before release
+if ('gobotany.plantshare' in settings.INSTALLED_APPS and
+    settings.DEV_FEATURES == True):   # TODO: remove this line before release
+    import gobotany.plantshare.models as plantshare_models
+
+    # PlantShare pages
+    class SightingPageIndex(BaseRealTimeIndex):
+        # Index
+
+        text = indexes.CharField(
+            document=True, use_template=True,
+            template_name='sighting_page_text_searchindex.txt')
+
+        # Display
+
+        title = indexes.CharField(use_template=True,
+            template_name='sighting_page_title_searchindex.txt')
+
+        # Customization
+        # TODO: Index only publicly shared, non-rare-plant sightings
+
+
+    class QuestionIndex(BaseRealTimeIndex):
+        # Index
+
+        text = indexes.CharField(
+            document=True, use_template=True,
+            template_name='question_text_searchindex.txt')
+
+        # Display
+
+        title = indexes.CharField(use_template=True,
+            template_name='question_title_searchindex.txt')
+
+        # Customization
+
+        def index_queryset(self):
+            return plantshare_models.Question.objects.answered()
+
+
     site.register(plantshare_models.Sighting, SightingPageIndex)
     site.register(plantshare_models.Question, QuestionIndex)
