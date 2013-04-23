@@ -38,7 +38,8 @@
                         {{ empty_form.date_posted }}
                     </td><!-- /.date-posted -->
                     <td class="note">
-                        <a href="javascript:alert('Coming soon!');" rel="shadowbox;width=550;height=240">Add<br>Note</a>
+                        <div class="note-field">{{ empty_form.note }}</div>
+                        <a href="#" class="note-link">Note</a>
                         <a href="#" class="close-btn row-btn">Close</a>
                     </td><!-- /.note -->
                 </tr>
@@ -105,7 +106,8 @@
                         {{ entry_form.date_posted.errors }}
                     </td><!-- /.date-posted -->
                     <td class="note">
-                        <a href="javascript:alert('Coming soon!');" rel="shadowbox;width=550;height=240">Add<br>Note</a>
+                        <div class="note-field">{{ entry_form.note }}</div>
+                        <a href="#" class="note-link">Note</a>
                         <a href="#" class="close-btn row-btn">Close</a>
                     </td><!-- /.note -->
                 </tr>
