@@ -881,6 +881,39 @@ body.plantshare {
     }
 
     &#checklists {
+        div.notes-modal {
+            background-color: #fff;
+            overflow: hidden; 
+            margin: 0;
+            padding: 15px 20px 0;
+            max-height: 240px;
+        }
+        div.notes-modal {
+            section {
+                padding: 10px 0 0;
+            }
+
+            textarea {
+                border: 1px solid #ABABAB;
+                box-shadow: inset 1px 1px 5px #ccc;
+                -moz-box-shadow: inset 1px 1px 5px #ccc;
+                -webkit-box-shadow: inset 1px 1px 5px #ccc;
+                font-size: inherit;
+                height: 80px;
+                line-height: inherit;
+                max-width: 90%;
+                padding: 7px 5px 5px;
+                width: 100%
+            }
+
+            div.form-actions {
+                padding: 10px 0;
+
+                a.clear-btn {
+                    margin: 0 0 0 10px;
+                }
+            }
+        }
         div.ps-section {
             margin: 20px 0;
             padding: 10px 0;
@@ -926,6 +959,9 @@ body.plantshare {
             .note {
                 width: 60px;
                 padding-right: 7px;
+                .note-field {
+                    display: none;
+                }
                 a {
                     margin: 0;
                 }
@@ -1048,6 +1084,9 @@ body.plantshare {
                 .note {
                     padding-right: 0;
                     width: 60px;
+                    .note-field {
+                        display: none;
+                    }
                     a {
                         display: inline-block;
                     }
