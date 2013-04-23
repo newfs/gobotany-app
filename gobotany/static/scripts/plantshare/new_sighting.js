@@ -122,6 +122,21 @@ define([
         $location_box.blur(function () {
             update_latitude_longitude($(this).val(), geocoder);
         });
+        $location_box.on('keypress keyup', function (event) {
+            if (event.which === 13) {   // Enter key
+                // If the location field is not empty, prevent the form
+                // auto-submit so the user can see the map location update.
+                // The location field, with its associated map, is similar to
+                // textarea in the sense that Enter is used to accomplish
+                // something within it.
+                var value = $(this).val();
+                if (value !== '') {
+                    event.preventDefault();
+                    update_latitude_longitude(value, geocoder);
+                    return false;
+                }
+            }
+        });
     });
 
 });

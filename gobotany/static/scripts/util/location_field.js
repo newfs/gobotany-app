@@ -19,10 +19,16 @@ define([
 
     LocationField.prototype.setup = function () {
         // If there is a map for this location input field, update the map
-        // once now and also any time when focus shifts away from the field.
+        // once now. Also update it whenever focus shifts away from the field
+        // or when user presses Enter within it.
         if (this.$location_map !== undefined) {
             this.update_map();
             this.$input_box.blur($.proxy(this.update_map, this));
+            this.$input_box.on('keypress keyup', $.proxy(function () {
+                if (event.which === 13) {   // Enter key
+                    this.update_map();
+                }
+            }, this));
         }
     };
 
