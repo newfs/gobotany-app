@@ -2,21 +2,20 @@
 
 {% block title %}Sighting Posted: PlantShare{% endblock %}
 
-{% block body_attributes %}id="new-sighting-done"
+{% block body_attributes %}id="edit-sighting-done"
     class="plantshare"{% endblock %}
 
 {% block main_content %}
-<h1>Sighting Posted</h1>
+<h1>Sighting Updated</h1>
 
-<p>Thank you for posting your sighting.</p>
+<p>Your sighting has been updated.</p>
 
 {% url 'ps-sighting' request.GET.s as sighting_url %}
 <p>You can <a href="{{ sighting_url }}">review your sighting</a>
-or <a href="{% url 'ps-new-sighting' %}">post another sighting</a>.</p>
+or <a href="{% url 'ps-manage-sightings' %}">edit another sighting</a>.</p>
 
 {% endblock %}
 
 {% block sidebar_content %}
     {% include "_plantshare_navigation.html" %}
 {% endblock %}
-

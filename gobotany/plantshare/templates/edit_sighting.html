@@ -24,7 +24,7 @@
 </div>
 
 <form method="post" action="{% url 'ps-sighting' sighting.id %}">
-    {% include "_sighting_form.html" %}
+    {% include "_sighting_form.html" with edit=True %}
 </form>
 
 {% endblock %}

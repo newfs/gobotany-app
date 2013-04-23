@@ -209,7 +209,7 @@ def sighting_view(request, sighting_id):
                         s.photos.add(photo)
                 s.save()
 
-                done_url = (reverse('ps-new-sighting-done') + '?s=%d'
+                done_url = (reverse('ps-edit-sighting-done') + '?s=%d'
                             % s.id)
                 return HttpResponseRedirect(done_url)
             else:
@@ -284,6 +284,13 @@ def edit_sighting_view(request, sighting_id):
         'location_notes': sighting.location_notes,
     })
     return _sighting_form_page(request, form, edit=True, sighting=sighting)
+
+
+@login_required
+def edit_sighting_done_view(request):
+    """View for a confirmation page upon editing a sighting."""
+    return render_to_response('edit_sighting_done.html', {
+           }, context_instance=RequestContext(request))
 
 
 @login_required

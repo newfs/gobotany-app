@@ -13,23 +13,29 @@ urlpatterns = patterns(
     # Normal registration login
     url(r'^accounts/', include('gobotany.plantshare.backends.default.urls')),
 
-    # Sightings
-    url(r'^sightings/$', views.sightings_view, name='ps-sightings'),
+    # Post a (new) Sighting form
+    url(r'^sightings/new/$', views.new_sighting_view, name='ps-new-sighting'),
+    url(r'^sightings/new/done/$', views.new_sighting_done_view,
+        name='ps-new-sighting-done'),
+
+    # Sightings Locator
     url(r'^sightings/locator/$', views.sightings_locator_view,
         name='ps-sightings-locator'),
+
+    # Manage Your Sightings
     url(r'^sightings/manage/$', views.manage_sightings_view,
         name='ps-manage-sightings'),
     url(r'^sightings/(?P<sighting_id>[0-9]+)/edit/$',
         views.edit_sighting_view, name='ps-edit-sighting'),
+    url(r'^sightings/edit/done/$', views.edit_sighting_done_view,
+        name='ps-edit-sighting-done'),
     url(r'^sightings/(?P<sighting_id>[0-9]+)/delete/$',
         views.delete_sighting_view, name='ps-delete-sighting'),
     url(r'^sightings/(?P<sighting_id>[0-9]+)/$', views.sighting_view,
         name='ps-sighting'),
 
-    # Post a (new) Sighting form
-    url(r'^sightings/new/$', views.new_sighting_view, name='ps-new-sighting'),
-    url(r'^sightings/new/done/$', views.new_sighting_done_view,
-        name='ps-new-sighting-done'),
+    # Recent Sightings
+    url(r'^sightings/$', views.sightings_view, name='ps-sightings'),
 
     # Ask the Botanist
     url(r'^questions/$', views.questions_view, name='ps-questions'),
@@ -46,7 +52,7 @@ urlpatterns = patterns(
     url(r'^checklists/(?P<checklist_id>[0-9]+)/edit$', views.edit_checklist_view,
         name='ps-checklist-edit'),
 
-    # My Profile page
+    # Your Profile page
     url(r'^profile/$', views.profile_view, name='ps-profile'),
 
     # Staff-Only area urls
