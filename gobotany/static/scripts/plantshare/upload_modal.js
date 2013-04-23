@@ -19,7 +19,7 @@ define([
             mask: {
                 color: 'black',
                 loadSpeed: 200,
-                opacity: 0.5
+                opacity: 0.8
             },
             closeOnClick: false
         });
