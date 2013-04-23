@@ -277,8 +277,6 @@ class PileInfo(models.Model):
     key_characteristics = tinymce_models.HTMLField(blank=True)
     notable_exceptions = tinymce_models.HTMLField(blank=True)
 
-    objects = NameManager()
-
     class Meta:
         abstract = True
         ordering = ['name']
@@ -297,9 +295,6 @@ class PileInfo(models.Model):
         if not self.slug:
             self.slug = slugify(self.name)
         super(PileInfo, self).save(*args, **kw)
-
-    def natural_key(self):
-        return (self.name,)
 
 
 class Pile(PileInfo):
@@ -335,6 +330,10 @@ class PileGroup(PileInfo):
         'ContentImage', related_name='sample_for_pilegroups',
         through='PileGroupImage')
 
+    objects = NameManager()
+
+    def natural_key(self):
+        return (self.name,)
 
 class PileGroupImage(models.Model):
     """Intermediary model used to govern the many-to-many relationship
