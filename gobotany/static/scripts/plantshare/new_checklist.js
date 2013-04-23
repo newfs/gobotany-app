@@ -54,6 +54,7 @@ define([
             Shadowbox.close();
         });
         $(document).on('click', '.notes-modal a.clear-btn', function(e) {
+            e.preventDefault();
             $(this).parents('section').find('textarea').val('');
         });
 
