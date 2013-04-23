@@ -16,8 +16,9 @@ define([
                 var num_showing = num_rows - num_hidden_rows;
                 var message = 'are all';
                 if (num_showing < num_rows) {
-                    var verb = (num_showing > 1) ? 'are': 'is';
-                    message = verb + ' ' + num_showing + ' of the';
+                    var verb = (num_showing === 1) ? 'is': 'are';
+                    var showing = (num_showing === 0) ? 'none': num_showing;
+                    message = verb + ' ' + showing + ' of the';
                 }
                 $('.showing').html(message);
             }
