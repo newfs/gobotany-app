@@ -29,9 +29,11 @@ body.plantshare {
             }
             input {
                 font-family: $body-font;
-                height: 16px;
                 margin-bottom: 10px;
                 @include form-field-base;
+                &[type=text], &[type=password] {
+                    height: 16px;
+                }
             }
             textarea {
                 font-family: $body-font;
@@ -120,6 +122,16 @@ body.plantshare {
         margin: 10px 0;
         text-transform: uppercase;
 
+    }
+    .save-btn {
+        background: transparent url(/static/images/layout/plantshare-btns.png) no-repeat -272px -231px;
+        width: 99px !important;
+        height: 32px;
+        font-size: 0;
+        -moz-box-shadow: 0 !important;
+        border: 0 none !important;
+        display: block;
+        text-indent: -9999px;
     }
     a.close-btn {
         background: transparent url(/static/images/icons/close.png) no-repeat;
@@ -473,16 +485,6 @@ body.plantshare {
         .modal-container {
             position: relative;
 
-            .save-btn {
-                background: transparent url(/static/images/layout/plantshare-btns.png) no-repeat -272px -231px;
-                width: 99px !important;
-                height: 32px;
-                font-size: 0;
-                -moz-box-shadow: 0 !important;
-                border: 0 none !important;
-                display: block;
-                text-indent: -9999px;
-            }
             .image-modal {
                 background-color: white;
                 border: 5px solid #ACAC90;
@@ -643,16 +645,6 @@ body.plantshare {
         div.section-container {
             position: relative;
 
-            .save-btn {
-                background: transparent url(/static/images/layout/plantshare-btns.png) no-repeat -272px -231px;
-                width: 99px !important;
-                height: 32px;
-                font-size: 0;
-                -moz-box-shadow: 0 !important;
-                border: 0 none !important;
-                display: block;
-                text-indent: -9999px;
-            }
             .image-modal {
                 background-color: white;
                 border: 5px solid #ACAC90;
@@ -1129,16 +1121,6 @@ body.plantshare {
 
         div.form-control {
             margin: 0 30px;
-        }
-        .save-btn {
-            background: transparent url(/static/images/layout/plantshare-btns.png) no-repeat -272px -231px;
-            width: 99px !important;
-            height: 32px;
-            font-size: 0;
-            -moz-box-shadow: 0 !important;
-            border: 0 none !important;
-            display: block;
-            text-indent: -9999px;
         }
     }
 }
