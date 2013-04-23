@@ -1132,6 +1132,11 @@ body.plantshare .profile img { display: block; float: left; max-height: 84px; ma
 body.plantshare .profile table { clear: left; }
 body.plantshare#plantshare { /* styles for the PlantShare main page */ }
 body.plantshare#plantshare #ask { margin-top: 20px; }
+body.plantshare#plantshare #find-people { float: right; width: 184px; }
+body.plantshare#plantshare #find-people h2 { font-size: 18px; }
+body.plantshare#plantshare #find-people input[type='text'] { background: transparent url(/static/images/layout/plantshare-btns.png) no-repeat -246px -4px; border: 0 none; display: block; float: left; font-size: 11px; height: 22px; padding: 0 2px 0 12px; width: 131px; }
+body.plantshare#plantshare #find-people input[type='button'] { background: transparent url(../images/layout/plantshare-btns.png) no-repeat -391px -4px; border: 0 none; display: block; float: left; height: 22px; padding: 0 5px; text-indent: -9999px; width: 39px; }
+body.plantshare#plantshare #find-people input:focus { outline: 0 none; }
 body.plantshare#sign-up #main form input { width: 350px; }
 body.plantshare#sign-up #main form input.button { background: transparent url(../images/layout/plantshare-btns.png) no-repeat -1px -359px; border: 0; height: 41px; margin-top: 12px; width: 244px; display: block; text-indent: -9000px; }
 body.plantshare#sign-up #main form input.button:hover { background-position: -1px -402px; }

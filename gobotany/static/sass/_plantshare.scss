@@ -140,6 +140,7 @@ body.plantshare {
         width: 16px;
         text-indent: -9999px;
     }
+
     .profile {
         width: 471px;
         h2 {
@@ -173,6 +174,40 @@ body.plantshare {
         #ask {
             margin-top: 20px;
         }
+
+        #find-people {
+            float: right;
+            width: 184px;
+            h2 {
+                font-size: 18px;
+            }
+            input {
+                &[type='text'] {
+                    background: transparent url(/static/images/layout/plantshare-btns.png) no-repeat -246px -4px;
+                    border: 0 none;
+                    display: block;
+                    float: left;
+                    font-size: $mini-input-font-size;
+                    height: 22px;
+                    padding: 0 2px 0 12px;
+                    width: 131px;
+                }
+                &[type='button'] {
+                    background: transparent url(../images/layout/plantshare-btns.png) no-repeat -391px -4px;
+                    border: 0 none;
+                    display: block;
+                    float: left;
+                    height: 22px;
+                    padding: 0 5px;
+                    text-indent: -9999px;
+                    width: 39px;
+                }
+                &:focus {
+                   outline: 0 none;
+                }
+            }
+        }
+
     }
 
     &#sign-up #main {
