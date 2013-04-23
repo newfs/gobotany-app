@@ -20,7 +20,7 @@ define([
             horizontal_adjust_px: 20,
             hover_delay: 400,
             small_screen_max_width: 600,
-            vertical_adjust_px: 24,
+            vertical_adjust_px: 26,
             width: null   // use width defined in CSS by default
         },
 
