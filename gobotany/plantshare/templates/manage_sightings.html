@@ -16,7 +16,7 @@
     <h1>Manage Your Sightings</h1>
 
     {% if sightings %}
-        <p><b>{% user_first_name user %}</b>, here
+        <p>{% user_first_name user %}, here
         {% if sightings|length > 1 %}
             are the {{ sightings|length|intcomma }} sightings
         {% else %}

@@ -17,7 +17,7 @@
 <h1>Edit Sighting</h1>
 
 <p>You posted this sighting on {{ created }},
-<b>{% user_first_name user %}</b>.</p>
+{% user_first_name user %}.</p>
 
 <div class="modal-container">
   {% include "_image_upload_form.html" with image_form=upload_photo_form %}
