@@ -10,7 +10,7 @@ define([
 		'<section>' +
             '<textarea placeholder="Write your notes here"></textarea>' +
             '<div class="form-actions">' +
-                '<a href="#" class="ps-button save-btn">Save</a>' +
+                '<a href="#" class="ps-button save">Save</a>' +
                 '<a href="#" class="clear-btn">Clear</a>' +
             '</div><!-- /.form-actions -->' +
 		'</section>' +
@@ -46,7 +46,8 @@ define([
                 }
             });
         });
-        $(document).on('click', '.notes-modal a.save-btn', function(e) {
+        $(document).on('click', '.notes-modal a.save', function(e) {
+            e.preventDefault();
             var $textarea = $(this).parents('section').find('textarea');
             var $field = $('#' + $textarea.attr('rel'));
             $field.val($textarea.val());
