@@ -14,7 +14,7 @@
 
 {% location_map location=sighting.location height_px="150" width_px="302" zoom="7" id="id_location_map" %}
 
-<p>Posted {{ sighting.created }} by {% user_display_name user %}</p>
+<p>Posted {{ sighting.created }} by {% user_display_name sighting.user %}</p>
 
 {% if sighting.notes %}
     <p>Description or comments: {{ sighting.notes }}</p>
