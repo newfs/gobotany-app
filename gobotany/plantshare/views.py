@@ -384,13 +384,13 @@ def new_checklist_view(request):
         profile = request.user.userprofile
         user_pod = profile.get_user_pod()
         checklist_form = ChecklistForm(request.POST)
+        entry_formset = ChecklistEntryFormSet(request.POST)
         if checklist_form.is_valid():
             checklist = checklist_form.save()
             # Set the current user's personal pod as the owner
             owner = ChecklistCollaborator(collaborator=user_pod,
                    checklist=checklist, is_owner=True)
             owner.save()
-            entry_formset = ChecklistEntryFormSet(request.POST)
             if entry_formset.is_valid():
                 for entry in entry_formset.save(commit=False):
                     entry.checklist = checklist
