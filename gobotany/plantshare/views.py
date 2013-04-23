@@ -442,6 +442,13 @@ def checklist_view(request, checklist_id):
 
 
 @login_required
+def find_people_view(request):
+    """View for the Find People page."""
+    return render_to_response('find_people.html', {
+        }, context_instance=RequestContext(request))
+
+
+@login_required
 def profile_view(request):
     """View for the logged-in user's profile."""
     try:

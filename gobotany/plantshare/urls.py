@@ -52,6 +52,9 @@ urlpatterns = patterns(
     url(r'^checklists/(?P<checklist_id>[0-9]+)/edit$', views.edit_checklist_view,
         name='ps-checklist-edit'),
 
+    # Find People
+    url(r'^people/$', views.find_people_view, name='ps-find-people'),
+
     # Your Profile page
     url(r'^profile/$', views.profile_view, name='ps-profile'),
 

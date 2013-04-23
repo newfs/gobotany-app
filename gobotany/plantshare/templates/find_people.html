@@ -1,0 +1,19 @@
+{% extends "gobotany/_page_free_sidebar.html" %}
+
+{% block title %}Find People: PlantShare{% endblock %}
+
+{% block body_attributes %}id="find-people"
+    class="plantshare"{% endblock %}
+
+{% block js_require %}
+    //require(['plantshare/find_people']);
+{% endblock %}
+
+{% block main_content %}
+    <h1>Find People</h1>
+
+{% endblock %}
+
+{% block sidebar_content %}
+    {% include "_plantshare_navigation.html" %}
+{% endblock %}
