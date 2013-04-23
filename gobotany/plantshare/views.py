@@ -5,6 +5,7 @@ from django.contrib.auth.decorators import login_required, user_passes_test
 from django.core.exceptions import ObjectDoesNotExist
 from django.core.urlresolvers import reverse, reverse_lazy
 from django.conf import settings
+from django.db.models import Q
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import (render, render_to_response, redirect,
         get_object_or_404)
@@ -444,7 +445,15 @@ def checklist_view(request, checklist_id):
 @login_required
 def find_people_view(request):
     """View for the Find People page."""
+    name = request.GET.get('n')
+    people = UserProfile.objects.filter(
+        Q(display_name__istartswith=name) |
+        Q(user__username__istartswith=name))
+    # TODO: in addition to 'starts with', will want to return results
+    # that match the beginning of people's last names.
     return render_to_response('find_people.html', {
+            'name': name,
+            'people': people,
         }, context_instance=RequestContext(request))
 
 

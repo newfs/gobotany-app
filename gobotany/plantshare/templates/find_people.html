@@ -1,4 +1,5 @@
 {% extends "gobotany/_page_free_sidebar.html" %}
+{% load plantshare_tags %}
 
 {% block title %}Find People: PlantShare{% endblock %}
 
@@ -12,6 +13,11 @@
 {% block main_content %}
     <h1>Find People</h1>
 
+    <p>Name: {{ name }}</p>
+
+    {% for person in people %}
+        <p>Person: {% user_display_name person.user %}</p>
+    {% endfor %}
 {% endblock %}
 
 {% block sidebar_content %}
