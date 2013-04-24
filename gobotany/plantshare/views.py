@@ -445,9 +445,10 @@ def checklist_view(request, checklist_id):
 @login_required
 def find_people_view(request):
     """View for the Find People results page."""
+    MIN_QUERY_LENGTH = 2
     query = request.GET.get('n', '').lower()
     people = []
-    if query:
+    if len(query) >= MIN_QUERY_LENGTH:
         candidates = UserProfile.objects.filter(
             Q(display_name__icontains=query) |
             Q(user__username__istartswith=query))
@@ -471,6 +472,7 @@ def find_people_view(request):
                 people.append(candidate)
 
     return render_to_response('find_people.html', {
+            'min_query_length': MIN_QUERY_LENGTH,
             'name_query': query,
             'people': people,
         }, context_instance=RequestContext(request))

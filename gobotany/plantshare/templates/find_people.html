@@ -47,6 +47,9 @@
     {% else %}
         {% if name_query %}
             <p>No matches found.</p>
+            {% if name_query|length < min_query_length %}
+                <p>Please try a longer search word.</p>
+            {% endif %}
         {% else %}
             <p>Search for friends and colleagues who use PlantShare.</p>
         {% endif %}
