@@ -15,7 +15,7 @@
 
     <form id="find-people-form" method="get"
         action="{% url 'ps-find-people' %}">
-        <input type="text" name="n" value="{{ name }}" class="suggest"
+        <input type="text" name="n" value="{{ name_query }}" class="suggest"
             placeholder="Enter person's name"
             autocomplete="off" role="textbox" aria-autocomplete="list"
             aria-haspopup="true"
@@ -45,7 +45,7 @@
         {% endfor %}
         </ul>
     {% else %}
-        {% if name %}
+        {% if name_query %}
             <p>No matches found.</p>
         {% else %}
             <p>Search for friends and colleagues who use PlantShare.</p>

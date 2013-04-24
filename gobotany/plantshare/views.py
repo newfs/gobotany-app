@@ -444,17 +444,30 @@ def checklist_view(request, checklist_id):
 
 @login_required
 def find_people_view(request):
-    """View for the Find People page."""
-    name = request.GET.get('n') or ''
-    people = None
-    if name:
-        people = UserProfile.objects.filter(
-            Q(display_name__istartswith=name) |
-            Q(user__username__istartswith=name))
-    # TODO: in addition to 'starts with', will want to return results
-    # that match the beginning of people's last names.
+    """View for the Find People results page."""
+    query = request.GET.get('n', '').lower()
+    people = []
+    if query:
+        candidates = UserProfile.objects.filter(
+            Q(display_name__icontains=query) |
+            Q(user__username__istartswith=query))
+        for candidate in candidates:
+            is_match = False
+            # First check the beginning of any parts of the display name.
+            # If none of those match, check the beginning of the username.
+            parts = candidate.display_name.lower().split(' ')
+            for part in parts:
+                if part.startswith(query):
+                    is_match = True
+                    break
+            if not is_match:
+                if candidate.user.username.lower().startswith(query):
+                    is_match = True
+            if is_match:
+                people.append(candidate)
+
     return render_to_response('find_people.html', {
-            'name': name,
+            'name_query': query,
             'people': people,
         }, context_instance=RequestContext(request))
 
