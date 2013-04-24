@@ -453,14 +453,18 @@ def find_people_view(request):
             Q(user__username__istartswith=query))
         for candidate in candidates:
             is_match = False
-            # First check the beginning of any parts of the display name.
-            # If none of those match, check the beginning of the username.
-            parts = candidate.display_name.lower().split(' ')
-            for part in parts:
-                if part.startswith(query):
-                    is_match = True
-                    break
-            if not is_match:
+            # If a user has specified a display name, look to it but not
+            # to the username, because the display name is how the person
+            # has chosen to be known.
+            if candidate.display_name != '':
+                # Check the beginning of any parts of the display name.
+                parts = candidate.display_name.lower().split(' ')
+                for part in parts:
+                    if part.startswith(query):
+                        is_match = True
+                        break
+            else:
+                # Check the beginning of the username.
                 if candidate.user.username.lower().startswith(query):
                     is_match = True
             if is_match:
