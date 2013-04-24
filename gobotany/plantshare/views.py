@@ -761,12 +761,14 @@ def ajax_people_suggestions(request):
                 if len(part) < MIN_SUGGESTION_LENGTH:
                     continue
                 if part.startswith(query):
-                    suggestions.append(part)
-                    if len(suggestions) == MAX_RESULTS:
-                        break
+                    if part not in suggestions:
+                        suggestions.append(part)
+                        if len(suggestions) == MAX_RESULTS:
+                            break
         else:
             username = name[1].lower()
-            suggestions.append(username)
+            if username not in suggestions:
+                suggestions.append(username)
 
     return HttpResponse(simplejson.dumps(sorted(suggestions)),
                         mimetype='application/json; charset=utf-8')
