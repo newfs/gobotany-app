@@ -13,11 +13,43 @@
 {% block main_content %}
     <h1>Find People</h1>
 
-    <p>Name: {{ name }}</p>
+    <form id="find-people-form" method="get"
+        action="{% url 'ps-find-people' %}">
+        <input type="text" name="n" value="{{ name }}"
+            placeholder="Enter person's name"
+            autocomplete="off" role="textbox" aria-autocomplete="list"
+            aria-haspopup="true">
+        <input type="button" value="Go">
+    </form>
 
-    {% for person in people %}
-        <p>Person: {% user_display_name person.user %}</p>
-    {% endfor %}
+    {% if people %}
+        <p>{{ people|length }}
+            match{{ people|length|pluralize:"es" }} found:</p>
+
+        <ul class="box">
+        {% for person in people %}
+            <li class="person">
+                <img src="{{ person.public_avatar_image.thumb_url }}" alt="">
+                <ul>
+                    <li class="name">{% user_display_name person.user %}</li>
+                    {% if person.location %}
+                        <li class="location">{{ person.location.user_input }}</li>
+                    {% endif %}
+                    <li class="profile"><a href="#">View Profile »</a></li>
+                </ul>
+                <p><a href="#" class="invite-group-btn">Invite to
+                    Group</a></p>
+            </li>
+        {% endfor %}
+        </ul>
+    {% else %}
+        {% if name %}
+            <p>No matches found.</p>
+        {% else %}
+            <p>Search for friends and colleagues who use PlantShare.</p>
+        {% endif %}
+    {% endif %}
+
 {% endblock %}
 
 {% block sidebar_content %}

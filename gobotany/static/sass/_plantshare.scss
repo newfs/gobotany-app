@@ -174,40 +174,98 @@ body.plantshare {
         #ask {
             margin-top: 20px;
         }
-
-        #find-people {
+        #find-people-form {
             float: right;
+            margin: 0;
             width: 184px;
-            h2 {
-                font-size: 18px;
+            input[type='text'] {
+                width: 128px;
             }
-            input {
-                &[type='text'] {
-                    background: transparent url(/static/images/layout/plantshare-btns.png) no-repeat -246px -4px;
-                    border: 0 none;
-                    display: block;
-                    float: left;
-                    font-size: $mini-input-font-size;
-                    height: 22px;
-                    padding: 0 2px 0 12px;
-                    width: 131px;
+        }
+    }
+
+    &#find-people {
+        #main {
+            .box {
+                padding: 10px;
+            }
+            .person {
+                height: 74px;
+                margin: 0;
+                padding: 20px 0 0 0;
+                &:nth-child(odd) {
+                    background-color: $light-green;
                 }
-                &[type='button'] {
-                    background: transparent url(../images/layout/plantshare-btns.png) no-repeat -391px -4px;
-                    border: 0 none;
-                    display: block;
+                img {
                     float: left;
-                    height: 22px;
-                    padding: 0 5px;
+                    height: 56px;
+                    padding: 0 18px;
+                    width: 56px;
+                }
+                ul {
+                    float: left;
+                    line-height: 140%;
+                    width: 400px;
+                }
+                li {
+                    margin: 0 0 2px;
+                }
+                .name {
+                    font-family: $headings-font;
+                    font-size: 24px;
+                    margin-bottom: 8px;
+                }
+                p {
+                    float: right;
+                    margin: 12px 0 0;
+                    padding-right: 10px;
+                }
+                .invite-group-btn {
+                    background: transparent url(/static/images/layout/plantshare-btns.png) no-repeat -1px -231px;
+                    display: block;
+                    font-size: 0;
+                    height: 32px;
                     text-indent: -9999px;
-                    width: 39px;
-                }
-                &:focus {
-                   outline: 0 none;
+                    width: 163px;
                 }
             }
         }
+    }
 
+    #find-people-form {
+        margin: 14px 0 0;
+        h2 {
+            font-size: 18px;
+        }
+        input {
+            &[type='text'] {
+                background: transparent url(../images/layout/plantshare-btns.png) no-repeat -1px -334px;
+                border: 0 none;
+                display: block;
+                float: left;
+                font-size: $mini-input-font-size;
+                height: 22px;
+                padding: 0 2px 0 12px;
+                width: 309px;
+            }
+            &[type='button'] {
+                background: transparent url(../images/layout/plantshare-btns.png) no-repeat -388px -4px;
+                border: 0 none;
+                display: block;
+                float: left;
+                height: 22px;
+                padding: 0 5px;
+                text-indent: -9999px;
+                width: 39px;
+            }
+            &:focus {
+               outline: 0 none;
+            }
+        }
+        & + p {
+            clear: left;
+            padding-top: 14px;
+        }
     }
 
     &#sign-up #main {
