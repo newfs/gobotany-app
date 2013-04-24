@@ -90,9 +90,6 @@ urlpatterns = patterns(
     url(r'^maps/(?P<genus>[^/-]+)-(?P<epithet>[^/]+)'
          '-na-distribution-map(\.svg|/)?$',
         views.north_american_distribution_map, name='na-distribution-map'),
-    url(r'^maps/(?P<genus>[^/-]+)-(?P<epithet>[^/]+)'
-         '-us-distribution-map(\.svg|/)?$',
-        views.united_states_distribution_map, name='us-distribution-map'),
 
     url(r'^$', 'nonexistent', name='api-base'),  # helps compute the base URL
     )
