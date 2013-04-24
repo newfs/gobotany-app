@@ -755,6 +755,7 @@ def ajax_people_suggestions(request):
         if display_name != '':
             parts = display_name.split(' ')
             for part in parts:   # "parts" of a name (first, last)
+                part = part.strip('.')   # for initials, abbreviations
                 if len(part) < MIN_SUGGESTION_LENGTH:
                     continue
                 if part.startswith(query):
