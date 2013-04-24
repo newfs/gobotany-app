@@ -292,8 +292,6 @@
         "model": "auth.user",
         "fields": {
             "username": "efarnsworth",
-            "first_name": "",
-            "last_name": "",
             "is_active": true,
             "is_superuser": true,
             "is_staff": true,
@@ -305,7 +303,14 @@
             "date_joined": "2013-01-18T07:18:04.707"
         }
     },
-        {
+    {
+        "pk": 1,
+        "model": "plantshare.userprofile",
+        "fields": {
+            "user": 231
+        }
+    },
+    {
         "pk": 2,
         "model": "core.partnersite",
         "fields": {
@@ -318,8 +323,6 @@
         "model": "auth.user",
         "fields": {
             "username": "john4",
-            "first_name": "",
-            "last_name": "",
             "is_active": true,
             "is_superuser": false,
             "is_staff": false,
@@ -333,11 +336,18 @@
     },
     {
         "pk": 2,
+        "model": "plantshare.userprofile",
+        "fields": {
+            "user": 230,
+            "display_name": "John Stevenson",
+            "location": 3
+        }
+    },
+    {
+        "pk": 2,
         "model": "auth.user",
         "fields": {
             "username": "bobsmith293",
-            "first_name": "",
-            "last_name": "",
             "is_active": true,
             "is_superuser": false,
             "is_staff": false,
@@ -351,11 +361,18 @@
     },
     {
         "pk": 3,
+        "model": "plantshare.userprofile",
+        "fields": {
+            "user": 2,
+            "display_name": "Bob Smith",
+            "location": 6
+        }
+    },
+    {
+        "pk": 3,
         "model": "auth.user",
         "fields": {
             "username": "skratz",
-            "first_name": "Susan",
-            "last_name": "Kratz",
             "is_active": true,
             "is_superuser": false,
             "is_staff": false,
@@ -369,11 +386,18 @@
     },
     {
         "pk": 4,
+        "model": "plantshare.userprofile",
+        "fields": {
+            "user": 3,
+            "display_name": "Susan Kratz",
+            "location": 7
+        }
+    },
+    {
+        "pk": 4,
         "model": "auth.user",
         "fields": {
             "username": "dwilliams",
-            "first_name": "Danielle",
-            "last_name": "Williams",
             "is_active": true,
             "is_superuser": false,
             "is_staff": false,
@@ -387,11 +411,18 @@
     },
     {
         "pk": 5,
+        "model": "plantshare.userprofile",
+        "fields": {
+            "user": 4,
+            "display_name": "Danielle Williams",
+            "location": 8
+        }
+    },
+    {
+        "pk": 5,
         "model": "auth.user",
         "fields": {
             "username": "shozot302",
-            "first_name": "Shozo",
-            "last_name": "Tanaka",
             "is_active": true,
             "is_superuser": false,
             "is_staff": false,
@@ -405,11 +436,18 @@
     },
     {
         "pk": 6,
+        "model": "plantshare.userprofile",
+        "fields": {
+            "user": 5,
+            "display_name": "Shozo Tanaka",
+            "location": 3
+        }
+    },
+    {
+        "pk": 6,
         "model": "auth.user",
         "fields": {
             "username": "hstevenson",
-            "first_name": "Harry",
-            "last_name": "Stevenson",
             "is_active": true,
             "is_superuser": false,
             "is_staff": false,
@@ -419,6 +457,14 @@
             "password": "pbkdf2_sha256$10000$PQejVA8HjBU4$ARmUrxXHMURachnsLErJ2Q0b5h6MYWgy6jSJt45gfH8=",
             "email": "a@a.com",
             "date_joined": "2012-11-05T09:58:26.002"
+        }
+    },
+    {
+        "pk": 7,
+        "model": "plantshare.userprofile",
+        "fields": {
+            "user": 6,
+            "display_name": "Harry Stevenson"
         }
     },
     {
