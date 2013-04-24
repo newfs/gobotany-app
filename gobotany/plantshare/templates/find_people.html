@@ -15,10 +15,12 @@
 
     <form id="find-people-form" method="get"
         action="{% url 'ps-find-people' %}">
-        <input type="text" name="n" value="{{ name }}"
+        <input type="text" name="n" value="{{ name }}" class="suggest"
             placeholder="Enter person's name"
             autocomplete="off" role="textbox" aria-autocomplete="list"
-            aria-haspopup="true">
+            aria-haspopup="true"
+            data-suggest-url="{% url 'ps-ajax-people-suggestions' %}?q=%s"
+            data-align-menu-inside-input="true" data-submit-on-select="true">
         <input type="button" value="Go">
     </form>
 

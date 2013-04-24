@@ -69,4 +69,6 @@ urlpatterns = patterns(
     url(r'^api/image-reject/(?P<image_id>[0-9]+)$', views.ajax_image_reject,
         name='ps-ajax-image-reject'),
     url(r'^api/sightings/$', views.ajax_sightings, name='ps-ajax-sightings'),
+    url(r'^api/people-suggestions/$', views.ajax_people_suggestions,
+        name='ps-ajax-people-suggestions'),
     )

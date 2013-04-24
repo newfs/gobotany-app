@@ -716,3 +716,34 @@ def ajax_sightings(request):
 
     return HttpResponse(simplejson.dumps(json),
                         mimetype='application/json; charset=utf-8')
+
+
+@login_required
+def ajax_people_suggestions(request):
+    """Return suggestions with names to help users find other users."""
+    MAX_RESULTS = 10
+    query = request.GET.get('q', '').lower()
+    suggestions = []
+
+    # Get all potentially matching display names and usernames.
+    names = UserProfile.objects.filter(
+                Q(display_name__icontains=query) |
+                Q(user__username__istartswith=query)).values_list(
+                'display_name', 'user__username')
+    for name in names:
+        if len(suggestions) == MAX_RESULTS:
+            break
+        display_name = name[0].lower()
+        if display_name != '':
+            parts = display_name.split(' ')
+            for part in parts:   # "parts" of a name (first, last)
+                if part.startswith(query):
+                    suggestions.append(part)
+                    if len(suggestions) == MAX_RESULTS:
+                        break
+        else:
+            username = name[1].lower()
+            suggestions.append(username)
+
+    return HttpResponse(simplejson.dumps(sorted(suggestions)),
+                        mimetype='application/json; charset=utf-8')

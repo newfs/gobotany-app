@@ -16,9 +16,12 @@
 {% if user.is_authenticated %}
 <form id="find-people-form" method="get" action="{% url 'ps-find-people' %}">
     <h2>Find People</h2>
-    <input type="text" name="n" placeholder="Enter person's name"
+    <input type="text" name="n" class="suggest"
+        placeholder="Enter person's name"
         autocomplete="off" role="textbox" aria-autocomplete="list"
-        aria-haspopup="true">
+        aria-haspopup="true"
+        data-suggest-url="{% url 'ps-ajax-people-suggestions' %}?q=%s"
+        data-align-menu-inside-input="true" data-submit-on-select="true">
     <input type="button" value="Go">
 </form>
 <div class="profile box">
