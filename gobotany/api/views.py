@@ -703,13 +703,6 @@ def new_england_distribution_map(request, genus, epithet):
     distribution_map = NewEnglandPlantDistributionMap()
     return _distribution_map(request, distribution_map, genus, epithet)
 
-def united_states_distribution_map(request, genus, epithet):
-    """Return a vector map of the United States showing county-level
-    distribution data for a plant.
-    """
-    distribution_map = UnitedStatesPlantDistributionMap()
-    return _distribution_map(request, distribution_map, genus, epithet)
-
 def north_american_distribution_map(request, genus, epithet):
     """Return a vector map of North America showing county-level
     distribution data for a plant.
