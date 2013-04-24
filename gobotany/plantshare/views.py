@@ -739,6 +739,7 @@ def ajax_sightings(request):
 def ajax_people_suggestions(request):
     """Return suggestions with names to help users find other users."""
     MAX_RESULTS = 10
+    MIN_SUGGESTION_LENGTH = 2
     query = request.GET.get('q', '').lower()
     suggestions = []
 
@@ -754,6 +755,8 @@ def ajax_people_suggestions(request):
         if display_name != '':
             parts = display_name.split(' ')
             for part in parts:   # "parts" of a name (first, last)
+                if len(part) < MIN_SUGGESTION_LENGTH:
+                    continue
                 if part.startswith(query):
                     suggestions.append(part)
                     if len(suggestions) == MAX_RESULTS:
