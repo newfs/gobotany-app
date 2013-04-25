@@ -161,14 +161,19 @@ define([
                 this.$menu.hide();
                 break;
             case this.KEY_CODE.ENTER:
-                // If the menu is visible, prevent the validation and
-                // form submit that is normally triggered. This is so
-                // the form does not normally submit automatically with
-                // an input field with suggestions, matching how HTML5
-                // datalists behave.
+                // If the menu is visible, and the input box is not a
+                // "search"-type box, prevent the validation and form
+                // submit that is normally triggered. This is so the
+                // form does not submit automatically by default. It
+                // matches how HTML5 datalists behave.
                 if (this.$menu.is(':visible')) {
-                    e.preventDefault();
-                    e.stopPropagation();
+                    // For "search"-type boxes that should submit the form
+                    // right away upon selecting a menu item, do not prevent
+                    // submitting the form right away upon pressing Enter.
+                    if (this.submit_on_select === 'false') {
+                        e.preventDefault();
+                        e.stopPropagation();
+                    }
                 }
                 this.enter_current_item();
                 this.$menu.hide();
