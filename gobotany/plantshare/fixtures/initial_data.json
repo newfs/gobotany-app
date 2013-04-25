@@ -288,6 +288,265 @@
         }
     },
     {
+        "pk": 23,
+        "model": "plantshare.location",
+        "fields": {
+            "user_input": "Boston, MA"
+        }
+    },
+    {
+        "pk": 24,
+        "model": "plantshare.location",
+        "fields": {
+            "user_input": "Boston, Massachusetts"
+        }
+    },
+    {
+        "pk": 25,
+        "model": "plantshare.location",
+        "fields": {
+            "user_input": "Worcester, MA"
+        }
+    },
+    {
+        "pk": 26,
+        "model": "plantshare.location",
+        "fields": {
+            "user_input": "Providence, RI"
+        }
+    },
+    {
+        "pk": 27,
+        "model": "plantshare.location",
+        "fields": {
+            "user_input": "Springfield, MA"
+        }
+    },
+    {
+        "pk": 28,
+        "model": "plantshare.location",
+        "fields": {
+            "user_input": "Bridgeport, CT"
+        }
+    },
+    {
+        "pk": 29,
+        "model": "plantshare.location",
+        "fields": {
+            "user_input": "New Haven, CT"
+        }
+    },
+    {
+        "pk": 30,
+        "model": "plantshare.location",
+        "fields": {
+            "user_input": "Hartford, CT"
+        }
+    },
+    {
+        "pk": 31,
+        "model": "plantshare.location",
+        "fields": {
+            "user_input": "Stamford, CT"
+        }
+    },
+    {
+        "pk": 32,
+        "model": "plantshare.location",
+        "fields": {
+            "user_input": "Waterbury, CT"
+        }
+    },
+    {
+        "pk": 33,
+        "model": "plantshare.location",
+        "fields": {
+            "user_input": "Manchester, NH"
+        }
+    },
+    {
+        "pk": 34,
+        "model": "plantshare.location",
+        "fields": {
+            "user_input": "Lowell, Mass."
+        }
+    },
+    {
+        "pk": 35,
+        "model": "plantshare.location",
+        "fields": {
+            "user_input": "Cambridge, MA"
+        }
+    },
+    {
+        "pk": 36,
+        "model": "plantshare.location",
+        "fields": {
+            "user_input": "New Bedford, MA"
+        }
+    },
+    {
+        "pk": 38,
+        "model": "plantshare.location",
+        "fields": {
+            "user_input": "Brockton, MA"
+        }
+    },
+    {
+        "pk": 39,
+        "model": "plantshare.location",
+        "fields": {
+            "user_input": "Quincy, Mass"
+        }
+    },
+    {
+        "pk": 40,
+        "model": "plantshare.location",
+        "fields": {
+            "user_input": "Lynn, MA"
+        }
+    },
+    {
+        "pk": 41,
+        "model": "plantshare.location",
+        "fields": {
+            "user_input": "Fall River, MA"
+        }
+    },
+    {
+        "pk": 42,
+        "model": "plantshare.location",
+        "fields": {
+            "user_input": "Nashua, NH"
+        }
+    },
+    {
+        "pk": 43,
+        "model": "plantshare.location",
+        "fields": {
+            "user_input": "Norwalk, CT"
+        }
+    },
+    {
+        "pk": 44,
+        "model": "plantshare.location",
+        "fields": {
+            "user_input": "Warwick, RI"
+        }
+    },
+    {
+        "pk": 45,
+        "model": "plantshare.location",
+        "fields": {
+            "user_input": "Danbury, CT"
+        }
+    },
+    {
+        "pk": 46,
+        "model": "plantshare.location",
+        "fields": {
+            "user_input": "Portland, ME"
+        }
+    },
+    {
+        "pk": 47,
+        "model": "plantshare.location",
+        "fields": {
+            "user_input": "Brookline, Mass."
+        }
+    },
+    {
+        "pk": 48,
+        "model": "plantshare.location",
+        "fields": {
+            "user_input": "West Haven, CT"
+        }
+    },
+    {
+        "pk": 49,
+        "model": "plantshare.location",
+        "fields": {
+            "user_input": "Burlington, VT"
+        }
+    },
+    {
+        "pk": 50,
+        "model": "plantshare.location",
+        "fields": {
+            "user_input": "Concord, NH"
+        }
+    },
+    {
+        "pk": 51,
+        "model": "plantshare.location",
+        "fields": {
+            "user_input": "Barnstable, MA"
+        }
+    },
+    {
+        "pk": 52,
+        "model": "plantshare.location",
+        "fields": {
+            "user_input": "South Portland, ME"
+        }
+    },
+    {
+        "pk": 53,
+        "model": "plantshare.location",
+        "fields": {
+            "user_input": "Augusta, ME"
+        }
+    },
+    {
+        "pk": 54,
+        "model": "plantshare.location",
+        "fields": {
+            "user_input": "Lewiston, ME"
+        }
+    },
+    {
+        "pk": 55,
+        "model": "plantshare.location",
+        "fields": {
+            "user_input": "South Burlington, VT"
+        }
+    },
+    {
+        "pk": 56,
+        "model": "plantshare.location",
+        "fields": {
+            "user_input": "Rutland, VT"
+        }
+    },
+    {
+        "pk": 57,
+        "model": "plantshare.location",
+        "fields": {
+            "user_input": "St. Albans, VT"
+        }
+    },
+    {
+        "pk": 58,
+        "model": "plantshare.location",
+        "fields": {
+            "user_input": "Vergennes, VT"
+        }
+    },
+    {
+        "pk": 59,
+        "model": "plantshare.location",
+        "fields": {
+            "user_input": "Ottawa, ON"
+        }
+    },
+    {
+        "pk": 60,
+        "model": "plantshare.location",
+        "fields": {
+            "user_input": "Yarmouth, NS"
+        }
+    },
+    {
         "pk": 231,
         "model": "auth.user",
         "fields": {
