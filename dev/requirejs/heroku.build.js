@@ -21,6 +21,7 @@
                 'mapping/google_maps',
                 'mapping/marker_map',
                 'plantshare/delete_sighting',
+                'plantshare/find_people',
                 'plantshare/manage_sightings',
                 'plantshare/myprofile',
                 'plantshare/plantshare',
