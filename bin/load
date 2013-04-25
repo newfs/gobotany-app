@@ -6,6 +6,8 @@ import os
 import sys
 import subprocess
 
+from django.conf import settings
+
 # Actions that the user can perform; default is to do them all.
 
 def schema():
@@ -23,6 +25,14 @@ def schema():
 """)
         sys.exit(1)
     admin('migrate')
+
+    # Load any fixture data if in an environment with Go Botany development
+    # features enabled, i.e., a local development environment or a
+    # deployed Development instance, but not Production.
+    if settings.DEV_FEATURES:
+        # The data filename is changed from its default, initial_data.json,
+        # to prevent its loading automatically after syncdb and migrate.
+        admin('loaddata starting_data.json')
 
 def csv():
     run('python -m gobotany.core.importer zipimport')
