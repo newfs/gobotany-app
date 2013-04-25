@@ -1146,7 +1146,7 @@ body.plantshare#find-people #main .person .invite-group-btn { background: transp
 body.plantshare #find-people-form { margin: 14px 0 0; }
 body.plantshare #find-people-form h2 { font-size: 18px; }
 body.plantshare #find-people-form input[type='text'] { background: transparent url(../images/layout/plantshare-btns.png) no-repeat -1px -334px; border: 0 none; display: block; float: left; font-size: 11px; height: 22px; padding: 0 2px 0 12px; width: 309px; }
-body.plantshare #find-people-form input[type='button'] { background: transparent url(../images/layout/plantshare-btns.png) no-repeat -388px -4px; border: 0 none; display: block; float: left; height: 22px; padding: 0 5px; text-indent: -9999px; width: 39px; }
+body.plantshare #find-people-form input[type='submit'] { background: transparent url(../images/layout/plantshare-btns.png) no-repeat -388px -4px; border: 0 none; display: block; float: left; height: 22px; padding: 0 5px; text-indent: -9999px; width: 39px; }
 body.plantshare #find-people-form input:focus { outline: 0 none; }
 body.plantshare #find-people-form + p { clear: left; padding-top: 14px; }
 body.plantshare#sign-up #main form input { width: 350px; }
