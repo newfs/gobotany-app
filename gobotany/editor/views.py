@@ -316,6 +316,12 @@ def _save_length(request, character, taxon, minmax, lit_source=None):
         old_values = [value.value_min, value.value_max]
         is_value_shared = len(value.taxon_character_values.all())
 
+        # Delete any null/null lengths
+        if minmax[0] is None and minmax[1] is None:
+            tcv.delete()
+            tcv.character_value.delete()
+            return old_values
+
         if is_value_shared:
             tcv.delete()
         else:
