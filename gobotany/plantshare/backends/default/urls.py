@@ -5,11 +5,11 @@ a little.
 """
 
 from django.conf.urls import patterns, url, include
-from django.views.generic import TemplateView
+from django.views.generic.base import TemplateView
 
-from registration.views import activate
-from registration.views import register
-
+from registration.backends.default.views import ActivationView
+from registration.backends.default.views import RegistrationView
+from captcha.forms import RegistrationFormCaptcha
 
 urlpatterns = patterns('',
                        url(r'^activate/complete/$',
@@ -21,12 +21,10 @@ urlpatterns = patterns('',
                        # that way it can return a sensible "invalid key" message instead of a
                        # confusing 404.
                        url(r'^activate/(?P<activation_key>\w+)/$',
-                           activate,
-                           {'backend': 'gobotany.plantshare.backends.default.PlantShareDefaultBackend'},
+                           ActivationView.as_view(),
                            name='registration_activate'),
                        url(r'^register/$',
-                           register,
-                           {'backend': 'gobotany.plantshare.backends.default.PlantShareDefaultBackend'},
+                           RegistrationView.as_view(form_class=RegistrationFormCaptcha),
                            name='registration_register'),
                        url(r'^register/complete/$',
                            TemplateView.as_view(
