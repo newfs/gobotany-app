@@ -42,10 +42,11 @@
                 <td class="date">{{ checklist.date_found|default:"N/A" }}</td>
                 {% ifequal user.username checklist.owner.name %}
                 <td class="owner">Me</td>
+                <td class="last"><a href="{% url 'ps-checklist-edit' checklist.pk %}">Edit List</a></td>
                 {% else %}
                 <td class="owner">{{ checklist.owner.name }}</td>
-                {% endifequal %}
                 <td class="last"><a href="{% url 'ps-checklist' checklist.pk %}">View List</a></td>
+                {% endifequal %}
             </tr>
             {% endfor %}
         </tbody>
