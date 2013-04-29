@@ -33,8 +33,11 @@ define([
     SightingsLocatorPart.prototype.setup = function () {
         // Set up the map and form.
         
-        var map_div = this.$locator_element.find('.map').eq(0);
-        var sightings_map = new SightingsMap(map_div);
+        var map_div = this.$locator_element.find('.map').first();
+
+        // Restore the last map location the user used, if any.
+        var CENTER_COOKIE_NAME = 'last_locator_center';
+        var sightings_map = new SightingsMap(map_div, CENTER_COOKIE_NAME);
         sightings_map.setup();
 
         // Restore the last plant searched in the Sightings Locator, if any.

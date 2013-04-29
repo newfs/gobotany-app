@@ -9,8 +9,9 @@ define([
 ], function ($, MarkerMap) {
 
     // Constructor
-    function SightingsMap(map_div) {
-        MarkerMap.call(this, map_div);   // Call super-constructor
+    function SightingsMap(map_div, center_cookie_name) {
+        // Call the super-constructor.
+        MarkerMap.call(this, map_div, center_cookie_name);
 
         this.MAX_INFO_DESC_LENGTH = 80;
 

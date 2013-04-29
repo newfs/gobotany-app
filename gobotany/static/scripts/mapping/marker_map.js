@@ -8,15 +8,37 @@
 
 define([
     'bridge/jquery',
+    'bridge/jquery.cookie',
     'mapping/google_maps'
-], function ($, google_maps) {
+], function ($, x1, google_maps) {
 
     // Constructor
-    function MarkerMap(map_div) {
+    function MarkerMap(map_div, center_cookie_name) {
         this.$map_div = $(map_div);
         this.map_id = this.$map_div.attr('id');
+
         this.latitude = this.$map_div.attr('data-latitude');
         this.longitude = this.$map_div.attr('data-longitude');
+
+        // If the last location center was saved in a cookie, restore it.
+        this.center_cookie_name = center_cookie_name;
+        var center_lat_long = $.cookie(this.center_cookie_name);
+        if (center_lat_long !== undefined && center_lat_long !== null) {
+            center_lat_long = center_lat_long.replace(/\(|\)/g, '');
+            var parts = center_lat_long.split(',');
+            if (isNaN(parts[0].trim()) || isNaN(parts[1].trim())) {
+                // If a location part is invalid, clear it.
+                console.error('Invalid location part. Clearing cookie');
+                $.cookie(this.center_cookie_name, null, {path: '/'});
+            }
+            else {
+                var lat_long = new google_maps.LatLng(parts[0].trim(),
+                                                      parts[1].trim());
+                this.latitude = lat_long.lat();
+                this.longitude = lat_long.lng();
+            }
+        }
+
         this.center_title = this.$map_div.attr('data-center-title');
         this.map = null;
         this.info_window = null;    // InfoWindow: marker pop-up
@@ -31,6 +53,15 @@ define([
             mapTypeId: google_maps.MapTypeId.ROADMAP
         };
         this.map = new google_maps.Map(this.$map_div.get(0), map_options);
+
+        // When the user moves the map around, store the location center.
+        var center_cookie_name = this.center_cookie_name;
+        google.maps.event.addListener(
+            this.map, 'center_changed', function () {
+                var center = this.center.toString();
+                $.cookie(center_cookie_name, center, {path: '/'});
+        });
+
         var info_window_options = {
             maxWidth: 300
         };
