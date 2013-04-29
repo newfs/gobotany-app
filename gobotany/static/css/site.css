@@ -598,7 +598,7 @@ table.list th td:first-child { font-family: "Trebuchet MS", Helvetica, Arial, "L
 .info-window p { margin-top: 0; }
 .info-window img { float: left; margin-right: 10px; }
 
-#mini-sightings-map .info-window img { height: 75px; width: 80px; }
+#sightings-locator .info-window img { height: 75px; width: 80px; }
 
 /* Plant distribution maps */
 .section.map { border: none; }

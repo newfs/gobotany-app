@@ -74,8 +74,10 @@ define([
     };
 
     SightingsMap.prototype.show_sightings_count = function (sightings_count) {
-        $('#sightings-status').css('margin-left', 'auto'); // for the mini map
+        // On the mini map, the status message must be placed in view.
+        $('#sightings-status').css('margin-left', 'auto');
 
+        // Show the status message with sightings count.
         $('#sightings-status').show();
         $('#sightings-status span').html(sightings_count);
     };
