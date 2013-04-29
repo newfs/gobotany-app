@@ -97,7 +97,7 @@ define([
     },
 
     image_type: function () {
-        return this._parameter_from_hash('show');
+        return this._parameter_from_hash('show') || '';
     },
 
     hash: function (args) {
