@@ -386,6 +386,13 @@
         }
     },
     {
+        "pk": 37,
+        "model": "plantshare.location",
+        "fields": {
+            "user_input": "Litchfield, CT"
+        }
+    },
+    {
         "pk": 38,
         "model": "plantshare.location",
         "fields": {
