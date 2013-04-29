@@ -33,7 +33,7 @@ requirements = [
 
     'django-facebook-connect>=1.0.2',
     'django-recaptcha==0.0.4',
-    'django-registration==0.8',
+    'django-registration==0.9b1',
 
     # For storing images on S3.
 
@@ -51,6 +51,8 @@ requirements = [
 dependency_links = [
     'git+https://github.com/jrrickerson/django-facebook-connect'
     + '#egg=django-facebook-connect-1.0.2',
+    'https://bitbucket.org/ubernostrum/django-registration/get/tip.tar.gz'
+    + '#egg=registration-0.9b1'
     ]
 
 packages = find_packages()
