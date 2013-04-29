@@ -13,20 +13,20 @@ define([
 ], function ($, x1, google_maps) {
 
     // Constructor
-    function MarkerMap(map_div, center_cookie_name) {
+    function MarkerMap(map_div, center_cookie_name, zoom_cookie_name) {
         this.$map_div = $(map_div);
         this.map_id = this.$map_div.attr('id');
 
         this.latitude = this.$map_div.attr('data-latitude');
         this.longitude = this.$map_div.attr('data-longitude');
-
         // If the last location center was saved in a cookie, restore it.
         this.center_cookie_name = center_cookie_name;
         var center_lat_long = $.cookie(this.center_cookie_name);
         if (center_lat_long !== undefined && center_lat_long !== null) {
             center_lat_long = center_lat_long.replace(/\(|\)/g, '');
             var parts = center_lat_long.split(',');
-            if (isNaN(parts[0].trim()) || isNaN(parts[1].trim())) {
+            if (parts[0] === undefined || isNaN(parts[0].trim()) || 
+                parts[1] === undefined || isNaN(parts[1].trim())) {
                 // If a location part is invalid, clear it.
                 console.error('Invalid location part. Clearing cookie');
                 $.cookie(this.center_cookie_name, null, {path: '/'});
@@ -36,6 +36,21 @@ define([
                                                       parts[1].trim());
                 this.latitude = lat_long.lat();
                 this.longitude = lat_long.lng();
+            }
+        }
+
+        this.zoom = 6;
+        // If the last zoom level was saved in a cookie, restore it.
+        this.zoom_cookie_name = zoom_cookie_name;
+        var zoom = $.cookie(this.zoom_cookie_name);
+        if (zoom !== undefined && zoom !== null) {
+            if (isNaN(zoom)) {
+                // If a zoom level is invalid, clear it.
+                console.error('Invalid zoom level. Clearing cookie');
+                $.cookie(this.zoom_cookie_name, null, {path: '/'});
+            }
+            else {
+                this.zoom = parseInt(zoom);
             }
         }
 
@@ -49,7 +64,7 @@ define([
         var lat_long = new google_maps.LatLng(this.latitude, this.longitude);
         var map_options = {
             center: lat_long,
-            zoom: 6,
+            zoom: this.zoom,
             mapTypeId: google_maps.MapTypeId.ROADMAP
         };
         this.map = new google_maps.Map(this.$map_div.get(0), map_options);
@@ -61,6 +76,12 @@ define([
                 var center = this.center.toString();
                 $.cookie(center_cookie_name, center, {path: '/'});
         });
+        // When the user changes the zoom level, store it.
+        var zoom_cookie_name = this.zoom_cookie_name;
+        google.maps.event.addListener(
+            this.map, 'zoom_changed', function () {
+                $.cookie(zoom_cookie_name, this.zoom, {path: '/'});
+        });      
 
         var info_window_options = {
             maxWidth: 300
