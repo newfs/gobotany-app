@@ -9,7 +9,7 @@ from django.views.generic.base import TemplateView
 
 from registration.backends.default.views import ActivationView
 from registration.backends.default.views import RegistrationView
-from captcha.forms import RegistrationFormCaptcha
+from .forms import RegistrationFormWithCaptcha
 
 urlpatterns = patterns('',
                        url(r'^activate/complete/$',
@@ -24,7 +24,7 @@ urlpatterns = patterns('',
                            ActivationView.as_view(),
                            name='registration_activate'),
                        url(r'^register/$',
-                           RegistrationView.as_view(form_class=RegistrationFormCaptcha),
+                           RegistrationView.as_view(form_class=RegistrationFormWithCaptcha),
                            name='registration_register'),
                        url(r'^register/complete/$',
                            TemplateView.as_view(
