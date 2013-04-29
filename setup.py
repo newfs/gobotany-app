@@ -33,7 +33,8 @@ requirements = [
 
     'django-facebook-connect>=1.0.2',
     'django-recaptcha==0.0.6',
-    'django-registration==0.9b1',
+    # Installed in a separate step pending Django dependency issues
+    #'django-registration==0.9b1',
 
     # For storing images on S3.
 
@@ -51,8 +52,11 @@ requirements = [
 dependency_links = [
     'git+https://github.com/jrrickerson/django-facebook-connect'
     + '#egg=django-facebook-connect-1.0.2',
+    # This currently requires Django to already be installed, so
+    # it gets installed in a separate call later
+    # Once django-registration is updated on PyPi we should fix this.
     'https://bitbucket.org/ubernostrum/django-registration/get/tip.tar.gz'
-    + '#egg=registration-0.9b1'
+    + '#egg=django-registration-0.9b1'
     ]
 
 packages = find_packages()
