@@ -1123,17 +1123,18 @@ body.plantshare .notification ul { line-height: 18px; list-style-position: insid
 body.plantshare .ps-button { display: inline-block; color: white; margin: 10px 0; text-transform: uppercase; }
 body.plantshare .save-btn { background: transparent url(/static/images/layout/plantshare-btns.png) no-repeat -272px -231px; width: 99px !important; height: 32px; font-size: 0; -moz-box-shadow: 0 !important; border: 0 none !important; display: block; text-indent: -9999px; }
 body.plantshare a.close-btn { background: transparent url(/static/images/icons/close.png) no-repeat; display: block; height: 16px; width: 16px; text-indent: -9999px; }
-body.plantshare .profile { width: 471px; }
-body.plantshare .profile h2 { float: left; }
-body.plantshare .profile a.edit { display: block; float: right; padding-top: 12px; }
-body.plantshare .profile h3 { font-size: 18px; }
-body.plantshare .profile div { clear: left; height: 84px; }
-body.plantshare .profile img { display: block; float: left; max-height: 84px; margin-right: 16px; max-width: 84px; }
-body.plantshare .profile table { clear: left; }
+body.plantshare #main .profile { width: 471px; }
+body.plantshare #main .profile h2 { float: left; }
+body.plantshare #main .profile a.edit { display: block; float: right; padding-top: 12px; }
+body.plantshare #main .profile h3 { font-size: 18px; }
+body.plantshare #main .profile div { clear: left; height: 84px; }
+body.plantshare #main .profile img { display: block; float: left; max-height: 84px; margin-right: 16px; max-width: 84px; }
+body.plantshare #main .profile table { clear: left; }
 body.plantshare#plantshare { /* styles for the PlantShare main page */ }
 body.plantshare#plantshare #ask { margin-top: 20px; }
 body.plantshare#plantshare #find-people-form { float: right; margin: 0; width: 184px; }
 body.plantshare#plantshare #find-people-form input[type='text'] { width: 128px; }
+body.plantshare#find-people { /* Hide the usual default Shadowbox close button. This is used for some dialogs that have their own interior close button, such as is seen on various PlantShare dialogs. */ }
 body.plantshare#find-people #main .box { padding: 10px; }
 body.plantshare#find-people #main .person { height: 74px; margin: 0; padding: 20px 0 0 0; }
 body.plantshare#find-people #main .person:nth-child(odd) { background-color: #e1f0d1; }
@@ -1143,12 +1144,16 @@ body.plantshare#find-people #main .person li { margin: 0 0 2px; }
 body.plantshare#find-people #main .person .name { font-family: "Trebuchet MS", Helvetica, Arial, "Lucida Sans Unicode", sans-serif; font-size: 24px; margin-bottom: 8px; }
 body.plantshare#find-people #main .person p { float: right; margin: 12px 0 0; padding-right: 10px; }
 body.plantshare#find-people #main .person .invite-group-btn { background: transparent url(/static/images/layout/plantshare-btns.png) no-repeat -1px -231px; display: block; font-size: 0; height: 32px; text-indent: -9999px; width: 163px; }
+body.plantshare#find-people #sb-nav-close { display: none; }
 body.plantshare #find-people-form { margin: 14px 0 0; }
 body.plantshare #find-people-form h2 { font-size: 18px; }
 body.plantshare #find-people-form input[type='text'] { background: transparent url(../images/layout/plantshare-btns.png) no-repeat -1px -334px; border: 0 none; display: block; float: left; font-size: 11px; height: 22px; padding: 0 2px 0 12px; width: 309px; }
 body.plantshare #find-people-form input[type='submit'] { background: transparent url(../images/layout/plantshare-btns.png) no-repeat -388px -4px; border: 0 none; display: block; float: left; height: 22px; padding: 0 5px; text-indent: -9999px; width: 39px; }
 body.plantshare #find-people-form input:focus { outline: 0 none; }
 body.plantshare #find-people-form + p { clear: left; padding-top: 14px; }
+body.plantshare#find-people-profile { background: none; }
+body.plantshare#find-people-profile div { background: #fff; border: 5px solid #acac90; height: 100%; padding: 0 18px; text-align: center; }
+body.plantshare#find-people-profile .close { background: transparent url(/static/images/icons/close.png) no-repeat; cursor: pointer; display: block; height: 16px; position: absolute; right: 15px; text-indent: -9999px; top: 15px; width: 16px; }
 body.plantshare#sign-up #main form input { width: 350px; }
 body.plantshare#sign-up #main form input.button { background: transparent url(../images/layout/plantshare-btns.png) no-repeat -1px -359px; border: 0; height: 41px; margin-top: 12px; width: 244px; display: block; text-indent: -9000px; }
 body.plantshare#sign-up #main form input.button:hover { background-position: -1px -402px; }
@@ -1181,7 +1186,7 @@ body.plantshare#new-sighting .thumb-gallery .thumb-frame, body.plantshare#edit-s
 body.plantshare#new-sighting .thumb-gallery .thumb-frame .thumb, body.plantshare#edit-sighting .thumb-gallery .thumb-frame .thumb { vertical-align: bottom; }
 body.plantshare#new-sighting .thumb-gallery .thumb-frame .delete-link, body.plantshare#edit-sighting .thumb-gallery .thumb-frame .delete-link { width: 100%; text-align: center; margin: 2px 0; padding-top: 2px; }
 body.plantshare#new-sighting .thumb-gallery .thumb-frame .delete-link img, body.plantshare#edit-sighting .thumb-gallery .thumb-frame .delete-link img { vertical-align: middle; margin-right: 4px; }
-body.plantshare#manage-sightings { /* Hide the regular Shadowbox close button for the Delete dialog, because the delete dialog will have its own interior close button as seen on various PlantShare dialogs. */ }
+body.plantshare#manage-sightings { /* Hide the usual default Shadowbox close button. This is used for some dialogs that have their own interior close button, such as is seen on various PlantShare dialogs. */ }
 body.plantshare#manage-sightings .content table { width: 100%; }
 body.plantshare#manage-sightings .content table th.identification { width: 40%; }
 body.plantshare#manage-sightings .content table th.location { width: 23%; }

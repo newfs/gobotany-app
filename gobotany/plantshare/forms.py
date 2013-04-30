@@ -105,7 +105,6 @@ class UserProfileForm(forms.ModelForm):
         user_text = self.cleaned_data['location']
         location, created = Location.objects.get_or_create(
             user_input=user_text)
-
         return location
 
     def avatar(self):

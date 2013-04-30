@@ -12,6 +12,15 @@ $mini-input-font-size: 11px;
     width: $form-field-width;
 }
 
+@mixin hide-default-shadowbox-close {
+    /* Hide the usual default Shadowbox close button. This is used for
+     * some dialogs that have their own interior close button, such as
+     * is seen on various PlantShare dialogs. */
+    #sb-nav-close {
+        display: none;
+    }
+}
+
 body.plantshare {
     .content {
         li {
@@ -230,6 +239,7 @@ body.plantshare {
                 }
             }
         }
+        @include hide-default-shadowbox-close;
     }
 
     #find-people-form {
@@ -265,6 +275,20 @@ body.plantshare {
         & + p {
             clear: left;
             padding-top: 14px;
+        }
+    }
+
+    &#find-people-profile {
+        background: none;
+        div {
+            background: #fff;
+            border: 5px solid #acac90;
+            height: 100%;
+            padding: 0 18px;
+            text-align: center;
+        }
+        .close {
+            @include dialog-close-button;
         }
     }
 
@@ -447,12 +471,7 @@ body.plantshare {
                 text-align: center;
             }
         }
-        /* Hide the regular Shadowbox close button for the Delete
-         * dialog, because the delete dialog will have its own interior
-         * close button as seen on various PlantShare dialogs. */
-        #sb-nav-close {
-            display: none;
-        }
+        @include hide-default-shadowbox-close;
     }
 
     &#delete-sighting {

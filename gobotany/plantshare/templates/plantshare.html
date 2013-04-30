@@ -26,7 +26,7 @@
 </form>
 <div class="profile box">
     <h2>Your Profile</h2>
-    <a href="{% url 'ps-profile' %}" class="edit">Edit Profile</a>
+    <a href="{% url 'ps-your-profile' %}" class="edit">Edit Profile</a>
     <div>
         <img src="{{ avatar.thumb_url }}" alt="">
         <h3>{% user_display_name user %}</h3>

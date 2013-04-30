@@ -479,7 +479,14 @@ def find_people_view(request):
 
 
 @login_required
-def profile_view(request):
+def find_people_profile_view(request, username):
+    return render_to_response('_find_people_profile.html', {
+            'username': username,
+        }, context_instance=RequestContext(request))
+
+
+@login_required
+def your_profile_view(request):
     """View for the logged-in user's profile."""
     try:
         profile = UserProfile.objects.get(user=request.user)
@@ -495,7 +502,7 @@ def profile_view(request):
         'profile_form': profile_form,
         'avatar_form': avatar_form,
     }
-    return render_to_response('profile.html', context,
+    return render_to_response('your_profile.html', context,
             context_instance=RequestContext(request))
 
 
@@ -692,7 +699,6 @@ def ajax_sightings(request):
     }
 
     plant_name = request.GET.get('plant')
-    print 'plant_name:', plant_name
 
     sightings = None
     if plant_name == None:

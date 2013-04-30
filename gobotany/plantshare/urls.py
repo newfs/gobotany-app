@@ -54,9 +54,11 @@ urlpatterns = patterns(
 
     # Find People
     url(r'^people/$', views.find_people_view, name='ps-find-people'),
+    url(r'^people/profile/(?P<username>[a-z0-9]+)/$',
+        views.find_people_profile_view, name='ps-find-people-profile'),
 
     # Your Profile page
-    url(r'^profile/$', views.profile_view, name='ps-profile'),
+    url(r'^profile/$', views.your_profile_view, name='ps-your-profile'),
 
     # Staff-Only area urls
     url(r'^staff/images$', views.screen_images, name='ps-screen-images'),

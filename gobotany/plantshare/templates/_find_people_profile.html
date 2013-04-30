@@ -1,0 +1,22 @@
+{% extends "gobotany/_modal_base.html" %}
+{% load gobotany_tags %}
+
+{# This page appears in a lightbox when viewing another user's profile. #}
+
+{% block body_attributes %}id="find-people-profile"
+    class="plantshare"{% endblock %}
+
+{% block js_require %}
+    require(['plantshare/find_people_profile']);
+{% endblock %}
+
+{% block body_content %}
+    <div>
+        <a class="close">Close</a>
+
+        <h2>{{ username }}</h2>
+
+        <p>Profile information appears here</p>
+    </div>
+{% endblock %}
+

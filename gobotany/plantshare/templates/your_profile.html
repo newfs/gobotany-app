@@ -4,6 +4,10 @@
 
 {% block body_attributes %}id="profile" class="plantshare"{% endblock %}
 
+{% block js_require %}
+    require(['plantshare/your_profile']);
+{% endblock %}
+
 {% block main_content %}
 <h1>Your Profile</h1>
 
@@ -145,10 +149,6 @@
     </section>
   </form>
 </div>
-
-<script type="text/javascript">
-    require(['plantshare/myprofile']);
-</script>
 {% endblock %}
 
 {% block sidebar_content %}

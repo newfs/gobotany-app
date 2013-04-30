@@ -35,9 +35,12 @@
                 <ul>
                     <li class="name">{% user_display_name person.user %}</li>
                     {% if person.location %}
-                        <li class="location">{{ person.location.user_input }}</li>
+                        <li>{{ person.location.user_input }}</li>
                     {% endif %}
-                    <li class="profile"><a href="#">View Profile »</a></li>
+                    <li>
+                        <a href="{% url 'ps-find-people-profile' name_query %}"
+                            rel="shadowbox;width=700;height=300">View Profile »</a>
+                    </li>
                 </ul>
                 <p><a href="#" class="invite-group-btn">Invite to
                     Group</a></p>
