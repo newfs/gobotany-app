@@ -7,6 +7,7 @@ from django.db import models
 from django.db.models.signals import post_save
 from django.conf import settings
 from django.contrib.auth.models import User
+from facebook_connect.models import FacebookUser
 from django.core.files.storage import Storage, FileSystemStorage
 from django.dispatch import receiver
 
@@ -179,14 +180,41 @@ def create_user_profile(sender, **kwargs):
     # Only when a user is first created, we should create his UserProfile
     # and his personal Pod.
     if created:
+        if not user.username:
+            # If the user is created without a username,
+            # it's being created as a facebook user, so we'll let
+            # the FacebookUser signal handle it instead
+            return
+
+        print 'New standard user creation [Username: {0}]'.format(user.username)
         profile = UserProfile(user=user)
         profile.save()
+        print 'Created new UserProfile'
         user_pod = Pod(name=user.username)
         user_pod.save()
+        print 'Created default Pod'
         membership = PodMembership(member=profile, pod=user_pod, is_owner=True,
             is_self_pod=True)
         membership.save()
 
+@receiver(post_save, sender=FacebookUser, dispatch_uid='create_profile_for_user')
+def create_fbuser_profile(sender, **kwargs):
+    fbuser = kwargs['instance']
+    created = kwargs['created']
+    # Only when a user is first created, we should create his UserProfile
+    # and his personal Pod.
+    if created:
+        user = fbuser.contrib_user
+        print 'New Facebook user creation [Username: {0}]'.format(user.username)
+        profile = UserProfile(user=user)
+        profile.save()
+        print 'Created new UserProfile'
+        user_pod = Pod(name=user.username)
+        user_pod.save()
+        print 'Created default Pod'
+        membership = PodMembership(member=profile, pod=user_pod, is_owner=True,
+            is_self_pod=True)
+        membership.save()
 
 class Sighting(models.Model):
     user = models.ForeignKey(User)
