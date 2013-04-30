@@ -14,8 +14,5 @@ python2.7 virtualenv.py --distribute --unzip-setuptools \
     --system-site-packages ./venv
 
 ./venv/bin/pip install -e ..
-# This is here because django-registration currently requires Django to already be installed when we install it.  
-# Hopefully this will be fixed soon, and we can put this back into the setup.py properly
-./venv/bin/pip install https://bitbucket.org/ubernostrum/django-registration/get/tip.tar.gz#egg=django-registration-0.9b1 
 ./venv/bin/pip install coverage
 ./venv/bin/pip install selenium
