@@ -1,4 +1,5 @@
 {% extends "gobotany/_modal_base.html" %}
+{% load gobotany_tags %}
 
 {# This page appears in a lightbox dialog when deleting a sighting. #}
 
@@ -22,7 +23,7 @@
                 <th>Date Posted</th>
             </thead>
             <tbody>
-                <td>{{ sighting.identification }}</td>
+                <td>{{ sighting.identification|italicize_if_scientific|safe }}</td>
                 <td>{{ sighting.location }}</td>
                 <td>{{ sighting.created }}</td>
             </tbody>

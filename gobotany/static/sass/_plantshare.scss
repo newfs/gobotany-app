@@ -725,12 +725,12 @@ body.plantshare {
             &:first-child {
                 margin-top: 0;
             }
-            span {
-                font-weight: normal;
-            }
         }
         dd {
             margin: 0;
+        }
+        span {
+            display: block;
         }
     }
 

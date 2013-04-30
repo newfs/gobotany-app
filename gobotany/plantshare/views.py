@@ -27,7 +27,8 @@ SIGHTINGS_MAP_DEFAULTS = {
     'center_title': 'Rumford, Maine'
 }
 
-SIGHTING_DATE_TIME_FORMAT = "%A, %e %B %Y"
+SIGHTING_DATE_FORMAT = "%A, %e %B %Y"
+SIGHTING_DATE_TIME_FORMAT = SIGHTING_DATE_FORMAT + " at %I:%M %p"
 
 def _sighting_form_page(request, form, edit=False, sighting=None):
     """Return a sighting form, either blank or with data."""
@@ -40,7 +41,7 @@ def _sighting_form_page(request, form, edit=False, sighting=None):
     })
     created = None
     if sighting:
-        created = sighting.created.strftime(SIGHTING_DATE_TIME_FORMAT)
+        created = sighting.created.strftime(SIGHTING_DATE_FORMAT)
         upload_photo_form = ScreenedImageForm(initial={
             'image_type': 'SIGHTING'
         })
@@ -144,8 +145,7 @@ def sightings_view(request):
                 'identification': sighting.identification,
                 'location': sighting.location,
                 'user': sighting.user,
-                'created': sighting.created.strftime(
-                           SIGHTING_DATE_TIME_FORMAT),
+                'created': sighting.created.strftime(SIGHTING_DATE_FORMAT),
             })
 
         return render_to_response('sightings.html', {
@@ -177,7 +177,7 @@ def sighting_view(request, sighting_id):
             'location': s.location,
             'location_notes': s.location_notes,
             'user': s.user,
-            'created': s.created,
+            'created': s.created.strftime(SIGHTING_DATE_TIME_FORMAT),
             'photos': s.private_photos()
         }
         return render_to_response('sighting.html', {
@@ -259,7 +259,7 @@ def manage_sightings_view(request):
             'identification': sighting.identification,
             'location': sighting.location,
             'user': sighting.user,
-            'created': sighting.created.strftime(SIGHTING_DATE_TIME_FORMAT),
+            'created': sighting.created.strftime(SIGHTING_DATE_FORMAT),
         })
     return render_to_response('manage_sightings.html', {
             'sightings': sightings,
@@ -309,7 +309,7 @@ def delete_sighting_view(request, sighting_id):
             'location': s.location,
             'location_notes': s.location_notes,
             'user': s.user,
-            'created': s.created.strftime(SIGHTING_DATE_TIME_FORMAT),
+            'created': s.created.strftime(SIGHTING_DATE_FORMAT),
         }
         return render_to_response('_delete_sighting.html', {
                 'sighting': sighting
@@ -718,7 +718,7 @@ def ajax_sightings(request):
         sightings_json.append({
             'id': sighting.id,
             'created': unicode(sighting.created.strftime(
-                               SIGHTING_DATE_TIME_FORMAT)),
+                               SIGHTING_DATE_FORMAT)),
             'location': sighting.location.user_input,
             'latitude': sighting.location.latitude,
             'longitude': sighting.location.longitude,

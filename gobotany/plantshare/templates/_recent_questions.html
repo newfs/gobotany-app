@@ -4,9 +4,9 @@
                 <dl>
                     <dt>Question</dt>
                     <dd>{{ question.question }}</dd>
-                    <dt>Answer
-                    <span>({{ question.answered|date:"l, F j" }})</span></dt>
-                    <dd>{{ question.answer }}</dd>
+                    <dt>Answer</dt>
+                    <dd>{{ question.answer }}
+                    <span>({{ question.answered|date:"l, j F Y" }})</span></dd>
                 </dl>
             </li>
         {% endfor %}

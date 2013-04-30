@@ -1241,8 +1241,8 @@ body.plantshare .questions li { background-color: #f9faea; border: 1px solid #c3
 body.plantshare .questions dl { margin: 0; padding: 0; }
 body.plantshare .questions dt { font-weight: bold; margin-top: 10px; }
 body.plantshare .questions dt:first-child { margin-top: 0; }
-body.plantshare .questions dt span { font-weight: normal; }
 body.plantshare .questions dd { margin: 0; }
+body.plantshare .questions span { display: block; }
 body.plantshare#profile div.section-container { position: relative; }
 body.plantshare#profile div.section-container .image-modal { background-color: white; border: 5px solid #acac90; display: none; padding: 15px; position: absolute; width: 400px; height: 160px; z-index: 10; }
 body.plantshare#profile div.section-container .image-modal img { float: left; margin: 0 20px 10px 0; max-height: 84px; max-width: 84px; }
