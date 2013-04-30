@@ -34,6 +34,7 @@
                 'plantshare/new_sighting',
                 'plantshare/new_checklist',
                 'plantshare/edit_checklist',
+                'plantshare/checklists',
                 'simplekey/simple',
                 'simplekey/results',
                 'taxa/species',

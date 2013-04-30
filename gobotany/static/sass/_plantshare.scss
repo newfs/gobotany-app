@@ -1006,6 +1006,10 @@ body.plantshare {
 
             .first {
               width: 15px; 
+
+              input[type="checkbox"] {
+                width: auto;
+              }
             }
             .checklistview-name {
               width: 185px; 

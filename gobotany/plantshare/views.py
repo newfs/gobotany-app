@@ -408,6 +408,17 @@ def new_checklist_view(request):
 
 
 @login_required
+def delete_checklist_view(request):
+    if request.method == 'POST':
+        delete_list = request.POST.getlist('checklist_id')
+        deleted_lists = Checklist.objects.filter(pk__in=delete_list)
+        deleted_lists.delete()
+
+    # We only support POST for this - if someone does a GET for this
+    # URL just send them back to the checklists page.
+    return redirect('ps-checklists')
+
+@login_required
 def edit_checklist_view(request, checklist_id):
     """Edit a checklist"""
     ChecklistEntryFormSet = _create_checklistentry_formset(can_delete=True)
