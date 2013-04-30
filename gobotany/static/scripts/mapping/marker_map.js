@@ -13,27 +13,39 @@ define([
 ], function ($, x1, google_maps) {
 
     // Constructor
-    function MarkerMap(map_div, center_cookie_name, zoom_cookie_name) {
+    function MarkerMap(map_div, cookie_names) {
+        // Set limits for latitude and longitude roughly corresponding to
+        // North America. Upon restoring the map location, if the
+        // location is found to be out of these limits, the default
+        // center location will be used instead.
+        var MIN_LATITUDE = 24;
+        var MAX_LATITUDE = 60;
+        var MIN_LONGITUDE = -128;
+        var MAX_LONGITUDE = -53;
+
         this.$map_div = $(map_div);
         this.map_id = this.$map_div.attr('id');
 
         this.latitude = this.$map_div.attr('data-latitude');
         this.longitude = this.$map_div.attr('data-longitude');
         // If the last location center was saved in a cookie, restore it.
-        this.center_cookie_name = center_cookie_name;
+        this.center_cookie_name = cookie_names['center'];
         var center_lat_long = $.cookie(this.center_cookie_name);
         if (center_lat_long !== undefined && center_lat_long !== null) {
             center_lat_long = center_lat_long.replace(/\(|\)/g, '');
             var parts = center_lat_long.split(',');
-            if (parts[0] === undefined || isNaN(parts[0].trim()) || 
-                parts[1] === undefined || isNaN(parts[1].trim())) {
+            var latitude = parts[0].trim();
+            var longitude = parts[1].trim();
+            if (latitude === undefined || isNaN(latitude) || 
+                longitude === undefined || isNaN(longitude) ||
+                latitude < MIN_LATITUDE || latitude > MAX_LATITUDE ||
+                longitude < MIN_LONGITUDE || longitude > MAX_LONGITUDE) {
                 // If a location part is invalid, clear it.
                 console.error('Invalid location part. Clearing cookie');
                 $.cookie(this.center_cookie_name, null, {path: '/'});
             }
             else {
-                var lat_long = new google_maps.LatLng(parts[0].trim(),
-                                                      parts[1].trim());
+                var lat_long = new google_maps.LatLng(latitude, longitude);
                 this.latitude = lat_long.lat();
                 this.longitude = lat_long.lng();
             }
@@ -41,7 +53,7 @@ define([
 
         this.zoom = 6;
         // If the last zoom level was saved in a cookie, restore it.
-        this.zoom_cookie_name = zoom_cookie_name;
+        this.zoom_cookie_name = cookie_names['zoom'];
         var zoom = $.cookie(this.zoom_cookie_name);
         if (zoom !== undefined && zoom !== null) {
             if (isNaN(zoom)) {
@@ -54,6 +66,7 @@ define([
             }
         }
 
+        this.last_viewed_cookie_name = cookie_names['last_viewed'];
         this.center_title = this.$map_div.attr('data-center-title');
         this.map = null;
         this.info_window = null;    // InfoWindow: marker pop-up
@@ -98,13 +111,19 @@ define([
         }
     };
 
+    MarkerMap.prototype.save_last_viewed = function (last_viewed_id,
+                                                     cookie_name) {
+        // Set a cookie for the last viewed item, for restoring later.
+        $.cookie(cookie_name, last_viewed_id, {path: '/'});
+    };
+
     MarkerMap.prototype.add_marker = function (latitude, longitude, title,
-                                               info_window_html) {
+                                               info_window_html, sighting_id,
+                                               show_info) {
         // Create a marker and add it to the array of markers that must
         // be kept in order to be able to clear all markers.
         var lat_long = new google_maps.LatLng(latitude, longitude);
         var marker = new google_maps.Marker({
-            animation: google_maps.Animation.DROP,
             position: lat_long,
             map: this.map,
             title: title
@@ -113,10 +132,20 @@ define([
 
         // Allow for showing an information popup upon clicking a marker.
         var info_window = this.info_window;
+        var save_last_viewed = this.save_last_viewed;
+        var cookie_name = this.last_viewed_cookie_name;
         google_maps.event.addListener(marker, 'click', function () {
             info_window.setContent(info_window_html);
             info_window.open(this.map, marker);
+            save_last_viewed(sighting_id, cookie_name);
         });
+
+        if (show_info === true) {
+            // Show the info window upon adding this marker.
+            info_window.setContent(info_window_html);
+            info_window.open(this.map, marker);
+            save_last_viewed(sighting_id, cookie_name);
+        }
     };
 
     MarkerMap.prototype.mark_center = function () {

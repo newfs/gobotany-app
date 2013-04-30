@@ -9,18 +9,25 @@ define([
 ], function ($, MarkerMap) {
 
     // Constructor
-    function SightingsMap(map_div, center_cookie_name, zoom_cookie_name) {
+    function SightingsMap(map_div, cookie_names) {
         // Call the super-constructor.
-        MarkerMap.call(this, map_div, center_cookie_name, zoom_cookie_name);
+        MarkerMap.apply(this, arguments);
 
+        this.cookie_names = cookie_names;
         this.MAX_INFO_DESC_LENGTH = 80;
 
         return this;
     };
 
     // Extend the base
-    SightingsMap.prototype = new MarkerMap;
-    SightingsMap.prototype.constructor = SightingsMap;
+
+    function subclass_of(base) {
+        _subclass_of.prototype = base.prototype;
+        return new _subclass_of();
+    }
+    function _subclass_of() {};
+
+    SightingsMap.prototype = subclass_of(MarkerMap);
 
     // Define methods
     
@@ -92,14 +99,26 @@ define([
             this.clear_markers();
             var sightings_count = json.sightings.length;
             this.show_sightings_count(sightings_count);
+            var marker;
             for (var i = 0; i < sightings_count; i++) {
                 var sighting = json.sightings[i];
                 var title = this.get_sighting_title(plant_name, sighting,
                                                     false);
                 var info_window_html = this.build_info_window_html(plant_name,
                                                                    sighting);
-                this.add_marker(sighting.latitude, sighting.longitude,
-                                title, info_window_html);
+
+                // Determine whether to show the info window for this
+                // sighting: do so if it was stored as the last viewed.
+                var show_info = false;
+                var last_sighting_id = parseInt(
+                    $.cookie(this.cookie_names['last_viewed']));
+                if (last_sighting_id === sighting.id) {
+                    show_info = true;
+                }
+
+                marker = this.add_marker(sighting.latitude,
+                    sighting.longitude, title, info_window_html, sighting.id,
+                    show_info);
             }
         });
     };

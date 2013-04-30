@@ -35,11 +35,14 @@ define([
         
         var map_div = this.$locator_element.find('.map').first();
 
-        // Restore the last map location and zoom level the user used, if any.
-        var CENTER_COOKIE_NAME = 'last_locator_center';
-        var ZOOM_COOKIE_NAME = 'last_locator_zoom';
-        var sightings_map = new SightingsMap(map_div, CENTER_COOKIE_NAME,
-            ZOOM_COOKIE_NAME);
+        // Restore the last map location, zoom level, and sighting
+        // viewed, if any.
+        var cookie_names = {
+            'center': 'last_locator_center',
+            'zoom': 'last_locator_zoom',
+            'last_viewed': 'last_locator_sighting'
+        }
+        var sightings_map = new SightingsMap(map_div, cookie_names);
         sightings_map.setup();
 
         // Restore the last plant searched in the Sightings Locator, if any.
