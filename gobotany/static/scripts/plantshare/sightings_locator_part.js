@@ -16,7 +16,7 @@ define([
             'input[type="text"]').first();
         this.current_plant_name = '';
         var plant_name = $.cookie('last_locator_name');
-        if (plant_name !== undefined && plant_name.length > 0) {
+        if (plant_name) {
             this.current_plant_name = plant_name;
             this.$plant_name_field.val(this.current_plant_name);
         }
