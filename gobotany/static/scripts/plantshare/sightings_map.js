@@ -74,6 +74,7 @@ define([
         }
         html += '</p>';
         if (sighting.id !== undefined) {
+            // TODO: URL base
             html += '<p><a href="/ps/sightings/' + sighting.id +
                     '/">more</a></p>';
         }
@@ -90,21 +91,33 @@ define([
         $('#sightings-status span').html(sightings_count);
     };
 
-    SightingsMap.prototype.show_plant = function (plant_name) {
+    SightingsMap.prototype.show_sightings = function (plant_name) {
         // Get sightings data from the server and show them on the map.
+        var url = '/ps/api/sightings/'   // TODO: URL base
+
+        // If the plant_name is undefined or null, will leave off the
+        // plant parameter and show recent sightings. If the plant name
+        // is non-empty or empty, will include the plant parameter and
+        // show sightings for that query.
+        var show_plant = (plant_name !== undefined && plant_name !== null);
+        if (show_plant) {
+            url += '?plant=' + plant_name
+        }
         $.ajax({
-            url: '/ps/api/sightings/?plant=' + plant_name,   // TODO: URL base
+            url: url,
             context: this
         }).done(function (json) {
             this.clear_markers();
             var sightings_count = json.sightings.length;
-            this.show_sightings_count(sightings_count);
+            if (show_plant) {
+                this.show_sightings_count(sightings_count);
+            }
             var marker;
             for (var i = 0; i < sightings_count; i++) {
                 var sighting = json.sightings[i];
-                var title = this.get_sighting_title(plant_name, sighting,
-                                                    false);
-                var info_window_html = this.build_info_window_html(plant_name,
+                var name = sighting.identification;
+                var title = this.get_sighting_title(name, sighting, false);
+                var info_window_html = this.build_info_window_html(name,
                                                                    sighting);
 
                 // Determine whether to show the info window for this

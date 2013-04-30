@@ -22,12 +22,13 @@ define([
         }
     };
 
-    SightingsLocatorPart.prototype.show_plant = function (plant_name,
-                                                          sightings_map) {
+    SightingsLocatorPart.prototype.show_sightings = function (plant_name,
+                                                              sightings_map) {
+        // Store the latest plant name searched, then get the sightings.
         this.current_plant_name = plant_name;
         $.cookie('last_locator_name', this.current_plant_name,
             {path: '/'});
-        sightings_map.show_plant(this.current_plant_name);
+        sightings_map.show_sightings(this.current_plant_name);
     };
 
     SightingsLocatorPart.prototype.setup = function () {
@@ -46,7 +47,13 @@ define([
         sightings_map.setup();
 
         // Restore the last plant searched in the Sightings Locator, if any.
-        this.show_plant(this.current_plant_name, sightings_map);
+        // Otherwise, just show some recent sightings.
+        if (this.current_plant_name.length > 0) {
+            this.show_sightings(this.current_plant_name, sightings_map);
+        }
+        else {
+            sightings_map.show_sightings();
+        }
 
         this.$locator_element.submit($.proxy(
             function (e) {
@@ -54,7 +61,7 @@ define([
 
                 var plant_name = this.$plant_name_field.val();
                 if (plant_name !== this.current_plant_name) {
-                    this.show_plant(plant_name, sightings_map);
+                    this.show_sightings(plant_name, sightings_map);
                 }
             }, this)
         );

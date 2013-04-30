@@ -692,9 +692,17 @@ def ajax_sightings(request):
     }
 
     plant_name = request.GET.get('plant')
+    print 'plant_name:', plant_name
 
-    sightings = Sighting.objects.select_related('location', 'user').filter(
-                    identification__iexact=plant_name)[:MAX_TO_RETURN]
+    sightings = None
+    if plant_name == None:
+        sightings = Sighting.objects.select_related(
+            'location', 'user').order_by('-created')[:MAX_TO_RETURN]
+    else:
+        sightings = Sighting.objects.select_related(
+            'location', 'user').filter(
+            identification__iexact=plant_name)[:MAX_TO_RETURN]
+
     sightings_json = []
     for sighting in sightings:
         photos = []
@@ -717,6 +725,7 @@ def ajax_sightings(request):
 
         sightings_json.append({
             'id': sighting.id,
+            'identification': sighting.identification,
             'created': unicode(sighting.created.strftime(
                                SIGHTING_DATE_FORMAT)),
             'location': sighting.location.user_input,
@@ -729,7 +738,6 @@ def ajax_sightings(request):
         })
 
     json = {
-        'scientific_name': plant_name,
         'sightings': sightings_json
     }
 
