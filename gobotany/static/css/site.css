@@ -1123,13 +1123,13 @@ body.plantshare .notification ul { line-height: 18px; list-style-position: insid
 body.plantshare .ps-button { display: inline-block; color: white; margin: 10px 0; text-transform: uppercase; }
 body.plantshare .save-btn { background: transparent url(/static/images/layout/plantshare-btns.png) no-repeat -272px -231px; width: 99px !important; height: 32px; font-size: 0; -moz-box-shadow: 0 !important; border: 0 none !important; display: block; text-indent: -9999px; }
 body.plantshare a.close-btn { background: transparent url(/static/images/icons/close.png) no-repeat; display: block; height: 16px; width: 16px; text-indent: -9999px; }
-body.plantshare #main .profile { width: 471px; }
-body.plantshare #main .profile h2 { float: left; }
-body.plantshare #main .profile a.edit { display: block; float: right; padding-top: 12px; }
-body.plantshare #main .profile h3 { font-size: 18px; }
-body.plantshare #main .profile div { clear: left; height: 84px; }
-body.plantshare #main .profile img { display: block; float: left; max-height: 84px; margin-right: 16px; max-width: 84px; }
-body.plantshare #main .profile table { clear: left; }
+body.plantshare .profile { width: 471px; }
+body.plantshare .profile h2 { float: left; }
+body.plantshare .profile a.edit { display: block; float: right; padding-top: 12px; }
+body.plantshare .profile h3 { font-size: 18px; }
+body.plantshare .profile div { clear: left; height: 84px; }
+body.plantshare .profile img { display: block; float: left; max-height: 84px; margin-right: 16px; max-width: 84px; }
+body.plantshare .profile table { clear: left; }
 body.plantshare#plantshare { /* styles for the PlantShare main page */ }
 body.plantshare#plantshare #ask { margin-top: 20px; }
 body.plantshare#plantshare #find-people-form { float: right; margin: 0; width: 184px; }
@@ -1296,6 +1296,7 @@ body.plantshare#checklists div.ps-section { margin: 20px 0; padding: 10px 0; }
 body.plantshare#checklists div#form-template { display: none; }
 body.plantshare#checklists table.checklists-list { background: #fff; border: 1px solid #c3d941; margin: 20px 0; width: 100%; }
 body.plantshare#checklists table.checklists-list .first { width: 15px; }
+body.plantshare#checklists table.checklists-list .first input[type="checkbox"] { width: auto; }
 body.plantshare#checklists table.checklists-list .checklistview-name { width: 185px; }
 body.plantshare#checklists table.checklists-list .date { width: 174px; }
 body.plantshare#checklists table.checklists-list .owner { width: 174px; }
