@@ -3,13 +3,14 @@
  */
 define([
     'bridge/jquery',
+    'util/mailto',
     'util/shadowbox_init',
     'util/tooltip'
-], function($, shadowbox_init, tooltip) {
+], function ($, mailto, shadowbox_init, tooltip) {
 
 var PhotoHelper = {
 
-    init: function() {
+    init: function () {
     },
 
     prepare_to_enlarge: function () {
@@ -27,6 +28,26 @@ var PhotoHelper = {
         // TODO: Fix this when we correct shadowbox_init.js to not insert
         // functions in the global namespace
         shadowbox_on_open();
+    },
+
+    anchor_email_addresses: function (content) {
+        // Add HTML anchors around apparent email addresses in content.
+        function anchor(match) {
+            return '<a class="email">' + match + '</a>';
+        }
+        return content.replace(/\b\S*\[at\]\S*\b/g, anchor);
+    },
+
+    link_urls: function (content) {
+        // Add HTML hyperlinks around apparent URLs in content.
+        function link(match) {
+            var url = match;
+            if (match.toString().indexOf('http://') !== 0) {
+                url = 'http://' + match;
+            }
+            return '<a href="' + url + '">' + match + '</a>';
+        }
+        return content.replace(/\b(http:\/\/)?www\.\S*\b/g, link);
     },
 
     process_credit: function () {
@@ -96,7 +117,16 @@ var PhotoHelper = {
         // Connect a tooltip for copyright holder contact information.
         var tooltip_html = '<p>';
         if (contact_info) {
-            tooltip_html += 'Contact: ' + contact_info + '</p><p>Also, ';
+            // Surround any email addresses with anchors, which will be
+            // transformed into hyperlinks upon display.
+            var anchored_contact_info = PhotoHelper.anchor_email_addresses(
+                contact_info);
+            // Hyperlink any URLs.
+            var anchored_contact_info = PhotoHelper.link_urls(
+                anchored_contact_info);
+
+            tooltip_html += 'Contact: ' + anchored_contact_info +
+                            '</p><p>Also, ';
         }
         tooltip_html += 'Go Botany <a ' +
             'href="/terms-of-use/#ip">Terms of Use</a> apply</p>';
@@ -105,7 +135,10 @@ var PhotoHelper = {
         $contact_link.tooltip({
             content: tooltip_html,
             css_class: 'gb-tooltip dark photo',
-            cursor_activation: 'click'
+            cursor_activation: 'click',
+            on_load: function () {
+                mailto.make_link('.gb-tooltip.dark.photo .email');
+            }
         });
     }
 

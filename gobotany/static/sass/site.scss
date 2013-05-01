@@ -757,7 +757,14 @@ footer {
             font-family: $headings-font;
             font-size: 11px;
             p {
-                margin: 0;
+                line-height: 120%;
+                margin: 6px 0;
+                &:first-of-type {
+                    margin-top: 0;
+                }
+                &:last-of-type {
+                    margin-bottom: 0;
+                }
             }
             a {
                 color: white;

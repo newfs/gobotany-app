@@ -19,6 +19,7 @@ define([
             fade_speed: 'fast',
             horizontal_adjust_px: 20,
             hover_delay: 400,
+            on_load: null,   // optional callback when tooltip is displayed
             small_screen_max_width: 600,
             vertical_adjust_px: 26,
             width: null   // use width defined in CSS by default
@@ -102,6 +103,11 @@ define([
             $('body').append(tooltip_element);
             this.position_tooltip(tooltip_element, left, top);
             $(tooltip_element).fadeIn(this.options.fade_speed);
+
+            // Call the optional "on load" callback function.
+            if (this.options.on_load) {
+                this.options.on_load.call();
+            }
         },
 
         hide_tooltip: function (fade) {

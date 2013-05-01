@@ -424,7 +424,9 @@ footer .support { margin-right: 0; padding: 18px 0; }
 .gb-tooltip.dark { border-color: black; background: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #517032), color-stop(100%, #3d5524)); background: -webkit-linear-gradient(top center, #517032, #3d5524); background: -moz-linear-gradient(top center, #517032, #3d5524); background: -o-linear-gradient(top center, #517032, #3d5524); background: linear-gradient(top center, #517032, #3d5524); color: #fff; }
 .gb-tooltip.dark .arrow { background: #3d5524; border-color: black; border-bottom-color: #3d5524; border-right-color: #3d5524; }
 .gb-tooltip.dark.photo { font-family: "Trebuchet MS", Helvetica, Arial, "Lucida Sans Unicode", sans-serif; font-size: 11px; }
-.gb-tooltip.dark.photo p { margin: 0; }
+.gb-tooltip.dark.photo p { line-height: 120%; margin: 6px 0; }
+.gb-tooltip.dark.photo p:first-of-type { margin-top: 0; }
+.gb-tooltip.dark.photo p:last-of-type { margin-bottom: 0; }
 .gb-tooltip.dark.photo a { color: white; text-decoration: underline; }
 
 /* Glossary tooltip */
