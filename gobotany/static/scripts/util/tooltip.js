@@ -180,7 +180,7 @@ define([
                     }
                     else if (self.options.cursor_activation === 'click') {
                         $(element).bind({
-                            'click.Tooltip': function () {
+                            'click.Tooltip': function (event) {
                                 var offset = $(element).offset();
                                 self.show_tooltip(element, offset.left,
                                                   offset.top);
