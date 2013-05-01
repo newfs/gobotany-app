@@ -228,6 +228,7 @@ results_page_init: function(args) {
             /* Hide or show the filter questions area on small screens. */
             $('#question-nav .instructions').bind('click', function() {
                 $(this).parent().toggleClass('closed');
+                $('.icon-plus,.icon-minus', this).toggleClass('icon-plus').toggleClass('icon-minus');
             });
         }
     });
