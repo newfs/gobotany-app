@@ -755,6 +755,14 @@ footer {
         }
         &.photo {
             font-family: $headings-font;
+            font-size: 11px;
+            p {
+                margin: 0;
+            }
+            a {
+                color: white;
+                text-decoration: underline;
+            }
         }
     }
 }

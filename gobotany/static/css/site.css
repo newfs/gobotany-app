@@ -423,7 +423,9 @@ footer .support { margin-right: 0; padding: 18px 0; }
 .gb-tooltip .arrow { background: #d6e6c5; border: 1px solid #c3d941; /* rotated borders, same color as bottom of tooltip */ border-bottom-color: #d6e6c5; border-right-color: #d6e6c5; bottom: -7px; height: 11px; left: 10px; position: absolute; width: 11px; -webkit-box-shadow: -1px -1px 1px #333333; -moz-box-shadow: -1px -1px 1px #333333; box-shadow: -1px -1px 1px #333333; -webkit-transform: rotate(225deg); -moz-transform: rotate(225deg); -ms-transform: rotate(225deg); -o-transform: rotate(225deg); transform: rotate(225deg); }
 .gb-tooltip.dark { border-color: black; background: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #517032), color-stop(100%, #3d5524)); background: -webkit-linear-gradient(top center, #517032, #3d5524); background: -moz-linear-gradient(top center, #517032, #3d5524); background: -o-linear-gradient(top center, #517032, #3d5524); background: linear-gradient(top center, #517032, #3d5524); color: #fff; }
 .gb-tooltip.dark .arrow { background: #3d5524; border-color: black; border-bottom-color: #3d5524; border-right-color: #3d5524; }
-.gb-tooltip.dark.photo { font-family: "Trebuchet MS", Helvetica, Arial, "Lucida Sans Unicode", sans-serif; }
+.gb-tooltip.dark.photo { font-family: "Trebuchet MS", Helvetica, Arial, "Lucida Sans Unicode", sans-serif; font-size: 11px; }
+.gb-tooltip.dark.photo p { margin: 0; }
+.gb-tooltip.dark.photo a { color: white; text-decoration: underline; }
 
 /* Glossary tooltip */
 .glosstip { line-height: 16px; margin: 0; padding: 0; position: relative; max-width: 30em; }

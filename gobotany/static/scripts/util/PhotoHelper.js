@@ -82,12 +82,8 @@ var PhotoHelper = {
         }
 
         var html = '<div><h6>' + title + '</h6><span>' + copyright_holder +
-            ' ' + copyright + ' Use: <a href="/terms-of-use/#ip" ' +
-            '">Terms' + '</a>';
-        if (contact_info !== '') {
-            html += ', <a class="contact">Permission</a>';
-        }            
-        html += '</span>';
+            ' ' + copyright + ' <a class="contact">Permission and ' +
+            'Terms of Use</a></span>';
         if (source !== '') {
             html += '<br><span>' + source + '</span>';
         }
@@ -98,14 +94,19 @@ var PhotoHelper = {
         title_element.removeClass('hidden');
 
         // Connect a tooltip for copyright holder contact information.
-        if (contact_info !== '') {
-            var $contact_link = $('.contact', title_element);
-            $contact_link.tooltip({
-                content: contact_info,
-                css_class: 'gb-tooltip dark photo',
-                cursor_activation: 'click'
-            });
+        var tooltip_html = '<p>';
+        if (contact_info) {
+            tooltip_html += 'Contact: ' + contact_info + '</p><p>Also, ';
         }
+        tooltip_html += 'Go Botany <a ' +
+            'href="/terms-of-use/#ip">Terms of Use</a> apply</p>';
+
+        var $contact_link = $('.contact', title_element);
+        $contact_link.tooltip({
+            content: tooltip_html,
+            css_class: 'gb-tooltip dark photo',
+            cursor_activation: 'click'
+        });
     }
 
 };
