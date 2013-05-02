@@ -35,7 +35,7 @@ var PhotoHelper = {
         function anchor(match) {
             return '<a class="email">' + match + '</a>';
         }
-        return content.replace(/\b\S*\[at\]\S*,?\b/g, anchor);
+        return content.replace(/\b\S*\[at\]\S*\b/g, anchor);
     },
 
     link_urls: function (content) {
