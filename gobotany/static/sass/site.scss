@@ -756,6 +756,7 @@ footer {
         &.photo {
             font-family: $headings-font;
             font-size: 11px;
+            position: fixed;   /* with lightbox, so prevent scrolling away */
             p {
                 line-height: 120%;
                 margin: 6px 0;
