@@ -564,7 +564,7 @@ results_page_init: function(args) {
         // no hash yet), do not create a new Back history entry when replacing
         // the hash. This is to help avoid creating a "barrier" when the user
         // tries to navigate back to the pile ID pages using the Back button.
-        if (window.location.hash === '') {   // empty hash: initial page load
+        if (window.location.hash.indexOf('_filters=') < 0) {   // no _filters in hash: initial page load
             create_new_history_entry = false;
         }
 
