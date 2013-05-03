@@ -158,7 +158,7 @@ def nav_item(parser, token):
 
 class NavigationItemNode(template.Node):
     def __init__(self, label, named_url, extra_path_item=None):
-        self.label = label[1:-1]
+        self.label = template.Variable(label)
         self.named_url = None
         if named_url:
             self.named_url = named_url
@@ -167,6 +167,14 @@ class NavigationItemNode(template.Node):
             self.extra_path_item = extra_path_item[1:-1]
 
     def render(self, context):
+        # Handle either a variable or a string as the label.
+        try:
+            label_from_variable = self.label.resolve(context)
+            self.label = label_from_variable
+        except template.VariableDoesNotExist:
+            # Treat the label as a string: trim quotes.
+            self.label = self.label.tostring()[1:-1]
+
         args = ()
         if self.extra_path_item:
             args = (self.extra_path_item,)

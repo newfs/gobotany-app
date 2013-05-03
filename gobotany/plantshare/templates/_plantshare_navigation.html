@@ -1,4 +1,6 @@
 {% load gobotany_tags %}
+{% load plantshare_tags %}
+
 <div class="box">
     <nav>
         <ul>
@@ -18,7 +20,10 @@
                 <li>{% nav_item 'Find People' ps-find-people %}</li>
                 <li>{% nav_item 'Your Groups' %}{# TODO: add URL name #}</li>
                 <li class="profile">{% nav_item 'Your Profile' ps-your-profile %}</li>
-                <li class="logout">{% nav_item 'Log Out' auth_logout %}</li>
+                {% assign_user_display_name user=user as display_name %}
+                {% with logout_label="Log Out "|add:display_name %}
+                    <li class="logout">{% nav_item logout_label auth_logout %}</li>
+                {% endwith %}
             {% else %}
                 {% comment %}
                 This sign up link is always shown, even if a prior signup is
