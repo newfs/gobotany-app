@@ -1729,21 +1729,19 @@ class Importer(object):
 
 
     def _create_help_page(self):
-        self._create_plain_page('site-help',
-                                'Help',
-                                'site/templates/gobotany/help.html')
+        self._create_plain_page('site-help', 'Help',
+            'site/templates/gobotany/_help_main_content.html')
 
 
     def _create_about_gobotany_page(self):
-        self._create_plain_page('site-about',
-                                'About Go Botany',
-                                'site/templates/gobotany/about.html')
+        self._create_plain_page('site-about', 'About Go Botany',
+            'site/templates/gobotany/_about_main_content.html')
 
 
     def _create_getting_started_page(self):
         plain_page = self._create_plain_page('site-getting-started',
             'Getting Started with the Simple Key',
-            'site/templates/gobotany/getting_started.html')
+            'site/templates/gobotany/_getting_started_main_content.html')
         video = models.Video.objects.get(title='Getting Started')
         if video:
             plain_page.videos.add(video)
@@ -1806,11 +1804,11 @@ class Importer(object):
 
     def _create_privacy_policy_page(self):
         self._create_plain_page('site-privacy', 'Privacy Policy',
-                                'site/templates/gobotany/privacy.html')
+            'site/templates/gobotany/_privacy_main_content.html')
 
     def _create_terms_of_use_page(self):
         self._create_plain_page('site-terms-of-use', 'Terms of Use',
-                                'site/templates/gobotany/terms.html')
+            'site/templates/gobotany/_terms_main_content.html')
 
 
     def import_plain_pages(self):
