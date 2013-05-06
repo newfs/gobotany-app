@@ -639,7 +639,7 @@ body.taxa#genus ul.species { font-size: 14px; list-style: none; }
 body.taxa#genus ul.species li { margin: 0 0 5px 0; }
 body.taxa#genus p.family { font-size: 14px; margin: 0; }
 body.taxa#genus .genus-species-btn { background: url(/static/images/layout/genus-btn.png) no-repeat scroll 0 0 transparent; clear: both; display: block; float: left; height: 32px; margin: 15px 0 0; text-indent: -9000px; width: 280px; }
-body.taxa#species { /* Larger gallery styles */ /* Smooth Div Scroll image area */ }
+body.taxa#species { /* end #main */ /* Larger gallery styles */ /* Smooth Div Scroll image area */ }
 body.taxa#species #main { background: url(/static/images/layout/sidebar-bg.png) repeat-y; /* layout: right-side content sections */ /* left-side content sections */ }
 body.taxa#species #main .common { margin: 6px 0 12px; }
 body.taxa#species #main #breadcrumb, body.taxa#species #main #name, body.taxa#species #main #species-images, body.taxa#species #main #partner, body.taxa#species #main #facts, body.taxa#species #main #habitat, body.taxa#species #main #chars, body.taxa#species #main #wetland, body.taxa#species #main #status, body.taxa#species #main #info-dkey { clear: left; margin-left: 250px; }
@@ -662,7 +662,7 @@ body.taxa#species #main h5 { font-size: 14px; }
 body.taxa#species #main p { margin: 0 0 15px; }
 body.taxa#species #sb-player.html { background: #fff; overflow: hidden; /* Get rid of vertical scrollbar in WebKit on enlarged N. America dist. map. */ padding: 0 5px 5px; }
 body.taxa#species #sb-player #na-dist-county-map { background: #fff; height: 100%; width: 100%; }
-body.taxa#species .note { background: #c4bd93; border-bottom: 1px solid #ad9f50; border-top: 1px solid #ad9f50; color: #000; font-family: "Trebuchet MS", Helvetica, Arial, "Lucida Sans Unicode", sans-serif; font-size: 24px; margin-bottom: 0.5em; padding: 0.5em 0; text-align: center; width: 100%; }
+body.taxa#species .note { background: rgba(196, 189, 147, 0.7); border-bottom: 1px solid #ad9f50; border-top: 1px solid #ad9f50; color: #000; font-family: "Trebuchet MS", Helvetica, Arial, "Lucida Sans Unicode", sans-serif; font-size: 22px; padding: 8px 0; position: relative; text-align: center; width: 100%; z-index: 11; }
 body.taxa#species a.description-control { background: url(/static/images/icons/plus.png) left 50% no-repeat; display: block; margin: 10px 0 12px 0; padding: 3px 0 3px 25px; }
 body.taxa#species a.description-control.expanded { background: url(/static/images/icons/minus.png) left 50% no-repeat; }
 body.taxa#species ul.full-description { background: #fbfbf8; border: 1px solid #e1e1dc; display: none; margin: 0 0 15px 0; }
@@ -712,7 +712,7 @@ body.taxa#species #species-images .scrollableArea a { border-right: 5px solid wh
   body.taxa#species #main .section { padding: 12px 0 0; width: auto; }
   body.taxa#species #main .section.help { display: none; }
   body.taxa#species #main #maps, body.taxa#species #main #side { position: static; }
-  body.taxa#species #main #maps { background: #fff; border: 1px solid #c3d941; padding-left: 16px; padding-right: 16px; }
+  body.taxa#species #main #maps { background: #fff; border: 1px solid #c3d941; padding-left: 16px; padding-right: 16px; z-index: 10; }
   body.taxa#species #main #species-images { border: 0; height: 120px; -webkit-box-shadow: none; -moz-box-shadow: none; box-shadow: none; }
   body.taxa#species #main #species-images .scrollableArea a { border-right: 20px solid #f0f0c0; }
   body.taxa#species #main #species-images .scrollableArea a img { height: 120px; width: 120px; }
