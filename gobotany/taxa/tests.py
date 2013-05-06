@@ -142,28 +142,28 @@ class LookalikesTests(FunctionalCase):
         for s in SPECIES:
             url = '/species/%s/' % s.replace(' ', '/').lower()
             self.get(url)
-            heading = self.css('#sidebar .lookalikes h4')
+            heading = self.css('#side .lookalikes h4')
             self.assertTrue(heading)
-            lookalikes = self.css('#sidebar .lookalikes dt')
+            lookalikes = self.css('#side .lookalikes dt')
             self.assertTrue(len(lookalikes) > 0)
             for lookalike in lookalikes:
                 self.assertTrue(len(lookalike.text) > 0)
-            notes = self.css('#sidebar .lookalikes dd')
+            notes = self.css('#side .lookalikes dd')
             self.assertTrue(len(notes) > 0)
             for note in notes:
                 self.assertTrue(len(note.text) > 0)
 
     def test_lookalikes_with_notes(self):
         self.get('/species/abies/balsamea/')
-        lookalike = self.css('#sidebar .lookalikes dt')[0].text
-        notes = self.css('#sidebar .lookalikes dd')[0].text
+        lookalike = self.css('#side .lookalikes dt')[0].text
+        notes = self.css('#side .lookalikes dd')[0].text
         self.assertTrue(lookalike.find(':') > -1);
         self.assertTrue(len(notes) > 0)
         self.assertTrue(notes.find('winter buds not resinous,') > -1)
 
     def test_lookalikes_without_notes(self):
         self.get('/species/abies/concolor/')
-        lookalike = self.css('#sidebar .lookalikes dt')[0].text
-        notes = self.css('#sidebar .lookalikes dd')[0].text
+        lookalike = self.css('#side .lookalikes dt')[0].text
+        notes = self.css('#side .lookalikes dd')[0].text
         self.assertTrue(lookalike.find(':') == -1);
         self.assertTrue(len(notes) == 0)
