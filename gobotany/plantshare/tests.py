@@ -86,7 +86,7 @@ class PlantShareTests(FunctionalCase):
         self._get_plantshare(self.MAIN_URL)
         link = None
         try:
-            link = self.link_saying('My Profile')
+            link = self.link_saying('Your Profile')
         except ValueError:
             pass
         self.assertIsNone(link)
@@ -108,11 +108,12 @@ class PlantShareTests(FunctionalCase):
 
     def test_main_page_logged_in_has_profile_nav_item(self):
         self._get_plantshare(self.MAIN_URL, log_in=True)
-        self.assertIsNotNone(self.link_saying('My Profile'))
+        self.assertIsNotNone(self.link_saying('Your Profile'))
 
     def test_main_page_logged_in_has_logout_nav_item(self):
         self._get_plantshare(self.MAIN_URL, log_in=True)
-        self.assertIsNotNone(self.link_saying('Log Out'))
+        self.assertIsNotNone(self.link_saying('Log Out ' +
+                                              self.TEST_USERNAME))
 
     def test_main_page_logged_in_omits_signup_nav_item(self):
         self._get_plantshare(self.MAIN_URL, log_in=True)
@@ -298,7 +299,7 @@ class PlantShareTests(FunctionalCase):
 
     def test_new_sighting_form_page_has_my_profile_nav_item(self):
         self._get_plantshare(self.NEW_SIGHTING_URL, log_in=True)
-        self.assertIsNotNone(self.link_saying('My Profile'))
+        self.assertIsNotNone(self.link_saying('Your Profile'))
 
     def test_new_sighting_form_page_has_full_navigation(self):
         self._get_plantshare(self.NEW_SIGHTING_URL, log_in=True)
@@ -333,14 +334,14 @@ class PlantShareTests(FunctionalCase):
 
     def test_new_sighting_done_page_has_my_profile_nav_item(self):
         self._get_plantshare(self.NEW_SIGHTING_DONE_URL, log_in=True)
-        self.assertIsNotNone(self.link_saying('My Profile'))
+        self.assertIsNotNone(self.link_saying('Your Profile'))
 
     def test_new_sighting_done_page_has_full_navigation(self):
         self._get_plantshare(self.NEW_SIGHTING_DONE_URL, log_in=True)
         navigation_items = self.css('#sidebar nav li')
         self.assertGreater(len(navigation_items), 1)
 
-    # My Profile page
+    # Your Profile page
 
     MY_PROFILE_URL = '/profile/'
 
@@ -352,11 +353,11 @@ class PlantShareTests(FunctionalCase):
     def test_profile_page_title(self):
         self.assertEqual(self._page_title(
             self.MY_PROFILE_URL, log_in=True),
-            'My Profile: PlantShare: Go Botany')
+            'Your Profile: PlantShare: Go Botany')
 
     def test_profile_page_main_heading(self):
         self.assertEqual(self._page_heading(self.MY_PROFILE_URL,
-                                            log_in=True), 'My Profile')
+                                            log_in=True), 'Your Profile')
 
     def test_profile_page_has_plantshare_nav_item(self):
         self._get_plantshare(self.MY_PROFILE_URL, log_in=True)
@@ -368,7 +369,7 @@ class PlantShareTests(FunctionalCase):
 
     def test_profile_page_has_my_profile_nav_item(self):
         self._get_plantshare(self.MY_PROFILE_URL, log_in=True)
-        self.assertIsNotNone(self.link_saying('My Profile'))
+        self.assertIsNotNone(self.link_saying('Your Profile'))
 
     def test_my_profile_page_has_full_navigation(self):
         self._get_plantshare(self.MY_PROFILE_URL, log_in=True)
