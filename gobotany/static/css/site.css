@@ -1552,13 +1552,13 @@ body.search-results .search-navigation a { text-decoration: underline; }
 #list .content table { width: 100%; }
 #list .content table th { text-align: center; vertical-align: bottom; }
 #list .content table th.name { width: 16%; }
-#list .content table th.common { width: 15%; }
-#list .content table th.family { width: 14%; }
-#list .content table th.dist { width: 10%; }
-#list .content table th.native { width: 12%; }
+#list .content table th.common { width: 13%; }
+#list .content table th.family { width: 13%; }
+#list .content table th.dist { width: 12%; }
+#list .content table th.native { width: 9%; }
 #list .content table th.wetland { width: 5%; }
 #list .content table th.group { width: 12%; }
-#list .content table th.subgroup { width: 16%; }
+#list .content table th.subgroup { width: 20%; }
 
 /* Legal notification pages */
 .legal #main h3 { margin: 8px 0; }
