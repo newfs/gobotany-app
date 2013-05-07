@@ -1018,27 +1018,35 @@ body.plantshare {
             border: 1px solid #C3D941;
             margin: 20px 0;
             width: 100%;
+            table-layout: fixed;
+
+            td { overflow: hidden; }
 
             .first {
-              width: 15px; 
+              min-width: 15px; 
+              white-space: nowrap;
 
               input[type="checkbox"] {
                 width: auto;
               }
             }
             .checklistview-name {
-              width: 185px; 
+              min-width: 185px; 
+              white-space: nowrap;
             }
             .date {
-              width: 174px; 
+              min-width: 100px; 
+              white-space: nowrap;
             }
             .owner {
-              width: 174px; 
+              min-width: 100px; 
+              white-space: nowrap;
             }
             .last {
               padding-right: 20px;
               text-align: right;
-              width: 79px; 
+              width: 100%;
+              white-space: nowrap;
             }
             .name {
                 width: 140px; 
@@ -1072,8 +1080,6 @@ body.plantshare {
                 display: block;
                 width: auto;
                 tr th {
-                    display: block;
-                    float: left !important;
                     padding: 7px 5px;
                     text-align: left;
                     text-transform: uppercase;
@@ -1090,10 +1096,7 @@ body.plantshare {
                 }
 
                 tr td {
-                    display: block;
-                    float: left;
-                    padding: 10px 5px;
-                    width: auto;
+                    padding: 7px 5px;
                     
                     .thumb {
                         background: url(../images/icons/flower-thumb.gif) no-repeat;

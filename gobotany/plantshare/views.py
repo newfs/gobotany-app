@@ -1,3 +1,4 @@
+import csv
 from datetime import datetime
 from random import randint
 
@@ -418,6 +419,26 @@ def delete_checklist_view(request):
     # We only support POST for this - if someone does a GET for this
     # URL just send them back to the checklists page.
     return redirect('ps-checklists')
+
+@login_required
+def export_checklist_view(request, checklist_id):
+    response = HttpResponse(content_type='text/csv')
+    checklist = get_object_or_404(Checklist, pk=checklist_id)
+    filename = checklist.name.lower().replace(' ', '_') + '.csv'
+    response['Content-Disposition'] = 'attachment; filename="{0}"'.format(filename)
+
+    writer = csv.writer(response)
+    writer.writerow(('List Name:', checklist.name))
+    writer.writerow(('Comments:', checklist.comments))
+    writer.writerow([])
+    writer.writerow(('Found?', 'Plant Name', 'Date Sighted', 'Location', 'Date Posted', 'Notes'))
+    for entry in checklist.entries.all():
+        found = 'Yes' if entry.is_checked else 'No'
+        sighted = entry.date_found.strftime('%d/%m/%Y') if entry.date_found else 'N/A'
+        posted = entry.date_posted.strftime('%d/%m/%Y') if entry.date_posted else 'N/A'
+        writer.writerow((found, entry.plant_name, sighted, entry.location, posted, entry.note))
+
+    return response
 
 @login_required
 def edit_checklist_view(request, checklist_id):

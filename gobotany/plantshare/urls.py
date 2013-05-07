@@ -50,6 +50,8 @@ urlpatterns = patterns(
     url(r'^checklists/delete/$', views.delete_checklist_view, name='ps-checklist-delete'),
     url(r'^checklists/(?P<checklist_id>[0-9]+)/$', views.checklist_view,
         name='ps-checklist'),
+    url(r'^checklists/(?P<checklist_id>[0-9]+)/export$', views.export_checklist_view,
+        name='ps-checklist-export'),
     url(r'^checklists/(?P<checklist_id>[0-9]+)/edit$', views.edit_checklist_view,
         name='ps-checklist-edit'),
 

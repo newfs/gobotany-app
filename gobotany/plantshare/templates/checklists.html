@@ -47,7 +47,10 @@
                   <td class="date">{{ checklist.date_found|default:"N/A" }}</td>
                   {% ifequal user.username checklist.owner.name %}
                   <td class="owner">Me</td>
-                  <td class="last"><a href="{% url 'ps-checklist-edit' checklist.pk %}">Edit List</a></td>
+                  <td class="last">
+                      <a href="{% url 'ps-checklist-edit' checklist.pk %}">Edit</a> |
+                      <a href="{% url 'ps-checklist-export' checklist.pk %}">Export</a>
+                  </td>
                   {% else %}
                   <td class="owner">{{ checklist.owner.name }}</td>
                   <td class="last"><a href="{% url 'ps-checklist' checklist.pk %}">View List</a></td>
@@ -59,7 +62,6 @@
     </form>
     <div class="form-actions small-margin-top">
         <!-- <a class="ps-button" href="javascript:alert('Coming soon!');" rel="shadowbox;height=440;width=750;" class="share-btn inactive btn">Share</a> -->
-        <a class="ps-button" href="javascript:alert('Coming soon!');" class="export-btn inactive btn">Export</a>
         <a href="{% url 'ps-checklist-delete' %}" class="ps-button delete-btn inactive btn">Delete</a>
     </div><!-- /.form-actions -->
     {% else %}
