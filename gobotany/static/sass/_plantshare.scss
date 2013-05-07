@@ -150,7 +150,7 @@ body.plantshare {
         text-indent: -9999px;
     }
 
-    .profile {
+    #main .profile {
         width: 471px;
         h2 {
             float: left;
@@ -279,16 +279,30 @@ body.plantshare {
     }
 
     &#find-people-profile {
+        $profile-box-padding: 16px;
+        $avatar-image-height: 153px;
         background: none;
         div {
             background: #fff;
             border: 5px solid #acac90;
-            height: 100%;
-            padding: 0 18px;
-            text-align: center;
+            height: $avatar-image-height + ($profile-box-padding * 2);
+            padding: 0 $profile-box-padding 0 0;
+            p {
+                margin-top: 0;
+            }
         }
         .close {
             @include dialog-close-button;
+        }
+        .avatar {
+            float: left;
+            height: $avatar-image-height;
+            margin: $profile-box-padding;
+        }
+        .map {
+            float: right;
+            height: 115px;
+            width: 169px;
         }
     }
 

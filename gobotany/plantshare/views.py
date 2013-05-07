@@ -2,6 +2,7 @@ from datetime import datetime
 from random import randint
 
 from django.contrib.auth.decorators import login_required, user_passes_test
+from django.contrib.auth.models import User
 from django.core.exceptions import ObjectDoesNotExist
 from django.core.urlresolvers import reverse, reverse_lazy
 from django.conf import settings
@@ -491,7 +492,19 @@ def find_people_view(request):
 
 @login_required
 def find_people_profile_view(request, username):
+    user = None
+    profile = None
+    try:
+        user = User.objects.get(username=username)
+    except ObjectDoesNotExist:
+        pass
+    if user:
+        try:
+            profile = UserProfile.objects.get(user=user)
+        except UserProfile.DoesNotExist:
+            pass
     return render_to_response('_find_people_profile.html', {
+            'profile': profile,
             'username': username,
         }, context_instance=RequestContext(request))
 

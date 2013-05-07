@@ -1127,13 +1127,13 @@ body.plantshare .notification ul { line-height: 18px; list-style-position: insid
 body.plantshare .ps-button { display: inline-block; color: white; margin: 10px 0; text-transform: uppercase; }
 body.plantshare .save-btn { background: transparent url(/static/images/layout/plantshare-btns.png) no-repeat -272px -231px; width: 99px !important; height: 32px; font-size: 0; -moz-box-shadow: 0 !important; border: 0 none !important; display: block; text-indent: -9999px; }
 body.plantshare a.close-btn { background: transparent url(/static/images/icons/close.png) no-repeat; display: block; height: 16px; width: 16px; text-indent: -9999px; }
-body.plantshare .profile { width: 471px; }
-body.plantshare .profile h2 { float: left; }
-body.plantshare .profile a.edit { display: block; float: right; padding-top: 12px; }
-body.plantshare .profile h3 { font-size: 18px; }
-body.plantshare .profile div { clear: left; height: 84px; }
-body.plantshare .profile img { display: block; float: left; max-height: 84px; margin-right: 16px; max-width: 84px; }
-body.plantshare .profile table { clear: left; }
+body.plantshare #main .profile { width: 471px; }
+body.plantshare #main .profile h2 { float: left; }
+body.plantshare #main .profile a.edit { display: block; float: right; padding-top: 12px; }
+body.plantshare #main .profile h3 { font-size: 18px; }
+body.plantshare #main .profile div { clear: left; height: 84px; }
+body.plantshare #main .profile img { display: block; float: left; max-height: 84px; margin-right: 16px; max-width: 84px; }
+body.plantshare #main .profile table { clear: left; }
 body.plantshare#plantshare { /* styles for the PlantShare main page */ }
 body.plantshare#plantshare #ask { margin-top: 20px; }
 body.plantshare#plantshare #find-people-form { float: right; margin: 0; width: 184px; }
@@ -1156,8 +1156,11 @@ body.plantshare #find-people-form input[type='submit'] { background: transparent
 body.plantshare #find-people-form input:focus { outline: 0 none; }
 body.plantshare #find-people-form + p { clear: left; padding-top: 14px; }
 body.plantshare#find-people-profile { background: none; }
-body.plantshare#find-people-profile div { background: #fff; border: 5px solid #acac90; height: 100%; padding: 0 18px; text-align: center; }
+body.plantshare#find-people-profile div { background: #fff; border: 5px solid #acac90; height: 185px; padding: 0 16px 0 0; }
+body.plantshare#find-people-profile div p { margin-top: 0; }
 body.plantshare#find-people-profile .close { background: transparent url(/static/images/icons/close.png) no-repeat; cursor: pointer; display: block; height: 16px; position: absolute; right: 15px; text-indent: -9999px; top: 15px; width: 16px; }
+body.plantshare#find-people-profile .avatar { float: left; height: 153px; margin: 16px; }
+body.plantshare#find-people-profile .map { float: right; height: 115px; width: 169px; }
 body.plantshare#sign-up #main form input { width: 350px; }
 body.plantshare#sign-up #main form input.button { background: transparent url(../images/layout/plantshare-btns.png) no-repeat -1px -359px; border: 0; height: 41px; margin-top: 12px; width: 244px; display: block; text-indent: -9000px; }
 body.plantshare#sign-up #main form input.button:hover { background-position: -1px -402px; }

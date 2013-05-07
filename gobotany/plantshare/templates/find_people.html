@@ -33,12 +33,12 @@
             <li class="person">
                 <img src="{{ person.public_avatar_image.thumb_url }}" alt="">
                 <ul>
-                    <li class="name">{% user_display_name person.user %}</li>
+                    <li class="name">{{ person.user_display_name }}</li>
                     {% if person.location %}
                         <li>{{ person.location.user_input }}</li>
                     {% endif %}
                     <li>
-                        <a href="{% url 'ps-find-people-profile' name_query %}"
+                        <a href="{% url 'ps-find-people-profile' person.user.username %}"
                             rel="shadowbox;width=700;height=300">View Profile »</a>
                     </li>
                 </ul>

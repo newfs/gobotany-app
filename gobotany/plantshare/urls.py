@@ -55,7 +55,7 @@ urlpatterns = patterns(
 
     # Find People
     url(r'^people/$', views.find_people_view, name='ps-find-people'),
-    url(r'^people/profile/(?P<username>[a-z0-9]+)/$',
+    url(r'^people/(?P<username>[a-z0-9]+)/$',
         views.find_people_profile_view, name='ps-find-people-profile'),
 
     # Your Profile page

@@ -1,5 +1,6 @@
 {% extends "gobotany/_modal_base.html" %}
 {% load gobotany_tags %}
+{% load mapping_tags %}
 
 {# This page appears in a lightbox when viewing another user's profile. #}
 
@@ -14,9 +15,23 @@
     <div>
         <a class="close">Close</a>
 
-        <h2>{{ username }}</h2>
-
-        <p>Profile information appears here</p>
+        {% if profile %}
+            <img class="avatar" src="{{ profile.public_avatar_image.thumb_url }}">
+            <h2>{{ profile.user_display_name }}</h2>
+            {# TODO: something like profile.public_location, perhaps #}
+            {% if profile.location %}
+                {% location_map location=profile.location height_px="115" width_px="169" zoom="7" id="id_location_map" %}
+                <p>{{ profile.location }}</p>
+            {% endif %}
+            {% if profile.saying %}
+                <p>{{ profile.saying }}</p>
+            {% endif %}
+            {% if profile.groups %}
+                <p>Groups: {{ profile.groups }}</p>
+            {% endif %}
+        {% else %}
+            <p>Profile not found</p>
+        {% endif %}
     </div>
 {% endblock %}
 
