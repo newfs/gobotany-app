@@ -209,7 +209,6 @@ body.plantshare {
                     float: left;
                     height: 56px;
                     padding: 0 18px;
-                    width: 56px;
                 }
                 ul {
                     float: left;
@@ -281,6 +280,7 @@ body.plantshare {
     &#find-people-profile {
         $profile-box-padding: 16px;
         $avatar-image-height: 153px;
+        $avatar-image-width: 169px;
         background: none;
         div {
             background: #fff;
@@ -298,11 +298,12 @@ body.plantshare {
             float: left;
             height: $avatar-image-height;
             margin: $profile-box-padding;
+            width: $avatar-image-width;
         }
         .map {
             float: right;
-            height: 115px;
-            width: 169px;
+            height: 113px;
+            width: $avatar-image-width;
         }
     }
 

@@ -1142,7 +1142,7 @@ body.plantshare#find-people { /* Hide the usual default Shadowbox close button. 
 body.plantshare#find-people #main .box { padding: 10px; }
 body.plantshare#find-people #main .person { height: 74px; margin: 0; padding: 20px 0 0 0; }
 body.plantshare#find-people #main .person:nth-child(odd) { background-color: #e1f0d1; }
-body.plantshare#find-people #main .person img { float: left; height: 56px; padding: 0 18px; width: 56px; }
+body.plantshare#find-people #main .person img { float: left; height: 56px; padding: 0 18px; }
 body.plantshare#find-people #main .person ul { float: left; line-height: 140%; width: 400px; }
 body.plantshare#find-people #main .person li { margin: 0 0 2px; }
 body.plantshare#find-people #main .person .name { font-family: "Trebuchet MS", Helvetica, Arial, "Lucida Sans Unicode", sans-serif; font-size: 24px; margin-bottom: 8px; }
@@ -1159,8 +1159,8 @@ body.plantshare#find-people-profile { background: none; }
 body.plantshare#find-people-profile div { background: #fff; border: 5px solid #acac90; height: 185px; padding: 0 16px 0 0; }
 body.plantshare#find-people-profile div p { margin-top: 0; }
 body.plantshare#find-people-profile .close { background: transparent url(/static/images/icons/close.png) no-repeat; cursor: pointer; display: block; height: 16px; position: absolute; right: 15px; text-indent: -9999px; top: 15px; width: 16px; }
-body.plantshare#find-people-profile .avatar { float: left; height: 153px; margin: 16px; }
-body.plantshare#find-people-profile .map { float: right; height: 115px; width: 169px; }
+body.plantshare#find-people-profile .avatar { float: left; height: 153px; margin: 16px; width: 169px; }
+body.plantshare#find-people-profile .map { float: right; height: 113px; width: 169px; }
 body.plantshare#sign-up #main form input { width: 350px; }
 body.plantshare#sign-up #main form input.button { background: transparent url(../images/layout/plantshare-btns.png) no-repeat -1px -359px; border: 0; height: 41px; margin-top: 12px; width: 244px; display: block; text-indent: -9000px; }
 body.plantshare#sign-up #main form input.button:hover { background-position: -1px -402px; }
