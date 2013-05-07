@@ -159,12 +159,12 @@
         "pk": 13,
         "model": "plantshare.location",
         "fields": {
-            "city": "Rumford",
-            "user_input": "Rumford, ME",
-            "longitude": -70.56609,
+            "city": "Andover",
+            "user_input": "Andover, ME",
+            "longitude": -70.750055,
             "state": "ME",
             "postal_code": null,
-            "latitude": 44.53599
+            "latitude": 44.633921
         }
     },
     {
