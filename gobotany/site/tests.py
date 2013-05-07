@@ -541,15 +541,15 @@ class RobotsTests(TestCase):
         self.assertEqual(200, response.status_code)
 
 
-class SitemapTests(TestCase):
+class SitemapTests(FunctionalCase):
 
     def test_sitemap_returns_ok(self):
-        response = self.client.get('/sitemap.txt')
-        self.assertEqual(200, response.status_code)
+        self.get('/sitemap.txt')
+        self.assertEqual(200, self.response.status_code)
 
 
-class SpeciesListTests(TestCase):
+class SpeciesListTests(FunctionalCase):
 
     def test_species_list_returns_ok(self):
-        response = self.client.get('/list/')
-        self.assertEqual(200, response.status_code)
+        self.get('/list/')
+        self.assertEqual(200, self.response.status_code)

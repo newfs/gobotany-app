@@ -19,7 +19,8 @@ from gobotany.core.models import (
     Family, Genus, GlossaryTerm, HomePageImage, PartnerSite, PartnerSpecies,
     Pile, Taxon, Video,
     )
-from gobotany.core.partner import (which_partner, per_partner_template,
+from gobotany.core.partner import (which_partner, partner_short_name,
+                                   per_partner_template,
                                    render_to_response_per_partner)
 from gobotany.plantoftheday.models import PlantOfTheDay
 from gobotany.simplekey.groups_order import ordered_pilegroups, ordered_piles
@@ -276,8 +277,8 @@ def sitemap_view(request):
     PROTOCOL = 'http'   # TODO: change when moving to https
     host = request.get_host()
 
-    partner_short_name = which_partner(request)
-    partner_site = PartnerSite.objects.get(short_name=partner_short_name)
+    partner_name = partner_short_name(request)
+    partner_site = PartnerSite.objects.get(short_name=partner_name)
     partner_species = PartnerSpecies.objects.filter(
         partner=partner_site).values_list('species__scientific_name',
                                           'species__family__name',
