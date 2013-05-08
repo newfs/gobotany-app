@@ -103,11 +103,12 @@ class UserProfileForm(forms.ModelForm):
         if not 'location' in self.cleaned_data:
             return None
         user_text = self.cleaned_data['location']
-        try:
-            # Look for a Location record with the user input text.
+        # Look for a Location record with the user input text.
+        locations = Location.objects.filter(user_input=user_text)
+        if locations.count() > 0:
             # The first one is OK because any duplicates are equivalent.
-            location = Location.objects.filter(user_input=user_text)[0]
-        except Location.DoesNotExist:
+            location = locations[0]
+        else:
             # Create a new location record.
             location = Location(user_input=user_text)
             location.save()
