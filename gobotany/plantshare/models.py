@@ -15,11 +15,18 @@ from storages.backends.s3boto import S3BotoStorage
 from imagekit.models import ProcessedImageField, ImageSpecField
 from imagekit.processors.resize import ResizeToFit
 
-SHARING_CHOICES = (
-    ('PRIVATE', 'Only PlantShare staff and myself'),
-    ('GROUPS', 'My Groups'),
-    ('PUBLIC', 'Public - All'),
+VISIBILITY_CHOICES = (
+    ('PRIVATE', 'Only you and PlantShare staff'),
+    #('GROUPS', 'Your groups'),   # TODO: enable with Groups feature
+    ('USERS', 'All PlantShare users'),
+    ('PUBLIC', 'Public: everyone'),
 )
+
+PROFILE_VISIBILITY_CHOICES = VISIBILITY_CHOICES[:-1]   # No 'public' profiles
+DETAILS_DEFAULT_VISIBILITY = [item for item in PROFILE_VISIBILITY_CHOICES
+                              if item[0] == 'USERS'][0][0]
+LOCATION_DEFAULT_VISIBILITY = [item for item in PROFILE_VISIBILITY_CHOICES
+                               if item[0] == 'USERS'][0][0]
 
 IMAGE_TYPES = (
     ('AVATAR', 'User Avatar'),
@@ -73,22 +80,23 @@ class UserProfile(models.Model):
 
     user = models.OneToOneField(User)
 
-    display_name = models.CharField(max_length=60, blank=True)
     zipcode = models.CharField(max_length=5, blank=True)
     security_question = models.CharField(max_length=100, blank=True)
     security_answer = models.CharField(max_length=100, blank=True)
 
-    # User's profile preferences
+    # User's profile details and preferences
     sharing_visibility = models.CharField(blank=False, max_length=7,
-        choices=SHARING_CHOICES, default=SHARING_CHOICES[0][0])
+        choices=PROFILE_VISIBILITY_CHOICES,
+        default=DETAILS_DEFAULT_VISIBILITY)
+    avatar = models.ForeignKey('ScreenedImage', null=True, blank=True)
+    display_name = models.CharField(max_length=60, blank=True)
     saying = models.CharField(max_length=100, blank=True)
 
-    # User's location preferences
+    # User's profile location and preferences
     location_visibility = models.CharField(blank=False, max_length=7,
-        choices=SHARING_CHOICES, default=SHARING_CHOICES[0][0])
+        choices=PROFILE_VISIBILITY_CHOICES,
+        default=LOCATION_DEFAULT_VISIBILITY)
     location = models.ForeignKey(Location, null=True, blank=True)
-
-    avatar = models.ForeignKey('ScreenedImage', null=True, blank=True)
 
     @classmethod
     def default_avatar_image(cls):
