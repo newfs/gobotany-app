@@ -1,7 +1,7 @@
 /* PlantShare */
 
 $form-field-padding: 5px;
-$form-field-width: 350px;
+$form-field-width: 357px;
 $plantshare-main-column-width: 475px;
 $section-padding: 16px;
 $mini-input-font-size: 11px;
@@ -769,6 +769,9 @@ body.plantshare {
     }
 
     &#profile {
+        .username {
+            float: right;
+        }
         div.section-container {
             position: relative;
 
@@ -901,17 +904,19 @@ body.plantshare {
                 table {
                     margin: 10px 0 0 0;
                     padding: 0;
-                    width: 70%;
+                    width: 493px;
 
                     td {
                         padding: 5px 10px;
                     }
 
                     td.first {
+                        font-weight: bold;
                         line-height: 170%;
-                        padding-left: 15px;
+                        padding: 5px;
+                        text-align: right;
                         vertical-align: baseline;
-                        width: 25%;
+                        width: 95px;
                     }
 
                     p {
@@ -942,8 +947,7 @@ body.plantshare {
         .info-section {
             margin: 0 0 20px;
             .info.box {
-                margin: 0 0 20px;
-                padding: 10px 15px 20px;
+                padding: 10px 15px;
                 table {
                     margin: 0;
                 }

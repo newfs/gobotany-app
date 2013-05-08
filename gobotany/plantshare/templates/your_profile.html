@@ -11,7 +11,9 @@
 {% block main_content %}
 <h1>Your Profile</h1>
 
-<h2>Information</h2>
+<p class="username">Username <b>{{ user.username }}</b></p>
+
+<h2>Details</h2>
 
 <div class="section-container">
   {% include "_image_upload_form.html" with image_form=avatar_form %}
@@ -30,11 +32,7 @@
           <table>
               <tbody>
                   <tr>
-                      <td class="first">Username:</td>
-                      <td>{{ user.username }}</td>
-                  </tr>
-                  <tr>
-                      <td class="first">Visibility:</td>
+                      <td class="first">Visibility</td>
                       <td>
                           <div class="display">
                               <p><span>[Not yet selected]</span><a href="#" class="edit-link">Edit</a></p>
@@ -51,7 +49,7 @@
                       </td>
                   </tr>
                   <tr>
-                      <td class="first">Display Name:</td>
+                      <td class="first">Display Name</td>
                       <td>
                           <div class="display">
                               <p><span>[Not yet selected]</span><a href="#" class="edit-link">Edit</a></p>
@@ -68,7 +66,7 @@
                       </td>
                   </tr>
                   <tr>
-                      <td class="first">Saying:</td>
+                      <td class="first">Saying</td>
                       <td>
                           <div class="display">
                               <p><span>[Not yet selected]</span><a href="#" class="edit-link">Edit</a></p>
@@ -85,7 +83,7 @@
                       </td>
                   </tr>
                   <tr>
-                      <td class="first">Groups:</td>
+                      <td class="first">Groups</td>
                       <td>
                           <div class="display">
                               <ul class="group-list">
@@ -110,7 +108,7 @@
           <table>
               <tbody>
                   <tr>
-                      <td class="first">Visibility:</td>
+                      <td class="first">Visibility</td>
                       <td>
                           <div class="display">
                               <p><span>[Not yet selected]</span><a href="#" class="edit-link">Edit</a></p>
@@ -127,7 +125,7 @@
                       </td>
                   </tr>
                   <tr>
-                      <td class="first">Location:</td>
+                      <td class="first">Location</td>
                       <td>
                           <div class="display">
                               <p><span>[Not yet selected]</span><a href="#" class="edit-link">Edit</a></p>
