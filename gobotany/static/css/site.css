@@ -1102,10 +1102,10 @@ ul.get-more-questions-menu ul li[data-character] { color: black; }
 body.plantshare { /* end #sightings-locator */ /* end .info-section, .location-section */ }
 body.plantshare .content li { list-style-type: none; }
 body.plantshare .content form p { margin: 0; }
-body.plantshare .content form label { display: block; margin-bottom: 4px; text-transform: uppercase; width: 357px; }
-body.plantshare .content form input { font-family: Verdana, Geneva, "Lucida Sans Unicode", sans-serif; margin-bottom: 10px; border: 1px solid #c3d941; padding: 5px; width: 357px; }
+body.plantshare .content form label { display: block; margin-bottom: 4px; text-transform: uppercase; width: 353px; }
+body.plantshare .content form input { font-family: Verdana, Geneva, "Lucida Sans Unicode", sans-serif; margin-bottom: 10px; border: 1px solid #c3d941; padding: 5px; width: 353px; }
 body.plantshare .content form input[type=text], body.plantshare .content form input[type=password] { height: 16px; }
-body.plantshare .content form textarea { font-family: Verdana, Geneva, "Lucida Sans Unicode", sans-serif; height: 82px; border: 1px solid #c3d941; padding: 5px; width: 357px; }
+body.plantshare .content form textarea { font-family: Verdana, Geneva, "Lucida Sans Unicode", sans-serif; height: 82px; border: 1px solid #c3d941; padding: 5px; width: 353px; }
 body.plantshare .box { background-color: #fff; border: 1px solid #c3d941; padding: 4px 16px; }
 body.plantshare .box table { margin: 16px 0 12px; width: 100%; }
 body.plantshare .box table tr:nth-child(odd) { background-color: #e1f0d1; }
@@ -1217,7 +1217,7 @@ body.plantshare#sightings #main > ul > li ul { margin-left: 200px; margin-top: -
 body.plantshare#sightings #main > ul > li ul li { clear: left; }
 body.plantshare.sighting .map { float: right; }
 body.plantshare.sighting form label { text-transform: none; }
-body.plantshare.sighting form fieldset { border: 0; margin: 0 0 16px; padding: 0; width: 691px; }
+body.plantshare.sighting form fieldset { border: 0; margin: 0 0 16px; padding: 0; width: 687px; }
 body.plantshare.sighting form fieldset legend { display: block; text-indent: -9000px; }
 body.plantshare.sighting form .post-sighting-btn { background: transparent url(/static/images/layout/plantshare2-btn.png) no-repeat -372px -634px; border: 0 none; display: block; width: 157px; height: 32px; text-indent: -9999px; }
 body.plantshare.sighting form .post-sighting-btn.inactive { background-position: -372px -599px; }
