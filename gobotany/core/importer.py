@@ -1910,8 +1910,10 @@ class Importer(object):
         table.save()
 
         # Add extra search suggestions for the Simple Key pages.
-        groups_list_page = GroupsListPage.objects.all()[0]
-        suggestions = groups_list_page.search_suggestions()
+        suggestions = []
+        groups_list_pages = GroupsListPage.objects.all()
+        if len(groups_list_pages):
+            suggestions = groups_list_pages[0].search_suggestions()
         groups = SubgroupsListPage.objects.all()
         for group in groups:
             suggestions.extend(group.search_suggestions())
