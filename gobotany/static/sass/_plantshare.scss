@@ -880,7 +880,7 @@ body.plantshare {
                 }
             }
             .info.box {
-                min-height: 160px;
+                min-height: 158px;
                 padding: 0 0 5px 0;
                 .avatar {
                     margin-right: 15px;
@@ -916,7 +916,7 @@ body.plantshare {
                         padding: 5px;
                         text-align: right;
                         vertical-align: baseline;
-                        width: 95px;
+                        width: 97px;
                     }
 
                     p {
@@ -947,6 +947,7 @@ body.plantshare {
         .info-section {
             margin: 0 0 20px;
             .info.box {
+                min-height: 172px;
                 padding: 10px 15px;
                 table {
                     margin: 0;

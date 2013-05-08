@@ -35,7 +35,7 @@
                       <td class="first">Visibility</td>
                       <td>
                           <div class="display">
-                              <p><span>[Not yet selected]</span><a href="#" class="edit-link">Edit</a></p>
+                              <p><span></span><a href="#" class="edit-link">Edit</a></p>
                           </div>
                           <div class="edit">
                               <div class="ajax-field">
@@ -52,7 +52,7 @@
                       <td class="first">Display Name</td>
                       <td>
                           <div class="display">
-                              <p><span>[Not yet selected]</span><a href="#" class="edit-link">Edit</a></p>
+                              <p><span></span><a href="#" class="edit-link">Edit</a></p>
                           </div>
                           <div class="edit">
                               <div class="ajax-field">
@@ -69,7 +69,7 @@
                       <td class="first">Saying</td>
                       <td>
                           <div class="display">
-                              <p><span>[Not yet selected]</span><a href="#" class="edit-link">Edit</a></p>
+                              <p><span></span><a href="#" class="edit-link">Edit</a></p>
                           </div>
                           <div class="edit">
                               <div class="ajax-field">
@@ -86,12 +86,15 @@
                       <td class="first">Groups</td>
                       <td>
                           <div class="display">
+                              {% comment %}
                               <ul class="group-list">
                                   <li>First Group</li>
                                   <li>Sample Group B</li>
                                   <li>Hiker's Club</li>
                               </ul>
-                              <a href="#" class="edit-link">Your Groups</a></p>
+                              <a href="#" class="edit-link">Edit</a>
+                              {% endcomment %}
+                              <a style="color: #ccc; float:right">Edit</a>
                           </div>
                       </td>
                   </tr>
@@ -111,7 +114,7 @@
                       <td class="first">Visibility</td>
                       <td>
                           <div class="display">
-                              <p><span>[Not yet selected]</span><a href="#" class="edit-link">Edit</a></p>
+                              <p><span></span><a href="#" class="edit-link">Edit</a></p>
                           </div>
                           <div class="edit">
                               <div class="ajax-field">
@@ -128,7 +131,7 @@
                       <td class="first">Location</td>
                       <td>
                           <div class="display">
-                              <p><span>[Not yet selected]</span><a href="#" class="edit-link">Edit</a></p>
+                              <p><span></span><a href="#" class="edit-link">Edit</a></p>
                           </div>
                           <div class="edit">
                               <div class="ajax-field">
@@ -152,4 +155,3 @@
 {% block sidebar_content %}
     {% include "_plantshare_navigation.html" %}
 {% endblock %}
-

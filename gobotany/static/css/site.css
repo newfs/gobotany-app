@@ -1274,21 +1274,21 @@ body.plantshare#profile .info-section .field-controls, body.plantshare#profile .
 body.plantshare#profile .info-section .field-controls input, body.plantshare#profile .location-section .field-controls input { float: left; }
 body.plantshare#profile .info-section .field-controls input, body.plantshare#profile .info-section .field-controls a, body.plantshare#profile .location-section .field-controls input, body.plantshare#profile .location-section .field-controls a { display: block; margin-right: 20px; vertical-align: middle; }
 body.plantshare#profile .info-section .field-controls::after, body.plantshare#profile .location-section .field-controls::after { display: block; content: " "; clear: both; }
-body.plantshare#profile .info-section .info.box, body.plantshare#profile .location-section .info.box { min-height: 160px; padding: 0 0 5px 0; }
+body.plantshare#profile .info-section .info.box, body.plantshare#profile .location-section .info.box { min-height: 158px; padding: 0 0 5px 0; }
 body.plantshare#profile .info-section .info.box .avatar, body.plantshare#profile .location-section .info.box .avatar { margin-right: 15px; padding: 0; float: left; width: 170px; }
 body.plantshare#profile .info-section .info.box .avatar img, body.plantshare#profile .location-section .info.box .avatar img { border: 0; }
 body.plantshare#profile .info-section .info.box .avatar p, body.plantshare#profile .location-section .info.box .avatar p { text-align: center; margin: 0; }
 body.plantshare#profile .info-section .info.box .map-thumbnail, body.plantshare#profile .location-section .info.box .map-thumbnail { float: left; margin: 0 15px 0 0; padding: 0; }
 body.plantshare#profile .info-section .info.box table, body.plantshare#profile .location-section .info.box table { margin: 10px 0 0 0; padding: 0; width: 493px; }
 body.plantshare#profile .info-section .info.box table td, body.plantshare#profile .location-section .info.box table td { padding: 5px 10px; }
-body.plantshare#profile .info-section .info.box table td.first, body.plantshare#profile .location-section .info.box table td.first { font-weight: bold; line-height: 170%; padding: 5px; text-align: right; vertical-align: baseline; width: 95px; }
+body.plantshare#profile .info-section .info.box table td.first, body.plantshare#profile .location-section .info.box table td.first { font-weight: bold; line-height: 170%; padding: 5px; text-align: right; vertical-align: baseline; width: 97px; }
 body.plantshare#profile .info-section .info.box table p, body.plantshare#profile .location-section .info.box table p { margin: 0; padding: 0; }
 body.plantshare#profile .info-section .info.box table .display .group-list, body.plantshare#profile .info-section .info.box table .display .coords-list, body.plantshare#profile .location-section .info.box table .display .group-list, body.plantshare#profile .location-section .info.box table .display .coords-list { float: left; }
 body.plantshare#profile .info-section .info.box table .display .edit-link, body.plantshare#profile .location-section .info.box table .display .edit-link { float: right; }
 body.plantshare#profile .info-section .info.box table .display ul, body.plantshare#profile .location-section .info.box table .display ul { list-style: none; }
 body.plantshare#profile .info-section .info.box table .edit, body.plantshare#profile .location-section .info.box table .edit { display: none; }
 body.plantshare#profile .info-section { margin: 0 0 20px; }
-body.plantshare#profile .info-section .info.box { padding: 10px 15px; }
+body.plantshare#profile .info-section .info.box { min-height: 172px; padding: 10px 15px; }
 body.plantshare#profile .info-section .info.box table { margin: 0; }
 body.plantshare #login.box { background-color: #d3eaad; border-color: #317b0c; max-width: 475px; padding: 0; }
 body.plantshare #login.box h4 { font-size: 20px; padding: 16px 16px 10px; }
