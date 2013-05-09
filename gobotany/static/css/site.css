@@ -1161,6 +1161,7 @@ body.plantshare#find-people-profile div p { margin-top: 0; }
 body.plantshare#find-people-profile .close { background: transparent url(/static/images/icons/close.png) no-repeat; cursor: pointer; display: block; height: 16px; position: absolute; right: 15px; text-indent: -9999px; top: 15px; width: 16px; }
 body.plantshare#find-people-profile .avatar { float: left; height: 153px; margin: 16px; width: 169px; }
 body.plantshare#find-people-profile .map { float: right; height: 113px; width: 169px; }
+body.plantshare#find-people-profile .not-found { padding: 70px 0; text-align: center; }
 body.plantshare#sign-up #main form input { width: 350px; }
 body.plantshare#sign-up #main form input.button { background: transparent url(../images/layout/plantshare-btns.png) no-repeat -1px -359px; border: 0; height: 41px; margin-top: 12px; width: 244px; display: block; text-indent: -9000px; }
 body.plantshare#sign-up #main form input.button:hover { background-position: -1px -402px; }
