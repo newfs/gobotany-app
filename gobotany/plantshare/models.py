@@ -85,7 +85,7 @@ class UserProfile(models.Model):
     security_answer = models.CharField(max_length=100, blank=True)
 
     # User's profile details and preferences
-    sharing_visibility = models.CharField(blank=False, max_length=7,
+    details_visibility = models.CharField(blank=False, max_length=7,
         choices=PROFILE_VISIBILITY_CHOICES,
         default=DETAILS_DEFAULT_VISIBILITY)
     avatar = models.ForeignKey('ScreenedImage', null=True, blank=True)

@@ -605,6 +605,7 @@
         "model": "plantshare.userprofile",
         "fields": {
             "user": 230,
+            "details_visibility": "PRIVATE",
             "display_name": "John Stevenson",
             "location": 3
         }

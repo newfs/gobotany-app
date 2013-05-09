@@ -92,7 +92,7 @@ class UserProfileForm(forms.ModelForm):
 
     class Meta:
         model = UserProfile
-        fields = ('sharing_visibility', 'display_name', 'saying',
+        fields = ('details_visibility', 'display_name', 'saying',
             'location_visibility', 'location',)
 
     def __init__(self, *args, **kwargs):
