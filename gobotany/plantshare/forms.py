@@ -1,8 +1,8 @@
 from django import forms
 from django.core.urlresolvers import reverse_lazy
 
-from models import (UserProfile, ScreenedImage, Location, Checklist,
-        ChecklistEntry)
+from gobotany.plantshare.models import (UserProfile, ScreenedImage, Location,
+    Checklist, ChecklistEntry)
 
 def plant_name_suggestions_url():
     return reverse_lazy('site-plant-name-suggestions') + '?q=%s'
