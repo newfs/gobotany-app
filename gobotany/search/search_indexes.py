@@ -1,12 +1,14 @@
 from django.conf import settings
 
+from gobotany.core.models import Family, Genus, GlossaryTerm, Taxon
+from gobotany.dkey.models import Page
+from gobotany.plantshare.models import Question, Sighting
+from gobotany.search.models import (GroupsListPage, PlainPage,
+    SubgroupsListPage, SubgroupResultsPage)
+
 from haystack import indexes
 from haystack import site
 
-import gobotany.core.models as core_models
-import gobotany.dkey.models as dkey_models
-import gobotany.plantshare.models as plantshare_models
-import gobotany.search.models as search_models
 
 class CharacterCharField(indexes.CharField):
     '''A CharField that understands how to get the character value
@@ -301,24 +303,24 @@ class QuestionIndex(BaseRealTimeIndex):
     # Customization
 
     def index_queryset(self):
-        return plantshare_models.Question.objects.answered()
+        return Question.objects.answered()
 
 
 # Register indexes for all desired page/model types.
 
-site.register(core_models.Taxon, TaxonIndex)
-site.register(core_models.Family, FamilyIndex)
-site.register(core_models.Genus, GenusIndex)
-site.register(core_models.GlossaryTerm, GlossaryTermIndex)
+site.register(Taxon, TaxonIndex)
+site.register(Family, FamilyIndex)
+site.register(Genus, GenusIndex)
+site.register(GlossaryTerm, GlossaryTermIndex)
 
-site.register(search_models.PlainPage, PlainPageIndex)
-site.register(search_models.GroupsListPage, GroupsListPageIndex)
-site.register(search_models.SubgroupsListPage, SubgroupsListPageIndex)
-site.register(search_models.SubgroupResultsPage, SubgroupResultsPageIndex)
+site.register(PlainPage, PlainPageIndex)
+site.register(GroupsListPage, GroupsListPageIndex)
+site.register(SubgroupsListPage, SubgroupsListPageIndex)
+site.register(SubgroupResultsPage, SubgroupResultsPageIndex)
 
-site.register(dkey_models.Page, DichotomousKeyPageIndex)
+site.register(Page, DichotomousKeyPageIndex)
 
 # Exclude PlantShare results in production until release.
 if settings.DEV_FEATURES == True:   # TODO: remove this line before release
-    site.register(plantshare_models.Sighting, SightingPageIndex)
-    site.register(plantshare_models.Question, QuestionIndex)
+    site.register(Sighting, SightingPageIndex)
+    site.register(Question, QuestionIndex)
