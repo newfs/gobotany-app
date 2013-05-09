@@ -16,13 +16,13 @@ from imagekit.models import ProcessedImageField, ImageSpecField
 from imagekit.processors.resize import ResizeToFit
 
 VISIBILITY_CHOICES = (
-    ('PRIVATE', 'Only you and PlantShare staff'),
-    #('GROUPS', 'Your groups'),   # TODO: enable with Groups feature
-    ('USERS', 'All PlantShare users'),
     ('PUBLIC', 'Public: everyone'),
+    ('USERS', 'All PlantShare users'),
+    #('GROUPS', 'Your Groups'),   # TODO: enable with Groups feature
+    ('PRIVATE', 'Only you and PlantShare staff'),
 )
 
-PROFILE_VISIBILITY_CHOICES = VISIBILITY_CHOICES[:-1]   # No 'public' profiles
+PROFILE_VISIBILITY_CHOICES = VISIBILITY_CHOICES[1:]   # No 'public' profiles
 DETAILS_DEFAULT_VISIBILITY = [item for item in PROFILE_VISIBILITY_CHOICES
                               if item[0] == 'USERS'][0][0]
 LOCATION_DEFAULT_VISIBILITY = [item for item in PROFILE_VISIBILITY_CHOICES
