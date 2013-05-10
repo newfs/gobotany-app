@@ -487,9 +487,7 @@ def find_people_view(request):
             Q(user__username__istartswith=query))
         for candidate in candidates:
             is_match = False
-            # If a user has specified a display name, look to it but not
-            # to the username, because the display name is how the person
-            # has chosen to be known.
+            # If a user has specified a display name, check it.
             if candidate.display_name != '':
                 # Check the beginning of any parts of the display name.
                 parts = candidate.display_name.lower().split(' ')
@@ -497,10 +495,9 @@ def find_people_view(request):
                     if part.startswith(query):
                         is_match = True
                         break
-            else:
-                # Check the beginning of the username.
-                if candidate.user.username.lower().startswith(query):
-                    is_match = True
+            # Check the beginning of the username.
+            if candidate.user.username.lower().startswith(query):
+                is_match = True
             if is_match:
                 people.append(candidate)
 
@@ -831,12 +828,6 @@ def ajax_people_suggestions(request):
         if len(suggestions) == MAX_RESULTS:
             break
 
-        # Add either the display name, or, if either the display name is not
-        # set or the profile visibility setting disallows showing the display
-        # name to the user who is searching, add the username.
-        # (With a display name set and visible, the username no longer
-        # appears in results or on pages, so it is not always added.)
-
         # Figure out if we can show the display name to this user.
         # TODO: later when available, take into account a 'GROUPS' setting.
         may_show_display_name = (name.details_visibility != 'PRIVATE')
@@ -853,12 +844,14 @@ def ajax_people_suggestions(request):
                     suggestions.append(part)
                     if len(suggestions) == MAX_RESULTS:
                         break
-        else:
-            # Either the display name cannot be shown, or it is empty.
-            # Add the username instead.
-            username = name.user.username.lower()
-            if username not in suggestions:
-                suggestions.append(username)
+
+        # Also add the username. Although the username does not show on
+        # pages if a display name takes its place, it does show in the
+        # profile link URL, and users might know or exchange usernames
+        # informally and therefore expect to see them listed.
+        username = name.user.username.lower()
+        if username not in suggestions:
+            suggestions.append(username)
 
     return HttpResponse(simplejson.dumps(sorted(suggestions)),
                         mimetype='application/json; charset=utf-8')
