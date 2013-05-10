@@ -484,7 +484,7 @@ def find_people_view(request):
     if len(query) >= MIN_QUERY_LENGTH:
         candidates = UserProfile.objects.filter(
             Q(display_name__icontains=query) |
-            Q(user__username__istartswith=query))
+            Q(user__username__istartswith=query)).order_by('display_name')
         for candidate in candidates:
             is_match = False
             # If a user has specified a display name, check it.
