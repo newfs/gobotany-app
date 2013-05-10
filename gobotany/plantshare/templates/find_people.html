@@ -49,9 +49,11 @@
         </ul>
     {% else %}
         {% if name_query %}
-            <p>No matches found.</p>
             {% if name_query|length < min_query_length %}
-                <p>Please try a longer word.</p>
+                <p>Please try a search of {{ min_query_length }} letters
+                or longer.</p>
+            {% else %}
+                <p>No matches found.</p>
             {% endif %}
         {% else %}
             <p>Find your friends and colleagues who use PlantShare.</p>
