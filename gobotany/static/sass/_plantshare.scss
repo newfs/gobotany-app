@@ -223,6 +223,9 @@ body.plantshare {
                     font-size: 24px;
                     margin-bottom: 8px;
                 }
+                ul:first-child {   /* when avatar is omitted */
+                    margin-left: 98px;
+                }
                 p {
                     float: right;
                     margin: 12px 0 0;

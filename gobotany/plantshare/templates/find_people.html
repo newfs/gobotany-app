@@ -31,16 +31,32 @@
         <ul class="box">
         {% for person in people %}
             <li class="person">
-                <img src="{{ person.public_avatar_image.thumb_url }}" alt="">
+                {% if request.user.id == person.user.id or request.user.is_staff or person.details_visibility != 'PRIVATE' %}
+                    {# TODO: later, take into account 'GROUPS' visibility #}
+                    <img src="{{ person.public_avatar_image.thumb_url }}" alt="">
+                {% endif %}
                 <ul>
-                    <li class="name">{{ person.user_display_name }}</li>
-                    {% if person.location %}
-                        <li>{{ person.location.user_input }}</li>
-                    {% endif %}
-                    <li>
-                        <a href="{% url 'ps-find-people-profile' person.user.username %}"
-                            rel="shadowbox;width=700;height=300">View Profile »</a>
+                    <li class="name">
+                        {% if request.user.id == person.user.id or request.user.is_staff or person.details_visibility != 'PRIVATE' %}
+                            {# TODO: later, take into account 'GROUPS' visibility #}
+                            {{ person.user_display_name }}
+                        {% else %}
+                            {{ person.user.username }}
+                        {% endif %}
                     </li>
+                    {% if request.user.id == person.user.id or request.user.is_staff or person.location_visibility != 'PRIVATE' %}
+                    {# TODO: later, take into account 'GROUPS' visibility #}
+                        {% if person.location %}
+                            <li>{{ person.location.user_input }}</li>
+                        {% endif %}
+                    {% endif %}
+                    {% if request.user.id == person.user.id or request.user.is_staff or person.details_visibility != 'PRIVATE' %}
+                        {# TODO: later, take into account 'GROUPS' visibility #}
+                        <li>
+                            <a href="{% url 'ps-find-people-profile' person.user.username %}"
+                                rel="shadowbox;width=700;height=300">View Profile »</a>
+                        </li>
+                    {% endif %}
                 </ul>
                 <p><a href="#" class="invite-group-btn">Invite to
                     Group</a></p>

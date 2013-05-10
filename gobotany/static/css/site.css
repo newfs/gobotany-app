@@ -1146,6 +1146,7 @@ body.plantshare#find-people #main .person img { float: left; height: 56px; paddi
 body.plantshare#find-people #main .person ul { float: left; line-height: 140%; width: 400px; }
 body.plantshare#find-people #main .person li { margin: 0 0 2px; }
 body.plantshare#find-people #main .person .name { font-family: "Trebuchet MS", Helvetica, Arial, "Lucida Sans Unicode", sans-serif; font-size: 24px; margin-bottom: 8px; }
+body.plantshare#find-people #main .person ul:first-child { /* when avatar is omitted */ margin-left: 98px; }
 body.plantshare#find-people #main .person p { float: right; margin: 12px 0 0; padding-right: 10px; }
 body.plantshare#find-people #main .person .invite-group-btn { background: transparent url(/static/images/layout/plantshare-btns.png) no-repeat -1px -231px; display: block; font-size: 0; height: 32px; text-indent: -9999px; width: 163px; }
 body.plantshare#find-people #sb-nav-close { display: none; }

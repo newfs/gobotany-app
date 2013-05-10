@@ -487,8 +487,14 @@ def find_people_view(request):
             Q(user__username__istartswith=query)).order_by('display_name')
         for candidate in candidates:
             is_match = False
+
+            # Figure out if we can show the display name to this user.
+            # TODO: later when available, take 'GROUPS' setting into account.
+            may_show_display_name = (request.user.is_staff or
+                (candidate.details_visibility != 'PRIVATE'))
+
             # If a user has specified a display name, check it.
-            if candidate.display_name != '':
+            if may_show_display_name and candidate.display_name != '':
                 # Check the beginning of any parts of the display name.
                 parts = candidate.display_name.lower().split(' ')
                 for part in parts:

@@ -830,6 +830,8 @@
         "model": "plantshare.userprofile",
         "fields": {
             "user": 10,
+            "details_visibility": "PRIVATE",
+            "location_visibility": "PRIVATE",
             "location": 37
         }
     }, 
@@ -854,6 +856,7 @@
         "model": "plantshare.userprofile",
         "fields": {
             "user": 11,
+            "location_visibility": "PRIVATE",
             "display_name": "Andris Maly"
         }
     }, 
@@ -903,8 +906,9 @@
         "model": "plantshare.userprofile",
         "fields": {
             "user": 13,
-            "display_name": "Anton Vogel",
-            "location": 46
+            "details_visibility": "PRIVATE",
+            "location_visibility": "PRIVATE",
+            "display_name": "Anton Vogel"
         }
     }, 
     {
@@ -1051,7 +1055,9 @@
         "pk": 20,
         "model": "plantshare.userprofile",
         "fields": {
-            "user": 19
+            "user": 19,
+            "details_visibility": "PRIVATE",
+            "location_visibility": "PRIVATE"
         }
     }, 
     {
