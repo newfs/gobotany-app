@@ -841,18 +841,18 @@ def ajax_people_suggestions(request):
                 if len(part) < MIN_SUGGESTION_LENGTH:
                     continue
                 if part.startswith(query) and part not in suggestions:
-                    suggestions.append(part)
-                    if len(suggestions) < MAX_RESULTS:
-                        break
+                        suggestions.append(part)
+                        if len(suggestions) < MAX_RESULTS:
+                            break
 
-    # If there is room in the suggestions list, also add the username.
+    # If there is room in the suggestions list, also may add the username.
     # Although the username does not show on pages if a display name takes
     # its place, it does show in the profile link URL. Users might know or
     # exchange usernames informally and therefore expect to see them listed.
     if len(suggestions) < MAX_RESULTS:
         for name in names:
             username = name.user.username.lower()
-            if username not in suggestions:
+            if username.find(query) > -1 and username not in suggestions:
                 suggestions.append(username)
                 if len(suggestions) == MAX_RESULTS:
                     break
