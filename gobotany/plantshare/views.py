@@ -515,6 +515,8 @@ def find_people_view(request):
 def find_people_profile_view(request, username):
     user = None
     profile = None
+    details_visible = False
+    location_visible = False
     try:
         user = User.objects.get(username=username)
     except ObjectDoesNotExist:
@@ -524,9 +526,25 @@ def find_people_profile_view(request, username):
             profile = UserProfile.objects.get(user=user)
         except UserProfile.DoesNotExist:
             pass
+
+    if profile:
+        if profile.details_visibility == 'PRIVATE':
+            if request.user.id == user.id or request.user.is_staff:
+                details_visible = True
+        elif profile.details_visibility == 'USERS':
+            details_visible = True
+
+        if profile.location_visibility == 'PRIVATE':
+            if request.user.id == user.id or request.user.is_staff:
+                location_visible = True
+        elif profile.location_visibility == 'USERS':
+            location_visible = True
+
     return render_to_response('_find_people_profile.html', {
             'profile': profile,
             'username': username,
+            'details_visible': details_visible,
+            'location_visible': location_visible,
         }, context_instance=RequestContext(request))
 
 

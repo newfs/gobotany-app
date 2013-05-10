@@ -15,11 +15,10 @@
     <div>
         <a class="close">Close</a>
 
-        {% if profile %}
+        {% if profile and details_visible %}
             <img class="avatar" src="{{ profile.public_avatar_image.thumb_url }}">
             <h2>{{ profile.user_display_name }}</h2>
-            {# TODO: something like profile.public_location, perhaps #}
-            {% if profile.location %}
+            {% if profile.location and location_visible %}
                 {% location_map location=profile.location height_px="115" width_px="169" zoom="7" id="id_location_map" %}
                 <p>{{ profile.location }}</p>
             {% endif %}
