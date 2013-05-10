@@ -825,25 +825,38 @@ def ajax_people_suggestions(request):
     # Get all potentially matching display names and usernames.
     names = UserProfile.objects.filter(
                 Q(display_name__icontains=query) |
-                Q(user__username__istartswith=query)).values_list(
-                'display_name', 'user__username')
+                Q(user__username__istartswith=query))
+
     for name in names:
         if len(suggestions) == MAX_RESULTS:
             break
-        display_name = name[0].lower()
-        if display_name != '':
+
+        # Add either the display name, or, if either the display name is not
+        # set or the profile visibility setting disallows showing the display
+        # name to the user who is searching, add the username.
+        # (With a display name set and visible, the username no longer
+        # appears in results or on pages, so it is not always added.)
+
+        # Figure out if we can show the display name to this user.
+        # TODO: later when available, take into account a 'GROUPS' setting.
+        may_show_display_name = (name.details_visibility != 'PRIVATE')
+
+        display_name = name.display_name.lower()
+        if may_show_display_name and display_name != '':
+            # Add each part (first, last, etc.) of the display name.
             parts = display_name.split(' ')
-            for part in parts:   # "parts" of a name (first, last)
+            for part in parts:
                 part = part.strip('.')   # for initials, abbreviations
                 if len(part) < MIN_SUGGESTION_LENGTH:
                     continue
-                if part.startswith(query):
-                    if part not in suggestions:
-                        suggestions.append(part)
-                        if len(suggestions) == MAX_RESULTS:
-                            break
+                if part.startswith(query) and part not in suggestions:
+                    suggestions.append(part)
+                    if len(suggestions) == MAX_RESULTS:
+                        break
         else:
-            username = name[1].lower()
+            # Either the display name cannot be shown, or it is empty.
+            # Add the username instead.
+            username = name.user.username.lower()
             if username not in suggestions:
                 suggestions.append(username)
 
