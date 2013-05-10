@@ -857,5 +857,15 @@ def ajax_people_suggestions(request):
                 if len(suggestions) == MAX_RESULTS:
                     break
 
-    return HttpResponse(simplejson.dumps(sorted(suggestions)),
+    # Order the suggestions so any that start with the query string
+    # appear first.
+    ordered_suggestions = []
+    suggestions = sorted(suggestions)
+    for suggestion in reversed(suggestions):
+        if suggestion.startswith(query):
+            ordered_suggestions.insert(0, suggestion)
+        else:
+            ordered_suggestions.append(suggestion)
+
+    return HttpResponse(simplejson.dumps(ordered_suggestions),
                         mimetype='application/json; charset=utf-8')
