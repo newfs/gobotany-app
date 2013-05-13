@@ -6,6 +6,10 @@ $plantshare-main-column-width: 475px;
 $section-padding: 16px;
 $mini-input-font-size: 11px;
 
+$profile-box-padding: 16px;
+$avatar-image-height: 153px;
+$avatar-image-width: 169px;
+
 @mixin form-field-base {
     border: 1px solid $border-green;
     padding: $form-field-padding;
@@ -50,6 +54,9 @@ body.plantshare {
                 @include form-field-base;
             }
         }
+    }
+    .profile img {
+        background: $light-green;
     }
     .box {
         background-color: #fff;
@@ -206,9 +213,11 @@ body.plantshare {
                     background-color: $light-green;
                 }
                 img {
+                    background: $light-green;
                     float: left;
-                    height: 56px;
-                    padding: 0 18px;
+                    height: 60px;
+                    margin: 0 18px;
+                    width: 66px;
                 }
                 ul {
                     float: left;
@@ -216,12 +225,12 @@ body.plantshare {
                     width: 400px;
                 }
                 li {
-                    margin: 0 0 2px;
+                    margin: 0 0 3px;
                 }
                 .name {
                     font-family: $headings-font;
                     font-size: 24px;
-                    margin-bottom: 8px;
+                    margin: 2px 0 10px;
                 }
                 ul:first-child {   /* when avatar is omitted */
                     margin-left: 98px;
@@ -281,9 +290,6 @@ body.plantshare {
     }
 
     &#find-people-profile {
-        $profile-box-padding: 16px;
-        $avatar-image-height: 153px;
-        $avatar-image-width: 169px;
         background: none;
         div {
             background: #fff;
@@ -298,6 +304,7 @@ body.plantshare {
             @include dialog-close-button;
         }
         .avatar {
+            background: $light-green;
             float: left;
             height: $avatar-image-height;
             margin: $profile-box-padding;
@@ -890,13 +897,16 @@ body.plantshare {
                 min-height: 158px;
                 padding: 0 0 5px 0;
                 .avatar {
+                    float: left;
                     margin-right: 15px;
                     padding: 0;
-                    float: left;
                     width: 170px;
 
                     img {
+                        background: $light-green;
                         border: 0;
+                        height: $avatar-image-height;
+                        width: $avatar-image-width;
                     }
                     p {
                         text-align: center;
@@ -1104,7 +1114,7 @@ body.plantshare {
                 overflow-y: scroll;
 
                 tr:nth-child(odd) {
-                    background-color: #e0f0d1;
+                    background-color: $light-green;
                 }
 
                 tr td {

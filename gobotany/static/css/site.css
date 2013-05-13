@@ -1106,6 +1106,7 @@ body.plantshare .content form label { display: block; margin-bottom: 4px; text-t
 body.plantshare .content form input { font-family: Verdana, Geneva, "Lucida Sans Unicode", sans-serif; margin-bottom: 10px; border: 1px solid #c3d941; padding: 5px; width: 353px; }
 body.plantshare .content form input[type=text], body.plantshare .content form input[type=password] { height: 16px; }
 body.plantshare .content form textarea { font-family: Verdana, Geneva, "Lucida Sans Unicode", sans-serif; height: 82px; border: 1px solid #c3d941; padding: 5px; width: 353px; }
+body.plantshare .profile img { background: #e1f0d1; }
 body.plantshare .box { background-color: #fff; border: 1px solid #c3d941; padding: 4px 16px; }
 body.plantshare .box table { margin: 16px 0 12px; width: 100%; }
 body.plantshare .box table tr:nth-child(odd) { background-color: #e1f0d1; }
@@ -1142,10 +1143,10 @@ body.plantshare#find-people { /* Hide the usual default Shadowbox close button. 
 body.plantshare#find-people #main .box { padding: 10px; }
 body.plantshare#find-people #main .person { height: 74px; margin: 0; padding: 20px 0 0 0; }
 body.plantshare#find-people #main .person:nth-child(odd) { background-color: #e1f0d1; }
-body.plantshare#find-people #main .person img { float: left; height: 56px; padding: 0 18px; }
+body.plantshare#find-people #main .person img { background: #e1f0d1; float: left; height: 60px; margin: 0 18px; width: 66px; }
 body.plantshare#find-people #main .person ul { float: left; line-height: 140%; width: 400px; }
-body.plantshare#find-people #main .person li { margin: 0 0 2px; }
-body.plantshare#find-people #main .person .name { font-family: "Trebuchet MS", Helvetica, Arial, "Lucida Sans Unicode", sans-serif; font-size: 24px; margin-bottom: 8px; }
+body.plantshare#find-people #main .person li { margin: 0 0 3px; }
+body.plantshare#find-people #main .person .name { font-family: "Trebuchet MS", Helvetica, Arial, "Lucida Sans Unicode", sans-serif; font-size: 24px; margin: 2px 0 10px; }
 body.plantshare#find-people #main .person ul:first-child { /* when avatar is omitted */ margin-left: 98px; }
 body.plantshare#find-people #main .person p { float: right; margin: 12px 0 0; padding-right: 10px; }
 body.plantshare#find-people #main .person .invite-group-btn { background: transparent url(/static/images/layout/plantshare-btns.png) no-repeat -1px -231px; display: block; font-size: 0; height: 32px; text-indent: -9999px; width: 163px; }
@@ -1160,7 +1161,7 @@ body.plantshare#find-people-profile { background: none; }
 body.plantshare#find-people-profile div { background: #fff; border: 5px solid #acac90; height: 185px; padding: 0 16px 0 0; }
 body.plantshare#find-people-profile div p { margin-top: 0; }
 body.plantshare#find-people-profile .close { background: transparent url(/static/images/icons/close.png) no-repeat; cursor: pointer; display: block; height: 16px; position: absolute; right: 15px; text-indent: -9999px; top: 15px; width: 16px; }
-body.plantshare#find-people-profile .avatar { float: left; height: 153px; margin: 16px; width: 169px; }
+body.plantshare#find-people-profile .avatar { background: #e1f0d1; float: left; height: 153px; margin: 16px; width: 169px; }
 body.plantshare#find-people-profile .map { float: right; height: 113px; width: 169px; }
 body.plantshare#find-people-profile .not-found { padding: 70px 0; text-align: center; }
 body.plantshare#sign-up #main form input { width: 350px; }
@@ -1277,8 +1278,8 @@ body.plantshare#profile .info-section .field-controls input, body.plantshare#pro
 body.plantshare#profile .info-section .field-controls input, body.plantshare#profile .info-section .field-controls a, body.plantshare#profile .location-section .field-controls input, body.plantshare#profile .location-section .field-controls a { display: block; margin-right: 20px; vertical-align: middle; }
 body.plantshare#profile .info-section .field-controls::after, body.plantshare#profile .location-section .field-controls::after { display: block; content: " "; clear: both; }
 body.plantshare#profile .info-section .info.box, body.plantshare#profile .location-section .info.box { min-height: 158px; padding: 0 0 5px 0; }
-body.plantshare#profile .info-section .info.box .avatar, body.plantshare#profile .location-section .info.box .avatar { margin-right: 15px; padding: 0; float: left; width: 170px; }
-body.plantshare#profile .info-section .info.box .avatar img, body.plantshare#profile .location-section .info.box .avatar img { border: 0; }
+body.plantshare#profile .info-section .info.box .avatar, body.plantshare#profile .location-section .info.box .avatar { float: left; margin-right: 15px; padding: 0; width: 170px; }
+body.plantshare#profile .info-section .info.box .avatar img, body.plantshare#profile .location-section .info.box .avatar img { background: #e1f0d1; border: 0; height: 153px; width: 169px; }
 body.plantshare#profile .info-section .info.box .avatar p, body.plantshare#profile .location-section .info.box .avatar p { text-align: center; margin: 0; }
 body.plantshare#profile .info-section .info.box .map-thumbnail, body.plantshare#profile .location-section .info.box .map-thumbnail { float: left; margin: 0 15px 0 0; padding: 0; }
 body.plantshare#profile .info-section .info.box table, body.plantshare#profile .location-section .info.box table { margin: 10px 0 0 0; padding: 0; width: 493px; }
@@ -1323,7 +1324,7 @@ body.plantshare#checklists table.checklists-list .note a.row-btn { float: right;
 body.plantshare#checklists table.checklists-list thead { display: block; width: auto; }
 body.plantshare#checklists table.checklists-list thead tr th { padding: 7px 5px; text-align: left; text-transform: uppercase; }
 body.plantshare#checklists table.checklists-list tbody { display: block; height: 500px; overflow-y: scroll; }
-body.plantshare#checklists table.checklists-list tbody tr:nth-child(odd) { background-color: #e0f0d1; }
+body.plantshare#checklists table.checklists-list tbody tr:nth-child(odd) { background-color: #e1f0d1; }
 body.plantshare#checklists table.checklists-list tbody tr td { padding: 7px 5px; }
 body.plantshare#checklists table.checklists-list tbody tr td .thumb { background: url(../images/icons/flower-thumb.gif) no-repeat; height: 40px; width: 39px; }
 body.plantshare#checklists .checklists-section { background-color: #fff; border: 1px solid #c3d941; margin: 20px 0; min-height: 140px; padding: 10px 15px 20px; position: relative; }
