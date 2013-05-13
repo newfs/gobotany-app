@@ -876,7 +876,6 @@ body.skey {
                 -khtml-user-select: none;
                 -webkit-user-select: none;
                 -ms-user-select: none;
-                user-select: none;
             }
 
             #slider {
@@ -1432,15 +1431,13 @@ ul.get-more-questions-menu {
                         position: absolute;
                     }
                     label {
-                        /*border-left: 1px solid orange;*/
-                        /*border-right: 1px solid orange;*/
                         display: table;
                         font-family: Verdana, sans-serif; /* No Tahoma on iOS */
                         font-size: 11px;
                         height: 44px;
                         margin: 0;
-                        max-width: none;
-                        min-width: none;
+                        max-width: 0;
+                        min-width: 0;
                         padding-left: 4px;
                         padding-right: 12px;
                         width: 96%;
@@ -1766,7 +1763,7 @@ ul.get-more-questions-menu {
             }
             &.mobile-gloss .working-area {
                 h4 {
-                    padding-right: 0;
+                    padding-right: 0;
                 }
                 .terms {
                     background: inherit;
@@ -1810,7 +1807,7 @@ ul.get-more-questions-menu {
             display: block;
             border-bottom: solid 1px #000;
             li {
-                list-item-type: none;
+                list-style-type: none;
                 display: none;
                 &.answered {
                     display: inline;

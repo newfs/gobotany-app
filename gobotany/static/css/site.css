@@ -189,13 +189,13 @@ div.sb-message a:link, div.sb-message a:visited { color: #fff; text-decoration: 
 div.scrollingHotSpotLeft { 	/* The hotspots have a minimum width of 100 pixels and if there is room the will grow and occupy 15% of the scrollable area (30% combined). Adjust it to your own taste. */ min-width: 75px; width: 10%; height: 100%; 	/* There is a big background image and it's used to solve some problems I experienced in Internet Explorer 6. */ background-image: url(/static/images/smoothDivScroll/big_transparent.gif); background-repeat: repeat; background-position: center center; position: absolute; z-index: 200; left: 0; /*  The first url is for Firefox and other browsers, the second is for Internet Explorer */ cursor: url(/static/images/smoothDivScroll/cursors/cursor_arrow_left.png), url(../images/smoothDivScroll/cursors/cursor_arrow_left.png), w-resize; }
 
 /* Visible left hotspot */
-div.scrollingHotSpotLeftVisible { background-image: url(/static/images/smoothDivScroll/arrow_left.gif); background-color: #fff; background-repeat: no-repeat; opacity: 0.35; /* Standard CSS3 opacity setting */ -moz-opacity: 0.35; /* Opacity for really old versions of Mozilla Firefox (0.9 or older) */ filter: alpha(opacity=35); /* Opacity for Internet Explorer. */ zoom: 1; /* Trigger "hasLayout" in Internet Explorer 6 or older versions */ }
+div.scrollingHotSpotLeftVisible { background-image: url(/static/images/smoothDivScroll/arrow_left.gif); background-color: #fff; background-repeat: no-repeat; opacity: 0.35; /* Standard CSS3 opacity setting */ -moz-opacity: 0.35; /* Opacity for really old versions of Mozilla Firefox (0.9 or older) */ filter: alpha(opacity=35); /* Opacity for Internet Explorer. */ }
 
 /* Invisible right hotspot */
 div.scrollingHotSpotRight { min-width: 75px; width: 10%; height: 100%; background-image: url(/static/images/smoothDivScroll/big_transparent.gif); background-repeat: repeat; background-position: center center; position: absolute; z-index: 200; right: 0; cursor: url(/static/images/smoothDivScroll/cursors/cursor_arrow_right.png), url(../images/smoothDivScroll/cursors/cursor_arrow_right.png), e-resize; }
 
 /* Visible right hotspot */
-div.scrollingHotSpotRightVisible { background-image: url(/static/images/smoothDivScroll/arrow_right.gif); background-color: #fff; background-repeat: no-repeat; opacity: 0.35; filter: alpha(opacity=35); -moz-opacity: 0.35; zoom: 1; }
+div.scrollingHotSpotRightVisible { background-image: url(/static/images/smoothDivScroll/arrow_right.gif); background-color: #fff; background-repeat: no-repeat; opacity: 0.35; filter: alpha(opacity=35); -moz-opacity: 0.35; }
 
 /* The scroll wrapper is always the same width and height as the containing element (div). Overflow is hidden because you don't want to show all of the scrollable area.
 */
@@ -241,7 +241,7 @@ h4 { font-size: 14px; }
 
 h5, h6 { font-size: 12px; }
 
-h6 { font-weight: italic; }
+h6 { font-style: italic; }
 
 p { line-height: 170%; margin: 1em 0; padding: 0; }
 
@@ -310,7 +310,7 @@ header nav #search button { background: #317b0c url(/static/images/layout/search
 .content #main .smallscreen-anchor-nav { display: none; }
 .content .container.free-sidebar #main { background: none; }
 .content .container.free-sidebar #sidebar { border-top: 0; height: auto; padding: 0; }
-.content .container.no-sidebar #main { background: none; float: none; min-height: none; padding-left: 0; width: auto; }
+.content .container.no-sidebar #main { background: none; float: none; min-height: 0; padding-left: 0; width: auto; }
 
 /* Sidebar (usually in a #sidebar section, but sometimes not, being arranged by floating and positioning content) */
 #sidebar { border-top: 1px solid #c3d941; float: left; height: 100%; margin-right: -230px; padding: 16px 0 0; width: 230px; }
@@ -504,7 +504,7 @@ table.list th td:first-child { font-family: "Trebuchet MS", Helvetica, Arial, "L
 #home .three-col.last a.learn-more { margin: 33px 0 0 0; }
 #home .three-col h3 { font-size: 24px; }
 #home .three-col h4 { margin: 0 0 3px 0; font-style: italic; color: #807121; }
-#home .three-col p { margin: 0 inherit; }
+#home .three-col p { margin: 0; }
 #home .three-col a.learn-more { margin: 13px 0 0 0; }
 #home a.learn-more { background: url(/static/images/layout/learn-more-btn.png) 0 0 no-repeat; height: 32px; width: 111px; display: block; text-indent: -9000px; }
 #home a.learn-more:hover { background-position: 0 -32px; }
@@ -870,10 +870,10 @@ body.skey.results .working-area .measurement label input { margin: 0 4px 0 8px; 
 body.skey.results .working-area .instructions { margin-bottom: 8px; }
 body.skey.results .working-area .actions { text-align: center; }
 body.skey.results .working-area #slider { height: 70px; margin: 20px 0 10px; padding: 20px 0 0 0; position: relative; }
-body.skey.results .working-area #slider .bar { cursor: pointer; padding: 0 4px; position: absolute; top: 47px; width: 100%; -moz-box-sizing: border-box; -webkit-box-sizing: border-box; box-sizing: border-box; -moz-user-select: -moz-none; -khtml-user-select: none; -webkit-user-select: none; -ms-user-select: none; user-select: none; }
-body.skey.results .working-area #slider .bar div { background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #c1d9a7), color-stop(100%, white)); background: -moz-linear-gradient(center top, #c1d9a7, white); border: 1px solid #c1d9a7; height: 8px; -moz-border-radius: 4px; -webkit-border-radius: 4px; -o-border-radius: 4px; -ms-border-radius: 4px; -khtml-border-radius: 4px; border-radius: 4px; -moz-user-select: -moz-none; -khtml-user-select: none; -webkit-user-select: none; -ms-user-select: none; user-select: none; }
+body.skey.results .working-area #slider .bar { cursor: pointer; padding: 0 4px; position: absolute; top: 47px; width: 100%; -moz-box-sizing: border-box; -webkit-box-sizing: border-box; box-sizing: border-box; -moz-user-select: -moz-none; -khtml-user-select: none; -webkit-user-select: none; -ms-user-select: none; }
+body.skey.results .working-area #slider .bar div { background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #c1d9a7), color-stop(100%, white)); background: -moz-linear-gradient(center top, #c1d9a7, white); border: 1px solid #c1d9a7; height: 8px; -moz-border-radius: 4px; -webkit-border-radius: 4px; -o-border-radius: 4px; -ms-border-radius: 4px; -khtml-border-radius: 4px; border-radius: 4px; -moz-user-select: -moz-none; -khtml-user-select: none; -webkit-user-select: none; -ms-user-select: none; }
 body.skey.results .working-area #slider .thumb { background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #c1d9a7), color-stop(100%, white)); background: -moz-linear-gradient(center top, #c1d9a7, white); border: 1px solid white; cursor: pointer; height: 30px; left: 3px; position: absolute; text-align: center; top: 35px; width: 30px; -moz-border-radius: 16px; -webkit-border-radius: 16px; -o-border-radius: 16px; -ms-border-radius: 16px; -khtml-border-radius: 16px; border-radius: 16px; -moz-box-shadow: 0 1px 6px 1px #333333; -webkit-box-shadow: 0 1px 6px 1px #333333; -o-box-shadow: 0 1px 6px 1px #333333; box-shadow: 0 1px 6px 1px #333333; }
-body.skey.results .working-area #slider .label { font-size: 16px; position: relative; top: -36px; -moz-user-select: -moz-none; -khtml-user-select: none; -webkit-user-select: none; -ms-user-select: none; user-select: none; }
+body.skey.results .working-area #slider .label { font-size: 16px; position: relative; top: -36px; -moz-user-select: -moz-none; -khtml-user-select: none; -webkit-user-select: none; -ms-user-select: none; }
 body.skey.results img.char-value-larger { height: 160px !important; /* Consistent height for popup character value drawings */ }
 body.skey .toplink { display: none; }
 body.skey #filters-preview { display: none; }
@@ -983,7 +983,7 @@ ul.get-more-questions-menu ul li[data-character] { color: black; }
   body.skey.results .working-area .choices.has-drawings .choice:last-of-type .drawing { border-bottom-left-radius: 8px; }
   body.skey.results .working-area .choice { border-bottom: 1px solid #999999; margin: 0; height: 44px; position: relative; }
   body.skey.results .working-area .choice input { margin: 4px 0; opacity: 0; position: absolute; }
-  body.skey.results .working-area .choice label { /*border-left: 1px solid orange;*/ /*border-right: 1px solid orange;*/ display: table; font-family: Verdana, sans-serif; /* No Tahoma on iOS */ font-size: 11px; height: 44px; margin: 0; max-width: none; min-width: none; padding-left: 4px; padding-right: 12px; width: 96%; -webkit-tap-highlight-color: rgba(0, 0, 0, 0); }
+  body.skey.results .working-area .choice label { display: table; font-family: Verdana, sans-serif; /* No Tahoma on iOS */ font-size: 11px; height: 44px; margin: 0; max-width: 0; min-width: 0; padding-left: 4px; padding-right: 12px; width: 96%; -webkit-tap-highlight-color: rgba(0, 0, 0, 0); }
   body.skey.results .working-area .row:first-of-type .choice:first-of-type { border-top: none; }
   body.skey.results .working-area .checked { background: #eef2e9 url(/static/images/layout/check.png) no-repeat; background-size: auto 20px; background-position: 98% center; }
   body.skey.results .working-area .row:first-of-type .checked:first-of-type { border-top-left-radius: 8px; border-top-right-radius: 8px; }
@@ -1046,7 +1046,7 @@ ul.get-more-questions-menu ul li[data-character] { color: black; }
   body.skey.results.mobile-inline .working-area .info { float: none; }
   body.skey.results.mobile-inline .working-area .choices { height: auto; overflow: visible; }
   body.skey.results.mobile-inline .working-area .choice:last-of-type { border-bottom: 0; }
-  body.skey.results.mobile-inline.mobile-gloss .working-area h4 { padding-right:  0; }
+  body.skey.results.mobile-inline.mobile-gloss .working-area h4 { padding-right: 0; }
   body.skey.results.mobile-inline.mobile-gloss .working-area .terms { background: inherit; border: 0; padding: 4px; position: static; text-align: left; width: 100%; }
   body.skey.results.mobile-inline.mobile-gloss .working-area .terms.closed h5::after { display: none; }
   body.skey.results.mobile-inline.mobile-gloss .working-area .terms.closed ul { display: block; }
@@ -1055,7 +1055,7 @@ ul.get-more-questions-menu ul li[data-character] { color: black; }
   body.skey.results.mobile-toplink { /* Mobile variant with floating 'back to top' link */ }
   body.skey.results.mobile-toplink .toplink { position: fixed; left: 0; bottom: 0; width: 100%; text-align: right; }
   body.skey.mobile-preview-filters #filters-preview { display: block; border-bottom: solid 1px black; }
-  body.skey.mobile-preview-filters #filters-preview li { list-item-type: none; display: none; }
+  body.skey.mobile-preview-filters #filters-preview li { list-style-type: none; display: none; }
   body.skey.mobile-preview-filters #filters-preview li.answered { display: inline; }
   body.skey.mobile-preview-filters #filters-preview li .name { font-weight: bold; }
   body.skey.mobile-preview-filters #filters-preview .clear-filter { display: none; }

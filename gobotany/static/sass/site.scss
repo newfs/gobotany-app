@@ -98,7 +98,7 @@ h5, h6 {
 	font-size: $base-font-size;	
 }
 h6 {
-    font-weight: italic;
+    font-style: italic;
 }
 p {
     line-height: $text-line-height;
@@ -372,7 +372,7 @@ header {
         &.no-sidebar #main {
             background: none;
             float: none;
-            min-height: none;
+            min-height: 0;
             padding-left: 0;
             width: auto;
         }
