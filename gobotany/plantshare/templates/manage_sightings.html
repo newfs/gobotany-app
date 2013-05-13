@@ -67,7 +67,7 @@
         </table>
     {% else %}
         <p>Here is where your sightings will be listed,
-        <b>{% user_first_name user %}</b>.</p>
+        {% user_first_name user %}.</p>
         
         <p>You are welcome to
         <a href="{% url 'ps-new-sighting' %}">post a sighting</a>
