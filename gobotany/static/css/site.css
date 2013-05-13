@@ -1515,7 +1515,7 @@ body.search-results .search-navigation li { display: inline; margin: 0 2px; }
 #glossary #terms dt, #glossary #terms dd { border-top: 1px solid #e1e1dc; min-height: 24px; }
 #glossary #terms dt { clear: left; float: left; line-height: 27px; padding: 7px 10px 0 38px; width: 190px; }
 #glossary #terms dt:first-child, #glossary #terms dt:first-child + dd { border-top: 0; }
-#glossary #terms dt a { float: left; margin-left: -34px; }
+#glossary #terms dt a { border-bottom: 0; float: left; margin-left: -34px; }
 #glossary #terms dd { margin-left: 224px; padding: 13px; }
 #glossary #terms img { padding-left: 4px; padding-top: 1px; }
 
