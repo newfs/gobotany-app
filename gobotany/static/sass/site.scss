@@ -43,9 +43,6 @@ a {
     &:visited {
         color: $visited-link-color;
     }
-    &:hover {
-        text-decoration: underline;
-    }
     &:active {
         color: $active-link-color;
     }
@@ -54,6 +51,18 @@ a {
         &:hover {
             text-decoration: none;
         }
+    }
+}
+#main p a, #main li a, #main dt a, #main td a {
+    border-bottom: 1px solid $border-green;
+    &:hover {
+        border-color: $link-green;
+    }
+    &:active {
+        border-color: $active-link-color;
+    }
+    &:not([href]) {
+        border: 0;
     }
 }
 
@@ -540,15 +549,16 @@ footer {
         display: inline-block;
         list-style-type: none;
         margin-bottom: 8px;
-    }
-    .label {
-        color: $medium-brown;
-    }
-    a {
         &::after {
             color: $medium-brown;
             content: ' >';
         }
+        &:first-of-type::after, &:last-of-type::after {
+            content: none;
+        }
+    }
+    .label {
+        color: $medium-brown;
     }
 }
 

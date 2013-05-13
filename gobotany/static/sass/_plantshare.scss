@@ -783,6 +783,9 @@ body.plantshare {
     }
 
     &#profile {
+        form input {
+            margin-bottom: 0;
+        }
         .username {
             float: right;
         }
@@ -878,446 +881,450 @@ body.plantshare {
             position: relative;
 
             .field-controls {
+                margin-top: 10px;
                 padding: 5px 0 0;
                 input {
-                  float: left;
-                }
-                input, a {
-                    display: block;
-                    margin-right: 20px;
-                    vertical-align: middle;
-                }
-                &::after {
-                  display: block;
-                  content: " ";
-                  clear: both;
-                }
+                    float: left;
             }
-            .info.box {
-                min-height: 158px;
-                padding: 0 0 5px 0;
-                .avatar {
-                    float: left;
-                    margin-right: 15px;
-                    padding: 0;
-                    width: 170px;
-
-                    img {
-                        background: $light-green;
-                        border: 0;
-                        height: $avatar-image-height;
-                        width: $avatar-image-width;
-                    }
-                    p {
-                        text-align: center;
-                        margin: 0;
-                    }
-                }
-                .map-thumbnail {
-                    float: left;
-                    margin: 0 15px 0 0;
-                    padding: 0;
-                }
-                table {
-                    margin: 10px 0 0 0;
-                    padding: 0;
-                    width: 493px;
-
-                    td {
-                        padding: 5px 10px;
-                    }
-
-                    td.first {
-                        font-weight: bold;
-                        line-height: 170%;
-                        padding: 5px;
-                        text-align: right;
-                        vertical-align: baseline;
-                        width: 97px;
-                    }
-
-                    p {
-                        margin: 0;
-                        padding: 0;
-                    }
-
-                    .display {
-                        .group-list, .coords-list {
-                            float: left;
-                        }
-                        .edit-link {
-                            float: right;
-                        }
-                        ul {
-                            list-style: none;
-                        }
-                    }
-
-                    .edit {
-                        display: none;
-                    }
-                }
+            input, a {
+                display: inline-block;
+                margin-right: 20px;
+                vertical-align: middle;
+            }
+            &::after {
+                content: " ";
+                clear: both;
+                display: block;
             }
         }
-    } /* end .info-section, .location-section */
-    &#profile {
-        .info-section {
-            margin: 0 0 20px;
-            .info.box {
-                min-height: 172px;
-                padding: 10px 15px;
-                table {
+        .field-reset {
+            margin-top: 7px;
+        }
+        .info.box {
+            min-height: 158px;
+            padding: 0 0 5px 0;
+            .avatar {
+                float: left;
+                margin-right: 15px;
+                padding: 0;
+                width: 170px;
+
+                img {
+                    background: $light-green;
+                    border: 0;
+                    height: $avatar-image-height;
+                    width: $avatar-image-width;
+                }
+                p {
+                    text-align: center;
                     margin: 0;
                 }
             }
-        }
-    }
-
-    #login.box {
-        background-color: $login-box-background-color;
-        border-color: $link-green;
-        max-width: $plantshare-main-column-width;
-        padding: 0;
-        h4 {
-            font-size: 20px;
-            padding: $section-padding $section-padding 10px;
-        }
-        div {
-            border-top: 1px solid $link-green;
-            padding: $section-padding;
-            a {
-                margin-left: 0;
+            .map-thumbnail {
+                float: left;
+                margin: 0 15px 0 0;
+                padding: 0;
             }
-        }
-        input[type='text'], input[type='password'] {
-            width: 95%;
-        }
-    }
+            table {
+                margin: 10px 0 0 0;
+                padding: 0;
+                width: 493px;
 
-    &#checklists {
-        div.notes-modal {
-            background-color: #fff;
-            overflow: hidden; 
-            margin: 0;
-            padding: 15px 20px 0;
-            max-height: 240px;
-        }
-        div.notes-modal {
-            section {
-                padding: 10px 0 0;
-            }
+                td {
+                    padding: 7px 10px;
+                }
 
-            textarea {
-                border: 1px solid #ABABAB;
-                box-shadow: inset 1px 1px 5px #ccc;
-                -moz-box-shadow: inset 1px 1px 5px #ccc;
-                -webkit-box-shadow: inset 1px 1px 5px #ccc;
-                font-size: inherit;
-                height: 80px;
-                line-height: inherit;
-                max-width: 90%;
-                padding: 7px 5px 5px;
-                width: 100%
-            }
+                td.first {
+                    font-weight: bold;
+                    padding: 7px;
+                    text-align: right;
+                    vertical-align: baseline;
+                    width: 97px;
+                }
 
-            div.form-actions {
-                padding: 10px 0;
+                p {
+                    line-height: normal;
+                    margin: 0;
+                    padding: 0;
+                }
 
-                a.clear-btn {
-                    margin: 0 0 0 10px;
+                .display {
+                    .group-list, .coords-list {
+                        float: left;
+                    }
+                    .edit-link {
+                        float: right;
+                    }
+                    ul {
+                        list-style: none;
+                    }
+                }
+
+                .edit {
+                    display: none;
                 }
             }
         }
-        div.ps-section {
-            margin: 20px 0;
+    }
+} /* end .info-section, .location-section */
+&#profile {
+    .info-section {
+        margin: 0 0 20px;
+        .info.box {
+            min-height: 172px;
+            padding: 10px 15px;
+            table {
+                margin: 0;
+            }
+        }
+    }
+}
+
+#login.box {
+    background-color: $login-box-background-color;
+    border-color: $link-green;
+    max-width: $plantshare-main-column-width;
+    padding: 0;
+    h4 {
+        font-size: 20px;
+        padding: $section-padding $section-padding 10px;
+    }
+    div {
+        border-top: 1px solid $link-green;
+        padding: $section-padding;
+        a {
+            margin-left: 0;
+        }
+    }
+    input[type='text'], input[type='password'] {
+        width: 95%;
+    }
+}
+
+&#checklists {
+    div.notes-modal {
+        background-color: #fff;
+        overflow: hidden; 
+        margin: 0;
+        padding: 15px 20px 0;
+        max-height: 240px;
+    }
+    div.notes-modal {
+        section {
+            padding: 10px 0 0;
+        }
+
+        textarea {
+            border: 1px solid #ABABAB;
+            box-shadow: inset 1px 1px 5px #ccc;
+            -moz-box-shadow: inset 1px 1px 5px #ccc;
+            -webkit-box-shadow: inset 1px 1px 5px #ccc;
+            font-size: inherit;
+            height: 80px;
+            line-height: inherit;
+            max-width: 90%;
+            padding: 7px 5px 5px;
+            width: 100%
+        }
+
+        div.form-actions {
             padding: 10px 0;
+
+            a.clear-btn {
+                margin: 0 0 0 10px;
+            }
         }
-        div#form-template {
-            display: none;
-        }
-        table.checklists-list {
-            background: #fff;
-            border: 1px solid #C3D941;
-            margin: 20px 0;
-            width: 100%;
-            table-layout: fixed;
+    }
+    div.ps-section {
+        margin: 20px 0;
+        padding: 10px 0;
+    }
+    div#form-template {
+        display: none;
+    }
+    table.checklists-list {
+        background: #fff;
+        border: 1px solid #C3D941;
+        margin: 20px 0;
+        width: 100%;
+        table-layout: fixed;
 
-            td { overflow: hidden; }
+        td { overflow: hidden; }
 
-            .first {
-              min-width: 15px; 
-              white-space: nowrap;
+        .first {
+            min-width: 15px; 
+            white-space: nowrap;
 
-              input[type="checkbox"] {
+            input[type="checkbox"] {
                 width: auto;
-              }
+          }
+        }
+        .checklistview-name {
+            min-width: 185px; 
+            white-space: nowrap;
+        }
+        .date {
+            min-width: 100px; 
+            white-space: nowrap;
+        }
+        .owner {
+            min-width: 100px; 
+            white-space: nowrap;
+        }
+        .last {
+            padding-right: 20px;
+            text-align: right;
+            width: 100%;
+            white-space: nowrap;
+        }
+        .name {
+            width: 140px; 
+        }
+        .image {
+            width: 80px; 
+        }
+        .date-sighted, .date-posted {
+            width: 110px; 
+        }
+        .location {
+            width: 130px; 
+        }
+        .note {
+            width: 60px;
+            padding-right: 7px;
+            .note-field {
+                display: none;
             }
-            .checklistview-name {
-              min-width: 185px; 
-              white-space: nowrap;
+            a {
+                margin: 0;
             }
-            .date {
-              min-width: 100px; 
-              white-space: nowrap;
+            a.row-btn {
+                float: right;
+                margin: 0 0 0 8px;
+                text-indent: -9999px;
             }
-            .owner {
-              min-width: 100px; 
-              white-space: nowrap;
+        }
+
+        thead {
+            display: block;
+            width: auto;
+            tr th {
+                padding: 7px 5px;
+                text-align: left;
+                text-transform: uppercase;
             }
-            .last {
-              padding-right: 20px;
-              text-align: right;
-              width: 100%;
-              white-space: nowrap;
+        }
+
+        tbody {
+            display: block;
+            height: 500px;
+            overflow-y: scroll;
+
+            tr:nth-child(odd) {
+                background-color: $light-green;
             }
-            .name {
-                width: 140px; 
+
+            tr td {
+                padding: 7px 5px;
+
+                .thumb {
+                    background: url(../images/icons/flower-thumb.gif) no-repeat;
+                    height: 40px;
+                    width: 39px;
+                }
+            }
+        }
+    }
+    .checklists-section {
+        background-color: #fff;
+        border: 1px solid #c3d941;
+        margin: 20px 0;
+        min-height: 140px;
+        padding: 10px 15px 20px;
+        position: relative;
+
+        input, textarea {
+            border: 1px solid #ababab;
+            box-shadow: inset 1px 1px 2px #ccc;
+            -moz-box-shadow: inset 1px 1px 2px #ccc;
+            -webkit-box-shadow: inset 1px 1px 2px #ccc;
+            display: block;
+            font-size: inherit;
+            line-height: 1em;
+            padding: 7px 5px 5px;
+        }
+
+        h4 {
+            margin: 0 0 15px;
+            font-size: 18px;
+        }
+
+        header {
+            margin: 0 0 10px;
+            height: auto !important;
+
+            input, textarea {
+                margin: 5px 0 10px;
+                width: 95%;
+                height: auto;
+            }
+        }
+
+        .import-sightings-link {
+            background-color: #e0f0d1;
+            display: block;
+            font-weight: bold;
+            margin: 0 0 25px;
+            padding: 5px 10px;
+        }
+
+        table#add-sightings-table {
+            width: 678px;
+
+            div.form-data {
+                display: none;
+            }
+
+            th, td {
+                padding: 15px 10px 5px 0;
+            }
+
+            td input {
+                padding: 7px 5px 5px;
+                margin: 0;
+            }
+
+            .name input {
+                width: 160px;
             }
             .image {
-                width: 80px; 
+                font-size: 0.9em;
             }
-            .date-sighted, .date-posted {
-                width: 110px; 
+            .date-sighted input {
+                width: 70px;
             }
-            .location {
-                width: 130px; 
+            .location input {
+                width: 150px;
+            }
+            .date-posted input {
+                width: 70px;
             }
             .note {
+                padding-right: 0;
                 width: 60px;
-                padding-right: 7px;
                 .note-field {
                     display: none;
                 }
                 a {
-                    margin: 0;
+                    display: inline-block;
                 }
                 a.row-btn {
                     float: right;
-                    margin: 0 0 0 8px;
-                    text-indent: -9999px;
+                    margin: 5px 0 0 8px;
                 }
             }
 
-            thead {
-                display: block;
-                width: auto;
-                tr th {
-                    padding: 7px 5px;
-                    text-align: left;
-                    text-transform: uppercase;
-                }
-            }
-            
-            tbody {
-                display: block;
-                height: 500px;
-                overflow-y: scroll;
+            thead { 
+                border-bottom: 1px solid #ccc;
+                width: 678px; 
 
-                tr:nth-child(odd) {
-                    background-color: $light-green;
-                }
-
-                tr td {
-                    padding: 7px 5px;
-                    
-                    .thumb {
-                        background: url(../images/icons/flower-thumb.gif) no-repeat;
-                        height: 40px;
-                        width: 39px;
-                    }
-                }
-            }
-        }
-        .checklists-section {
-            background-color: #fff;
-            border: 1px solid #c3d941;
-            margin: 20px 0;
-            min-height: 140px;
-            padding: 10px 15px 20px;
-            position: relative;
-            
-            input, textarea {
-                border: 1px solid #ababab;
-                box-shadow: inset 1px 1px 2px #ccc;
-                -moz-box-shadow: inset 1px 1px 2px #ccc;
-                -webkit-box-shadow: inset 1px 1px 2px #ccc;
-                display: block;
-                font-size: inherit;
-                line-height: 1em;
-                padding: 7px 5px 5px;
-            }
-            
-            h4 {
-                margin: 0 0 15px;
-                font-size: 18px;
-            }
-
-            header {
-                margin: 0 0 10px;
-                height: auto !important;
-                
-                input, textarea {
-                    margin: 5px 0 10px;
-                    width: 95%;
-                    height: auto;
-                }
-            }
-
-            .import-sightings-link {
-                background-color: #e0f0d1;
-                display: block;
-                font-weight: bold;
-                margin: 0 0 25px;
-                padding: 5px 10px;
-            }
-
-            table#add-sightings-table {
-                width: 678px;
-
-                div.form-data {
-                    display: none;
-                }
-
-                th, td {
-                    padding: 15px 10px 5px 0;
-                }
-            
-                td input {
-                    padding: 7px 5px 5px;
-                    margin: 0;
-                }
-
-                .name input {
-                    width: 160px;
-                }
-                .image {
-                    font-size: 0.9em;
-                }
-                .date-sighted input {
-                    width: 70px;
-                }
-                .location input {
-                    width: 150px;
-                }
-                .date-posted input {
-                    width: 70px;
-                }
-                .note {
-                    padding-right: 0;
-                    width: 60px;
-                    .note-field {
-                        display: none;
-                    }
-                    a {
-                        display: inline-block;
-                    }
-                    a.row-btn {
-                        float: right;
-                        margin: 5px 0 0 8px;
-                    }
-                }
-
-                thead { 
-                    border-bottom: 1px solid #ccc;
-                    width: 678px; 
-                    
-                    th {
-                        text-transform: uppercase;
-                        
-                        span {
-                            color: #999;
-                            font-style: italic;
-                            text-transform: none;
-                        }
-                    }
-                }
-                tfoot {
-                    border-bottom: 1px solid #ccc;
-                    
-                    td {
-                        font-size: .9em;
-                        padding-bottom: 10px;
-                        padding-top: 10px;
-                    }
-                }
-            }
-            .form-actions {
-                padding: 15px 0 0;
-
-                a {
-                    margin: 7px 20px 0 0;
-                    display: block;
-                    float: left;
-                    vertical-align: middle;
-                }
-                #save-btn {
-                    height: 32px;
-                    width: 99px;
-                    border: 0 none;
-                    margin: 0 20px 0 0;
-                    box-shadow: none;
-                    -moz-box-shadow: none;
-                    -webkit-box-shadow: none;
-                    white-space: nowrap;
-                    display: block;
-                    float: left;
-                    vertical-align: middle;
-                }
-
-                &::after {
-                  display: block;
-                  content: " ";
-                  clear: both;
-                }
-            }
-        }
-    }
-
-    &#screen-images {
-        table.unscreened {
-            margin: 20px 0;
-            padding: 0;
-            table-layout: fixed;
-            overflow: hidden;
-            width: 100%;
-            text-align: center;
-
-            tr.header {
-                height: 20px;
                 th {
+                    text-transform: uppercase;
+
+                    span {
+                        color: #999;
+                        font-style: italic;
+                        text-transform: none;
+                    }
+                }
+            }
+            tfoot {
+                border-bottom: 1px solid #ccc;
+
+                td {
+                    font-size: .9em;
                     padding-bottom: 10px;
+                    padding-top: 10px;
                 }
             }
-            tr {
-                height: 128px;
-                vertical-align: top;
-            }
-
-            th.approval, td.approval {
-                width: 150px;
-                overflow: hidden;
-
-                input {
-                    width: 20px;
-                }
-
-                li {
-                  float: left;
-                  label {
-                    width: 60px;
-                  }
-                }
-            }
-            th.thumb, td.thumb {
-                width: 138px;
-            }
-
         }
+        .form-actions {
+            padding: 15px 0 0;
 
-        div.form-control {
-            margin: 0 30px;
+            a {
+                margin: 7px 20px 0 0;
+                display: block;
+                float: left;
+                vertical-align: middle;
+            }
+            #save-btn {
+                height: 32px;
+                width: 99px;
+                border: 0 none;
+                margin: 0 20px 0 0;
+                box-shadow: none;
+                -moz-box-shadow: none;
+                -webkit-box-shadow: none;
+                white-space: nowrap;
+                display: block;
+                float: left;
+                vertical-align: middle;
+            }
+
+            &::after {
+                display: block;
+                content: " ";
+                clear: both;
+            }
         }
     }
+}
+
+&#screen-images {
+    table.unscreened {
+        margin: 20px 0;
+        padding: 0;
+        table-layout: fixed;
+        overflow: hidden;
+        width: 100%;
+        text-align: center;
+
+        tr.header {
+            height: 20px;
+            th {
+                padding-bottom: 10px;
+            }
+        }
+        tr {
+            height: 128px;
+            vertical-align: top;
+        }
+
+        th.approval, td.approval {
+            width: 150px;
+            overflow: hidden;
+
+            input {
+                width: 20px;
+            }
+
+            li {
+                float: left;
+                label {
+                    width: 60px;
+              }
+            }
+        }
+        th.thumb, td.thumb {
+            width: 138px;
+        }
+
+    }
+
+    div.form-control {
+        margin: 0 30px;
+    }
+}
 }
 
 /* Begin media queries styles for PlantShare. */
@@ -1327,21 +1334,21 @@ body.plantshare {
     body.plantshare {
         .box {
             width: $smallscreen-portrait-box-width;
-        }
-        .content form {
-            label, input, textarea {
-                width: $smallscreen-portrait-form-el-width;
-            }
+    }
+    .content form {
+        label, input, textarea {
+            width: $smallscreen-portrait-form-el-width;
         }
     }
+}
 }
 /* Landscape-orientation styles */
 @media only screen and (min-width: 401px) and (max-width: 600px) {
     body.plantshare {
         .box {
             width: $smallscreen-landscape-box-width;
-        }
     }
+}
 }
 /* These styles are common to both smartphone widths */
 @media only screen and (max-width: 600px) {
@@ -1351,37 +1358,37 @@ body.plantshare {
             > * {
                 padding-left: $section-padding;
                 padding-right: $section-padding;
-            }
-            > table {
-                margin-left: $section-padding;
-                width: 90%;
-            }
         }
-        .content #sidebar {
-            background: none;
-            border: 0;
+        > table {
+            margin-left: $section-padding;
+            width: 90%;
         }
-        &#plantshare .sign-up-call {
+    }
+    .content #sidebar {
+        background: none;
+        border: 0;
+    }
+    &#plantshare .sign-up-call {
+        width: auto;
+        ul {
+            margin-left: 0;
+        }
+    }
+    &#plantshare .notification {
+        width: auto;
+        ul {
+            margin-left: 0;
+        }
+    }
+    &.sighting form {
+        fieldset {
             width: auto;
-            ul {
-                margin-left: 0;
-            }
         }
-        &#plantshare .notification {
-            width: auto;
-            ul {
-                margin-left: 0;
-            }
-        }
-        &.sighting form {
-            fieldset {
-                width: auto;
-            }
-            .location {
-                img {
-                    display: block;
-                    float: none;
-                    margin-bottom: 10px;
+        .location {
+            img {
+                display: block;
+                float: none;
+                margin-bottom: 10px;
                 }
             }
         }

@@ -83,7 +83,7 @@ $disabled_orange_gradient: linear-gradient(
     min-width: 10em;
     @include border-radius(1em);
     @include single-box-shadow(darken($inactive_bg, 30), 0px, 1px, 4px);
-    border: 1px solid $orange1;
+    border: 1px solid $orange1 !important;
     @include background($orange_gradient);
     padding: 0.3em 0.5em;
     color: white;
@@ -93,6 +93,9 @@ $disabled_orange_gradient: linear-gradient(
     font-weight: bold;
     line-height: 1.5em;
     letter-spacing: (1em / 12);
+    &:visited {
+        color: white;
+    }
     &:hover {
         @include background($bright_orange_gradient);
     }

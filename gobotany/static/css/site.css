@@ -237,7 +237,8 @@ div.scrollableArea { position: relative; width: auto; height: 100%; }
 /* Import for Go Botany common definitions */
 /* Go Botany common definitions */
 /* for gradient, etc. */
-.orange-button, body.taxa .visit-dkey a, body.plantshare .ps-button, body.plantshare.sighting .modal-container .image-modal a.button, body.plantshare#ask #main .submit, body.plantshare#plantshare #ask .submit, body.plantshare#profile div.section-container .image-modal a.button, #dkey #main .offer-help-aside a.button, #dkey #main ul.couplets a.button, #dkey #main a.show-all-button { min-width: 10em; -webkit-border-radius: 1em; -moz-border-radius: 1em; -ms-border-radius: 1em; -o-border-radius: 1em; border-radius: 1em; -webkit-box-shadow: 0px 1px 4px #a2a64d; -moz-box-shadow: 0px 1px 4px #a2a64d; box-shadow: 0px 1px 4px #a2a64d; border: 1px solid #dc9402; background: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #dc9402), color-stop(40%, #f0b448), color-stop(100%, #dc9402)); background: -webkit-linear-gradient(top, #dc9402 0%, #f0b448 40%, #dc9402 100%); background: -moz-linear-gradient(top, #dc9402 0%, #f0b448 40%, #dc9402 100%); background: -o-linear-gradient(top, #dc9402 0%, #f0b448 40%, #dc9402 100%); background: linear-gradient(top, #dc9402 0%, #f0b448 40%, #dc9402 100%); padding: 0.3em 0.5em; color: white; text-align: center; text-decoration: none; font-family: "Trebuchet MS", Helvetica, Arial, "Lucida Sans Unicode", sans-serif; font-weight: bold; line-height: 1.5em; letter-spacing: 0.08333em; }
+.orange-button, body.taxa .visit-dkey a, body.plantshare .ps-button, body.plantshare.sighting .modal-container .image-modal a.button, body.plantshare#ask #main .submit, body.plantshare#plantshare #ask .submit, body.plantshare#profile div.section-container .image-modal a.button, #dkey #main .offer-help-aside a.button, #dkey #main ul.couplets a.button, #dkey #main a.show-all-button { min-width: 10em; -webkit-border-radius: 1em; -moz-border-radius: 1em; -ms-border-radius: 1em; -o-border-radius: 1em; border-radius: 1em; -webkit-box-shadow: 0px 1px 4px #a2a64d; -moz-box-shadow: 0px 1px 4px #a2a64d; box-shadow: 0px 1px 4px #a2a64d; border: 1px solid #dc9402 !important; background: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #dc9402), color-stop(40%, #f0b448), color-stop(100%, #dc9402)); background: -webkit-linear-gradient(top, #dc9402 0%, #f0b448 40%, #dc9402 100%); background: -moz-linear-gradient(top, #dc9402 0%, #f0b448 40%, #dc9402 100%); background: -o-linear-gradient(top, #dc9402 0%, #f0b448 40%, #dc9402 100%); background: linear-gradient(top, #dc9402 0%, #f0b448 40%, #dc9402 100%); padding: 0.3em 0.5em; color: white; text-align: center; text-decoration: none; font-family: "Trebuchet MS", Helvetica, Arial, "Lucida Sans Unicode", sans-serif; font-weight: bold; line-height: 1.5em; letter-spacing: 0.08333em; }
+.orange-button:visited, body.taxa .visit-dkey a:visited, body.plantshare .ps-button:visited, body.plantshare.sighting .modal-container .image-modal a.button:visited, body.plantshare#ask #main .submit:visited, body.plantshare#plantshare #ask .submit:visited, body.plantshare#profile div.section-container .image-modal a.button:visited, #dkey #main .offer-help-aside a.button:visited, #dkey #main ul.couplets a.button:visited, #dkey #main a.show-all-button:visited { color: white; }
 .orange-button:hover, body.taxa .visit-dkey a:hover, body.plantshare .ps-button:hover, body.plantshare.sighting .modal-container .image-modal a.button:hover, body.plantshare#ask #main .submit:hover, body.plantshare#plantshare #ask .submit:hover, body.plantshare#profile div.section-container .image-modal a.button:hover, #dkey #main .offer-help-aside a.button:hover, #dkey #main ul.couplets a.button:hover, #dkey #main a.show-all-button:hover { background: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #e29b0b), color-stop(32%, #f6be59), color-stop(50%, #f6be59), color-stop(100%, #e39d0e)); background: -webkit-linear-gradient(top, #e29b0b 0%, #f6be59 32%, #f6be59 50%, #e39d0e 100%); background: -moz-linear-gradient(top, #e29b0b 0%, #f6be59 32%, #f6be59 50%, #e39d0e 100%); background: -o-linear-gradient(top, #e29b0b 0%, #f6be59 32%, #f6be59 50%, #e39d0e 100%); background: linear-gradient(top, #e29b0b 0%, #f6be59 32%, #f6be59 50%, #e39d0e 100%); }
 .orange-button.disabled, body.taxa .visit-dkey a.disabled, body.plantshare .disabled.ps-button, body.plantshare.sighting .modal-container .image-modal a.disabled.button, body.plantshare#ask #main .disabled.submit, body.plantshare#plantshare #ask .disabled.submit, body.plantshare#profile div.section-container .image-modal a.disabled.button, #dkey #main .offer-help-aside a.disabled.button, #dkey #main ul.couplets a.disabled.button, #dkey #main a.disabled.show-all-button { border-color: #ecda92; background: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #ecda92), color-stop(32%, #f1e3a6), color-stop(50%, #f1e3a6), color-stop(100%, #ecdb93)); background: -webkit-linear-gradient(top, #ecda92 0%, #f1e3a6 32%, #f1e3a6 50%, #ecdb93 100%); background: -moz-linear-gradient(top, #ecda92 0%, #f1e3a6 32%, #f1e3a6 50%, #ecdb93 100%); background: -o-linear-gradient(top, #ecda92 0%, #f1e3a6 32%, #f1e3a6 50%, #ecdb93 100%); background: linear-gradient(top, #ecda92 0%, #f1e3a6 32%, #f1e3a6 50%, #ecdb93 100%); }
 
@@ -248,10 +249,14 @@ html, button, input, select, textarea { font-family: Verdana, Geneva, "Lucida Sa
 
 a { color: #317b0c; text-decoration: none; }
 a:visited { color: #666e0b; }
-a:hover { text-decoration: underline; }
 a:active { color: #45ac11; }
 a:not([href]) { color: black; }
 a:not([href]):hover { text-decoration: none; }
+
+#main p a, #main li a, #main dt a, #main td a { border-bottom: 1px solid #c3d941; }
+#main p a:hover, #main li a:hover, #main dt a:hover, #main td a:hover { border-color: #317b0c; }
+#main p a:active, #main li a:active, #main dt a:active, #main td a:active { border-color: #45ac11; }
+#main p a:not([href]), #main li a:not([href]), #main dt a:not([href]), #main td a:not([href]) { border: 0; }
 
 *|*:-moz-any-link:active, *|*:-moz-any-link:focus { border: 0; outline: 0; }
 
@@ -382,8 +387,9 @@ footer .support { margin-right: 0; padding: 18px 0; }
 /* Breadcrumb trails */
 #breadcrumb { color: #000; font-family: "Trebuchet MS", Helvetica, Arial, "Lucida Sans Unicode", sans-serif; font-size: 14px; margin: 0 0 6px; }
 #breadcrumb li { display: inline-block; list-style-type: none; margin-bottom: 8px; }
+#breadcrumb li::after { color: #807121; content: ' >'; }
+#breadcrumb li:first-of-type::after, #breadcrumb li:last-of-type::after { content: none; }
 #breadcrumb .label { color: #807121; }
-#breadcrumb a::after { color: #807121; content: ' >'; }
 
 /* Wait spinners */
 .wait-spinner { background: url(/static/images/icons/preloaders-dot-net-lg.gif) no-repeat scroll center center transparent; height: 350px; margin: auto; /* Wait spinner's children are hidden until the parent is unspinnered. */ }
@@ -650,7 +656,7 @@ body.taxa#species #main #maps, body.taxa#species #main #side { position: absolut
 body.taxa#species #main #maps { border-top: 1px solid #c3d941; top: 128px; }
 body.taxa#species #main #side { top: 668px; }
 body.taxa#species #main #side dt, body.taxa#species #main #side dd { display: inline; }
-body.taxa#species #main #side .lookalikes dt { margin-top: 1em; display: block; }
+body.taxa#species #main #side .lookalikes dt { margin: 8px 0 2px; display: block; }
 body.taxa#species #main #side .lookalikes dd { margin-left: 0; }
 body.taxa#species #main #side .help { float: left; line-height: 28px; }
 body.taxa#species #main #side .get-help-btn { margin: 0 0 0 90px; }
@@ -1258,6 +1264,7 @@ body.plantshare .questions dt { font-weight: bold; margin-top: 10px; }
 body.plantshare .questions dt:first-child { margin-top: 0; }
 body.plantshare .questions dd { margin: 0; }
 body.plantshare .questions span { display: block; }
+body.plantshare#profile .content form input { margin-bottom: 0; }
 body.plantshare#profile .username { float: right; }
 body.plantshare#profile div.section-container { position: relative; }
 body.plantshare#profile div.section-container .image-modal { background-color: white; border: 5px solid #acac90; display: none; padding: 15px; position: absolute; width: 400px; height: 160px; z-index: 10; }
@@ -1273,19 +1280,20 @@ body.plantshare#profile div.section-container .image-modal input { border: 0 non
 body.plantshare#profile div.section-container .image-modal input#id_image { clear: both; display: block; margin: 0 0 10px; }
 body.plantshare#profile div.section-container .image-modal div.screening-notify p { margin: 5px 0; font-size: 10px; color: #888; }
 body.plantshare#profile .info-section, body.plantshare#profile .location-section { min-height: 140px; position: relative; }
-body.plantshare#profile .info-section .field-controls, body.plantshare#profile .location-section .field-controls { padding: 5px 0 0; }
+body.plantshare#profile .info-section .field-controls, body.plantshare#profile .location-section .field-controls { margin-top: 10px; padding: 5px 0 0; }
 body.plantshare#profile .info-section .field-controls input, body.plantshare#profile .location-section .field-controls input { float: left; }
-body.plantshare#profile .info-section .field-controls input, body.plantshare#profile .info-section .field-controls a, body.plantshare#profile .location-section .field-controls input, body.plantshare#profile .location-section .field-controls a { display: block; margin-right: 20px; vertical-align: middle; }
-body.plantshare#profile .info-section .field-controls::after, body.plantshare#profile .location-section .field-controls::after { display: block; content: " "; clear: both; }
+body.plantshare#profile .info-section .field-controls input, body.plantshare#profile .info-section .field-controls a, body.plantshare#profile .location-section .field-controls input, body.plantshare#profile .location-section .field-controls a { display: inline-block; margin-right: 20px; vertical-align: middle; }
+body.plantshare#profile .info-section .field-controls::after, body.plantshare#profile .location-section .field-controls::after { content: " "; clear: both; display: block; }
+body.plantshare#profile .info-section .field-reset, body.plantshare#profile .location-section .field-reset { margin-top: 7px; }
 body.plantshare#profile .info-section .info.box, body.plantshare#profile .location-section .info.box { min-height: 158px; padding: 0 0 5px 0; }
 body.plantshare#profile .info-section .info.box .avatar, body.plantshare#profile .location-section .info.box .avatar { float: left; margin-right: 15px; padding: 0; width: 170px; }
 body.plantshare#profile .info-section .info.box .avatar img, body.plantshare#profile .location-section .info.box .avatar img { background: #e1f0d1; border: 0; height: 153px; width: 169px; }
 body.plantshare#profile .info-section .info.box .avatar p, body.plantshare#profile .location-section .info.box .avatar p { text-align: center; margin: 0; }
 body.plantshare#profile .info-section .info.box .map-thumbnail, body.plantshare#profile .location-section .info.box .map-thumbnail { float: left; margin: 0 15px 0 0; padding: 0; }
 body.plantshare#profile .info-section .info.box table, body.plantshare#profile .location-section .info.box table { margin: 10px 0 0 0; padding: 0; width: 493px; }
-body.plantshare#profile .info-section .info.box table td, body.plantshare#profile .location-section .info.box table td { padding: 5px 10px; }
-body.plantshare#profile .info-section .info.box table td.first, body.plantshare#profile .location-section .info.box table td.first { font-weight: bold; line-height: 170%; padding: 5px; text-align: right; vertical-align: baseline; width: 97px; }
-body.plantshare#profile .info-section .info.box table p, body.plantshare#profile .location-section .info.box table p { margin: 0; padding: 0; }
+body.plantshare#profile .info-section .info.box table td, body.plantshare#profile .location-section .info.box table td { padding: 7px 10px; }
+body.plantshare#profile .info-section .info.box table td.first, body.plantshare#profile .location-section .info.box table td.first { font-weight: bold; padding: 7px; text-align: right; vertical-align: baseline; width: 97px; }
+body.plantshare#profile .info-section .info.box table p, body.plantshare#profile .location-section .info.box table p { line-height: normal; margin: 0; padding: 0; }
 body.plantshare#profile .info-section .info.box table .display .group-list, body.plantshare#profile .info-section .info.box table .display .coords-list, body.plantshare#profile .location-section .info.box table .display .group-list, body.plantshare#profile .location-section .info.box table .display .coords-list { float: left; }
 body.plantshare#profile .info-section .info.box table .display .edit-link, body.plantshare#profile .location-section .info.box table .display .edit-link { float: right; }
 body.plantshare#profile .info-section .info.box table .display ul, body.plantshare#profile .location-section .info.box table .display ul { list-style: none; }
@@ -1457,12 +1465,11 @@ body.search-results #search-results-list { margin: 6px 0 13px; padding: 6px 0 0;
 body.search-results #search-results-list .highlighted { font-weight: bold; }
 body.search-results #search-results-list li { list-style-type: none; margin: 0 0 2px; padding: 2px 0; }
 body.search-results #search-results-list li img { float: left; margin: -1px 10px 0 0; vertical-align: middle; }
-body.search-results #search-results-list li a { font-family: "Trebuchet MS", Helvetica, Arial, "Lucida Sans Unicode", sans-serif; font-size: 15px; text-decoration: underline; }
+body.search-results #search-results-list li a { font-family: "Trebuchet MS", Helvetica, Arial, "Lucida Sans Unicode", sans-serif; font-size: 15px; }
 body.search-results #search-results-list li p { line-height: 140%; margin-left: 34px; margin-top: 2px; }
 body.search-results .search-navigation { font-family: "Trebuchet MS", Helvetica, Arial, "Lucida Sans Unicode", sans-serif; font-size: 15px; text-align: center; }
 body.search-results .search-navigation ul { display: inline; }
 body.search-results .search-navigation li { display: inline; margin: 0 2px; }
-body.search-results .search-navigation a { text-decoration: underline; }
 
 /* Begin media queries styles for Search results. */
 /* Portrait-orientation styles */
