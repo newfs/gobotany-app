@@ -6,7 +6,10 @@
 {% block body_attributes %}id="profile" class="plantshare"{% endblock %}
 
 {% block js_require %}
-    require(['plantshare/your_profile']);
+    require([
+        'util/location_field_init',
+        'plantshare/your_profile'
+    ]);
 {% endblock %}
 
 {% block main_content %}
@@ -108,9 +111,7 @@
   
     <section class="location-section">
         <div class="info box">
-            {# 189 x 163 #}
-            {# del: /static/images/icons/my-location-placeholder.png" #}
-            {% location_map location=location height_px="163" width_px="189" zoom="7" id="location-map" %}
+            {% location_map location=location height_px="163" width_px="189" zoom="7" id="id_location_map" %}
           <table>
               <tbody>
                   <tr>
