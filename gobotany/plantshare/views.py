@@ -382,6 +382,9 @@ def checklist_index_view(request):
 @login_required
 def new_checklist_view(request):
     """Create a new checklist"""
+    entry_image_form = ScreenedImageForm(initial={
+        'image_type': 'CHECKLIST'
+    })
     ChecklistEntryFormSet = _create_checklistentry_formset()
     if request.method == 'POST':
         profile = request.user.userprofile
@@ -406,7 +409,8 @@ def new_checklist_view(request):
 
     return render_to_response('new_checklist.html', {
             'checklist_form': checklist_form,
-            'entry_formset': entry_formset
+            'entry_formset': entry_formset,
+            'entry_image_form': entry_image_form,
            }, context_instance=RequestContext(request))
 
 
