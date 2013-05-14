@@ -147,7 +147,7 @@ class ChecklistEntryForm(forms.ModelForm):
     class Meta:
         model = ChecklistEntry
         fields = ('plant_name', 'date_found', 'location', 'date_posted',
-                  'note')
+                  'note', 'plant_photo')
 
     def __init__(self, *args, **kwargs):
         super(ChecklistEntryForm, self).__init__(*args, **kwargs)
@@ -166,3 +166,4 @@ class ChecklistEntryForm(forms.ModelForm):
         self.fields['note'].widget = forms.Textarea(attrs={
             'placeholder': 'Write your notes here'
             })
+        self.fields['plant_photo'].widget = forms.HiddenInput()
