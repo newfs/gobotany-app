@@ -19,7 +19,7 @@
             <img class="avatar" src="{{ profile.public_avatar_image.thumb_url }}">
             <h2>{{ profile.user_display_name }}</h2>
             {% if profile.location and location_visible %}
-                {% location_map location=profile.location height_px="115" width_px="169" zoom="7" id="id_location_map" %}
+                {% location_map location=profile.location height_px="115" width_px="169" zoom="6" id="id_location_map" %}
                 <p>{{ profile.location }}</p>
             {% endif %}
             {% if profile.saying %}

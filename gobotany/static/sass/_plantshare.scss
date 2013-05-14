@@ -55,9 +55,6 @@ body.plantshare {
             }
         }
     }
-    .profile img {
-        background: $light-green;
-    }
     .box {
         background-color: #fff;
         border: 1px solid $border-green;
@@ -169,20 +166,28 @@ body.plantshare {
         }
         h3 {
             font-size: 18px;
+            margin: 0;
         }
         div {
             clear: left;
             height: 84px;
         }
-        img {
+        .avatar {
+            background: $light-green;
             display: block;
             float: left;
-            max-height: 84px;
+            height: 76px;
             margin-right: $section-padding;
-            max-width: 84px;
+            width: 84px;
         }
         table {
             clear: left;
+        }
+        .map {
+            float: right;
+        }
+        p {
+            margin: 2px 0;
         }
     }
     

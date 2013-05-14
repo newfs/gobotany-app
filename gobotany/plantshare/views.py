@@ -93,7 +93,8 @@ def plantshare_view(request):
                'avatar': avatar_info,
                'map': SIGHTINGS_MAP_DEFAULTS,
                'questions': questions,
-               'max_questions': MAX_RECENTLY_ANSWERED_QUESTIONS
+               'max_questions': MAX_RECENTLY_ANSWERED_QUESTIONS,
+               'profile': profile
            }, context_instance=RequestContext(request))
 
 

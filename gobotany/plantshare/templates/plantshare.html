@@ -28,8 +28,17 @@
     <h2>Your Profile</h2>
     <a href="{% url 'ps-your-profile' %}" class="edit">Edit Profile</a>
     <div>
-        <img src="{{ avatar.thumb_url }}" alt="">
+        {% if profile.location %}
+            {% location_map location=profile.location height_px="74" width_px="140" zoom="6" id="id_location_map" %}
+        {% endif %}
+        <img class="avatar" src="{{ avatar.thumb_url }}" alt="">
         <h3>{% user_display_name user %}</h3>
+        {% if profile.location %}
+            <p>{{ profile.location }}</p>
+        {% endif %}
+        {% if profile.saying %}
+            <p>{{ profile.saying }}</p>
+        {% endif %}
     </div>
     {% comment %}
     <table>

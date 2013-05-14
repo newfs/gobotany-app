@@ -1086,7 +1086,6 @@ body.plantshare .content form label { display: block; margin-bottom: 4px; text-t
 body.plantshare .content form input { font-family: Verdana, Geneva, "Lucida Sans Unicode", sans-serif; margin-bottom: 10px; border: 1px solid #c3d941; padding: 5px; width: 353px; }
 body.plantshare .content form input[type=text], body.plantshare .content form input[type=password] { height: 16px; }
 body.plantshare .content form textarea { font-family: Verdana, Geneva, "Lucida Sans Unicode", sans-serif; height: 82px; border: 1px solid #c3d941; padding: 5px; width: 353px; }
-body.plantshare .profile img { background: #e1f0d1; }
 body.plantshare .box { background-color: #fff; border: 1px solid #c3d941; padding: 4px 16px; }
 body.plantshare .box table { margin: 16px 0 12px; width: 100%; }
 body.plantshare .box table tr:nth-child(odd) { background-color: #e1f0d1; }
@@ -1111,10 +1110,12 @@ body.plantshare a.close-btn { background: transparent url(/static/images/icons/c
 body.plantshare #main .profile { width: 471px; }
 body.plantshare #main .profile h2 { float: left; }
 body.plantshare #main .profile a.edit { display: block; float: right; padding-top: 12px; }
-body.plantshare #main .profile h3 { font-size: 18px; }
+body.plantshare #main .profile h3 { font-size: 18px; margin: 0; }
 body.plantshare #main .profile div { clear: left; height: 84px; }
-body.plantshare #main .profile img { display: block; float: left; max-height: 84px; margin-right: 16px; max-width: 84px; }
+body.plantshare #main .profile .avatar { background: #e1f0d1; display: block; float: left; height: 76px; margin-right: 16px; width: 84px; }
 body.plantshare #main .profile table { clear: left; }
+body.plantshare #main .profile .map { float: right; }
+body.plantshare #main .profile p { margin: 2px 0; }
 body.plantshare#plantshare { /* styles for the PlantShare main page */ }
 body.plantshare#plantshare #ask { margin-top: 20px; }
 body.plantshare#plantshare #find-people-form { float: right; margin: 0; width: 184px; }
