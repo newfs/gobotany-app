@@ -42,7 +42,7 @@
 
     <div id="maps">
         <div class="section map nemap">
-            <h4>New England Distribution</h4>
+            <h2>New England Distribution</h2>
             {% include "gobotany/_map_attribution.html" %}
             <!--[if !IE]>-->
             <object
@@ -66,7 +66,7 @@
         </div>
 
         <div class="section map namap">
-            <h4>North America Distribution</h4>
+            <h2>North America Distribution</h2>
             {% include "gobotany/_map_attribution.html" %}
             <div>
                 <object
@@ -220,14 +220,14 @@
 
     <div id="side">
         <div class="section">
-            <h4>Native to North America?</h4>
+            <h2>Native to North America?</h2>
             <p>{{ native_to_north_america }}</p>
         </div>
 
         {% with lookalikes=taxon.lookalikes.all %}
         {% if lookalikes|length > 0 %}
         <div class="section lookalikes">
-            <h4>Sometimes Confused With</h4>
+            <h2>Sometimes Confused With</h2>
             <dl>
             {% for lookalike in lookalikes %}
                 <dt>{% lookalike_item lookalike.lookalike_scientific_name %}{% if lookalike.lookalike_characteristic %}:{% endif %}</dt>
@@ -241,7 +241,7 @@
         {% with taxon.synonyms.all as synonyms %}
         {% if synonyms|length > 0 %}
         <div class="section">
-            <h4>Synonyms</h4>
+            <h2>Synonyms</h2>
             <ul>
             {% for synonym in synonyms %}
                 <li>{{ synonym.full_name|italicize_plant|safe }}</li>
@@ -252,26 +252,26 @@
         {% endwith %}
 
         <div class="section">
-            <h4>Family</h4>
+            <h2>Family</h2>
             <p><a href="{% url 'taxa-family' taxon.family.slug %}"
                 >{{ taxon.family }}</a></p>
         </div>
 
         <div class="section">
-            <h4>Genus</h4>
+            <h2>Genus</h2>
             <p><em><a href="{% url 'taxa-genus' taxon.genus.slug %}"
                 >{{ taxon.genus }}</a></em></p>
         </div>
 
         {% if taxon.variety_notes %}
         <div class="section">
-            <h4>Notes on Subspecies and Varieties in New England</h4>
+            <h2>Notes on Subspecies and Varieties in New England</h2>
             <p>{{ taxon.variety_notes|italicize_plant|safe }}</p>
         </div>
         {% endif %}
         
         <div class="section help">
-            <h4 class="left help">Need Help?</h4>
+            <h2 class="left help">Need Help?</h2>
             <a href="{% url 'site-getting-started' %}"
                 class="get-help-btn left">Get Help</a>
         </div>

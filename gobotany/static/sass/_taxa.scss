@@ -131,6 +131,10 @@ body.taxa {
             }
             #maps, #side {
                 position: absolute;
+                h2 {
+                    font-size: 14px;
+                    margin: 0 0 4px 0;
+                }
             }
             #maps {
                 border-top: 1px solid $border-green;
@@ -143,9 +147,11 @@ body.taxa {
                 }
                 .lookalikes {
                     dl {
+                        line-height: 20px;
                         margin: 0;
                     }
                     dt {
+                        font-weight: bold;
                         margin: 2px 0;
                         display: block;
                     }
@@ -358,7 +364,7 @@ $mini-table-font-size: 10px;
                 padding-bottom: 14px;
             }
             #maps {
-                height: 380px;
+                height: 350px;
                 width: 428px;
                 .nemap {
                     float: left;
@@ -414,7 +420,7 @@ $mini-table-font-size: 10px;
                 line-height: 18px;
             }
             .section {
-                padding: 12px 0 0;
+                padding: 0;
                 width: auto;
                 &.help {
                     display: none;
@@ -422,6 +428,9 @@ $mini-table-font-size: 10px;
             }
             #maps, #side {
                 position: static;
+                h2 {
+                    margin: 8px 0;
+                }
             }
             #maps {
                 background: #fff;
@@ -430,7 +439,10 @@ $mini-table-font-size: 10px;
                 padding-right: 16px;
                 z-index: 10;
             }
-
+            #side h2 {
+                font-size: 16px;
+                margin-top: 14px;
+            }
             #species-images {
                 border: 0;
                 height: 120px;

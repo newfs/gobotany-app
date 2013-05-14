@@ -623,11 +623,12 @@ body.taxa#species #main .section { padding: 16px 16px 0; width: 197px; }
 body.taxa#species #main .section h4 { font-size: 14px; margin: 0; padding: 0; }
 body.taxa#species #main .section p { margin-bottom: 0; }
 body.taxa#species #main #maps, body.taxa#species #main #side { position: absolute; }
+body.taxa#species #main #maps h2, body.taxa#species #main #side h2 { font-size: 14px; margin: 0 0 4px 0; }
 body.taxa#species #main #maps { border-top: 1px solid #c3d941; top: 128px; }
 body.taxa#species #main #side { top: 668px; }
 body.taxa#species #main #side dt, body.taxa#species #main #side dd { display: inline-block; }
-body.taxa#species #main #side .lookalikes dl { margin: 0; }
-body.taxa#species #main #side .lookalikes dt { margin: 2px 0; display: block; }
+body.taxa#species #main #side .lookalikes dl { line-height: 20px; margin: 0; }
+body.taxa#species #main #side .lookalikes dt { font-weight: bold; margin: 2px 0; display: block; }
 body.taxa#species #main #side .lookalikes dd { margin: 0 0 6px 0; }
 body.taxa#species #main #side .help { float: left; line-height: 28px; }
 body.taxa#species #main #side .get-help-btn { margin: 0 0 0 90px; }
@@ -672,7 +673,7 @@ body.taxa#species #species-images .scrollableArea a { border-right: 5px solid wh
 /* Landscape-orientation styles */
 @media only screen and (min-width: 401px) and (max-width: 600px) { body.taxa#species #main #species-images { width: 462px; }
   body.taxa#species #main #sidebar { margin-bottom: 14px; padding-bottom: 14px; }
-  body.taxa#species #main #maps { height: 380px; width: 428px; }
+  body.taxa#species #main #maps { height: 350px; width: 428px; }
   body.taxa#species #main #maps .nemap { float: left; }
   body.taxa#species #main #maps .namap { float: right; } }
 /* These styles are common to both smartphone widths */
@@ -686,10 +687,12 @@ body.taxa#species #species-images .scrollableArea a { border-right: 5px solid wh
   body.taxa#species #main { background: none; /* layout for smartphones: sections in document sequence */ }
   body.taxa#species #main #breadcrumb, body.taxa#species #main #name, body.taxa#species #main #species-images, body.taxa#species #main #partner, body.taxa#species #main #facts, body.taxa#species #main #habitat, body.taxa#species #main #chars, body.taxa#species #main #wetland, body.taxa#species #main #status, body.taxa#species #main #info-dkey { margin-left: 0; }
   body.taxa#species #main h2 { margin-top: 14px; line-height: 18px; }
-  body.taxa#species #main .section { padding: 12px 0 0; width: auto; }
+  body.taxa#species #main .section { padding: 0; width: auto; }
   body.taxa#species #main .section.help { display: none; }
   body.taxa#species #main #maps, body.taxa#species #main #side { position: static; }
+  body.taxa#species #main #maps h2, body.taxa#species #main #side h2 { margin: 8px 0; }
   body.taxa#species #main #maps { background: #fff; border: 1px solid #c3d941; padding-left: 16px; padding-right: 16px; z-index: 10; }
+  body.taxa#species #main #side h2 { font-size: 16px; margin-top: 14px; }
   body.taxa#species #main #species-images { border: 0; height: 120px; -webkit-box-shadow: none; -moz-box-shadow: none; box-shadow: none; }
   body.taxa#species #main #species-images .scrollableArea a { border-right: 20px solid #f0f0c0; }
   body.taxa#species #main #species-images .scrollableArea a img { height: 120px; width: 120px; }
