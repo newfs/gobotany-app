@@ -9,19 +9,28 @@ define([
     function setup(modalSelector, linkSelector, options) {
         var $modal = $(modalSelector);
         var $link = $(linkSelector);
+        var $lastTrigger = null;
         var settings = $.extend({
             'onUploadComplete': function(imageInfo) {},
             'onError': function(errorInfo) {},
             'onStartUpload': function() {},
         }, options);
 
-        var triggers = $link.overlay({
-            mask: {
-                color: 'black',
-                loadSpeed: 200,
-                opacity: 0.8
-            },
-            closeOnClick: false
+        // Set up overlay handling for any dynamic links
+        // matching the selector
+        $(document).on('click', linkSelector, function(e) {
+            e.preventDefault();
+            $lastTrigger = $(this);
+
+            $lastTrigger.overlay({
+                mask: {
+                    color: 'black',
+                    loadSpeed: 200,
+                    opacity: 0.8
+                },
+                closeOnClick: false,
+                load: true
+            });
         });
 
         // Update filename box, image, and buttons when the selected file
@@ -55,7 +64,7 @@ define([
 
         // Close button
         $modal.find('.close').click(function() {
-            triggers.eq(0).overlay().close();
+            $lastTrigger.overlay().close();
             return false;
         });
 
@@ -69,14 +78,14 @@ define([
                         'thumb': response.thumb,
                         'url': response.url
                     };
-                    settings.onUploadComplete.call(this, imageInfo); 
+                    settings.onUploadComplete.call(this, imageInfo, $lastTrigger); 
                 } else {
                     console.log('Error during upload: ' + response.info);
-                    settings.onError.call(this, response.info);
+                    settings.onError.call(this, response.info, $lastTrigger);
                 }
             });
-            triggers.eq(0).overlay().close();
-            settings.onStartUpload.call(this);
+            $lastTrigger.overlay().close();
+            settings.onStartUpload.call(this, $lastTrigger);
             return false;
         });
     }
