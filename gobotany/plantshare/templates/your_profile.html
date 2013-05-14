@@ -1,4 +1,5 @@
 {% extends "gobotany/_page_free_sidebar.html" %}
+{% load mapping_tags %}
 
 {% block title %}Your Profile: PlantShare{% endblock %}
 
@@ -106,8 +107,10 @@
     <h2>Location</h2>
   
     <section class="location-section">
-      <div class="info box">
-          <img class="map-thumbnail" src="/static/images/icons/my-location-placeholder.png" alt="">
+        <div class="info box">
+            {# 189 x 163 #}
+            {# del: /static/images/icons/my-location-placeholder.png" #}
+            {% location_map location=location height_px="163" width_px="189" zoom="7" id="location-map" %}
           <table>
               <tbody>
                   <tr>

@@ -564,9 +564,13 @@ def your_profile_view(request):
         'image_type': 'AVATAR'
     })
 
+    DEFAULT_LOCATION = "Rumford, ME"
+    location = profile.location if profile.location else DEFAULT_LOCATION
+
     context = {
         'profile_form': profile_form,
         'avatar_form': avatar_form,
+        'location': location,
     }
     return render_to_response('your_profile.html', context,
             context_instance=RequestContext(request))
