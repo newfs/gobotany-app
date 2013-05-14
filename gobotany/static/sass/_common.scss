@@ -99,8 +99,11 @@ $disabled_orange_gradient: linear-gradient(
     &:hover {
         @include background($bright_orange_gradient);
     }
+    &.caps {
+        text-transform: uppercase;
+    }
     &.disabled {
-        border-color: mix($body_bg, $orange2, 75%);
+        border-color: mix($body_bg, $orange2, 75%) !important;
         @include background($disabled_orange_gradient);
     }
 }
