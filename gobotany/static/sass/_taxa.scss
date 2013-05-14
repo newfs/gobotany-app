@@ -139,15 +139,18 @@ body.taxa {
             #side {
                 top: 668px;
                 dt, dd {
-                    display: inline;
+                    display: inline-block;
                 }
                 .lookalikes {
+                    dl {
+                        margin: 0;
+                    }
                     dt {
-                        margin: 8px 0 2px;
+                        margin: 2px 0;
                         display: block;
                     }
                     dd {
-                        margin-left: 0;
+                        margin: 0 0 6px 0;
                     }
                 }
                 .help {

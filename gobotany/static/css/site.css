@@ -625,9 +625,10 @@ body.taxa#species #main .section p { margin-bottom: 0; }
 body.taxa#species #main #maps, body.taxa#species #main #side { position: absolute; }
 body.taxa#species #main #maps { border-top: 1px solid #c3d941; top: 128px; }
 body.taxa#species #main #side { top: 668px; }
-body.taxa#species #main #side dt, body.taxa#species #main #side dd { display: inline; }
-body.taxa#species #main #side .lookalikes dt { margin: 8px 0 2px; display: block; }
-body.taxa#species #main #side .lookalikes dd { margin-left: 0; }
+body.taxa#species #main #side dt, body.taxa#species #main #side dd { display: inline-block; }
+body.taxa#species #main #side .lookalikes dl { margin: 0; }
+body.taxa#species #main #side .lookalikes dt { margin: 2px 0; display: block; }
+body.taxa#species #main #side .lookalikes dd { margin: 0 0 6px 0; }
 body.taxa#species #main #side .help { float: left; line-height: 28px; }
 body.taxa#species #main #side .get-help-btn { margin: 0 0 0 90px; }
 body.taxa#species #main #side li { line-height: 16px; list-style-type: none; }
