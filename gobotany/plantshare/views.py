@@ -820,58 +820,60 @@ def ajax_sightings(request):
 @login_required
 def ajax_people_suggestions(request):
     """Return suggestions with names to help users find other users."""
+    MIN_QUERY_LENGTH = 1
     MAX_RESULTS = 10
     MIN_SUGGESTION_LENGTH = 2
     query = request.GET.get('q', '').lower()
     suggestions = []
-
-    # Get all potentially matching display names and usernames.
-    names = UserProfile.objects.filter(
-                Q(display_name__icontains=query) |
-                Q(user__username__istartswith=query))
-
-    for name in names:
-        if len(suggestions) == MAX_RESULTS:
-            break
-
-        # Figure out if we can show the display name to this user.
-        # TODO: later when available, take into account a 'GROUPS' setting.
-        may_show_display_name = (name.details_visibility != 'PRIVATE')
-
-        display_name = name.display_name.lower()
-        if may_show_display_name and display_name != '':
-            # Add each part (first, last, etc.) of the display name.
-            parts = display_name.split(' ')
-            for part in parts:
-                part = part.strip('.')   # for initials, abbreviations
-                if len(part) < MIN_SUGGESTION_LENGTH:
-                    continue
-                if part.startswith(query) and part not in suggestions:
-                        suggestions.append(part)
-                        if len(suggestions) < MAX_RESULTS:
-                            break
-
-    # If there is room in the suggestions list, also may add the username.
-    # Although the username does not show on pages if a display name takes
-    # its place, it does show in the profile link URL. Users might know or
-    # exchange usernames informally and therefore expect to see them listed.
-    if len(suggestions) < MAX_RESULTS:
-        for name in names:
-            username = name.user.username.lower()
-            if username.find(query) > -1 and username not in suggestions:
-                suggestions.append(username)
-                if len(suggestions) == MAX_RESULTS:
-                    break
-
-    # Order the suggestions so any that start with the query string
-    # appear first.
     ordered_suggestions = []
-    suggestions = sorted(suggestions)
-    for suggestion in reversed(suggestions):
-        if suggestion.startswith(query):
-            ordered_suggestions.insert(0, suggestion)
-        else:
-            ordered_suggestions.append(suggestion)
+
+    if len(query) >= MIN_QUERY_LENGTH:
+        # Get all potentially matching display names and usernames.
+        names = UserProfile.objects.filter(
+                    Q(display_name__icontains=query) |
+                    Q(user__username__istartswith=query))
+
+        for name in names:
+            if len(suggestions) == MAX_RESULTS:
+                break
+
+            # Figure out if we can show the display name to this user.
+            # TODO: later when available, take into account 'GROUPS' setting.
+            may_show_display_name = (name.details_visibility != 'PRIVATE')
+
+            display_name = name.display_name.lower()
+            if may_show_display_name and display_name != '':
+                # Add each part (first, last, etc.) of the display name.
+                parts = display_name.split(' ')
+                for part in parts:
+                    part = part.strip('.')   # for initials, abbreviations
+                    if len(part) < MIN_SUGGESTION_LENGTH:
+                        continue
+                    if part.startswith(query) and part not in suggestions:
+                            suggestions.append(part)
+                            if len(suggestions) < MAX_RESULTS:
+                                break
+
+        # If there is room in the suggestions list, may add usernames.
+        # Although username does not show on pages if a display name takes
+        # its place, it does show in the profile link URL. Users might know
+        # or exchange usernames informally and expect to see them listed.
+        if len(suggestions) < MAX_RESULTS:
+            for name in names:
+                username = name.user.username.lower()
+                if username.find(query) > -1 and username not in suggestions:
+                    suggestions.append(username)
+                    if len(suggestions) == MAX_RESULTS:
+                        break
+
+        # Order the suggestions so any that start with the query string
+        # appear first.
+        suggestions = sorted(suggestions)
+        for suggestion in reversed(suggestions):
+            if suggestion.startswith(query):
+                ordered_suggestions.insert(0, suggestion)
+            else:
+                ordered_suggestions.append(suggestion)
 
     return HttpResponse(simplejson.dumps(ordered_suggestions),
                         mimetype='application/json; charset=utf-8')

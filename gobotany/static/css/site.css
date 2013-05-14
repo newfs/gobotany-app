@@ -223,10 +223,10 @@ a:active { color: #45ac11; }
 a:not([href]) { color: black; }
 a:not([href]):hover { text-decoration: none; }
 
-#main p a, #main li a, #main dt a, #main td a { border-bottom: 1px solid #c3d941; }
-#main p a:hover, #main li a:hover, #main dt a:hover, #main td a:hover { border-color: #317b0c; }
-#main p a:active, #main li a:active, #main dt a:active, #main td a:active { border-color: #45ac11; }
-#main p a:not([href]), #main li a:not([href]), #main dt a:not([href]), #main td a:not([href]) { border: 0; }
+#main p a, #main li > a, #main dt a, #main td a { border-bottom: 1px solid #c3d941; }
+#main p a:hover, #main li > a:hover, #main dt a:hover, #main td a:hover { border-color: #317b0c; }
+#main p a:active, #main li > a:active, #main dt a:active, #main td a:active { border-color: #45ac11; }
+#main p a:not([href]), #main li > a:not([href]), #main dt a:not([href]), #main td a:not([href]) { border: 0; }
 
 *|*:-moz-any-link:active, *|*:-moz-any-link:focus { border: 0; outline: 0; }
 
