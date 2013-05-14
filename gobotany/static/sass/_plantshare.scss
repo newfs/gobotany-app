@@ -239,6 +239,9 @@ body.plantshare {
                     float: right;
                     margin: 12px 0 0;
                     padding-right: 10px;
+                    a {
+                        border-bottom: 0;
+                    }
                 }
                 .invite-group-btn {
                     background: transparent url(/static/images/layout/plantshare-btns.png) no-repeat -1px -231px;
