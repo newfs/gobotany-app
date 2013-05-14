@@ -31,12 +31,14 @@
         <img src="{{ avatar.thumb_url }}" alt="">
         <h3>{% user_display_name user %}</h3>
     </div>
+    {% comment %}
     <table>
         <tr><th>Total Species</th><td>None</td></tr>
         <tr><th>Total Locations</th><td>None</td></tr>
         <tr><th>Checklists</th><td>None</td></tr>
         <tr><th>Groups</th><td>None</td></tr>
     </table>
+    {% endcomment %}
 </div>
 {% else %}
     {% if prior_signup_detected %}
