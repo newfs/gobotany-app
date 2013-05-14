@@ -31,6 +31,7 @@ LOCATION_DEFAULT_VISIBILITY = [item for item in PROFILE_VISIBILITY_CHOICES
 IMAGE_TYPES = (
     ('AVATAR', 'User Avatar'),
     ('SIGHTING', 'Sighting Photo'),
+    ('CHECKLIST', 'Checklist Photo'),
 )
 
 DEFAULT_AVATAR_URL = urlparse.urljoin(settings.STATIC_URL,
