@@ -452,14 +452,13 @@ def edit_checklist_view(request, checklist_id):
     checklist = get_object_or_404(Checklist, pk=checklist_id)
     if request.method == 'POST':
         checklist_form = ChecklistForm(request.POST, instance=checklist)
-        if checklist_form.is_valid():
+        entry_formset = ChecklistEntryFormSet(request.POST)
+        if checklist_form.is_valid() and entry_formset.is_valid():
             checklist_form.save()
-            entry_formset = ChecklistEntryFormSet(request.POST)
-            if entry_formset.is_valid():
-                for entry in entry_formset.save(commit=False):
-                    entry.checklist = checklist
-                    entry.save()
-                return redirect('ps-checklists')
+            for entry in entry_formset.save(commit=False):
+                entry.checklist = checklist
+                entry.save()
+            return redirect('ps-checklists')
     else:
         checklist_form = ChecklistForm(instance=checklist)
         entry_formset = ChecklistEntryFormSet(
