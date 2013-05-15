@@ -17,6 +17,7 @@
 <h1>Checklists</h1>
 
 <div class="checklists-section">
+{% include "_image_upload_form.html" with image_form=entry_image_form %}
     <div id="form-template">
         <table>
             <tbody>
@@ -26,7 +27,9 @@
                         {{ empty_form.plant_name }}
                     </td><!-- /.name -->
                     <td class="image">
-                        <a href="javascript:alert('Coming soon!');" class="upload-image-thumb btn">Upload Image</a>
+                        {{ empty_form.plant_photo }}
+                        <a href="#" rel=".image-modal" 
+                            class="upload-image-thumb btn">Upload Image</a>
                     </td><!-- /.image -->
                     <td class="date-sighted">
                         {{ empty_form.date_found }}
@@ -91,7 +94,15 @@
                         {{ entry_form.plant_name.errors }}
                     </td><!-- /.name -->
                     <td class="image">
-                        <a href="javascript:alert('Coming soon!');" class="upload-image-thumb btn">Upload Image</a>
+                        {{ entry_form.plant_photo }}
+                        {% if entry_form.instance.plant_photo %}
+                        <a href="#" rel=".image-modal" 
+                            class="upload-image-thumb btn"><img class="checklist-thumb" 
+                            src="{{ entry_form.instance.plant_photo.thumb.url }}" /></a>
+                        {% else %}
+                        <a href="#" rel=".image-modal" 
+                            class="upload-image-thumb btn">Upload Image</a>
+                        {% endif %}
                     </td><!-- /.image -->
                     <td class="date-sighted">
                         {{ entry_form.date_found }}

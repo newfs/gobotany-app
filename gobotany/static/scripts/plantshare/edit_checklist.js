@@ -1,8 +1,9 @@
 define([
     'bridge/jquery', 
     'util/shadowbox_init',
-    'util/formset'
-], function ($, Shadowbox, formset) {
+    'util/formset',
+    'plantshare/upload_modal'
+], function ($, Shadowbox, formset, upload_modal) {
 
     var notes_modal = '' +
     '<div id="container" class="notes-modal">' +
@@ -15,6 +16,8 @@ define([
             '</div><!-- /.form-actions -->' +
 		'</section>' +
 	'</div><!--!/#container -->';
+
+    var UPLOAD_SPINNER = '/static/images/icons/preloaders-dot-net-lg.gif';
 
     $(document).ready(function() {
 
@@ -57,6 +60,27 @@ define([
         $(document).on('click', '.notes-modal a.clear-btn', function(e) {
             e.preventDefault();
             $(this).parents('section').find('textarea').val('');
+        });
+
+        function startUpload($trigger) {
+            console.log('Beginning upload...');
+            $trigger.html('<img src="' + UPLOAD_SPINNER + '" class="checklist-thumb" />');
+        }
+
+        function imageUploaded(imageInfo, $trigger) {
+            console.log('Successfully uploaded checklist image');
+            $trigger.html('<img src="' + imageInfo.thumb + '" class="checklist-thumb" />');
+            $trigger.parent().find('input[type="hidden"]').val(imageInfo.id);
+        }
+
+        function uploadError(errorInfo, $trigger) {
+            console.log('Checklist image upload error: ' + errorInfo);
+        }
+
+        upload_modal.setup('.image-modal', '.upload-image-thumb', {
+            onUploadComplete: imageUploaded,
+            onError: uploadError,
+            onStartUpload: startUpload,
         });
 
     });

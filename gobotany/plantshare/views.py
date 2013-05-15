@@ -448,6 +448,9 @@ def export_checklist_view(request, checklist_id):
 @login_required
 def edit_checklist_view(request, checklist_id):
     """Edit a checklist"""
+    entry_image_form = ScreenedImageForm(initial={
+        'image_type': 'CHECKLIST'
+    })
     ChecklistEntryFormSet = _create_checklistentry_formset(can_delete=True)
     checklist = get_object_or_404(Checklist, pk=checklist_id)
     if request.method == 'POST':
@@ -466,7 +469,8 @@ def edit_checklist_view(request, checklist_id):
 
     return render_to_response('edit_checklist.html', {
             'checklist_form': checklist_form,
-            'entry_formset': entry_formset
+            'entry_formset': entry_formset,
+            'entry_image_form': entry_image_form,
            }, context_instance=RequestContext(request))
 
 
