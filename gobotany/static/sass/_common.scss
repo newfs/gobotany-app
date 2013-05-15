@@ -80,6 +80,7 @@ $disabled_orange_gradient: linear-gradient(
     mix($body_bg, $orange5, 75%) 50%, mix($body_bg, $orange3, 75%) 100%);
 
 .orange-button {
+    background-color: $orange1;   /* for IE without gradient support */
     min-width: 10em;
     @include border-radius(1em);
     @include single-box-shadow(darken($inactive_bg, 30), 0px, 1px, 4px);
@@ -97,12 +98,15 @@ $disabled_orange_gradient: linear-gradient(
         color: white;
     }
     &:hover {
+        background-color: $orange2;  /* for IE without gradient support */
         @include background($bright_orange_gradient);
     }
     &.caps {
         text-transform: uppercase;
     }
     &.disabled {
+        background-color: mix($body_bg, $orange2, 75%); /* for IE without
+                                                           gradient support */
         border-color: mix($body_bg, $orange2, 75%) !important;
         @include background($disabled_orange_gradient);
     }
