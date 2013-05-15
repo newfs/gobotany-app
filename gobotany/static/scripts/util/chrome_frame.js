@@ -22,11 +22,12 @@ function get_cookie(name) {
 }
 
 function dismiss_gcf_install() {
-    // (Assume jQuery is loaded.)
-    
     // Hide the installation elements.
-    $('#ie-note').hide();
-    $('.chromeFrameInstallDefaultStyle').hide();
+    document.getElementById('ie-note').style.display = 'none';
+    var elements = document.body.getElementsByTagName('iframe');
+    for (var i = 0; i < elements.length; i++) {
+        elements[i].style.display = 'none';
+    }
 
     // Set a cookie that will expire when the browser session does,
     // to be used for deciding whether to show or hide the installation
