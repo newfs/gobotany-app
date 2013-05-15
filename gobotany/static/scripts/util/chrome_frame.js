@@ -33,5 +33,5 @@ function dismiss_gcf_install() {
     // to be used for deciding whether to show or hide the installation
     // message. On subsequent visits in a new browser session, the
     // installation message will be shown again.
-    document.cookie = 'hide_gcf_install=true';
+    document.cookie = 'hide_gcf_install=true;path=/';
 }
