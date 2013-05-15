@@ -61,7 +61,7 @@ define([
             $(this).parents('section').find('textarea').val('');
         });
 
-        function startUpload(submitBtn, $trigger) {
+        function startUpload($trigger) {
             console.log('Beginning upload...');
             $trigger.html('<img src="' + UPLOAD_SPINNER + '" class="checklist-thumb" />');
         }
