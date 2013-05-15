@@ -81,6 +81,7 @@ def plantshare_view(request):
                                                 False)
 
     avatar_info = UserProfile.default_avatar_image()
+    profile = None
     if request.user.is_authenticated():
         try:
             profile = UserProfile.objects.get(user=request.user)
