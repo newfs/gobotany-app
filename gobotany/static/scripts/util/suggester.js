@@ -58,9 +58,11 @@ define([
     Suggester.prototype.setup = function () {
         this.$form = this.$input_box.parents('form').first();
 
-        // Add an element for the suggestions menu, if it doesn't already have one.
-        if(0 == this.$input_box.next('div.suggester-menu').size()) {
-            this.$input_box.after('<div class="suggester-menu"><ul></ul></div>');
+        // Add an element for the suggestions menu, if it doesn't already
+        // have one.
+        if (0 === this.$input_box.next('div.suggester-menu').size()) {
+            this.$input_box.after(
+                '<div class="suggester-menu"><ul></ul></div>');
         }
 
         this.$menu = this.$input_box.next();
@@ -98,9 +100,11 @@ define([
                 this.$menu.hide();
             }, this)
         );
-        this.$menu.off('click.suggester').on('click.suggester', function (event) {
-            event.stopPropagation();
-        });
+        this.$menu.off('click.suggester').on('click.suggester',
+            function (event) {
+                event.stopPropagation();
+            }
+        );
 
         // If there is a an empty required field in the form, a validation
         // error shows immediately upon pressing the Enter key (unlike
