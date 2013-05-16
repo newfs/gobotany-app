@@ -58,8 +58,10 @@ define([
     Suggester.prototype.setup = function () {
         this.$form = this.$input_box.parents('form').first();
 
-        // Add an element for the suggestions menu.
-        this.$input_box.after('<div><ul></ul></div>');
+        // Add an element for the suggestions menu, if it doesn't already have one.
+        if(0 == this.$input_box.next('div.suggester-menu').size()) {
+            this.$input_box.after('<div class="suggester-menu"><ul></ul></div>');
+        }
 
         this.$menu = this.$input_box.next();
         this.$menu.hide();
@@ -81,19 +83,22 @@ define([
         // Position the menu under the box, and adjust the position when
         // the browser window is resized.
         this.set_menu_position();
-        $(window).resize($.proxy(this.set_menu_position, this));
+        $(window).off('resize.suggester').on('resize.suggester',
+                $.proxy(this.set_menu_position, this));
 
         // Set up keyboard event handlers.
-        this.$input_box.keyup($.proxy(this.handle_keys_up, this));
-        this.$input_box.keydown($.proxy(this.handle_keys_down, this));
+        this.$input_box.off('keyup.suggester').on('keyup.suggester',
+                $.proxy(this.handle_keys_up, this));
+        this.$input_box.off('keydown.suggester').on('keydown.suggester',
+                $.proxy(this.handle_keys_down, this));
 
         // Hide the menu upon clicking outside the input box.
-        $(document).click($.proxy(
+        $(document).off('click.suggester').on('click.suggester', $.proxy(
             function () {
                 this.$menu.hide();
             }, this)
         );
-        this.$menu.click(function (event) {
+        this.$menu.off('click.suggester').on('click.suggester', function (event) {
             event.stopPropagation();
         });
 
@@ -103,10 +108,12 @@ define([
         // from updating with the user's selected menu item. In order
         // to overcome this, update the box with the currently selected
         // value as soon as focus leaves the input box.
-        this.$input_box.blur($.proxy(this.enter_current_item, this));
+        this.$input_box.off('blur.suggester').on('blur.suggester',
+                $.proxy(this.enter_current_item, this));
 
         // Hide the menu on focus, such as when tabbing to the field.
-        this.$input_box.focus($.proxy(this.hide_menu, this));
+        this.$input_box.off('focus.suggester').on('focus.suggester',
+                $.proxy(this.hide_menu, this));
     };
 
     Suggester.prototype.hide_menu = function () {
