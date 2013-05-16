@@ -240,8 +240,6 @@ class Sighting(models.Model):
 
     created = models.DateTimeField(blank=False, auto_now_add=True)
     identification = models.CharField(max_length=120, blank=True)
-    # TODO: delete title field once confirmed it will not be needed
-    title = models.CharField(max_length=120, blank=False)
     notes = models.TextField(blank=True)
 
     location = models.ForeignKey(Location, null=True)

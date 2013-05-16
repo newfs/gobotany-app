@@ -3874,7 +3874,6 @@
         "pk": 1,
         "model": "plantshare.sighting",
         "fields": {
-            "title": "Maple in the woods",
             "location_notes": "",
             "notes": "I identified this tree as sugar maple but was not completely sure if that was correct or if it was maybe a Norway maple instead.",
             "created": "2012-10-31T14:42:13.370",
@@ -3887,7 +3886,6 @@
         "pk": 2,
         "model": "plantshare.sighting",
         "fields": {
-            "title": "Maple tree",
             "location_notes": "",
             "notes": "",
             "created": "2012-10-29T14:42:23.370",
@@ -3900,7 +3898,6 @@
         "pk": 3,
         "model": "plantshare.sighting",
         "fields": {
-            "title": "Sugar maple",
             "location_notes": "",
             "notes": "",
             "created": "2012-10-24T12:42:13.370",
@@ -3913,7 +3910,6 @@
         "pk": 4,
         "model": "plantshare.sighting",
         "fields": {
-            "title": "Maple",
             "location_notes": "",
             "notes": "",
             "created": "2012-10-22T14:42:13.370",
@@ -3926,7 +3922,6 @@
         "pk": 5,
         "model": "plantshare.sighting",
         "fields": {
-            "title": "Sugar Maple",
             "location_notes": "",
             "notes": "",
             "created": "2012-10-15T10:42:13.370",
@@ -3939,7 +3934,6 @@
         "pk": 6,
         "model": "plantshare.sighting",
         "fields": {
-            "title": "Sugar maple tree",
             "location_notes": "",
             "notes": "Lovely tree with fall color just starting",
             "created": "2012-10-14T14:40:13.370",
@@ -3952,7 +3946,6 @@
         "pk": 7,
         "model": "plantshare.sighting",
         "fields": {
-            "title": "",
             "location_notes": "",
             "notes": "",
             "created": "2012-10-01T14:42:13.370",
@@ -3965,7 +3958,6 @@
         "pk": 8,
         "model": "plantshare.sighting",
         "fields": {
-            "title": "Maple",
             "location_notes": "",
             "notes": "",
             "created": "2012-09-23T14:42:13.370",
@@ -3978,7 +3970,6 @@
         "pk": 9,
         "model": "plantshare.sighting",
         "fields": {
-            "title": "Acer saccharum, sugar maple",
             "location_notes": "",
             "notes": "",
             "created": "2012-09-18T14:42:13.370",
@@ -3991,7 +3982,6 @@
         "pk": 10,
         "model": "plantshare.sighting",
         "fields": {
-            "title": "Maple tree",
             "location_notes": "",
             "notes": "",
             "created": "2012-09-14T14:42:13.370",
@@ -4004,7 +3994,6 @@
         "pk": 11,
         "model": "plantshare.sighting",
         "fields": {
-            "title": "Sugar maple",
             "location_notes": "",
             "notes": "",
             "created": "2012-09-12T14:42:13.370",
@@ -4017,7 +4006,6 @@
         "pk": 12,
         "model": "plantshare.sighting",
         "fields": {
-            "title": "Water lily",
             "location_notes": "",
             "notes": "",
             "created": "2012-10-30T14:42:13.370",
@@ -4030,7 +4018,6 @@
         "pk": 13,
         "model": "plantshare.sighting",
         "fields": {
-            "title": "Water lilies",
             "location_notes": "",
             "notes": "",
             "created": "2012-10-27T14:42:13.370",
@@ -4043,7 +4030,6 @@
         "pk": 14,
         "model": "plantshare.sighting",
         "fields": {
-            "title": "Water lily",
             "location_notes": "",
             "notes": "",
             "created": "2012-10-26T14:42:13.370",
@@ -4056,7 +4042,6 @@
         "pk": 15,
         "model": "plantshare.sighting",
         "fields": {
-            "title": "Water lilies",
             "location_notes": "",
             "notes": "",
             "created": "2012-10-24T14:42:13.370",
@@ -4069,7 +4054,6 @@
         "pk": 16,
         "model": "plantshare.sighting",
         "fields": {
-            "title": "Water lily",
             "location_notes": "",
             "notes": "",
             "created": "2012-10-17T14:42:13.370",
@@ -4082,7 +4066,6 @@
         "pk": 17,
         "model": "plantshare.sighting",
         "fields": {
-            "title": "Water Lilies",
             "location_notes": "",
             "notes": "",
             "created": "2012-10-13T14:42:13.370",
@@ -4095,7 +4078,6 @@
         "pk": 18,
         "model": "plantshare.sighting",
         "fields": {
-            "title": "Water Lily",
             "location_notes": "",
             "notes": "",
             "created": "2012-10-10T14:42:13.370",
@@ -4108,7 +4090,6 @@
         "pk": 19,
         "model": "plantshare.sighting",
         "fields": {
-            "title": "Water lilies",
             "location_notes": "",
             "notes": "",
             "created": "2012-10-01T14:42:13.370",
@@ -4121,7 +4102,6 @@
         "pk": 20,
         "model": "plantshare.sighting",
         "fields": {
-            "title": "Water lily",
             "location_notes": "",
             "notes": "",
             "created": "2012-09-19T14:42:13.370",
@@ -4134,7 +4114,6 @@
         "pk": 21,
         "model": "plantshare.sighting",
         "fields": {
-            "title": "Water Lilies",
             "location_notes": "",
             "notes": "",
             "created": "2012-09-13T14:42:13.370",
@@ -4147,7 +4126,6 @@
         "pk": 22,
         "model": "plantshare.sighting",
         "fields": {
-            "title": "Water lilies",
             "location_notes": "",
             "notes": "",
             "created": "2012-09-04T14:42:13.370",
