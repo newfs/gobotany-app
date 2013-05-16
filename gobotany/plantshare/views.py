@@ -192,7 +192,10 @@ def sighting_view(request, sighting_id):
             # TODO: future support for a GROUPS visibility level
         elif s.visibility == 'PRIVATE':
             if (request.user.id == s.user.id) or request.user.is_staff:
-                is_visible = True
+                if request.user.is_authenticated():
+                    is_visible = True
+                else:
+                    return redirect_to_login(request.path)
 
         if not is_visible:
             raise Http404
