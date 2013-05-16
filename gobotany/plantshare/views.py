@@ -100,6 +100,25 @@ def plantshare_view(request):
                'profile': profile
            }, context_instance=RequestContext(request))
 
+def _may_show_sighting(sighting, user):
+    """Determine whether a sighting may be shown to a user in a set of
+    results (list, table, map markers, etc.).
+    """
+    may_show_sighting = False
+
+    if sighting.visibility == 'PUBLIC':
+        may_show_sighting = True
+    if (sighting.visibility == 'USERS') and user.is_authenticated():
+        may_show_sighting = True
+    #elif:
+        # TODO: later when available, handle GROUPS visibility
+    elif sighting.visibility == 'PRIVATE':
+        if (((user.id == sighting.user.id) or user.is_staff) and
+                user.is_authenticated()):
+            may_show_sighting = True
+
+    return may_show_sighting
+
 
 def sightings_view(request):
     """View for the sightings collection: showing a list of recent sightings
@@ -149,19 +168,7 @@ def sightings_view(request):
         sightings = []
         for sighting in sightings_queryset:
 
-            may_show_sighting = False
-            if sighting.visibility == 'PUBLIC':
-                may_show_sighting = True
-            if ((sighting.visibility == 'USERS') and
-                    request.user.is_authenticated()):
-                may_show_sighting = True
-            #elif:
-                # TODO: later when available, handle GROUPS visibility
-            elif sighting.visibility == 'PRIVATE':
-                if (((request.user.id == sighting.user.id) or
-                        request.user.is_staff) and
-                        request.user.is_authenticated()):
-                    may_show_sighting = True
+            may_show_sighting = _may_show_sighting(sighting, request.user)
 
             if may_show_sighting:
                 created = sighting.created.strftime(SIGHTING_DATE_FORMAT)
@@ -828,48 +835,51 @@ def ajax_sightings(request):
 
     plant_name = request.GET.get('plant')
 
-    sightings = None
-    if plant_name == None:
-        sightings = Sighting.objects.select_related(
-            'location', 'user').order_by('-created')[:MAX_TO_RETURN]
-    else:
-        sightings = Sighting.objects.select_related(
-            'location', 'user').filter(
-            identification__iexact=plant_name)[:MAX_TO_RETURN]
+    sightings = Sighting.objects.select_related().all().\
+        prefetch_related('location').order_by('-created')
+    if plant_name:
+        sightings = sightings.filter(identification__iexact=plant_name)
 
     sightings_json = []
     for sighting in sightings:
-        photos = []
-        for photo in sighting.approved_photos():
-            photos.append(photo.thumb.url)
 
-        # TODO: temporary, remove before release:
-        # If there are no approved photos yet for this sighting, look
-        # through the test images and if such exist, assign one random
-        # dummy photo per sighting. This is just to keep the test data
-        # working a little while longer.
-        if len(photos) == 0 and DUMMY_PHOTOS.has_key(plant_name):
-                num_photos = len(DUMMY_PHOTOS[plant_name])
-                photo_index = randint(0, num_photos - 1)
-                photos.append(
-                    'http://%s.s3.amazonaws.com/taxon-images-160x149/%s' \
-                        % (
-                    getattr(settings, 'AWS_STORAGE_BUCKET_NAME', 'newfs'),
-                    DUMMY_PHOTOS[plant_name][photo_index]))
+        may_show_sighting = _may_show_sighting(sighting, request.user)
 
-        sightings_json.append({
-            'id': sighting.id,
-            'identification': sighting.identification,
-            'created': unicode(sighting.created.strftime(
-                               SIGHTING_DATE_FORMAT)),
-            'location': sighting.location.user_input,
-            'latitude': sighting.location.latitude,
-            'longitude': sighting.location.longitude,
-            'user': sighting.user.username, # TODO: fast way of getting
-                                            #       user display name
-            'description': sighting.notes,
-            'photos': photos,
-        })
+        if may_show_sighting:
+            photos = []
+            for photo in sighting.approved_photos():
+                photos.append(photo.thumb.url)
+
+            # TODO: temporary, remove before release:
+            # If there are no approved photos yet for this sighting, look
+            # through the test images and if such exist, assign one random
+            # dummy photo per sighting. This is just to keep the test data
+            # working a little while longer.
+            if len(photos) == 0 and DUMMY_PHOTOS.has_key(plant_name):
+                    num_photos = len(DUMMY_PHOTOS[plant_name])
+                    photo_index = randint(0, num_photos - 1)
+                    photos.append(
+                        'http://%s.s3.amazonaws.com/taxon-images-160x149/%s' \
+                            % (
+                        getattr(settings, 'AWS_STORAGE_BUCKET_NAME', 'newfs'),
+                        DUMMY_PHOTOS[plant_name][photo_index]))
+
+            sightings_json.append({
+                'id': sighting.id,
+                'identification': sighting.identification,
+                'created': unicode(sighting.created.strftime(
+                                   SIGHTING_DATE_FORMAT)),
+                'location': sighting.location.user_input,
+                'latitude': sighting.location.latitude,
+                'longitude': sighting.location.longitude,
+                'user': sighting.user.username, # TODO: fast way of getting
+                                                #       user display name
+                'description': sighting.notes,
+                'photos': photos,
+            })
+
+            if len(sightings_json) == MAX_TO_RETURN:
+                break
 
     json = {
         'sightings': sightings_json
