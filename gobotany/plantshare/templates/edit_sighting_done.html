@@ -11,8 +11,9 @@
 <p>Your sighting has been updated.</p>
 
 {% url 'ps-sighting' request.GET.s as sighting_url %}
-<p>You can <a href="{{ sighting_url }}">review your sighting</a>
-or <a href="{% url 'ps-manage-sightings' %}">edit another sighting</a>.</p>
+<p>You can <a href="{{ sighting_url }}">review your sighting</a>,
+or continue to
+<a href="{% url 'ps-manage-sightings' %}">manage your sightings</a>.</p>
 
 {% endblock %}
 

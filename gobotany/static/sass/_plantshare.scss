@@ -498,13 +498,16 @@ body.plantshare {
             width: 100%;
             th {
                 &.identification {
-                    width: 40%;
+                    width: 33%;
                 }
                 &.location {
-                    width: 23%;
+                    width: 20%;
                 }
                 &.posted {
-                    width: 27%;
+                    width: 17%;
+                }
+                &.visibility {
+                    width: 20%;
                 }
                 &.action {
                     width: 5%;

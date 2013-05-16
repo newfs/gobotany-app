@@ -1182,9 +1182,10 @@ body.plantshare#new-sighting .visibility, body.plantshare#edit-sighting .visibil
 body.plantshare#new-sighting .visibility select, body.plantshare#edit-sighting .visibility select { margin: 6px 0 0; }
 body.plantshare#manage-sightings { /* Hide the usual default Shadowbox close button. This is used for some dialogs that have their own interior close button, such as is seen on various PlantShare dialogs. */ }
 body.plantshare#manage-sightings .content table { width: 100%; }
-body.plantshare#manage-sightings .content table th.identification { width: 40%; }
-body.plantshare#manage-sightings .content table th.location { width: 23%; }
-body.plantshare#manage-sightings .content table th.posted { width: 27%; }
+body.plantshare#manage-sightings .content table th.identification { width: 33%; }
+body.plantshare#manage-sightings .content table th.location { width: 20%; }
+body.plantshare#manage-sightings .content table th.posted { width: 17%; }
+body.plantshare#manage-sightings .content table th.visibility { width: 20%; }
 body.plantshare#manage-sightings .content table th.action { width: 5%; }
 body.plantshare#manage-sightings .content table td.action { text-align: center; }
 body.plantshare#manage-sightings #sb-nav-close { display: none; }

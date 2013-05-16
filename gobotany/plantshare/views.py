@@ -16,12 +16,11 @@ from django.utils import simplejson
 from django.forms import widgets
 from django.forms.models import modelformset_factory
 
-from gobotany.plantshare.forms import (SightingForm, UserProfileForm,
-                                       ScreenedImageForm, ChecklistForm,
-                                       ChecklistEntryForm)
-from gobotany.plantshare.models import (Location, Sighting, UserProfile,
-                                        ScreenedImage, Question, Checklist,
-                                        ChecklistEntry, ChecklistCollaborator)
+from gobotany.plantshare.forms import (ChecklistEntryForm, ChecklistForm,
+    ScreenedImageForm, SightingForm, UserProfileForm)
+from gobotany.plantshare.models import (Checklist, ChecklistCollaborator,
+    ChecklistEntry, Location, Question, ScreenedImage, Sighting,
+    SIGHTING_VISIBILITY_CHOICES, UserProfile)
 
 SIGHTINGS_MAP_DEFAULTS = {
     'latitude': '44.53599',
@@ -29,8 +28,9 @@ SIGHTINGS_MAP_DEFAULTS = {
     'center_title': 'Rumford, Maine'
 }
 
-SIGHTING_DATE_FORMAT = "%A, %e %B %Y"
-SIGHTING_DATE_TIME_FORMAT = SIGHTING_DATE_FORMAT + " at %I:%M %p"
+SIGHTING_DATE_FORMAT = "%e %B %Y"
+SIGHTING_DAY_DATE_FORMAT = '%A, ' + SIGHTING_DATE_FORMAT
+SIGHTING_DATE_TIME_FORMAT = SIGHTING_DAY_DATE_FORMAT + " at %I:%M %p"
 
 def _sighting_form_page(request, form, edit=False, sighting=None):
     """Return a sighting form, either blank or with data."""
@@ -261,12 +261,15 @@ def manage_sightings_view(request):
         select_related().prefetch_related('location')
     sightings = []
     for sighting in sightings_queryset:
+        visibility = [item for item in SIGHTING_VISIBILITY_CHOICES
+                      if item[0] == sighting.visibility][0][1]
         sightings.append({
             'id': sighting.id,
             'identification': sighting.identification,
             'location': sighting.location,
             'user': sighting.user,
             'created': sighting.created.strftime(SIGHTING_DATE_FORMAT),
+            'visibility': visibility,
         })
     return render_to_response('manage_sightings.html', {
             'sightings': sightings,
