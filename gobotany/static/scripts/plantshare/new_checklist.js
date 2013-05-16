@@ -1,9 +1,10 @@
 define([
     'bridge/jquery', 
+    'bridge/jquery-ui', 
     'util/shadowbox_init',
     'util/formset',
     'plantshare/upload_modal'
-], function ($, Shadowbox, formset, upload_modal) {
+], function ($, jqueryUI, Shadowbox, formset, upload_modal) {
     
     var UPLOAD_SPINNER = '/static/images/icons/preloaders-dot-net-lg.gif';
 
@@ -26,6 +27,10 @@ define([
             'formTemplateSelector': '#form-template tr',
             'addLinkSelector': '.add-new-row',
             'removeLinkSelector': '.close-btn.row-btn'
+        });
+
+        $('body').on('focus', 'input.date-input', function() {
+            $(this).datepicker({dateFormat: 'mm/dd/yy'});
         });
 
         // Shadowbox setup for Notes modal popups

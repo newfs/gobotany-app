@@ -158,14 +158,16 @@ class ChecklistEntryForm(forms.ModelForm):
             'placeholder': 'Enter Plant Name'
             })
         self.fields['date_found'].widget = forms.DateInput(attrs={
-            'placeholder': 'dd/mm/yy'
-            })
+            'placeholder': 'mm/dd/yyyy',
+            'class': 'date-input'
+            }, format='%m/%d/%Y')
         self.fields['location'].widget = forms.TextInput(attrs={
             'placeholder': 'Enter Location'
             })
         self.fields['date_posted'].widget = forms.DateInput(attrs={
-            'placeholder': 'dd/mm/yy'
-            })
+            'placeholder': 'mm/dd/yyyy',
+            'class': 'date-input'
+            }, format='%m/%d/%Y')
         self.fields['note'].widget = forms.Textarea(attrs={
             'placeholder': 'Write your notes here'
             })
