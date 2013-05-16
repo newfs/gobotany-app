@@ -462,7 +462,7 @@ body.plantshare {
     }
     &#new-sighting, &#edit-sighting {
         .thumb-gallery {
-            margin-bottom: 28px;
+            margin-bottom: 20px;
             .thumb-frame {
                 display: inline-block;
                 margin: 0 5px;
@@ -483,6 +483,12 @@ body.plantshare {
                         margin-right: 4px;
                     }
                 }
+            }
+        }
+        .visibility {
+            margin-bottom: 60px;
+            select {
+                margin: 6px 0 0;
             }
         }
     }

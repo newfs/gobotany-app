@@ -1,8 +1,9 @@
 from django import forms
 from django.core.urlresolvers import reverse_lazy
 
-from gobotany.plantshare.models import (UserProfile, ScreenedImage, Location,
-    Checklist, ChecklistEntry)
+from gobotany.plantshare.models import (Checklist, ChecklistEntry,
+    Location, ScreenedImage, SIGHTING_DEFAULT_VISIBILITY,
+    SIGHTING_VISIBILITY_CHOICES, UserProfile)
 
 def plant_name_suggestions_url():
     return reverse_lazy('site-plant-name-suggestions') + '?q=%s'
@@ -85,6 +86,8 @@ class SightingForm(forms.Form):
         required=False,
         widget=forms.TextInput()
     )
+    visibility = forms.ChoiceField(choices=SIGHTING_VISIBILITY_CHOICES,
+                                   initial=SIGHTING_DEFAULT_VISIBILITY)
 
 
 class UserProfileForm(forms.ModelForm):

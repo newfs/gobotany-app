@@ -119,10 +119,12 @@ def sightings_view(request):
                 identification = form.cleaned_data['identification']
                 notes = form.cleaned_data['notes']
                 location_notes = form.cleaned_data['location_notes']
+                visibility = form.cleaned_data['visibility']
                 sighting = Sighting(user=request.user,
                                     identification=identification, title='',
                                     notes=notes, location=location,
-                                    location_notes=location_notes)
+                                    location_notes=location_notes,
+                                    visibility=visibility)
                 sighting.save()
 
                 photo_ids = request.POST.getlist('sightings_photos')
@@ -202,6 +204,7 @@ def sighting_view(request, sighting_id):
                 s.identification = form.cleaned_data['identification']
                 s.notes = form.cleaned_data['notes']
                 s.location_notes = form.cleaned_data['location_notes']
+                s.visibility = form.cleaned_data['visibility']
                 s.save()
 
                 photo_ids = request.POST.getlist('sightings_photos')
@@ -287,6 +290,7 @@ def edit_sighting_view(request, sighting_id):
         'notes': sighting.notes,
         'location': sighting.location.id, # Set foreign key of Location record
         'location_notes': sighting.location_notes,
+        'visibility': sighting.visibility,
     })
     return _sighting_form_page(request, form, edit=True, sighting=sighting)
 

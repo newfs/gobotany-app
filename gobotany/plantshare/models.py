@@ -16,7 +16,7 @@ from imagekit.models import ProcessedImageField, ImageSpecField
 from imagekit.processors.resize import ResizeToFit
 
 VISIBILITY_CHOICES = (
-    ('PUBLIC', 'Public: everyone'),
+    ('PUBLIC', 'Everyone: public'),
     ('USERS', 'All PlantShare users'),
     #('GROUPS', 'Your Groups'),   # TODO: enable with Groups feature
     ('PRIVATE', 'Only you and PlantShare staff'),
@@ -27,6 +27,10 @@ DETAILS_DEFAULT_VISIBILITY = [item for item in PROFILE_VISIBILITY_CHOICES
                               if item[0] == 'USERS'][0][0]
 LOCATION_DEFAULT_VISIBILITY = [item for item in PROFILE_VISIBILITY_CHOICES
                                if item[0] == 'USERS'][0][0]
+
+SIGHTING_VISIBILITY_CHOICES = VISIBILITY_CHOICES
+SIGHTING_DEFAULT_VISIBILITY = [item for item in SIGHTING_VISIBILITY_CHOICES
+                               if item[0] == 'PUBLIC'][0][0]
 
 IMAGE_TYPES = (
     ('AVATAR', 'User Avatar'),
@@ -239,6 +243,10 @@ class Sighting(models.Model):
 
     photos = models.ManyToManyField('ScreenedImage', null=True, blank=True)
 
+    visibility = models.CharField(blank=False, max_length=7,
+        choices=SIGHTING_VISIBILITY_CHOICES,
+        default=SIGHTING_DEFAULT_VISIBILITY)
+
     class Meta:
         ordering = ['-created']
         verbose_name = 'sighting'
@@ -256,7 +264,7 @@ class Sighting(models.Model):
 
     def private_photos(self):
         ''' Return photos which have either not been screened, or are screened
-        and approved.  This should only be used on views shown only to the user
+        and approved. This should only be used on views shown only to the user
         who uploaded the photos. '''
         return self.photos.exclude(
                 screened__isnull=False,
@@ -270,9 +278,12 @@ class Sighting(models.Model):
         return self.photos.filter(is_approved=True, deleted=False,
                 orphaned=False)
 
+
+# Storage location for uploaded images depends on environment.
 if settings.DEBUG:
     # Local, debug upload
-    upload_storage = FileSystemStorage(location=os.path.join(settings.MEDIA_ROOT, 'upload_images'),
+    upload_storage = FileSystemStorage(
+            location=os.path.join(settings.MEDIA_ROOT, 'upload_images'),
             base_url=urlparse.urljoin(settings.MEDIA_URL, 'upload_images/'))
 elif settings.IS_AWS_AUTHENTICATED:
     # Direct upload to S3
