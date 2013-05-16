@@ -144,17 +144,36 @@ def sightings_view(request):
             return HttpResponse(status=401)   # 401 Unauthorized
     elif request.method == 'GET':
         # Return a representation of the collection of sightings.
-        sightings_queryset = Sighting.objects.all().select_related().\
-            prefetch_related('location')[:MAX_RECENT_SIGHTINGS]
+        sightings_queryset = Sighting.objects.select_related().all().\
+            prefetch_related('location')
         sightings = []
         for sighting in sightings_queryset:
-            sightings.append({
-                'id': sighting.id,
-                'identification': sighting.identification,
-                'location': sighting.location,
-                'user': sighting.user,
-                'created': sighting.created.strftime(SIGHTING_DATE_FORMAT),
-            })
+
+            may_show_sighting = False
+            if sighting.visibility == 'PUBLIC':
+                may_show_sighting = True
+            if ((sighting.visibility == 'USERS') and
+                    request.user.is_authenticated()):
+                may_show_sighting = True
+            #elif:
+                # TODO: later when available, handle GROUPS visibility
+            elif sighting.visibility == 'PRIVATE':
+                if (((request.user.id == sighting.user.id) or
+                        request.user.is_staff) and
+                        request.user.is_authenticated()):
+                    may_show_sighting = True
+
+            if may_show_sighting:
+                created = sighting.created.strftime(SIGHTING_DATE_FORMAT)
+                sightings.append({
+                    'id': sighting.id,
+                    'identification': sighting.identification,
+                    'location': sighting.location,
+                    'user': sighting.user,
+                    'created': created,
+                })
+                if len(sightings) == MAX_RECENT_SIGHTINGS:
+                    break
 
         return render_to_response('sightings.html', {
                     'sightings': sightings

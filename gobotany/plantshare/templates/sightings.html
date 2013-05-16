@@ -20,7 +20,14 @@
             <li><a
                 href="{% url 'ps-sighting' sighting.id %}">{{ sighting.identification|italicize_if_scientific|safe }}
                 at {{ sighting.location|capfirst }}</a>
-                by {% unique_user_display_name sighting.user %}</li>
+                by
+                {% comment %}
+                TODO: revisit getting the user's display name here.
+                For now, just show the username to keep the query count low.
+                {% endcomment %}
+                {# unique_user_display_name sighting.user #}
+                {{ sighting.user }}
+                </li>
         {% endfor %}
     </ul>
     </li>
