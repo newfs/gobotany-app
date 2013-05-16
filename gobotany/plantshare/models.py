@@ -1,19 +1,19 @@
 import datetime
+import hashlib
 import os
 import urlparse
-import hashlib
 
-from django.db import models
-from django.db.models.signals import post_save
 from django.conf import settings
 from django.contrib.auth.models import User
-from facebook_connect.models import FacebookUser
-from django.core.files.storage import Storage, FileSystemStorage
+from django.core.files.storage import FileSystemStorage, Storage
+from django.db import models
+from django.db.models.signals import post_save
 from django.dispatch import receiver
 
-from storages.backends.s3boto import S3BotoStorage
-from imagekit.models import ProcessedImageField, ImageSpecField
+from facebook_connect.models import FacebookUser
+from imagekit.models import ImageSpecField, ProcessedImageField
 from imagekit.processors.resize import ResizeToFit
+from storages.backends.s3boto import S3BotoStorage
 
 VISIBILITY_CHOICES = (
     ('PUBLIC', 'Everyone: public'),
@@ -111,11 +111,12 @@ class UserProfile(models.Model):
         }
 
     def private_avatar_image(self):
-        ''' Convenience method that will return the user's latest uploaded avatar,
-        whether or not it has been approved by staff.  This should ONLY appear to
-        the user himself. '''
+        '''Convenience method that will return the user's latest uploaded
+        avatar, whether or not it has been approved by staff.  This should
+        ONLY appear to the user himself.
+        '''
         latest_avatars = ScreenedImage.objects.filter(
-                uploaded_by=self.user, 
+                uploaded_by=self.user,
                 image_type='AVATAR',
                 deleted=False,
                 orphaned=False
@@ -130,12 +131,13 @@ class UserProfile(models.Model):
             avatar_info = self.__class__.default_avatar_image()
 
         return avatar_info
-    
+
     def public_avatar_image(self):
-        ''' Convenience method that will return the user's current avatar. This will
-        display only a pre-screened, approved avatar, or the default "empty" avatar
-        if the user has no approved avatar.  This should be used in any views
-        displayed to anyone other than this user.'''
+        '''Convenience method that will return the user's current avatar.
+        This will display only a pre-screened, approved avatar, or the default
+        "empty" avatar if the user has no approved avatar.  This should be
+        used in any views displayed to anyone other than this user.
+        '''
         if self.avatar:
             avatar_info = {
                 'url': self.avatar.image.url,
@@ -150,7 +152,8 @@ class UserProfile(models.Model):
     def checklists(self):
         """Retrieve the list of all checklists this user has created
         or has been added as a collaborator on, including those editable due
-        to Pod membership."""
+        to Pod membership.
+        """
         return Checklist.objects.filter(collaborators__members=self)
 
     def get_user_pod(self):
@@ -199,18 +202,20 @@ def create_user_profile(sender, **kwargs):
             # the FacebookUser signal handle it instead
             return
 
-        print 'New standard user creation [Username: {0}]'.format(user.username)
+        print 'New standard user creation [Username: {0}]'.format(
+            user.username)
         profile = UserProfile(user=user)
         profile.save()
         print 'Created new UserProfile'
         user_pod = Pod(name=user.username)
         user_pod.save()
         print 'Created default Pod'
-        membership = PodMembership(member=profile, pod=user_pod, is_owner=True,
-            is_self_pod=True)
+        membership = PodMembership(member=profile, pod=user_pod,
+            is_owner=True, is_self_pod=True)
         membership.save()
 
-@receiver(post_save, sender=FacebookUser, dispatch_uid='create_profile_for_user')
+@receiver(post_save, sender=FacebookUser,
+          dispatch_uid='create_profile_for_user')
 def create_fbuser_profile(sender, **kwargs):
     fbuser = kwargs['instance']
     created = kwargs['created']
@@ -218,15 +223,16 @@ def create_fbuser_profile(sender, **kwargs):
     # and his personal Pod.
     if created:
         user = fbuser.contrib_user
-        print 'New Facebook user creation [Username: {0}]'.format(user.username)
+        print 'New Facebook user creation [Username: {0}]'.format(
+            user.username)
         profile = UserProfile(user=user)
         profile.save()
         print 'Created new UserProfile'
         user_pod = Pod(name=user.username)
         user_pod.save()
         print 'Created default Pod'
-        membership = PodMembership(member=profile, pod=user_pod, is_owner=True,
-            is_self_pod=True)
+        membership = PodMembership(member=profile, pod=user_pod,
+            is_owner=True, is_self_pod=True)
         membership.save()
 
 class Sighting(models.Model):
@@ -263,18 +269,20 @@ class Sighting(models.Model):
             self.identification, self.location, self.user.id, created_at)
 
     def private_photos(self):
-        ''' Return photos which have either not been screened, or are screened
+        '''Return photos which have either not been screened, or are screened
         and approved. This should only be used on views shown only to the user
-        who uploaded the photos. '''
+        who uploaded the photos.
+        '''
         return self.photos.exclude(
                 screened__isnull=False,
                 is_approved=False
                 ).exclude(deleted=True).exclude(orphaned=True)
 
     def approved_photos(self):
-        ''' Return only photos which have been screened and approved.
+        '''Return only photos which have been screened and approved.
         Use this method for any view where someone other than the owner
-        will see these photos.'''
+        will see these photos.
+        '''
         return self.photos.filter(is_approved=True, deleted=False,
                 orphaned=False)
 
@@ -310,24 +318,27 @@ def rename_image_by_type(instance, filename):
 
 
 class ScreenedImage(models.Model):
-    image = ProcessedImageField(upload_to=rename_image_by_type, 
-                storage=upload_storage, format='PNG', 
+    image = ProcessedImageField(upload_to=rename_image_by_type,
+                storage=upload_storage, format='PNG',
                 processors=[ResizeToFit(1000, 1000)])
-    thumb = ImageSpecField(image_field='image', storage=upload_storage, format='PNG',
-                processors=[ResizeToFit(128, 128, upscale=True)]) 
+    thumb = ImageSpecField(image_field='image', storage=upload_storage,
+                format='PNG',
+                processors=[ResizeToFit(128, 128, upscale=True)])
 
     uploaded = models.DateTimeField(blank=False, auto_now_add=True)
-    uploaded_by = models.ForeignKey(User, null=False, related_name='images_uploaded')
+    uploaded_by = models.ForeignKey(User, null=False,
+                                    related_name='images_uploaded')
 
     image_type = models.CharField(blank=True, max_length=10,
-            choices=IMAGE_TYPES)
+                                  choices=IMAGE_TYPES)
 
     screened = models.DateTimeField(null=True)
-    screened_by = models.ForeignKey(User, null=True, related_name='images_approved')
+    screened_by = models.ForeignKey(User, null=True,
+                                    related_name='images_approved')
     is_approved = models.BooleanField(default=False)
 
-    # Flag true if the image has been orphaned (old avatars, user-deleted avatars,
-    # deleted sighting photos)
+    # Flag true if the image has been orphaned (old avatars, user-deleted
+    # avatars, deleted sighting photos)
     orphaned = models.BooleanField(default=False)
 
     # Flag true if the user or staff has chosen to delete this image.  This
@@ -390,7 +401,7 @@ class Checklist(models.Model):
     comments = models.TextField(blank=True)
 
     """Pods that can view and update this actual Checklist instance.
-    Any members of these Pods can collaborate on adding or editing items 
+    Any members of these Pods can collaborate on adding or editing items
     on this Checklist. If the owner flag is set, the Pod members may also
     delete items."""
     collaborators = models.ManyToManyField('Pod', related_name='checklists',
@@ -463,4 +474,3 @@ class ChecklistCollaborator(models.Model):
     checklist = models.ForeignKey(Checklist)
 
     is_owner = models.BooleanField(default=False)
-
