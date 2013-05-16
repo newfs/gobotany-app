@@ -1184,9 +1184,9 @@ body.plantshare#manage-sightings { /* Hide the usual default Shadowbox close but
 body.plantshare#manage-sightings .content table { width: 100%; }
 body.plantshare#manage-sightings .content table th.identification { width: 33%; }
 body.plantshare#manage-sightings .content table th.location { width: 20%; }
-body.plantshare#manage-sightings .content table th.posted { width: 17%; }
+body.plantshare#manage-sightings .content table th.posted { width: 20%; }
 body.plantshare#manage-sightings .content table th.visibility { width: 20%; }
-body.plantshare#manage-sightings .content table th.action { width: 5%; }
+body.plantshare#manage-sightings .content table th.action { width: 7%; }
 body.plantshare#manage-sightings .content table td.action { text-align: center; }
 body.plantshare#manage-sightings #sb-nav-close { display: none; }
 body.plantshare#delete-sighting { background: none; }

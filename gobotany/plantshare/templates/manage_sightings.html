@@ -46,6 +46,7 @@
                     {% endif %}
                     <th class="action"></th>
                     <th class="action"></th>
+                    <th class="action"></th>
                 </tr>
             </thead>
             <tbody>
@@ -55,6 +56,9 @@
                     <td>{{ sighting.location }}</td>
                     <td>{{ sighting.created }}</td>
                     <td>{{ sighting.visibility }}</td>
+                    <td class="action">
+                        <a href="{% url 'ps-sighting' sighting.id %}">View</a>
+                    </td>
                     <td class="action">
                         <a href="{% url 'ps-edit-sighting' sighting.id %}">Edit</a>
                     </td>
