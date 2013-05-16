@@ -1,20 +1,22 @@
 import csv
+
 from datetime import datetime
 from random import randint
 
+from django.conf import settings
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.contrib.auth.models import User
+from django.contrib.auth.views import redirect_to_login
 from django.core.exceptions import ObjectDoesNotExist
 from django.core.urlresolvers import reverse, reverse_lazy
-from django.conf import settings
 from django.db.models import Q
-from django.http import HttpResponse, HttpResponseRedirect
-from django.shortcuts import (render, render_to_response, redirect,
-        get_object_or_404)
-from django.template import RequestContext
-from django.utils import simplejson
 from django.forms import widgets
 from django.forms.models import modelformset_factory
+from django.http import Http404, HttpResponse, HttpResponseRedirect
+from django.shortcuts import (get_object_or_404, redirect, render,
+    render_to_response)
+from django.template import RequestContext
+from django.utils import simplejson
 
 from gobotany.plantshare.forms import (ChecklistEntryForm, ChecklistForm,
     ScreenedImageForm, SightingForm, UserProfileForm)
@@ -174,8 +176,27 @@ def sighting_view(request, sighting_id):
     try:
         s = Sighting.objects.get(id=sighting_id)
     except ObjectDoesNotExist:
-        return HttpResponse(status=404)
-    if request.method == 'GET':   # Show a sighting
+        raise Http404
+    if request.method == 'GET':   # Show a sighting.
+
+        # Determine if this sighting should be visible to this user.
+        is_visible = False
+        if s.visibility == 'PUBLIC':
+            is_visible = True
+        elif s.visibility == 'USERS':
+            if request.user.is_authenticated():
+                is_visible = True
+            else:
+                return redirect_to_login(request.path)
+        #elif:
+            # TODO: future support for a GROUPS visibility level
+        elif s.visibility == 'PRIVATE':
+            if (request.user.id == s.user.id) or request.user.is_staff:
+                is_visible = True
+
+        if not is_visible:
+            raise Http404
+
         sighting = {
             'id': s.id,
             'identification': s.identification,
@@ -189,7 +210,7 @@ def sighting_view(request, sighting_id):
         return render_to_response('sighting.html', {
                    'sighting': sighting,
                }, context_instance=RequestContext(request))
-    elif request.method == 'POST':   # Update an edited sighting
+    elif request.method == 'POST':   # Update an edited sighting.
         if not request.user.is_authenticated():
             return HttpResponse(status=401)
         # Ensure this sighting belongs to the user requesting to update it.
