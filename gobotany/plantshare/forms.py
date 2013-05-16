@@ -154,9 +154,14 @@ class ChecklistEntryForm(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
         super(ChecklistEntryForm, self).__init__(*args, **kwargs)
-        self.fields['plant_name'].widget = forms.TextInput(attrs={
-            'placeholder': 'Enter Plant Name'
-            })
+        self.fields['plant_name'].widget=forms.TextInput({
+            'autocomplete': 'off',
+            'autofocus': 'autofocus',
+            'class': 'suggest',
+            'data-suggest-url': plant_name_suggestions_url(),
+            'placeholder': 'Enter Plant Name',
+            'required': 'required',
+        })
         self.fields['date_found'].widget = forms.DateInput(attrs={
             'placeholder': 'mm/dd/yyyy',
             'class': 'date-input'
