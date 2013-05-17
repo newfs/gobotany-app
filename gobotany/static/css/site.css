@@ -1322,7 +1322,7 @@ body.plantshare#checklists table.checklists-list .location { width: 130px; }
 body.plantshare#checklists table.checklists-list .note { width: 60px; padding-right: 7px; }
 body.plantshare#checklists table.checklists-list .note .note-field { display: none; }
 body.plantshare#checklists table.checklists-list .note a { margin: 0; }
-body.plantshare#checklists table.checklists-list .note a.row-btn { float: right; margin: 0 0 0 8px; text-indent: -9999px; }
+body.plantshare#checklists table.checklists-list .note a.row-btn { border-bottom: 0; float: right; margin: 0 0 0 8px; text-indent: -9999px; }
 body.plantshare#checklists table.checklists-list thead { display: block; }
 body.plantshare#checklists table.checklists-list thead tr th { padding: 7px 5px; text-align: left; text-transform: uppercase; }
 body.plantshare#checklists table.checklists-list tbody { display: block; }
@@ -1348,7 +1348,7 @@ body.plantshare#checklists .checklists-section table#add-sightings-table .date-p
 body.plantshare#checklists .checklists-section table#add-sightings-table .note { padding-right: 0; width: 60px; }
 body.plantshare#checklists .checklists-section table#add-sightings-table .note .note-field { display: none; }
 body.plantshare#checklists .checklists-section table#add-sightings-table .note a { display: inline-block; }
-body.plantshare#checklists .checklists-section table#add-sightings-table .note a.row-btn { float: right; margin: 5px 0 0 8px; }
+body.plantshare#checklists .checklists-section table#add-sightings-table .note a.row-btn { border-bottom: 0; float: right; margin: 5px 0 0 8px; }
 body.plantshare#checklists .checklists-section table#add-sightings-table thead { border-bottom: 1px solid #ccc; width: 678px; }
 body.plantshare#checklists .checklists-section table#add-sightings-table thead th { text-transform: uppercase; }
 body.plantshare#checklists .checklists-section table#add-sightings-table thead th span { color: #999; font-style: italic; text-transform: none; }
