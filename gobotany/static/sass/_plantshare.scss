@@ -1160,8 +1160,9 @@ body.plantshare {
 
         .first {
             white-space: nowrap;
-            width: 20px;
+            width: 0px;   /* hidden */
             input[type="checkbox"] {
+                display: none;
                 margin-left: 5px;
                 margin-top: 10px;
                 width: auto;
@@ -1169,16 +1170,16 @@ body.plantshare {
         }
         .checklistview-name {
             white-space: nowrap;
-            width: 368px;
+            width: 358px;
         }
         .owner {
             white-space: nowrap;
-            width: 150px;
+            width: 120px;
         }
         .last {
             text-align: right;
             white-space: nowrap;
-            width: 130px;
+            width: 180px;
             a {
                 margin-right: 10px;
             }
