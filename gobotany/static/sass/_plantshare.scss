@@ -1151,34 +1151,32 @@ body.plantshare {
         border: 1px solid #C3D941;
         margin: 20px 0;
         width: 100%;
-        table-layout: fixed;
+
+        thead, tbody {
+            width: 100%;
+        }
 
         td { overflow: hidden; }
 
         .first {
-            min-width: 15px; 
             white-space: nowrap;
-
+            width: 20px;
             input[type="checkbox"] {
                 width: auto;
-          }
+            }
         }
         .checklistview-name {
-            min-width: 185px; 
             white-space: nowrap;
-        }
-        .date {
-            min-width: 100px; 
-            white-space: nowrap;
+            width: 368px;
         }
         .owner {
-            min-width: 100px; 
             white-space: nowrap;
+            width: 150px;
         }
         .last {
             text-align: right;
-            width: 100%;
             white-space: nowrap;
+            width: 130px;
             a {
                 margin-right: 10px;
             }
@@ -1218,7 +1216,6 @@ body.plantshare {
 
         thead {
             display: block;
-            width: auto;
             tr th {
                 padding: 7px 5px;
                 text-align: left;

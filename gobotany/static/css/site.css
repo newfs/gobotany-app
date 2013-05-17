@@ -1305,14 +1305,14 @@ body.plantshare#checklists .image-modal input { border: 0 none !important; box-s
 body.plantshare#checklists .image-modal input#id_image { clear: both; display: block; margin: 0 0 10px; }
 body.plantshare#checklists .image-modal div.screening-notify p { margin: 5px 0; font-size: 10px; color: #888; }
 body.plantshare#checklists div#form-template { display: none; }
-body.plantshare#checklists table.checklists-list { background: #fff; border: 1px solid #C3D941; margin: 20px 0; width: 100%; table-layout: fixed; }
+body.plantshare#checklists table.checklists-list { background: #fff; border: 1px solid #C3D941; margin: 20px 0; width: 100%; }
+body.plantshare#checklists table.checklists-list thead, body.plantshare#checklists table.checklists-list tbody { width: 100%; }
 body.plantshare#checklists table.checklists-list td { overflow: hidden; }
-body.plantshare#checklists table.checklists-list .first { min-width: 15px; white-space: nowrap; }
+body.plantshare#checklists table.checklists-list .first { white-space: nowrap; width: 20px; }
 body.plantshare#checklists table.checklists-list .first input[type="checkbox"] { width: auto; }
-body.plantshare#checklists table.checklists-list .checklistview-name { min-width: 185px; white-space: nowrap; }
-body.plantshare#checklists table.checklists-list .date { min-width: 100px; white-space: nowrap; }
-body.plantshare#checklists table.checklists-list .owner { min-width: 100px; white-space: nowrap; }
-body.plantshare#checklists table.checklists-list .last { text-align: right; width: 100%; white-space: nowrap; }
+body.plantshare#checklists table.checklists-list .checklistview-name { white-space: nowrap; width: 368px; }
+body.plantshare#checklists table.checklists-list .owner { white-space: nowrap; width: 150px; }
+body.plantshare#checklists table.checklists-list .last { text-align: right; white-space: nowrap; width: 130px; }
 body.plantshare#checklists table.checklists-list .last a { margin-right: 10px; }
 body.plantshare#checklists table.checklists-list .name { width: 140px; }
 body.plantshare#checklists table.checklists-list .image { width: 80px; }
@@ -1323,7 +1323,7 @@ body.plantshare#checklists table.checklists-list .note { width: 60px; padding-ri
 body.plantshare#checklists table.checklists-list .note .note-field { display: none; }
 body.plantshare#checklists table.checklists-list .note a { margin: 0; }
 body.plantshare#checklists table.checklists-list .note a.row-btn { float: right; margin: 0 0 0 8px; text-indent: -9999px; }
-body.plantshare#checklists table.checklists-list thead { display: block; width: auto; }
+body.plantshare#checklists table.checklists-list thead { display: block; }
 body.plantshare#checklists table.checklists-list thead tr th { padding: 7px 5px; text-align: left; text-transform: uppercase; }
 body.plantshare#checklists table.checklists-list tbody { display: block; }
 body.plantshare#checklists table.checklists-list tbody tr:nth-child(odd) { background-color: #e1f0d1; }

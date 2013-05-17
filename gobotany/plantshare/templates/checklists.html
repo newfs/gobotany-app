@@ -33,8 +33,7 @@
           <thead>
               <tr>
                   <th class="first"></th>
-                  <th class="checklistview-name">Name<span></span></th>
-                  <th class="date">Date Found</th>
+                  <th class="checklistview-name">Checklist Name<span></span></th>
                   <th class="owner">Owner</th>
                   <th class="last"></th>
               </tr>
@@ -44,7 +43,6 @@
               <tr>
                   <td class="first"><input type="checkbox" name="checklist_id" value="{{checklist.pk}}"/></td>
                   <td class="checklistview-name">{{ checklist.name }}</td>
-                  <td class="date">{{ checklist.date_found|default:"N/A" }}</td>
                   {% ifequal user.username checklist.owner.name %}
                   <td class="owner">Me</td>
                   <td class="last">
