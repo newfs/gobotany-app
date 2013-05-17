@@ -462,10 +462,12 @@ body.plantshare {
     }
     &#new-sighting, &#edit-sighting {
         .thumb-gallery {
-            margin-bottom: 20px;
+            display: inline-block;
+            float: left;
+            padding-top: 10px;
             .thumb-frame {
                 display: inline-block;
-                margin: 0 5px;
+                margin: 0 14px 0 0;
                 vertical-align: bottom;
 
                 .thumb {
@@ -485,8 +487,15 @@ body.plantshare {
                 }
             }
         }
+        .upload {
+            display: inline-block;
+            float: left;
+            padding-top: 6px;
+        }
         .visibility {
+            clear: left;
             margin-bottom: 60px;
+            padding-top: 20px;
             select {
                 margin: 6px 0 0;
             }
