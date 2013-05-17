@@ -45,7 +45,7 @@ def _sighting_form_page(request, form, edit=False, sighting=None):
     })
     created = None
     if sighting:
-        created = sighting.created.strftime(SIGHTING_DATE_FORMAT)
+        created = sighting.created.strftime(SIGHTING_DAY_DATE_FORMAT)
         upload_photo_form = ScreenedImageForm(initial={
             'image_type': 'SIGHTING'
         })
@@ -171,7 +171,7 @@ def sightings_view(request):
             may_show_sighting = _may_show_sighting(sighting, request.user)
 
             if may_show_sighting:
-                created = sighting.created.strftime(SIGHTING_DATE_FORMAT)
+                created = sighting.created.strftime(SIGHTING_DAY_DATE_FORMAT)
                 sightings.append({
                     'id': sighting.id,
                     'identification': sighting.identification,
