@@ -525,6 +525,7 @@ def edit_checklist_view(request, checklist_id):
             queryset=ChecklistEntry.objects.filter(checklist=checklist))
 
     return render_to_response('edit_checklist.html', {
+            'checklist': checklist,
             'checklist_form': checklist_form,
             'entry_formset': entry_formset,
             'entry_image_form': entry_image_form,
