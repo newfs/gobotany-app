@@ -11,11 +11,10 @@
 {% block body_attributes %}id="checklist" class="plantshare checklists"{% endblock %}
 
 {% block main_content %}
-<h1>Checklists</h1>
+<h1>Checklist: {{ checklist.name }}</h1>
 
 <div class="ps-section">
-    <h3>{{ checklist.name }}</h3>
-    <p><em>Comments: {{ checklist.comments }}</em></p>
+    <p>Comments: {{ checklist.comments }}</p>
     {% if checklist.entries %}
     <table id="checklist-detail" class="checklists-list">
         <thead>
