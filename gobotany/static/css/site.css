@@ -1285,6 +1285,7 @@ body.plantshare #login.box h4 { font-size: 20px; padding: 16px 16px 10px; }
 body.plantshare #login.box div { border-top: 1px solid #317b0c; padding: 16px; }
 body.plantshare #login.box div a { margin-left: 0; }
 body.plantshare #login.box input[type='text'], body.plantshare #login.box input[type='password'] { width: 95%; }
+body.plantshare#checklists .notification.box li { list-style-type: disc; }
 body.plantshare#checklists div.notes-modal { background-color: #fff; overflow: hidden; margin: 0; padding: 15px 20px 0; max-height: 240px; }
 body.plantshare#checklists div.notes-modal section { padding: 10px 0 0; }
 body.plantshare#checklists div.notes-modal textarea { border: 1px solid #ABABAB; box-shadow: inset 1px 1px 5px #ccc; -moz-box-shadow: inset 1px 1px 5px #ccc; -webkit-box-shadow: inset 1px 1px 5px #ccc; font-size: inherit; height: 80px; line-height: inherit; max-width: 90%; padding: 7px 5px 5px; width: 100%; }

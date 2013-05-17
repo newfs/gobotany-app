@@ -1019,6 +1019,9 @@ body.plantshare {
 }
 
 &#checklists {
+    .notification.box li {
+        list-style-type: disc;
+    }
     div.notes-modal {
         background-color: #fff;
         overflow: hidden; 
