@@ -20,6 +20,7 @@
                 'mapping/geocoder',
                 'mapping/google_maps',
                 'mapping/marker_map',
+                'plantshare/delete_checklist',
                 'plantshare/delete_sighting',
                 'plantshare/find_people',
                 'plantshare/find_people_profile',
