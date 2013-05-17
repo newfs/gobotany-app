@@ -18,7 +18,7 @@
 {% block body_attributes %}id="checklists" class="plantshare checklists"{% endblock %}
 
 {% block main_content %}
-<h1>Checklists</h1>
+<h1>Create New Checklist</h1>
 
 <div class="checklists-section">
 {% include "_image_upload_form.html" with image_form=entry_image_form %}
@@ -57,7 +57,6 @@
     <form name="checklist-fillout" id="checklist-fillout" method="POST">
         {% csrf_token %}
         <header>
-            <h4>Create New Checklist</h4>
             {{ checklist_form.non_field_errors }}
             {{ checklist_form.name }}
             {{ checklist_form.name.errors }}
