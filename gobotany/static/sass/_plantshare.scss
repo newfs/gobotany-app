@@ -1056,8 +1056,8 @@ body.plantshare {
         }
     }
     div.ps-section {
-        margin: 20px 0;
-        padding: 10px 0;
+        margin: 0;
+        padding: 0;
     }
     .image-modal {
         background-color: white;
@@ -1225,8 +1225,6 @@ body.plantshare {
 
         tbody {
             display: block;
-            height: 500px;
-            overflow-y: scroll;
 
             tr:nth-child(odd) {
                 background-color: $light-green;

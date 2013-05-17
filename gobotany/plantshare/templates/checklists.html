@@ -1,5 +1,6 @@
 {% extends "gobotany/_page_free_sidebar.html" %}
 {% load mapping_tags %}
+{% load plantshare_tags %}
 
 {% block title %}Checklists: PlantShare{% endblock %}
 
@@ -25,7 +26,6 @@
     <a class="ps-button" href="{% url 'ps-checklist-new' %}">Create New Checklist</a>
 </div>
 <div class="ps-section">
-    <h2 class="left">Checklists</h2>
     {% if checklists %}
     <form action="" method="POST">
       {% csrf_token %}
@@ -65,7 +65,7 @@
         <a href="{% url 'ps-checklist-delete' %}" class="ps-button delete-btn inactive btn">Delete</a>
     </div><!-- /.form-actions -->
     {% else %}
-        <span>You currently have no checklists.</span>
+    <p>Your checklists will appear here, {% user_first_name request.user %}.</p>
     {% endif %}
 </div><!-- /.ps-section -->
 {% endblock %}
