@@ -48,7 +48,8 @@
                   {% ifequal user.username checklist.owner.name %}
                   <td class="owner">Me</td>
                   <td class="last">
-                      <a href="{% url 'ps-checklist-edit' checklist.pk %}">Edit</a> |
+                      <a href="{% url 'ps-checklist' checklist.pk %}">View</a>
+                      <a href="{% url 'ps-checklist-edit' checklist.pk %}">Edit</a>
                       <a href="{% url 'ps-checklist-export' checklist.pk %}">Export</a>
                   </td>
                   {% else %}

@@ -1312,7 +1312,8 @@ body.plantshare#checklists table.checklists-list .first input[type="checkbox"] {
 body.plantshare#checklists table.checklists-list .checklistview-name { min-width: 185px; white-space: nowrap; }
 body.plantshare#checklists table.checklists-list .date { min-width: 100px; white-space: nowrap; }
 body.plantshare#checklists table.checklists-list .owner { min-width: 100px; white-space: nowrap; }
-body.plantshare#checklists table.checklists-list .last { padding-right: 20px; text-align: right; width: 100%; white-space: nowrap; }
+body.plantshare#checklists table.checklists-list .last { text-align: right; width: 100%; white-space: nowrap; }
+body.plantshare#checklists table.checklists-list .last a { margin-right: 10px; }
 body.plantshare#checklists table.checklists-list .name { width: 140px; }
 body.plantshare#checklists table.checklists-list .image { width: 80px; }
 body.plantshare#checklists table.checklists-list .image img.checklist-thumb { max-width: 40px; max-height: 40px; }

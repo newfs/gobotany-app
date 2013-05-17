@@ -1176,10 +1176,13 @@ body.plantshare {
             white-space: nowrap;
         }
         .last {
-            padding-right: 20px;
             text-align: right;
             width: 100%;
             white-space: nowrap;
+            a {
+                margin-right: 10px;
+            }
+
         }
         .name {
             width: 140px; 
