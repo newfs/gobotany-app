@@ -233,7 +233,8 @@ body {
     }
     &.plantshare {
         &#sighting #sidebar .sightings a::before,
-        &#questions #sidebar .ask a::before {
+        &#questions #sidebar .ask a::before,
+        &#new-checklist #sidebar .checklists a::before {
             @include highlight-sidebar-nav-item;
         }
     }
