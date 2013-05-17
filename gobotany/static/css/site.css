@@ -1211,7 +1211,7 @@ body.plantshare.sighting form fieldset legend { display: block; text-indent: -90
 body.plantshare.sighting form .post-sighting-btn { background: transparent url(/static/images/layout/plantshare2-btn.png) no-repeat -372px -634px; border: 0 none; display: block; width: 157px; height: 32px; text-indent: -9999px; }
 body.plantshare.sighting form .post-sighting-btn.inactive { background-position: -372px -599px; }
 body.plantshare.sighting .sighting-gallery h2 { margin-top: 50px; }
-body.plantshare.sighting .sighting-gallery ul li { list-style: none; margin: 5px; height: 128px; }
+body.plantshare.sighting .sighting-gallery ul li { height: auto; list-style: none; margin: 5px; padding: 10px 0; }
 body.plantshare.sighting .sighting-gallery ul img { max-height: 500px; max-width: 500px; }
 body.plantshare.sighting .modal-container { position: relative; }
 body.plantshare.sighting .modal-container .image-modal { background-color: white; border: 5px solid #ACAC90; display: none; padding: 15px; position: absolute; width: 400px; height: 160px; top: 250px; left: 0px; z-index: 10; }
