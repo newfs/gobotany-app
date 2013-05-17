@@ -28,7 +28,7 @@
     <h2>Sighting Photos</h2>
     <ul>
     {% for photo in sighting.photos.all %}
-        <li><img src="{{ photo.thumb.url }}" /></li>
+        <li><img src="{{ photo.image.url }}" /></li>
     {% empty %}
         <li><p>There are currently no photos for this sighting.</p></li>
     {% endfor %}
