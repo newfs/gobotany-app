@@ -40,7 +40,7 @@
           </thead>
           <tbody>
               {% for checklist in checklists %}
-              <tr>
+              <tr id="checklist-{{ checklist.pk }}">
                   <td class="first"><input type="checkbox" name="checklist_id" value="{{ checklist.pk }}"></td>
                   <td class="checklistview-name">{{ checklist.name }}</td>
                   {% ifequal user.username checklist.owner.name %}
@@ -49,7 +49,8 @@
                       <a href="{% url 'ps-checklist' checklist.pk %}">View</a>
                       <a href="{% url 'ps-checklist-edit' checklist.pk %}">Edit</a>
                       <a href="{% url 'ps-checklist-export' checklist.pk %}">Export</a>
-                      <a class="delete" href="{% url 'ps-checklist-delete' %}">Delete</a>
+                      <a class="delete" href="{% url 'ps-checklist-delete' checklist.pk %}"
+                          rel="shadowbox;width=700;height=180">Delete</a>
                   </td>
                   {% else %}
                   <td class="owner">{{ checklist.owner.name }}</td>
@@ -62,7 +63,7 @@
     </form>
     <div class="form-actions small-margin-top">
         <!-- <a class="ps-button" href="javascript:alert('Coming soon!');" rel="shadowbox;height=440;width=750;" class="share-btn inactive btn">Share</a> -->
-        <!--<a href="{% url 'ps-checklist-delete' %}" class="ps-button delete-btn inactive btn">Delete</a>-->
+        <!--<a href="{% url 'ps-checklists-delete' %}" class="ps-button delete-btn inactive btn">Delete</a>-->
     </div><!-- /.form-actions -->
     {% else %}
     <p>Your checklists will appear here, {% user_first_name request.user %}.</p>

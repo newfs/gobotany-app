@@ -520,7 +520,7 @@ body.plantshare {
         @include hide-default-shadowbox-close;
     }
 
-    &#delete-sighting {
+    &#delete-sighting, &#delete-checklist {
         background: none;
         div {
             background: #fff;
@@ -1018,6 +1018,10 @@ body.plantshare {
     }
 }
 
+&#checklists {
+    @include hide-default-shadowbox-close;
+}
+
 &.checklists {
     .notification.box li {
         list-style-type: disc;
@@ -1170,7 +1174,7 @@ body.plantshare {
         }
         .checklistview-name {
             white-space: nowrap;
-            width: 358px;
+            width: 368px;
         }
         .owner {
             white-space: nowrap;
@@ -1211,7 +1215,7 @@ body.plantshare {
                 margin: 0;
             }
             a.row-btn {
-                border-bottom: 0;
+                border-bottom: 0 !important;
                 float: right;
                 margin: 0 0 0 8px;
                 text-indent: -9999px;

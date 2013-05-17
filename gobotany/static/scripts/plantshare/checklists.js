@@ -1,7 +1,9 @@
 define([
-    'bridge/jquery', 
-], function ($) {
+    'bridge/jquery',
+    'util/shadowbox_init'
+], function ($, Shadowbox) {
 
+    /*
     $('a.delete').click(function (e) {
         // Delete a single checklist.
 
@@ -15,6 +17,6 @@ define([
         // POST the form to delete it.
         $('form').attr('action', $(this).attr('href'));
         $('form').submit();
-    });
+    });*/
 
 })

@@ -1,0 +1,33 @@
+{% extends "gobotany/_modal_base.html" %}
+{% load gobotany_tags %}
+
+{# This page appears in a lightbox dialog when deleting a checklist. #}
+
+{% block body_attributes %}id="delete-checklist"
+    class="plantshare"{% endblock %}
+
+{% block js_require %}
+    require(['plantshare/delete_checklist']);
+{% endblock %}
+
+{% block body_content %}
+    <div>
+        <a class="close">Close</a>
+
+        <h2>Are you sure you want to permanently delete this checklist?</h2>
+
+        <table>
+            <thead>
+                <th>Checklist Name</th>
+            </thead>
+            <tbody>
+                <td>{{ checklist.name }}</td>
+            </tbody>
+        </table>
+
+        <p class="actions">
+            <a class="cancel-btn">No, Cancel</a>
+            <a class="delete" href="#">Yes, Delete</a>
+        </p>
+    </div>
+{% endblock %}

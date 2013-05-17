@@ -1189,14 +1189,14 @@ body.plantshare#manage-sightings .content table th.visibility { width: 20%; }
 body.plantshare#manage-sightings .content table th.action { width: 7%; }
 body.plantshare#manage-sightings .content table td.action { text-align: center; }
 body.plantshare#manage-sightings #sb-nav-close { display: none; }
-body.plantshare#delete-sighting { background: none; }
-body.plantshare#delete-sighting div { background: #fff; border: 5px solid #acac90; height: 100%; padding: 0 18px; text-align: center; }
-body.plantshare#delete-sighting .close { background: transparent url(/static/images/icons/close.png) no-repeat; cursor: pointer; display: block; height: 16px; position: absolute; right: 15px; text-indent: -9999px; top: 15px; width: 16px; }
-body.plantshare#delete-sighting h2 { font-size: 18px; text-align: left; }
-body.plantshare#delete-sighting table { margin: 18px 0; width: 100%; }
-body.plantshare#delete-sighting thead { display: none; }
-body.plantshare#delete-sighting .cancel-btn { background: url(/static/images/layout/plantshare2-btn.png) no-repeat -415px -297px; cursor: pointer; display: inline-block; height: 32px; margin: 0 10px 0 0; text-indent: -9999px; vertical-align: middle; width: 143px; }
-body.plantshare#delete-sighting .cancel-btn:hover { background-position: -415px -336px; }
+body.plantshare#delete-sighting, body.plantshare#delete-checklist { background: none; }
+body.plantshare#delete-sighting div, body.plantshare#delete-checklist div { background: #fff; border: 5px solid #acac90; height: 100%; padding: 0 18px; text-align: center; }
+body.plantshare#delete-sighting .close, body.plantshare#delete-checklist .close { background: transparent url(/static/images/icons/close.png) no-repeat; cursor: pointer; display: block; height: 16px; position: absolute; right: 15px; text-indent: -9999px; top: 15px; width: 16px; }
+body.plantshare#delete-sighting h2, body.plantshare#delete-checklist h2 { font-size: 18px; text-align: left; }
+body.plantshare#delete-sighting table, body.plantshare#delete-checklist table { margin: 18px 0; width: 100%; }
+body.plantshare#delete-sighting thead, body.plantshare#delete-checklist thead { display: none; }
+body.plantshare#delete-sighting .cancel-btn, body.plantshare#delete-checklist .cancel-btn { background: url(/static/images/layout/plantshare2-btn.png) no-repeat -415px -297px; cursor: pointer; display: inline-block; height: 32px; margin: 0 10px 0 0; text-indent: -9999px; vertical-align: middle; width: 143px; }
+body.plantshare#delete-sighting .cancel-btn:hover, body.plantshare#delete-checklist .cancel-btn:hover { background-position: -415px -336px; }
 body.plantshare#locator #main h3 { font-family: Verdana, Geneva, "Lucida Sans Unicode", sans-serif; font-size: 12px; line-height: 24px; }
 body.plantshare#locator #main #sightings-status { display: none; /* initially hide, until updating value via JS */ float: right; line-height: 24px; }
 body.plantshare#sightings #main > ul { margin-top: 14px; }
@@ -1285,6 +1285,8 @@ body.plantshare #login.box h4 { font-size: 20px; padding: 16px 16px 10px; }
 body.plantshare #login.box div { border-top: 1px solid #317b0c; padding: 16px; }
 body.plantshare #login.box div a { margin-left: 0; }
 body.plantshare #login.box input[type='text'], body.plantshare #login.box input[type='password'] { width: 95%; }
+body.plantshare#checklists { /* Hide the usual default Shadowbox close button. This is used for some dialogs that have their own interior close button, such as is seen on various PlantShare dialogs. */ }
+body.plantshare#checklists #sb-nav-close { display: none; }
 body.plantshare.checklists .notification.box li { list-style-type: disc; }
 body.plantshare.checklists div.notes-modal { background-color: #fff; overflow: hidden; margin: 0; padding: 15px 20px 0; max-height: 240px; }
 body.plantshare.checklists div.notes-modal section { padding: 10px 0 0; }
@@ -1322,7 +1324,7 @@ body.plantshare.checklists table.checklists-list .location { width: 130px; }
 body.plantshare.checklists table.checklists-list .note { width: 60px; padding-right: 7px; }
 body.plantshare.checklists table.checklists-list .note .note-field { display: none; }
 body.plantshare.checklists table.checklists-list .note a { margin: 0; }
-body.plantshare.checklists table.checklists-list .note a.row-btn { border-bottom: 0; float: right; margin: 0 0 0 8px; text-indent: -9999px; }
+body.plantshare.checklists table.checklists-list .note a.row-btn { border-bottom: 0 !important; float: right; margin: 0 0 0 8px; text-indent: -9999px; }
 body.plantshare.checklists table.checklists-list thead { display: block; }
 body.plantshare.checklists table.checklists-list thead tr th { padding: 7px 5px; text-align: left; text-transform: uppercase; }
 body.plantshare.checklists table.checklists-list tbody { display: block; }

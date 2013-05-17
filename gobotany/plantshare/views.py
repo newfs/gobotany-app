@@ -198,7 +198,9 @@ def sightings_locator_view(request):
 
 def sighting_view(request, sighting_id):
     """View for an individual sighting. Supported HTTP methods: GET (return
-    a sighting), and DELETE (delete a sighting)."""
+    a sighting), POST (update an edited sighting), and DELETE (delete a
+    sighting).
+    """
     try:
         s = Sighting.objects.get(id=sighting_id)
     except ObjectDoesNotExist:
@@ -284,7 +286,7 @@ def sighting_view(request, sighting_id):
             # Not Found due to the record being gone.
             return HttpResponse(status=200)
         else:
-            return HttpResponse(status=403)   # 401 Forbidden
+            return HttpResponse(status=403)   # 403 Forbidden
     else:
         # For an unsupported HTTP method, return Method Not Allowed.
         return HttpResponse(status=405)
@@ -472,7 +474,7 @@ def new_checklist_view(request):
 
 
 @login_required
-def delete_checklist_view(request):
+def delete_checklists_view(request):
     if request.method == 'POST':
         delete_list = request.POST.getlist('checklist_id')
         deleted_lists = Checklist.objects.filter(pk__in=delete_list)
@@ -481,6 +483,27 @@ def delete_checklist_view(request):
     # We only support POST for this - if someone does a GET for this
     # URL just send them back to the checklists page.
     return redirect('ps-checklists')
+
+
+@login_required
+def delete_checklist_view(request, checklist_id):
+    """View for deleting a checklist by presenting a lightbox dialog,
+    using HTTP GET. (The actual delete should be performed by sending a
+    HTTP DELETE request to the sighting URL.
+    """
+    c = Checklist.objects.get(id=checklist_id)
+    if request.method == 'GET':
+        checklist = {
+            'id': c.id,
+            'name': c.name,
+        }
+        return render_to_response('_delete_checklist.html', {
+                'checklist': checklist
+            }, context_instance=RequestContext(request))
+    else:
+        # For an unsupported HTTP method, return Method Not Allowed.
+        return HttpResponse(status=405)
+
 
 @login_required
 def export_checklist_view(request, checklist_id):
@@ -534,12 +557,30 @@ def edit_checklist_view(request, checklist_id):
 
 @login_required
 def checklist_view(request, checklist_id):
-    """Display the details of a checklist"""
+    """View for an individual checklist. Supported HTTP methods: GET (display
+    a checklist) and DELETE (delete a checklist).
+    """
     checklist = get_object_or_404(Checklist, pk=checklist_id)
-    return render_to_response('checklist_detail.html', {
-            'checklist': checklist
-           }, context_instance=RequestContext(request))
 
+    if request.method == 'GET':
+        return render_to_response('checklist_detail.html', {
+                'checklist': checklist
+            }, context_instance=RequestContext(request))
+    elif request.method == 'DELETE':
+        if not request.user.is_authenticated():
+            return HttpResponse(status=401)   # 401 Unauthorized
+        # Ensure this checklist belongs to the user requesting its deletion.
+        checklist_owner_profile = checklist.owner.get_owner()
+        if checklist_owner_profile.user.id == request.user.id:
+            checklist.delete()
+            # This response gets 200 OK, but subsequent responses will get 404
+            # Not Found due to the record being gone.
+            return HttpResponse(status=200)
+        else:
+            return HttpResponse(status=403)   # 403 Forbidden
+    else:
+        # For an unsupported HTTP method, return Method Not Allowed.
+        return HttpResponse(status=405)
 
 @login_required
 def find_people_view(request):

@@ -48,14 +48,17 @@ urlpatterns = patterns(
     url(r'^checklists/$', views.checklist_index_view, name='ps-checklists'),
     url(r'^checklists/new/$', views.new_checklist_view,
         name='ps-checklist-new'),
-    url(r'^checklists/delete/$', views.delete_checklist_view,
-        name='ps-checklist-delete'),
+    url(r'^checklists/delete/$', views.delete_checklists_view,
+        name='ps-checklists-delete'),
     url(r'^checklists/(?P<checklist_id>[0-9]+)/$', views.checklist_view,
         name='ps-checklist'),
     url(r'^checklists/(?P<checklist_id>[0-9]+)/export/$',
         views.export_checklist_view, name='ps-checklist-export'),
     url(r'^checklists/(?P<checklist_id>[0-9]+)/edit/$',
         views.edit_checklist_view, name='ps-checklist-edit'),
+    # dialog for AJAX-based delete of single checklist
+    url(r'^checklists/(?P<checklist_id>[0-9]+)/delete/$',
+        views.delete_checklist_view, name='ps-checklist-delete'),
 
     # Find People
     url(r'^people/$', views.find_people_view, name='ps-find-people'),
