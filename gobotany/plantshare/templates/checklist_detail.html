@@ -2,7 +2,7 @@
 {% load gobotany_tags %}
 {% load mapping_tags %}
 
-{% block title %}Checklists: PlantShare{% endblock %}
+{% block title %}Checklist: {{ checklist.name }}: PlantShare{% endblock %}
 
 {% block js_require %}
     require(['util/suggester_init', 'plantshare/plantshare']);
