@@ -142,7 +142,7 @@ def sightings_view(request):
                 location_notes = form.cleaned_data['location_notes']
                 visibility = form.cleaned_data['visibility']
                 sighting = Sighting(user=request.user,
-                                    identification=identification, title='',
+                                    identification=identification,
                                     notes=notes, location=location,
                                     location_notes=location_notes,
                                     visibility=visibility)
