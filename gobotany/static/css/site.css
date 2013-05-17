@@ -281,7 +281,7 @@ body.help #sidebar nav li:first-child, body.plantshare #sidebar nav li:first-chi
 body.help #sidebar nav li a:not([href])::before, body.plantshare #sidebar nav li a:not([href])::before { color: #000; content: "\25b8"; margin-left: -14px; padding-bottom: 5px; padding-right: 5px; }
 body.help #sidebar nav li > span, body.plantshare #sidebar nav li > span { color: #ccc; padding-left: 10px; }
 body.help#glossary #sidebar .glossary a::before, body.help#fullkey-placeholder #sidebar .advanced-id-tools a::before, body.help#dkey-placeholder #sidebar .advanced-id-tools a::before { color: #000; content: "\25b8"; margin-left: -14px; padding-bottom: 5px; padding-right: 5px; }
-body.plantshare#sighting #sidebar .sightings a::before, body.plantshare#questions #sidebar .ask a::before, body.plantshare#new-checklist #sidebar .checklists a::before, body.plantshare#checklist #sidebar .checklists a::before { color: #000; content: "\25b8"; margin-left: -14px; padding-bottom: 5px; padding-right: 5px; }
+body.plantshare#sighting #sidebar .sightings a::before, body.plantshare#questions #sidebar .ask a::before, body.plantshare#checklist #sidebar .checklists a::before, body.plantshare#new-checklist #sidebar .checklists a::before, body.plantshare#edit-checklist #sidebar .checklists a::before { color: #000; content: "\25b8"; margin-left: -14px; padding-bottom: 5px; padding-right: 5px; }
 
 /* Header */
 header { height: 120px; }
