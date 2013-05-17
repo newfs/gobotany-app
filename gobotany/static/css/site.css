@@ -1309,7 +1309,7 @@ body.plantshare#checklists table.checklists-list { background: #fff; border: 1px
 body.plantshare#checklists table.checklists-list thead, body.plantshare#checklists table.checklists-list tbody { width: 100%; }
 body.plantshare#checklists table.checklists-list td { overflow: hidden; }
 body.plantshare#checklists table.checklists-list .first { white-space: nowrap; width: 20px; }
-body.plantshare#checklists table.checklists-list .first input[type="checkbox"] { width: auto; }
+body.plantshare#checklists table.checklists-list .first input[type="checkbox"] { margin-left: 5px; margin-top: 10px; width: auto; }
 body.plantshare#checklists table.checklists-list .checklistview-name { white-space: nowrap; width: 368px; }
 body.plantshare#checklists table.checklists-list .owner { white-space: nowrap; width: 150px; }
 body.plantshare#checklists table.checklists-list .last { text-align: right; white-space: nowrap; width: 130px; }
