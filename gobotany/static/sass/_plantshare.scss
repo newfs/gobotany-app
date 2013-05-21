@@ -1227,6 +1227,9 @@ body.plantshare {
                 margin: 0 0 0 8px;
                 text-indent: -9999px;
             }
+            div.note-text {
+                display: none;
+            }
         }
 
         thead {
@@ -1247,12 +1250,6 @@ body.plantshare {
 
             tr td {
                 padding: 7px 5px;
-
-                .thumb {
-                    background: url(../images/icons/flower-thumb.gif) no-repeat;
-                    height: 40px;
-                    width: 39px;
-                }
             }
         }
     }
@@ -1532,6 +1529,74 @@ body.plantshare {
 }
 /* These styles apply to smartphones and tablets */
 @media only screen and (max-width: 1024px) {
+}
+
+@media only print {
+    body.plantshare {
+        background: white;
+        header, footer {
+            display: none;
+        }
+        div#sidebar { 
+            display: none;
+        }
+
+    }
+    #checklist {
+        background: white;
+
+        div#main {
+            width: 100%;
+            padding: 0;
+
+            h1 {
+                color: black;
+                font-weight: bold;
+            }
+
+            div.ps-section {
+                width: 100%;
+                color: black;
+
+                table#checklist-detail {
+                    width: 100%;
+                    border: 1px solid black;
+                    border-collapse: collapse;
+
+                    .name { width: 20%; }
+                    .image { width: 10%; }
+                    .date-sighted { width: 10%; }
+                    .location { width: 15%; }
+                    .date-posted { width: 10%; }
+                    .note { width: 30%; }
+
+                    td, th {
+                        white-space: nowrap;
+                        border: 1px solid black;
+                        overflow: hidden;
+                        padding: 5px;
+                    }
+                    tr {
+                        background: white;
+                    }
+                    thead, tbody {
+                        width: 100%;
+                        border-bottom: 2px solid black;
+                    }
+
+                    td.note { 
+                        a {
+                            display: none;
+                        }
+                        div.note-text {
+                            display: block;
+                        }
+                    }
+                }
+            }
+
+        }
+    }
 }
 
 /* End media queries styles for PlantShare */

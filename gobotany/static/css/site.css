@@ -1326,12 +1326,12 @@ body.plantshare.checklists table.checklists-list .note { width: 60px; padding-ri
 body.plantshare.checklists table.checklists-list .note .note-field { display: none; }
 body.plantshare.checklists table.checklists-list .note a { margin: 0; }
 body.plantshare.checklists table.checklists-list .note a.row-btn { border-bottom: 0 !important; float: right; margin: 0 0 0 8px; text-indent: -9999px; }
+body.plantshare.checklists table.checklists-list .note div.note-text { display: none; }
 body.plantshare.checklists table.checklists-list thead { display: block; }
 body.plantshare.checklists table.checklists-list thead tr th { padding: 7px 5px; text-align: left; text-transform: uppercase; }
 body.plantshare.checklists table.checklists-list tbody { display: block; }
 body.plantshare.checklists table.checklists-list tbody tr:nth-child(odd) { background-color: #e1f0d1; }
 body.plantshare.checklists table.checklists-list tbody tr td { padding: 7px 5px; }
-body.plantshare.checklists table.checklists-list tbody tr td .thumb { background: url(../images/icons/flower-thumb.gif) no-repeat; height: 40px; width: 39px; }
 body.plantshare.checklists .checklists-section { background-color: #fff; border: 1px solid #c3d941; margin: 20px 0; min-height: 140px; padding: 10px 15px 20px; position: relative; }
 body.plantshare.checklists .checklists-section input, body.plantshare.checklists .checklists-section textarea { border: 1px solid #ababab; box-shadow: inset 1px 1px 2px #ccc; -moz-box-shadow: inset 1px 1px 2px #ccc; -webkit-box-shadow: inset 1px 1px 2px #ccc; display: block; font-size: inherit; line-height: 1em; padding: 7px 5px 5px; }
 body.plantshare.checklists .checklists-section h4 { margin: 0 0 15px; font-size: 18px; }
@@ -1392,6 +1392,25 @@ body.plantshare#screen-images div.form-control { margin: 0 30px; }
   body.plantshare#profile .info.box img { padding: 16px; }
   body.plantshare#sign-up #main form input { width: 290px; } }
 /* These styles apply to smartphones and tablets */
+@media only print { body.plantshare { background: white; }
+  body.plantshare header, body.plantshare footer { display: none; }
+  body.plantshare div#sidebar { display: none; }
+  #checklist { background: white; }
+  #checklist div#main { width: 100%; padding: 0; }
+  #checklist div#main h1 { color: black; font-weight: bold; }
+  #checklist div#main div.ps-section { width: 100%; color: black; }
+  #checklist div#main div.ps-section table#checklist-detail { width: 100%; border: 1px solid black; border-collapse: collapse; }
+  #checklist div#main div.ps-section table#checklist-detail .name { width: 20%; }
+  #checklist div#main div.ps-section table#checklist-detail .image { width: 10%; }
+  #checklist div#main div.ps-section table#checklist-detail .date-sighted { width: 10%; }
+  #checklist div#main div.ps-section table#checklist-detail .location { width: 15%; }
+  #checklist div#main div.ps-section table#checklist-detail .date-posted { width: 10%; }
+  #checklist div#main div.ps-section table#checklist-detail .note { width: 30%; }
+  #checklist div#main div.ps-section table#checklist-detail td, #checklist div#main div.ps-section table#checklist-detail th { white-space: nowrap; border: 1px solid black; overflow: hidden; padding: 5px; }
+  #checklist div#main div.ps-section table#checklist-detail tr { background: white; }
+  #checklist div#main div.ps-section table#checklist-detail thead, #checklist div#main div.ps-section table#checklist-detail tbody { width: 100%; border-bottom: 2px solid black; }
+  #checklist div#main div.ps-section table#checklist-detail td.note a { display: none; }
+  #checklist div#main div.ps-section table#checklist-detail td.note div.note-text { display: block; } }
 /* End media queries styles for PlantShare */
 /* Dichotomous Key */
 #dkey #main .offer-help-aside { float: right; margin: 1em 1em 0.5em 1em; text-align: right; color: #606060; }
