@@ -32,7 +32,7 @@
             <tr>
                 
                 <td class="name">{{ entry.plant_name|italicize_if_scientific|safe }}</td>
-                <td class="image"><div class="thumb"></div></td>
+                <td class="image"><img class="checklist-thumb" src="{{entry.plant_photo.thumb.url}}" /></td>
                 <td class="date-sighted">{{ entry.date_found|date:"m/d/Y"|default:"N/A" }}</td>
                 <td class="location">{{ entry.location|default:"N/A" }}</td>
                 <td class="date-posted">{{ entry.date_posted|date:"m/d/Y"|default:"N/A" }}</td>
