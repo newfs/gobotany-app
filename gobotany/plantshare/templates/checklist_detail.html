@@ -38,6 +38,7 @@
                 <td class="date-posted">{{ entry.date_posted|date:"m/d/Y"|default:"N/A" }}</td>
                 <td class="note">
                     <a href="javascript:alert('Coming soon!');" rel="shadowbox;height=240;width=550">View</a>
+                    <div class="note-text">{{ entry.note|default:"" }}</div>
                 </td>
             </tr>
             {% endfor %}
