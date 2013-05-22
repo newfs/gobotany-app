@@ -2,7 +2,7 @@
 {% load mapping_tags %}
 {% load plantshare_tags %}
 
-{% block title %}Checklists: PlantShare{% endblock %}
+{% block title %}Plant Checklists: PlantShare{% endblock %}
 
 {% block js_require %}
     require([
@@ -19,11 +19,12 @@
 <div class="notification box">
     <p>Check out our plant checklists!<p>
     <ul>
-        <li>Create your own checklist of plants you have seen.</li>
-        <li>Share checklists with friends, students, and colleagues.</li>
-        <li>When planning a trip, find checklists made by local experts.</li>
+        <li>Create your own list of plants you have seen, or want to see.</li>
+        <li>Share plant checklists with friends, students, and colleagues.</li>
+        <li>Export the data in a plant checklist for use elsewhere.</li>
     </li>
-    <a class="ps-button" href="{% url 'ps-checklist-new' %}">Create New Checklist</a>
+    <a class="ps-button" href="{% url 'ps-checklist-new' %}">Create New
+        Plant Checklist</a>
 </div>
 <div class="ps-section">
     {% if checklists %}
@@ -33,7 +34,7 @@
           <thead>
               <tr>
                   <th class="first"></th>
-                  <th class="checklistview-name">Checklist Name<span></span></th>
+                  <th class="checklistview-name">Plant Checklist Title<span></span></th>
                   <th class="owner">Owner</th>
                   <th class="last"></th>
               </tr>
@@ -66,7 +67,7 @@
         <!--<a href="{% url 'ps-checklists-delete' %}" class="ps-button delete-btn inactive btn">Delete</a>-->
     </div><!-- /.form-actions -->
     {% else %}
-    <p>Your checklists will appear here, {% user_first_name request.user %}.</p>
+    <p>Your plant checklists will appear here, {% user_first_name request.user %}.</p>
     {% endif %}
 </div><!-- /.ps-section -->
 {% endblock %}

@@ -139,10 +139,10 @@ class ChecklistForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super(ChecklistForm, self).__init__(*args, **kwargs)
         self.fields['name'].widget = forms.TextInput(attrs={
-            'placeholder': 'Enter Checklist Name'
+            'placeholder': 'Give your plant checklist a title (required)'
             })
         self.fields['comments'].widget = forms.Textarea(attrs={
-            'placeholder': 'Comments about checklist...',
+            'placeholder': 'Notes about your plant checklist',
             'rows': ''
             })
 

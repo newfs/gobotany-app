@@ -514,7 +514,7 @@ def export_checklist_view(request, checklist_id):
     response['Content-Disposition'] = 'attachment; filename="{0}"'.format(filename)
 
     writer = csv.writer(response)
-    writer.writerow(('List Name:', checklist.name))
+    writer.writerow(('Plant Checklist Title:', checklist.name))
     writer.writerow(('Comments:', checklist.comments))
     writer.writerow([])
     writer.writerow(('Found?', 'Plant Name', 'Date Sighted', 'Location', 'Date Posted', 'Notes'))
