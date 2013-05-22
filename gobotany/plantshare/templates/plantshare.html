@@ -104,7 +104,7 @@
                 href="{% url 'ps-sightings-locator' %}">View full page »</a></p>
         </form>
 
-        {% sightings_map latitude=map.latitude longitude=map.longitude center_title=map.center_title height="297px" width="481px" zoom="6" id="mini-sightings-map" %}       
+        {% sightings_map latitude=map.latitude longitude=map.longitude center_title=map.center_title height="297px" width="481px" zoom=map.zoom id="mini-sightings-map" %}
     </div>
 </div>
 

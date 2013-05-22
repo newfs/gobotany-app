@@ -25,9 +25,10 @@ from gobotany.plantshare.models import (Checklist, ChecklistCollaborator,
     SIGHTING_VISIBILITY_CHOICES, UserProfile)
 
 SIGHTINGS_MAP_DEFAULTS = {
-    'latitude': '44.53599',
-    'longitude': '-70.56609',
-    'center_title': 'Rumford, Maine'
+    'latitude': '43.66',
+    'longitude': '-70.27',
+    'center_title': 'Portland, Maine',
+    'zoom': '7'
 }
 
 SIGHTING_DATE_FORMAT = "%e %B %Y"

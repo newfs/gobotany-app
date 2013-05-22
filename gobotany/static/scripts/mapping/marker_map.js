@@ -14,6 +14,8 @@ define([
 
     // Constructor
     function MarkerMap(map_div, cookie_names) {
+        var DEFAULT_ZOOM_LEVEL = 6;
+
         // Set limits for latitude and longitude roughly corresponding to
         // North America. Upon restoring the map location, if the
         // location is found to be out of these limits, the default
@@ -51,10 +53,17 @@ define([
             }
         }
 
-        this.zoom = 6;
+        this.zoom = DEFAULT_ZOOM_LEVEL;
+
+        // If the page has a zoom level specified, start with it.
+        var zoom = this.$map_div.attr('data-zoom');
+        if (zoom) {
+            this.zoom = parseInt(zoom);
+        }
+
         // If the last zoom level was saved in a cookie, restore it.
         this.zoom_cookie_name = cookie_names['zoom'];
-        var zoom = $.cookie(this.zoom_cookie_name);
+        zoom = $.cookie(this.zoom_cookie_name);
         if (zoom !== undefined && zoom !== null) {
             if (isNaN(zoom)) {
                 // If a zoom level is invalid, clear it.

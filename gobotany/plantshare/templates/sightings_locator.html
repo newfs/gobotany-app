@@ -28,7 +28,7 @@
 
     <p id="sightings-status"><span>0</span> sightings found</p>
 
-    {% sightings_map latitude=map.latitude longitude=map.longitude center_title=map.center_title height="524px" width="710px" zoom="6" id="sightings-map" %}
+    {% sightings_map latitude=map.latitude longitude=map.longitude center_title=map.center_title height="524px" width="710px" zoom=map.zoom id="sightings-map" %}
 </form>
 
 {% endblock %}
