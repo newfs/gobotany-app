@@ -1562,36 +1562,42 @@ body.plantshare {
                     width: 100%;
                     border: 1px solid black;
                     border-collapse: collapse;
+                    background-color: white;
 
-                    .name { width: 20%; }
-                    .image { width: 10%; }
+                    .name { width: 25%; }
+                    .image { 
+                        width: 40px; 
+                        text-align: center;
+                    }
                     .date-sighted { width: 10%; }
-                    .location { width: 15%; }
+                    .location { width: 10%; }
                     .date-posted { width: 10%; }
-                    .note { width: 30%; }
+                    .note { width: 35%; }
 
                     td, th {
-                        white-space: nowrap;
                         border: 1px solid black;
-                        overflow: hidden;
                         padding: 5px;
                     }
                     tr {
-                        background: white;
+                        background-color: white;
                     }
-                    thead, tbody {
+                    thead {
                         width: 100%;
+                        display: table-header-group;
                         border-bottom: 2px solid black;
                     }
+                    tbody {
+                        width: 100%;
+                        display: table-row-group;
+                        border-bottom: 2px solid black;
 
-                    td.note { 
-                        a {
-                            display: none;
-                        }
-                        div.note-text {
-                            display: block;
+                        tr {
+                            height: 80px;
                         }
                     }
+
+                    td.note a { display: none; }
+                    td.note div.note-text { display: block; }
                 }
             }
 

@@ -1399,16 +1399,18 @@ body.plantshare#screen-images div.form-control { margin: 0 30px; }
   #checklist div#main { width: 100%; padding: 0; }
   #checklist div#main h1 { color: black; font-weight: bold; }
   #checklist div#main div.ps-section { width: 100%; color: black; }
-  #checklist div#main div.ps-section table#checklist-detail { width: 100%; border: 1px solid black; border-collapse: collapse; }
-  #checklist div#main div.ps-section table#checklist-detail .name { width: 20%; }
-  #checklist div#main div.ps-section table#checklist-detail .image { width: 10%; }
+  #checklist div#main div.ps-section table#checklist-detail { width: 100%; border: 1px solid black; border-collapse: collapse; background-color: white; }
+  #checklist div#main div.ps-section table#checklist-detail .name { width: 25%; }
+  #checklist div#main div.ps-section table#checklist-detail .image { width: 40px; text-align: center; }
   #checklist div#main div.ps-section table#checklist-detail .date-sighted { width: 10%; }
-  #checklist div#main div.ps-section table#checklist-detail .location { width: 15%; }
+  #checklist div#main div.ps-section table#checklist-detail .location { width: 10%; }
   #checklist div#main div.ps-section table#checklist-detail .date-posted { width: 10%; }
-  #checklist div#main div.ps-section table#checklist-detail .note { width: 30%; }
-  #checklist div#main div.ps-section table#checklist-detail td, #checklist div#main div.ps-section table#checklist-detail th { white-space: nowrap; border: 1px solid black; overflow: hidden; padding: 5px; }
-  #checklist div#main div.ps-section table#checklist-detail tr { background: white; }
-  #checklist div#main div.ps-section table#checklist-detail thead, #checklist div#main div.ps-section table#checklist-detail tbody { width: 100%; border-bottom: 2px solid black; }
+  #checklist div#main div.ps-section table#checklist-detail .note { width: 35%; }
+  #checklist div#main div.ps-section table#checklist-detail td, #checklist div#main div.ps-section table#checklist-detail th { border: 1px solid black; padding: 5px; }
+  #checklist div#main div.ps-section table#checklist-detail tr { background-color: white; }
+  #checklist div#main div.ps-section table#checklist-detail thead { width: 100%; display: table-header-group; border-bottom: 2px solid black; }
+  #checklist div#main div.ps-section table#checklist-detail tbody { width: 100%; display: table-row-group; border-bottom: 2px solid black; }
+  #checklist div#main div.ps-section table#checklist-detail tbody tr { height: 80px; }
   #checklist div#main div.ps-section table#checklist-detail td.note a { display: none; }
   #checklist div#main div.ps-section table#checklist-detail td.note div.note-text { display: block; } }
 /* End media queries styles for PlantShare */
