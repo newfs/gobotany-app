@@ -1008,7 +1008,7 @@ def ajax_conservation_status(request):
     conservation_status = []
     plant_name = request.GET.get('plant')
 
-    taxa = Taxon.objects.filter(scientific_name=plant_name)
+    taxa = Taxon.objects.filter(scientific_name__iexact=plant_name)
 
     for taxon in taxa:
         common_names = [n.common_name for n in taxon.common_names.all()]
