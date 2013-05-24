@@ -230,6 +230,7 @@ body {
     }
     &.plantshare {
         &#sighting #sidebar .sightings a::before,
+        &#edit-sighting #sidebar .manage-sightings a::before,
         &#questions #sidebar .ask a::before,
         &#checklist #sidebar .checklists a::before,
         &#new-checklist #sidebar .checklists a::before,
