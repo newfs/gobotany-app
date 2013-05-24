@@ -461,6 +461,12 @@ body.plantshare {
         }
     }
     &#new-sighting, &#edit-sighting {
+        #id_identification, .restricted {
+            display: inline-block;
+        }
+        .restricted {
+            margin-left: 14px;
+        }
         .thumb-gallery {
             display: inline-block;
             float: left;
@@ -496,6 +502,12 @@ body.plantshare {
             clear: left;
             margin-bottom: 60px;
             padding-top: 20px;
+            p {
+                display: inline-block;
+            }
+            .label {
+                display: block;
+            }
             select {
                 margin: 6px 0 0;
             }

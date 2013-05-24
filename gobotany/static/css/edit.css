@@ -7,6 +7,8 @@
 .orange-button.caps, span.caps.all-species-button, span.caps.simple-key-button, .caps.save-button, .caps.length-save-button { text-transform: uppercase; }
 .orange-button.disabled, span.disabled.all-species-button, span.disabled.simple-key-button, .disabled.save-button, .disabled.length-save-button { background-color: #ecda92; /* for IE without gradient support */ border-color: #ecda92 !important; background: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #ecda92), color-stop(32%, #f1e3a6), color-stop(50%, #f1e3a6), color-stop(100%, #ecdb93)); background: -webkit-linear-gradient(top, #ecda92 0%, #f1e3a6 32%, #f1e3a6 50%, #ecdb93 100%); background: -moz-linear-gradient(top, #ecda92 0%, #f1e3a6 32%, #f1e3a6 50%, #ecdb93 100%); background: -o-linear-gradient(top, #ecda92 0%, #f1e3a6 32%, #f1e3a6 50%, #ecdb93 100%); background: linear-gradient(top, #ecda92 0%, #f1e3a6 32%, #f1e3a6 50%, #ecdb93 100%); }
 
+.hidden { display: none !important; }
+
 .edit-page #all { margin: 2em; }
 
 .edit-character-definition { margin-top: 0; margin-left: 2em; margin-bottom: 0; }

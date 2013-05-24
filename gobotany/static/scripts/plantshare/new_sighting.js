@@ -111,14 +111,72 @@ define([
         }
     }
 
+    function set_visibility_restriction(is_restricted) {
+        if (is_restricted) {
+            // Show messages and restrict visibility options.
+            $('.restricted').removeClass('hidden');
+            $('#id_visibility').val('PRIVATE');
+            $('#id_visibility option').each(function () {
+                if ($(this).val() !== 'PRIVATE') {
+                    $(this).attr('disabled', true);
+                }
+            });
+        }
+        else {
+            // Hide messages and unrestrict visibility options.
+            $('.restricted').addClass('hidden');
+            $('#id_visibility option').each(function () {
+                if ($(this).val() !== 'PRIVATE') {
+                    $(this).attr('disabled', false);
+                }
+            });
+        }
+    }
+
+    function check_conservation_status(plant_name) {
+        var is_restricted = false;
+        var url = '/ps/api/conservation_status/';   // TODO: URL base
+        url += '?plant=' + encodeURIComponent(plant_name);
+        $.ajax({
+            url: url
+        }).done(function (json) {
+            var is_restricted = false;
+            // If any result says that sightings are restricted,
+            // consider sightings restricted for this plant. (Multiple
+            // results are for supporting common names, where the same
+            // name can apply to more than one plant.)
+            $.each(json, function (i, taxon) {
+                if (taxon.sightings_restricted === true) {
+                    is_restricted = true;
+                    return false;   // to break out of the loop
+                }
+            });
+            set_visibility_restriction(is_restricted);
+        });
+    }
+
     $(window).load(function () {   
         var geocoder = new Geocoder(); // geocoder must be created at onload
+        var $identification_box = $('#id_identification');
         var $location_box = $('#id_location');
         
+        // Check the conservation status for any initial identification
+        // value.
+        if ($identification_box.val() !== '') {
+            check_conservation_status($identification_box.val());
+        }
+
         // Set the latitude and longitude for any initial location value.
-        if ($location_box.val() != '') {
+        if ($location_box.val() !== '') {
             update_latitude_longitude($location_box.val(), geocoder);
         }
+
+        // When the user enters a plant name in the identification
+        // field, check the name to see if it is a plant with
+        // conservation concerns. If so, the sighting will be hidden.
+        $identification_box.on('blur', function () {
+            check_conservation_status($(this).val());
+        });
 
         // When the user enters a location, geocode it again if needed,
         // and let the map update.
@@ -131,7 +189,7 @@ define([
                 // auto-submit so the user can see the map location update.
                 // The location field, with its associated map, is similar to
                 // textarea in the sense that Enter is used to accomplish
-                // something within it.
+                // something within (or in this case, related to) it.
                 var value = $(this).val();
                 if (value !== '') {
                     event.preventDefault();

@@ -212,6 +212,8 @@ div.scrollableArea { position: relative; width: auto; height: 100%; }
 .orange-button.caps, body.taxa .visit-dkey a.caps, body.plantshare .caps.ps-button, body.plantshare.sighting .modal-container .image-modal a.caps.button, body.plantshare#ask #main .caps.submit, body.plantshare#plantshare #ask .caps.submit, body.plantshare#profile div.section-container .image-modal a.caps.button, body.plantshare.checklists .image-modal a.caps.button, #dkey #main .offer-help-aside a.caps.button, #dkey #main ul.couplets a.caps.button, #dkey #main a.caps.show-all-button { text-transform: uppercase; }
 .orange-button.disabled, body.taxa .visit-dkey a.disabled, body.plantshare .disabled.ps-button, body.plantshare.sighting .modal-container .image-modal a.disabled.button, body.plantshare#ask #main .disabled.submit, body.plantshare#plantshare #ask .disabled.submit, body.plantshare#profile div.section-container .image-modal a.disabled.button, body.plantshare.checklists .image-modal a.disabled.button, #dkey #main .offer-help-aside a.disabled.button, #dkey #main ul.couplets a.disabled.button, #dkey #main a.disabled.show-all-button { background-color: #ecda92; /* for IE without gradient support */ border-color: #ecda92 !important; background: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #ecda92), color-stop(32%, #f1e3a6), color-stop(50%, #f1e3a6), color-stop(100%, #ecdb93)); background: -webkit-linear-gradient(top, #ecda92 0%, #f1e3a6 32%, #f1e3a6 50%, #ecdb93 100%); background: -moz-linear-gradient(top, #ecda92 0%, #f1e3a6 32%, #f1e3a6 50%, #ecdb93 100%); background: -o-linear-gradient(top, #ecda92 0%, #f1e3a6 32%, #f1e3a6 50%, #ecdb93 100%); background: linear-gradient(top, #ecda92 0%, #f1e3a6 32%, #f1e3a6 50%, #ecdb93 100%); }
 
+.hidden { display: none !important; }
+
 /* Site-wide styles */
 body { background: #f0f0c0; color: black; font-family: Verdana, Geneva, "Lucida Sans Unicode", sans-serif; font-size: 12px; }
 
@@ -249,8 +251,6 @@ p { line-height: 170%; margin: 1em 0; padding: 0; }
 ul { line-height: 170%; margin: 0; padding: 0; }
 
 ul li { margin: 0 0 5px 0; }
-
-.hidden { display: none; }
 
 .clearit { border: none !important; clear: both; float: none !important; height: auto !important; margin: 0 !important; padding: 0 !important; width: auto !important; }
 
@@ -1173,6 +1173,8 @@ body.plantshare #sightings-locator.mini .box form p#sightings-status { margin-le
 body.plantshare #sightings-locator.mini .box form p.full-link { margin-top: 10px; }
 body.plantshare #sightings-locator.mini .box .map { clear: none; border-bottom: 0; border-right: 0; border-top: 0; float: right; margin-top: 0; }
 body.plantshare#new-sighting h1 + div { background: #fff; border: 1px solid #c3d941; margin-bottom: 16px; padding: 5px 16px; }
+body.plantshare#new-sighting #id_identification, body.plantshare#new-sighting .restricted, body.plantshare#edit-sighting #id_identification, body.plantshare#edit-sighting .restricted { display: inline-block; }
+body.plantshare#new-sighting .restricted, body.plantshare#edit-sighting .restricted { margin-left: 14px; }
 body.plantshare#new-sighting .thumb-gallery, body.plantshare#edit-sighting .thumb-gallery { display: inline-block; float: left; padding-top: 10px; }
 body.plantshare#new-sighting .thumb-gallery .thumb-frame, body.plantshare#edit-sighting .thumb-gallery .thumb-frame { display: inline-block; margin: 0 14px 0 0; vertical-align: bottom; }
 body.plantshare#new-sighting .thumb-gallery .thumb-frame .thumb, body.plantshare#edit-sighting .thumb-gallery .thumb-frame .thumb { vertical-align: bottom; }
@@ -1180,6 +1182,8 @@ body.plantshare#new-sighting .thumb-gallery .thumb-frame .delete-link, body.plan
 body.plantshare#new-sighting .thumb-gallery .thumb-frame .delete-link img, body.plantshare#edit-sighting .thumb-gallery .thumb-frame .delete-link img { vertical-align: middle; margin-right: 4px; }
 body.plantshare#new-sighting .upload, body.plantshare#edit-sighting .upload { display: inline-block; float: left; padding-top: 6px; }
 body.plantshare#new-sighting .visibility, body.plantshare#edit-sighting .visibility { clear: left; margin-bottom: 60px; padding-top: 20px; }
+body.plantshare#new-sighting .visibility p, body.plantshare#edit-sighting .visibility p { display: inline-block; }
+body.plantshare#new-sighting .visibility .label, body.plantshare#edit-sighting .visibility .label { display: block; }
 body.plantshare#new-sighting .visibility select, body.plantshare#edit-sighting .visibility select { margin: 6px 0 0; }
 body.plantshare#manage-sightings { /* Hide the usual default Shadowbox close button. This is used for some dialogs that have their own interior close button, such as is seen on various PlantShare dialogs. */ }
 body.plantshare#manage-sightings .content table { width: 100%; }

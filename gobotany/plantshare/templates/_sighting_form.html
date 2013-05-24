@@ -8,6 +8,9 @@
         <label for="id_identification">Identification of plant
             (required)</label>
         {{ form.identification }}
+        <p class="restricted name hidden">
+            Rare plant. Only you and staff will see this sighting.
+        </p>
 
         {{ form.notes.errors }}
         <label for="id_notes">Description or comments</label>
@@ -56,8 +59,10 @@
         </p>
 
         <div class="visibility">
-            <p>Visibility</p>
+            <p class="label">Visibility</p>
             <p>{{ form.visibility }}</p>
+            <p class="restricted hidden">Rare plant. Only you and
+            staff will see this sighting.</p>
         </div>
 
         {# TODO: buttons: disable until input is ready to submit #}
