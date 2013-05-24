@@ -1,6 +1,7 @@
 import csv
 
 from datetime import datetime
+from itertools import chain
 from random import randint
 
 from django.conf import settings
@@ -18,6 +19,7 @@ from django.shortcuts import (get_object_or_404, redirect, render,
 from django.template import RequestContext
 from django.utils import simplejson
 
+from gobotany.core.models import Taxon
 from gobotany.plantshare.forms import (ChecklistEntryForm, ChecklistForm,
     ScreenedImageForm, SightingForm, UserProfileForm)
 from gobotany.plantshare.models import (Checklist, ChecklistCollaborator,
@@ -991,4 +993,46 @@ def ajax_people_suggestions(request):
                 ordered_suggestions.append(suggestion)
 
     return HttpResponse(simplejson.dumps(ordered_suggestions),
+                        mimetype='application/json; charset=utf-8')
+
+
+@login_required
+def ajax_conservation_status(request):
+    """API call for determining whether a sighting should be restricted
+    to private and staff viewing only for plants with a conservation
+    concern.
+    """
+    RESTRICTED_STATUSES = ['rare', 'endangered', 'threatened',
+        'special concern', 'historic', 'extirpated']
+
+    conservation_status = []
+    plant_name = request.GET.get('plant')
+
+    taxa = Taxon.objects.filter(scientific_name=plant_name)
+
+    for taxon in taxa:
+        common_names = [n.common_name for n in taxon.common_names.all()]
+        synonyms = [s.full_name for s in taxon.synonyms.all()]
+
+        statuses = taxon.get_conservation_statuses()
+        statuses_lists = [v for k, v in 
+            {k : v for k, v in statuses.iteritems()}.iteritems()]
+        all_statuses = list(set(list(chain.from_iterable(statuses_lists))))
+
+        sightings_restricted = False
+        restricted_by = [restricted_status for restricted_status
+            in RESTRICTED_STATUSES if restricted_status in
+            '\n'.join(all_statuses)]
+        if len(restricted_by) > 0:
+            sightings_restricted = True
+
+        conservation_status.append({
+            "scientific_name": taxon.scientific_name,
+            "common_names": common_names,
+            "synonyms": synonyms,
+            "all_statuses": all_statuses,
+            "restricted_by": restricted_by,
+            "sightings_restricted": sightings_restricted,
+        })
+    return HttpResponse(simplejson.dumps(conservation_status),
                         mimetype='application/json; charset=utf-8')
