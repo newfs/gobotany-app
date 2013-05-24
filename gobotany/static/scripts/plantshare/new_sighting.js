@@ -16,9 +16,10 @@ define([
             // to the real image url.
             var $lastImage = $('.thumb-gallery img.thumb').last();
             $lastImage.attr('src', thumb_url);
-            $lastImage.wrap('<a href="' + full_url + '" class="preview"></a>');
-            $lastImage.parent().after('<div class="delete-link"><a href="' + id + 
-                '"><img src="' + DELETE_ICON + '" />Remove</a></div>');
+            $lastImage.wrap('<a href="' + full_url +
+                '" class="preview"></a>');
+            $lastImage.parent().after('<div class="delete-link"><a href="' +
+                id + '"><img src="' + DELETE_ICON + '" />Remove</a></div>');
 
             Shadowbox.setup('a.preview');
         }
@@ -32,7 +33,8 @@ define([
             var rejectUrl = '/ps/api/image-reject/' + id;
             $.ajax(rejectUrl).done(function(data) {
                 if(data.success) {
-                    $('#sighting-photos').find('input[value=' + id + ']').remove();
+                    $('#sighting-photos').find('input[value=' + id +
+                        ']').remove();
                     $frame.fadeOut(300, function() { $frame.remove(); });
                 } else {
                     console.log('Error removing sighting photo.');
@@ -49,7 +51,8 @@ define([
 
         function startUpload() {
             // Add the spinner to the gallery
-            $('.thumb-gallery').append('<div class="thumb-frame"><img class="thumb" src="' + 
+            $('.thumb-gallery').append(
+                '<div class="thumb-frame"><img class="thumb" src="' + 
                 UPLOAD_SPINNER + '"></div>');
         }
 
