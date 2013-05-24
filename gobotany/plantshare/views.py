@@ -1001,6 +1001,12 @@ def ajax_conservation_status(request):
     """API call for determining whether a sighting should be restricted
     to private and staff viewing only for plants with a conservation
     concern.
+
+    Most of the time only one plant will be returned, but in some cases
+    such as where more than one plant has the same common name, multiple
+    plants can be returned. The caller should look at all the
+    'sightings_restricted' values, and if *any* are marked True, then
+    do restrict sightings for that plant name.
     """
     RESTRICTED_STATUSES = ['rare', 'endangered', 'threatened',
         'special concern', 'historic', 'extirpated']
@@ -1008,14 +1014,17 @@ def ajax_conservation_status(request):
     conservation_status = []
     plant_name = request.GET.get('plant')
 
-    taxa = Taxon.objects.filter(scientific_name__iexact=plant_name)
+    taxa = Taxon.objects.filter(
+        Q(scientific_name__iexact=plant_name) |
+        Q(common_names__common_name__iexact=plant_name)
+    )
 
     for taxon in taxa:
         common_names = [n.common_name for n in taxon.common_names.all()]
         synonyms = [s.full_name for s in taxon.synonyms.all()]
 
         statuses = taxon.get_conservation_statuses()
-        statuses_lists = [v for k, v in 
+        statuses_lists = [v for k, v in
             {k : v for k, v in statuses.iteritems()}.iteritems()]
         all_statuses = list(set(list(chain.from_iterable(statuses_lists))))
 
