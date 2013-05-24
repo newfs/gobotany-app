@@ -1014,14 +1014,17 @@ def ajax_conservation_status(request):
     conservation_status = []
     plant_name = request.GET.get('plant')
 
-    taxa = Taxon.objects.filter(
-        Q(scientific_name__iexact=plant_name) |
-        Q(common_names__common_name__iexact=plant_name)
-    )
+    scientific_name_taxa = Taxon.objects.filter(
+        scientific_name__iexact=plant_name)
+    common_name_taxa = Taxon.objects.filter(
+        common_names__common_name__iexact=plant_name)
+    synonym_taxa = Taxon.objects.filter(
+        synonyms__scientific_name__iexact=plant_name)
+    taxa = list(chain(scientific_name_taxa, common_name_taxa, synonym_taxa))
 
     for taxon in taxa:
         common_names = [n.common_name for n in taxon.common_names.all()]
-        synonyms = [s.full_name for s in taxon.synonyms.all()]
+        synonyms = [s.scientific_name for s in taxon.synonyms.all()]
 
         statuses = taxon.get_conservation_statuses()
         statuses_lists = [v for k, v in
