@@ -406,6 +406,23 @@ class PartnerSiteAdmin(_Base):
     readonly_fields = (species_summary,)
 
 
+class PartnerSpeciesAdmin(_Base):
+    """
+
+    <p>
+    Each "partner site" may have it's own list of species made available
+    from the total set of species.  Use this form to assign a particular
+    species to a partner site, choose whether the species will appear in
+    that partner site's Simple Key, and edit the custom page heading and 
+    "blurb" text which will appear on the species page for that partner
+    site.
+    </p>
+    """
+    search_fields = ('partner__short_name', 'species__scientific_name')
+    list_display = ('partner', 'species')
+    list_display_links = ('partner', 'species')
+    list_filter = ('partner',)
+
 # Registrations
 
 admin.site.register(models.Parameter)
@@ -422,3 +439,4 @@ admin.site.register(models.PileGroup, PileGroupAdmin)
 admin.site.register(models.Family, FamilyAdmin)
 admin.site.register(models.Genus, GenusAdmin)
 admin.site.register(models.PartnerSite, PartnerSiteAdmin)
+admin.site.register(models.PartnerSpecies, PartnerSpeciesAdmin)
