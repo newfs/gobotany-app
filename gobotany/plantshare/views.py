@@ -996,7 +996,7 @@ def ajax_people_suggestions(request):
 
 
 @login_required
-def ajax_conservation_status(request):
+def ajax_restrictions(request):
     """API call for determining whether a sighting should be restricted
     to private and staff viewing only for plants with a conservation
     concern.

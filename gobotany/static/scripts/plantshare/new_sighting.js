@@ -133,9 +133,9 @@ define([
         }
     }
 
-    function check_conservation_status(plant_name) {
+    function check_restrictions(plant_name) {
         var is_restricted = false;
-        var url = '/ps/api/conservation_status/';   // TODO: URL base
+        var url = '/ps/api/restrictions/';   // TODO: URL base
         url += '?plant=' + encodeURIComponent(plant_name);
         $.ajax({
             url: url
@@ -163,7 +163,7 @@ define([
         // Check the conservation status for any initial identification
         // value.
         if ($identification_box.val() !== '') {
-            check_conservation_status($identification_box.val());
+            check_restrictions($identification_box.val());
         }
 
         // Set the latitude and longitude for any initial location value.
@@ -175,7 +175,7 @@ define([
         // field, check the name to see if it is a plant with
         // conservation concerns. If so, the sighting will be hidden.
         $identification_box.on('blur', function () {
-            check_conservation_status($(this).val());
+            check_restrictions($(this).val());
         });
 
         // When the user enters a location, geocode it again if needed,

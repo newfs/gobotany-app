@@ -81,6 +81,6 @@ urlpatterns = patterns(
     url(r'^api/sightings/$', views.ajax_sightings, name='ps-ajax-sightings'),
     url(r'^api/people-suggestions/$', views.ajax_people_suggestions,
         name='ps-ajax-people-suggestions'),
-    url(r'^api/conservation_status/$', views.ajax_conservation_status,
-        name='ps-ajax-conservation-status'),
+    url(r'^api/restrictions/$', views.ajax_restrictions,
+        name='ps-ajax-restrictions'),
     )
