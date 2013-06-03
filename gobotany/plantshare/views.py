@@ -1,7 +1,6 @@
 import csv
 
 from datetime import datetime
-from itertools import chain
 from random import randint
 
 from django.conf import settings
@@ -19,12 +18,12 @@ from django.shortcuts import (get_object_or_404, redirect, render,
 from django.template import RequestContext
 from django.utils import simplejson
 
-from gobotany.core.models import Taxon
 from gobotany.plantshare.forms import (ChecklistEntryForm, ChecklistForm,
     ScreenedImageForm, SightingForm, UserProfileForm)
 from gobotany.plantshare.models import (Checklist, ChecklistCollaborator,
     ChecklistEntry, Location, Question, ScreenedImage, Sighting,
     SIGHTING_VISIBILITY_CHOICES, UserProfile)
+from gobotany.plantshare.utils import restrictions
 
 SIGHTINGS_MAP_DEFAULTS = {
     'latitude': '43.66',
@@ -1008,43 +1007,7 @@ def ajax_conservation_status(request):
     'sightings_restricted' values, and if *any* are marked True, then
     do restrict sightings for that plant name.
     """
-    RESTRICTED_STATUSES = ['rare', 'endangered', 'threatened',
-        'special concern', 'historic', 'extirpated']
-
-    conservation_status = []
     plant_name = request.GET.get('plant')
-
-    scientific_name_taxa = Taxon.objects.filter(
-        scientific_name__iexact=plant_name)
-    common_name_taxa = Taxon.objects.filter(
-        common_names__common_name__iexact=plant_name)
-    synonym_taxa = Taxon.objects.filter(
-        synonyms__scientific_name__iexact=plant_name)
-    taxa = list(chain(scientific_name_taxa, common_name_taxa, synonym_taxa))
-
-    for taxon in taxa:
-        common_names = [n.common_name for n in taxon.common_names.all()]
-        synonyms = [s.scientific_name for s in taxon.synonyms.all()]
-
-        statuses = taxon.get_conservation_statuses()
-        statuses_lists = [v for k, v in
-            {k : v for k, v in statuses.iteritems()}.iteritems()]
-        all_statuses = list(set(list(chain.from_iterable(statuses_lists))))
-
-        sightings_restricted = False
-        restricted_by = [restricted_status for restricted_status
-            in RESTRICTED_STATUSES if restricted_status in
-            '\n'.join(all_statuses)]
-        if len(restricted_by) > 0:
-            sightings_restricted = True
-
-        conservation_status.append({
-            "scientific_name": taxon.scientific_name,
-            "common_names": common_names,
-            "synonyms": synonyms,
-            "all_statuses": all_statuses,
-            "restricted_by": restricted_by,
-            "sightings_restricted": sightings_restricted,
-        })
-    return HttpResponse(simplejson.dumps(conservation_status),
+    restrictions_info = restrictions(plant_name)
+    return HttpResponse(simplejson.dumps(restrictions_info),
                         mimetype='application/json; charset=utf-8')
