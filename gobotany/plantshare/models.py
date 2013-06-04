@@ -15,6 +15,8 @@ from imagekit.models import ImageSpecField, ProcessedImageField
 from imagekit.processors.resize import ResizeToFit
 from storages.backends.s3boto import S3BotoStorage
 
+from gobotany.plantshare.utils import restrictions
+
 VISIBILITY_CHOICES = (
     ('PUBLIC', 'Everyone: public'),
     ('USERS', 'All PlantShare users'),
@@ -265,6 +267,19 @@ class Sighting(models.Model):
             created_at = ', %s' % self.created
         return 'Sighting%s: %s at %s (user %d%s)' % (sighting_id,
             self.identification, self.location, self.user.id, created_at)
+
+    def save(self):
+        # If the plant is rare, ensure the visibility is set to private.
+        plant_list = restrictions(self.identification)
+        if plant_list:
+            sightings_restricted = False
+            for plant in plant_list:
+                if plant['sightings_restricted'] == True:
+                    sightings_restricted = True
+                    break
+            if sightings_restricted:
+                self.visibility = 'PRIVATE'
+        super(Sighting, self).save()
 
     def private_photos(self):
         '''Return photos which have either not been screened, or are screened
