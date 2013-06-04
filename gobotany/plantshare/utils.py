@@ -13,8 +13,8 @@ def restrictions(plant_name):
     # Remove any extra spaces in the plant name.
     plant_name = ' '.join(plant_name.split())
 
-    # Allow ignoring hyphens and other non-word characters.
-    plant_name_regex = plant_name.replace(' ', '\W')
+    # Allow ignoring hyphens, periods, and other non-word characters.
+    plant_name_regex = plant_name.replace(' ', '\W+')
 
     restrictions = []
 
