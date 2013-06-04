@@ -112,8 +112,13 @@ define([
         // from updating with the user's selected menu item. In order
         // to overcome this, update the box with the currently selected
         // value as soon as focus leaves the input box.
-        this.$input_box.off('blur.suggester').on('blur.suggester',
-                $.proxy(this.enter_current_item, this));
+        this.$input_box.off('blur.suggester').on('blur.suggester', $.proxy(
+            function () {
+                if (this.$input_box.val() !== '') {
+                    this.enter_current_item();
+                }
+            }, this)
+        );
 
         // Hide the menu on focus, such as when tabbing to the field.
         this.$input_box.off('focus.suggester').on('focus.suggester',
