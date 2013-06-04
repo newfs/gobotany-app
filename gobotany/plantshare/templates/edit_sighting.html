@@ -14,7 +14,8 @@
     class="plantshare sighting"{% endblock %}
 
 {% block main_content %}
-<h1>Edit Sighting</h1>
+<h1>Edit Sighting: <i>{{ sighting.identification }}</i> at
+    {{ sighting.location|capfirst }}</h1>
 
 <p>You posted this sighting on {{ created }},
 {% user_first_name user %}.</p>
