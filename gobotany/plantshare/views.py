@@ -1007,7 +1007,9 @@ def ajax_restrictions(request):
     'sightings_restricted' values, and if *any* are marked True, then
     do restrict sightings for that plant name.
     """
+    restrictions_info = []
     plant_name = request.GET.get('plant')
-    restrictions_info = restrictions(plant_name)
+    if plant_name:
+        restrictions_info = restrictions(plant_name)
     return HttpResponse(simplejson.dumps(restrictions_info),
                         mimetype='application/json; charset=utf-8')
