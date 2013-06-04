@@ -24,7 +24,8 @@ def restrictions(plant_name):
         common_names__common_name__iregex=plant_name_regex)
     synonym_taxa = Taxon.objects.filter(
         synonyms__scientific_name__iregex=plant_name_regex)
-    taxa = list(chain(scientific_name_taxa, common_name_taxa, synonym_taxa))
+    taxa = list(
+        set(chain(scientific_name_taxa, common_name_taxa, synonym_taxa)))
 
     for taxon in taxa:
         common_names = [n.common_name for n in taxon.common_names.all()]
