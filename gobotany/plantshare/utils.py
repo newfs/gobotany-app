@@ -9,6 +9,10 @@ def restrictions(plant_name):
     """Return a list of taxa matching a given plant name, along with any
     information on restrictions for sightings of rare plants, etc.
     """
+
+    # Remove any extra spaces in the plant name.
+    plant_name = ' '.join(plant_name.split())
+
     restrictions = []
 
     scientific_name_taxa = Taxon.objects.filter(
