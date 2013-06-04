@@ -13,14 +13,17 @@ def restrictions(plant_name):
     # Remove any extra spaces in the plant name.
     plant_name = ' '.join(plant_name.split())
 
+    # Allow ignoring hyphens and other non-word characters.
+    plant_name_regex = plant_name.replace(' ', '\W')
+
     restrictions = []
 
     scientific_name_taxa = Taxon.objects.filter(
-        scientific_name__iexact=plant_name)
+        scientific_name__iregex=plant_name_regex)
     common_name_taxa = Taxon.objects.filter(
-        common_names__common_name__iexact=plant_name)
+        common_names__common_name__iregex=plant_name_regex)
     synonym_taxa = Taxon.objects.filter(
-        synonyms__scientific_name__iexact=plant_name)
+        synonyms__scientific_name__iregex=plant_name_regex)
     taxa = list(chain(scientific_name_taxa, common_name_taxa, synonym_taxa))
 
     for taxon in taxa:
