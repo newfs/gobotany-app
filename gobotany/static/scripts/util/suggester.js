@@ -37,13 +37,17 @@ define([
 
         /* Settings that can be set with HTML5 data- attributes: */
 
-        /* Required: URL of the service that supplies search suggestions.
+        /* data-suggest-url
+         *
+         * Required: URL of the service that supplies search suggestions.
          * Include a placeholder (%s) for the query value.
          * Example: data-suggest-url="/plant-name-suggestions/?q=%s"
          */
         this.suggestions_url = this.$input_box.attr('data-suggest-url');
 
-        /* Set this to "true" if the form should automatically submit on
+        /* data-submit-on-select
+         *
+         * Set this to "true" if the form should automatically submit on
          * selecting a suggestion, such as for a search feature. */
         this.submit_on_select = false;
         if (this.$input_box.is('[data-submit-on-select]')) {
@@ -51,12 +55,18 @@ define([
                 (this.$input_box.attr('data-submit-on-select') === 'true');
         }
 
-        /* Set this to "true" to align the left edge of the menu with the
+        /* data-align-menu-inside-input
+         *
+         * Set this to "true" to align the left edge of the menu with the
          * padded inside left of the input box. This is for handling an
          * input box that is styled to have curved corners outside its
          * rectangular input area. */
-        this.align_menu_inside_input =
-            this.$input_box.attr('data-align-menu-inside-input');
+        this.align_menu_inside_input = false;
+        if (this.$input_box.is('[data-align-menu-inside-input]')) {
+            this.align_menu_inside_input =
+                (this.$input_box.attr('data-align-menu-inside-input') ===
+                 'true');
+        }
     };
 
     Suggester.prototype.setup = function () {
@@ -79,7 +89,7 @@ define([
 
         // Set the width of the menu to match that of the box.
         var menu_width = this.$input_box.outerWidth(true) - 2;
-        if (this.align_menu_inside_input === "true") {
+        if (this.align_menu_inside_input === true) {
             // If the option to align the menu to the left edge of the
             // padded input box is set, then make the menu narrower too.
             menu_width -= parseInt(this.$input_box.css('padding-right'));
@@ -137,7 +147,7 @@ define([
         // Position the menu under the box.
         var $input_box_position = this.$input_box.position();
         var input_box_left_padding = 0;
-        if (this.align_menu_inside_input === "true") {
+        if (this.align_menu_inside_input === true) {
             // If the option to align the menu to the inside of a padded
             // input box is set, adjust the left edge position.
             input_box_left_padding +=
