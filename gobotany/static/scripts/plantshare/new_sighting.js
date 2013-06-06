@@ -177,6 +177,13 @@ define([
         $identification_box.on('blur', function () {
             check_restrictions($(this).val());
         });
+        $identification_box.on('keyup', function () {
+            if ($(this).val() === '') {
+                // Empty box: clear any restriction message
+                var is_restricted = false;
+                set_visibility_restriction(is_restricted);
+            }
+        });
 
         // When the user enters a location, geocode it again if needed,
         // and let the map update.
