@@ -45,7 +45,11 @@ define([
 
         /* Set this to "true" if the form should automatically submit on
          * selecting a suggestion, such as for a search feature. */
-        this.submit_on_select = this.$input_box.attr('data-submit-on-select');
+        this.submit_on_select = false;
+        if (this.$input_box.is('[data-submit-on-select]')) {
+            this.submit_on_select = 
+                (this.$input_box.attr('data-submit-on-select') === 'true');
+        }
 
         /* Set this to "true" to align the left edge of the menu with the
          * padded inside left of the input box. This is for handling an
@@ -183,10 +187,10 @@ define([
                 // form does not submit automatically by default. It
                 // matches how HTML5 datalists behave.
                 if (this.$menu.is(':visible')) {
-                    // For "search"-type boxes that should submit the form
-                    // right away upon selecting a menu item, do not prevent
-                    // submitting the form right away upon pressing Enter.
-                    if (this.submit_on_select === 'false') {
+                    // If the box is not a "search"-type box that should
+                    // submit the form right away upon selecting a menu item,
+                    // prevent submitting the form upon pressing Enter.
+                    if (this.submit_on_select !== true) {
                         e.preventDefault();
                         e.stopPropagation();
                     }
@@ -337,7 +341,7 @@ define([
         // If the option to submit the form upon item selection is set,
         // submit the form. This is to support things like single search
         // boxes that should submit right away.
-        if (this.submit_on_select === "true") {
+        if (this.submit_on_select === true) {
             this.$form.submit();
         }
     };
