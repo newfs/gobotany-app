@@ -177,11 +177,14 @@ define([
         $identification_box.on('blur', function () {
             check_restrictions($(this).val());
         });
-        $identification_box.on('keyup', function () {
+        $identification_box.on('keyup', function (event) {
             if ($(this).val() === '') {
                 // Empty box: clear any restriction message
                 var is_restricted = false;
                 set_visibility_restriction(is_restricted);
+            }
+            else if (event.which == 13) {   // Enter key
+                check_restrictions($(this).val());
             }
         });
 
