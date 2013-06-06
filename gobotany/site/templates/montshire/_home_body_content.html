@@ -1,0 +1,43 @@
+{% extends "gobotany/_home_body_content.html" %}
+{% load simplekey_extras %}
+
+{% block images_overlay %}
+    <div id="overlay">
+        <h2>Simple ID Key</h2>
+        <img src="/static/images/layout/separator.png" alt="">
+        <p>Want to know what that plant is? With the 
+        Go Botany Montshire Flora <b>Simple Key</b>,
+        you can identify over 200 common
+        New England plants! Observe closely, collect a sample or
+        take a photo, answer some questions, and narrow down to
+        the correct identification.</p>
+        <a href="{% url 'level1' 'simple' %}" id="cta">Get Started</a>
+    </div>
+{% endblock %}
+
+{% block section_introductions %}
+    {# Omit. #}
+    <div class="three-col"></div>
+{% endblock %}
+
+{% block partner_introduction %}
+    <div class="intro">
+        <p>The <b>Go Botany Montshire Flora</b> web site contains a
+        comprehensive list of plants located on the <b>Montshire Museum
+        of Science</b> in Norwhich, Vermont</b>, and is a customized version of Go Botany.
+        To learn about all of the plants of New England, visit the main
+        <a href="http://gobotany.newenglandwild.org/" 
+            >Go Botany</a>
+        web site.</p>
+
+        <p>The nomenclature is from 
+        <a href="http://www.newenglandwild.org/store/flora-novae-angliae/"
+        >Flora
+        Novae Angliae</a> by Arthur Haines, Research Botanist at
+        New England Wild Flower Society.</p>
+    </div>
+{% endblock %}
+
+{% block donate %}
+    {# Omit. #}
+{% endblock %}

@@ -1,0 +1,17 @@
+{% extends "gobotany/_species_main_content.html" %}
+{% load dkey_filters %}
+{% load simplekey_extras %}
+{% load taxa_tags %}
+
+    {% block partner_note %}
+        {% if partner_blurb %}
+            <div id="partner">
+                <h2>{{ partner_heading|default:'At Montshire' }}</h2>
+                <p>{{ partner_blurb|italicize_infraspecific_names|safe }}</p>
+            </div>
+        {% endif %}
+    {% endblock %}
+
+    {% block flora_section %}
+        {# omit #}
+    {% endblock %}

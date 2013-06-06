@@ -1,0 +1,26 @@
+{% extends "montshire/_base.html" %}
+
+{% block title %}Monstshire Flora: Go Botany{% endblock %}
+{% block title_sep %}{% endblock %}
+{% block title_suffix %}{% endblock %}
+
+{% block more_meta_link %}
+    {% include "gobotany/_home_feed_link.html" %}
+{% endblock %}
+
+{% block body_attributes %}
+    {# So far, use one set of body attributes for all partner sites. #}
+    {% include "gobotany/_home_partner_body_attributes.html" %}
+{% endblock %}
+
+{% block js_require %}
+    {% include "gobotany/_home_js_require.html" %}
+{% endblock %}
+
+{% block header %}
+    {% include "montshire/_header.html" with page="home" %}
+{% endblock %}
+
+{% block body_content %}
+    {% include "montshire/_home_body_content.html" %}
+{% endblock %}

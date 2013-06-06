@@ -1,0 +1,24 @@
+{% extends "montshire/_page_no_sidebar.html" %}
+
+{% block title %}{{ scientific_name }} 
+({% for common_name in common_names %}{% if not forloop.first %}, {% endif %}{{ common_name }}{% endfor %}){% endblock %}
+
+{% block body_attributes %}
+    {% include "gobotany/_species_body_attributes.html" %}
+{% endblock %}
+
+{% block js_top %}
+    {% include "gobotany/_species_js_top.html" %}
+{% endblock %}
+
+{% block js_require %}
+    {% include "gobotany/_species_js_require.html" %}
+{% endblock %}
+
+{% block top_content %}
+    {% include "gobotany/_species_top_content.html" %}
+{% endblock %}
+
+{% block main_content %}
+    {% include "montshire/_species_main_content.html" %}
+{% endblock %}

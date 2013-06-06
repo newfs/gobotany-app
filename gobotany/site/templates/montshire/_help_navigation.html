@@ -1,0 +1,26 @@
+{% load gobotany_tags %}
+    <nav>
+        <ul>
+            <li class="help">{% nav_item 'Help' site-help %}</li>
+            <li class="getting-started">{% nav_item 'Getting Started with the Simple Key' site-getting-started %}</li>
+            <li class="video">{% nav_item 'Video Help Topics' site-video %}</li>
+            <li class="advanced-map">{% nav_item 'Advanced Map to Groups' site-advanced-map %}</li>
+            
+            {% comment %}
+            <li class="dkey">{% nav_item "What’s a Dichotomous Key?" site-help-dkey %}</li>
+            {% endcomment %}
+
+            <li class="glossary">{% nav_item 'Glossary' site-glossary 'a' %}</li>
+            
+            {% comment %}
+            <li class="advanced-id-tools">{% nav_item 'Advanced ID Tools' advanced-id-tools %}</li>
+            {% endcomment %}
+            <li class="about">{% nav_item 'About Go Botany' site-about %}</li>
+			{% comment %}
+            <li class="contributors">{% nav_item 'Contributors' site-contributors %}</li>
+            {% endcomment %}
+            <li class="privacy">{% nav_item 'Privacy Policy' site-privacy %}</li>
+            <li class="terms-of-use">{% nav_item 'Terms of Use' site-terms-of-use %}</li>
+            <li class="contact">{% nav_item 'Contact Us' site-contact %}</li>
+        </ul>
+    </nav>

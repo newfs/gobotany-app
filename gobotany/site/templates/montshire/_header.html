@@ -1,0 +1,25 @@
+{% extends "gobotany/_header.html" %}
+{% load gobotany_tags %}
+
+{# Use CSS class 'partner-site' for all partner sites #}
+{% block header_css_class %}partner-site{% endblock %}
+
+{% block home_page_main_heading %}Monstshire Flora: Go Botany{% endblock %}
+
+{% block home_page_partner_site_name_tagline %}
+    <p class="site-name"><b>Montshire Flora</b>
+        <i>Discover the plants of Montshire Museum</i></p>
+{% endblock %}
+
+{% block partner_site_name_tagline %}
+    <p class="site-name"><b>{% nav_item 'Montshire Flora' site-home %}</b>
+        <i>Discover the plants of Montshire Museum</i></p>
+{% endblock %}
+
+{% block primary_navigation %}
+    {% include "montshire/_primary_navigation.html" %}
+{% endblock %}
+
+{% block search %}
+    {# Omit for now. To enable search, remove this override. #}
+{% endblock %}

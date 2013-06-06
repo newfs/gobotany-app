@@ -1,0 +1,19 @@
+{% extends "montshire/_page_full_sidebar.html" %}
+
+{% block title %}{{ subgroups_list_page.title }}{% endblock %}
+
+{% block body_attributes %}
+    {% include "gobotany/_simple_body_attributes.html" %}
+{% endblock %}
+
+{% block js_require %}
+    {% include "gobotany/_simple_js_require.html" %}
+{% endblock %}
+
+{% block main_content %}
+    {% include "gobotany/_pilegroup_main_content.html" %}
+{% endblock %}
+
+{% block sidebar_content %}
+    {% include "gobotany/_sidebar_items.html" %}
+{% endblock %}

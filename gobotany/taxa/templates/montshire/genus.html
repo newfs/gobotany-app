@@ -1,0 +1,23 @@
+{% extends "montshire/_page_full_sidebar.html" %}
+
+{% block title %}Genus: {{ genus.name }} {% if common_name %}({{ common_name }}){% endif %}{% endblock %}
+
+{% block js_top %}
+    {% include "gobotany/_api_url_js.html" %}
+{% endblock %}
+
+{% block js_require %}
+    {% include "gobotany/_genus_js_require.html" %}
+{% endblock %}
+
+{% block body_attributes %}
+    {% include "gobotany/_genus_body_attributes.html" %}
+{% endblock %}
+
+{% block main_content %}
+    {% include "gobotany/_genus_main_content.html" %}
+{% endblock %}
+
+{% block sidebar_content %}
+    {% include "gobotany/_sidebar_items.html" %}
+{% endblock %}
