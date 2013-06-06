@@ -203,6 +203,12 @@ define([
                     if (this.submit_on_select !== true) {
                         e.preventDefault();
                         e.stopPropagation();
+
+                        // Move focus along to the next field, if any.
+                        var $this_field = $(e.target);
+                        var $next_field = $this_field.nextAll(
+                            'input, select, textarea').first();
+                        $next_field.focus();
                     }
                 }
                 this.enter_current_item();
