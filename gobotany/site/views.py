@@ -234,13 +234,13 @@ def plant_name_suggestions_view(request):
         # Allow ignoring hyphens, periods, and other non-word characters.
         query_regex = query.replace(' ', '\W+')
 
+        # Make a variation for checking at the start of the string.
+        query_regex_at_start = '^%s' % query_regex
+
         # First look for suggestions that match at the start of the
         # query string.
-
-        # This query is case-insensitive to return names as they appear
-        # in the database regardless of the case of the query string.
         suggestions = list(PlantNameSuggestion.objects.filter(
-            name__iregex=query_regex).exclude(name=query).
+            name__iregex=query_regex_at_start).exclude(name=query).
             order_by('name').values_list('name', flat=True)[:MAX_RESULTS])
 
         # If fewer than the maximum number of suggestions were found,
@@ -249,7 +249,8 @@ def plant_name_suggestions_view(request):
         remaining_slots = MAX_RESULTS - len(suggestions)
         if remaining_slots > 0:
             more_suggestions = list(PlantNameSuggestion.objects.filter(
-                name__icontains=query).exclude(name__istartswith=query).
+                name__iregex=query_regex).
+                exclude(name__iregex=query_regex_at_start).
                 order_by('name').values_list('name', flat=True)[:MAX_RESULTS])
             more_suggestions = list(more_suggestions)[:remaining_slots]
             suggestions.extend(more_suggestions)
