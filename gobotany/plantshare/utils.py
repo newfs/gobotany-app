@@ -5,11 +5,10 @@ from gobotany.core.models import Taxon
 RESTRICTED_STATUSES = ['rare', 'endangered', 'threatened',
     'special concern', 'historic', 'extirpated']
 
-def restrictions(plant_name):
-    """Return a list of taxa matching a given plant name, along with any
-    information on restrictions for sightings of rare plants, etc.
+def plant_name_regex(plant_name):
+    """Return a regular expression for matching a plant name, allowing
+    for some typos and punctuation differences.
     """
-
     # Remove any extra spaces in the plant name.
     plant_name = ' '.join(plant_name.split())
 
@@ -35,14 +34,22 @@ def restrictions(plant_name):
     # Allow ignoring hyphens, periods, and other non-word characters.
     plant_name_regex = '\W+'.join(regex_words)
 
+    return plant_name_regex
+
+
+def restrictions(plant_name):
+    """Return a list of taxa matching a given plant name, along with any
+    information on restrictions for sightings of rare plants, etc.
+    """
+    plant_regex = plant_name_regex(plant_name)
     restrictions = []
 
     scientific_name_taxa = Taxon.objects.filter(
-        scientific_name__iregex=plant_name_regex)
+        scientific_name__iregex=plant_regex)
     common_name_taxa = Taxon.objects.filter(
-        common_names__common_name__iregex=plant_name_regex)
+        common_names__common_name__iregex=plant_regex)
     synonym_taxa = Taxon.objects.filter(
-        synonyms__scientific_name__iregex=plant_name_regex)
+        synonyms__scientific_name__iregex=plant_regex)
     taxa = list(
         set(chain(scientific_name_taxa, common_name_taxa, synonym_taxa)))
 

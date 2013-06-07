@@ -23,6 +23,7 @@ from gobotany.core.partner import (which_partner, partner_short_name,
                                    per_partner_template,
                                    render_to_response_per_partner)
 from gobotany.plantoftheday.models import PlantOfTheDay
+from gobotany.plantshare.utils import plant_name_regex
 from gobotany.simplekey.groups_order import ordered_pilegroups, ordered_piles
 from gobotany.site.models import PlantNameSuggestion, SearchSuggestion
 
@@ -228,11 +229,7 @@ def plant_name_suggestions_view(request):
 
     suggestions = []
     if query != '':
-        # Remove any extra spaces in the query.
-        query = ' '.join(query.split())
-
-        # Allow ignoring hyphens, periods, and other non-word characters.
-        query_regex = query.replace(' ', '\W+')
+        query_regex = plant_name_regex(query)
 
         # Make a variation for checking at the start of the string.
         query_regex_at_start = '^%s' % query_regex
