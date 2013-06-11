@@ -1,3 +1,5 @@
+import re
+
 def query_regex(plant_name):
     """Return a regular expression for matching a query (plant name, etc.),
     allowing for some typos and punctuation differences. This is for use in
@@ -18,7 +20,7 @@ def query_regex(plant_name):
             interior_chars = ''.join(set(list(word[1:-1])))   # Unique chars.
             regex_word = '%s[%s]{%d,%d}%s' % (
                 word[0],   # First character: an anchor
-                interior_chars,    # Allow any, to handle transpositions
+                re.escape(interior_chars),  # Allow any: handle transpositions
                 interior_length,   # Allow typo with an extra character
                 interior_length + 1,
                 word[-1])  # Last character: another anchor
