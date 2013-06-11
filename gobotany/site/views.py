@@ -23,9 +23,9 @@ from gobotany.core.partner import (which_partner, partner_short_name,
                                    per_partner_template,
                                    render_to_response_per_partner)
 from gobotany.plantoftheday.models import PlantOfTheDay
-from gobotany.plantshare.utils import plant_name_regex
 from gobotany.simplekey.groups_order import ordered_pilegroups, ordered_piles
 from gobotany.site.models import PlantNameSuggestion, SearchSuggestion
+from gobotany.site.utils import query_regex
 
 # Home page
 
@@ -187,6 +187,11 @@ def search_suggestions_view(request):
     query = request.GET.get('q', '').lower()
     suggestions = []
     if query != '':
+        regex = query_regex(query)
+
+        # Make a variation for checking at the start of the string.
+        regex_at_start = '^%s' % regex
+
         # First look for suggestions that match at the start of the
         # query string.
 
@@ -196,7 +201,7 @@ def search_suggestions_view(request):
         # records be lowercased before import to ensure that they
         # can be reached.
         suggestions = list(SearchSuggestion.objects.filter(
-            term__startswith=query).exclude(term=query).
+            term__iregex=regex_at_start).exclude(term=query).
             order_by('term').values_list('term', flat=True)
             [:MAX_RESULTS * 2])   # Fetch extra to handle case-sensitive dups
         # Remove any duplicates due to case-sensitivity and pare down to
@@ -210,7 +215,7 @@ def search_suggestions_view(request):
         remaining_slots = MAX_RESULTS - len(suggestions)
         if remaining_slots > 0:
             more_suggestions = list(SearchSuggestion.objects.filter(
-                term__contains=query).exclude(term__startswith=query).
+                term__iregex=regex).exclude(term__iregex=regex_at_start).
                 order_by('term').values_list('term', flat=True)
                 [:MAX_RESULTS * 2])
             more_suggestions = list(sorted(set([suggestion.lower()
@@ -229,15 +234,15 @@ def plant_name_suggestions_view(request):
 
     suggestions = []
     if query != '':
-        query_regex = plant_name_regex(query)
+        regex = query_regex(query)
 
         # Make a variation for checking at the start of the string.
-        query_regex_at_start = '^%s' % query_regex
+        regex_at_start = '^%s' % regex
 
         # First look for suggestions that match at the start of the
         # query string.
         suggestions = list(PlantNameSuggestion.objects.filter(
-            name__iregex=query_regex_at_start).exclude(name=query).
+            name__iregex=regex_at_start).exclude(name=query).
             order_by('name').values_list('name', flat=True)[:MAX_RESULTS])
 
         # If fewer than the maximum number of suggestions were found,
@@ -246,8 +251,7 @@ def plant_name_suggestions_view(request):
         remaining_slots = MAX_RESULTS - len(suggestions)
         if remaining_slots > 0:
             more_suggestions = list(PlantNameSuggestion.objects.filter(
-                name__iregex=query_regex).
-                exclude(name__iregex=query_regex_at_start).
+                name__iregex=regex).exclude(name__iregex=regex_at_start).
                 order_by('name').values_list('name', flat=True)[:MAX_RESULTS])
             more_suggestions = list(more_suggestions)[:remaining_slots]
             suggestions.extend(more_suggestions)

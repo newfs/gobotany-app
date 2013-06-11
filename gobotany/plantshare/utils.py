@@ -1,47 +1,16 @@
 from itertools import chain
 
 from gobotany.core.models import Taxon
+from gobotany.site.utils import query_regex
 
 RESTRICTED_STATUSES = ['rare', 'endangered', 'threatened',
     'special concern', 'historic', 'extirpated']
-
-def plant_name_regex(plant_name):
-    """Return a regular expression for matching a plant name, allowing
-    for some typos and punctuation differences.
-    """
-    # Remove any extra spaces in the plant name.
-    plant_name = ' '.join(plant_name.split())
-
-    # Split the words and create regular expressions for typo matching:
-    # - Interior transpositions: pylmouth rose-gentian, plymouth rsoe-gentian
-    # - An extra character: plymoutth rose-gentian
-    # - A missing duplicate character: sabatia kenedyana (missing an 'n')
-    regex_words = []
-    words = plant_name.split()
-    for word in words:
-        if len(word) > 2:
-            interior = ''.join(set(list(word[1:-1]))) # Unique interior chars.
-            regex_word = '%s[%s]{%d,%d}%s' % (
-                word[0],   # First character: an anchor
-                interior,  # Any interior characters, to handle transpositions
-                len(interior),      # Allow typo with an extra character
-                len(interior) + 1,
-                word[-1])  # Last character: another anchor
-        else:
-            regex_word = word
-        regex_words.append(regex_word)
-
-    # Allow ignoring hyphens, periods, and other non-word characters.
-    plant_name_regex = '\W+'.join(regex_words)
-
-    return plant_name_regex
-
 
 def restrictions(plant_name):
     """Return a list of taxa matching a given plant name, along with any
     information on restrictions for sightings of rare plants, etc.
     """
-    plant_regex = plant_name_regex(plant_name)
+    plant_regex = query_regex(plant_name)
     restrictions = []
 
     scientific_name_taxa = Taxon.objects.filter(
