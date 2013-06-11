@@ -16,6 +16,34 @@
         <label for="id_notes">Description or comments</label>
         {{ form.notes }}
 
+        <div class="images">
+            <p>Images</p> 
+            <div id="sighting-photos">
+                <input type="hidden" name="__template__sightings_photos"
+                    class="template-photo"></input>
+            </div>
+            <div class="thumb-gallery">
+                {# For editing a sighting, show any existing images. #}
+                {% if sighting.private_photos %}
+                    {% for photo in sighting.private_photos.all %}
+                        <div class="thumb-frame">
+                            <a href="{{ photo.image.url }}"><img class="thumb"
+                                src="{{ photo.thumb.url }}"></a>
+                            <div class="delete-link">
+                                <a href="{{ photo.id }}"><img
+                                    src="/static/images/icons/close.png"
+                                    alt=""> Remove</a>
+                            </div>
+                        </div>
+                    {% endfor %}
+                {% endif %}
+            </div>
+            <p class="upload">
+                <a id="upload-link" href="#"
+                    rel=".image-modal">+ Upload Image</a>
+            </p>
+        </div>
+
         <fieldset>
             <legend>Location</legend>
 
@@ -33,30 +61,6 @@
             {{ form.latitude.as_hidden }}
             {{ form.longitude.as_hidden }}
         </fieldset>
-
-        <p>Images</p> 
-        <div id="sighting-photos">
-            <input type="hidden" name="__template__sightings_photos" class="template-photo"></input>
-        </div>
-        <div class="thumb-gallery">
-            {% if sighting.private_photos %}
-                {# When editing a sighting, photos may already be present. #}
-                {% for photo in sighting.private_photos.all %}
-                    <div class="thumb-frame">
-                        <a href="{{ photo.image.url }}"><img class="thumb"
-                            src="{{ photo.thumb.url }}"></a>
-                        <div class="delete-link">
-                            <a href="{{ photo.id }}"><img
-                                src="/static/images/icons/close.png"
-                                alt=""> Remove</a>
-                        </div>
-                    </div>
-                {% endfor %}
-            {% endif %}
-        </div>
-        <p class="upload">
-            <a id="upload-link" href="#" rel=".image-modal">+ Upload Image</a>
-        </p>
 
         <div class="visibility">
             <p class="label">Visibility</p>

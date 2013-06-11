@@ -1174,17 +1174,19 @@ body.plantshare #sightings-locator.mini .box form p.full-link { margin-top: 10px
 body.plantshare #sightings-locator.mini .box .map { clear: none; border-bottom: 0; border-right: 0; border-top: 0; float: right; margin-top: 0; }
 body.plantshare#new-sighting h1 + div { background: #fff; border: 1px solid #c3d941; margin-bottom: 16px; padding: 5px 16px; }
 body.plantshare#new-sighting #id_identification, body.plantshare#new-sighting .restricted, body.plantshare#edit-sighting #id_identification, body.plantshare#edit-sighting .restricted { display: inline-block; }
+body.plantshare#new-sighting .images, body.plantshare#edit-sighting .images { margin-top: 10px; }
 body.plantshare#new-sighting .restricted, body.plantshare#edit-sighting .restricted { margin-left: 14px; }
-body.plantshare#new-sighting .thumb-gallery, body.plantshare#edit-sighting .thumb-gallery { display: inline-block; float: left; padding-top: 10px; }
+body.plantshare#new-sighting .thumb-gallery, body.plantshare#edit-sighting .thumb-gallery { display: inline-block; float: left; padding-top: 4px; }
 body.plantshare#new-sighting .thumb-gallery .thumb-frame, body.plantshare#edit-sighting .thumb-gallery .thumb-frame { display: inline-block; margin: 0 14px 0 0; vertical-align: bottom; }
 body.plantshare#new-sighting .thumb-gallery .thumb-frame .thumb, body.plantshare#edit-sighting .thumb-gallery .thumb-frame .thumb { vertical-align: bottom; }
-body.plantshare#new-sighting .thumb-gallery .thumb-frame .delete-link, body.plantshare#edit-sighting .thumb-gallery .thumb-frame .delete-link { width: 100%; text-align: center; margin: 2px 0; padding-top: 2px; }
-body.plantshare#new-sighting .thumb-gallery .thumb-frame .delete-link img, body.plantshare#edit-sighting .thumb-gallery .thumb-frame .delete-link img { vertical-align: middle; margin-right: 4px; }
-body.plantshare#new-sighting .upload, body.plantshare#edit-sighting .upload { display: inline-block; float: left; padding-top: 6px; }
-body.plantshare#new-sighting .visibility, body.plantshare#edit-sighting .visibility { clear: left; margin-bottom: 60px; padding-top: 20px; }
+body.plantshare#new-sighting .thumb-gallery .thumb-frame .delete-link, body.plantshare#edit-sighting .thumb-gallery .thumb-frame .delete-link { width: 100%; text-align: center; margin: 0; padding-top: 8px; }
+body.plantshare#new-sighting .thumb-gallery .thumb-frame .delete-link img, body.plantshare#edit-sighting .thumb-gallery .thumb-frame .delete-link img { vertical-align: top; }
+body.plantshare#new-sighting .upload, body.plantshare#edit-sighting .upload { display: inline-block; float: left; }
+body.plantshare#new-sighting fieldset, body.plantshare#edit-sighting fieldset { margin-bottom: 10px; }
+body.plantshare#new-sighting .visibility, body.plantshare#edit-sighting .visibility { clear: left; margin-bottom: 50px; }
 body.plantshare#new-sighting .visibility p, body.plantshare#edit-sighting .visibility p { display: inline-block; }
 body.plantshare#new-sighting .visibility .label, body.plantshare#edit-sighting .visibility .label { display: block; }
-body.plantshare#new-sighting .visibility select, body.plantshare#edit-sighting .visibility select { margin: 6px 0 0; }
+body.plantshare#new-sighting .visibility select, body.plantshare#edit-sighting .visibility select { margin: 4px 0 0; }
 body.plantshare#manage-sightings { /* Hide the usual default Shadowbox close button. This is used for some dialogs that have their own interior close button, such as is seen on various PlantShare dialogs. */ }
 body.plantshare#manage-sightings .content table { width: 100%; }
 body.plantshare#manage-sightings .content table th.identification { width: 33%; }

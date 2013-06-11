@@ -464,31 +464,30 @@ body.plantshare {
         #id_identification, .restricted {
             display: inline-block;
         }
+        .images {
+            margin-top: 10px;
+        }
         .restricted {
             margin-left: 14px;
         }
         .thumb-gallery {
             display: inline-block;
             float: left;
-            padding-top: 10px;
+            padding-top: 4px;
             .thumb-frame {
                 display: inline-block;
                 margin: 0 14px 0 0;
                 vertical-align: bottom;
-
                 .thumb {
                   vertical-align: bottom;
                 }
-
                 .delete-link {
                     width: 100%;
                     text-align: center;
-                    margin: 2px 0;
-                    padding-top: 2px;
-
+                    margin: 0;
+                    padding-top: 8px;
                     img {
-                        vertical-align: middle;
-                        margin-right: 4px;
+                        vertical-align: top;
                     }
                 }
             }
@@ -496,12 +495,13 @@ body.plantshare {
         .upload {
             display: inline-block;
             float: left;
-            padding-top: 6px;
+        }
+        fieldset {
+            margin-bottom: 10px;
         }
         .visibility {
             clear: left;
-            margin-bottom: 60px;
-            padding-top: 20px;
+            margin-bottom: 50px;
             p {
                 display: inline-block;
             }
@@ -509,7 +509,7 @@ body.plantshare {
                 display: block;
             }
             select {
-                margin: 6px 0 0;
+                margin: 4px 0 0;
             }
         }
     }
