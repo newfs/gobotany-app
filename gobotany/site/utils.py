@@ -14,12 +14,13 @@ def query_regex(plant_name):
     words = query.split()
     for word in words:
         if len(word) > 2:
-            interior = ''.join(set(list(word[1:-1]))) # Unique interior chars.
+            interior_length = len(word[1:-1])
+            interior_chars = ''.join(set(list(word[1:-1])))   # Unique chars.
             regex_word = '%s[%s]{%d,%d}%s' % (
                 word[0],   # First character: an anchor
-                interior,  # Any interior characters, to handle transpositions
-                len(interior),      # Allow typo with an extra character
-                len(interior) + 1,
+                interior_chars,    # Allow any, to handle transpositions
+                interior_length,   # Allow typo with an extra character
+                interior_length + 1,
                 word[-1])  # Last character: another anchor
         else:
             regex_word = word
