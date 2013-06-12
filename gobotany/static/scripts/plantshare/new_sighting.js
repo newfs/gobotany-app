@@ -19,7 +19,7 @@ define([
             $lastImage.wrap('<a href="' + full_url +
                 '" class="preview"></a>');
             $lastImage.parent().after('<div class="delete-link"><a href="' +
-                id + '"><img src="' + DELETE_ICON + '" />Remove</a></div>');
+                id + '"><img src="' + DELETE_ICON + '" /> Remove</a></div>');
 
             Shadowbox.setup('a.preview');
         }
