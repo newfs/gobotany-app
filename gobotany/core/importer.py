@@ -179,6 +179,13 @@ class Importer(object):
                 copyright=row['copyright holder'],
                 source=row['image_source'],
                 contact_info=row['contact_information'],
+                primary_bds=row['primary_bds'],
+                date_record=row['date-record'],
+                last_name=row['last_name'],
+                permission_source=row['permission_source'],
+                permission_level=row['permission_level'],
+                permission_location=row['permission_doc_location'],
+                notes=row['notes'],
                 )
 
         copyright_holder.save()

@@ -795,6 +795,15 @@ class CopyrightHolder(models.Model):
     source = models.CharField(max_length=300)
     contact_info = models.CharField(max_length=300)
 
+    # Additional fields, imported as text.  These may need to change later.
+    primary_bds = models.CharField(max_length=300)
+    date_record = models.CharField(max_length=300)
+    last_name = models.CharField(max_length=300)
+    permission_source = models.CharField(max_length=300)
+    permission_level = models.CharField(max_length=300)
+    permission_location = models.CharField(max_length=300)
+    notes = models.CharField(max_length=1000)
+
     def __unicode__(self):
         unicode_string = u'%s: %s. Copyright: %s.' % (self.coded_name,
                                                       self.expanded_name,
