@@ -76,7 +76,9 @@ define([
                     var imageInfo = {
                         'id': response.id,
                         'thumb': response.thumb,
-                        'url': response.url
+                        'url': response.url,
+                        'latitude': response.latitude,
+                        'longitude': response.longitude
                     };
                     settings.onUploadComplete.call(this, imageInfo, $lastTrigger); 
                 } else {

@@ -807,12 +807,12 @@ def ajax_image_upload(request):
             # Return basic information in the response, as well as
             # latitude and longitude if the original image contained GPS
             # coordinates in its metadata.
-            latitude = ''
-            longitude = ''
+            latitude = None
+            longitude = None
             if new_image.latitude is not None:
-                latitude = str(new_image.latitude)
+                latitude = float(new_image.latitude) # convert so serializable
             if new_image.longitude is not None:
-                longitude = str(new_image.longitude)
+                longitude = float(new_image.longitude)
             response.update({
                 'id': new_image.pk,
                 'thumb': new_image.thumb.url,

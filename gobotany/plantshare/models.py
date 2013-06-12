@@ -381,27 +381,34 @@ class ScreenedImage(models.Model):
         # Extract any GPS coordinates in the image metadata and save them
         # in the database before the data are automatically erased due to
         # the ProcessedImageField image that gets resized and saved.
-        image = Image.open(self.image)
-        exif = {
-            TAGS[k]: v for k, v in image._getexif().items() if k in TAGS
-        }
-        gps_info = exif.get('GPSInfo')
-        if gps_info:
-            getcontext().prec = 10   # decimal precision
-            # Get latitude.
-            degrees, minutes, seconds = self._get_dms(gps_info[2])
-            latitude = self._get_coordinate(degrees, minutes, seconds)
-            direction = gps_info[1]
-            if direction.upper() == 'S':
-                latitude = latitude * -1
-            self.latitude = latitude
-            # Get longitude.
-            degrees, minutes, seconds = self._get_dms(gps_info[4])
-            longitude = self._get_coordinate(degrees, minutes, seconds)
-            direction = gps_info[3]
-            if direction.upper() == 'W':
-                longitude = longitude * -1
-            self.longitude = longitude
+        DECIMAL_PRECISION = 7
+        img = Image.open(self.image)
+        exif = None
+        try:
+            exif = img._getexif()
+        except AttributeError:
+            pass
+        if exif:
+            tagged_exif = {
+                TAGS[k]: v for k, v in exif.items() if k in TAGS
+            }
+            gps_info = tagged_exif.get('GPSInfo')
+            if gps_info:
+                getcontext().prec = DECIMAL_PRECISION
+                # Get latitude.
+                degrees, minutes, seconds = self._get_dms(gps_info[2])
+                latitude = self._get_coordinate(degrees, minutes, seconds)
+                direction = gps_info[1]
+                if direction.upper() == 'S':
+                    latitude = latitude * -1
+                self.latitude = latitude
+                # Get longitude.
+                degrees, minutes, seconds = self._get_dms(gps_info[4])
+                longitude = self._get_coordinate(degrees, minutes, seconds)
+                direction = gps_info[3]
+                if direction.upper() == 'W':
+                    longitude = longitude * -1
+                self.longitude = longitude
         super(ScreenedImage, self).save(force_insert, force_update)
 
 

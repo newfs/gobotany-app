@@ -56,12 +56,17 @@ define([
                 UPLOAD_SPINNER + '"></div>');
         }
 
-        function photoUploaded(imageInfo) {
+        function photoUploaded(info) {
             console.log('Successfully uploaded sighting photo.');
-            console.log('New Photo [id=' + imageInfo.id + ', thumb=' +
-                        imageInfo.thumb + ', url=' + imageInfo.url + ']');
-            addNewThumb(imageInfo.thumb, imageInfo.url, imageInfo.id);
-            attachSightingPhoto(imageInfo.id);
+            console.log('New Photo [id=' + info.id + ', thumb=' +
+                        info.thumb + ', url=' + info.url + ']');
+            addNewThumb(info.thumb, info.url, info.id);
+            attachSightingPhoto(info.id);
+            if ((info.latitude !== null) && (info.longitude !== null)) {
+                var $location = $('#id_location');
+                $location.val(info.latitude + ', ' + info.longitude);
+                $location.trigger('blur');   // trigger map update
+            }
         }
 
         function uploadError(errorInfo) {
