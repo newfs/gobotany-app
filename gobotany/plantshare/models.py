@@ -3,6 +3,8 @@ import hashlib
 import os
 import urlparse
 
+from decimal import Decimal, getcontext
+
 from django.conf import settings
 from django.contrib.auth.models import User
 from django.core.files.storage import FileSystemStorage, Storage
@@ -13,6 +15,8 @@ from django.dispatch import receiver
 from facebook_connect.models import FacebookUser
 from imagekit.models import ImageSpecField, ProcessedImageField
 from imagekit.processors.resize import ResizeToFit
+from PIL import Image
+from PIL.ExifTags import TAGS
 from storages.backends.s3boto import S3BotoStorage
 
 from gobotany.plantshare.utils import restrictions
@@ -345,6 +349,11 @@ class ScreenedImage(models.Model):
     image_type = models.CharField(blank=True, max_length=10,
                                   choices=IMAGE_TYPES)
 
+    # If GPS coordinates exist in the image metadata, they are recorded 
+    # before storing the image, which strips metadata during processing.
+    latitude = models.FloatField(null=True, blank=True)
+    longitude = models.FloatField(null=True, blank=True)
+
     screened = models.DateTimeField(null=True)
     screened_by = models.ForeignKey(User, null=True,
                                     related_name='images_approved')
@@ -357,6 +366,43 @@ class ScreenedImage(models.Model):
     # Flag true if the user or staff has chosen to delete this image.  This
     # indicates that the image binary itself has been removed from storage.
     deleted = models.BooleanField(default=False)
+
+    def _get_dms(self, exif_data):
+        degrees = Decimal(exif_data[0][0] / exif_data[0][1])
+        minutes = Decimal(exif_data[1][0] / exif_data[1][1])
+        seconds = Decimal(exif_data[2][0] / exif_data[2][1])
+        return (degrees, minutes, seconds)
+
+    def _get_coordinate(self, degrees, minutes, seconds):
+        fractional_degrees = ((minutes * 60) + seconds) / 3600
+        return degrees + fractional_degrees
+
+    def save(self, force_insert=False, force_update=False):
+        # Extract any GPS coordinates in the image metadata and save them
+        # in the database before the data are automatically erased due to
+        # the ProcessedImageField image that gets resized and saved.
+        image = Image.open(self.image)
+        exif = {
+            TAGS[k]: v for k, v in image._getexif().items() if k in TAGS
+        }
+        gps_info = exif.get('GPSInfo')
+        if gps_info:
+            getcontext().prec = 10   # decimal precision
+            # Get latitude.
+            degrees, minutes, seconds = self._get_dms(gps_info[2])
+            latitude = self._get_coordinate(degrees, minutes, seconds)
+            direction = gps_info[1]
+            if direction.upper() == 'S':
+                latitude = latitude * -1
+            self.latitude = latitude
+            # Get longitude.
+            degrees, minutes, seconds = self._get_dms(gps_info[4])
+            longitude = self._get_coordinate(degrees, minutes, seconds)
+            direction = gps_info[3]
+            if direction.upper() == 'W':
+                longitude = longitude * -1
+            self.longitude = longitude
+        super(ScreenedImage, self).save(force_insert, force_update)
 
 
 class QuestionManager(models.Manager):
