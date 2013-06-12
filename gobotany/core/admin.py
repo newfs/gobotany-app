@@ -423,15 +423,30 @@ class PartnerSpeciesAdmin(_Base):
     list_display_links = ('partner', 'species')
     list_filter = ('partner',)
 
+
+class ContentImageAdmin(_Base):
+    """
+
+    <p>
+    Content Images are stored on S3 Storage, which is scanned every
+    night to check for new images. Creator names are cross-referenced
+    with the Copyright Holder information pulled from the source spreadsheet.
+    Content images are separately managed from user-uploaded, ScreenImages.
+    </p>
+    """
+    search_fields = ('image', 'alt', 'creator')
+    list_display = ('alt', 'image', 'creator')
+    list_display_links = ('alt', 'image', 'creator')
+
 # Registrations
 
 admin.site.register(models.Parameter)
-admin.site.register(models.ContentImage)
 admin.site.register(models.HomePageImage)
 admin.site.register(models.ImageType)
 admin.site.register(models.CharacterGroup)
 admin.site.register(models.Taxon, TaxonAdmin)
 
+admin.site.register(models.ContentImage, ContentImageAdmin)
 admin.site.register(models.GlossaryTerm, GlossaryTermAdmin)
 admin.site.register(models.Character, CharacterAdmin)
 admin.site.register(models.Pile, PileAdmin)
