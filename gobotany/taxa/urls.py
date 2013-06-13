@@ -29,4 +29,12 @@ urlpatterns = patterns(
      r'(?P<genus_slug>[a-z]+)/(?P<epithet>[-a-z]+)/$', RedirectView.as_view(
          url='/species/%(genus_slug)s/%(epithet)s/?pile=%(pile_slug)s')),
 
+    (r'^family/(?P<family_slug>[a-zA-Z]+)/$',
+        views.UppercaseFamilyRedirectView.as_view()),
+
+    (r'^genus/(?P<genus_slug>[a-zA-Z]+)/$',
+        views.UppercaseGenusRedirectView.as_view()),
+
+    (r'^species/(?P<genus_slug>[a-zA-Z]+)/(?P<epithet>[-a-z]+)/$',
+        views.SpeciesUppercaseGenusRedirectView.as_view()),
     )

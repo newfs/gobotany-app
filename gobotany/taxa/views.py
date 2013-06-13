@@ -3,10 +3,12 @@
 from itertools import groupby
 from operator import itemgetter
 
+from django.core.urlresolvers import reverse
 from django.db.models import Q
 from django.shortcuts import get_object_or_404, render_to_response
 from django.template import RequestContext
 from django.views.decorators.vary import vary_on_headers
+from django.views.generic.base import RedirectView
 
 from gobotany.core import botany
 from gobotany.core.models import (
@@ -324,3 +326,26 @@ def species_view(request, genus_slug, epithet):
            'epithet': epithet,
            'native_to_north_america': native_to_north_america
            }, request)
+
+
+# Redirect some URL variants with an uppercase family or genus name. (#495)
+
+class UppercaseFamilyRedirectView(RedirectView):
+    query_string = True
+
+    def get_redirect_url(self, family_slug):
+        return reverse('taxa-family', args=(family_slug.lower(),))
+
+
+class UppercaseGenusRedirectView(RedirectView):
+    query_string = True
+
+    def get_redirect_url(self, genus_slug):
+        return reverse('taxa-genus', args=(genus_slug.lower(),))
+
+
+class SpeciesUppercaseGenusRedirectView(RedirectView):
+    query_string = True
+
+    def get_redirect_url(self, genus_slug, epithet):
+        return reverse('taxa-species', args=(genus_slug.lower(), epithet,))
