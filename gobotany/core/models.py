@@ -428,7 +428,7 @@ class HomePageImage(models.Model):
         ordering = ['image']  # users prefix filenames with "01_", "02_", etc
 
     def __unicode__(self):
-        return '%d: %s' % (self.order, self.image.name)
+        return self.image.name
 
 
 class Family(models.Model):
