@@ -1,5 +1,7 @@
-Thank you for registering for your PlantShare membership on the Go Botany site!
-To complete your registration, please activate your account by visiting the following link:
+Thank you for signing up for PlantShare on the Go Botany site!
+
+Please click the following link to activate your account:
+
 http://{{site.domain}}{% url 'registration_activate' activation_key %} 
 
-You must activate using this link within 7 days, or you will need to re-register for a new membership.
+This link is valid for 7 days. (After then, you would need to sign up again.)
