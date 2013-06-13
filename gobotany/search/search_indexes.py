@@ -303,6 +303,7 @@ class QuestionIndex(BaseRealTimeIndex):
     # Customization
 
     def index_queryset(self):
+        # Index only published questions, i.e., those with approved answers.
         return Question.objects.answered()
 
 

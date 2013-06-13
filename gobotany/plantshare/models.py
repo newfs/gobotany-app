@@ -414,7 +414,9 @@ class ScreenedImage(models.Model):
 
 class QuestionManager(models.Manager):
     def answered(self):
-        return self.exclude(answer__isnull=True).exclude(answer__exact='')
+        """Return questions with an answer approved for publication."""
+        return self.filter(approved=True).exclude(
+            answer__isnull=True).exclude(answer__exact='')
 
 class Question(models.Model):
     question = models.CharField(max_length=300, blank=False)
@@ -424,6 +426,11 @@ class Question(models.Model):
     asked = models.DateTimeField(blank=False, auto_now_add=True)
     asked_by = models.ForeignKey(User, blank=False,
                                  related_name='questions_asked')
+
+    approved = models.BooleanField(default=False)
+
+    # The "answered" date is a non-editable field that automatically fills
+    # in when an answered question is approved in the Admin for publication.
     answered = models.DateTimeField(null=True, editable=False)
 
     class Meta:
@@ -434,9 +441,9 @@ class Question(models.Model):
         return '%d: %s' % (self.id, self.question)
 
     def save(self):
-        # Auto-populate the "answered" date upon answering a question in
-        # the Admin.
-        if self.answer:
+        # Auto-populate the "answered" date the first time a question is
+        # approved in the the Admin.
+        if self.answer and self.approved == True and not self.answered:
             self.answered = datetime.datetime.now()
         super(Question, self).save()
 

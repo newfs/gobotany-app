@@ -4157,6 +4157,7 @@
             "category": "Invasives",
             "asked": "2012-01-22T12:13:00.120",
             "asked_by": 3,
+            "approved": true,
             "answered": "2012-01-23T04:04:00.280"
         }
     },
@@ -4169,6 +4170,7 @@
             "category": "General",
             "asked": "2012-01-23T09:04:00.330",
             "asked_by": 4,
+            "approved": true,
             "answered": "2012-01-24T09:04:00.330"
         }
     },
@@ -4188,10 +4190,11 @@
         "model": "plantshare.question",
         "fields": {
             "question": "How can I be sure not to spread any invasive aquatic plants when I go boating around New England?",
-            "answer": "",
+            "answer": "Be sure to thoroughly clean your boat and all gear, removing any plant material to avoid accidental transport to another waterway.",
             "category": "",
             "asked": "2012-01-23T12:52:00.230",
-            "asked_by": 6
+            "asked_by": 6,
+            "approved": false
         }
     },
     {

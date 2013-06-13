@@ -16,9 +16,9 @@ class QuestionAdminForm(forms.ModelForm):
 
 class QuestionAdmin(admin.ModelAdmin):
     date_hierarchy = 'asked'
-    fields = ('question', 'asked_by', 'answer', 'category')
+    fields = ('question', 'asked_by', 'answer', 'category', 'approved')
     form = QuestionAdminForm
-    list_display = ('question', 'answer', 'asked', 'category')
+    list_display = ('question', 'answer', 'asked', 'category', 'approved')
     ordering = ['-answered']
     readonly_fields = ['asked_by']
     search_fields = ['question', 'answer']

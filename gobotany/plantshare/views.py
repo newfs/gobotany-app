@@ -68,8 +68,7 @@ def _create_checklistentry_formset(**kwargs):
 # Views
 
 def _get_recently_answered_questions(number_of_questions):
-    questions = Question.objects.all().exclude(
-        answer__exact='').order_by(
+    questions = Question.objects.answered().order_by(
         '-answered')[:number_of_questions]
     return questions
 
@@ -415,8 +414,7 @@ def questions_view(request):
 
 def all_questions_view(request):
     """View for the full list of Questions and Answers."""
-    questions = Question.objects.all().exclude(
-        answer__exact='').order_by(
+    questions = Question.objects.answered().order_by(
         'category', '-answered')
     return render_to_response('all_questions.html', {
             'questions': questions
