@@ -423,6 +423,7 @@ class ContentImage(models.Model):
 class HomePageImage(models.Model):
     """An image that appears on the home page, cycled among others."""
     image = models.ImageField(upload_to='home-page-images')
+    partner_site = models.ForeignKey('PartnerSite', related_name='home_page_images')
 
     class Meta:
         ordering = ['image']  # users prefix filenames with "01_", "02_", etc
