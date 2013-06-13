@@ -458,9 +458,9 @@ class ContentImageAdmin(_Base):
         return mark_safe(markup)
 
 class CopyrightHolderAdmin(_Base):
-    search_fields = ('coded_name', 'expanded_name',)
-    list_display = ('coded_name', 'expanded_name', 'image_count')
-    list_display_links = ('coded_name', 'expanded_name',)
+    search_fields = ('coded_name', 'expanded_name', 'copyright')
+    list_display = ('coded_name', 'expanded_name', 'copyright', 'date_record', 'image_count')
+    list_display_links = ('coded_name', 'expanded_name', 'copyright', 'date_record')
 
     def image_count(self, obj):
         return models.ContentImage.objects.filter(creator=obj.coded_name).count()
