@@ -1,6 +1,7 @@
 # -*- encoding: utf-8 -*-
 
 from django import forms
+from django.core.urlresolvers import reverse
 from django.contrib import admin
 from django.db import models as dbmodels
 from django.template import Context, Template
@@ -8,6 +9,12 @@ from django.utils.safestring import mark_safe
 from gobotany.core import models
 
 # View classes
+
+def admin_url_from_model(model_obj):
+    url = reverse('admin:{0}_{1}_change'.format(
+            model_obj._meta.app_label, model_obj._meta.module_name
+        ), args=(model_obj.id,)) 
+    return url
 
 class _Base(admin.ModelAdmin):
 
@@ -437,6 +444,18 @@ class ContentImageAdmin(_Base):
     search_fields = ('image', 'alt', 'creator')
     list_display = ('alt', 'image', 'creator')
     list_display_links = ('alt', 'image', 'creator')
+    fields = ('image', 'alt', 'rank', 'image_type', 'content_type',
+        'object_id', 'creator', 'copyright')
+    readonly_fields = ('copyright',)
+
+    def copyright(self, obj):
+        copyright_obj = models.CopyrightHolder.objects.get(coded_name=obj.creator)
+        url = admin_url_from_model(copyright_obj)
+        markup = u'<a href={0}>{1}</a>'.format(
+            url,
+            'Copyright Info for {0}'.format(obj.creator)
+        )
+        return mark_safe(markup)
 
 # Registrations
 
@@ -444,8 +463,9 @@ admin.site.register(models.Parameter)
 admin.site.register(models.HomePageImage)
 admin.site.register(models.ImageType)
 admin.site.register(models.CharacterGroup)
-admin.site.register(models.Taxon, TaxonAdmin)
+admin.site.register(models.CopyrightHolder)
 
+admin.site.register(models.Taxon, TaxonAdmin)
 admin.site.register(models.ContentImage, ContentImageAdmin)
 admin.site.register(models.GlossaryTerm, GlossaryTermAdmin)
 admin.site.register(models.Character, CharacterAdmin)
