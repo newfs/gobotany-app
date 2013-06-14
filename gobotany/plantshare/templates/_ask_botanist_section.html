@@ -13,7 +13,18 @@ questions, and all visitors can see the answers.
 {% if user.is_authenticated %}
 <form method="post" action="{% url 'ps-questions' %}">
     {% csrf_token %}
-    <textarea name="question" placeholder="Ask your question here"></textarea>
+    <label for="question">Your Question</label>
+    <textarea id="question" name="question"></textarea>
+
+    <div id="question-image">
+        <label for="upload-link">Image (optional)</label>
+        <p class="upload">
+            <a id="upload-link" href="#" rel=".image-modal">+ Upload Image</a>
+        </p>
+        <input type="hidden" name="__template__question_image"
+            class="template-photo"></input>
+    </div>
+
     <button class="submit">Submit</button>
 </form>
 {% endif %}

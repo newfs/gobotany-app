@@ -53,7 +53,7 @@ a {
         }
     }
 }
-#main p a, #main li > a, #main dt a, #main td a {
+#main p a, #main li > a, #main dt a, #main td a, #main h2 a {
     border-bottom: 1px solid $border-green;
     &:hover {
         border-color: $link-green;

@@ -747,24 +747,34 @@ body.plantshare {
             background: #ddd;
             float: left;
             height: 97px;
-            margin: 8px 18px 18px 0;
+            margin: 8px 18px 12px 0;
             width: 103px;
         }
         form {
             clear: left;
+            height: 148px;
+            padding-left: 121px;
+        }
+        label {
+            text-transform: none;
+            width: auto;
         }
         textarea {
             border: 1px solid #aaa;
-            height: 40px;
-            margin: 0 0 1%;
-            padding: 8px 10px;
-            max-width: 97%;
-            width: 97%;
+            height: 46px;
+            margin: 4px 0 10px;
+            padding: 8px;
+            width: 430px;
             @include single-box-shadow(#ddd, 2px, 3px, 5px, 0px);
+        }
+        #question-image {
+            float: right;
+            margin-top: -19px;
+            width: 120px;
         }
         .submit {
             @extend .orange-button;
-            float: right;
+            clear: both;
             text-transform: uppercase;
         }
         h2, h3 {
