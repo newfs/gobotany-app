@@ -1,10 +1,10 @@
-<img src="" alt="">
+<img src="/static/images/icons/botanist.jpg" alt="Ace Acer">
 
 <p><b>&#8220;Ace&#8221; Acer</b><br>
 Our Ace Botanist is here to help you identify a plant, suggest locations
 for seeing plants, and provide you with expert scientific guidance on all
-things in the New England plant kingdom. Registered users can ask questions,
-all visitors can see the answers.
+things in the New England plant kingdom. Logged-in users can ask
+questions, and all visitors can see the answers.
 {% if not user.is_authenticated %}
 <a href="{% url 'ps-main' %}">Log in</a> to ask a question.
 {% endif %}
