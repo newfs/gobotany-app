@@ -1331,9 +1331,9 @@ class Importer(object):
         gobotany_id = models.PartnerSite.objects.get(short_name='gobotany').id
 
         log.info('Loading home page images')
-        field = models.HomePageImage._meta.get_field('image')
-        directories, image_names = default_storage.listdir(field.upload_to)
-        image_paths = [ field.upload_to + '/' + name
+        path = models.HomePageImage.root_path
+        directories, image_names = default_storage.listdir(path)
+        image_paths = [ path + '/' + name
                         for name in image_names if name ]
 
         for path in image_paths:
