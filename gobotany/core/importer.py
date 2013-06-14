@@ -1328,6 +1328,7 @@ class Importer(object):
         """Load home page image URLs from S3"""
         log.info('Emptying the old home page image list')
         models.HomePageImage.objects.all().delete()
+        gobotany_id = models.PartnerSite.objects.get(short_name='gobotany').id
 
         log.info('Loading home page images')
         field = models.HomePageImage._meta.get_field('image')
@@ -1337,7 +1338,7 @@ class Importer(object):
 
         for path in image_paths:
             log.info('  Adding image: %s' % path)
-            models.HomePageImage.objects.get_or_create(image=path)
+            models.HomePageImage.objects.get_or_create(image=path, partner_site_id=gobotany_id)
 
         log.info('Loaded %d home page images' % len(image_names))
 
