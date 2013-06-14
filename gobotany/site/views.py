@@ -33,10 +33,12 @@ from gobotany.site.utils import query_regex
 def home_view(request):
     """View for the home page of the Go Botany site."""
 
-    home_page_images = HomePageImage.objects.all()
+    partner = which_partner(request)
+
+    # Get home page images for the partner
+    home_page_images = HomePageImage.objects.filter(partner_site=partner)
 
     # Get or generate today's Plant of the Day, if appropriate.
-    partner = which_partner(request)
     plant_of_the_day = PlantOfTheDay.get_by_date.for_day(
         date.today(), partner.short_name)
     plant_of_the_day_taxon = None
