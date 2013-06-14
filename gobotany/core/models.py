@@ -420,10 +420,22 @@ class ContentImage(models.Model):
         return name
 
 
+def _partner_subdirectory_path(instance, filename):
+    path_segments = []
+    if instance.root_path:
+        path_segments.append(instance.root_path)
+    if instance.partner_site:
+        path_segments.append(instance.partner_site.short_name)
+    path_segments.append(filename)
+
+    return '/'.join(path_segments)
+
+
 class HomePageImage(models.Model):
     """An image that appears on the home page, cycled among others."""
-    image = models.ImageField(upload_to='home-page-images')
+    root_path = 'home-page-images'
     partner_site = models.ForeignKey('PartnerSite', related_name='home_page_images')
+    image = models.ImageField(upload_to=_partner_subdirectory_path)
 
     class Meta:
         ordering = ['image']  # users prefix filenames with "01_", "02_", etc
