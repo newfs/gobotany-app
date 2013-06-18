@@ -743,16 +743,19 @@ body.plantshare {
 
     &#ask #main,         /* Ask the Botanist section on both pages */
     &#plantshare #ask {
-        h1 + img, h2 + img {
-            background: #ddd;
-            float: left;
-            height: 97px;
-            margin: 8px 18px 12px 0;
-            width: 103px;
+        #ask-section {
+            margin-bottom: 18px;
+            min-height: 100px;
+            img {
+                background: #ddd;
+                float: left;
+                height: 97px;
+                margin: 8px 18px 0 0;
+                width: 103px;
+            }
         }
         form {
             clear: left;
-            height: 148px;
             padding-left: 121px;
         }
         label {
@@ -764,17 +767,16 @@ body.plantshare {
             height: 46px;
             margin: 4px 0 10px;
             padding: 8px;
-            width: 430px;
+            width: 571px;
             @include single-box-shadow(#ddd, 2px, 3px, 5px, 0px);
         }
         #question-image {
-            float: right;
-            margin-top: -19px;
             width: 120px;
         }
         .submit {
             @extend .orange-button;
             clear: both;
+            margin: 22px 0 8px;
             text-transform: uppercase;
         }
         h2, h3 {
