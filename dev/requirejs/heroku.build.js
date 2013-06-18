@@ -20,6 +20,7 @@
                 'mapping/geocoder',
                 'mapping/google_maps',
                 'mapping/marker_map',
+                'plantshare/ask_the_botanist',
                 'plantshare/delete_checklist',
                 'plantshare/delete_sighting',
                 'plantshare/find_people',
