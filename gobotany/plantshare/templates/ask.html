@@ -2,6 +2,12 @@
 
 {% block title %}Ask the Botanist: PlantShare{% endblock %}
 
+{% block js_require %}
+    require([
+        'plantshare/ask_the_botanist'
+    ]);
+{% endblock %}
+
 {% block body_attributes %}id="ask" class="plantshare ask"{% endblock %}
 
 {% block main_content %}

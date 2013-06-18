@@ -25,7 +25,7 @@ from gobotany.plantshare.models import (Checklist, ChecklistCollaborator,
     SIGHTING_VISIBILITY_CHOICES, UserProfile)
 from gobotany.plantshare.utils import restrictions
 
-SIGHTINGS_MAP_DEFAULTS = {
+qSIGHTINGS_MAP_DEFAULTS = {
     'latitude': '43.66',
     'longitude': '-70.27',
     'center_title': 'Portland, Maine',
@@ -395,6 +395,11 @@ def questions_view(request):
         if request.user.is_authenticated():
             question_text = request.POST['question']
             question = Question(question=question_text, asked_by=request.user)
+
+            image_ids = request.POST.getlist('question_image')
+            image = ScreenedImage.objects.filter(id__in=image_ids)[0]
+            question.image = image
+
             question.save()
 
             done_url = reverse('ps-new-question-done')
@@ -402,10 +407,14 @@ def questions_view(request):
         else:
             return HttpResponse(status=401)   # 401 Unauthorized
     elif request.method == 'GET':
+        upload_photo_form = ScreenedImageForm(initial={
+            'image_type': 'QUESTION'
+        })
         questions = _get_recently_answered_questions(
                     MAX_RECENTLY_ANSWERED_QUESTIONS)
         return render_to_response('ask.html', {
-                    'questions': questions
+                    'questions': questions,
+                    'upload_photo_form': upload_photo_form
             }, context_instance=RequestContext(request))
     else:
         # For an unsupported HTTP method, return Method Not Allowed.

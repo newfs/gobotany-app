@@ -592,6 +592,94 @@ body.plantshare {
         }
     }
 
+    .sighting-gallery {
+        clear: both;
+        h2 {
+            margin-top: 50px;
+        }
+        ul {
+            li {
+                height: auto;
+                list-style: none;
+                margin: 0;
+                padding: 10px 0;
+            }
+            img {
+                max-height: 710px;
+                max-width: 710px;
+            }
+        }
+    }
+    .modal-container {
+        position: relative;
+        .image-modal {
+            background-color: white;
+            border: 5px solid #acac90;
+            display: none;
+            height: 160px;
+            left: 0px;
+            padding: 15px;
+            position: absolute;
+            top: 250px;
+            width: 400px;
+            z-index: 10;
+            img {
+                float: left;
+                margin: 0 20px 10px 0;
+                max-height: 84px;
+                max-width: 84px;
+            }
+            a.button {
+                @extend .orange-button;
+                color: white;
+                display: inline-block;
+                margin: 10px 0;
+            }
+
+            a.disabled {
+                display: none;
+            }
+            div.modal-footer {
+                color: #888;
+                display: block;
+                float: left;
+                position: relative;
+                width: 100%;
+                div.file-path {
+                    border: 1px solid #888;
+                    color: #888;
+                    margin: 2px 0 auto;
+                    padding: 2px;
+                }
+            }
+            a.close {
+                @include dialog-close-button;    
+            }
+            h4 {
+                font-size: 18px;
+                margin: 0 0 5px;
+            }
+            form {
+                float: right;
+                width: 290px;
+            }
+            input {
+                border: 0 none !important;
+                box-shadow: inset 0 0 0 white !important;
+            }
+            input#id_image {
+                clear: both;
+                display: block;
+                margin: 0 0 10px;
+            }
+            div.screening-notify p {
+                color: #888;
+                font-size: 10px;
+                margin: 5px 0;
+            }
+        }
+    }
+
     &#sightings {
         #main > ul {
             margin-top: 14px;
@@ -638,107 +726,6 @@ body.plantshare {
                 }
             }                
         }
-        .sighting-gallery {
-            clear: both;
-            h2 {
-                margin-top: 50px;
-            }
-
-            ul {
-
-                li {
-                    height: auto;
-                    list-style: none;
-                    margin: 0;
-                    padding: 10px 0;
-                }
-                img {
-                    max-height: 710px;
-                    max-width: 710px;
-                }
-            }
-
-        }
-        .modal-container {
-            position: relative;
-
-            .image-modal {
-                background-color: white;
-                border: 5px solid #ACAC90;
-                display: none;
-                padding: 15px;
-                position: absolute;
-                width: 400px;
-                height: 160px;
-                top: 250px;
-                left: 0px;
-                z-index: 10;
-
-                img {
-                    float: left;
-                    margin: 0 20px 10px 0;
-                    max-height: 84px;
-                    max-width: 84px;
-                }
-
-                a.button {
-                    @extend .orange-button;
-                    display: inline-block;
-                    color: white;
-                    margin: 10px 0;
-                }
-
-                a.disabled {
-                    display: none;
-                }
-
-                div.modal-footer {
-                    display: block;
-                    position: relative;
-                    float: left;
-                    width: 100%;
-                    color: #888;
-
-                    div.file-path {
-                        margin: 2px 0 auto;
-                        border: 1px solid #888;
-                        padding: 2px;
-                        color: #888;
-                    }
-                }
-
-                a.close {
-                    @include dialog-close-button;    
-                }
-
-                h4 {
-                    margin: 0 0 5px;
-                    font-size: 18px;
-                }
-
-                form {
-                    float: right;
-                    width: 290px;
-                }
-                
-                input {
-                    border: 0 none !important;
-                    box-shadow: inset 0 0 0 white !important;
-                }
-
-                input#id_image {
-                    clear: both;
-                    display: block;
-                    margin: 0 0 10px;
-                }
-
-                div.screening-notify p {
-                  margin: 5px 0;
-                  font-size: 10px;
-                  color: #888;
-                }
-            }
-        }
     }
 
     &#ask #main,         /* Ask the Botanist section on both pages */
@@ -746,7 +733,7 @@ body.plantshare {
         #ask-section {
             margin-bottom: 18px;
             min-height: 100px;
-            img {
+            .botanist {
                 background: #ddd;
                 float: left;
                 height: 97px;
@@ -754,7 +741,7 @@ body.plantshare {
                 width: 103px;
             }
         }
-        form {
+        #question-form {
             clear: left;
             padding-left: 121px;
         }
@@ -824,6 +811,10 @@ body.plantshare {
         }
         dd {
             margin: 0;
+            img {
+                vertical-align: top;
+                margin: 5px 8px 0 0;
+            }
         }
         span {
             display: block;

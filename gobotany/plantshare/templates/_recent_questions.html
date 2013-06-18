@@ -3,7 +3,12 @@
             <li id="q{{ forloop.counter }}">
                 <dl>
                     <dt>Question</dt>
-                    <dd>{{ question.question }}</dd>
+                    <dd>
+                    {% if question.image %}
+                        <img src="{{ question.image.thumb.url }}" alt="">
+                    {% endif %}
+                    {{ question.question }}
+                    </dd>
                     <dt>Answer</dt>
                     <dd>{{ question.answer }}
                     <span>({{ question.answered|date:"l, j F Y" }})</span></dd>

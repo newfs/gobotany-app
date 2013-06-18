@@ -5,7 +5,10 @@
 {% block title %}PlantShare{% endblock %}
 
 {% block js_require %}
-    require(['util/suggester_init', 'plantshare/plantshare']);
+    require([
+        'util/suggester_init', 
+        'plantshare/plantshare'
+    ]);
 {% endblock %}
 
 {% block body_attributes %}id="plantshare" class="plantshare"{% endblock %}

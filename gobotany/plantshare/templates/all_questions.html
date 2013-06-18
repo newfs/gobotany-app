@@ -26,7 +26,12 @@
             <li id="q{{ question.id }}">
                 <dl>
                     <dt>Question</dt>
-                    <dd>{{ question.question }}</dd>
+                    <dd>
+                    {% if question.image %}
+                        <img src="{{ question.image.thumb.url }}" alt="">
+                    {% endif %}
+                    {{ question.question }}
+                    </dd>
                     <dt>Answer</dt>
                     <dd>{{ question.answer }}</dd>
                 </dl>
