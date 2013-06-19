@@ -443,8 +443,9 @@ class Question(models.Model):
         return '%d: %s' % (self.id, self.question)
 
     def save(self):
-        # Auto-populate the "answered" date the first time a question is
-        # approved in the the Admin.
+        """Auto-populate the "answered" date the first time a question is
+        approved in the the Admin.
+        """
         if self.answer and self.approved == True and not self.answered:
             self.answered = datetime.datetime.now()
         super(Question, self).save()
