@@ -1176,12 +1176,6 @@ body.plantshare#new-sighting h1 + div { background: #fff; border: 1px solid #c3d
 body.plantshare#new-sighting #id_identification, body.plantshare#new-sighting .restricted, body.plantshare#edit-sighting #id_identification, body.plantshare#edit-sighting .restricted { display: inline-block; }
 body.plantshare#new-sighting .images, body.plantshare#edit-sighting .images { margin-top: 10px; }
 body.plantshare#new-sighting .restricted, body.plantshare#edit-sighting .restricted { margin-left: 14px; }
-body.plantshare#new-sighting .thumb-gallery, body.plantshare#edit-sighting .thumb-gallery { display: inline-block; float: left; padding-top: 4px; }
-body.plantshare#new-sighting .thumb-gallery .thumb-frame, body.plantshare#edit-sighting .thumb-gallery .thumb-frame { display: inline-block; margin: 0 14px 0 0; vertical-align: bottom; }
-body.plantshare#new-sighting .thumb-gallery .thumb-frame .thumb, body.plantshare#edit-sighting .thumb-gallery .thumb-frame .thumb { vertical-align: bottom; }
-body.plantshare#new-sighting .thumb-gallery .thumb-frame .delete-link, body.plantshare#edit-sighting .thumb-gallery .thumb-frame .delete-link { width: 100%; text-align: center; margin: 0; padding-top: 8px; }
-body.plantshare#new-sighting .thumb-gallery .thumb-frame .delete-link img, body.plantshare#edit-sighting .thumb-gallery .thumb-frame .delete-link img { vertical-align: top; }
-body.plantshare#new-sighting .upload, body.plantshare#edit-sighting .upload { display: inline-block; float: left; }
 body.plantshare#new-sighting fieldset, body.plantshare#edit-sighting fieldset { margin-bottom: 10px; }
 body.plantshare#new-sighting .visibility, body.plantshare#edit-sighting .visibility { clear: left; margin-bottom: 50px; }
 body.plantshare#new-sighting .visibility p, body.plantshare#edit-sighting .visibility p { display: inline-block; }
@@ -1223,6 +1217,12 @@ body.plantshare .modal-container .image-modal form { float: right; width: 290px;
 body.plantshare .modal-container .image-modal input { border: 0 none !important; box-shadow: inset 0 0 0 white !important; }
 body.plantshare .modal-container .image-modal input#id_image { clear: both; display: block; margin: 0 0 10px; }
 body.plantshare .modal-container .image-modal div.screening-notify p { color: #888; font-size: 10px; margin: 5px 0; }
+body.plantshare .thumb-gallery { display: inline-block; float: left; padding: 4px 0 20px 0; }
+body.plantshare .thumb-frame { display: inline-block; margin: 0 14px 0 0; vertical-align: bottom; }
+body.plantshare .thumb-frame .thumb { vertical-align: bottom; }
+body.plantshare .thumb-frame .delete-link { width: 100%; text-align: center; margin: 0; padding-top: 8px; }
+body.plantshare .thumb-frame .delete-link img { vertical-align: top; }
+body.plantshare .upload { display: inline-block; float: left; }
 body.plantshare#sightings #main > ul { margin-top: 14px; }
 body.plantshare#sightings #main > ul > li { float: left; margin-bottom: 14px; }
 body.plantshare#sightings #main > ul > li ul { margin-left: 200px; margin-top: -20px; }
@@ -1238,8 +1238,7 @@ body.plantshare#ask #main #ask-section .botanist, body.plantshare#plantshare #as
 body.plantshare#ask #main #question-form, body.plantshare#plantshare #ask #question-form { clear: left; padding-left: 121px; }
 body.plantshare#ask #main label, body.plantshare#plantshare #ask label { text-transform: none; width: auto; }
 body.plantshare#ask #main textarea, body.plantshare#plantshare #ask textarea { border: 1px solid #aaa; height: 75px; margin: 4px 0 10px; padding: 8px; width: 571px; -webkit-box-shadow: 2px 3px 5px 0px #dddddd; -moz-box-shadow: 2px 3px 5px 0px #dddddd; box-shadow: 2px 3px 5px 0px #dddddd; }
-body.plantshare#ask #main #question-image, body.plantshare#plantshare #ask #question-image { width: 120px; }
-body.plantshare#ask #main .submit, body.plantshare#plantshare #ask .submit { clear: both; margin: 22px 0 8px; text-transform: uppercase; }
+body.plantshare#ask #main .submit, body.plantshare#plantshare #ask .submit { clear: both; display: block; margin: 42px 0 8px; text-transform: uppercase; }
 body.plantshare#ask #main h2, body.plantshare#ask #main h3, body.plantshare#plantshare #ask h2, body.plantshare#plantshare #ask h3 { clear: both; }
 body.plantshare#ask #main .more, body.plantshare#plantshare #ask .more { text-align: right; }
 body.plantshare#questions #main { /* Questions and Answers page */ }

@@ -20,10 +20,12 @@ questions, and all visitors can see the answers.
         maxlength="{{ max_question_length }}"
         placeholder="Up to {{ max_question_length }} characters"></textarea>
 
-    <div id="question-image">
-        <label for="upload-link">Image (optional)</label>
-        <input type="hidden" name="__template__question_image"
+    <div class="images">
+        <label for="upload-link">Images (optional)</label>
+        <div id="question-images">
+            <input type="hidden" name="__template__question_images"
             class="template-image"></input>
+        </div>
         <div class="thumb-gallery"></div>
         <p class="upload">
             <a id="upload-link" href="#" rel=".image-modal">+ Upload Image</a>

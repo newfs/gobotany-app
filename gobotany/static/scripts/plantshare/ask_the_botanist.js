@@ -21,8 +21,8 @@ define([
         Shadowbox.setup('a.preview');
     }
 
-    function remove_thumb(id, $frame) {
-        console.log('Remove thumb ' + id);
+    function remove_thumbnail(id, $frame) {
+        console.log('Remove thumbnail ' + id);
         
         // TODO: URL path
         var rejectUrl = '/ps/api/image-reject/' + id;
@@ -39,9 +39,9 @@ define([
 
     function attach_question_image(new_image_id) {
         $('.template-image').clone().removeClass('template-image').attr({
-                'name': 'question_image',
-                'value': new_image_id
-            }).appendTo('#question-image');
+            'name': 'question_images',
+            'value': new_image_id
+        }).appendTo('#question-images');
     }
 
     function start_upload() {
@@ -61,6 +61,15 @@ define([
     function upload_error(error_info) {
         console.log('Error: ' + error_info);
     };
+
+    $('.delete-link a').live('click', function() {
+        $this = $(this);
+        console.log('Remove image');
+        $frame = $('.thumb-gallery .thumb-frame').has($this);
+        remove_thumbnail($this.attr('href'), $frame);
+
+        return false;
+    });
 
     upload_modal.setup('.image-modal', '#upload-link', {
         onStartUpload: start_upload,

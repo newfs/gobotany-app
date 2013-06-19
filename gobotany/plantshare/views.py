@@ -402,7 +402,7 @@ def questions_view(request):
             question = Question(question=question_text, asked_by=request.user)
             question.save()
 
-            image_ids = request.POST.getlist('question_image')
+            image_ids = request.POST.getlist('question_images')
             images = ScreenedImage.objects.filter(id__in=image_ids)
             question.images.add(*images)
             question.save()

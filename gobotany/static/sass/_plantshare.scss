@@ -470,32 +470,6 @@ body.plantshare {
         .restricted {
             margin-left: 14px;
         }
-        .thumb-gallery {
-            display: inline-block;
-            float: left;
-            padding-top: 4px;
-            .thumb-frame {
-                display: inline-block;
-                margin: 0 14px 0 0;
-                vertical-align: bottom;
-                .thumb {
-                  vertical-align: bottom;
-                }
-                .delete-link {
-                    width: 100%;
-                    text-align: center;
-                    margin: 0;
-                    padding-top: 8px;
-                    img {
-                        vertical-align: top;
-                    }
-                }
-            }
-        }
-        .upload {
-            display: inline-block;
-            float: left;
-        }
         fieldset {
             margin-bottom: 10px;
         }
@@ -679,6 +653,33 @@ body.plantshare {
             }
         }
     }
+    .thumb-gallery {
+        display: inline-block;
+        float: left;
+        padding: 4px 0 20px 0;
+    }
+    .thumb-frame {
+        display: inline-block;
+        margin: 0 14px 0 0;
+        vertical-align: bottom;
+        .thumb {
+            vertical-align: bottom;
+        }
+        .delete-link {
+            width: 100%;
+            text-align: center;
+            margin: 0;
+            padding-top: 8px;
+            img {
+                vertical-align: top;
+            }
+        }
+    }
+    .upload {
+        display: inline-block;
+        float: left;
+    }
+
 
     &#sightings {
         #main > ul {
@@ -757,13 +758,11 @@ body.plantshare {
             width: 571px;
             @include single-box-shadow(#ddd, 2px, 3px, 5px, 0px);
         }
-        #question-image {
-            width: 120px;
-        }
         .submit {
             @extend .orange-button;
             clear: both;
-            margin: 22px 0 8px;
+            display: block;
+            margin: 42px 0 8px;
             text-transform: uppercase;
         }
         h2, h3 {

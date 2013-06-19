@@ -4,11 +4,9 @@
                 <dl>
                     <dt>Question</dt>
                     <dd>
-                    {% if question.images %}
-                        {% with question.images.all|first as image %}
+                    {% for image in question.images.all %}
                         <img src="{{ image.thumb.url }}" alt="">
-                        {% endwith %}
-                    {% endif %}
+                    {% endfor %}
                     {{ question.question }}
                     </dd>
                     <dt>Answer</dt>

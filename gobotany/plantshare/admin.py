@@ -17,29 +17,30 @@ class QuestionAdminForm(forms.ModelForm):
 
 class QuestionAdmin(admin.ModelAdmin):
     date_hierarchy = 'asked'
-    fields = ('question', 'image_link', 'asked_by', 'answer', 'category',
+    fields = ('question', 'image_links', 'asked_by', 'answer', 'category',
               'approved')
     form = QuestionAdminForm
-    list_display = ('question', 'image_link', 'answer', 'asked', 'category',
-                    'approved')
+    list_display = ('question', 'answer', 'asked', 'category', 'approved')
     list_filter = ('category',)
     ordering = ['-answered']
-    readonly_fields = ['image_link', 'asked_by']
+    readonly_fields = ['image_links', 'asked_by']
     search_fields = ['question', 'answer']
 
-    def image_link(self, obj):
-        """Present an image as a thumbnail linked to the larger version,
+    def image_links(self, obj):
+        """Present images as thumbnails linked to the larger versions,
         for viewing when answering a question.
         """
-        all_images = obj.images.all()
-        if all_images:
-            first_image = all_images[0]
-            return '<a href="%s"><img src="%s"></a>' % (first_image.image.url,
-                                                        first_image.thumb.url)
+        html = ''
+        images = obj.images.all()
+        if images:
+            for image in images:
+                html += '<a href="%s"><img src="%s"></a> ' % (
+                    image.image.url, image.thumb.url)
+            return html
         else:
             return None
-    image_link.short_description = 'Image'
-    image_link.allow_tags = True
+    image_links.short_description = 'Images'
+    image_links.allow_tags = True
 
 
 class SightingPhotoInline(admin.StackedInline):

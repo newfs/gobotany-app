@@ -27,9 +27,9 @@
                 <dl>
                     <dt>Question</dt>
                     <dd>
-                    {% if question.image %}
-                        <img src="{{ question.image.thumb.url }}" alt="">
-                    {% endif %}
+                    {% for image in question.images.all %}
+                        <img src="{{ image.thumb.url }}" alt="">
+                    {% endfor %}
                     {{ question.question }}
                     </dd>
                     <dt>Answer</dt>
