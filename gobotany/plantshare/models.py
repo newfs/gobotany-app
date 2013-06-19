@@ -421,7 +421,7 @@ class QuestionManager(models.Manager):
 
 class Question(models.Model):
     question = models.CharField(max_length=300, blank=False)
-    image = models.ForeignKey('ScreenedImage', null=True, blank=True)
+    images = models.ManyToManyField('ScreenedImage', null=True, blank=True)
     answer = models.CharField(max_length=3000, blank=True)
     category = models.CharField(max_length=120, blank=False,
                                 default="General")
