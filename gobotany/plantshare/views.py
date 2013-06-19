@@ -25,7 +25,7 @@ from gobotany.plantshare.models import (Checklist, ChecklistCollaborator,
     SIGHTING_VISIBILITY_CHOICES, UserProfile)
 from gobotany.plantshare.utils import restrictions
 
-qSIGHTINGS_MAP_DEFAULTS = {
+SIGHTINGS_MAP_DEFAULTS = {
     'latitude': '43.66',
     'longitude': '-70.27',
     'center_title': 'Portland, Maine',
