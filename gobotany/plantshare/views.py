@@ -19,7 +19,7 @@ from django.template import RequestContext
 from django.utils import simplejson
 
 from gobotany.plantshare.forms import (ChecklistEntryForm, ChecklistForm,
-    ScreenedImageForm, SightingForm, UserProfileForm)
+    QuestionForm, ScreenedImageForm, SightingForm, UserProfileForm)
 from gobotany.plantshare.models import (Checklist, ChecklistCollaborator,
     ChecklistEntry, Location, Question, ScreenedImage, Sighting,
     SIGHTING_VISIBILITY_CHOICES, UserProfile)
@@ -394,38 +394,52 @@ def questions_view(request):
     question (the POST action from the question form).
     """
     MAX_RECENTLY_ANSWERED_QUESTIONS = 10
+    max_question_length = Question._meta.get_field('question').max_length
+    question_form = QuestionForm()
+    upload_photo_form = ScreenedImageForm(initial={
+        'image_type': 'QUESTION'
+    })
+    questions = _get_recently_answered_questions(
+        MAX_RECENTLY_ANSWERED_QUESTIONS)
+
+    return_ask_the_botanist_page = False
 
     if request.method == 'POST':
         # Handle posting a new question to the questions collection.
         if request.user.is_authenticated():
-            question_text = request.POST['question']
-            question = Question(question=question_text, asked_by=request.user)
-            question.save()
+            question_form = QuestionForm(request.POST)
+            if question_form.is_valid():
+                question_text = question_form.cleaned_data['question']
+                question = Question(question=question_text,
+                                    asked_by=request.user)
+                question.save()
 
-            image_ids = request.POST.getlist('question_images')
-            images = ScreenedImage.objects.filter(id__in=image_ids)
-            question.images.add(*images)
-            question.save()
+                image_ids = request.POST.getlist('question_images')
+                images = ScreenedImage.objects.filter(id__in=image_ids)
+                question.images.add(*images)
+                question.save()
 
-            done_url = reverse('ps-new-question-done')
-            return HttpResponseRedirect(done_url)
+                done_url = reverse('ps-new-question-done')
+                return HttpResponseRedirect(done_url)
+            else:
+                # Present the form again for input correction.
+                return_ask_the_botanist_page = True
         else:
             return HttpResponse(status=401)   # 401 Unauthorized
     elif request.method == 'GET':
-        upload_photo_form = ScreenedImageForm(initial={
-            'image_type': 'QUESTION'
-        })
-        questions = _get_recently_answered_questions(
-                    MAX_RECENTLY_ANSWERED_QUESTIONS)
-        max_question_length = Question._meta.get_field('question').max_length
-        return render_to_response('ask.html', {
-                    'questions': questions,
-                    'max_question_length': max_question_length,
-                    'upload_photo_form': upload_photo_form
-            }, context_instance=RequestContext(request))
+        # Return the main Ask the Botanist page.
+        return_ask_the_botanist_page = True
     else:
         # For an unsupported HTTP method, return Method Not Allowed.
         return HttpResponse(status=405)
+
+    if return_ask_the_botanist_page == True:
+        return render_to_response('ask.html', {
+                    'questions': questions,
+                    'max_question_length': max_question_length,
+                    'question_form': question_form,
+                    'upload_photo_form': upload_photo_form
+            }, context_instance=RequestContext(request))
 
 
 def all_questions_view(request):

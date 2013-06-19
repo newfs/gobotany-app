@@ -90,6 +90,13 @@ class SightingForm(forms.Form):
                                    initial=SIGHTING_DEFAULT_VISIBILITY)
 
 
+class QuestionForm(forms.Form):
+    question = forms.CharField(
+        required=True,
+        widget=forms.Textarea()
+    )
+
+
 class UserProfileForm(forms.ModelForm):
     location = LocationField()
 
