@@ -21,7 +21,7 @@ class QuestionAdmin(admin.ModelAdmin):
               'approved')
     form = QuestionAdminForm
     list_display = ('question', 'answer', 'asked', 'category', 'approved')
-    list_filter = ('category',)
+    list_filter = ('category', 'approved', 'answered', 'asked')
     ordering = ['-answered']
     readonly_fields = ['image_links', 'asked_by']
     search_fields = ['question', 'answer']
