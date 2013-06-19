@@ -797,6 +797,10 @@ body.plantshare {
             margin: 5px 0 10px;
             padding: 10px 12px;
         }
+        img {
+            float: right;
+            margin: 5px 0 5px 12px;
+        }
         dl {
             margin: 0;
             padding: 0;
@@ -811,10 +815,6 @@ body.plantshare {
         }
         dd {
             margin: 0;
-            img {
-                float: left;
-                margin: 5px 8px 10px 0;
-            }
         }
         span {
             display: block;

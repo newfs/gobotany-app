@@ -1,14 +1,12 @@
     <ul class="questions">
         {% for question in questions %}
             <li id="q{{ forloop.counter }}">
+                {% for image in question.images.all %}
+                    <img src="{{ image.thumb.url }}" alt="">
+                {% endfor %}
                 <dl>
                     <dt>Question</dt>
-                    <dd>
-                    {% for image in question.images.all %}
-                        <img src="{{ image.thumb.url }}" alt="">
-                    {% endfor %}
-                    {{ question.question }}
-                    </dd>
+                    <dd>{{ question.question }}</dd>
                     <dt>Answer</dt>
                     <dd>{{ question.answer }}
                     <span>({{ question.answered|date:"l, j F Y" }})</span></dd>
