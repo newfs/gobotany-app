@@ -4143,7 +4143,7 @@
         "fields": {
             "question": "I've been seeing a lot lately about invasive plants carried on the bottoms of boats from one lake to another. Can you give me some guidance on what plants are especially problematic, and how to prevent them from spreading?",
             "answer": "",
-            "category": "",
+            "category": "General",
             "asked": "2012-01-21T14:42:13.360",
             "asked_by": 2
         }
@@ -4180,7 +4180,7 @@
         "fields": {
             "question": "Are there any plants in New England that were absent 10 years ago?",
             "answer": "",
-            "category": "",
+            "category": "General",
             "asked": "2012-01-23T11:33:00.330",
             "asked_by": 5
         }
@@ -4191,7 +4191,7 @@
         "fields": {
             "question": "How can I be sure not to spread any invasive aquatic plants when I go boating around New England?",
             "answer": "Be sure to thoroughly clean your boat and all gear, removing any plant material to avoid accidental transport to another waterway.",
-            "category": "",
+            "category": "General",
             "asked": "2012-01-23T12:52:00.230",
             "asked_by": 6,
             "approved": false
@@ -4203,7 +4203,7 @@
         "fields": {
             "question": "How did the last ice age affect plants in New England?",
             "answer": "",
-            "category": "",
+            "category": "General",
             "asked": "2012-02-01T07:55:00.330",
             "asked_by": 5
         }
