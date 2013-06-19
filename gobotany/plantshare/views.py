@@ -79,6 +79,7 @@ def plantshare_view(request):
     MAX_RECENTLY_ANSWERED_QUESTIONS = 3
     questions = _get_recently_answered_questions(
                 MAX_RECENTLY_ANSWERED_QUESTIONS)
+    max_question_length = Question._meta.get_field('question').max_length
 
     prior_signup_detected = request.COOKIES.get('registration_complete',
                                                 False)
@@ -98,6 +99,7 @@ def plantshare_view(request):
                'map': SIGHTINGS_MAP_DEFAULTS,
                'questions': questions,
                'max_questions': MAX_RECENTLY_ANSWERED_QUESTIONS,
+               'max_question_length': max_question_length,
                'profile': profile
            }, context_instance=RequestContext(request))
 
@@ -412,8 +414,10 @@ def questions_view(request):
         })
         questions = _get_recently_answered_questions(
                     MAX_RECENTLY_ANSWERED_QUESTIONS)
+        max_question_length = Question._meta.get_field('question').max_length
         return render_to_response('ask.html', {
                     'questions': questions,
+                    'max_question_length': max_question_length,
                     'upload_photo_form': upload_photo_form
             }, context_instance=RequestContext(request))
     else:

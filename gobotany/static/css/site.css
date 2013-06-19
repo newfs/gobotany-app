@@ -1237,7 +1237,7 @@ body.plantshare#ask #main #ask-section, body.plantshare#plantshare #ask #ask-sec
 body.plantshare#ask #main #ask-section .botanist, body.plantshare#plantshare #ask #ask-section .botanist { background: #ddd; float: left; height: 97px; margin: 8px 18px 0 0; width: 103px; }
 body.plantshare#ask #main #question-form, body.plantshare#plantshare #ask #question-form { clear: left; padding-left: 121px; }
 body.plantshare#ask #main label, body.plantshare#plantshare #ask label { text-transform: none; width: auto; }
-body.plantshare#ask #main textarea, body.plantshare#plantshare #ask textarea { border: 1px solid #aaa; height: 46px; margin: 4px 0 10px; padding: 8px; width: 571px; -webkit-box-shadow: 2px 3px 5px 0px #dddddd; -moz-box-shadow: 2px 3px 5px 0px #dddddd; box-shadow: 2px 3px 5px 0px #dddddd; }
+body.plantshare#ask #main textarea, body.plantshare#plantshare #ask textarea { border: 1px solid #aaa; height: 75px; margin: 4px 0 10px; padding: 8px; width: 571px; -webkit-box-shadow: 2px 3px 5px 0px #dddddd; -moz-box-shadow: 2px 3px 5px 0px #dddddd; box-shadow: 2px 3px 5px 0px #dddddd; }
 body.plantshare#ask #main #question-image, body.plantshare#plantshare #ask #question-image { width: 120px; }
 body.plantshare#ask #main .submit, body.plantshare#plantshare #ask .submit { clear: both; margin: 22px 0 8px; text-transform: uppercase; }
 body.plantshare#ask #main h2, body.plantshare#ask #main h3, body.plantshare#plantshare #ask h2, body.plantshare#plantshare #ask h3 { clear: both; }

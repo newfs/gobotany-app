@@ -16,7 +16,9 @@ questions, and all visitors can see the answers.
 <form id="question-form" method="post" action="{% url 'ps-questions' %}">
     {% csrf_token %}
     <label for="question">Your Question</label>
-    <textarea id="question" name="question"></textarea>
+    <textarea id="question" name="question"
+        maxlength="{{ max_question_length }}"
+        placeholder="Up to {{ max_question_length }} characters"></textarea>
 
     <div id="question-image">
         <label for="upload-link">Image (optional)</label>
