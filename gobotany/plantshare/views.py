@@ -735,7 +735,8 @@ def screen_images(request):
                 profile.save()
 
     unscreened_images = ScreenedImage.objects.filter(screened=None,
-            deleted=False, orphaned=False)
+        deleted=False, orphaned=False).exclude(
+            image_type='QUESTION')   # No screening here for question images
     formset = ScreeningFormSet(queryset=unscreened_images)
 
     context = {
