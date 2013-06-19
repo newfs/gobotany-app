@@ -796,7 +796,7 @@ body.plantshare {
             background-color: #f9faea;
             border: 1px solid $border-green;
             margin: 5px 0 10px;
-            min-height: 138px;  /* to handle portrait-orientation thumbnails */
+            overflow: auto;
             padding: 10px 12px;
         }
         img {
