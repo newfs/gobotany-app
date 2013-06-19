@@ -803,6 +803,7 @@ body.plantshare {
             padding: 0;
         }
         dt {
+            clear: left;
             font-weight: bold;
             margin-top: 10px;
             &:first-child {
@@ -812,8 +813,8 @@ body.plantshare {
         dd {
             margin: 0;
             img {
-                vertical-align: top;
-                margin: 5px 8px 0 0;
+                float: left;
+                margin: 5px 8px 10px 0;
             }
         }
         span {

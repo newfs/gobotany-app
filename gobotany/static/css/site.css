@@ -1249,10 +1249,10 @@ body.plantshare#questions #main #category-nav li { display: inline; margin-right
 body.plantshare .questions { /* styles common to Ask the Botanist, questions pages */ }
 body.plantshare .questions li { background-color: #f9faea; border: 1px solid #c3d941; margin: 5px 0 10px; padding: 10px 12px; }
 body.plantshare .questions dl { margin: 0; padding: 0; }
-body.plantshare .questions dt { font-weight: bold; margin-top: 10px; }
+body.plantshare .questions dt { clear: left; font-weight: bold; margin-top: 10px; }
 body.plantshare .questions dt:first-child { margin-top: 0; }
 body.plantshare .questions dd { margin: 0; }
-body.plantshare .questions dd img { vertical-align: top; margin: 5px 8px 0 0; }
+body.plantshare .questions dd img { float: left; margin: 5px 8px 10px 0; }
 body.plantshare .questions span { display: block; }
 body.plantshare#profile form input { margin-bottom: 0; }
 body.plantshare#profile .username { float: right; }
