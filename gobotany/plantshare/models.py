@@ -443,11 +443,19 @@ class Question(models.Model):
         return '%d: %s' % (self.id, self.question)
 
     def save(self):
-        """Auto-populate the "answered" date the first time a question is
-        approved in the the Admin.
-        """
+        # Auto-populate the "answered" date the first time a question is
+        # approved in the the Admin.
         if self.answer and self.approved == True and not self.answered:
             self.answered = datetime.datetime.now()
+
+        # If the question is answered or approved, then any attached images
+        # are implicitly approved (otherwise the Admin user would just delete
+        # the question), so set the images as approved.
+        if self.answer or self.approved == True:
+            for image in self.images.all():
+                image.is_approved = True
+                image.save()
+
         super(Question, self).save()
 
     objects = QuestionManager()
