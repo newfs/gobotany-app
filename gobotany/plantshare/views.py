@@ -75,7 +75,9 @@ def _get_recently_answered_questions(number_of_questions):
 
 def plantshare_view(request):
     """View for the main PlantShare page."""
-
+    upload_photo_form = ScreenedImageForm(initial={
+        'image_type': 'QUESTION'
+    })
     MAX_RECENTLY_ANSWERED_QUESTIONS = 3
     questions = _get_recently_answered_questions(
                 MAX_RECENTLY_ANSWERED_QUESTIONS)
@@ -94,13 +96,14 @@ def plantshare_view(request):
             avatar_info = UserProfile.default_avatar_image()
 
     return render_to_response('plantshare.html', {
-               'prior_signup_detected': prior_signup_detected,
-               'avatar': avatar_info,
-               'map': SIGHTINGS_MAP_DEFAULTS,
-               'questions': questions,
-               'max_questions': MAX_RECENTLY_ANSWERED_QUESTIONS,
-               'max_question_length': max_question_length,
-               'profile': profile
+                'prior_signup_detected': prior_signup_detected,
+                'avatar': avatar_info,
+                'map': SIGHTINGS_MAP_DEFAULTS,
+                'questions': questions,
+                'max_questions': MAX_RECENTLY_ANSWERED_QUESTIONS,
+                'max_question_length': max_question_length,
+                'upload_photo_form': upload_photo_form,
+                'profile': profile
            }, context_instance=RequestContext(request))
 
 def _may_show_sighting(sighting, user):
