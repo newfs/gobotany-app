@@ -1,9 +1,7 @@
     <ul class="questions">
         {% for question in questions %}
             <li id="q{{ forloop.counter }}">
-                {% for image in question.images.all %}
-                    <img src="{{ image.thumb.url }}" alt="">
-                {% endfor %}
+                {% include "_question_images.html" %}
                 <dl>
                     <dt>Question</dt>
                     <dd>{{ question.question }}</dd>

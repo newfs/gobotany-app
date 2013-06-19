@@ -1,0 +1,5 @@
+        {% for image in question.images.all %}
+            <a href="{{ image.image.url }}" rel="shadowbox">
+                <img src="{{ image.thumb.url }}" alt="">
+            </a>
+        {% endfor %}
