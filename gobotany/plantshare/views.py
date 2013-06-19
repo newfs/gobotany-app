@@ -397,11 +397,11 @@ def questions_view(request):
         if request.user.is_authenticated():
             question_text = request.POST['question']
             question = Question(question=question_text, asked_by=request.user)
+            question.save()
 
             image_ids = request.POST.getlist('question_image')
-            image = ScreenedImage.objects.filter(id__in=image_ids)[0]
-            question.image = image
-
+            images = ScreenedImage.objects.filter(id__in=image_ids)
+            question.images.add(*images)
             question.save()
 
             done_url = reverse('ps-new-question-done')

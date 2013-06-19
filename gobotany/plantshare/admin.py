@@ -22,6 +22,7 @@ class QuestionAdmin(admin.ModelAdmin):
     form = QuestionAdminForm
     list_display = ('question', 'image_link', 'answer', 'asked', 'category',
                     'approved')
+    list_filter = ('category',)
     ordering = ['-answered']
     readonly_fields = ['image_link', 'asked_by']
     search_fields = ['question', 'answer']
@@ -30,9 +31,11 @@ class QuestionAdmin(admin.ModelAdmin):
         """Present an image as a thumbnail linked to the larger version,
         for viewing when answering a question.
         """
-        if obj.image:
-            return '<a href="%s"><img src="%s"></a>' % (obj.image.image.url,
-                                                        obj.image.thumb.url)
+        all_images = obj.images.all()
+        if all_images:
+            first_image = all_images[0]
+            return '<a href="%s"><img src="%s"></a>' % (first_image.image.url,
+                                                        first_image.thumb.url)
         else:
             return None
     image_link.short_description = 'Image'
