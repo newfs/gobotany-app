@@ -1,0 +1,26 @@
+[
+    {
+        "pk": 1,
+        "model": "sites.site",
+        "fields": {
+            "domain": "127.0.0.1:8000",
+            "name": "Go Botany (local)"
+        }
+    },
+    {
+        "pk": 2,
+        "model": "sites.site",
+        "fields": {
+            "domain": "gobotany-dev.herokuapp.com",
+            "name": "Go Botany (Dev)"
+        }
+    },
+    {
+        "pk": 3,
+        "model": "sites.site",
+        "fields": {
+            "domain": "gobotany.newenglandwild.org",
+            "name": "Go Botany"
+        }
+    }
+]

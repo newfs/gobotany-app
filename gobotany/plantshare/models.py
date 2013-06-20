@@ -7,6 +7,7 @@ from decimal import Decimal, getcontext
 
 from django.conf import settings
 from django.contrib.auth.models import User
+from django.contrib.sites.models import Site
 from django.core.exceptions import ObjectDoesNotExist
 from django.core.files.storage import FileSystemStorage, Storage
 from django.db import models
@@ -452,8 +453,10 @@ class Question(models.Model):
             user_name = user_profile.user_first_name()
         except ObjectDoesNotExist:
             pass
+        site = Site.objects.get_current()
         context = {
             'user_name': user_name,
+            'site': site,
             'question_id': self.id,
             'question': self.question,
         }

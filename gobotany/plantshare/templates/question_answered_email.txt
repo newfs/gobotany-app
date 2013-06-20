@@ -1,6 +1,6 @@
 Hello, {{ user_name }}. Your question has been answered on the Go Botany site:
 
-http://gobotany.newenglandwild.org{% url 'ps-all-questions' %}#q{{ question_id }}
+http://{{ site.domain }}{% url 'ps-all-questions' %}#q{{ question_id }}
 
 Thanks for asking!
 

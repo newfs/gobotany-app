@@ -120,6 +120,7 @@ INSTALLED_APPS = [
     'django.contrib.humanize',
     'django.contrib.messages',
     'django.contrib.sessions',
+    'django.contrib.sites',
     'django.contrib.staticfiles',
 
     ] + (['debug_toolbar'] if USE_DEBUG_TOOLBAR else []) + [
@@ -269,3 +270,16 @@ CONTENT_IMAGE_LOCATIONS = {
     u'taxon': lambda i,f: 'taxon-images/%s/%s'%(i.content_object.family.name,
                                                 f),
 }
+
+SITES = {
+    'LOCAL': 1,
+    'DEV': 2,
+    'PROD': 3,
+}
+
+SITE_ID = SITES['LOCAL']
+if IN_PRODUCTION:
+	if DEV_FEATURES:
+		SITE_ID = SITES['DEV']
+	else:
+		SITE_ID = SITES['PROD']
