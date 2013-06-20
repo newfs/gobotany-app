@@ -730,6 +730,12 @@ body.plantshare {
         }
     }
 
+    &.ask {
+        #sb-title-inner {
+            font-size: 11px;   /* title atop lightboxed question images */
+        }
+    }
+
     &#ask #main,         /* Ask the Botanist section on both pages */
     &#plantshare #ask {
         #ask-section {

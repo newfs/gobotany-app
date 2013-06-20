@@ -124,7 +124,7 @@ table { border-collapse: collapse; border-spacing: 0; }
 
 /* for gradient, etc. */
 /* Imports for third-party controls */
-#sb-title-inner, #sb-info-inner, #sb-loading-inner, div.sb-message { font-family: Verdana,"HelveticaNeue-Light","Helvetica Neue",Helvetica,Arial,sans-serif; font-weight: 200; color: #fff; }
+#sb-title-inner, #sb-info-inner, #sb-loading-inner, div.sb-message { font-family: "Trebuchet MS",Verdana,"HelveticaNeue-Light","Helvetica Neue",Helvetica,Arial,sans-serif; font-weight: 200; color: #fff; }
 
 #sb-container { position: fixed; margin: 0; padding: 0; top: 0; left: 0; z-index: 999; text-align: left; visibility: hidden; display: none; }
 
@@ -1233,6 +1233,7 @@ body.plantshare.sighting form fieldset { border: 0; margin: 0 0 16px; padding: 0
 body.plantshare.sighting form fieldset legend { display: block; text-indent: -9000px; }
 body.plantshare.sighting form .post-sighting-btn { background: transparent url(/static/images/layout/plantshare2-btn.png) no-repeat -372px -634px; border: 0 none; display: block; width: 157px; height: 32px; text-indent: -9999px; }
 body.plantshare.sighting form .post-sighting-btn.inactive { background-position: -372px -599px; }
+body.plantshare.ask #sb-title-inner { font-size: 11px; /* title atop lightboxed question images */ }
 body.plantshare#ask #main #ask-section, body.plantshare#plantshare #ask #ask-section { margin-bottom: 18px; min-height: 100px; }
 body.plantshare#ask #main #ask-section .botanist, body.plantshare#plantshare #ask #ask-section .botanist { background: #ddd; float: left; height: 97px; margin: 8px 18px 0 0; width: 103px; }
 body.plantshare#ask #main #question-form, body.plantshare#plantshare #ask #question-form { clear: left; padding-left: 121px; }
