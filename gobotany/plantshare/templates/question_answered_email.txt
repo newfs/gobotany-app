@@ -13,4 +13,4 @@ New England Wild Flower Society
 
 Your question was:
 
-{{ question }}
+{{ question|safe }}
