@@ -1,0 +1,16 @@
+Hello, {{ user_name }}. Your question has been answered on the Go Botany site:
+
+http://gobotany.newenglandwild.org{% url 'ps-all-questions' %}#q{{ question_id }}
+
+Thanks for asking!
+
+Sincerely,
+
+The Go Botany Team
+New England Wild Flower Society
+
+--
+
+Your question was:
+
+{{ question }}

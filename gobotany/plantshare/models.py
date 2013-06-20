@@ -7,10 +7,12 @@ from decimal import Decimal, getcontext
 
 from django.conf import settings
 from django.contrib.auth.models import User
+from django.core.exceptions import ObjectDoesNotExist
 from django.core.files.storage import FileSystemStorage, Storage
 from django.db import models
 from django.db.models.signals import post_save
 from django.dispatch import receiver
+from django.template.loader import render_to_string
 
 from facebook_connect.models import FacebookUser
 from imagekit.models import ImageSpecField, ProcessedImageField
@@ -172,7 +174,7 @@ class UserProfile(models.Model):
         """
         display_name = self.user.username
         if self.display_name:
-                display_name = self.display_name
+            display_name = self.display_name
         return display_name
 
     def unique_user_display_name(self):
@@ -442,11 +444,30 @@ class Question(models.Model):
     def __unicode__(self):
         return '%d: %s' % (self.id, self.question)
 
+    def notify_user(self):
+        """Notify the user that the question has been answered on the site."""
+        user_name = self.asked_by.username
+        try:
+            user_profile = UserProfile.objects.get(user=self.asked_by)
+            user_name = user_profile.user_first_name()
+        except ObjectDoesNotExist:
+            pass
+        context = {
+            'user_name': user_name,
+            'question_id': self.id,
+            'question': self.question,
+        }
+        subject = render_to_string('question_answered_email_subject.txt')
+        subject = ''.join(subject.splitlines())   # remove newlines
+        message = render_to_string('question_answered_email.txt', context)
+        self.asked_by.email_user(subject, message)
+
     def save(self):
         # Auto-populate the "answered" date the first time a question is
-        # approved in the the Admin.
+        # approved in the the Admin, and notify the user by email.
         if self.answer and self.approved == True and not self.answered:
             self.answered = datetime.datetime.now()
+            self.notify_user()
 
         # If the question is answered or approved, then any attached images
         # are implicitly approved (otherwise the Admin user would just delete
