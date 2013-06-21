@@ -51,6 +51,7 @@ class SightingPhotoInline(admin.StackedInline):
 class SightingAdmin(admin.ModelAdmin):
     inlines = [SightingPhotoInline]
     exclude = ['photos']
+    list_display = ('user', 'identification', 'created', 'location')
 
 
 class ScreenedImageAdmin(admin.ModelAdmin):
