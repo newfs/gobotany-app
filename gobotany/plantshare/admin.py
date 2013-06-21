@@ -51,7 +51,20 @@ class SightingPhotoInline(admin.StackedInline):
 class SightingAdmin(admin.ModelAdmin):
     inlines = [SightingPhotoInline]
     exclude = ['photos']
-    list_display = ('user', 'identification', 'created', 'location')
+    list_display = ('display_name', 'identification', 'created', 'location',)
+    search_fields = ('identification', 'location__city', 'location__state',)
+
+    def display_name(self, obj):
+        display_name = ''
+        try: 
+            profile = models.UserProfile.objects.get(user=obj.user)
+            display_name = profile.user_display_name()
+        except models.UserProfile.DoesNotExist:
+            display_name = obj.user.username
+
+        return display_name
+
+
 
 
 class ScreenedImageAdmin(admin.ModelAdmin):
