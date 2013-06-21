@@ -337,6 +337,9 @@ class ImageType(models.Model):
     """
     name = models.CharField(max_length=100,
                             verbose_name=u'image type', unique=True)
+    # Normally only 2 characters long, but save some space just in case
+    code = models.CharField(max_length=4,
+                            verbose_name=u'type code')
 
     def __unicode__(self):
         return self.name

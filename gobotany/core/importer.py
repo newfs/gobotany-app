@@ -1282,9 +1282,9 @@ class Importer(object):
                 continue
 
             # Fetch or create a row representing this image type.
-
+            image_type_code = key[1]
             image_type_name = taxon_image_types[key]
-            table_imagetype.get(name=image_type_name)
+            table_imagetype.get(name=image_type_name, code=image_type_code)
 
             # Arbitrarily promote the first image for each
             # species-type to Rank 1.
