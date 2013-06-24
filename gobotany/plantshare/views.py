@@ -1049,7 +1049,8 @@ def ajax_restrictions(request):
     """
     restrictions_info = []
     plant_name = request.GET.get('plant')
+    location = request.GET.get('location')
     if plant_name:
-        restrictions_info = restrictions(plant_name)
+        restrictions_info = restrictions(plant_name, location)
     return HttpResponse(simplejson.dumps(restrictions_info),
                         mimetype='application/json; charset=utf-8')
