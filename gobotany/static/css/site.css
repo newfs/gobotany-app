@@ -1679,7 +1679,7 @@ body.search-results .search-navigation li { display: inline; margin: 0 2px; }
 #home.partner-site .three-col { background: none; height: 10px; }
 
 header.partner-site .go-botany, header.partner-site .go-botany a { width: 170px; }
-header.partner-site .site-name { color: #317b0c; float: left; font-family: "Trebuchet MS", Helvetica, Arial, "Lucida Sans Unicode", sans-serif; font-size: 14px; position: relative; top: 45px; width: 550px; }
+header.partner-site .site-name { color: #317b0c; float: left; font-family: "Trebuchet MS", Helvetica, Arial, "Lucida Sans Unicode", sans-serif; font-size: 14px; position: relative; top: 45px; width: 650px; }
 header.partner-site .site-name b { margin-right: 10px; }
 header.partner-site .site-name a { padding-left: 10px; text-decoration: none; }
 header.partner-site nav li a { padding: 5px 32px 0; /* fewer sections, more horizontal padding */ }
