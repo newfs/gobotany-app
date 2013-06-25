@@ -13,20 +13,37 @@ def new_england_state(location):
     state = None
     location = location.lower() if location else None
 
-    # Determine the state name from the end of the location string.
     if location:
-        if re.search(r'\W(connectitcut|ct\.?|conn\.?)$', location):
-            state = 'Connecticut'
-        elif re.search(r'\W(massachusetts|ma\.?|mass\.?)$', location):
-            state = 'Massachusetts'
-        elif re.search(r'\W(maine|me\.?)$', location):
-            state = 'Maine'
-        elif re.search(r'\W(new\s+hampshire|nh|n\.?\s+h\.?)$', location):
-            state = 'New Hampshire'
-        elif re.search(r'\W(rhode\s+island|ri|r\.?\s+i\.?)$', location):
-            state = 'Rhode Island'
-        elif re.search(r'\W(vermont|vt\.?)$', location):
-            state = 'Vermont'
+        if re.search(r'\d{5}(-\d{4})?$', location):
+            # Determine the state name from a ZIP code.
+            if re.search(r'06[0-9]{3}(-\d{4})?$', location):
+                state = 'Connecticut'
+            elif re.search(r'0(39|40|41|42|43|44|45|46|47|48|49)[0-9]{2}'
+                            '(-\d{4})?$', location):
+                state = 'Maine'
+            elif re.search(r'0(10|11|12|13|14|15|16|17|18|19|20|21|22|23|'
+                            '24|25|26|27)[0-9]{2}(-\d{4})?$', location):
+                state = 'Massachusetts'
+            elif re.search(r'03[0-8]{1}[0-9]{2}(-\d{4})?$', location):
+                state = 'New Hampshire'
+            elif re.search(r'02[89]{1}[0-9]{2}(-\d{4})?$', location):
+                state = 'Rhode Island'
+            elif re.search(r'05[0-9]{3}(-\d{4})?$', location):
+                state = 'Vermont'
+        else:
+            # Determine the state name from a name or abbreviation.
+            if re.search(r'\W(connectitcut|ct\.?|conn\.?)$', location):
+                state = 'Connecticut'
+            elif re.search(r'\W(maine|me\.?)$', location):
+                state = 'Maine'
+            elif re.search(r'\W(massachusetts|ma\.?|mass\.?)$', location):
+                state = 'Massachusetts'
+            elif re.search(r'\W(new\s+hampshire|nh|n\.?\s+h\.?)$', location):
+                state = 'New Hampshire'
+            elif re.search(r'\W(rhode\s+island|ri|r\.?\s+i\.?)$', location):
+                state = 'Rhode Island'
+            elif re.search(r'\W(vermont|vt\.?)$', location):
+                state = 'Vermont'
 
     return state
 
