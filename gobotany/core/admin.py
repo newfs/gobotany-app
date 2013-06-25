@@ -56,6 +56,18 @@ class TaxonLookalikeInline(admin.TabularInline):
     model = models.Lookalike
     extra = 1
 
+class TaxonAdminForm(forms.ModelForm):
+    class Meta:
+        model = models.Taxon
+        widgets = {
+            'factoid': forms.Textarea(attrs={
+                    'cols': 80,
+                    'rows': 10,
+                    'maxlength': model._meta.get_field('factoid').max_length,
+            })
+        }
+
+
 class TaxonAdmin(_Base):
     """
 
@@ -79,6 +91,7 @@ class TaxonAdmin(_Base):
     </p>
 
     """
+    form = TaxonAdminForm
     inlines = [
         TaxonConservationStatusInline,
         TaxonSynonymInline,
