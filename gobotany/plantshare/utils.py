@@ -1,4 +1,6 @@
+import json
 import re
+import urllib2
 
 from itertools import chain
 
@@ -14,7 +16,28 @@ def new_england_state(location):
     location = location.lower() if location else None
 
     if location:
-        if re.search(r'\d{5}(-\d{4})?$', location):
+        lat_long = re.search(r'^(-?\d{1,3}.?\d{1,6}? ?[nNsS]?)[, ]?'
+                              '(-?\d{1,3}.?\d{1,6}? ?[wWeE]?)$', location)
+        if lat_long:
+            # Determine the state name from latitude and longitude
+            # coordinates.
+            latitude = lat_long.group(1)
+            longitude = lat_long.group(2)
+            url = ('http://data.fcc.gov/api/block/find?format=json&'
+                   'latitude=%s&longitude=%s&showall=true') % (latitude,
+                                                               longitude)
+            try:
+                data = urllib2.urlopen(url).read()
+                response = json.loads(data)
+                state = response['State']['name']
+                state = state if state in ['Connecticut', 'Maine',
+                    'Massachusetts', 'New Hampshire', 'Rhode Island',
+                    'Vermont'] else None
+            except urllib2.HTTPError, e:
+                print 'HTTP error: %d' % e.code
+            except urllib2.URLError, e:
+                print 'Network error: %s' % e.reason.args[1]
+        elif re.search(r'\d{5}(-\d{4})?$', location):
             # Determine the state name from a ZIP code.
             if re.search(r'06[0-9]{3}(-\d{4})?$', location):
                 state = 'Connecticut'
