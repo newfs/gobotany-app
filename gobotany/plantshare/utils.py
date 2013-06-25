@@ -34,7 +34,7 @@ def restrictions(plant_name, location=None):
     """Return a list of taxa matching a given plant name, along with any
     information on restrictions for sightings of rare plants, etc.
     """
-    plant_regex = query_regex(plant_name)
+    plant_regex = query_regex(plant_name, anchor_at_start=True)
     ne_state = new_england_state(location)
     restrictions = []
 
