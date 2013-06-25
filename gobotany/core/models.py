@@ -517,7 +517,7 @@ class CommonName(models.Model):
 class Lookalike(models.Model):
     """Species that can be mistaken for others."""
     lookalike_scientific_name = models.CharField(max_length=100)
-    lookalike_characteristic = models.CharField(max_length=900)
+    lookalike_characteristic = models.CharField(max_length=900, blank=True)
     taxon = models.ForeignKey('Taxon', related_name='lookalikes')
 
     def __unicode__(self):
