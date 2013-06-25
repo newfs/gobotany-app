@@ -16,8 +16,8 @@ def new_england_state(location):
     location = location.lower() if location else None
 
     if location:
-        lat_long = re.search(r'^(-?\d{1,3}.?\d{1,6}? ?[nNsS]?)[, ]?'
-                              '(-?\d{1,3}.?\d{1,6}? ?[wWeE]?)$', location)
+        lat_long = re.search(r'^(-?\d{1,3}.?\d{1,6}?)[, ]?'
+                              '(-?\d{1,3}.?\d{1,6}?)$', location)
         if lat_long:
             # Determine the state name from latitude and longitude
             # coordinates.
