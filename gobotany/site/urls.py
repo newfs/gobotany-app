@@ -25,6 +25,8 @@ urlpatterns = patterns(
     url(r'^glossary/(?P<letter>[1a-z])/$', views.glossary_view,
         name='site-glossary'),
     url(r'^glossary/$', views.glossary_main_view, name='site-glossary-main'),
+    url('^advanced/$', views.placeholder_view,
+        {'template': 'gobotany/advanced.html'}, name='advanced-id-tools'),
     url(r'^about/$', views.about_view, name='site-about'),
     url(r'^contributors/$', views.contributors_view,
         name='site-contributors'),
@@ -40,20 +42,11 @@ urlpatterns = patterns(
     url(r'^plant-name-suggestions/', views.plant_name_suggestions_view,
         name='site-plant-name-suggestions'),
 
-    # Temporary placeholder pages for unreleased features
+    # Temporary placeholder page for unreleased feature
+    # TODO: redirect this URL at release
     url('^ps/$', views.placeholder_view,
         {'template': 'gobotany/plantshare_placeholder.html'},
-        name='plantshare-placeholder'),   # TODO: Use this URL at release
-    # TODO: redirect these URLs at release
-    url('^advanced/$', views.placeholder_view,
-        {'template': 'gobotany/advanced.html'},
-        name='advanced-id-tools'),
-    url('^advanced/full-key/$', views.placeholder_view,
-        {'template': 'gobotany/full_key_placeholder.html'},
-        name='full-key-placeholder'),
-    url('^advanced/dich-key/$', views.placeholder_view,
-        {'template': 'gobotany/dich_key_placeholder.html'},
-        name='dich-key-placeholder'),
+        name='plantshare-placeholder'),
 
     # Redirects for old URLs
     url('^teaching-tools/$', RedirectView.as_view(url='/teaching/')),
@@ -67,6 +60,8 @@ urlpatterns = patterns(
     url('^help/contributors/$', RedirectView.as_view(url='/contributors/')),
     url('^legal/privacy-policy/$', RedirectView.as_view(url='/privacy/')),
     url('^legal/terms-of-use/$', RedirectView.as_view(url='/terms-of-use/')),
+    url('^advanced/full-key/$', RedirectView.as_view(url='/full/')),
+    url('^advanced/dich-key/$', RedirectView.as_view(url='/dkey/')),
 
     # Unlinked pages for development and testing: even though unlinked,
     # comment out at release time anyway
