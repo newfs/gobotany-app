@@ -18,6 +18,10 @@ def query_regex(plant_name, anchor_at_start=False):
         if len(word) > 2:
             interior_length = len(word[1:-1])
             interior_chars = ''.join(set(list(word[1:-1])))   # Unique chars.
+
+            # Allow omitting an interior apostrophe if the word has one.
+            interior_chars += '\''
+
             regex_word = '%s[%s]{%d,%d}%s' % (
                 re.escape(word[0]),   # First character: an anchor
                 re.escape(interior_chars),  # Allow any: handle transpositions
