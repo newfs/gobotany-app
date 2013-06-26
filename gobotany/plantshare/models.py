@@ -261,6 +261,12 @@ class Sighting(models.Model):
         choices=SIGHTING_VISIBILITY_CHOICES,
         default=SIGHTING_DEFAULT_VISIBILITY)
 
+    # Add field for administrators indicating "flagged for review" if True.
+    flagged = models.BooleanField(default=False)
+
+    # Add field for administrators indicating approval of a flagged sighting.
+    approved = models.BooleanField(default=False)
+
     class Meta:
         ordering = ['-created']
         verbose_name = 'sighting'
