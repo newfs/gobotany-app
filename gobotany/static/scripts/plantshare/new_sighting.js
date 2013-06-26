@@ -135,10 +135,11 @@ define([
         }
     }
 
-    function check_restrictions(plant_name) {
+    function check_restrictions(plant_name, location) {
         var is_restricted = false;
         var url = '/plantshare/api/restrictions/';
-        url += '?plant=' + encodeURIComponent(plant_name);
+        url += '?plant=' + encodeURIComponent(plant_name) + '&location=' +
+            encodeURIComponent(location);
         $.ajax({
             url: url
         }).done(function (json) {
@@ -162,22 +163,25 @@ define([
         var $identification_box = $('#id_identification');
         var $location_box = $('#id_location');
         
-        // Check the conservation status for any initial identification
-        // value.
-        if ($identification_box.val() !== '') {
-            check_restrictions($identification_box.val());
-        }
-
+        var initial_identification = $identification_box.val();
+        var initial_location = $location_box.val();
         // Set the latitude and longitude for any initial location value.
-        if ($location_box.val() !== '') {
-            update_latitude_longitude($location_box.val(), geocoder);
+        if (initial_location !== '') {
+            update_latitude_longitude(initial_location, geocoder);
+        }
+        // Check the conservation status for any initial identification
+        // value and location value.
+        if (initial_identification !== '' && initial_location !== '') {
+            check_restrictions(initial_identification, initial_location);
         }
 
         // When the user enters a plant name in the identification
-        // field, check the name to see if it is a plant with
-        // conservation concerns. If so, the sighting will be hidden.
+        // field, check the name and location to see if there are
+        // conservation concerns. If so, the sighting will be private.
         $identification_box.on('blur', function () {
-            check_restrictions($(this).val());
+            if ($location_box.val() !== '') {
+                check_restrictions($(this).val(), $location_box.val());
+            }
         });
         $identification_box.on('keyup', function (event) {
             if ($(this).val() === '') {
@@ -186,7 +190,9 @@ define([
                 set_visibility_restriction(is_restricted);
             }
             else if (event.which == 13) {   // Enter key
-                check_restrictions($(this).val());
+                if ($location_box.val() !== '') {
+                    check_restrictions($(this).val(), $location_box.val());
+                }
             }
         });
 
@@ -194,6 +200,9 @@ define([
         // and let the map update.
         $location_box.blur(function () {
             update_latitude_longitude($(this).val(), geocoder);
+
+            // Check visibility restrictions for the plant and location.
+            check_restrictions($identification_box.val(), $(this).val());
         });
         $location_box.on('keypress keyup', function (event) {
             if (event.which === 13) {   // Enter key
@@ -206,6 +215,11 @@ define([
                 if (value !== '') {
                     event.preventDefault();
                     update_latitude_longitude(value, geocoder);
+
+                    // Check visibility restrictions for the plant and
+                    // location.
+                    check_restrictions($identification_box.val(),
+                                       $(this).val());
                     return false;
                 }
             }
