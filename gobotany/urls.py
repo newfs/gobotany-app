@@ -15,7 +15,7 @@ urlpatterns = patterns(
     url(r'^dkey/', include('gobotany.dkey.urls')),
     url(r'^edit/', include('gobotany.editor.urls')),
     url(r'^plantoftheday/', include('gobotany.plantoftheday.urls')),
-    url(r'^ps/', include('gobotany.plantshare.urls')), # Release: plantshare/
+    url(r'^plantshare/', include('gobotany.plantshare.urls')),
     url(r'^tinymce/', include('tinymce.urls')),
     url(r'^', include('gobotany.search.urls')),
     url(r'^', include('gobotany.site.urls')),

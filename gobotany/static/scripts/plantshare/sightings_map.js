@@ -74,8 +74,7 @@ define([
         }
         html += '</p>';
         if (sighting.id !== undefined) {
-            // TODO: URL base
-            html += '<p><a href="/ps/sightings/' + sighting.id +
+            html += '<p><a href="/plantshare/sightings/' + sighting.id +
                     '/">more</a></p>';
         }
         html += '</div>';
@@ -93,7 +92,7 @@ define([
 
     SightingsMap.prototype.show_sightings = function (plant_name) {
         // Get sightings data from the server and show them on the map.
-        var url = '/ps/api/sightings/'   // TODO: URL base
+        var url = '/plantshare/api/sightings/'
 
         // If the plant_name is undefined or null, will leave off the
         // plant parameter and show recent sightings. If the plant name

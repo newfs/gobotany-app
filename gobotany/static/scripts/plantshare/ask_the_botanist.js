@@ -26,8 +26,7 @@ define([
         function remove_thumbnail(id, $frame) {
             console.log('Remove thumbnail ' + id);
             
-            // TODO: URL path
-            var rejectUrl = '/ps/api/image-reject/' + id;
+            var rejectUrl = '/plantshare/api/image-reject/' + id;
             $.ajax(rejectUrl).done(function(data) {
                 if(data.success) {
                     $('#sighting-photos').find('input[value=' + id +

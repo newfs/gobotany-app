@@ -180,14 +180,14 @@ TIME_ZONE = 'America/New_York'
 USE_TZ = True
 
 # For django-facebook-connect
-FACEBOOK_LOGIN_REDIRECT = '/ps'     # TODO: /ps/ --> /plantshare/ at release
-FACEBOOK_SCOPE = 'email' 
+FACEBOOK_LOGIN_REDIRECT = '/plantshare/'
+FACEBOOK_SCOPE = 'email'
 FACEBOOK_APP_ID = os.environ.get('FACEBOOK_APP_ID', '')
 FACEBOOK_APP_SECRET = os.environ.get('FACEBOOK_APP_SECRET', '')
 
 # For django-registration
 ACCOUNT_ACTIVATION_DAYS = 7
-LOGIN_URL = '/ps/accounts/login/'   # TODO: /ps/ --> /plantshare/ at release
+LOGIN_URL = '/plantshare/accounts/login/'
 # To test with this, start a local test email server as follows:
 # python -m smtpd -n -c DebuggingServer localhost:1025
 EMAIL_HOST = os.environ.get('EMAIL_HOST', '')

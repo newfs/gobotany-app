@@ -27,10 +27,7 @@ define([
         function removeThumb(id, $frame) {
             console.log('Remove thumb ' + id);
 
-            // TODO: Import or implement a form of Django url-reversing 
-            // accessible to javascript, or insert variables at the top
-            // of relevant templates.
-            var rejectUrl = '/ps/api/image-reject/' + id;
+            var rejectUrl = '/plantshare/api/image-reject/' + id;
             $.ajax(rejectUrl).done(function(data) {
                 if(data.success) {
                     $('#sighting-photos').find('input[value=' + id +
@@ -140,7 +137,7 @@ define([
 
     function check_restrictions(plant_name) {
         var is_restricted = false;
-        var url = '/ps/api/restrictions/';   // TODO: URL base
+        var url = '/plantshare/api/restrictions/';
         url += '?plant=' + encodeURIComponent(plant_name);
         $.ajax({
             url: url

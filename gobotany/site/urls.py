@@ -41,7 +41,7 @@ urlpatterns = patterns(
         name='site-plant-name-suggestions'),
 
     # Temporary placeholder pages for unreleased features
-    url('^plantshare/$', views.placeholder_view,
+    url('^ps/$', views.placeholder_view,
         {'template': 'gobotany/plantshare_placeholder.html'},
         name='plantshare-placeholder'),   # TODO: Use this URL at release
     # TODO: redirect these URLs at release

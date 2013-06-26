@@ -171,7 +171,7 @@ class NavigationTests(FunctionalCase):
         self.assertEqual(self.css1('h1').text, 'Woody plants')
 
     def test_main_heading_plantshare(self):
-        self.get('/ps/')
+        self.get('/plantshare/')
         self.assertEqual(self.css1('h1').text, 'PlantShare')
 
     def test_main_heading_full_key(self):

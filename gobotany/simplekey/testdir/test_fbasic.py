@@ -163,11 +163,12 @@ class NavigationFunctionalTests(FunctionalTestCase):
 
     def test_header_plantshare_item_highlighted(self):
         self.assertTrue(
-            self._is_nav_item_highlighted('/ps/', 'header li.plantshare'))
+            self._is_nav_item_highlighted('/plantshare/',
+                'header li.plantshare'))
 
     def test_header_plantshare_item_highlighted_within_section(self):
         self.assertTrue(
-            self._is_nav_item_highlighted('/ps/accounts/register/',
+            self._is_nav_item_highlighted('/plantshare/accounts/register/',
                                           'header li.plantshare'))
 
     def test_header_full_key_item_highlighted(self):
