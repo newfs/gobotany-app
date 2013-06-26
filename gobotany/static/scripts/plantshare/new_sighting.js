@@ -11,54 +11,54 @@ define([
 
     $(document).ready(function () {
 
-        function addNewThumb(thumb_url, full_url, id) {
-            // Set the last image's url, which should be the spinner,
-            // to the real image url.
-            var $lastImage = $('.thumb-gallery img.thumb').last();
-            $lastImage.attr('src', thumb_url);
-            $lastImage.wrap('<a href="' + full_url +
+        function add_new_thumb(thumb_url, full_url, id) {
+            // Set the last image's URL, which should be the spinner,
+            // to the real image URL.
+            var $last_image = $('.thumb-gallery img.thumb').last();
+            $last_image.attr('src', thumb_url);
+            $last_image.wrap('<a href="' + full_url +
                 '" class="preview"></a>');
-            $lastImage.parent().after('<div class="delete-link"><a href="' +
+            $last_image.parent().after('<div class="delete-link"><a href="' +
                 id + '"><img src="' + DELETE_ICON + '" /> Remove</a></div>');
 
             Shadowbox.setup('a.preview');
         }
 
-        function removeThumb(id, $frame) {
+        function remove_thumb(id, $frame) {
             console.log('Remove thumb ' + id);
 
-            var rejectUrl = '/plantshare/api/image-reject/' + id;
-            $.ajax(rejectUrl).done(function(data) {
+            var reject_url = '/plantshare/api/image-reject/' + id;
+            $.ajax(reject_url).done(function (data) {
                 if(data.success) {
                     $('#sighting-photos').find('input[value=' + id +
                         ']').remove();
-                    $frame.fadeOut(300, function() { $frame.remove(); });
+                    $frame.fadeOut(300, function () { $frame.remove(); });
                 } else {
                     console.log('Error removing sighting photo.');
                 }
             });
         }
 
-        function attachSightingPhoto(newPhotoId) {
+        function attach_sighting_photo(new_photo_id) {
             $('.template-photo').clone().removeClass('template-photo').attr({
                     'name': 'sightings_photos',
-                    'value': newPhotoId
+                    'value': new_photo_id
                 }).appendTo('#sighting-photos');
         }
 
-        function startUpload() {
+        function start_upload() {
             // Add the spinner to the gallery
             $('.thumb-gallery').append(
                 '<div class="thumb-frame"><img class="thumb" src="' + 
                 UPLOAD_SPINNER + '"></div>');
         }
 
-        function photoUploaded(info) {
+        function photo_uploaded(info) {
             console.log('Successfully uploaded sighting photo.');
             console.log('New Photo [id=' + info.id + ', thumb=' +
                         info.thumb + ', url=' + info.url + ']');
-            addNewThumb(info.thumb, info.url, info.id);
-            attachSightingPhoto(info.id);
+            add_new_thumb(info.thumb, info.url, info.id);
+            attach_sighting_photo(info.id);
             if ((info.latitude !== null) && (info.longitude !== null)) {
                 var $location = $('#id_location');
                 $location.val(info.latitude + ', ' + info.longitude);
@@ -66,11 +66,11 @@ define([
             }
         }
 
-        function uploadError(errorInfo) {
+        function upload_error(errorInfo) {
             console.log('Error: ' + errorInfo);
         }
 
-        $('.delete-link a').live('click', function() {
+        $('.delete-link a').live('click', function () {
             $this = $(this);
             console.log('Delete image');
             $frame = $('.thumb-gallery .thumb-frame').has($this);
@@ -80,9 +80,9 @@ define([
         });
 
         upload_modal.setup('.image-modal', '#upload-link', {
-            onStartUpload: startUpload,
-            onUploadComplete: photoUploaded,
-            onError: uploadError,
+            onStartUpload: start_upload,
+            onUploadComplete: photo_uploaded,
+            onError: upload_error,
         });
     });
 
@@ -213,4 +213,3 @@ define([
     });
 
 });
-
