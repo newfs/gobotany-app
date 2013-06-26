@@ -55,7 +55,7 @@ def new_england_state(location):
                 state = 'Vermont'
         else:
             # Determine the state name from a name or abbreviation.
-            if re.search(r'\W(connectitcut|ct\.?|conn\.?)$', location):
+            if re.search(r'\W(connecticut|ct\.?|conn\.?)$', location):
                 state = 'Connecticut'
             elif re.search(r'\W(maine|me\.?)$', location):
                 state = 'Maine'
