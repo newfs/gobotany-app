@@ -680,17 +680,27 @@ class Edit(models.Model):
 class ConservationStatus(models.Model):
     """Zero or more conservation status values per species+region."""
 
+    ABSENT = 'absent'
+    ENDANGERED = 'endangered'
+    EXTIRPATED = 'extirpated'
+    HISTORIC = 'historic'
+    INVASIVE = 'invasive'
+    PRESENT = 'present'
+    PROHIBITED = 'prohibited'
+    RARE = 'rare'
+    SPECIAL_CONCERN = 'special concern'
+    THREATENED = 'threatened'
     CONSERVATION_LABELS = (
-        ('absent', 'Absent'),
-        ('endangered', 'Endangered'),
-        ('extirpated', 'Extirpated'),
-        ('historic', 'Historic'),
-        ('invasive', 'Invasive'),
-        ('present', 'Present'),
-        ('prohibited', 'Prohibited'),
-        ('rare', 'Rare'),
-        ('special concern', 'Special concern'),
-        ('threatened', 'Threatened'),
+        (ABSENT, 'Absent'),
+        (ENDANGERED, 'Endangered'),
+        (EXTIRPATED, 'Extirpated'),
+        (HISTORIC, 'Historic'),
+        (INVASIVE, 'Invasive'),
+        (PRESENT, 'Present'),
+        (PROHIBITED, 'Prohibited'),
+        (RARE, 'Rare'),
+        (SPECIAL_CONCERN, 'Special concern'),
+        (THREATENED, 'Threatened'),
         )
 
     STATE_NAMES = sorted(settings.STATE_NAMES.items(), key=lambda x: x[1])
@@ -700,8 +710,10 @@ class ConservationStatus(models.Model):
     label = models.CharField(choices=CONSERVATION_LABELS, max_length=80)
 
     class Meta:
-        ordering = ('region', 'label')
+        ordering = ('taxon', 'region', 'label')
         unique_together = ('taxon', 'region', 'label')
+        verbose_name = 'conservation status'
+        verbose_name_plural = 'conservation statuses'
 
     def __unicode__(self):
         return u'%s: %s' % (self.region, self.label)
