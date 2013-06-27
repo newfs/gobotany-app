@@ -478,6 +478,12 @@ class CopyrightHolderAdmin(_Base):
     def image_count(self, obj):
         return models.ContentImage.objects.filter(creator=obj.coded_name).count()
 
+
+class DistributionAdmin(admin.ModelAdmin):
+    list_display = ('scientific_name', 'state', 'county', 'status')
+    list_filter = ('state', 'county', 'status')
+
+
 # Registrations
 
 admin.site.register(models.Parameter)
@@ -496,3 +502,4 @@ admin.site.register(models.Family, FamilyAdmin)
 admin.site.register(models.Genus, GenusAdmin)
 admin.site.register(models.PartnerSite, PartnerSiteAdmin)
 admin.site.register(models.PartnerSpecies, PartnerSpeciesAdmin)
+admin.site.register(models.Distribution, DistributionAdmin)

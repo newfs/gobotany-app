@@ -791,11 +791,14 @@ class PlantPreviewCharacter(models.Model):
 
 
 class Distribution(models.Model):
-    """County-level distribution data for plants."""
+    """County- or state-level distribution data for plants."""
     scientific_name = models.CharField(max_length=100, db_index=True)
     state = models.CharField(max_length=2)
     county = models.CharField(max_length=50)
     status = models.CharField(max_length=100)
+
+    class Meta:
+        ordering = ('scientific_name', 'state', 'county', 'status')
 
     def __unicode__(self):
         county = ' (%s County)' % self.county if len(self.county) > 0 else ''
