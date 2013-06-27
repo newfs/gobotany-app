@@ -15,7 +15,7 @@ from django.views.decorators.vary import vary_on_headers
 
 from gobotany.core import botany
 from gobotany.core.models import (
-    CommonName, ConservationStatus, ContentImage, CopyrightHolder,
+    CommonName, ConservationLabel, ContentImage, CopyrightHolder,
     Family, Genus, GlossaryTerm, HomePageImage, PartnerSite, PartnerSpecies,
     Pile, Taxon, Video,
     )
@@ -396,7 +396,7 @@ def species_list_view(request):
         if taxon_id in plantmap:
             plantmap[taxon_id]['common_names'].append(common_name)
 
-    q = ConservationStatus.objects.filter(label='present').values_list(
+    q = ConservationLabel.objects.filter(label='present').values_list(
         'taxon_id', 'region',
         )
     for taxon_id, region in q:

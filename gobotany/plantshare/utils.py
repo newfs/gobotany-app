@@ -7,7 +7,7 @@ from itertools import chain
 from gobotany.core.models import Taxon
 from gobotany.site.utils import query_regex
 
-RESTRICTED_STATUSES = ['rare', 'endangered', 'threatened',
+RESTRICTED_LABELS = ['rare', 'endangered', 'threatened',
     'special concern', 'historic', 'extirpated']
 
 def new_england_state(location):
@@ -91,10 +91,10 @@ def restrictions(plant_name, location=None):
         common_names = [n.common_name for n in taxon.common_names.all()]
         synonyms = [s.scientific_name for s in taxon.synonyms.all()]
 
-        statuses = taxon.get_conservation_statuses()
-        statuses_lists = [v for k, v in
-            {k : v for k, v in statuses.iteritems()}.iteritems()]
-        all_statuses = list(set(list(chain.from_iterable(statuses_lists))))
+        labels = taxon.get_conservation_labels()
+        labels_lists = [v for k, v in
+            {k : v for k, v in labels.iteritems()}.iteritems()]
+        all_labels = list(set(list(chain.from_iterable(labels_lists))))
 
         sightings_restricted = False
         restricted_by = []
@@ -103,17 +103,17 @@ def restrictions(plant_name, location=None):
         # the plant is rare in that state.
 
         if ne_state is not None and ne_state:
-            restricted_list = statuses[ne_state]
+            restricted_list = labels[ne_state]
         else:
             # If the location is anywhere else (or is unknown), restrict
             # if the plant is rare in any New England state, as a fallback.
             # This is a conservative measure for various edge cases
             # such as plants that may be rare outside New England,
             # incorrect location detection, etc.
-            restricted_list = all_statuses
+            restricted_list = all_labels
 
-        restricted_by = [restricted_status for restricted_status
-            in RESTRICTED_STATUSES if restricted_status in restricted_list]
+        restricted_by = [restricted_label for restricted_label
+            in RESTRICTED_LABELS if restricted_label in restricted_list]
         if len(restricted_by) > 0:
             sightings_restricted = True
 
@@ -122,8 +122,8 @@ def restrictions(plant_name, location=None):
             'common_names': common_names,
             'synonyms': synonyms,
             'new_england_state': ne_state,
-            'statuses': statuses,
-            'all_statuses': all_statuses,
+            'labels': labels,
+            'all_labels': all_labels,
             'restricted_by': restricted_by,
             'sightings_restricted': sightings_restricted,
         })

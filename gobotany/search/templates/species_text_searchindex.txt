@@ -52,9 +52,9 @@ Wetland Status:
 {% endif %}
 
 Distribution and Conservation Status:
-{% with conservation_matrix=object.get_conservation_statuses %}
-  {% for state_name, statuses in conservation_matrix.items %}
-    {{ state_name }}: {{ statuses|join:", " }}
+{% with conservation_matrix=object.get_conservation_labels %}
+  {% for state_name, labels in conservation_matrix.items %}
+    {{ state_name }}: {{ labels|join:", " }}
   {% endfor %}
 {% endwith %}
 

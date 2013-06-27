@@ -378,7 +378,7 @@ class Importer(object):
         family_table = db.table('core_family')
         genus_table = db.table('core_genus')
         taxon_table = db.table('core_taxon')
-        conservationstatus_table = db.table('core_conservationstatus')
+        conservationlabel_table = db.table('core_conservationlabel')
         partnerspecies_table = db.table('core_partnerspecies')
         pile_species_table = db.table('core_pile_species')
         commonname_table = db.table('core_commonname')
@@ -490,7 +490,7 @@ class Importer(object):
             state_statuses = self._get_all_states_status(taxon, row)
             for state_code, status_list in state_statuses.items():
                 for label in status_list:
-                    conservationstatus_table.get(
+                    conservationlabel_table.get(
                         taxon_id=taxon_proxy_id,
                         region=state_code,
                         label=label,
@@ -555,8 +555,8 @@ class Importer(object):
         taxon_table.replace('genus_id', genus_map)
         taxon_table.save()
         taxon_map = db.map('core_taxon', 'scientific_name', 'id')
-        conservationstatus_table.replace('taxon_id', taxon_map)
-        conservationstatus_table.save()
+        conservationlabel_table.replace('taxon_id', taxon_map)
+        conservationlabel_table.save()
         partnerspecies_table.replace('species_id', taxon_map)
         partnerspecies_table.save()
         pile_species_table.replace('taxon_id', taxon_map)

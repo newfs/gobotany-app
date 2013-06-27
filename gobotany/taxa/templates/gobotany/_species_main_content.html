@@ -203,9 +203,9 @@
         <p>Exact status definitions can vary from state to
         state. For details, please check with your state.</p>
         <div id="ne-status">
-        {% with statuses=taxon.get_distribution_and_conservation_statuses %}
+        {% with labels=taxon.get_distribution_and_conservation_labels %}
             <div class="characteristics">
-            {% for state_name, values in statuses.items %}
+            {% for state_name, values in labels.items %}
                 <dl>
                     <dt>{{ state_name }}</dt>
                     <dd>

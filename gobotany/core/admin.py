@@ -40,8 +40,8 @@ class _Base(admin.ModelAdmin):
         css = {'all': ('/static/admin_styles.css',)}
 
 
-class TaxonConservationStatusInline(admin.TabularInline):
-    model = models.ConservationStatus
+class TaxonConservationLabelInline(admin.TabularInline):
+    model = models.ConservationLabel
     extra = 1
 
 class TaxonSynonymInline(admin.TabularInline):
@@ -93,7 +93,7 @@ class TaxonAdmin(_Base):
     """
     form = TaxonAdminForm
     inlines = [
-        TaxonConservationStatusInline,
+        TaxonConservationLabelInline,
         TaxonSynonymInline,
         TaxonCommonNameInline,
         TaxonLookalikeInline,
@@ -479,7 +479,7 @@ class CopyrightHolderAdmin(_Base):
         return models.ContentImage.objects.filter(creator=obj.coded_name).count()
 
 
-class ConservationStatusAdmin(admin.ModelAdmin):
+class ConservationLabelAdmin(admin.ModelAdmin):
     list_display = ('taxon', 'region', 'label')
     list_filter = ('region', 'label')
 
@@ -507,5 +507,5 @@ admin.site.register(models.Family, FamilyAdmin)
 admin.site.register(models.Genus, GenusAdmin)
 admin.site.register(models.PartnerSite, PartnerSiteAdmin)
 admin.site.register(models.PartnerSpecies, PartnerSpeciesAdmin)
-admin.site.register(models.ConservationStatus, ConservationStatusAdmin)
+admin.site.register(models.ConservationLabel, ConservationLabelAdmin)
 admin.site.register(models.Distribution, DistributionAdmin)

@@ -589,17 +589,17 @@ class Taxon(models.Model):
         names.append(self.scientific_name)
         return names
 
-    def get_conservation_statuses(self):
+    def get_conservation_labels(self):
         mapping = defaultdict(list)
-        for row in self.conservation_statuses.all():
+        for row in self.conservation_labels.all():
             mapping[settings.STATE_NAMES[row.region]].append(row.label)
         return odict(sorted(mapping.iteritems()))
 
-    def get_distribution_and_conservation_statuses(self):
-        # Order the conservation statuses such that a special value, the
+    def get_distribution_and_conservation_labels(self):
+        # Order the conservation labels such that a special value, the
         # distribution (present/absent), always comes first.
         mapping = defaultdict(list)
-        for row in self.conservation_statuses.all():
+        for row in self.conservation_labels.all():
             key = settings.STATE_NAMES[row.region]
             if row.label in ['present', 'absent']:
                 mapping[key].insert(0, row.label)
@@ -677,8 +677,8 @@ class Edit(models.Model):
     old_value = models.TextField()
 
 
-class ConservationStatus(models.Model):
-    """Zero or more conservation status values per species+region."""
+class ConservationLabel(models.Model):
+    """Zero or more conservation labels per species+region."""
 
     ABSENT = 'absent'
     ENDANGERED = 'endangered'
@@ -705,15 +705,13 @@ class ConservationStatus(models.Model):
 
     STATE_NAMES = sorted(settings.STATE_NAMES.items(), key=lambda x: x[1])
 
-    taxon = models.ForeignKey(Taxon, related_name='conservation_statuses')
+    taxon = models.ForeignKey(Taxon, related_name='conservation_labels')
     region = models.CharField(choices=STATE_NAMES, max_length=80)
     label = models.CharField(choices=CONSERVATION_LABELS, max_length=80)
 
     class Meta:
         ordering = ('taxon', 'region', 'label')
         unique_together = ('taxon', 'region', 'label')
-        verbose_name = 'conservation status'
-        verbose_name_plural = 'conservation statuses'
 
     def __unicode__(self):
         return u'%s: %s' % (self.region, self.label)
