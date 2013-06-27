@@ -42,6 +42,9 @@ def schema():
 def csv():
     run('python -m gobotany.core.importer zipimport')
 
+    # After importing CSV data, load conservation status data from a fixture.
+    admin('loaddata conservation_status_data.json')
+
 def images():
     run('python -m gobotany.core.importer taxon-images')
 

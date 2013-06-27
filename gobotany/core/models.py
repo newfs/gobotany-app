@@ -539,8 +539,14 @@ class WetlandIndicator(models.Model):
         return '%s (%s)' % (self.code, self.name)
 
 
+class TaxonManager(models.Manager):
+    def get_by_natural_key(self, scientific_name):
+        return self.get(scientific_name=scientific_name)
+
+
 class Taxon(models.Model):
-    """Despite its general name, this currently represents a single species."""
+    """Despite its general name this currently represents a single species."""
+    objects = TaxonManager()
 
     scientific_name = models.CharField(max_length=100, unique=True)
     piles = models.ManyToManyField(
@@ -559,7 +565,9 @@ class Taxon(models.Model):
     north_american_introduced = models.NullBooleanField()
     description = models.CharField(max_length=500, blank=True)
     variety_notes = models.CharField(max_length=1000, blank=True)
-    # TODO: import descriptions!
+
+    def natural_key(self):
+        return (self.scientific_name,)
 
     class Meta:
         verbose_name = 'taxon'
@@ -715,6 +723,25 @@ class ConservationLabel(models.Model):
 
     def __unicode__(self):
         return u'%s: %s' % (self.region, self.label)
+
+
+class ConservationStatus(models.Model):
+    STATE_NAMES = sorted(settings.STATE_NAMES.items(), key=lambda x: x[1])
+
+    taxon = models.ForeignKey(Taxon, related_name='conservation_statuses')
+    variety_subspecies_hybrid = models.CharField(max_length=80)
+    region = models.CharField(choices=STATE_NAMES, max_length=80)
+    s_rank = models.CharField(max_length=10)
+    endangerment_code = models.CharField(max_length=10)
+    allow_public_posting = models.BooleanField(default=True)
+
+    class Meta:
+        verbose_name = 'conservation status'
+        verbose_name_plural = 'conservation statuses'
+
+    def __unicode__(self):
+        return u'%s: %s %s' % (self.region, self.s_rank,
+            self.endangerment_code)
 
 
 class DefaultFilter(models.Model):
