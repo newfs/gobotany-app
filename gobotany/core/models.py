@@ -691,16 +691,16 @@ class ConservationStatus(models.Model):
     SPECIAL_CONCERN = 'special concern'
     THREATENED = 'threatened'
     CONSERVATION_LABELS = (
-        (ABSENT, 'Absent'),
-        (ENDANGERED, 'Endangered'),
-        (EXTIRPATED, 'Extirpated'),
-        (HISTORIC, 'Historic'),
-        (INVASIVE, 'Invasive'),
-        (PRESENT, 'Present'),
-        (PROHIBITED, 'Prohibited'),
-        (RARE, 'Rare'),
-        (SPECIAL_CONCERN, 'Special concern'),
-        (THREATENED, 'Threatened'),
+        (ABSENT, 'absent'),
+        (ENDANGERED, 'endangered'),
+        (EXTIRPATED, 'extirpated'),
+        (HISTORIC, 'historic'),
+        (INVASIVE, 'invasive'),
+        (PRESENT, 'present'),
+        (PROHIBITED, 'prohibited'),
+        (RARE, 'rare'),
+        (SPECIAL_CONCERN, 'special concern'),
+        (THREATENED, 'threatened'),
         )
 
     STATE_NAMES = sorted(settings.STATE_NAMES.items(), key=lambda x: x[1])
