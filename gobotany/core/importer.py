@@ -630,6 +630,51 @@ class Importer(object):
         table.save()
 
 
+    def import_conservation_statuses(self, statuses_file):
+        log.info('Importing conservation statuses')
+
+        statuses_count = 0
+        for row in open_csv(statuses_file):
+            state = row['state']
+            scientific_name = row['scientific_name']
+            var_subsp_hybrid = row['variety_subspecies_hybrid']
+            s_rank = row['srank']
+            endangerment_code = row['endangerment_code']
+
+            allow_public_posting = True
+            if 'allow_public_posting' in row.keys():
+                if row['allow_public_posting'].upper() == 'NO':
+                    allow_public_posting = False
+
+            taxon = None
+            try:
+                taxon = models.Taxon.objects.get(
+                    scientific_name=scientific_name)
+            except ObjectDoesNotExist:
+                log.info('Taxon record does not exist: %s' % scientific_name)
+                log.info('Looking for synonym:')
+                try:
+                    synonym = models.Synonym.objects.get(
+                        scientific_name=scientific_name)
+                except ObjectDoesNotExist:
+                    log.info('Synonym not found')
+                    continue
+                taxon = synonym.taxon
+                print 'Found synonym: %s --> %s' % (
+                    synonym.scientific_name, taxon.scientific_name)
+
+            if taxon:
+                conservation_status = models.ConservationStatus(taxon=taxon,
+                    variety_subspecies_hybrid=var_subsp_hybrid,
+                    region=state, s_rank=s_rank,
+                    endangerment_code=endangerment_code,
+                    allow_public_posting=allow_public_posting)
+                conservation_status.save()
+                statuses_count += 1
+
+        log.info('Created %d conservation status records.' % statuses_count)
+
+
     def import_taxon_character_values(self, db, *filenames):
         """Load taxon character values from CSV files"""
 
@@ -2088,6 +2133,7 @@ full_import_steps = (
     (Importer.import_genera, 'genera.csv'),
     (Importer.import_wetland_indicators, 'wetland_indicators.csv'),
     (Importer.import_taxa, 'taxa.csv'),
+    (Importer.import_conservation_statuses, 'conservation_status.csv'),
     (Importer.import_characters, 'characters.csv'),
     (Importer.import_character_values, 'character_values.csv'),
     (Importer.import_glossary, 'glossary.csv'),

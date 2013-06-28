@@ -753,7 +753,9 @@ class ConservationLabel(models.Model):
 
 
 class ConservationStatus(models.Model):
-    STATE_NAMES = sorted(settings.STATE_NAMES.items(), key=lambda x: x[1])
+    STATE_NAMES = sorted([(abbrev.upper(), name)
+                         for abbrev, name in settings.STATE_NAMES.items()],
+                         key=lambda x: x[1])
 
     taxon = models.ForeignKey(Taxon, related_name='conservation_statuses')
     variety_subspecies_hybrid = models.CharField(max_length=80)
@@ -767,8 +769,8 @@ class ConservationStatus(models.Model):
         verbose_name_plural = 'conservation statuses'
 
     def __unicode__(self):
-        return u'%s: %s %s' % (self.region, self.s_rank,
-            self.endangerment_code)
+        return u'%s in %s: %s %s' % (self.taxon.scientific_name, self.region,
+            self.s_rank, self.endangerment_code)
 
 
 class DefaultFilter(models.Model):
