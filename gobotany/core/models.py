@@ -673,16 +673,13 @@ class SourceCitation(models.Model):
 class TaxonCharacterValue(models.Model):
     """Binary relation specifying the character values of a particular Taxon.
 
-    The extra field `lit_source` is used to remember what literature was
-    consulted to learn that a character value is indeed characteristic
-    of a particular species.
-
     """
     taxon = models.ForeignKey(Taxon)
     character_value = models.ForeignKey(CharacterValue,
                                         related_name='taxon_character_values')
-    lit_source = models.CharField(max_length=100,
-                                  null=True, blank=True)
+    literary_source = models.ForeignKey(SourceCitation,
+                                        related_name='taxon_character_values',
+                                        null=True)
 
     class Meta:
         unique_together = ('taxon', 'character_value')

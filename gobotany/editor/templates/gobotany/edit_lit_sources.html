@@ -17,7 +17,7 @@
     {% with character=character_value.character %}
     <div>
       <input name="tcv{{ tcv.id }}"
-             value="{{ tcv.lit_source|default_if_none:"" }}">
+             value="{{ tcv.literary_source|default_if_none:"" }}">
       <i>{{ tcv.taxon.scientific_name }}</i>
       {{ tcv.character_value.character.name }}
       {% if tcv.character_value.character.value_type == 'LENGTH' %}

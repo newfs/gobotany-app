@@ -367,7 +367,8 @@ def edit_lit_sources(request, dotted_datetime):
                 # Ignore a tcv that has disappeared in the meantime.
                 continue
             tcv = tcvs[0]
-            tcv.lit_source = request.POST[key]
+            citation = models.SourceCitation.objects.get(citation_text=request.POST[key])
+            tcv.literary_source = citation
             tcv.save()
         return redirect(return_to)
 
