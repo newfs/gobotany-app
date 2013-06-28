@@ -832,6 +832,8 @@ class Distribution(models.Model):
     scientific_name = models.CharField(max_length=100, db_index=True)
     state = models.CharField(max_length=2)
     county = models.CharField(max_length=50)
+    present = models.BooleanField(default=False)
+    native = models.BooleanField(default=False)
     status = models.CharField(max_length=100)
 
     class Meta:
@@ -839,8 +841,17 @@ class Distribution(models.Model):
 
     def __unicode__(self):
         county = ' (%s County)' % self.county if len(self.county) > 0 else ''
+        status = ''
+        if self.present:
+            status = 'present, '
+            if self.native:
+                status += 'native'
+            else:
+                status += 'non-native'
+        else:
+            status = 'absent'
         return '%s: %s%s: %s' % (self.scientific_name, self.state,
-                                 county, self.status)
+                                 county, status)
 
 
 class CopyrightHolder(models.Model):

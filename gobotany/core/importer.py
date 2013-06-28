@@ -1567,6 +1567,64 @@ class Importer(object):
         lookalike_table.save()
 
 
+    def _parse_status(self, status):
+        """For a distribution data status string, return whether the plant
+        is present and whether it is native.
+        """
+        ABSENCE_INDICATORS = [
+                'absent',       # From adjusted New England data, covers
+                                # "absent"
+                'extirpated',   # Covers: "Species extirpated (historic)"
+                'extinct',      # Covers: "Species extinct"
+                'not present',  # Covers: "Species not present in state"
+                'eradicated',   # Covers: "Species eradicated"
+                'questionable', # Covers: "Questionable presence
+                                #          (cross-hatched)"
+                ]
+        NON_NATIVE_PRESENCE_INDICATORS = [
+            'present, non-native',   # From adjusted New England data
+            'exotic',    # Covers: "Species present in state and exotic"
+                         #     and "Species exotic and present"
+            'waif',      # Covers: "Species waif"
+            'noxious',   # Covers: "Species noxious"
+            'native, but adventive', # Covers: "Species native, but adventive
+                                     #          in state"
+            ]
+        NATIVE_PRESENCE_INDICATORS = [
+            'present, native',   # From adjusted New England data
+            'and rare',  # Covers: "Species present and rare"
+            'native',    # Covers: "Species present in state and native"
+            'species present', # Covers: "Species present in state and
+                               #          not rare"
+            ]
+        status = status.lower()
+        is_present = None
+        is_native = False
+        # Look through the absence indicators first because otherwise
+        # a "false-present" label could occur.
+        for indicator in ABSENCE_INDICATORS:
+            if indicator in status:
+                is_present = False
+                break
+        # If an absence indicator did not match, look through the
+        # presence indicators.
+        if is_present is None:
+            for indicator in NON_NATIVE_PRESENCE_INDICATORS:
+                if indicator in status:
+                    is_present = True
+                    is_native = False
+                    break
+            if is_present is None:
+                for indicator in NATIVE_PRESENCE_INDICATORS:
+                    if indicator in status:
+                        is_present = True
+                        is_native = True
+                        break
+        if is_present is None:
+            is_present = False
+        return is_present, is_native
+
+
     def import_distributions(self, distributionsf):
         """Load BONAP distribution data from a CSV file"""
         log.info('Importing distribution data (BONAP)')
@@ -1586,11 +1644,15 @@ class Importer(object):
             break   # Now that the correct status column name is known
 
         for row in open_csv(distributionsf):
+            is_present, is_native = self._parse_status(
+                row[status_column_name])
             distribution.get(
                 scientific_name=row['scientific_name'],
                 state=row['state'],
                 county=row['county'],
                 ).set(
+                present=is_present,
+                native=is_native,
                 status=row[status_column_name],
                 )
 
@@ -1635,7 +1697,10 @@ class Importer(object):
             #        current_status,
             #        distribution_status
             #)
-            distribution_row.set(status=distribution_status)
+            is_present, is_native = self._parse_status(distribution_status)
+            distribution_row.set(present=is_present, native=is_native,
+                status=distribution_status)
+
 
     def import_videos(self, db, videofilename):
         """Load pile and pile group video URLs from a CSV file"""
