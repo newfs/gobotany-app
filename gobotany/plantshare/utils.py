@@ -4,14 +4,17 @@ import urllib2
 
 from itertools import chain
 
+from django.conf import settings
+
 from gobotany.core.models import Taxon
 from gobotany.site.utils import query_regex
 
-RESTRICTED_LABELS = ['rare', 'endangered', 'threatened',
-    'special concern', 'historic', 'extirpated']
-
-def new_england_state(location):
-    """Return the New England state for a location."""
+def get_covered_state(location):
+    """Return the name of the state covered by the site for a given
+    location, if possible.
+    (So far below, ZIP code and state abbreviation/name support is
+    limited to the New England states.)
+    """
     state = None
     location = location.lower() if location else None
 
@@ -30,9 +33,6 @@ def new_england_state(location):
                 data = urllib2.urlopen(url).read()
                 response = json.loads(data)
                 state = response['State']['name']
-                state = state if state in ['Connecticut', 'Maine',
-                    'Massachusetts', 'New Hampshire', 'Rhode Island',
-                    'Vermont'] else None
             except urllib2.HTTPError, e:
                 print 'HTTP error: %d' % e.code
             except urllib2.URLError, e:
@@ -68,6 +68,9 @@ def new_england_state(location):
             elif re.search(r'\W(vermont|vt\.?)$', location):
                 state = 'Vermont'
 
+    state = state if state in [
+        v for k, v in settings.STATE_NAMES.iteritems()] else None
+
     return state
 
 def restrictions(plant_name, location=None):
@@ -75,7 +78,7 @@ def restrictions(plant_name, location=None):
     information on restrictions for sightings of rare plants, etc.
     """
     plant_regex = query_regex(plant_name, anchor_at_start=True)
-    ne_state = new_england_state(location)
+    covered_state = get_covered_state(location)
     restrictions = []
 
     scientific_name_taxa = Taxon.objects.filter(
@@ -91,40 +94,41 @@ def restrictions(plant_name, location=None):
         common_names = [n.common_name for n in taxon.common_names.all()]
         synonyms = [s.scientific_name for s in taxon.synonyms.all()]
 
-        labels = taxon.get_conservation_labels()
-        labels_lists = [v for k, v in
-            {k : v for k, v in labels.iteritems()}.iteritems()]
-        all_labels = list(set(list(chain.from_iterable(labels_lists))))
+        allow_public_posting = {}
+        for status in taxon.conservation_statuses.all():
+            state_name = settings.STATE_NAMES[status.region.lower()]
+            allow_public_posting[state_name] = status.allow_public_posting
+        # Fill in any states that do not have conservation status
+        # records.
+        for key in settings.STATE_NAMES.keys():
+            state_name = settings.STATE_NAMES[key]
+            if state_name not in allow_public_posting.keys():
+                allow_public_posting[state_name] = True
 
         sightings_restricted = False
-        restricted_by = []
 
-        # If the location is in a New England state, restrict only if
-        # the plant is rare in that state.
-
-        if ne_state is not None and ne_state:
-            restricted_list = labels[ne_state]
+        # If the location is in a state covered by the site, restrict
+        # only if the plant is rare in that state.
+        if covered_state is not None and covered_state:
+            if not allow_public_posting[covered_state]:
+                sightings_restricted = True
         else:
             # If the location is anywhere else (or is unknown), restrict
             # if the plant is rare in any New England state, as a fallback.
             # This is a conservative measure for various edge cases
             # such as plants that may be rare outside New England,
             # incorrect location detection, etc.
-            restricted_list = all_labels
-
-        restricted_by = [restricted_label for restricted_label
-            in RESTRICTED_LABELS if restricted_label in restricted_list]
-        if len(restricted_by) > 0:
-            sightings_restricted = True
+            for state in allow_public_posting.keys():
+                if not allow_public_posting[state]:
+                    sightings_restricted = True
+                    break
 
         restrictions.append({
             'scientific_name': taxon.scientific_name,
             'common_names': common_names,
             'synonyms': synonyms,
-            'new_england_state': ne_state,
-            'labels': labels,
-            'all_labels': all_labels,
-            'restricted_by': restricted_by,
+            'covered_state': covered_state,
+            'allow_public_posting': allow_public_posting,
             'sightings_restricted': sightings_restricted,
         })
 
