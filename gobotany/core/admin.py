@@ -502,6 +502,7 @@ admin.site.register(models.Parameter)
 admin.site.register(models.HomePageImage)
 admin.site.register(models.ImageType)
 admin.site.register(models.CharacterGroup)
+admin.site.register(models.SourceCitation)
 
 admin.site.register(models.CopyrightHolder, CopyrightHolderAdmin)
 admin.site.register(models.Taxon, TaxonAdmin)

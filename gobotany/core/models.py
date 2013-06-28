@@ -1,4 +1,5 @@
 from collections import defaultdict, OrderedDict as odict
+from datetime import datetime
 
 from django.conf import settings
 from django.db import models
@@ -6,6 +7,7 @@ from django.contrib.auth.models import User
 from django.contrib.contenttypes.models import ContentType
 from django.contrib.contenttypes import generic
 from django.core.exceptions import ObjectDoesNotExist
+from django.core.validators import MaxValueValidator
 from django.forms import ValidationError
 from django.template.defaultfilters import slugify
 
@@ -638,6 +640,34 @@ class Taxon(models.Model):
         for site in self.partners():
             users.extend(site.users.all())
         return users
+
+
+class SourceCitation(models.Model):
+    """A reference citation for a particular piece of literature.
+
+    These citations are used to track the literature that was consulted to
+    learn that a character value is indeed characteristic of a particular
+    species.
+
+    """
+    citation_text = models.CharField(max_length=300)
+    author = models.CharField(max_length=100, blank=True,
+            verbose_name=u'Author or Editor')
+    publication_year = models.PositiveSmallIntegerField(null=True, blank=True,
+            verbose_name=u'Publication Year', validators=[
+                MaxValueValidator(datetime.now().year),
+            ])
+    article_title = models.CharField(max_length=100, blank=True,
+            verbose_name=u'Article Title')
+    publication_title = models.CharField(max_length=100, blank=True,
+            verbose_name=u'Periodical or Book Title')
+    publisher_name = models.CharField(max_length=100, blank=True,
+            verbose_name=u'Publisher Name')
+    publisher_location = models.CharField(max_length=100, blank=True,
+            verbose_name=u'Publisher Location')
+
+    def __unicode__(self):
+        return u'{0}'.format(self.citation_text)
 
 
 class TaxonCharacterValue(models.Model):
