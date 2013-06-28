@@ -834,10 +834,9 @@ class Distribution(models.Model):
     county = models.CharField(max_length=50)
     present = models.BooleanField(default=False)
     native = models.BooleanField(default=False)
-    status = models.CharField(max_length=100)
 
     class Meta:
-        ordering = ('scientific_name', 'state', 'county', 'status')
+        ordering = ('scientific_name', 'state', 'county')
 
     def __unicode__(self):
         county = ' (%s County)' % self.county if len(self.county) > 0 else ''

@@ -80,29 +80,6 @@ class CSVReader(object):
             yield [c.decode('Windows-1252') for c in row]
 
 
-# Precendence of distribution status to be assigned
-# when a species has differing status per subspecies
-# or variety.  Higher values will override lower.
-status_precedence = {
-    'Species noxious' : 16,
-    'present, non-native' : 15,   # New England data value
-    'Species present in state and exotic' : 14,
-    'Species exotic and present' : 13,
-    'Species waif' : 12,
-    'present, native' : 11,   # New England data value
-    'Species present in state and native' : 10,
-    'Species present and not rare' : 9,
-    'Species native, but adventive in state' : 8,
-    'Species present and rare' : 7,
-    'Species extirpated (historic)' : 6,
-    'Species extinct' : 5,
-    'Species not present in state' : 4,
-    'Species eradicated' : 3,
-    'Questionable Presence (cross-hatched)' : 2,
-    'absent' : 1,   # New England data value
-    '' : 0,
-}
-
 def read_default_filters(characters_csv):
     defaultlist = []
     for row in open_csv(characters_csv):
@@ -1625,6 +1602,36 @@ class Importer(object):
         return is_present, is_native
 
 
+    def _apply_subspecies_status(self, csv_row, distribution,
+                                 csv_status_column_name):
+        distribution_status = csv_row[csv_status_column_name]
+        is_present, is_native = self._parse_status(distribution_status)
+        full_name = csv_row['scientific_name']
+        state = csv_row['state']
+        county = csv_row['county']
+
+        scientific_name = _extract_scientific_name(full_name)
+        if scientific_name == full_name:
+            return
+        # If the new scientific name indicates that this is a subspecies or
+        # variety record, we will add it under the species name, modifying 
+        # the current distribution data if the data from this record has
+        # higher precedence (precedence: non-native > native > absent)
+        distribution_row = distribution.get(
+            scientific_name=scientific_name,
+            state=state,
+            county=county,
+            )
+
+        current_nativity = distribution_row.__dict__.get('native') or None
+        if is_present == True:
+            distribution_row.set(present=True)
+            if current_nativity != False:
+                distribution_row.set(native=is_native)
+        else:
+            distribution_row.set(present=False, native=False)
+
+
     def import_distributions(self, distributionsf):
         """Load BONAP distribution data from a CSV file"""
         log.info('Importing distribution data (BONAP)')
@@ -1653,7 +1660,6 @@ class Importer(object):
                 ).set(
                 present=is_present,
                 native=is_native,
-                status=row[status_column_name],
                 )
 
             self._apply_subspecies_status(row, distribution,
@@ -1661,51 +1667,11 @@ class Importer(object):
 
         distribution.save()
 
-    def _apply_subspecies_status(self, csv_row, distribution,
-                                 csv_status_column_name):
-        distribution_status = csv_row[csv_status_column_name]
-        full_name = csv_row['scientific_name']
-        state = csv_row['state']
-        county = csv_row['county']
-
-        scientific_name = _extract_scientific_name(full_name)
-        if scientific_name == full_name:
-            return
-        # If the new scientific name indicates that this is a subspecies or variety
-        # record, we will add it under the species name, modifying the
-        # current distribution status if the status from this record has
-        # higher precedence
-        distribution_row = distribution.get(
-            scientific_name=scientific_name,
-            state=state,
-            county=county,
-            )
-
-        # Get the current status from the distribution table row. Here
-        # the field name is part of the model and does not vary, unlike
-        # the source CSV data column names.
-        current_status = distribution_row.__dict__.get('status') or ''
-
-        if status_precedence[distribution_status] > status_precedence[current_status]:
-            # Interesting information, but there's SO much output it's annoying normally.
-            #log.info(
-            #    'Species %s status overridden from subspecies %s', 
-            #    scientific_name,
-            #    full_name
-            #)
-            #log.info('New distribution status ["%s" -> "%s"]',
-            #        current_status,
-            #        distribution_status
-            #)
-            is_present, is_native = self._parse_status(distribution_status)
-            distribution_row.set(present=is_present, native=is_native,
-                status=distribution_status)
-
 
     def import_videos(self, db, videofilename):
         """Load pile and pile group video URLs from a CSV file"""
         log.info('Reading CSV to import videos and assign to piles/pilegroups')
-
+        'native'
         # First clear any existing video associations.
         for pile_group in models.PileGroup.objects.all():
             if pile_group.video:
