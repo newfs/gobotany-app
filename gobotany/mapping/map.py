@@ -122,69 +122,14 @@ class PlantDistributionMap(ChloroplethMap):
             self.maximum_legend_items)
         self.legend = Legend(self.svg_map, self.maximum_legend_items)
 
-    def _get_label_for_status(self, status):
-        """Return the appropriate label for a distribution status string.
-
-        Because the Go Botany maps are aimed at a general audience, the
-        Go Botany map labels are fewer and simpler than those found on
-        the source maps.
-
-        23 May 2012: Labels are down to just present and absent due to
-        the use of simpler and more accurate New England data. The
-        labels for North America data are now made to "match" the New
-        England ones, so the maps will be consistent.
-        """
-        ABSENCE_INDICATORS = [
-                'absent',       # From adjusted New England data, covers
-                                # "absent"
-                'extirpated',   # Covers: "Species extirpated (historic)"
-                'extinct',      # Covers: "Species extinct"
-                'not present',  # Covers: "Species not present in state"
-                'eradicated',   # Covers: "Species eradicated"
-                'questionable', # Covers: "Questionable presence
-                                #          (cross-hatched)"
-                ]
-
-        NON_NATIVE_PRESENCE_INDICATORS = [
-            'present, non-native',   # From adjusted New England data
-            'exotic',    # Covers: "Species present in state and exotic"
-                         #     and "Species exotic and present"
-            'waif',      # Covers: "Species waif"
-            'noxious',   # Covers: "Species noxious"
-            'native, but adventive', # Covers: "Species native, but adventive
-                                     #          in state"
-            ]
-
-        NATIVE_PRESENCE_INDICATORS = [
-            'present, native',   # From adjusted New England data
-            'and rare',  # Covers: "Species present and rare"
-            'native',    # Covers: "Species present in state and native"
-            'species present', # Covers: "Species present in state and
-                               #          not rare"
-            ]
-
-        label = ''
-        status = status.lower()
-
-        # Look through the absence indicators first because otherwise
-        # a "false-present" label could occur.
-        for indicator in ABSENCE_INDICATORS:
-            if indicator in status:
-                label = 'absent'
-                break
-        # If an absence indicator did not set a label, look through the
-        # presence indicators.
-        if label == '':
-            for indicator in NON_NATIVE_PRESENCE_INDICATORS:
-                if indicator in status:
-                    label = 'non-native'
-                    break
-            if label == '':
-                for indicator in NATIVE_PRESENCE_INDICATORS:
-                    if indicator in status:
-                        label = 'native'
-                        break
-
+    def _get_label(self, is_present, is_native):
+        """Return the appropriate label for distribution data."""
+        label = 'absent'
+        if is_present:
+            if is_native:
+                label = 'native'
+            else:
+                label = 'non-native'
         return label
 
     def _add_name_to_title(self, scientific_name):
@@ -256,7 +201,7 @@ class PlantDistributionMap(ChloroplethMap):
                 for node in path_nodes:
                     node_id = node.get('id').lower()
                     if node_id.startswith(state_id_piece):
-                        label = self._get_label_for_status(record.status)
+                        label = self._get_label(record.present, record.native)
                         if label not in legend_labels_found:
                             legend_labels_found.append(label)
                         box = Path(node)
@@ -275,7 +220,7 @@ class PlantDistributionMap(ChloroplethMap):
                 for node in path_nodes:
                     node_id = node.get('id').lower()
                     if node_id == state_and_county:
-                        label = self._get_label_for_status(record.status)
+                        label = self._get_label(record.present, record.native)
                         if label not in legend_labels_found:
                             legend_labels_found.append(label)
                         box = Path(node)
@@ -360,7 +305,7 @@ class NorthAmericanPlantDistributionMap(PlantDistributionMap):
                 for node in path_nodes:
                     id_province = node.get('id').split('_')[0].upper()
                     if id_province == record.state.upper():
-                        label = self._get_label_for_status(record.status)
+                        label = self._get_label(record.present, record.native)
                         if label not in legend_labels_found:
                             legend_labels_found.append(label)
                         box = Path(node)
@@ -371,4 +316,3 @@ class NorthAmericanPlantDistributionMap(PlantDistributionMap):
             legend_labels_found = self._order_labels(legend_labels_found)
 
         return legend_labels_found
-
