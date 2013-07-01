@@ -635,15 +635,15 @@ class Importer(object):
 
         statuses_count = 0
         for row in open_csv(statuses_file):
-            state = row['state']
-            scientific_name = row['scientific_name']
-            var_subsp_hybrid = row['variety_subspecies_hybrid']
-            s_rank = row['srank']
-            endangerment_code = row['endangerment_code']
+            state = row['state'].strip()
+            scientific_name = row['scientific_name'].strip()
+            var_subsp_hybrid = row['variety_subspecies_hybrid'].strip()
+            s_rank = row['srank'].strip()
+            endangerment_code = row['endangerment_code'].strip()
 
             allow_public_posting = True
             if 'allow_public_posting' in row.keys():
-                if row['allow_public_posting'].upper() == 'NO':
+                if row['allow_public_posting'].strip().upper() == 'NO':
                     allow_public_posting = False
 
             taxon = None
