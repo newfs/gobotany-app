@@ -215,7 +215,7 @@ div.scrollableArea { position: relative; width: auto; height: 100%; }
 .hidden { display: none !important; }
 
 /* Site-wide styles */
-body { background: #f0f0c0; color: black; font-family: Verdana, Geneva, "Lucida Sans Unicode", sans-serif; font-size: 12px; }
+body { background-color: #f0f0c0; background-image: url(/static/images/layout/little-plants.png); background-position: bottom 140px center; background-repeat: no-repeat; color: black; font-family: Verdana, Geneva, "Lucida Sans Unicode", sans-serif; font-size: 12px; }
 
 html, button, input, select, textarea { font-family: Verdana, Geneva, "Lucida Sans Unicode", sans-serif; }
 
@@ -480,7 +480,7 @@ table.list th td:first-child { font-family: "Trebuchet MS", Helvetica, Arial, "L
 
 /* Imports for various pages, sections, features, etc. Each of these can contain their own media queries. */
 /* Home */
-#home { background: url(/static/images/layout/body-home.jpg) repeat-x left top #f3f3c3; }
+#home { background-color: #f3f3c3; background-image: url(/static/images/layout/body-home.jpg); background-position: left 0px top; background-repeat: repeat-x; }
 #home #all { background: url(/static/images/layout/content-home-bg.jpg) center 72px no-repeat transparent; }
 #home header h1 { background: url(/static/images/branding/logo-toplevel.png) no-repeat transparent; float: left; margin: 0 0 0 67px; height: 107px; width: 595px; display: block; text-indent: -9000px; }
 #home header .newfs a { background: url(/static/images/branding/newfs-logo-toplevel.png) no-repeat transparent; height: 88px; width: 160px; }
