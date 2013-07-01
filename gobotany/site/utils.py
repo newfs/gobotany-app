@@ -1,6 +1,6 @@
 import re
 
-def query_regex(plant_name, anchor_at_start=False):
+def query_regex(plant_name, anchor_at_start=False, anchor_at_end=False):
     """Return a regular expression for matching a query (plant name, etc.),
     allowing for some typos and punctuation differences. This is for use in
     various auto-suggest and other web service calls.
@@ -35,9 +35,10 @@ def query_regex(plant_name, anchor_at_start=False):
     # Allow ignoring hyphens, periods, and other non-word characters.
     query_regex = '\W+'.join(regex_words)
 
-    # Anchor the regular expression at the beginning of the string if
-    # requested.
+    # Anchor the regular expression at the ends of the string if requested.
     if anchor_at_start:
         query_regex = '^%s' % query_regex
+    if anchor_at_end:
+        query_regex = '%s$' % query_regex
 
     return query_regex

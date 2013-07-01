@@ -77,7 +77,8 @@ def restrictions(plant_name, location=None):
     """Return a list of taxa matching a given plant name, along with any
     information on restrictions for sightings of rare plants, etc.
     """
-    plant_regex = query_regex(plant_name, anchor_at_start=True)
+    plant_regex = query_regex(plant_name, anchor_at_start=True,
+        anchor_at_end=True)
     covered_state = get_covered_state(location)
     restrictions = []
 
