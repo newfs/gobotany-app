@@ -664,13 +664,13 @@ class Importer(object):
                     synonym.scientific_name, taxon.scientific_name)
 
             if taxon:
-                conservation_status = models.ConservationStatus(taxon=taxon,
-                    variety_subspecies_hybrid=var_subsp_hybrid,
+                cs, created = models.ConservationStatus.objects.get_or_create(
+                    taxon=taxon, variety_subspecies_hybrid=var_subsp_hybrid,
                     region=state, s_rank=s_rank,
                     endangerment_code=endangerment_code,
                     allow_public_posting=allow_public_posting)
-                conservation_status.save()
-                statuses_count += 1
+                if created:
+                    statuses_count += 1
 
         log.info('Created %d conservation status records.' % statuses_count)
 
