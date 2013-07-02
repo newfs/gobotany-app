@@ -203,14 +203,18 @@
         <div id="ne-status">
         <h3>Distribution</h3>
         {% with labels=taxon.get_state_distribution_labels %}
-            <div class="characteristics">
-            {% for state_name, label in labels.items %}
-                <dl>
-                    <dt>{{ state_name }}</dt>
-                    <dd>{{ label }}</dd>
-                </dl>
-            {% endfor %}
-            </div>
+            {% if labels %}
+                <div class="characteristics">
+                {% for state_name, label in labels.items %}
+                    <dl>
+                        <dt>{{ state_name }}</dt>
+                        <dd>{{ label }}</dd>
+                    </dl>
+                {% endfor %}
+                </div>
+            {% else %}
+                <p>No data</p>
+            {% endif %}
         {% endwith %}
         <h3>Conservation Status</h3>
         {% with statuses=taxon.conservation_statuses.all %}
