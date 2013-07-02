@@ -36,6 +36,71 @@ class LookalikeItemNode(template.Node):
         except template.VariableDoesNotExist:
             return ''
 
+@register.simple_tag
+def s_rank_label(code):
+    label = code
+    if code.startswith('S1'):
+        label = 'extremely rare'
+    elif code.startswith('S1S2'):
+        label = 'extremely rare to rare'
+    elif code.startswith('S2'):
+        label = 'rare'
+    elif code.startswith('S2S3'):
+        label = 'rare to uncommon'
+    elif code.startswith('S3'):
+        label = 'uncommon'
+    elif code.startswith('S3S4'):
+        label = 'uncommon to fairly widespread'
+    elif code.startswith('S4'):
+        label = 'fairly widespread'
+    elif code.startswith('S5'):
+        label = 'widespread'
+    elif code == 'SH':
+        label = 'historical'
+    elif code == 'SNA':
+        label = 'not applicable'
+    elif code == 'SNR':
+        label = 'unranked'
+    elif code == 'SU':
+        label = 'unrankable'
+    elif code == 'SX':
+        label = 'extirpated'
+    if code.endswith('?'):
+        label += ' (uncertain)'
+    return label
+
+@register.simple_tag
+def endangerment_code_label(code):
+    label = code
+    if code == '- H':
+        label = 'historical'
+    elif code == '- WL':
+        label = 'Watch List'
+    elif code == 'C':
+        label = 'concern'
+    elif code == 'C*':
+        label = 'concern (uncertain)'
+    elif code == 'E':
+        label = 'endangered'
+    elif code == 'FE':
+        label = 'federally endangered'
+    elif code == 'FT':
+        label = 'federally threatened'
+    elif code == 'FT/SH':
+        label = 'federally threatened/state historical'
+    elif code == 'PE':
+        label = 'potentially extirpated'
+    elif code == 'SC':
+        label = 'special concern'
+    elif code == 'SC*':
+        label = 'special concern, extirpated'
+    elif code == 'SE':
+        label = 'state endangered'
+    elif code == 'SH':
+        label = 'state historical'
+    elif code == 'T':
+        label = 'threatened'
+    return label
 
 # Inclusion tag for formatting a combined title/credit/copyright string
 # for use with a photo.

@@ -617,6 +617,23 @@ class Taxon(models.Model):
                 mapping[key].append(row.label)
         return odict(sorted(mapping.iteritems()))
 
+    def get_state_distribution_labels(self):
+        states = [key.upper() for key in settings.STATE_NAMES.keys()]
+        records = Distribution.objects.filter(
+            scientific_name=self.scientific_name).filter(
+            state__in=states).filter(
+            county__exact='')
+        mapping = defaultdict(list)
+        for record in records:
+            key = settings.STATE_NAMES[record.state.lower()]
+            label = 'absent'
+            if record.present == True:
+                label = 'present'
+            mapping[key] = label
+        labels = odict(sorted(mapping.iteritems()))
+        print labels
+        return labels
+
     def get_default_image(self):
         try:
             return self.images.get(rank=1, image_type__name='habit')
@@ -765,12 +782,18 @@ class ConservationStatus(models.Model):
     allow_public_posting = models.BooleanField(default=True)
 
     class Meta:
+        ordering = ('taxon', 'variety_subspecies_hybrid', 'region')
         verbose_name = 'conservation status'
         verbose_name_plural = 'conservation statuses'
 
     def __unicode__(self):
-        return u'%s in %s: %s %s' % (self.taxon.scientific_name, self.region,
-            self.s_rank, self.endangerment_code)
+        return u'%s %s in %s: %s %s' % (self.taxon.scientific_name,
+            self.variety_subspecies_hybrid, self.region, self.s_rank,
+            self.endangerment_code)
+
+    def region_name(self):
+        """Return the human-readable name for a region."""
+        return settings.STATE_NAMES[self.region.lower()]
 
 
 class DefaultFilter(models.Model):

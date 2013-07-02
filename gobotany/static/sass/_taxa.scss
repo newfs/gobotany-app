@@ -182,6 +182,9 @@ body.taxa {
                     line-height: 100%;
                 }
             }
+            h3 + p {
+                margin-top: 10px;
+            }
             h5 {
                 font-size: 14px;
             }

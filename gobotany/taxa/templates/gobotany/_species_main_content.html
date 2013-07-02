@@ -200,20 +200,51 @@
 
     <div id="status">
         <h2>New England Distribution and Conservation Status</h2>
-        <p>Exact status definitions can vary from state to
-        state. For details, please check with your state.</p>
         <div id="ne-status">
-        {% with labels=taxon.get_distribution_and_conservation_labels %}
+        <h3>Distribution</h3>
+        {% with labels=taxon.get_state_distribution_labels %}
             <div class="characteristics">
-            {% for state_name, values in labels.items %}
+            {% for state_name, label in labels.items %}
                 <dl>
                     <dt>{{ state_name }}</dt>
-                    <dd>
-                    {{ values|join:", " }}
-                    </dd>
+                    <dd>{{ label }}</dd>
                 </dl>
             {% endfor %}
             </div>
+        {% endwith %}
+        <h3>Conservation Status</h3>
+        {% with statuses=taxon.conservation_statuses.all %}
+        {% regroup statuses by variety_subspecies_hybrid as status_list %}
+        {% if status_list %}
+            <p>Exact status definitions can vary from state to
+            state. For details, please check with your state.</p>
+            {% for status in status_list %}
+                {% with plant_name=status.grouper %}
+                {% if plant_name %}
+                    <h4>{{ plant_name|italicize_plant|safe }}</h4>
+                {% endif %}
+                {% endwith %}
+                <div class="characteristics">
+                {% for item in status.list %}
+                    <dl>
+                        <dt>{{ item.region_name }}</dt>
+                        <dd>
+                        {% if item.s_rank %}
+                            {% s_rank_label item.s_rank %}
+                            (S-rank: {{ item.s_rank }}){% if item.endangerment_code %}, {% endif %}
+                        {% endif %}
+                        {% if item.endangerment_code %}
+                            {% endangerment_code_label item.endangerment_code %}
+                            (code: {{ item.endangerment_code }})
+                        {% endif %}
+                        </dd>
+                    </dl>
+                {% endfor %}
+            </div>
+            {% endfor %}
+        {% else %}
+            <p>None</p>
+        {% endif %}
         {% endwith %}
         </div>
     </div>

@@ -636,6 +636,7 @@ body.taxa#species #main #side li { line-height: 16px; list-style-type: none; }
 body.taxa#species #main #side a { margin-left: 0; }
 body.taxa#species #main h1 { margin-bottom: 0; }
 body.taxa#species #main h1 span.origin { font-size: 14px; line-height: 100%; }
+body.taxa#species #main h3 + p { margin-top: 10px; }
 body.taxa#species #main h5 { font-size: 14px; }
 body.taxa#species #main p { margin: 0 0 15px; }
 body.taxa#species #sb-player.html { background: #fff; overflow: hidden; /* Get rid of vertical scrollbar in WebKit on enlarged N. America dist. map. */ padding: 0 5px 5px; }
