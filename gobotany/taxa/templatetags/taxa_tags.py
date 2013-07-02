@@ -98,6 +98,8 @@ def endangerment_code_label(code):
         label = 'state endangered'
     elif code == 'SH':
         label = 'state historical'
+    elif code == 'ST':
+        label = 'state threatened'
     elif code == 'T':
         label = 'threatened'
     return label
