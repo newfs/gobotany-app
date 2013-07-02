@@ -1,5 +1,6 @@
 {% load search_tags %}
 {% load simplekey_extras %}
+{% load taxa_tags %}
 
 {{ object.scientific_name }} {{ object.taxonomic_authority }}.
 
@@ -51,11 +52,46 @@ Wetland Status:
     Not classified
 {% endif %}
 
-Distribution and Conservation Status:
-{% with conservation_matrix=object.get_conservation_labels %}
-  {% for state_name, labels in conservation_matrix.items %}
-    {{ state_name }}: {{ labels|join:", " }}
-  {% endfor %}
+New England Distribution and Conservation Status:
+
+Distribution:
+{% with labels=object.get_state_distribution_labels %}
+    {% if labels %}
+        {% for state_name, label in labels.items %}
+            {{ state_name }}: {{ label }}
+        {% endfor %}
+    {% else %}
+        No data
+    {% endif %}
+{% endwith %}
+
+Conservation Status:
+{% with statuses=object.conservation_statuses.all %}
+{% regroup statuses by variety_subspecies_hybrid as status_list %}
+{% if status_list %}
+    Exact status definitions can vary from state to
+    state. For details, please check with your state.
+    {% for status in status_list %}
+        {% with plant_name=status.grouper %}
+        {% if plant_name %}
+            {{ plant_name|italicize_plant|safe }}
+        {% endif %}
+        {% endwith %}
+        {% for item in status.list %}
+            {{ item.region_name }}:
+            {% if item.s_rank %}
+                {% s_rank_label item.s_rank %}
+                (S-rank: {{ item.s_rank }}){% if item.endangerment_code %}, {% endif %}
+            {% endif %}
+            {% if item.endangerment_code %}
+                {% endangerment_code_label item.endangerment_code %}
+                (code: {{ item.endangerment_code }})
+            {% endif %}
+        {% endfor %}
+    {% endfor %}
+{% else %}
+    <p>None</p>
+{% endif %}
 {% endwith %}
 
 {# Information from Flora Novae Angliae, if available #}
