@@ -462,8 +462,6 @@ class Importer(object):
         taxon_table.replace('genus_id', genus_map)
         taxon_table.save()
         taxon_map = db.map('core_taxon', 'scientific_name', 'id')
-        conservationlabel_table.replace('taxon_id', taxon_map)
-        conservationlabel_table.save()
         partnerspecies_table.replace('species_id', taxon_map)
         partnerspecies_table.save()
         pile_species_table.replace('taxon_id', taxon_map)
