@@ -479,11 +479,6 @@ class CopyrightHolderAdmin(_Base):
         return models.ContentImage.objects.filter(creator=obj.coded_name).count()
 
 
-class ConservationLabelAdmin(admin.ModelAdmin):
-    list_display = ('taxon', 'region', 'label')
-    list_filter = ('region', 'label')
-
-
 class ConservationStatusAdmin(admin.ModelAdmin):
     list_display = ('taxon', 'variety_subspecies_hybrid', 'region', 's_rank',
         'endangerment_code', 'allow_public_posting')
@@ -515,6 +510,5 @@ admin.site.register(models.Family, FamilyAdmin)
 admin.site.register(models.Genus, GenusAdmin)
 admin.site.register(models.PartnerSite, PartnerSiteAdmin)
 admin.site.register(models.PartnerSpecies, PartnerSpeciesAdmin)
-admin.site.register(models.ConservationLabel, ConservationLabelAdmin)
 admin.site.register(models.ConservationStatus, ConservationStatusAdmin)
 admin.site.register(models.Distribution, DistributionAdmin)
