@@ -631,7 +631,6 @@ class Taxon(models.Model):
                 label = 'present'
             mapping[key] = label
         labels = odict(sorted(mapping.iteritems()))
-        print labels
         return labels
 
     def get_default_image(self):
