@@ -238,65 +238,6 @@ class Importer(object):
 
         pile.save()
 
-    def _get_state_status(self, state_code, distribution,
-                          conservation_status_code=None, is_invasive=False,
-                          is_prohibited=False):
-        status = ['absent']
-
-        if state_code in distribution:
-            status = ['present']
-
-            if conservation_status_code == 'E':
-                status.append('endangered')
-            elif conservation_status_code == 'T':
-                status.append('threatened')
-            elif conservation_status_code in ['SC', 'SC*']:
-                status.append('special concern')
-            elif conservation_status_code == 'H':
-                status.append('historic')
-            elif conservation_status_code in ['C', 'WL', 'W', 'Ind']:
-                status.append('rare')
-
-            if is_invasive == True:
-                status.append('invasive')
-
-        # Extinct status ('X') applies to plants that are absent or present.
-        # Map these to 'extirpated.'
-        if conservation_status_code == 'X':
-            # If status is just 'present' or 'absent' so far, clear it so
-            # that 'extirpated' appears alone.
-            if status == ['present'] or status == ['absent']:
-                status = []
-            status.append('extirpated')
-
-        # Prohibited status applies even to plants that are absent.
-        if is_prohibited == True:
-            status.append('prohibited')
-
-        return status
-
-
-    def _get_all_states_status(self, taxon, taxon_data_row):
-        states = ('ct', 'ma', 'me', 'nh', 'ri', 'vt')
-        states_status = dict().fromkeys(states, '')
-
-        distribution = pipe_split(taxon_data_row['distribution'])
-        invasive_states = pipe_split(taxon_data_row[
-                'invasive_in_which_states'])
-        prohibited_states = pipe_split(taxon_data_row[
-                'prohibited_from_sale_states'])
-
-        for state in states:
-            status_field_name = 'conservation_status_%s' % state
-            conservation_status = taxon_data_row[status_field_name]
-            invasive = (state in invasive_states)
-            prohibited = (state in prohibited_states)
-            states_status[state] = self._get_state_status(state, distribution,
-                conservation_status_code=conservation_status,
-                is_invasive=invasive, is_prohibited=prohibited)
-
-        return states_status
-
 
     def _strip_taxonomic_authority(self, full_plant_name):
         """Strip the taxonomic authority out of a full plant name."""
@@ -344,6 +285,7 @@ class Importer(object):
                     break
         return ' '.join(name).encode('utf-8')
 
+
     def import_taxa(self, db, filename):
         """Load species list from a CSV file"""
         log.info('Loading taxa')
@@ -355,7 +297,6 @@ class Importer(object):
         family_table = db.table('core_family')
         genus_table = db.table('core_genus')
         taxon_table = db.table('core_taxon')
-        conservationlabel_table = db.table('core_conservationlabel')
         partnerspecies_table = db.table('core_partnerspecies')
         pile_species_table = db.table('core_pile_species')
         commonname_table = db.table('core_commonname')
@@ -461,17 +402,6 @@ class Importer(object):
                 description='',
                 variety_notes=variety_notes,
                 )
-
-            # Assign distribution and conservation status for all states.
-
-            state_statuses = self._get_all_states_status(taxon, row)
-            for state_code, status_list in state_statuses.items():
-                for label in status_list:
-                    conservationlabel_table.get(
-                        taxon_id=taxon_proxy_id,
-                        region=state_code,
-                        label=label,
-                        )
 
             # Assign all imported species to the Go Botany "partner" site.
 

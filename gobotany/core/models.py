@@ -599,24 +599,6 @@ class Taxon(models.Model):
         names.append(self.scientific_name)
         return names
 
-    def get_conservation_labels(self):
-        mapping = defaultdict(list)
-        for row in self.conservation_labels.all():
-            mapping[settings.STATE_NAMES[row.region]].append(row.label)
-        return odict(sorted(mapping.iteritems()))
-
-    def get_distribution_and_conservation_labels(self):
-        # Order the conservation labels such that a special value, the
-        # distribution (present/absent), always comes first.
-        mapping = defaultdict(list)
-        for row in self.conservation_labels.all():
-            key = settings.STATE_NAMES[row.region]
-            if row.label in ['present', 'absent']:
-                mapping[key].insert(0, row.label)
-            else:
-                mapping[key].append(row.label)
-        return odict(sorted(mapping.iteritems()))
-
     def get_state_distribution_labels(self):
         states = [key.upper() for key in settings.STATE_NAMES.keys()]
         records = Distribution.objects.filter(
@@ -726,46 +708,6 @@ class Edit(models.Model):
     coordinate1 = models.TextField()
     coordinate2 = models.TextField()
     old_value = models.TextField()
-
-
-class ConservationLabel(models.Model):
-    """Zero or more conservation labels per species+region."""
-
-    ABSENT = 'absent'
-    ENDANGERED = 'endangered'
-    EXTIRPATED = 'extirpated'
-    HISTORIC = 'historic'
-    INVASIVE = 'invasive'
-    PRESENT = 'present'
-    PROHIBITED = 'prohibited'
-    RARE = 'rare'
-    SPECIAL_CONCERN = 'special concern'
-    THREATENED = 'threatened'
-    CONSERVATION_LABELS = (
-        (ABSENT, 'absent'),
-        (ENDANGERED, 'endangered'),
-        (EXTIRPATED, 'extirpated'),
-        (HISTORIC, 'historic'),
-        (INVASIVE, 'invasive'),
-        (PRESENT, 'present'),
-        (PROHIBITED, 'prohibited'),
-        (RARE, 'rare'),
-        (SPECIAL_CONCERN, 'special concern'),
-        (THREATENED, 'threatened'),
-        )
-
-    STATE_NAMES = sorted(settings.STATE_NAMES.items(), key=lambda x: x[1])
-
-    taxon = models.ForeignKey(Taxon, related_name='conservation_labels')
-    region = models.CharField(choices=STATE_NAMES, max_length=80)
-    label = models.CharField(choices=CONSERVATION_LABELS, max_length=80)
-
-    class Meta:
-        ordering = ('taxon', 'region', 'label')
-        unique_together = ('taxon', 'region', 'label')
-
-    def __unicode__(self):
-        return u'%s: %s' % (self.region, self.label)
 
 
 class ConservationStatus(models.Model):

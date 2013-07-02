@@ -13,7 +13,7 @@ from gobotany.core import models
 def admin_url_from_model(model_obj):
     url = reverse('admin:{0}_{1}_change'.format(
             model_obj._meta.app_label, model_obj._meta.module_name
-        ), args=(model_obj.id,)) 
+        ), args=(model_obj.id,))
     return url
 
 class _Base(admin.ModelAdmin):
@@ -39,10 +39,6 @@ class _Base(admin.ModelAdmin):
     class Media:
         css = {'all': ('/static/admin_styles.css',)}
 
-
-class TaxonConservationLabelInline(admin.TabularInline):
-    model = models.ConservationLabel
-    extra = 1
 
 class TaxonSynonymInline(admin.TabularInline):
     model = models.Synonym
@@ -93,7 +89,6 @@ class TaxonAdmin(_Base):
     """
     form = TaxonAdminForm
     inlines = [
-        TaxonConservationLabelInline,
         TaxonSynonymInline,
         TaxonCommonNameInline,
         TaxonLookalikeInline,
