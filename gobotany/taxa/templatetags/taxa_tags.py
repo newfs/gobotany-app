@@ -43,14 +43,20 @@ def s_rank_label(code):
         label = 'extremely rare'
     elif code.startswith('S1S2'):
         label = 'extremely rare to rare'
+    elif code.startswith('S1S3'):
+        label = 'extremely rare to uncommon'
     elif code.startswith('S2'):
         label = 'rare'
     elif code.startswith('S2S3'):
         label = 'rare to uncommon'
+    elif code.startswith('S2S4'):
+        label = 'rare to fairly widespread'
     elif code.startswith('S3'):
         label = 'uncommon'
     elif code.startswith('S3S4'):
         label = 'uncommon to fairly widespread'
+    elif code.startswith('S3S5'):
+        label = 'uncommon to widespread'
     elif code.startswith('S4'):
         label = 'fairly widespread'
     elif code.startswith('S5'):
@@ -98,6 +104,8 @@ def endangerment_code_label(code):
         label = 'state endangered'
     elif code == 'SH':
         label = 'state historical'
+    elif code == 'SR':
+        label = 'state rare'
     elif code == 'ST':
         label = 'state threatened'
     elif code == 'T':
