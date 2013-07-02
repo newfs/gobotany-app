@@ -6,6 +6,7 @@ import string
 
 from datetime import date
 
+from django.conf import settings
 from django.core.exceptions import ObjectDoesNotExist
 from django.core.urlresolvers import reverse
 from django.http import HttpResponse
@@ -15,7 +16,7 @@ from django.views.decorators.vary import vary_on_headers
 
 from gobotany.core import botany
 from gobotany.core.models import (
-    CommonName, ConservationLabel, ContentImage, CopyrightHolder,
+    CommonName, ContentImage, CopyrightHolder, Distribution,
     Family, Genus, GlossaryTerm, HomePageImage, PartnerSite, PartnerSpecies,
     Pile, Taxon, Video,
     )
@@ -396,12 +397,20 @@ def species_list_view(request):
         if taxon_id in plantmap:
             plantmap[taxon_id]['common_names'].append(common_name)
 
-    q = ConservationLabel.objects.filter(label='present').values_list(
-        'taxon_id', 'region',
-        )
-    for taxon_id, region in q:
-        if taxon_id in plantmap:
-            plantmap[taxon_id]['states'].add(region)
+    # Populate states from Distribution data.
+    taxon_ids = plantmap.keys()
+    t = Taxon.objects.filter(id__in=taxon_ids).values_list(
+        'id', 'scientific_name')
+    sci_names = list(set([name for id, name in t]))
+    states = [state.upper() for state in settings.STATE_NAMES.keys()]
+    d = Distribution.objects.filter(present=True).filter(
+        county__exact='').filter(state__in=states).filter(
+        scientific_name__in=sci_names).values_list(
+        'scientific_name', 'state')
+    ids_by_name = {name: id for id, name in t}
+    for scientific_name, state in d:
+        taxon_id = ids_by_name[scientific_name]
+        plantmap[taxon_id]['states'].add(state)
 
     q = Pile.species.through.objects.values_list(
         'taxon_id', 'pile__friendly_title', 'pile__pilegroup__friendly_title',
