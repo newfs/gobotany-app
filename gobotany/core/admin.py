@@ -486,6 +486,10 @@ class DistributionAdmin(admin.ModelAdmin):
     list_filter = ('state', 'county', 'present', 'native')
 
 
+class LookalikeAdmin(admin.ModelAdmin):
+    list_display = ('taxon', 'lookalike_scientific_name',
+        'lookalike_characteristic')
+
 # Registrations
 
 admin.site.register(models.Parameter)
@@ -494,6 +498,7 @@ admin.site.register(models.ImageType)
 admin.site.register(models.CharacterGroup)
 admin.site.register(models.SourceCitation)
 
+admin.site.register(models.Lookalike, LookalikeAdmin)
 admin.site.register(models.CopyrightHolder, CopyrightHolderAdmin)
 admin.site.register(models.Taxon, TaxonAdmin)
 admin.site.register(models.ContentImage, ContentImageAdmin)
