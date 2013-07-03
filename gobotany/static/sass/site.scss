@@ -68,6 +68,9 @@ a {
         border: 0;
     }
 }
+#main td.scientific-name a {
+    border-bottom: 0;
+}
 
 *|*:-moz-any-link:active, *|*:-moz-any-link:focus {
     border: 0;

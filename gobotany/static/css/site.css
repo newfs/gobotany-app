@@ -230,6 +230,8 @@ a:not([href]):hover { text-decoration: none; }
 #main p a:active, #main li > a:active, #main dt a:active, #main td a:active, #main h2 a:active { border-color: #45ac11; }
 #main p a:not([href]), #main li > a:not([href]), #main dt a:not([href]), #main td a:not([href]), #main h2 a:not([href]) { border: 0; }
 
+#main td.scientific-name a { border-bottom: 0; }
+
 *|*:-moz-any-link:active, *|*:-moz-any-link:focus { border: 0; outline: 0; }
 
 h1, h2, h3, h4, h5, h6 { font-family: "Trebuchet MS", Helvetica, Arial, "Lucida Sans Unicode", sans-serif; font-weight: normal; line-height: 155%; margin: 0; padding: 0; }
