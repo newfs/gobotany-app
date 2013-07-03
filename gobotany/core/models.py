@@ -605,7 +605,6 @@ class Taxon(models.Model):
             scientific_name=self.scientific_name).filter(
             county__exact='').filter(
             state__in=states).values_list('state', 'present')
-        print records
         mapping = defaultdict(list)
         for state, present in records:
             key = settings.STATE_NAMES[state.lower()]
@@ -613,9 +612,7 @@ class Taxon(models.Model):
             if present == True:
                 label = 'present'
             mapping[key] = label
-        print mapping
         labels = odict(sorted(mapping.iteritems()))
-        print labels
         return labels
 
     def get_default_image(self):
