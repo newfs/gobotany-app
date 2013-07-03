@@ -603,16 +603,19 @@ class Taxon(models.Model):
         states = [key.upper() for key in settings.STATE_NAMES.keys()]
         records = Distribution.objects.filter(
             scientific_name=self.scientific_name).filter(
-            state__in=states).filter(
-            county__exact='')
+            county__exact='').filter(
+            state__in=states).values_list('state', 'present')
+        print records
         mapping = defaultdict(list)
-        for record in records:
-            key = settings.STATE_NAMES[record.state.lower()]
+        for state, present in records:
+            key = settings.STATE_NAMES[state.lower()]
             label = 'absent'
-            if record.present == True:
+            if present == True:
                 label = 'present'
             mapping[key] = label
+        print mapping
         labels = odict(sorted(mapping.iteritems()))
+        print labels
         return labels
 
     def get_default_image(self):
@@ -823,7 +826,7 @@ class PlantPreviewCharacter(models.Model):
 class Distribution(models.Model):
     """County- or state-level distribution data for plants."""
     scientific_name = models.CharField(max_length=100, db_index=True)
-    state = models.CharField(max_length=2)
+    state = models.CharField(max_length=2, db_index=True)
     county = models.CharField(max_length=50)
     present = models.BooleanField(default=False)
     native = models.BooleanField(default=False)
