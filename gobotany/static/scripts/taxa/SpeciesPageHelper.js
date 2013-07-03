@@ -118,10 +118,14 @@ var SpeciesPageHelper = {
             // Open the North America distribution map in a lightbox.
             var content_element =
                 $('.section.namap div').first();
+            var map_title = '<div><h6>' + 
+                $('.section.namap object').attr('title') +
+                '</h6></div>';
             Shadowbox.open({
                 content: content_element.html(),
                 player: 'html',
                 height: 582,
+                title: map_title,
                 width: 1000
             });
         }, this));

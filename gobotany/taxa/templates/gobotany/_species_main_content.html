@@ -44,50 +44,54 @@
         <div class="section map nemap">
             <h2>New England Distribution</h2>
             {% include "gobotany/_map_attribution.html" %}
+            {% with map_title='New England distribution: '|add:scientific_name|add:'.' %}
             <!--[if !IE]>-->
             <object
-                data="/api/maps/{{taxon.genus|lower}}-{{epithet}}-ne-distribution-map.svg"
+                data="{% url 'ne-distribution-map' taxon.genus|lower epithet %}"
                 type="image/svg+xml"
-                title="distribution map for {{ scientific_name }}"
+                title="{{ map_title }}"
                 id="ne-dist-county-map"> <!--<![endif]-->
             <!--[if lt IE 9]>
             <object
-                src="/api/maps/{{taxon.genus|lower}}-{{epithet}}-ne-distribution-map.svg"
+                src="{% url 'ne-distribution-map' taxon.genus|lower epithet %}"
                 classid="image/svg+xml"
-                title="distribution map for {{ scientific_name }}"
+                title="{{ map_title }}"
                 id="ne-dist-county-map"> <![endif]-->
             <!--[if gte IE 9]>
             <object
-                data="/api/maps/{{taxon.genus|lower}}-{{epithet}}-ne-distribution-map.svg"
+                data="{% url 'ne-distribution-map' taxon.genus|lower epithet %}"
                 type="image/svg+xml"
-                title="distribution map for {{ scientific_name }}"
+                title="{{ map_title }}"
                 id="ne-dist-county-map"> <![endif]-->
             </object>
+            {% endwith %}
         </div>
 
         <div class="section map namap">
             <h2>North America Distribution</h2>
             {% include "gobotany/_map_attribution.html" %}
+            {% with map_title='North America distribution: '|add:scientific_name|add:'.' %}
             <div>
                 <object
-                    data="/api/maps/{{taxon.genus|lower}}-{{epithet}}-na-distribution-map.svg"
+                    data="{% url 'na-distribution-map' taxon.genus|lower epithet %}"
                     type="image/svg+xml"
-                    title="distribution map for {{ scientific_name }}"
+                    title="{{ map_title }}"
                     id="na-dist-county-map"> <!--<![endif]-->
                 <!--[if lt IE 9]>
                 <object
-                    src="/api/maps/{{taxon.genus|lower}}-{{epithet}}-na-distribution-map.svg"
+                    src="{% url 'na-distribution-map' taxon.genus|lower epithet %}"
                     classid="image/svg+xml"
-                    title="distribution map for {{ scientific_name }}"
+                    title="{{ map_title }}"
                     id="na-dist-county-map"> <![endif]-->
                 <!--[if gte IE 9]>
                 <object
-                    data="/api/maps/{{taxon.genus|lower}}-{{epithet}}-na-distribution-map.svg"
+                    data="{% url 'na-distribution-map' taxon.genus|lower epithet %}"
                     type="image/svg+xml"
-                    title="distribution map for {{ scientific_name }}"
+                    title="{{ map_title }}"
                     id="na-dist-county-map"> <![endif]-->
                 </object>
             </div>
+            {% endwith %}
             <div class="trans"></div>
             <a class="enlarge" href="#">
                 <img src="/static/images/icons/zoom.png" alt="">
