@@ -309,10 +309,6 @@ def species_view(request, genus_slug, epithet):
            'key': key,
            'species_in_simple_key': species_in_simple_key,
            'common_names': taxon.common_names.all(),  # view uses this 3 times
-           'conservation_status_rows': (
-                'endangered', 'threatened', 'special concern', 'historic',
-                'rare', 'extirpated', 'invasive', 'prohibited',
-                ),
            'dkey_hybrids': dkey_hybrids,
            'dkey_page': dkey_page,
            'images': images,
