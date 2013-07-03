@@ -217,7 +217,7 @@
             {% endif %}
         {% endwith %}
         <h3>Conservation Status</h3>
-        {% with statuses=taxon.conservation_statuses.all %}
+        {% with statuses=conservation_statuses %}
         {% regroup statuses by variety_subspecies_hybrid as status_list %}
         {% if status_list %}
             <p>Exact status definitions can vary from state to
@@ -231,7 +231,7 @@
                 <div class="characteristics">
                 {% for item in status.list %}
                     <dl>
-                        <dt>{{ item.region_name }}</dt>
+                        <dt>{{ item.state }}</dt>
                         <dd>
                         {% if item.s_rank %}
                             {% s_rank_label item.s_rank %}

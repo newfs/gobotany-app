@@ -3,6 +3,7 @@
 from itertools import groupby
 from operator import itemgetter
 
+from django.conf import settings
 from django.core.urlresolvers import reverse
 from django.db.models import Q
 from django.shortcuts import get_object_or_404, render_to_response
@@ -300,6 +301,17 @@ def species_view(request, genus_slug, epithet):
 
     native_to_north_america = _native_to_north_america_status(taxon)
 
+    statuses = taxon.conservation_statuses.values_list(
+        'variety_subspecies_hybrid', 'region', 's_rank', 'endangerment_code')
+    statuses_state_names = [
+        {'variety_subspecies_hybrid': variety_subspecies_hybrid,
+         'state': settings.STATE_NAMES[region.lower()],
+         's_rank': s_rank, 'endangerment_code': endangerment_code}
+        for (variety_subspecies_hybrid, region, s_rank, endangerment_code)
+        in statuses]
+    conservation_statuses = sorted(statuses_state_names,
+        key=lambda k: (k['variety_subspecies_hybrid'], k['state']))
+
     return render_to_response_per_partner('species.html', {
            'pilegroup': pilegroup,
            'pile': pile,
@@ -320,7 +332,8 @@ def species_view(request, genus_slug, epithet):
            'brief_characteristics': preview_characters,
            'all_characteristics': all_characteristics,
            'epithet': epithet,
-           'native_to_north_america': native_to_north_america
+           'native_to_north_america': native_to_north_america,
+           'conservation_statuses': conservation_statuses,
            }, request)
 
 
