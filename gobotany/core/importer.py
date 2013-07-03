@@ -1497,7 +1497,8 @@ class Importer(object):
             tips = row['lookalike_tips'].replace(u'\u2013', '-')
 
             if tips.find(':') > 1:
-                parts = re.split('(\w+ \w+):', tips)   # Split on plant name
+                # Split on plant name at the left of the first colon.
+                parts = re.split('(\w+ \w+):', tips, maxsplit=1)
                 parts = parts[1:]   # Strip the first item, which is empty
             else:
                 # Handle entries that do not yet have explanatory text.
