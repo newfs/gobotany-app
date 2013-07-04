@@ -603,6 +603,21 @@ class Importer(object):
         log.info('Created %d conservation status records.' % statuses_count)
 
 
+    def import_litsources(self, citation_file):
+        log.info('Importing literary source citations')
+
+        new_citation_count = 0
+        for row in open_csv(citation_file):
+            citation_text = row['lit_source']
+            citation, created = models.SourceCitation.objects.get_or_create(
+                    citation_text=citation_text
+                    )
+            if created:
+                new_citation_count += 1
+
+        log.info('Imported {0} new source citation records.'.format(new_citation_count))
+
+
     def import_taxon_character_values(self, db, *filenames):
         """Load taxon character values from CSV files"""
 
