@@ -21,7 +21,7 @@
 {% user_first_name user %}.</p>
 
 <div class="modal-container">
-  {% include "_image_upload_form.html" with image_form=upload_photo_form %}
+    {% include "_image_upload_form.html" with image_form=upload_photo_form %}
 </div>
 
 <form method="post" action="{% url 'ps-sighting' sighting.id %}">

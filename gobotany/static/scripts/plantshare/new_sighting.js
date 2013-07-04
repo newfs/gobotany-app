@@ -113,7 +113,10 @@ define([
         }
     }
 
-    function set_visibility_restriction(is_restricted) {
+    function set_visibility_restriction(is_restricted, state, show_dialog) {
+        var has_state = (state !== undefined && state !== null &&
+                         state !== '');
+        var show_dialog = (show_dialog === false) ? false : true;
         if (is_restricted) {
             // Show messages and restrict visibility options.
             $('.restricted').removeClass('hidden');
@@ -123,6 +126,33 @@ define([
                     $(this).attr('disabled', true);
                 }
             });
+            if (show_dialog) {
+                // Show a dialog with details about the restriction.
+                var intro = 'Congratulations! You have found a plant that ' +
+                    'is <b>rare in ';
+                intro += (has_state) ? state : 'New England';
+                intro += '</b>.';
+                var details = 'To protect the plant, this sighting <b>will ' +
+                    'not be publicly visible.</b>';
+                if (has_state) {
+                    // A botanist may contact the user if the sighting
+                    // occurs in one of the covered states.
+                    details += ' A botanist may contact you.';
+                }
+                var html = '<div class="restricted-dialog">' +
+                    '<p>' + intro + '</p>' +
+                    '<p>' + details + '</p>' +
+                    '<div class="ok"><a class="orange-button" ' +
+                    'onclick="Shadowbox.close()">OK</a></div>' +
+                    '</div>';
+                Shadowbox.open({
+                    content: html,
+                    player: 'html',
+                    title: '',
+                    height: 400,
+                    width: 320
+                });
+            }
         }
         else {
             // Hide messages and unrestrict visibility options.
@@ -135,7 +165,7 @@ define([
         }
     }
 
-    function check_restrictions(plant_name, location) {
+    function check_restrictions(plant_name, location, show_dialog) {
         var is_restricted = false;
         var url = '/plantshare/api/restrictions/';
         url += '?plant=' + encodeURIComponent(plant_name) + '&location=' +
@@ -144,6 +174,7 @@ define([
             url: url
         }).done(function (json) {
             var is_restricted = false;
+            var state = '';
             // If any result says that sightings are restricted,
             // consider sightings restricted for this plant. (Multiple
             // results are for supporting common names, where the same
@@ -151,10 +182,11 @@ define([
             $.each(json, function (i, taxon) {
                 if (taxon.sightings_restricted === true) {
                     is_restricted = true;
+                    state = taxon.covered_state;
                     return false;   // to break out of the loop
                 }
             });
-            set_visibility_restriction(is_restricted);
+            set_visibility_restriction(is_restricted, state, show_dialog);
         });
     }
 
@@ -172,22 +204,34 @@ define([
         // Check the conservation status for any initial identification
         // value and location value.
         if (initial_identification !== '' && initial_location !== '') {
-            check_restrictions(initial_identification, initial_location);
+            var show_dialog = false;
+            check_restrictions(initial_identification, initial_location,
+                               show_dialog);
         }
 
         // When the user enters a plant name in the identification
         // field, check the name and location to see if there are
         // conservation concerns. If so, the sighting will be private.
         $identification_box.on('blur', function () {
-            if ($location_box.val() !== '') {
-                check_restrictions($(this).val(), $location_box.val());
+            var identification = $(this).val();
+            var location = $location_box.val();
+            if (location !== '') {
+                var show_dialog = true;
+                if (identification === initial_identification) {
+                    show_dialog = false;
+                }
+                check_restrictions(identification, location, show_dialog);
+            }
+            if (identification !== '') {
+                initial_identification = identification;
             }
         });
         $identification_box.on('keyup', function (event) {
             if ($(this).val() === '') {
-                // Empty box: clear any restriction message
+                // ID box is empty, so clear any restriction message.
                 var is_restricted = false;
-                set_visibility_restriction(is_restricted);
+                var state = '';
+                set_visibility_restriction(is_restricted, state);
             }
             else if (event.which == 13) {   // Enter key
                 if ($location_box.val() !== '') {
@@ -199,10 +243,25 @@ define([
         // When the user enters a location, geocode it again if needed,
         // and let the map update.
         $location_box.blur(function () {
-            update_latitude_longitude($(this).val(), geocoder);
+            var location = $(this).val();
+            if (location !== '') {
+                var show_dialog = true;
+                if (location === initial_location) {
+                    show_dialog = false;
+                }
+                update_latitude_longitude(location, geocoder);
 
-            // Check visibility restrictions for the plant and location.
-            check_restrictions($identification_box.val(), $(this).val());
+                // Check visibility restrictions for the plant and location.
+                check_restrictions($identification_box.val(), location,
+                                   show_dialog);
+                initial_location = location;
+            }
+            else {
+                // Location box is empty, so clear any restriction message.
+                var is_restricted = false;
+                var state = '';
+                set_visibility_restriction(is_restricted, state);
+            }
         });
         $location_box.on('keypress keyup', function (event) {
             if (event.which === 13) {   // Enter key

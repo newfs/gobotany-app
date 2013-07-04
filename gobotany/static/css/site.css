@@ -1179,6 +1179,10 @@ body.plantshare#new-sighting h1 + div { background: #fff; border: 1px solid #c3d
 body.plantshare#new-sighting #id_identification, body.plantshare#new-sighting .restricted, body.plantshare#edit-sighting #id_identification, body.plantshare#edit-sighting .restricted { display: inline-block; }
 body.plantshare#new-sighting .images, body.plantshare#edit-sighting .images { margin-top: 10px; }
 body.plantshare#new-sighting .restricted, body.plantshare#edit-sighting .restricted { margin-left: 14px; }
+body.plantshare#new-sighting .restricted-dialog, body.plantshare#edit-sighting .restricted-dialog { background: #fff; color: #000; padding: 20px; height: auto; width: auto; }
+body.plantshare#new-sighting .restricted-dialog p, body.plantshare#edit-sighting .restricted-dialog p { margin: 0 0 14px; }
+body.plantshare#new-sighting .restricted-dialog .ok, body.plantshare#edit-sighting .restricted-dialog .ok { margin: 20px 0 0; text-align: center; }
+body.plantshare#new-sighting .restricted-dialog .ok a, body.plantshare#edit-sighting .restricted-dialog .ok a { color: #fff; cursor: pointer; display: inline-block; width: 80px; }
 body.plantshare#new-sighting fieldset, body.plantshare#edit-sighting fieldset { margin-bottom: 10px; }
 body.plantshare#new-sighting .visibility, body.plantshare#edit-sighting .visibility { clear: left; margin-bottom: 50px; }
 body.plantshare#new-sighting .visibility p, body.plantshare#edit-sighting .visibility p { display: inline-block; }
