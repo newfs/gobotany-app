@@ -367,8 +367,11 @@ def edit_lit_sources(request, dotted_datetime):
                 # Ignore a tcv that has disappeared in the meantime.
                 continue
             tcv = tcvs[0]
-            citation = models.SourceCitation.objects.get(citation_text=request.POST[key])
-            tcv.literary_source = citation
+            if request.POST[key]:
+                citation = models.SourceCitation.objects.get(pk=request.POST[key])
+                tcv.literary_source = citation
+            else:
+                tcv.literary_source = None
             tcv.save()
         return redirect(return_to)
 
@@ -397,9 +400,12 @@ def edit_lit_sources(request, dotted_datetime):
             )
         tcvlist.extend(tcvs)
 
+    citation_list = models.SourceCitation.objects.all()
+
     return render_to_response('gobotany/edit_lit_sources.html', {
         'return_to': return_to,
         'tcvlist': tcvlist,
+        'citation_list': citation_list
         }, context_instance=RequestContext(request))
 
 

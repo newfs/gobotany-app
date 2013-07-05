@@ -16,8 +16,15 @@
     {% with character_value=tcv.character_value %}
     {% with character=character_value.character %}
     <div>
-      <input name="tcv{{ tcv.id }}"
-             value="{{ tcv.literary_source|default_if_none:"" }}">
+      <select name="tcv{{ tcv.id }}" size=1>
+        <option value="">Select a literary source citation</option>
+        {% for citation in citation_list %}
+        <option 
+          value="{{citation.id}}"
+          {% if tcv.literary_source_id = citation.id %}selected{% endif %}
+          >{{citation.citation_text}}</option>
+        {% endfor %}
+      </select>
       <i>{{ tcv.taxon.scientific_name }}</i>
       {{ tcv.character_value.character.name }}
       {% if tcv.character_value.character.value_type == 'LENGTH' %}

@@ -664,6 +664,9 @@ class SourceCitation(models.Model):
     publisher_location = models.CharField(max_length=100, blank=True,
             verbose_name=u'Publisher Location')
 
+    class Meta:
+        ordering = ['citation_text']
+
     def __unicode__(self):
         return u'{0}'.format(self.citation_text)
 

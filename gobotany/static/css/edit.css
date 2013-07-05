@@ -18,6 +18,7 @@ span.all-species-button, span.simple-key-button, .save-button, .length-save-butt
 .pile-character-grid { position: relative; margin-top: 2em; /* Editing a single character for many taxa: */ /* For editing numeric values. */ /* http://stackoverflow.com/questions/8669413/ */ }
 .pile-character-grid .column { z-index: -1; position: absolute; background-color: #fafae9; }
 .pile-character-grid h3 { background-color: #f3d281; }
+.pile-character-grid select { width: 25em; }
 .pile-character-grid div { white-space: nowrap; }
 .pile-character-grid div.expanded { border-top: 1px solid #519136; border-bottom: 1px solid #519136; }
 .pile-character-grid div:hover { background-color: #fafae9; }
