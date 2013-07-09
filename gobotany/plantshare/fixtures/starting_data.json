@@ -221,7 +221,7 @@
         "fields": {
             "city": "Guilford",
             "user_input": "Guilford, ME",
-            "longitude": 69.388721,
+            "longitude": -69.388721,
             "state": "ME",
             "postal_code": null,
             "latitude": 45.169966

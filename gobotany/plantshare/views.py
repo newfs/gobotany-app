@@ -234,6 +234,7 @@ def sighting_view(request, sighting_id):
         if not is_visible:
             raise Http404
 
+        SIGHTING_MAP_ZOOM = 14
         sighting = {
             'id': s.id,
             'identification': s.identification,
@@ -245,7 +246,8 @@ def sighting_view(request, sighting_id):
             'photos': s.private_photos()
         }
         return render_to_response('sighting.html', {
-                   'sighting': sighting,
+                    'sighting': sighting,
+                    'map_zoom': SIGHTING_MAP_ZOOM,
                }, context_instance=RequestContext(request))
     elif request.method == 'POST':   # Update an edited sighting.
         if not request.user.is_authenticated():

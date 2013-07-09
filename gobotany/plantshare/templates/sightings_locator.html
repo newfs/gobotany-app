@@ -4,7 +4,10 @@
 {% block title %}Sightings Locator: PlantShare{% endblock %}
 
 {% block js_require %}
-    require(['util/suggester_init', 'plantshare/sightings_locator']);
+    require([
+        'util/suggester_init',
+        'plantshare/sightings_locator'
+    ]);
 {% endblock %}
 
 {% block body_attributes %}id="locator" class="plantshare"{% endblock %}

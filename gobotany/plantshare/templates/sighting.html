@@ -5,6 +5,12 @@
 {% block title %}Sighting: {{ sighting.identification }} at
     {{ sighting.location|capfirst }}: PlantShare{% endblock %}
 
+{% block js_require %}
+    require([
+        'plantshare/sighting'
+    ]);
+{% endblock %}
+
 {% block body_attributes %}id="sighting"
     class="plantshare sighting"{% endblock %}
 
@@ -12,16 +18,16 @@
 <h1>Sighting: <i>{{ sighting.identification }}</i> at
     {{ sighting.location|capfirst }}</h1>
 
-{% location_map location=sighting.location height_px="300" width_px="450" zoom="7" id="id_location_map" %}
-
 <p>Posted {{ sighting.created }} by {% user_display_name sighting.user %}</p>
 
-{% if sighting.notes %}
-    <p>Description or comments: {{ sighting.notes }}</p>
-{% endif %}
+{% sightings_map latitude=sighting.location.latitude longitude=sighting.location.longitude center_title=sighting.location height="344px" width="710px" zoom=map_zoom id="sightings-map" %}
 
 {% if sighting.location_notes %}
     <p>Location notes: {{ sighting.location_notes }}</p>
+{% endif %}
+
+{% if sighting.notes %}
+    <p>Comments: {{ sighting.notes }}</p>
 {% endif %}
 
 <div class="photos">
@@ -40,4 +46,3 @@
 {% block sidebar_content %}
     {% include "_plantshare_navigation.html" %}
 {% endblock %}
-
