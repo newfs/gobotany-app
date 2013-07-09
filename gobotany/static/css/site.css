@@ -1207,10 +1207,6 @@ body.plantshare#delete-sighting .cancel-btn, body.plantshare#delete-checklist .c
 body.plantshare#delete-sighting .cancel-btn:hover, body.plantshare#delete-checklist .cancel-btn:hover { background-position: -415px -336px; }
 body.plantshare#locator #main h3 { font-family: Verdana, Geneva, "Lucida Sans Unicode", sans-serif; font-size: 12px; line-height: 24px; }
 body.plantshare#locator #main #sightings-status { display: none; /* initially hide, until updating value via JS */ float: right; line-height: 24px; }
-body.plantshare .sighting-gallery { clear: both; }
-body.plantshare .sighting-gallery h2 { margin-top: 50px; }
-body.plantshare .sighting-gallery ul li { height: auto; list-style: none; margin: 0; padding: 10px 0; }
-body.plantshare .sighting-gallery ul img { max-height: 710px; max-width: 710px; }
 body.plantshare .modal-container { position: relative; }
 body.plantshare .modal-container .image-modal { background-color: white; border: 5px solid #acac90; display: none; height: 160px; left: 0px; padding: 15px; position: absolute; top: 250px; width: 400px; z-index: 10; }
 body.plantshare .modal-container .image-modal img { float: left; margin: 0 20px 10px 0; max-height: 84px; max-width: 84px; }
@@ -1234,7 +1230,11 @@ body.plantshare#sightings #main > ul { margin-top: 14px; }
 body.plantshare#sightings #main > ul > li { float: left; margin-bottom: 14px; }
 body.plantshare#sightings #main > ul > li ul { margin-left: 200px; margin-top: -20px; }
 body.plantshare#sightings #main > ul > li ul li { clear: left; }
-body.plantshare.sighting .map { float: right; }
+body.plantshare.sighting .map { float: right; margin: 0 0 12px 12px; }
+body.plantshare.sighting .photos { clear: both; }
+body.plantshare.sighting .photos h2 { margin: 0; }
+body.plantshare.sighting .photos ul li { height: auto; list-style: none; margin: 0; padding: 10px 0; }
+body.plantshare.sighting .photos ul img { max-height: 710px; max-width: 710px; }
 body.plantshare.sighting form label { text-transform: none; }
 body.plantshare.sighting form fieldset { border: 0; margin: 0 0 16px; padding: 0; width: 687px; }
 body.plantshare.sighting form fieldset legend { display: block; text-indent: -9000px; }

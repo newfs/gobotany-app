@@ -586,24 +586,6 @@ body.plantshare {
         }
     }
 
-    .sighting-gallery {
-        clear: both;
-        h2 {
-            margin-top: 50px;
-        }
-        ul {
-            li {
-                height: auto;
-                list-style: none;
-                margin: 0;
-                padding: 10px 0;
-            }
-            img {
-                max-height: 710px;
-                max-width: 710px;
-            }
-        }
-    }
     .modal-container {
         position: relative;
         .image-modal {
@@ -722,6 +704,24 @@ body.plantshare {
     &.sighting {
         .map {
             float: right;
+            margin: 0 0 12px 12px;
+        }
+        .photos {
+            h2 {
+                margin: 0;
+            }
+            ul {
+                li {
+                    height: auto;
+                    list-style: none;
+                    margin: 0;
+                    padding: 10px 0;
+                }
+                img {
+                    max-height: 710px;
+                    max-width: 710px;
+                }
+            }
         }
         form {
             label {

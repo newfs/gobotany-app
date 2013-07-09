@@ -12,7 +12,7 @@
 <h1>Sighting: <i>{{ sighting.identification }}</i> at
     {{ sighting.location|capfirst }}</h1>
 
-{% location_map location=sighting.location height_px="150" width_px="302" zoom="7" id="id_location_map" %}
+{% location_map location=sighting.location height_px="300" width_px="450" zoom="7" id="id_location_map" %}
 
 <p>Posted {{ sighting.created }} by {% user_display_name sighting.user %}</p>
 
@@ -24,13 +24,13 @@
     <p>Location notes: {{ sighting.location_notes }}</p>
 {% endif %}
 
-<div class="sighting-gallery">
+<div class="photos">
     <h2>Photos</h2>
     <ul>
     {% for photo in sighting.photos.all %}
         <li><img src="{{ photo.image.url }}" /></li>
     {% empty %}
-        <li><p>There are currently no photos for this sighting.</p></li>
+        <li>There are currently no photos for this sighting.</li>
     {% endfor %}
     </ul>
 </div>
