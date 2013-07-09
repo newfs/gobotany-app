@@ -87,7 +87,11 @@ define([
         var map_options = {
             center: lat_long,
             zoom: this.zoom,
-            mapTypeId: google_maps.MapTypeId.ROADMAP
+            mapTypeId: google_maps.MapTypeId.ROADMAP,
+            mapTypeControl: true,
+            mapTypeControlOptions: {
+                style: google.maps.MapTypeControlStyle.DROPDOWN_MENU
+            }
         };
         this.map = new google_maps.Map(this.$map_div.get(0), map_options);
 
