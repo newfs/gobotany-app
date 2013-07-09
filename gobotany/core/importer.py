@@ -1293,19 +1293,24 @@ class Importer(object):
         """Load home page image URLs from S3"""
         log.info('Emptying the old home page image list')
         models.HomePageImage.objects.all().delete()
-        gobotany_id = models.PartnerSite.objects.get(short_name='gobotany').id
 
+        # For now, load the same images for Go Botany, Concord,
+        # Montshire, and the test site ('partner').
         log.info('Loading home page images')
-        path = models.HomePageImage.root_path
-        directories, image_names = default_storage.listdir(path)
-        image_paths = [ path + '/' + name
-                        for name in image_names if name ]
-
-        for path in image_paths:
-            log.info('  Adding image: %s' % path)
-            models.HomePageImage.objects.get_or_create(image=path, partner_site_id=gobotany_id)
+        short_names = ['gobotany', 'concord', 'montshire', 'partner']
+        for partner_name in short_names:
+            partner_id = models.PartnerSite.objects.get(
+                short_name=partner_name).id
+            path = models.HomePageImage.root_path
+            directories, image_names = default_storage.listdir(path)
+            image_paths = [path + '/' + name for name in image_names if name]
+            for path in image_paths:
+                log.info('  Adding image: %s' % path)
+                models.HomePageImage.objects.get_or_create(image=path,
+                    partner_site_id=partner_id)
 
         log.info('Loaded %d home page images' % len(image_names))
+
 
     def _has_unexpected_delimiter(self, text, unexpected_delimiter):
         """Check for an unexpected delimiter to help guard against breaking
