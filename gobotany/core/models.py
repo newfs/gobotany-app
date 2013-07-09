@@ -443,7 +443,8 @@ class HomePageImage(models.Model):
     image = models.ImageField(upload_to=_partner_subdirectory_path)
 
     class Meta:
-        ordering = ['image']  # users prefix filenames with "01_", "02_", etc
+        # users prefix filenames with "01_", "02_", etc.
+        ordering = ['partner_site', 'image']
 
     def __unicode__(self):
         return self.image.name
