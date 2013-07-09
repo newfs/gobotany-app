@@ -29,6 +29,7 @@
                 'plantshare/your_profile',
                 'plantshare/plantshare',
                 'plantshare/registration_complete',
+                'plantshare/sighting',
                 'plantshare/sightings_locator',
                 'plantshare/sightings_locator_part',
                 'plantshare/sightings_map',
