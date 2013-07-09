@@ -484,7 +484,7 @@ class ConservationStatusAdmin(admin.ModelAdmin):
 class DistributionAdmin(admin.ModelAdmin):
     list_display = ('scientific_name', 'state', 'county', 'present', 'native')
     list_filter = ('state', 'county', 'present', 'native')
-
+    search_fields = ('scientific_name',)
 
 class LookalikeAdmin(admin.ModelAdmin):
     list_display = ('taxon', 'lookalike_scientific_name',
