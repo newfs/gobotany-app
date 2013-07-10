@@ -33,22 +33,24 @@ define([
         var cookie_names = {};
         marker_map = new MarkerMap(map_div, cookie_names);
         marker_map.setup();
-        marker_map.mark_center();
+        
+        // Add the primary marker for the sighting.
+        var title = marker_map.center_title;
+        var info_window_html = marker_map.center_title;
+        marker_map.add_marker(marker_map.latitude, marker_map.longitude,
+            title, info_window_html);
 
+        // Add any secondary markers for place names mentioned in the
+        // location notes.
         google_maps.event.addListener(marker_map.map, 'bounds_changed',
                                       function () {
             // Only run this function once, when the map initally loads.
             if (map_loaded == false) {
                 map_loaded = true;
 
-                // If location notes were provided, try parsing them for
-                // possible place names for which a map marker in a secondary
-                // color can be set.
                 var location_notes = $('#location-notes').text();
-
                 var place_parser = new PlaceParser();
                 var possible_places = place_parser.parse(location_notes);
-
                 var MAX_PLACES_TO_GEOCODE = 3;
                 var geocoder = new Geocoder();
                 var bounds = marker_map.get_bounds();

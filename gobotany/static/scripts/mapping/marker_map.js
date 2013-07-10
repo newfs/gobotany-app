@@ -160,6 +160,14 @@ define([
             shadow: pin_shadow,
             title: title
         });
+
+        // Show title in an information popup upon clicking the marker.
+        var info_window = this.info_window;
+        google_maps.event.addListener(marker, 'click', function () {
+            info_window.setContent(title);
+            info_window.open(this.map, marker);
+        });
+
         this.markers.push(marker);
     };
 
