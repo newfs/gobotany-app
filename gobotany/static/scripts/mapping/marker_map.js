@@ -90,21 +90,21 @@ define([
             mapTypeId: google_maps.MapTypeId.ROADMAP,
             mapTypeControl: true,
             mapTypeControlOptions: {
-                style: google.maps.MapTypeControlStyle.DROPDOWN_MENU
+                style: google_maps.MapTypeControlStyle.DROPDOWN_MENU
             }
         };
         this.map = new google_maps.Map(this.$map_div.get(0), map_options);
 
         // When the user moves the map around, store the location center.
         var center_cookie_name = this.center_cookie_name;
-        google.maps.event.addListener(
+        google_maps.event.addListener(
             this.map, 'center_changed', function () {
                 var center = this.center.toString();
                 $.cookie(center_cookie_name, center, {path: '/'});
         });
         // When the user changes the zoom level, store it.
         var zoom_cookie_name = this.zoom_cookie_name;
-        google.maps.event.addListener(
+        google_maps.event.addListener(
             this.map, 'zoom_changed', function () {
                 $.cookie(zoom_cookie_name, this.zoom, {path: '/'});
         });      
@@ -139,20 +139,20 @@ define([
                                                         title) {
         // Create a marker in a secondary color to mark a landmark.
         var PROTOCOL = 'http://';
-        var pin_image = new google.maps.MarkerImage(PROTOCOL +
+        var pin_image = new google_maps.MarkerImage(PROTOCOL +
             location.host + "/static/images/icons/marker-pin-gray.png",
             new google.maps.Size(20, 34),
             new google.maps.Point(0, 0),
             new google.maps.Point(10, 34)
         );
-        var pin_shadow = new google.maps.MarkerImage(PROTOCOL +
+        var pin_shadow = new google_maps.MarkerImage(PROTOCOL +
             location.host + "/static/images/icons/marker-pin-shadow.png",
             new google.maps.Size(40, 37),
             new google.maps.Point(0, 0),
             new google.maps.Point(12, 35)
         );
-        var marker = new google.maps.Marker({
-            position: new google.maps.LatLng(latitude, longitude), 
+        var marker = new google_maps.Marker({
+            position: new google_maps.LatLng(latitude, longitude), 
             map: this.map,
             icon: pin_image,
             shadow: pin_shadow,
