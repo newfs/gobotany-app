@@ -113,6 +113,13 @@ define([
             maxWidth: 300
         };
         this.info_window = new google_maps.InfoWindow(info_window_options);
+
+        // When the user clicks anywhere outside an open info window,
+        // close the window.
+        var info_window = this.info_window;
+        google_maps.event.addListener(this.map, 'click', function () {
+            info_window.close();
+        });
     };
 
     MarkerMap.prototype.clear_markers = function () {
