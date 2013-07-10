@@ -126,8 +126,10 @@ define([
 
     MarkerMap.prototype.save_last_viewed = function (last_viewed_id,
                                                      cookie_name) {
-        // Set a cookie for the last viewed item, for restoring later.
-        $.cookie(cookie_name, last_viewed_id, {path: '/'});
+        if (last_viewed_id !== undefined && last_viewed_id !== null) {
+            // Set a cookie for the last viewed item, for restoring later.
+            $.cookie(cookie_name, last_viewed_id, {path: '/'});
+        }
     };
 
     MarkerMap.prototype.get_bounds = function () {
