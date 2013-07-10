@@ -1,9 +1,10 @@
 define([
     'bridge/jquery',
-    'mapping/marker_map',
     'mapping/geocoder',
-    'mapping/google_maps'
-], function ($, MarkerMap, Geocoder, google_maps) {
+    'mapping/google_maps',
+    'mapping/marker_map',
+    'mapping/place_parser'
+], function ($, Geocoder, google_maps, MarkerMap, PlaceParser) {
 
     var marker_map;
     var map_loaded = false;
@@ -16,7 +17,12 @@ define([
             var longitude = first_result.geometry.location.kb;
             var title = first_result.formatted_address;
 
-            marker_map.add_landmark_marker(latitude, longitude, title);
+            // If this location differs from the sighting location,
+            // add a marker for it.
+            if (parseFloat(latitude) !== parseFloat(marker_map.latitude) &&
+                parseFloat(longitude) !== parseFloat(marker_map.longitude)) {
+                marker_map.add_landmark_marker(latitude, longitude, title);
+            }
         }
     }
 
@@ -35,33 +41,20 @@ define([
             if (map_loaded == false) {
                 map_loaded = true;
 
-                // If location notes were provided, try parsing them for a
-                // possible location name for which a map marker in a
-                // secondary color can be set.
+                // If location notes were provided, try parsing them for
+                // possible place names for which a map marker in a secondary
+                // color can be set.
                 var location_notes = $('#location-notes').text();
 
-                var EXCLUDE_WORDS = ['about', 'above', 'around', 'below',
-                    'just', 'near', 'next', 'not', 'past', 'under'];
-                var possible_location = '';
-                var parts = location_notes.split(' ');
-                for (var i = 0; i < parts.length; i++) {
-                    var part = parts[i];
-                    var first_char = part.slice(0, 1);
-                    // Only consider uppercase words for a possible location.
-                    if (first_char === first_char.toUpperCase()) {
-                        // Include the word if not in the "exclude" list.
-                        if ($.inArray(part.toLowerCase(),
-                                      EXCLUDE_WORDS) === -1) {
-                            possible_location += ' ' + part;
-                        }
-                    }
-                }
+                var place_parser = new PlaceParser();
+                var possible_places = place_parser.parse(location_notes);
 
-                if (possible_location) {
-                    var geocoder = new Geocoder();
-                    var bounds = marker_map.get_bounds();
-                    geocoder.geocode(possible_location, mark_location,
-                        bounds);
+                var MAX_PLACES_TO_GEOCODE = 3;
+                var geocoder = new Geocoder();
+                var bounds = marker_map.get_bounds();
+                var places = possible_places.slice(0, MAX_PLACES_TO_GEOCODE);
+                for (var i = 0; i < places.length; i++) {
+                    geocoder.geocode(places[i], mark_location, bounds);
                 }
             }
         });
