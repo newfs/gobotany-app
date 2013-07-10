@@ -13,10 +13,15 @@ define([
         this.geocoder = new google_maps.Geocoder();
     };
 
-    Geocoder.prototype.geocode = function (address, response_callback) {
+    Geocoder.prototype.geocode = function (address, response_callback,
+                                           bounds /* optional */) {
         var request = {
-            'address': address
+            'address': address,
+            'region': 'us'  // Return results biased to a particular region
         };
+        if (bounds !== undefined) {
+            request['bounds'] = bounds
+        }
         this.geocoder.geocode(request, response_callback);
     };
 

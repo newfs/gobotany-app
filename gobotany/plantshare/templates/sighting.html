@@ -23,7 +23,9 @@
 {% sightings_map latitude=sighting.location.latitude longitude=sighting.location.longitude center_title=sighting.location height="344px" width="710px" zoom=map_zoom id="sightings-map" %}
 
 {% if sighting.location_notes %}
-    <p>Location notes: {{ sighting.location_notes }}</p>
+    <p>Location notes: 
+    <span id="location-notes">{{ sighting.location_notes }}</span>
+    </p>
 {% endif %}
 
 {% if sighting.notes %}

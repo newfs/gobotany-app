@@ -130,6 +130,37 @@ define([
         $.cookie(cookie_name, last_viewed_id, {path: '/'});
     };
 
+    MarkerMap.prototype.get_bounds = function () {
+        var bounds = this.map.getBounds();
+        return bounds;
+    };
+
+    MarkerMap.prototype.add_landmark_marker = function (latitude, longitude,
+                                                        title) {
+        // Create a marker in a secondary color to mark a landmark.
+        var PROTOCOL = 'http://';
+        var pin_image = new google.maps.MarkerImage(PROTOCOL +
+            location.host + "/static/images/icons/marker-pin-gray.png",
+            new google.maps.Size(20, 34),
+            new google.maps.Point(0, 0),
+            new google.maps.Point(10, 34)
+        );
+        var pin_shadow = new google.maps.MarkerImage(PROTOCOL +
+            location.host + "/static/images/icons/marker-pin-shadow.png",
+            new google.maps.Size(40, 37),
+            new google.maps.Point(0, 0),
+            new google.maps.Point(12, 35)
+        );
+        var marker = new google.maps.Marker({
+            position: new google.maps.LatLng(latitude, longitude), 
+            map: this.map,
+            icon: pin_image,
+            shadow: pin_shadow,
+            title: title
+        });
+        this.markers.push(marker);
+    };
+
     MarkerMap.prototype.add_marker = function (latitude, longitude, title,
                                                info_window_html, sighting_id,
                                                show_info) {
