@@ -58,7 +58,6 @@ define([
         }
         if (sighting.photos !== undefined && sighting.photos.length > 0) {
             var photo_url = sighting.photos[0];
-            console.log('photo_url:', photo_url);
             html += ' <img src="' + photo_url + '">';
         }
         html += '<p>';
