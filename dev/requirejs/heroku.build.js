@@ -27,6 +27,7 @@
                 'plantshare/find_people',
                 'plantshare/find_people_profile',
                 'plantshare/manage_sightings',
+                'plantshare/terms_of_agreement',
                 'plantshare/your_profile',
                 'plantshare/plantshare',
                 'plantshare/registration_complete',
