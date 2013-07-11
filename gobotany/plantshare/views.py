@@ -5,7 +5,7 @@ from random import randint
 
 from django.conf import settings
 from django.contrib.auth.decorators import login_required, user_passes_test
-from django.contrib.auth.models import User
+from django.contrib.auth.models import Group, User
 from django.contrib.auth.views import redirect_to_login
 from django.core.exceptions import ObjectDoesNotExist
 from django.core.urlresolvers import reverse, reverse_lazy
@@ -35,6 +35,34 @@ SIGHTINGS_MAP_DEFAULTS = {
 SIGHTING_DATE_FORMAT = "%e %B %Y"
 SIGHTING_DAY_DATE_FORMAT = '%A, ' + SIGHTING_DATE_FORMAT
 SIGHTING_DATE_TIME_FORMAT = SIGHTING_DAY_DATE_FORMAT + " at %I:%M %p"
+
+
+# Function and decorator for determining if a logged-in PlantShare user
+# has accepted the PlantShare Terms of Agreement and therefore can use
+# the PlantShare section of the site with member priveleges.
+
+def logged_in_user_agreed_to_terms(user):
+    if user and user.is_authenticated():
+        agreed_to_terms = user.groups.filter(
+            name=settings.AGREED_TO_TERMS_GROUP).exists()
+        return agreed_to_terms
+    else:
+        return True   # agreement not required now
+
+# This decorator should be used on all views that also use the
+# @login_required decorator. That is, if login is required for a view,
+# acceptance of the Terms of Agreement is required too.
+# However, this decorator can be used without login being required, such
+# as is the case for any PlantShare pages that do show some content
+# without requiring a logged-in PlantShare user (such as the PlantShare
+# main page, etc.).
+def terms_agreed_on_login(function=None):
+    decorator = user_passes_test(logged_in_user_agreed_to_terms,
+        login_url=reverse_lazy('ps-terms-of-agreement'))
+    if function:
+        return decorator(function)
+    return decorator
+
 
 def _sighting_form_page(request, form, edit=False, sighting=None):
     """Return a sighting form, either blank or with data."""
@@ -67,12 +95,50 @@ def _create_checklistentry_formset(**kwargs):
 
 # Views
 
+@login_required
+def terms_of_agreement_view(request):
+    return render_to_response('terms_of_agreement.html', {
+        }, context_instance=RequestContext(request))
+
+
+@login_required
+def terms_of_agreement_accept_view(request):
+    """Handle the form submission for accepting the Terms of Agreement."""
+    if request.method == 'POST':
+        REQUIRED_VALUES = ['terms1', 'terms2', 'terms3', 'terms4']
+        checked_values = request.POST.getlist('terms')
+        if (set(checked_values) == set(REQUIRED_VALUES)):
+            # All the check boxes are checked, so the user has agreed
+            # to the Terms. Place them in a Group that signifies this.
+            group = Group.objects.get(name=settings.AGREED_TO_TERMS_GROUP)
+            group.user_set.add(request.user)
+            # Verify the user is now in the group.
+            users = group.user_set.all()
+            user_in_group = request.user in users
+            if user_in_group:
+                url = 'ps-main'   # default: named URL for redirect
+                if 'next' in request.POST:
+                    # Redirect to the URL from the 'next' variable.
+                    url = request.POST['next']
+                return redirect(url)
+            else:
+                # Somehow the user did not get added to the group.
+                # Return to the form.
+                return redirect('ps-terms-of-agreement')
+        else:
+            # Not all check boxes were checked, so return to the form.
+            return redirect('ps-terms-of-agreement')
+    else:
+        return HttpResponse(status=405)   # HTTP method not allowed
+
+
 def _get_recently_answered_questions(number_of_questions):
     questions = Question.objects.answered().order_by(
         '-answered')[:number_of_questions]
     return questions
 
 
+@terms_agreed_on_login
 def plantshare_view(request):
     """View for the main PlantShare page."""
     upload_photo_form = ScreenedImageForm(initial={
@@ -106,6 +172,7 @@ def plantshare_view(request):
                 'profile': profile
            }, context_instance=RequestContext(request))
 
+
 def _may_show_sighting(sighting, user):
     """Determine whether a sighting may be shown to a user in a set of
     results (list, table, map markers, etc.).
@@ -126,6 +193,7 @@ def _may_show_sighting(sighting, user):
     return may_show_sighting
 
 
+@terms_agreed_on_login
 def sightings_view(request):
     """View for the sightings collection: showing a list of recent sightings
     (GET) as well as handling adding a new sighting (the POST action from
@@ -196,12 +264,14 @@ def sightings_view(request):
         return HttpResponse(status=405)
 
 
+@terms_agreed_on_login
 def sightings_locator_view(request):
     return render_to_response('sightings_locator.html', {
                 'map': SIGHTINGS_MAP_DEFAULTS
            }, context_instance=RequestContext(request))
 
 
+@terms_agreed_on_login
 def sighting_view(request, sighting_id):
     """View for an individual sighting. Supported HTTP methods: GET (return
     a sighting), POST (update an edited sighting), and DELETE (delete a
@@ -301,6 +371,7 @@ def sighting_view(request, sighting_id):
 
 
 @login_required
+@terms_agreed_on_login
 def new_sighting_view(request):
     """View for a blank form for posting a new sighting."""
     form = SightingForm()
@@ -308,6 +379,7 @@ def new_sighting_view(request):
 
 
 @login_required
+@terms_agreed_on_login
 def new_sighting_done_view(request):
     """View for a confirmation page upon posting a new sighting."""
     return render_to_response('new_sighting_done.html', {
@@ -315,6 +387,7 @@ def new_sighting_done_view(request):
 
 
 @login_required
+@terms_agreed_on_login
 def manage_sightings_view(request):
     """View for a page where the user can review and edit their sightings."""
     sightings_queryset = Sighting.objects.filter(user=request.user).\
@@ -337,6 +410,7 @@ def manage_sightings_view(request):
 
 
 @login_required
+@terms_agreed_on_login
 def edit_sighting_view(request, sighting_id):
     """View for editing a sighting: the same form for posting a sighting,
     but with the fields filled in.
@@ -359,6 +433,7 @@ def edit_sighting_view(request, sighting_id):
 
 
 @login_required
+@terms_agreed_on_login
 def edit_sighting_done_view(request):
     """View for a confirmation page upon editing a sighting."""
     return render_to_response('edit_sighting_done.html', {
@@ -366,6 +441,7 @@ def edit_sighting_done_view(request):
 
 
 @login_required
+@terms_agreed_on_login
 def delete_sighting_view(request, sighting_id):
     """View for deleting a sighting: the contents of a lightbox dialog,
     using HTTP GET. (The actual delete should be performed by sending a
@@ -390,6 +466,7 @@ def delete_sighting_view(request, sighting_id):
         return HttpResponse(status=405)
 
 
+@terms_agreed_on_login
 def questions_view(request):
     """View for the main Ask the Botanist page and the questions collection:
     showing a list of recent questions (GET) as well as handling adding a new
@@ -444,6 +521,7 @@ def questions_view(request):
             }, context_instance=RequestContext(request))
 
 
+@terms_agreed_on_login
 def all_questions_view(request):
     """View for the full list of Questions and Answers."""
     questions = Question.objects.answered().order_by(
@@ -454,6 +532,7 @@ def all_questions_view(request):
 
 
 @login_required
+@terms_agreed_on_login
 def new_question_done_view(request):
     """View for a confirmation page upon asking a new question."""
     return render_to_response('new_question_done.html', {
@@ -461,6 +540,7 @@ def new_question_done_view(request):
 
 
 @login_required
+@terms_agreed_on_login
 def checklist_index_view(request):
     """List of all of a user's visible checklists"""
     profile = request.user.userprofile
@@ -472,6 +552,7 @@ def checklist_index_view(request):
 
 
 @login_required
+@terms_agreed_on_login
 def new_checklist_view(request):
     """Create a new checklist"""
     entry_image_form = ScreenedImageForm(initial={
@@ -506,6 +587,7 @@ def new_checklist_view(request):
 
 
 @login_required
+@terms_agreed_on_login
 def delete_checklists_view(request):
     if request.method == 'POST':
         delete_list = request.POST.getlist('checklist_id')
@@ -518,6 +600,7 @@ def delete_checklists_view(request):
 
 
 @login_required
+@terms_agreed_on_login
 def delete_checklist_view(request, checklist_id):
     """View for deleting a checklist by presenting a lightbox dialog,
     using HTTP GET. (The actual delete should be performed by sending a
@@ -538,26 +621,33 @@ def delete_checklist_view(request, checklist_id):
 
 
 @login_required
+@terms_agreed_on_login
 def export_checklist_view(request, checklist_id):
     response = HttpResponse(content_type='text/csv')
     checklist = get_object_or_404(Checklist, pk=checklist_id)
     filename = checklist.name.lower().replace(' ', '_') + '.csv'
-    response['Content-Disposition'] = 'attachment; filename="{0}"'.format(filename)
+    response['Content-Disposition'] = 'attachment; filename="{0}"'.format(
+        filename)
 
     writer = csv.writer(response)
     writer.writerow(('Plant Checklist Title:', checklist.name))
     writer.writerow(('Comments:', checklist.comments))
     writer.writerow([])
-    writer.writerow(('Found?', 'Plant Name', 'Date Sighted', 'Location', 'Date Posted', 'Notes'))
+    writer.writerow(('Found?', 'Plant Name', 'Date Sighted', 'Location',
+        'Date Posted', 'Notes'))
     for entry in checklist.entries.all():
         found = 'Yes' if entry.is_checked else 'No'
-        sighted = entry.date_found.strftime('%d/%m/%Y') if entry.date_found else 'N/A'
-        posted = entry.date_posted.strftime('%d/%m/%Y') if entry.date_posted else 'N/A'
-        writer.writerow((found, entry.plant_name, sighted, entry.location, posted, entry.note))
+        sighted = (entry.date_found.strftime('%d/%m/%Y')
+            if entry.date_found else 'N/A')
+        posted = (entry.date_posted.strftime('%d/%m/%Y')
+            if entry.date_posted else 'N/A')
+        writer.writerow((found, entry.plant_name, sighted, entry.location,
+            posted, entry.note))
 
     return response
 
 @login_required
+@terms_agreed_on_login
 def edit_checklist_view(request, checklist_id):
     """Edit a checklist"""
     entry_image_form = ScreenedImageForm(initial={
@@ -588,6 +678,7 @@ def edit_checklist_view(request, checklist_id):
 
 
 @login_required
+@terms_agreed_on_login
 def checklist_view(request, checklist_id):
     """View for an individual checklist. Supported HTTP methods: GET (display
     a checklist) and DELETE (delete a checklist).
@@ -614,7 +705,9 @@ def checklist_view(request, checklist_id):
         # For an unsupported HTTP method, return Method Not Allowed.
         return HttpResponse(status=405)
 
+
 @login_required
+@terms_agreed_on_login
 def find_people_view(request):
     """View for the Find People results page."""
     MIN_QUERY_LENGTH = 2
@@ -654,6 +747,7 @@ def find_people_view(request):
 
 
 @login_required
+@terms_agreed_on_login
 def find_people_profile_view(request, username):
     user = None
     profile = None
@@ -691,6 +785,7 @@ def find_people_profile_view(request, username):
 
 
 @login_required
+@terms_agreed_on_login
 def your_profile_view(request):
     """View for the logged-in user's profile."""
     try:
@@ -976,6 +1071,7 @@ def ajax_sightings(request):
 
 
 @login_required
+@terms_agreed_on_login
 def ajax_people_suggestions(request):
     """Return suggestions with names to help users find other users."""
     MIN_QUERY_LENGTH = 1
@@ -1038,6 +1134,7 @@ def ajax_people_suggestions(request):
 
 
 @login_required
+@terms_agreed_on_login
 def ajax_restrictions(request):
     """API call for determining whether a sighting should be restricted
     to private and staff viewing only for plants with a conservation

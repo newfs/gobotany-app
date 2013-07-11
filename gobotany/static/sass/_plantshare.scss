@@ -191,6 +191,47 @@ body.plantshare {
         }
     }
     
+    &#terms-of-agreement {
+        #main form {
+            input[type="checkbox"] {
+                float: left;
+                margin: 3px 14px 0 0;
+                width: auto;
+            }
+            fieldset {
+                background: #fff;
+                border: 0;
+            }
+            label {
+                line-height: 150%;
+                margin: 0 0 24px 32px;
+                text-transform: none;
+                width: auto;
+                &:last-of-type {
+                    margin-bottom: 0;
+                }
+            }
+            div {
+                margin: 14px 0;
+                padding: 24px 36px 24px 18px;
+            }
+            .agree-btn {
+                background: transparent url(/static/images/layout/plantshare-btns.png)
+                    no-repeat -110px -131px;
+                border: 0 none;
+                cursor: pointer;
+                height: 32px;
+                margin-right: 14px;
+                text-indent: -9999px;
+                width: 173px;
+                &.inactive {
+                    background-position: -247px -57px;
+                    cursor: default !important;
+                }
+            }
+        }
+    }
+
     &#plantshare {   /* styles for the PlantShare main page */
         #ask {
             margin-top: 20px;

@@ -1119,6 +1119,13 @@ body.plantshare #main .profile .avatar { background: #e1f0d1; display: block; fl
 body.plantshare #main .profile table { clear: left; }
 body.plantshare #main .profile .map { float: right; }
 body.plantshare #main .profile p { margin: 2px 0; }
+body.plantshare#terms-of-agreement #main form input[type="checkbox"] { float: left; margin: 3px 14px 0 0; width: auto; }
+body.plantshare#terms-of-agreement #main form fieldset { background: #fff; border: 0; }
+body.plantshare#terms-of-agreement #main form label { line-height: 150%; margin: 0 0 24px 32px; text-transform: none; width: auto; }
+body.plantshare#terms-of-agreement #main form label:last-of-type { margin-bottom: 0; }
+body.plantshare#terms-of-agreement #main form div { margin: 14px 0; padding: 24px 36px 24px 18px; }
+body.plantshare#terms-of-agreement #main form .agree-btn { background: transparent url(/static/images/layout/plantshare-btns.png) no-repeat -110px -131px; border: 0 none; cursor: pointer; height: 32px; margin-right: 14px; text-indent: -9999px; width: 173px; }
+body.plantshare#terms-of-agreement #main form .agree-btn.inactive { background-position: -247px -57px; cursor: default !important; }
 body.plantshare#plantshare { /* styles for the PlantShare main page */ }
 body.plantshare#plantshare #ask { margin-top: 20px; }
 body.plantshare#plantshare #find-people-form { float: right; margin: 0; width: 184px; }
@@ -1231,7 +1238,6 @@ body.plantshare#sightings #main > ul > li { float: left; margin-bottom: 14px; }
 body.plantshare#sightings #main > ul > li ul { margin-left: 200px; margin-top: -20px; }
 body.plantshare#sightings #main > ul > li ul li { clear: left; }
 body.plantshare.sighting .map { float: right; margin: 0 0 12px 12px; }
-body.plantshare.sighting .photos { clear: both; }
 body.plantshare.sighting .photos h2 { margin: 0; }
 body.plantshare.sighting .photos ul li { height: auto; list-style: none; margin: 0; padding: 10px 0; }
 body.plantshare.sighting .photos ul img { max-height: 710px; max-width: 710px; }

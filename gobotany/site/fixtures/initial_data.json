@@ -22,5 +22,12 @@
             "domain": "gobotany.newenglandwild.org",
             "name": "Go Botany"
         }
+    },
+    {
+        "pk": 1,
+        "model": "auth.group",
+        "fields": {
+            "name": "Agreed to PlantShare Terms"
+        }
     }
 ]

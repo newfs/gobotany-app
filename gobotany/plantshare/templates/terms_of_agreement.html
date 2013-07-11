@@ -1,0 +1,63 @@
+{% extends "gobotany/_page_free_sidebar.html" %}
+{% load plantshare_tags %}
+
+{% block title %}PlantShare Terms of Agreement: PlantShare{% endblock %}
+
+{% block js_require %}
+    require([
+        'plantshare/terms_of_agreement'
+    ]);
+{% endblock %}
+
+{% block body_attributes %}id="terms-of-agreement"
+    class="plantshare"{% endblock %}
+
+{% block main_content %}
+    <h1>PlantShare Terms of Agreement</h1>
+    <ul>
+        <li>Welcome, {% user_first_name user %}!
+        To use PlantShare, you must agree to the terms below.</li>
+        <li>Check the box next to each section to agree to it.</li>
+        <li>Then press "I Agree" to confirm that you agree to all
+        terms.</li>
+    </ul>
+    <form method="post" action="{% url 'ps-terms-of-agreement-accept' %}">
+        {% csrf_token %}
+        <input type="hidden" name="next" value="{{ request.GET.next }}">
+        <div class="box">
+            <fieldset>
+            <!-- Limit the length of each label to be no more than three
+                 lines long when viewed in a browser. -->
+            <input type="checkbox" id="box1" name="terms" value="terms1">
+            <label for="box1">New England Wild Flower Society can use any 
+                content submitted, but will credit the submitter.</label>
+            <input type="checkbox" id="box2" name="terms" value="terms2">
+            <label for="box2">New England Wild Flower Society reserves the
+                right to end the membership of anyone engaged in
+                bullying behavior on PlantShare.
+                A good PlantShare citizen acts in a
+                respectful and courteous manner towards other members.
+                Bullying or other abusive behavior is strictly forbidden.            
+            </label>
+            <input type="checkbox" id="box3" name="terms" value="terms3">
+            <label for="box3">Postings of locations of endangered plants
+                for species deemed at risk from collection or
+                trampling will not be shown publicly. New England Wild Flower
+                Society strongly supports also reporting endangered
+                plant species to state Natural Heritage Programs, to add to
+                scientific understanding.</label>
+            <input type="checkbox" id="box4" name="terms" value="terms4">
+            <label for="box4">By posting a sighting, you acknowledge that
+                you have obtained the permission of the landowner of the
+                property on which a plant was seen and that no laws have been
+                broken.</label>
+        </fieldset>
+        </div>
+        <input type="submit" class="agree-btn inactive" value="I Agree">
+        <a href=#">Cancel</a>
+    </form>
+{% endblock %}
+
+{% block sidebar_content %}
+    {% include "_plantshare_navigation.html" %}
+{% endblock %}
