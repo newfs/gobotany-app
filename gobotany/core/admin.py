@@ -483,6 +483,7 @@ class ConservationStatusAdmin(admin.ModelAdmin):
 
 class DistributionAdmin(admin.ModelAdmin):
     list_display = ('scientific_name', 'state', 'county', 'present', 'native')
+    list_editable = ('present', 'native',)
     list_filter = ('state', 'county', 'present', 'native')
     search_fields = ('scientific_name',)
 
