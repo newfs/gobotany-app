@@ -3,9 +3,10 @@ define([
 ], function ($) {
 
     var CHECKBOXES_SELECTOR = '#main input[type="checkbox"]';
-    var num_checkboxes = $(CHECKBOXES_SELECTOR).length;
 
     $(document).ready(function () {
+    
+        var num_checkboxes = $(CHECKBOXES_SELECTOR).length;
 
         function enable_disable_agree_button() {
             var num_checked = $(CHECKBOXES_SELECTOR + ':checked').length;
@@ -13,7 +14,7 @@ define([
             $('.agree-btn').toggleClass('inactive', add_or_remove);
         };
 
-         // Enable the I Agree button only if all checkboxes are checked.
+        // Enable the I Agree button only if all checkboxes are checked.
 
         enable_disable_agree_button();
 
