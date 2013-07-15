@@ -739,7 +739,7 @@ def find_people_view(request):
                 # Check the beginning of any parts of the display name.
                 parts = candidate.display_name.lower().split(' ')
                 for part in parts:
-                    if part.startswith(query):
+                    if part.startswith(query_l):
                         is_match = True
                         break
                 # Also check the entire display name.
