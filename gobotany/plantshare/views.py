@@ -711,19 +711,24 @@ def checklist_view(request, checklist_id):
 def find_people_view(request):
     """View for the Find People results page."""
     MIN_QUERY_LENGTH = 2
-    query = request.GET.get('n', '').lower()
+    query = request.GET.get('n', '')
+    query_l = query.lower()
     people = []
     if len(query) >= MIN_QUERY_LENGTH:
         candidates = UserProfile.objects.filter(
-            Q(display_name__icontains=query) |
-            Q(user__username__istartswith=query)).order_by('display_name')
+            Q(display_name__icontains=query_l) |
+            Q(user__username__istartswith=query_l)).order_by('display_name')
         for candidate in candidates:
             is_match = False
 
             # Figure out if we can show the display name to this user.
+            # Display names can be shown to any staff user,
+            # or shown if a user's visibility is not set to private,
+            # or shown if this is the user's own name.
             # TODO: later when available, take 'GROUPS' setting into account.
             may_show_display_name = (request.user.is_staff or
-                (candidate.details_visibility != 'PRIVATE'))
+                (candidate.details_visibility != 'PRIVATE') or
+                (candidate.user.id == request.user.id))
 
             # If a user has specified a display name, check it.
             if may_show_display_name and candidate.display_name != '':
@@ -733,8 +738,11 @@ def find_people_view(request):
                     if part.startswith(query):
                         is_match = True
                         break
+                # Also check the entire display name.
+                if candidate.display_name.lower().startswith(query_l):
+                    is_match = True
             # Check the beginning of the username.
-            if candidate.user.username.lower().startswith(query):
+            if candidate.user.username.lower().startswith(query_l):
                 is_match = True
             if is_match:
                 people.append(candidate)
@@ -1091,11 +1099,16 @@ def ajax_people_suggestions(request):
             if len(suggestions) == MAX_RESULTS:
                 break
 
-            # Figure out if we can show the display name to this user.
+            # Figure out if we can show the display name to this user:
+            # Show if a staff user, or if the user's visibility is not
+            # set to private, or if the name belongs to the current
+            # user.
             # TODO: later when available, take into account 'GROUPS' setting.
-            may_show_display_name = (name.details_visibility != 'PRIVATE')
+            may_show_display_name = (name.user.is_staff or
+                (name.details_visibility != 'PRIVATE') or
+                (name.user.id == request.user.id))
 
-            display_name = name.display_name.lower()
+            display_name = name.display_name
             if may_show_display_name and display_name != '':
                 # Add each part (first, last, etc.) of the display name.
                 parts = display_name.split(' ')
@@ -1103,19 +1116,27 @@ def ajax_people_suggestions(request):
                     part = part.strip('.')   # for initials, abbreviations
                     if len(part) < MIN_SUGGESTION_LENGTH:
                         continue
-                    if part.startswith(query) and part not in suggestions:
+                    if (part.lower().startswith(query) and
+                        part not in suggestions):
                             suggestions.append(part)
                             if len(suggestions) < MAX_RESULTS:
                                 break
+                # Also match against the entire display name.
+                if (display_name.lower().startswith(query) and
+                    display_name not in suggestions):
 
-        # If there is room in the suggestions list, may add usernames.
+                    suggestions.append(display_name)
+
+        # If there is room in the suggestions list, add usernames.
         # Although username does not show on pages if a display name takes
         # its place, it does show in the profile link URL. Users might know
         # or exchange usernames informally and expect to see them listed.
         if len(suggestions) < MAX_RESULTS:
             for name in names:
-                username = name.user.username.lower()
-                if username.find(query) > -1 and username not in suggestions:
+                username = name.user.username
+                if (username.lower().find(query) > -1 and
+                    username not in suggestions):
+
                     suggestions.append(username)
                     if len(suggestions) == MAX_RESULTS:
                         break

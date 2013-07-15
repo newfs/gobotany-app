@@ -113,6 +113,9 @@ class UserProfile(models.Model):
         default=LOCATION_DEFAULT_VISIBILITY)
     location = models.ForeignKey(Location, null=True, blank=True)
 
+    def __unicode__(self):
+        return u'%s (%s)' % (self.display_name, self.user.username)
+
     @classmethod
     def default_avatar_image(cls):
         return {
