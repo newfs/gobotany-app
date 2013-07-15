@@ -1083,6 +1083,8 @@ ul.get-more-questions-menu ul li[data-character] { color: black; }
 /* End media queries styles for Simple and Full Keys */
 /* PlantShare */
 body.plantshare { /* end #sightings-locator */ /* end .info-section, .location-section */ }
+body.plantshare .recaptchatable a { color: #317b0c; }
+body.plantshare .recaptchatable #recaptcha_response_field { font-family: "Trebuchet MS", Helvetica, Arial, "Lucida Sans Unicode", sans-serif; font-size: 14px; }
 body.plantshare .content li { list-style-type: none; }
 body.plantshare .content form p { margin: 0; }
 body.plantshare .content form label { display: block; margin-bottom: 4px; text-transform: uppercase; width: 353px; }

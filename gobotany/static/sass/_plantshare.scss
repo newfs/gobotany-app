@@ -27,6 +27,16 @@ $avatar-image-width: 169px;
 
 body.plantshare {
 
+    .recaptchatable {
+        a {
+            color: $link-green;
+        }
+        #recaptcha_response_field {
+            font-family: $headings-font;
+            font-size: $nav-font-size;
+        }
+    }
+
     .content {
         li {
             list-style-type: none;
