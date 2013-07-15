@@ -706,6 +706,18 @@ def checklist_view(request, checklist_id):
         return HttpResponse(status=405)
 
 
+def _may_show_display_name(request, user_profile):
+    """Determine if a user's display name may be shown to the current user:
+    Show if the user's visibility is not set to private, or if the name
+    belongs to the current user, or if the current user is a 'staff' user.
+    TODO: later when available, take into account a 'GROUPS' setting.
+    """
+    may_show = ((user_profile.details_visibility != 'PRIVATE') or
+                (user_profile.user.id == request.user.id) or
+                (request.user.is_staff == True))
+    return may_show
+
+
 @login_required
 @terms_agreed_on_login
 def find_people_view(request):
@@ -720,15 +732,7 @@ def find_people_view(request):
             Q(user__username__istartswith=query_l)).order_by('display_name')
         for candidate in candidates:
             is_match = False
-
-            # Figure out if we can show the display name to this user.
-            # Display names can be shown to any staff user,
-            # or shown if a user's visibility is not set to private,
-            # or shown if this is the user's own name.
-            # TODO: later when available, take 'GROUPS' setting into account.
-            may_show_display_name = (request.user.is_staff or
-                (candidate.details_visibility != 'PRIVATE') or
-                (candidate.user.id == request.user.id))
+            may_show_display_name = _may_show_display_name(request, candidate)
 
             # If a user has specified a display name, check it.
             if may_show_display_name and candidate.display_name != '':
@@ -1099,15 +1103,7 @@ def ajax_people_suggestions(request):
             if len(suggestions) == MAX_RESULTS:
                 break
 
-            # Figure out if we can show the display name to this user:
-            # Show if a staff user, or if the user's visibility is not
-            # set to private, or if the name belongs to the current
-            # user.
-            # TODO: later when available, take into account 'GROUPS' setting.
-            may_show_display_name = (name.user.is_staff or
-                (name.details_visibility != 'PRIVATE') or
-                (name.user.id == request.user.id))
-
+            may_show_display_name = _may_show_display_name(request, name)
             display_name = name.display_name
             if may_show_display_name and display_name != '':
                 # Add each part (first, last, etc.) of the display name.
