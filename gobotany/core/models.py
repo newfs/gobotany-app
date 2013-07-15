@@ -604,7 +604,6 @@ class Taxon(models.Model):
         states = [key.upper() for key in settings.STATE_NAMES.keys()]
         records = Distribution.objects.filter(
             scientific_name=self.scientific_name).filter(
-            county__exact='').filter(
             state__in=states).values_list('state', 'present')
         mapping = defaultdict(list)
         for state, present in records:
