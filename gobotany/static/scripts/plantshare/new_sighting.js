@@ -242,7 +242,7 @@ define([
 
         // When the user enters a location, geocode it again if needed,
         // and let the map update.
-        $location_box.blur(function () {
+        $location_box.on('blur', function () {
             var location = $(this).val();
             if (location !== '') {
                 var show_dialog = true;
@@ -282,6 +282,16 @@ define([
                     return false;
                 }
             }
+        });
+
+        // Wait a bit for the location map to update upon submitting.
+        $('#main form').submit(function (event) {
+            event.preventDefault();
+            var form = this;
+            var seconds = 1;                      
+            setTimeout(function () {
+                form.submit();
+            }, seconds * 1000);
         });
     });
 
