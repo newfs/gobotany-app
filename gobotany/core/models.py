@@ -605,13 +605,12 @@ class Taxon(models.Model):
         records = Distribution.objects.filter(
             scientific_name=self.scientific_name).filter(
             state__in=states).values_list('state', 'present')
-        mapping = defaultdict(list)
+        mapping = {settings.STATE_NAMES[state.lower()]: 'absent'
+                   for state in states}
         for state, present in records:
             key = settings.STATE_NAMES[state.lower()]
-            label = 'absent'
             if present == True:
-                label = 'present'
-            mapping[key] = label
+                mapping[key] = 'present'
         labels = odict(sorted(mapping.iteritems()))
         return labels
 
