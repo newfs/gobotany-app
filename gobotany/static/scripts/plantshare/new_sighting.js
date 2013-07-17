@@ -113,6 +113,25 @@ define([
         }
     }
 
+    function enable_disable_submit_button(allow_enable /* optional */) {
+        // Enable or disable the submit ("Post Sighting") button.
+        var INACTIVE = 'inactive';
+        var DISABLED = 'disabled';
+        var $button = $('.post-sighting-btn');
+        var enable = ($('#id_identification').val() !== '' &&
+                      $('#id_location').val() !== '');
+        var allow_enable = (typeof allow_enable === 'undefined') ?
+            true : allow_enable;
+        if (enable === true && allow_enable === true) {
+            $button = $button.removeClass(INACTIVE);
+            $button.removeAttr(DISABLED);
+        }
+        else if (enable === false) {
+            $button.addClass(INACTIVE);
+            $button.prop(DISABLED, true);
+        }
+    }
+
     function set_visibility_restriction(is_restricted, state, show_dialog) {
         var has_state = (state !== undefined && state !== null &&
                          state !== '');
@@ -163,6 +182,8 @@ define([
                 }
             });
         }
+
+        enable_disable_submit_button();
     }
 
     function check_restrictions(plant_name, location, show_dialog) {
@@ -213,6 +234,7 @@ define([
         // field, check the name and location to see if there are
         // conservation concerns. If so, the sighting will be private.
         $identification_box.on('blur', function () {
+            enable_disable_submit_button();
             var identification = $(this).val();
             var location = $location_box.val();
             if (location !== '') {
@@ -227,6 +249,13 @@ define([
             }
         });
         $identification_box.on('keyup', function (event) {
+            // Disable the submit button when the box is cleared, but
+            // do not automatically enable it when just typing a letter
+            // or two: let a blur event trigger a restrictions check
+            // which will then enable the button.
+            var allow_enable = false;
+            enable_disable_submit_button(allow_enable);
+
             if ($(this).val() === '') {
                 // ID box is empty, so clear any restriction message.
                 var is_restricted = false;
@@ -243,6 +272,7 @@ define([
         // When the user enters a location, geocode it again if needed,
         // and let the map update.
         $location_box.on('blur', function () {
+            enable_disable_submit_button();
             var location = $(this).val();
             if (location !== '') {
                 var show_dialog = true;
@@ -261,9 +291,17 @@ define([
                 var is_restricted = false;
                 var state = '';
                 set_visibility_restriction(is_restricted, state);
+                enable_submit_button(false);
             }
         });
         $location_box.on('keypress keyup', function (event) {
+            // Disable the submit button when the box is cleared, but
+            // do not automatically enable it when just typing a letter
+            // or two: let a blur event trigger a restrictions check
+            // which will then enable the button.
+            var allow_enable = false;
+            enable_disable_submit_button(allow_enable);
+
             if (event.which === 13) {   // Enter key
                 // If the location field is not empty, prevent the form
                 // auto-submit so the user can see the map location update.
