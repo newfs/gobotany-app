@@ -284,3 +284,5 @@ if IN_PRODUCTION:
 # Name of the Group to which PlantShare users belong once they have
 # agreed to the PlantShare Terms of Agreement.
 AGREED_TO_TERMS_GROUP = 'Agreed to PlantShare Terms'
+
+ADMINS = (('Go Botany Dev', 'gobotanydev@newenglandwild.org'), )
