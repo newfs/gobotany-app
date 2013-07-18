@@ -395,6 +395,11 @@ class ScreenedImage(models.Model):
         # in the database before the data are automatically erased due to
         # the ProcessedImageField image that gets resized and saved.
         DECIMAL_PRECISION = 7
+        # These are tag ids defined by the EXIF Specification
+        EXIF_GPSLATITUDE = 2
+        EXIF_GPSLATITUDEREF = 1
+        EXIF_GPSLONGITUDE = 4
+        EXIF_GPSLONGITUDEREF = 3
         img = Image.open(self.image)
         exif = None
         try:
@@ -405,20 +410,25 @@ class ScreenedImage(models.Model):
             tagged_exif = {
                 TAGS[k]: v for k, v in exif.items() if k in TAGS
             }
-            gps_info = tagged_exif.get('GPSInfo')
-            if gps_info:
+            gps_info = tagged_exif.get('GPSInfo', {})
+            available_tags = set(gps_info.keys())
+            required_tags = set((EXIF_GPSLATITUDE, EXIF_GPSLATITUDEREF,
+                    EXIF_GPSLONGITUDE, EXIF_GPSLONGITUDEREF))
+            if gps_info and required_tags <= available_tags:
                 getcontext().prec = DECIMAL_PRECISION
                 # Get latitude.
-                degrees, minutes, seconds = self._get_dms(gps_info[2])
+                degrees, minutes, seconds = self._get_dms(
+                    gps_info[EXIF_GPSLATITUDE])
                 latitude = self._get_coordinate(degrees, minutes, seconds)
-                direction = gps_info[1]
+                direction = gps_info[EXIF_GPSLATITUDEREF]
                 if direction.upper() == 'S':
                     latitude = latitude * -1
                 self.latitude = latitude
                 # Get longitude.
-                degrees, minutes, seconds = self._get_dms(gps_info[4])
+                degrees, minutes, seconds = self._get_dms(
+                    gps_info[EXIF_GPSLONGITUDE])
                 longitude = self._get_coordinate(degrees, minutes, seconds)
-                direction = gps_info[3]
+                direction = gps_info[EXIF_GPSLONGITUDEREF]
                 if direction.upper() == 'W':
                     longitude = longitude * -1
                 self.longitude = longitude
