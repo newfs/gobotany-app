@@ -5,6 +5,7 @@ from random import randint
 
 from django.conf import settings
 from django.contrib.auth.decorators import login_required, user_passes_test
+from django.contrib.auth.forms import PasswordChangeForm
 from django.contrib.auth.models import Group, User
 from django.contrib.auth.views import redirect_to_login
 from django.core.exceptions import ObjectDoesNotExist
@@ -813,10 +814,22 @@ def your_profile_view(request):
     DEFAULT_LOCATION = "Rumford, ME"
     location = profile.location if profile.location else DEFAULT_LOCATION
 
+    password_exists = False
+    email_address_exists = False
+    change_password_form = None
+    if profile:
+        password_exists = (len(profile.user.password) > 0)
+        email_address_exists = (len(profile.user.email) > 0)
+        change_password_form = PasswordChangeForm(data=None,
+            user=profile.user)
+
     context = {
         'profile_form': profile_form,
         'avatar_form': avatar_form,
         'location': location,
+        'password_exists': password_exists,
+        'email_address_exists': email_address_exists,
+        'form': change_password_form,   # named as another view used expects
     }
     return render_to_response('your_profile.html', context,
             context_instance=RequestContext(request))

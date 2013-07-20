@@ -20,91 +20,98 @@
 <h2>Details</h2>
 
 <div class="section-container">
-  {% include "_image_upload_form.html" with image_form=avatar_form %}
+    {% include "_image_upload_form.html" with image_form=avatar_form %}
 
-  <form id="edit-profile-form" class="ajax-partial" method="POST"
-      action="{% url 'ps-ajax-profile-edit' %}">
-    <section class="info-section">
-      {% csrf_token %}
-      <div class="info box">
-          <div class="avatar">
-              <img id="avatar-image" src="{{ profile_form.avatar.thumb_url }}" alt="">
-              <p>
-                  <a id="upload-link" href="#" rel=".image-modal">Upload Photo</a>
-              </p>
-          </div>
-          <table>
-              <tbody>
-                  <tr>
-                      <td class="first">Visibility</td>
-                      <td>
-                          <div class="display">
-                              <p><span></span><a href="#" class="edit-link">Edit</a></p>
-                          </div>
-                          <div class="edit">
-                              <div class="ajax-field">
-                                  {{ profile_form.details_visibility }}
-                              </div>
-                              <div class="field-controls">
-                                <input type="button" class="field-save save-btn" value="Save">
-                                <a href="#" class="field-reset">Cancel</a>
-                              </div>
-                          </div>
-                      </td>
-                  </tr>
-                  <tr>
-                      <td class="first">Display Name</td>
-                      <td>
-                          <div class="display">
-                              <p><span></span><a href="#" class="edit-link">Edit</a></p>
-                          </div>
-                          <div class="edit">
-                              <div class="ajax-field">
-                                  {{ profile_form.display_name }}
-                              </div>
-                              <div class="field-controls">
-                                <input type="button" class="field-save save-btn" value="Save">
-                                <a href="#" class="field-reset">Cancel</a>
-                              </div>
-                          </div>
-                      </td>
-                  </tr>
-                  <tr>
-                      <td class="first">Saying</td>
-                      <td>
-                          <div class="display">
-                              <p><span></span><a href="#" class="edit-link">Edit</a></p>
-                          </div>
-                          <div class="edit">
-                              <div class="ajax-field">
-                                  {{ profile_form.saying }}
-                              </div>
-                              <div class="field-controls">
-                                <input type="button" class="field-save save-btn" value="Save">
-                                <a href="#" class="field-reset">Cancel</a>
-                              </div>
-                          </div>
-                      </td>
-                  </tr>
-                  <tr>
-                      <td class="first">Groups</td>
-                      <td>
-                          <div class="display">
-                              {% comment %}
-                              <ul class="group-list">
-                                  <li>First Group</li>
-                                  <li>Sample Group B</li>
-                                  <li>Hiker's Club</li>
-                              </ul>
-                              <a href="#" class="edit-link">Edit</a>
-                              {% endcomment %}
-                              <a style="color: #ccc; float:right">Edit</a>
-                          </div>
-                      </td>
-                  </tr>
-              </tbody>
-          </table>
-      </div>
+    <form id="edit-profile-form" class="ajax-partial" method="POST"
+        action="{% url 'ps-ajax-profile-edit' %}">
+        <section class="info-section">
+        {% csrf_token %}
+        <div class="info box">
+            <div class="avatar">
+                <img id="avatar-image" 
+                src="{{ profile_form.avatar.thumb_url }}"
+                alt="">
+                <p><a id="upload-link" href="#" 
+                    rel=".image-modal">Upload Photo</a></p>
+            </div>
+            <table>
+                <tbody>
+                    <tr>
+                        <td class="first">Visibility</td>
+                        <td>
+                            <div class="display">
+                                <p><span></span><a href="#"
+                                    class="edit-link">Edit</a></p>
+                            </div>
+                            <div class="edit">
+                                <div class="ajax-field">
+                                    {{ profile_form.details_visibility }}
+                                </div>
+                                <div class="field-controls">
+                                    <input type="button" 
+                                    class="field-save save-btn" value="Save">
+                                    <a href="#" class="field-reset">Cancel</a>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="first">Display Name</td>
+                        <td>
+                            <div class="display">
+                                <p><span></span><a href="#"
+                                    class="edit-link">Edit</a></p>
+                            </div>
+                            <div class="edit">
+                                <div class="ajax-field">
+                                    {{ profile_form.display_name }}
+                                </div>
+                                <div class="field-controls">
+                                    <input type="button"
+                                    class="field-save save-btn" value="Save">
+                                    <a href="#" class="field-reset">Cancel</a>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="first">Saying</td>
+                        <td>
+                            <div class="display">
+                                <p><span></span><a href="#"
+                                    class="edit-link">Edit</a></p>
+                            </div>
+                            <div class="edit">
+                                <div class="ajax-field">
+                                    {{ profile_form.saying }}
+                                </div>
+                                <div class="field-controls">
+                                    <input type="button"
+                                    class="field-save save-btn" value="Save">
+                                    <a href="#" class="field-reset">Cancel</a>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="first">Groups</td>
+                        <td>
+                            <div class="display">
+                                {% comment %}
+                                <ul class="group-list">
+                                    <li>First Group</li>
+                                    <li>Sample Group B</li>
+                                    <li>Hiker's Club</li>
+                                </ul>
+                                <a href="#" class="edit-link">Edit</a>
+                                {% endcomment %}
+                                <a style="color: #ccc; float:right">Edit</a>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
     </section>
   
     <h2>Location</h2>
@@ -112,47 +119,70 @@
     <section class="location-section">
         <div class="info box">
             {% location_map location=location height_px="163" width_px="189" zoom="7" id="id_location_map" %}
-          <table>
-              <tbody>
-                  <tr>
-                      <td class="first">Visibility</td>
-                      <td>
-                          <div class="display">
-                              <p><span></span><a href="#" class="edit-link">Edit</a></p>
-                          </div>
-                          <div class="edit">
-                              <div class="ajax-field">
-                                  {{ profile_form.location_visibility }}
-                              </div>
-                              <div class="field-controls">
-                                <input type="button" class="field-save save-btn" value="Save">
-                                <a href="#" class="field-reset">Cancel</a>
-                              </div>
-                          </div>
-                      </td>
-                  </tr>
-                  <tr>
-                      <td class="first">Location</td>
-                      <td>
-                          <div class="display">
-                              <p><span></span><a href="#" class="edit-link">Edit</a></p>
-                          </div>
-                          <div class="edit">
-                              <div class="ajax-field">
-                                  {{ profile_form.location }}
-                              </div>
-                              <div class="field-controls">
-                                <input type="button" class="field-save save-btn" value="Save">
-                                <a href="#" class="field-reset">Cancel</a>
-                              </div>
-                          </div>
-                      </td>
-                  </tr>
-              </tbody>
-          </table>
-      </div>
+            <table>
+                <tbody>
+                    <tr>
+                        <td class="first">Visibility</td>
+                        <td>
+                            <div class="display">
+                                <p><span></span><a href="#"
+                                    class="edit-link">Edit</a></p>
+                            </div>
+                            <div class="edit">
+                                <div class="ajax-field">
+                                    {{ profile_form.location_visibility }}
+                                </div>
+                                <div class="field-controls">
+                                    <input type="button"
+                                    class="field-save save-btn" value="Save">
+                                    <a href="#" class="field-reset">Cancel</a>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="first">Location</td>
+                        <td>
+                            <div class="display">
+                                <p><span></span><a href="#"
+                                    class="edit-link">Edit</a></p>
+                            </div>
+                            <div class="edit">
+                                <div class="ajax-field">
+                                    {{ profile_form.location }}
+                                </div>
+                                <div class="field-controls">
+                                    <input type="button"
+                                    class="field-save save-btn" value="Save">
+                                    <a href="#" class="field-reset">Cancel</a>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
     </section>
-  </form>
+</form>
+
+<h2>Account Settings</h2>
+
+{% if password_exists %}
+<section>
+    <h3>Change Password</h3>
+    {% include "registration/_change_password_form.html" %}
+</section>
+{% endif %}
+
+{% comment %}
+{% if email_address_exists %}
+<section>
+    <h3>Change Email Address</h3>
+    <p>form here</p>
+</section>
+{% endif %}
+{% endcomment %}
+
 </div>
 {% endblock %}
 

@@ -283,7 +283,7 @@ body.help #sidebar nav li:first-child, body.plantshare #sidebar nav li:first-chi
 body.help #sidebar nav li a:not([href])::before, body.plantshare #sidebar nav li a:not([href])::before { color: #000; content: "\25b8"; margin-left: -14px; padding-bottom: 5px; padding-right: 5px; }
 body.help #sidebar nav li > span, body.plantshare #sidebar nav li > span { color: #ccc; padding-left: 10px; }
 body.help#glossary #sidebar .glossary a::before, body.help#fullkey-placeholder #sidebar .advanced-id-tools a::before, body.help#dkey-placeholder #sidebar .advanced-id-tools a::before { color: #000; content: "\25b8"; margin-left: -14px; padding-bottom: 5px; padding-right: 5px; }
-body.plantshare#sighting #sidebar .sightings a::before, body.plantshare#edit-sighting #sidebar .manage-sightings a::before, body.plantshare#questions #sidebar .ask a::before, body.plantshare#checklist #sidebar .checklists a::before, body.plantshare#new-checklist #sidebar .checklists a::before, body.plantshare#edit-checklist #sidebar .checklists a::before { color: #000; content: "\25b8"; margin-left: -14px; padding-bottom: 5px; padding-right: 5px; }
+body.plantshare#sighting #sidebar .sightings a::before, body.plantshare#edit-sighting #sidebar .manage-sightings a::before, body.plantshare#questions #sidebar .ask a::before, body.plantshare#checklist #sidebar .checklists a::before, body.plantshare#new-checklist #sidebar .checklists a::before, body.plantshare#edit-checklist #sidebar .checklists a::before, body.plantshare#change-password #sidebar .profile a::before, body.plantshare#password-changed #sidebar .profile a::before { color: #000; content: "\25b8"; margin-left: -14px; padding-bottom: 5px; padding-right: 5px; }
 
 /* Header */
 header { height: 120px; }
@@ -1082,7 +1082,7 @@ ul.get-more-questions-menu ul li[data-character] { color: black; }
 @media only screen and (max-width: 1024px) { body.skey.results #question-nav .option-list > li:hover, body.skey.results #question-nav .option-list > li.active, body.skey.results #question-nav .option-list > li.answered.active { background: #fff; } }
 /* End media queries styles for Simple and Full Keys */
 /* PlantShare */
-body.plantshare { /* end #sightings-locator */ /* end .info-section, .location-section */ }
+body.plantshare { /* end #sightings-locator */ /* For: Your Profile page, Change Password page, etc. */ }
 body.plantshare .recaptchatable a { color: #317b0c; }
 body.plantshare .recaptchatable #recaptcha_response_field { font-family: "Trebuchet MS", Helvetica, Arial, "Lucida Sans Unicode", sans-serif; font-size: 14px; }
 body.plantshare .content li { list-style-type: none; }
@@ -1139,7 +1139,7 @@ body.plantshare#find-people #main .person:nth-child(odd) { background-color: #e1
 body.plantshare#find-people #main .person img { background: #e1f0d1; float: left; height: 60px; margin: 0 18px; width: 66px; }
 body.plantshare#find-people #main .person ul { float: left; line-height: 140%; width: 400px; }
 body.plantshare#find-people #main .person li { margin: 0 0 3px; }
-body.plantshare#find-people #main .person .name { font-family: "Trebuchet MS", Helvetica, Arial, "Lucida Sans Unicode", sans-serif; font-size: 24px; margin: 2px 0 10px; }
+body.plantshare#find-people #main .person .name { font-family: "Trebuchet MS", Helvetica, Arial, "Lucida Sans Unicode", sans-serif; font-size: 24px; margin: 2px 0 10px; text-transform: uppercase; }
 body.plantshare#find-people #main .person ul:first-child { /* when avatar is omitted */ margin-left: 98px; }
 body.plantshare#find-people #main .person p { float: right; margin: 12px 0 0; padding-right: 10px; }
 body.plantshare#find-people #main .person p a { border-bottom: 0; }
@@ -1269,8 +1269,10 @@ body.plantshare .questions dt { clear: left; font-weight: bold; margin-top: 10px
 body.plantshare .questions dt:first-child { margin-top: 0; }
 body.plantshare .questions dd { margin: 0; }
 body.plantshare .questions span { display: block; }
-body.plantshare#profile form input { margin-bottom: 0; }
+body.plantshare#profile { /* Profile page */ }
 body.plantshare#profile .username { float: right; }
+body.plantshare#profile form + h2 { margin: 30px 0 18px; }
+body.plantshare#profile h3 { margin-bottom: 14px; }
 body.plantshare#profile div.section-container { position: relative; }
 body.plantshare#profile div.section-container .image-modal { background-color: white; border: 5px solid #ACAC90; display: none; padding: 15px; position: absolute; width: 400px; height: 160px; z-index: 10; }
 body.plantshare#profile div.section-container .image-modal img { float: left; margin: 0 20px 10px 0; max-height: 84px; max-width: 84px; }
@@ -1286,7 +1288,7 @@ body.plantshare#profile div.section-container .image-modal input#id_image { clea
 body.plantshare#profile div.section-container .image-modal div.screening-notify p { margin: 5px 0; font-size: 10px; color: #888; }
 body.plantshare#profile .info-section, body.plantshare#profile .location-section { min-height: 140px; position: relative; }
 body.plantshare#profile .info-section .field-controls, body.plantshare#profile .location-section .field-controls { margin-top: 10px; padding: 5px 0 0; }
-body.plantshare#profile .info-section .field-controls input, body.plantshare#profile .location-section .field-controls input { float: left; }
+body.plantshare#profile .info-section .field-controls input, body.plantshare#profile .location-section .field-controls input { float: left; margin-bottom: 0; }
 body.plantshare#profile .info-section .field-controls input, body.plantshare#profile .info-section .field-controls a, body.plantshare#profile .location-section .field-controls input, body.plantshare#profile .location-section .field-controls a { display: inline-block; margin-right: 20px; vertical-align: middle; }
 body.plantshare#profile .info-section .field-controls::after, body.plantshare#profile .location-section .field-controls::after { content: " "; clear: both; display: block; }
 body.plantshare#profile .info-section .field-reset, body.plantshare#profile .location-section .field-reset { margin-top: 7px; }
@@ -1306,6 +1308,8 @@ body.plantshare#profile .info-section .info.box table .edit, body.plantshare#pro
 body.plantshare#profile .info-section { margin: 0 0 20px; }
 body.plantshare#profile .info-section .info.box { min-height: 172px; padding: 10px 15px; }
 body.plantshare#profile .info-section .info.box table { margin: 0; }
+body.plantshare .change-password input[type='submit'], body.plantshare .change-email input[type='submit'] { margin-top: 8px; width: auto; }
+body.plantshare .change-password input[type='password'], body.plantshare .change-password input[type='text'], body.plantshare .change-email input[type='password'], body.plantshare .change-email input[type='text'] { margin-bottom: 10px; width: 250px; }
 body.plantshare #login.box { background-color: #d3eaad; border-color: #317b0c; max-width: 475px; padding: 0; }
 body.plantshare #login.box h4 { font-size: 20px; padding: 16px 16px 10px; }
 body.plantshare #login.box div { border-top: 1px solid #317b0c; padding: 16px; }

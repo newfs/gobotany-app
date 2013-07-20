@@ -288,6 +288,7 @@ body.plantshare {
                     font-family: $headings-font;
                     font-size: 24px;
                     margin: 2px 0 10px;
+                text-transform: uppercase;
                 }
                 ul:first-child {   /* when avatar is omitted */
                     margin-left: 98px;
@@ -901,16 +902,18 @@ body.plantshare {
         }
     }
 
-    &#profile {
-        form input {
-            margin-bottom: 0;
-        }
+    &#profile {   /* Profile page */
         .username {
             float: right;
         }
+        form + h2 {
+            margin: 30px 0 18px;
+        }
+        h3 {
+            margin-bottom: 14px;
+        }
         div.section-container {
             position: relative;
-
             .image-modal {
                 background-color: white;
                 border: 5px solid #ACAC90;
@@ -920,32 +923,27 @@ body.plantshare {
                 width: 400px;
                 height: 160px;
                 z-index: 10;
-
                 img {
                     float: left;
                     margin: 0 20px 10px 0;
                     max-height: 84px;
                     max-width: 84px;
                 }
-
                 a.button {
                     @extend .orange-button;
                     display: inline-block;
                     color: white;
                     margin: 10px 0;
                 }
-
                 a.disabled {
                     display: none;
                 }
-
                 div.modal-footer {
                     display: block;
                     position: relative;
                     float: left;
                     width: 100%;
                     color: #888;
-
                     div.file-path {
                         margin: 2px 0 auto;
                         border: 1px solid #888;
@@ -953,7 +951,6 @@ body.plantshare {
                         color: #888;
                     }
                 }
-
                 a.close {
                     background: transparent url(/static/images/icons/close.png) no-repeat;
                     display: block;
@@ -964,585 +961,583 @@ body.plantshare {
                     width: 16px;
                     text-indent: -9999px;
                 }
-
                 h4 {
                     margin: 0 0 5px;
                     font-size: 18px;
                 }
-
                 form {
                     float: right;
                     margin: 0;
                     width: 290px;
                 }
-                
                 input {
                     border: 0 none !important;
                     box-shadow: inset 0 0 0 white !important;
                 }
-
                 input#id_image {
                     clear: both;
                     display: block;
                     margin: 0 0 10px;
                 }
-
                 div.screening-notify p {
                   margin: 5px 0;
                   font-size: 10px;
                   color: #888;
                 }
-
             }
         }
         .info-section, .location-section {
             min-height: 140px;
             position: relative;
-
             .field-controls {
                 margin-top: 10px;
                 padding: 5px 0 0;
                 input {
                     float: left;
-            }
-            input, a {
-                display: inline-block;
-                margin-right: 20px;
-                vertical-align: middle;
-            }
-            &::after {
-                content: " ";
-                clear: both;
-                display: block;
-            }
-        }
-        .field-reset {
-            margin-top: 7px;
-        }
-        .info.box {
-            min-height: 158px;
-            padding: 0 0 5px 0;
-            .avatar {
-                float: left;
-                margin-right: 15px;
-                padding: 0;
-                width: 170px;
-
-                img {
-                    background: $light-green;
-                    border: 0;
-                    height: $avatar-image-height;
-                    width: $avatar-image-width;
+                    margin-bottom: 0;
                 }
-                p {
-                    text-align: center;
-                    margin: 0;
+                input, a {
+                    display: inline-block;
+                    margin-right: 20px;
+                    vertical-align: middle;
+                }
+                &::after {
+                    content: " ";
+                    clear: both;
+                    display: block;
                 }
             }
-            #id_location_map {
-                float: left;
-                margin: 0 15px 0 0;
-                padding: 0;
+            .field-reset {
+                margin-top: 7px;
             }
-            table {
-                margin: 10px 0 0 0;
-                padding: 0;
-                width: 493px;
-
-                td {
-                    padding: 7px 10px;
+            .info.box {
+                min-height: 158px;
+                padding: 0 0 5px 0;
+                .avatar {
+                    float: left;
+                    margin-right: 15px;
+                    padding: 0;
+                    width: 170px;
+                    img {
+                        background: $light-green;
+                        border: 0;
+                        height: $avatar-image-height;
+                        width: $avatar-image-width;
+                    }
+                    p {
+                        text-align: center;
+                        margin: 0;
+                    }
                 }
-
-                td.first {
-                    font-weight: bold;
-                    padding: 7px;
-                    text-align: right;
-                    vertical-align: baseline;
-                    width: 97px;
-                }
-
-                p {
-                    line-height: normal;
-                    margin: 0;
+                #id_location_map {
+                    float: left;
+                    margin: 0 15px 0 0;
                     padding: 0;
                 }
-
-                .display {
-                    .group-list, .coords-list {
-                        float: left;
+                table {
+                    margin: 10px 0 0 0;
+                    padding: 0;
+                    width: 493px;
+                    td {
+                        padding: 7px 10px;
                     }
-                    .edit-link {
-                        float: right;
+                    td.first {
+                        font-weight: bold;
+                        padding: 7px;
+                        text-align: right;
+                        vertical-align: baseline;
+                        width: 97px;
                     }
-                    ul {
-                        list-style: none;
+                    p {
+                        line-height: normal;
+                        margin: 0;
+                        padding: 0;
+                    }
+                    .display {
+                        .group-list, .coords-list {
+                            float: left;
+                        }
+                        .edit-link {
+                            float: right;
+                        }
+                        ul {
+                            list-style: none;
+                        }
+                    }
+                    .edit {
+                        display: none;
                     }
                 }
-
-                .edit {
-                    display: none;
+            }
+        }
+        .info-section {
+            margin: 0 0 20px;
+            .info.box {
+                min-height: 172px;
+                padding: 10px 15px;
+                table {
+                    margin: 0;
                 }
             }
         }
     }
-} /* end .info-section, .location-section */
-&#profile {
-    .info-section {
-        margin: 0 0 20px;
-        .info.box {
-            min-height: 172px;
-            padding: 10px 15px;
-            table {
-                margin: 0;
-            }
+
+    /* For: Your Profile page, Change Password page, etc. */
+    .change-password, .change-email {
+        input[type='submit'] {
+            margin-top: 8px;
+            width: auto;
+        }
+        input[type='password'], input[type='text'] {
+            margin-bottom: 10px;
+            width: 250px;
         }
     }
-}
 
-#login.box {
-    background-color: $login-box-background-color;
-    border-color: $link-green;
-    max-width: $plantshare-main-column-width;
-    padding: 0;
-    h4 {
-        font-size: 20px;
-        padding: $section-padding $section-padding 10px;
-    }
-    div {
-        border-top: 1px solid $link-green;
-        padding: $section-padding;
-        a {
-            margin-left: 0;
-        }
-    }
-    input[type='text'], input[type='password'] {
-        width: 95%;
-    }
-}
-
-&#checklists {
-    @include hide-default-shadowbox-close;
-}
-
-&.checklists {
-    .notification.box li {
-        list-style-type: disc;
-    }
-    div.notes-modal {
-        background-color: #fff;
-        overflow: hidden; 
-        margin: 0;
-        padding: 15px 20px 0;
-        max-height: 240px;
-    }
-    div.notes-modal {
-        section {
-            padding: 10px 0 0;
-        }
-
-        textarea {
-            border: 1px solid #ABABAB;
-            box-shadow: inset 1px 1px 5px #ccc;
-            -moz-box-shadow: inset 1px 1px 5px #ccc;
-            -webkit-box-shadow: inset 1px 1px 5px #ccc;
-            font-size: inherit;
-            height: 80px;
-            line-height: inherit;
-            max-width: 90%;
-            padding: 7px 5px 5px;
-            width: 100%
-        }
-
-        div.form-actions {
-            padding: 10px 0;
-
-            a.clear-btn {
-                margin: 0 0 0 10px;
-            }
-        }
-    }
-    div.ps-section {
-        margin: 0;
+    #login.box {
+        background-color: $login-box-background-color;
+        border-color: $link-green;
+        max-width: $plantshare-main-column-width;
         padding: 0;
-    }
-    .image-modal {
-        background-color: white;
-        border: 5px solid #ACAC90;
-        display: none;
-        padding: 15px;
-        position: absolute;
-        width: 400px;
-        height: 160px;
-        z-index: 10;
-
-        img {
-            float: left;
-            margin: 0 20px 10px 0;
-            max-height: 84px;
-            max-width: 84px;
-        }
-
-        a.button {
-            @extend .orange-button;
-            display: inline-block;
-            color: white;
-            margin: 10px 0;
-        }
-
-        a.disabled {
-            display: none;
-        }
-
-        div.modal-footer {
-            display: block;
-            position: relative;
-            float: left;
-            width: 100%;
-            color: #888;
-
-            div.file-path {
-                margin: 2px 0 auto;
-                border: 1px solid #888;
-                padding: 2px;
-                color: #888;
-            }
-        }
-
-        a.close {
-            background: transparent url(/static/images/icons/close.png) no-repeat;
-            display: block;
-            height: 16px;
-            position: absolute;
-            top: 15px;
-            right: 15px;
-            width: 16px;
-            text-indent: -9999px;
-        }
-
         h4 {
-            margin: 0 0 5px;
-            font-size: 18px;
+            font-size: 20px;
+            padding: $section-padding $section-padding 10px;
         }
+        div {
+            border-top: 1px solid $link-green;
+            padding: $section-padding;
+            a {
+                margin-left: 0;
+            }
+        }
+        input[type='text'], input[type='password'] {
+            width: 95%;
+        }
+    }
 
-        form {
-            float: right;
+    &#checklists {
+        @include hide-default-shadowbox-close;
+    }
+
+    &.checklists {
+        .notification.box li {
+            list-style-type: disc;
+        }
+        div.notes-modal {
+            background-color: #fff;
+            overflow: hidden; 
             margin: 0;
-            width: 290px;
+            padding: 15px 20px 0;
+            max-height: 240px;
         }
-        
-        input {
-            border: 0 none !important;
-            box-shadow: inset 0 0 0 white !important;
-        }
-
-        input#id_image {
-            clear: both;
-            display: block;
-            margin: 0 0 10px;
-        }
-
-        div.screening-notify p {
-          margin: 5px 0;
-          font-size: 10px;
-          color: #888;
-        }
-
-    }
-
-    div#form-template {
-        display: none;
-    }
-    table.checklists-list {
-        background: #fff;
-        border: 1px solid #C3D941;
-        margin: 20px 0;
-        width: 100%;
-
-        thead, tbody {
-            width: 100%;
-        }
-
-        td { overflow: hidden; }
-
-        .first {
-            white-space: nowrap;
-            width: 0px;   /* hidden */
-            input[type="checkbox"] {
-                display: none;
-                margin-left: 5px;
-                margin-top: 10px;
-                width: auto;
-            }
-        }
-        .checklistview-name {
-            white-space: nowrap;
-            width: 368px;
-        }
-        .owner {
-            white-space: nowrap;
-            width: 120px;
-        }
-        .last {
-            text-align: right;
-            white-space: nowrap;
-            width: 180px;
-            a {
-                margin-right: 10px;
+        div.notes-modal {
+            section {
+                padding: 10px 0 0;
             }
 
-        }
-        .name {
-            width: 156px; 
-        }
-        .image {
-            width: 80px; 
-            img.checklist-thumb {
-                max-width: 40px;
-                max-height: 40px;
+            textarea {
+                border: 1px solid #ABABAB;
+                box-shadow: inset 1px 1px 5px #ccc;
+                -moz-box-shadow: inset 1px 1px 5px #ccc;
+                -webkit-box-shadow: inset 1px 1px 5px #ccc;
+                font-size: inherit;
+                height: 80px;
+                line-height: inherit;
+                max-width: 90%;
+                padding: 7px 5px 5px;
+                width: 100%
+            }
+
+            div.form-actions {
+                padding: 10px 0;
+
+                a.clear-btn {
+                    margin: 0 0 0 10px;
+                }
             }
         }
-        .date-sighted, .date-posted {
-            width: 110px; 
+        div.ps-section {
+            margin: 0;
+            padding: 0;
         }
-        .location {
-            width: 130px; 
-        }
-        .note {
-            width: 60px;
-            padding-right: 7px;
-            .note-field {
+        .image-modal {
+            background-color: white;
+            border: 5px solid #ACAC90;
+            display: none;
+            padding: 15px;
+            position: absolute;
+            width: 400px;
+            height: 160px;
+            z-index: 10;
+
+            img {
+                float: left;
+                margin: 0 20px 10px 0;
+                max-height: 84px;
+                max-width: 84px;
+            }
+
+            a.button {
+                @extend .orange-button;
+                display: inline-block;
+                color: white;
+                margin: 10px 0;
+            }
+
+            a.disabled {
                 display: none;
             }
-            a {
-                margin: 0;
+
+            div.modal-footer {
+                display: block;
+                position: relative;
+                float: left;
+                width: 100%;
+                color: #888;
+
+                div.file-path {
+                    margin: 2px 0 auto;
+                    border: 1px solid #888;
+                    padding: 2px;
+                    color: #888;
+                }
             }
-            a.row-btn {
-                border-bottom: 0 !important;
-                float: right;
-                margin: 0 0 0 8px;
+
+            a.close {
+                background: transparent url(/static/images/icons/close.png) no-repeat;
+                display: block;
+                height: 16px;
+                position: absolute;
+                top: 15px;
+                right: 15px;
+                width: 16px;
                 text-indent: -9999px;
             }
-            div.note-text {
-                display: none;
-            }
-        }
 
-        thead {
-            display: block;
-            tr th {
-                padding: 7px 5px;
-                text-align: left;
-                text-transform: uppercase;
-            }
-        }
-
-        tbody {
-            display: block;
-
-            tr:nth-child(odd) {
-                background-color: $light-green;
+            h4 {
+                margin: 0 0 5px;
+                font-size: 18px;
             }
 
-            tr td {
-                padding: 7px 5px;
-            }
-        }
-    }
-    .checklists-section {
-        background-color: #fff;
-        border: 1px solid #c3d941;
-        margin: 20px 0;
-        min-height: 140px;
-        padding: 10px 15px 20px;
-        position: relative;
-
-        input, textarea {
-            border: 1px solid #ababab;
-            box-shadow: inset 1px 1px 2px #ccc;
-            -moz-box-shadow: inset 1px 1px 2px #ccc;
-            -webkit-box-shadow: inset 1px 1px 2px #ccc;
-            display: block;
-            font-size: inherit;
-            line-height: 1em;
-            padding: 7px 5px 5px;
-        }
-
-        h4 {
-            margin: 0 0 15px;
-            font-size: 18px;
-        }
-
-        header {
-            margin: 0 0 10px;
-            height: auto !important;
-
-            input, textarea {
-                margin: 5px 0 10px;
-                width: 95%;
-                height: auto;
-            }
-        }
-
-        .import-sightings-link {
-            background-color: #e0f0d1;
-            display: block;
-            font-weight: bold;
-            margin: 0 0 25px;
-            padding: 5px 10px;
-        }
-
-        table#add-sightings-table {
-            width: 678px;
-
-            div.form-data {
-                display: none;
-            }
-
-            th, td {
-                padding: 15px 10px 5px 0;
-            }
-
-            td input {
-                padding: 7px 5px 5px;
+            form {
+                float: right;
                 margin: 0;
+                width: 290px;
+            }
+            
+            input {
+                border: 0 none !important;
+                box-shadow: inset 0 0 0 white !important;
             }
 
-            .name input {
-                width: 160px;
+            input#id_image {
+                clear: both;
+                display: block;
+                margin: 0 0 10px;
+            }
+
+            div.screening-notify p {
+              margin: 5px 0;
+              font-size: 10px;
+              color: #888;
+            }
+
+        }
+
+        div#form-template {
+            display: none;
+        }
+        table.checklists-list {
+            background: #fff;
+            border: 1px solid #C3D941;
+            margin: 20px 0;
+            width: 100%;
+
+            thead, tbody {
+                width: 100%;
+            }
+
+            td { overflow: hidden; }
+
+            .first {
+                white-space: nowrap;
+                width: 0px;   /* hidden */
+                input[type="checkbox"] {
+                    display: none;
+                    margin-left: 5px;
+                    margin-top: 10px;
+                    width: auto;
+                }
+            }
+            .checklistview-name {
+                white-space: nowrap;
+                width: 368px;
+            }
+            .owner {
+                white-space: nowrap;
+                width: 120px;
+            }
+            .last {
+                text-align: right;
+                white-space: nowrap;
+                width: 180px;
+                a {
+                    margin-right: 10px;
+                }
+
+            }
+            .name {
+                width: 156px; 
             }
             .image {
-                font-size: 0.9em;
+                width: 80px; 
                 img.checklist-thumb {
                     max-width: 40px;
                     max-height: 40px;
                 }
             }
-            .date-sighted input {
-                width: 70px;
+            .date-sighted, .date-posted {
+                width: 110px; 
             }
-            .location input {
-                width: 150px;
-            }
-            .date-posted input {
-                width: 70px;
+            .location {
+                width: 130px; 
             }
             .note {
-                padding-right: 0;
                 width: 60px;
+                padding-right: 7px;
                 .note-field {
                     display: none;
                 }
                 a {
-                    display: inline-block;
+                    margin: 0;
                 }
                 a.row-btn {
-                    border-bottom: 0;
+                    border-bottom: 0 !important;
                     float: right;
-                    margin: 5px 0 0 8px;
+                    margin: 0 0 0 8px;
+                    text-indent: -9999px;
+                }
+                div.note-text {
+                    display: none;
                 }
             }
 
-            thead { 
-                border-bottom: 1px solid #ccc;
-                width: 678px; 
-
-                th {
+            thead {
+                display: block;
+                tr th {
+                    padding: 7px 5px;
+                    text-align: left;
                     text-transform: uppercase;
+                }
+            }
 
-                    span {
-                        color: #999;
-                        font-style: italic;
-                        text-transform: none;
+            tbody {
+                display: block;
+
+                tr:nth-child(odd) {
+                    background-color: $light-green;
+                }
+
+                tr td {
+                    padding: 7px 5px;
+                }
+            }
+        }
+        .checklists-section {
+            background-color: #fff;
+            border: 1px solid #c3d941;
+            margin: 20px 0;
+            min-height: 140px;
+            padding: 10px 15px 20px;
+            position: relative;
+
+            input, textarea {
+                border: 1px solid #ababab;
+                box-shadow: inset 1px 1px 2px #ccc;
+                -moz-box-shadow: inset 1px 1px 2px #ccc;
+                -webkit-box-shadow: inset 1px 1px 2px #ccc;
+                display: block;
+                font-size: inherit;
+                line-height: 1em;
+                padding: 7px 5px 5px;
+            }
+
+            h4 {
+                margin: 0 0 15px;
+                font-size: 18px;
+            }
+
+            header {
+                margin: 0 0 10px;
+                height: auto !important;
+
+                input, textarea {
+                    margin: 5px 0 10px;
+                    width: 95%;
+                    height: auto;
+                }
+            }
+
+            .import-sightings-link {
+                background-color: #e0f0d1;
+                display: block;
+                font-weight: bold;
+                margin: 0 0 25px;
+                padding: 5px 10px;
+            }
+
+            table#add-sightings-table {
+                width: 678px;
+
+                div.form-data {
+                    display: none;
+                }
+
+                th, td {
+                    padding: 15px 10px 5px 0;
+                }
+
+                td input {
+                    padding: 7px 5px 5px;
+                    margin: 0;
+                }
+
+                .name input {
+                    width: 160px;
+                }
+                .image {
+                    font-size: 0.9em;
+                    img.checklist-thumb {
+                        max-width: 40px;
+                        max-height: 40px;
+                    }
+                }
+                .date-sighted input {
+                    width: 70px;
+                }
+                .location input {
+                    width: 150px;
+                }
+                .date-posted input {
+                    width: 70px;
+                }
+                .note {
+                    padding-right: 0;
+                    width: 60px;
+                    .note-field {
+                        display: none;
+                    }
+                    a {
+                        display: inline-block;
+                    }
+                    a.row-btn {
+                        border-bottom: 0;
+                        float: right;
+                        margin: 5px 0 0 8px;
+                    }
+                }
+
+                thead { 
+                    border-bottom: 1px solid #ccc;
+                    width: 678px; 
+
+                    th {
+                        text-transform: uppercase;
+
+                        span {
+                            color: #999;
+                            font-style: italic;
+                            text-transform: none;
+                        }
+                    }
+                }
+                tfoot {
+                    border-bottom: 1px solid #ccc;
+
+                    td {
+                        font-size: .9em;
+                        padding-bottom: 10px;
+                        padding-top: 10px;
                     }
                 }
             }
-            tfoot {
-                border-bottom: 1px solid #ccc;
+            .form-actions {
+                padding: 15px 0 0;
 
-                td {
-                    font-size: .9em;
-                    padding-bottom: 10px;
-                    padding-top: 10px;
+                a {
+                    margin: 7px 20px 0 0;
+                    display: block;
+                    float: left;
+                    vertical-align: middle;
+                }
+                #save-btn {
+                    height: 32px;
+                    width: 99px;
+                    border: 0 none;
+                    margin: 0 20px 0 0;
+                    box-shadow: none;
+                    -moz-box-shadow: none;
+                    -webkit-box-shadow: none;
+                    white-space: nowrap;
+                    display: block;
+                    float: left;
+                    vertical-align: middle;
+                }
+
+                &::after {
+                    display: block;
+                    content: " ";
+                    clear: both;
                 }
             }
         }
-        .form-actions {
-            padding: 15px 0 0;
-
-            a {
-                margin: 7px 20px 0 0;
-                display: block;
-                float: left;
-                vertical-align: middle;
-            }
-            #save-btn {
-                height: 32px;
-                width: 99px;
-                border: 0 none;
-                margin: 0 20px 0 0;
-                box-shadow: none;
-                -moz-box-shadow: none;
-                -webkit-box-shadow: none;
-                white-space: nowrap;
-                display: block;
-                float: left;
-                vertical-align: middle;
-            }
-
-            &::after {
-                display: block;
-                content: " ";
-                clear: both;
-            }
-        }
     }
-}
 
-&#screen-images {
-    table.unscreened {
-        margin: 20px 0;
-        padding: 0;
-        table-layout: fixed;
-        overflow: hidden;
-        width: 100%;
-        text-align: center;
-
-        tr.header {
-            height: 20px;
-            th {
-                padding-bottom: 10px;
-            }
-        }
-        tr {
-            height: 128px;
-            vertical-align: top;
-        }
-
-        th.approval, td.approval {
-            width: 150px;
+    &#screen-images {
+        table.unscreened {
+            margin: 20px 0;
+            padding: 0;
+            table-layout: fixed;
             overflow: hidden;
+            width: 100%;
+            text-align: center;
 
-            input {
-                width: 20px;
+            tr.header {
+                height: 20px;
+                th {
+                    padding-bottom: 10px;
+                }
+            }
+            tr {
+                height: 128px;
+                vertical-align: top;
             }
 
-            li {
-                float: left;
-                label {
-                    width: 60px;
-              }
+            th.approval, td.approval {
+                width: 150px;
+                overflow: hidden;
+
+                input {
+                    width: 20px;
+                }
+
+                li {
+                    float: left;
+                    label {
+                        width: 60px;
+                  }
+                }
             }
-        }
-        th.thumb, td.thumb {
-            width: 138px;
+            th.thumb, td.thumb {
+                width: 138px;
+            }
+
         }
 
+        div.form-control {
+            margin: 0 30px;
+        }
     }
-
-    div.form-control {
-        margin: 0 30px;
-    }
-}
 }
 
 /* Begin media queries styles for PlantShare. */

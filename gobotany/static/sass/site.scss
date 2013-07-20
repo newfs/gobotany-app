@@ -228,20 +228,26 @@ body {
      * here" marker. Each of these must be set up individually where
      * needed. */
     &.help {
-        &#glossary #sidebar .glossary a::before,
-        &#fullkey-placeholder #sidebar .advanced-id-tools a::before,
-        &#dkey-placeholder #sidebar .advanced-id-tools a::before {
-            @include highlight-sidebar-nav-item;
+        &#glossary #sidebar .glossary,
+        &#fullkey-placeholder #sidebar .advanced-id-tools,
+        &#dkey-placeholder #sidebar .advanced-id-tools {
+            a::before {
+                @include highlight-sidebar-nav-item;
+            }
         }
     }
     &.plantshare {
-        &#sighting #sidebar .sightings a::before,
-        &#edit-sighting #sidebar .manage-sightings a::before,
-        &#questions #sidebar .ask a::before,
-        &#checklist #sidebar .checklists a::before,
-        &#new-checklist #sidebar .checklists a::before,
-        &#edit-checklist #sidebar .checklists a::before {
-            @include highlight-sidebar-nav-item;
+        &#sighting #sidebar .sightings,
+        &#edit-sighting #sidebar .manage-sightings,
+        &#questions #sidebar .ask,
+        &#checklist #sidebar .checklists,
+        &#new-checklist #sidebar .checklists,
+        &#edit-checklist #sidebar .checklists,
+        &#change-password #sidebar .profile,
+        &#password-changed #sidebar .profile {
+            a::before {
+                @include highlight-sidebar-nav-item;
+            }
         }
     }
 }
