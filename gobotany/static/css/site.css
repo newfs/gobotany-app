@@ -1117,11 +1117,11 @@ body.plantshare .box table th, body.plantshare .box table td { padding: 6px 8px;
 body.plantshare .box table th { font-weight: normal; text-align: left; width: 33%; }
 body.plantshare form.login { padding: 0 16px 16px; max-width: 250px; min-width: 194px; }
 body.plantshare form.login label { font-size: 10px; }
-body.plantshare form.login input { border-color: #317b0c; max-width: 300px; width: 95%; }
+body.plantshare form.login input { border-color: #317b0c; max-width: 246px; }
 body.plantshare form.login input.button { background: transparent url(/static/images/layout/plantshare-btns.png) no-repeat -169px -231px; border: 0; height: 32px; width: 99px; display: block; text-indent: -9000px; }
 body.plantshare form.login input.button:hover { background-position: -169px -265px; }
 body.plantshare form.login input.button:active { background-position: -169px -299px; }
-body.plantshare form.login a { float: right; font-family: "Trebuchet MS", Helvetica, Arial, "Lucida Sans Unicode", sans-serif; font-size: 11px; margin-top: 9px; }
+body.plantshare form.login a { float: right; font-family: "Trebuchet MS", Helvetica, Arial, "Lucida Sans Unicode", sans-serif; font-size: 11px; margin-top: 9px; padding-right: 1px; }
 body.plantshare .sign-up-call { width: 475px; }
 body.plantshare .sign-up-call ul { line-height: 18px; list-style-position: inside; margin: 10px 0 0 24px; }
 body.plantshare .sign-up-call a { background: transparent url(/static/images/layout/plantshare-btns.png) no-repeat 0 -3px; height: 41px; margin: 12px auto; width: 244px; display: block; text-indent: -9000px; }

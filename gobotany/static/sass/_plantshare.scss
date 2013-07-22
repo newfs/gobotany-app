@@ -96,8 +96,7 @@ body.plantshare {
         }
         input {
             border-color: $link-green;
-            max-width: 300px;
-            width: 95%;
+            max-width: 246px;
             &.button {
                 background: transparent url(/static/images/layout/plantshare-btns.png) no-repeat -169px -231px;
                 border: 0;
@@ -117,6 +116,7 @@ body.plantshare {
             font-family: $headings-font;
             font-size: 11px;
             margin-top: 9px;
+            padding-right: 1px;
         }
     }
     .sign-up-call {
