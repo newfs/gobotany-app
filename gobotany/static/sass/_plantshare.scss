@@ -52,17 +52,18 @@ body.plantshare {
                 width: $form-field-width;
             }
             input {
-                font-family: $body-font;
                 margin-bottom: 10px;
-                @include form-field-base;
                 &[type=text], &[type=password] {
                     height: 16px;
+                    @include form-field-base;
                 }
             }
             textarea {
-                font-family: $body-font;
                 height: 82px;
                 @include form-field-base;
+            }
+            input[type=text], textarea {
+                font-family: $body-font;
             }
         }
     }
