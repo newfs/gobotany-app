@@ -15,7 +15,7 @@
     {% else %}
         <li class="this-page nogloss">
         {% with page.title|expand_group_title as title %}
-        {% if page.rank == 'genus' %}
+        {% if page.rank == 'genus' or page.rank == 'species' %}
             <i>{{ title }}</i>
         {% else %}
             {{ title }}
