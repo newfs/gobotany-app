@@ -70,12 +70,14 @@ define([
     var active_id = 'c1';
     var bottom_id = 'c1';
 
-    /* Save the original text of each orange button, since we will have
-       to rewrite some of them to say "Go back" as the user descends
+    /* Save the original text of each orange button, and whether it
+       it should be displayed in italics, since we will have to
+       rewrite some of them to say "Go back" as the user descends
        down the hierarchy. */
 
     $('.lead .button').each(function() {
         $(this).attr('original-text', $(this).text());
+        $(this).attr('is-italic', ($(this).find('i').length > 0));
     });
 
     /* The Big Function that gets run when our URL hash changes. */
@@ -116,7 +118,11 @@ define([
         $all_couplets.removeClass('active');
         $all_leads.removeClass('chosen go-back original-choice alt-choice');
         $all_buttons.each(function() {
-            $(this).text($(this).attr('original-text'));
+            var html = $(this).attr('original-text');
+            if ($(this).attr('is-italic') === 'true') {
+                html = '<i>' + html + '</i>';
+            }
+            $(this).html(html);
         });
 
         /* The hash determines what we display. */

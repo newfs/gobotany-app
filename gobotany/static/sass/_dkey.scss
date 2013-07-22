@@ -204,6 +204,7 @@
         display: inline-block;
         font-size:  $base-font-size;
         font-weight: normal;
+        text-transform: uppercase;
     }
     .image-type-selector {
         display: none;  /* once images are loaded, our JS will un-hide */
