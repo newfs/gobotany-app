@@ -8,10 +8,13 @@
         {% endcomment %}
         <label for="id_username">Username</label>
         <input id="id_username" type="text" name="username" maxlength="30"
-            autofocus>
+            autofocus tabindex="1">
         <label for="id_password">Password</label>
-        <input type="password" name="password" id="id_password">
-        <input type="submit" class="button" value="Login">
+        <input type="password" name="password" id="id_password"
+            tabindex="2">
+        <a href="{% url 'ps-forgot-password' %}"
+                tabindex="4">Forgot password</a>
+        <input type="submit" class="button" value="Login" tabindex="3">
         <input type="hidden" name="next"
         value="{% if next %}{{ next }}{% else %}{% url 'ps-main' %}{% endif %}">
     </form>

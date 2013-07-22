@@ -242,10 +242,10 @@ a:active { color: #45ac11; }
 a:not([href]) { color: black; }
 a:not([href]):hover { text-decoration: none; }
 
-#main p a, #main li > a, #main dt a, #main td a, #main h2 a { border-bottom: 1px solid #c3d941; }
-#main p a:hover, #main li > a:hover, #main dt a:hover, #main td a:hover, #main h2 a:hover { border-color: #317b0c; }
-#main p a:active, #main li > a:active, #main dt a:active, #main td a:active, #main h2 a:active { border-color: #45ac11; }
-#main p a:not([href]), #main li > a:not([href]), #main dt a:not([href]), #main td a:not([href]), #main h2 a:not([href]) { border: 0; }
+#main p a, #main li > a, #main dt a, #main td a, #main h2 a, #main form > a, #sidebar form > a { border-bottom: 1px solid #c3d941; }
+#main p a:hover, #main li > a:hover, #main dt a:hover, #main td a:hover, #main h2 a:hover, #main form > a:hover, #sidebar form > a:hover { border-color: #317b0c; }
+#main p a:active, #main li > a:active, #main dt a:active, #main td a:active, #main h2 a:active, #main form > a:active, #sidebar form > a:active { border-color: #45ac11; }
+#main p a:not([href]), #main li > a:not([href]), #main dt a:not([href]), #main td a:not([href]), #main h2 a:not([href]), #main form > a:not([href]), #sidebar form > a:not([href]) { border: 0; }
 
 #main td.scientific-name a { border-bottom: 0; }
 
@@ -1115,12 +1115,13 @@ body.plantshare .box table { margin: 16px 0 12px; width: 100%; }
 body.plantshare .box table tr:nth-child(odd) { background-color: #e1f0d1; }
 body.plantshare .box table th, body.plantshare .box table td { padding: 6px 8px; }
 body.plantshare .box table th { font-weight: normal; text-align: left; width: 33%; }
-body.plantshare form.login { padding: 0 16px 16px; }
+body.plantshare form.login { padding: 0 16px 16px; max-width: 250px; min-width: 194px; }
 body.plantshare form.login label { font-size: 10px; }
 body.plantshare form.login input { border-color: #317b0c; max-width: 300px; width: 95%; }
 body.plantshare form.login input.button { background: transparent url(/static/images/layout/plantshare-btns.png) no-repeat -169px -231px; border: 0; height: 32px; width: 99px; display: block; text-indent: -9000px; }
 body.plantshare form.login input.button:hover { background-position: -169px -265px; }
 body.plantshare form.login input.button:active { background-position: -169px -299px; }
+body.plantshare form.login a { float: right; font-family: "Trebuchet MS", Helvetica, Arial, "Lucida Sans Unicode", sans-serif; font-size: 11px; margin-top: 9px; }
 body.plantshare .sign-up-call { width: 475px; }
 body.plantshare .sign-up-call ul { line-height: 18px; list-style-position: inside; margin: 10px 0 0 24px; }
 body.plantshare .sign-up-call a { background: transparent url(/static/images/layout/plantshare-btns.png) no-repeat 0 -3px; height: 41px; margin: 12px auto; width: 244px; display: block; text-indent: -9000px; }
@@ -1327,8 +1328,11 @@ body.plantshare#profile .info-section .info.box table .edit, body.plantshare#pro
 body.plantshare#profile .info-section { margin: 0 0 20px; }
 body.plantshare#profile .info-section .info.box { min-height: 172px; padding: 10px 15px; }
 body.plantshare#profile .info-section .info.box table { margin: 0; }
-body.plantshare .change-password input[type='submit'], body.plantshare .change-email input[type='submit'] { margin-top: 8px; width: auto; }
+body.plantshare .change-password input[type='submit'], body.plantshare .change-email input[type='submit'] { margin: 8px 30px 0 0; width: auto; }
 body.plantshare .change-password input[type='password'], body.plantshare .change-password input[type='text'], body.plantshare .change-email input[type='password'], body.plantshare .change-email input[type='text'] { margin-bottom: 10px; width: 250px !important; }
+body.plantshare .change-password a, body.plantshare .change-email a { font-family: "Trebuchet MS", Helvetica, Arial, "Lucida Sans Unicode", sans-serif; font-size: 11px; }
+body.plantshare#forgot-password #main form input[type='text'] { width: 250px; }
+body.plantshare#forgot-password #main form input[type='submit'] { margin-top: 8px; }
 body.plantshare #login.box { background-color: #d3eaad; border-color: #317b0c; max-width: 475px; padding: 0; }
 body.plantshare #login.box h4 { font-size: 20px; padding: 16px 16px 10px; }
 body.plantshare #login.box div { border-top: 1px solid #317b0c; padding: 16px; }

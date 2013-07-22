@@ -5,7 +5,8 @@ a little.
 """
 
 from django.conf.urls import patterns, url, include
-from django.contrib.auth.views import password_change
+from django.contrib.auth.views import (password_change, password_reset,
+    password_reset_complete, password_reset_confirm, password_reset_done)
 from django.views.generic.base import TemplateView
 
 from registration.backends.default.views import ActivationView
@@ -43,6 +44,21 @@ urlpatterns = patterns('',
         TemplateView.as_view(
         template_name='registration/change_password_done.html'),
         name='ps-change-password-done'),
+
+    url(r'^password/reset/$', password_reset,
+        {'template_name': 'registration/forgot_password.html'},
+        name='ps-forgot-password'),
+    url(r'^password/reset/done/$', password_reset_done,
+        {'template_name': 'registration/reset_password_email_sent.html'},
+        name='ps-reset-password-email_sent'),
+    url(r'^password/reset/confirm/(?P<uidb36>[0-9A-Za-z]+)-(?P<token>.+)/$',
+        password_reset_confirm,
+        {'template_name': 'registration/choose_new_password.html'},
+        name='ps-reset-password-confirm'),
+    url(r'^password/reset/complete/$', password_reset_complete,
+        {'template_name': 'registration/change_password_done.html'},
+        name='ps-reset-password-complete'),
+
 
     (r'', include('registration.auth_urls')),
     )

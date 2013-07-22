@@ -89,6 +89,8 @@ body.plantshare {
     }
     form.login {
         padding: 0 $section-padding $section-padding;
+        max-width: 250px;
+        min-width: 194px;
         label {
             font-size: 10px;
         }
@@ -109,6 +111,12 @@ body.plantshare {
                     background-position: -169px -299px;
                 }
             }
+        }
+        a {
+            float: right;
+            font-family: $headings-font;
+            font-size: 11px;
+            margin-top: 9px;
         }
     }
     .sign-up-call {
@@ -1086,12 +1094,29 @@ body.plantshare {
     /* For: Your Profile page, Change Password page, etc. */
     .change-password, .change-email {
         input[type='submit'] {
-            margin-top: 8px;
+            margin: 8px 30px 0 0;
             width: auto;
         }
         input[type='password'], input[type='text'] {
             margin-bottom: 10px;
             width: 250px !important;
+        }
+        a {
+            font-family: $headings-font;
+            font-size: 11px;
+        }
+    }
+
+    &#forgot-password {
+        #main form {
+            input {
+                &[type='text'] {
+                    width: 250px;
+                }
+                &[type='submit'] {
+                    margin-top: 8px;
+                }
+            }
         }
     }
 
