@@ -4,6 +4,50 @@
 @import "compass/css3/box-shadow";
 @import "compass/css3/images";   /* for gradient, etc. */
 
+/* Web fonts: style-linked groups */
+
+@font-face {
+    font-family: ScalaSans;
+    src: url(http://newfs.s3.amazonaws.com/fonts/ScalaSansWeb.woff) format("woff");
+}
+@font-face {
+    font-family: ScalaSans;
+    font-weight: bold;
+    src: url(http://newfs.s3.amazonaws.com/fonts/ScalaSansWeb-Bold.woff) format("woff");
+}
+@font-face {
+    font-family: ScalaSans;
+    font-style: italic;
+    src: url(http://newfs.s3.amazonaws.com/fonts/ScalaSansWeb-Ita.woff) format("woff");
+}
+@font-face {
+    font-family: ScalaSans;
+    font-style: italic;
+    font-weight: bold;
+    src: url(http://newfs.s3.amazonaws.com/fonts/ScalaSansWeb-BoldIta.woff) format("woff");
+}
+
+@font-face {
+    font-family: ScalaSansSmallCaps;
+    src: url(http://newfs.s3.amazonaws.com/fonts/ScalaSansScWeb.woff) format("woff");
+}
+@font-face {
+    font-family: ScalaSansSmallCaps;
+    font-weight: bold;
+    src: url(http://newfs.s3.amazonaws.com/fonts/ScalaSansScWeb-Bold.woff) format("woff");
+}
+@font-face {
+    font-family: ScalaSansSmallCaps;
+    font-style: italic;
+    src: url(http://newfs.s3.amazonaws.com/fonts/ScalaSansScWeb-Ita.woff) format("woff");
+}
+@font-face {
+    font-family: ScalaSansSmallCaps;
+    font-style: italic;
+    font-weight: bold;
+    src: url(http://newfs.s3.amazonaws.com/fonts/ScalaSansScWeb-BoldIta.woff) format("woff");
+}
+
 $headings-font: "Trebuchet MS", Helvetica, Arial, "Lucida Sans Unicode", sans-serif;
 $body-font: Verdana, Geneva, "Lucida Sans Unicode", sans-serif;
 $narrower-body-font: Tahoma, "Trebuchet MS", "Lucida Sans Unicode", sans-serif;
@@ -81,19 +125,19 @@ $disabled_orange_gradient: linear-gradient(
 
 .orange-button {
     background-color: $orange1;   /* for IE without gradient support */
-    min-width: 10em;
-    @include border-radius(1em);
-    @include single-box-shadow(darken($inactive_bg, 30), 0px, 1px, 4px);
     border: 1px solid $orange1 !important;
-    @include background($orange_gradient);
-    padding: 0.3em 0.5em;
     color: white;
+    font-family: ScalaSans, $headings-font;
+    font-size: 1em;
+    letter-spacing: (1em / 8);
+    line-height: 1.5em;
+    min-width: 10em;
+    padding: 0.3em 1em;
     text-align: center;
     text-decoration: none;
-    font-family: $headings-font;
-    font-weight: bold;
-    line-height: 1.5em;
-    letter-spacing: (1em / 12);
+    @include border-radius(1em);
+    @include single-box-shadow(darken($inactive_bg, 30), 0px, 1px, 4px);
+    @include background($orange_gradient);
     &:visited {
         color: white;
     }
