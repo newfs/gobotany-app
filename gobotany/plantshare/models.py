@@ -1,3 +1,4 @@
+import sys
 import datetime
 import hashlib
 import os
@@ -16,7 +17,9 @@ from django.dispatch import receiver
 from django.template.loader import render_to_string
 
 from facebook_connect.models import FacebookUser
+from imagekit import ImageSpec, register
 from imagekit.models import ImageSpecField, ProcessedImageField
+from imagekit.utils import get_field_info
 from imagekit.processors.resize import ResizeToFit
 from PIL import Image
 from PIL.ExifTags import TAGS
@@ -347,12 +350,97 @@ def rename_image_by_type(instance, filename):
     return os.path.join(instance.image_type.lower(), new_name)
 
 
+class ExifGpsExtractor(object):
+    """ Custom django-imagekit image processor to extract GPS coordinates
+    from original image. 
+    This is a little non-standard in that it requires an object
+    of some sort with 'latitude' and 'longitude' attributes on which to store
+    the extracted data. """
+    def __init__(self, target_object):
+        self.target_object = target_object
+
+    def process(self, image):
+        self._extract_gps_data(image)
+        return image
+
+    def _get_dms(self, exif_data):
+        degrees = Decimal(exif_data[0][0] / exif_data[0][1])
+        minutes = Decimal(exif_data[1][0] / exif_data[1][1])
+        seconds = Decimal(exif_data[2][0] / exif_data[2][1])
+        return (degrees, minutes, seconds)
+
+    def _get_coordinate(self, degrees, minutes, seconds):
+        fractional_degrees = ((minutes * 60) + seconds) / 3600
+        return degrees + fractional_degrees
+
+    def _extract_gps_data(self, img):
+        # Extract any GPS coordinates in the image metadata and save them
+        # in the database before the data are automatically erased due to
+        # the ProcessedImageField image that gets resized and saved.
+        DECIMAL_PRECISION = 7
+        # These are tag ids defined by the EXIF Specification
+        EXIF_GPSLATITUDE = 2
+        EXIF_GPSLATITUDEREF = 1
+        EXIF_GPSLONGITUDE = 4
+        EXIF_GPSLONGITUDEREF = 3
+
+        exif = None
+        try:
+            exif = img._getexif()
+        except AttributeError:
+            pass
+        if exif:
+            tagged_exif = {
+                TAGS[k]: v for k, v in exif.items() if k in TAGS
+            }
+            gps_info = tagged_exif.get('GPSInfo', {})
+            available_tags = set(gps_info.keys())
+            required_tags = set((EXIF_GPSLATITUDE, EXIF_GPSLATITUDEREF,
+                    EXIF_GPSLONGITUDE, EXIF_GPSLONGITUDEREF))
+            if gps_info and required_tags <= available_tags:
+                getcontext().prec = DECIMAL_PRECISION
+                # Get latitude.
+                degrees, minutes, seconds = self._get_dms(
+                    gps_info[EXIF_GPSLATITUDE])
+                latitude = self._get_coordinate(degrees, minutes, seconds)
+                direction = gps_info[EXIF_GPSLATITUDEREF]
+                if direction.upper() == 'S':
+                    latitude = latitude * -1
+                self.target_object.latitude = latitude
+                # Get longitude.
+                degrees, minutes, seconds = self._get_dms(
+                    gps_info[EXIF_GPSLONGITUDE])
+                longitude = self._get_coordinate(degrees, minutes, seconds)
+                direction = gps_info[EXIF_GPSLONGITUDEREF]
+                if direction.upper() == 'W':
+                    longitude = longitude * -1
+                self.target_object.longitude = longitude
+
+
+class PlantshareGpsImage(ImageSpec):
+    """ Custom ImageKit ImageSpec to extract GPS data from an image and
+    resize it appropriately.
+    """
+    format = 'PNG'
+
+    @property
+    def processors(self):
+        """ Dynamically create the list of image processors using the model
+        instance. """
+        instance, field_name = get_field_info(self.source)
+        return [
+            ExifGpsExtractor(instance),
+            ResizeToFit(1000, 1000),
+        ]
+
+register.generator('plantshare:screenedimage:plantsharegpsimage',
+        PlantshareGpsImage)
+
 class ScreenedImage(models.Model):
     image = ProcessedImageField(upload_to=rename_image_by_type,
-                storage=upload_storage, format='PNG',
-                processors=[ResizeToFit(1000, 1000)])
-    thumb = ImageSpecField(image_field='image', storage=upload_storage,
-                format='PNG',
+                storage=upload_storage,
+                spec_id='plantshare:screenedimage:plantsharegpsimage')
+    thumb = ImageSpecField(source='image', format='PNG',
                 processors=[ResizeToFit(128, 128, upscale=True)])
 
     uploaded = models.DateTimeField(blank=False, auto_now_add=True)
@@ -379,60 +467,6 @@ class ScreenedImage(models.Model):
     # Flag true if the user or staff has chosen to delete this image.  This
     # indicates that the image binary itself has been removed from storage.
     deleted = models.BooleanField(default=False)
-
-    def _get_dms(self, exif_data):
-        degrees = Decimal(exif_data[0][0] / exif_data[0][1])
-        minutes = Decimal(exif_data[1][0] / exif_data[1][1])
-        seconds = Decimal(exif_data[2][0] / exif_data[2][1])
-        return (degrees, minutes, seconds)
-
-    def _get_coordinate(self, degrees, minutes, seconds):
-        fractional_degrees = ((minutes * 60) + seconds) / 3600
-        return degrees + fractional_degrees
-
-    def save(self, force_insert=False, force_update=False):
-        # Extract any GPS coordinates in the image metadata and save them
-        # in the database before the data are automatically erased due to
-        # the ProcessedImageField image that gets resized and saved.
-        DECIMAL_PRECISION = 7
-        # These are tag ids defined by the EXIF Specification
-        EXIF_GPSLATITUDE = 2
-        EXIF_GPSLATITUDEREF = 1
-        EXIF_GPSLONGITUDE = 4
-        EXIF_GPSLONGITUDEREF = 3
-        img = Image.open(self.image)
-        exif = None
-        try:
-            exif = img._getexif()
-        except AttributeError:
-            pass
-        if exif:
-            tagged_exif = {
-                TAGS[k]: v for k, v in exif.items() if k in TAGS
-            }
-            gps_info = tagged_exif.get('GPSInfo', {})
-            available_tags = set(gps_info.keys())
-            required_tags = set((EXIF_GPSLATITUDE, EXIF_GPSLATITUDEREF,
-                    EXIF_GPSLONGITUDE, EXIF_GPSLONGITUDEREF))
-            if gps_info and required_tags <= available_tags:
-                getcontext().prec = DECIMAL_PRECISION
-                # Get latitude.
-                degrees, minutes, seconds = self._get_dms(
-                    gps_info[EXIF_GPSLATITUDE])
-                latitude = self._get_coordinate(degrees, minutes, seconds)
-                direction = gps_info[EXIF_GPSLATITUDEREF]
-                if direction.upper() == 'S':
-                    latitude = latitude * -1
-                self.latitude = latitude
-                # Get longitude.
-                degrees, minutes, seconds = self._get_dms(
-                    gps_info[EXIF_GPSLONGITUDE])
-                longitude = self._get_coordinate(degrees, minutes, seconds)
-                direction = gps_info[EXIF_GPSLONGITUDEREF]
-                if direction.upper() == 'W':
-                    longitude = longitude * -1
-                self.longitude = longitude
-        super(ScreenedImage, self).save(force_insert, force_update)
 
 
 class QuestionManager(models.Manager):

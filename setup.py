@@ -9,7 +9,7 @@ requirements = [
     'cssselect',
     'django-debug-toolbar',
     'django-haystack==1.2.7',
-    'django-imagekit==2.0.2',
+    'django-imagekit==3.0.2',
     'django-piston==0.2.2',
     'django-tinymce',
     'lxml',
