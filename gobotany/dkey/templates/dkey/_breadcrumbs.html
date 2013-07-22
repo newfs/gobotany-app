@@ -13,6 +13,14 @@
     {% if page.title == 'Key to the Families' %}
         <li class="this-page nogloss">Dichotomous Key</li>
     {% else %}
-        <li class="this-page nogloss">{{ page.title|expand_group_title }}</li>
+        <li class="this-page nogloss">
+        {% with page.title|expand_group_title as title %}
+        {% if page.rank == 'genus' %}
+            <i>{{ title }}</i>
+        {% else %}
+            {{ title }}
+        {% endif %}
+        {% endwith %}
+        </li>
     {% endif %}
 </ul>
