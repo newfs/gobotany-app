@@ -16,9 +16,11 @@ point for logging in is the main PlantShare page, not here.
 {% if request.GET.next %}
     <p>Please log in to continue.</p>
 {% else %}
-    <ul class="errorlist">
-        <li>Please try logging in again.</li>
-    </ul>
+    {% if form.errors %}
+        <ul class="errorlist">
+            <li>Please try logging in again.</li>
+        </ul>
+    {% endif %}
 {% endif %}
 
 {% include "_login_form.html" %}
