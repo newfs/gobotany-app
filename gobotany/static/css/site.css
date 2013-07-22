@@ -1328,7 +1328,7 @@ body.plantshare#profile .info-section { margin: 0 0 20px; }
 body.plantshare#profile .info-section .info.box { min-height: 172px; padding: 10px 15px; }
 body.plantshare#profile .info-section .info.box table { margin: 0; }
 body.plantshare .change-password input[type='submit'], body.plantshare .change-email input[type='submit'] { margin-top: 8px; width: auto; }
-body.plantshare .change-password input[type='password'], body.plantshare .change-password input[type='text'], body.plantshare .change-email input[type='password'], body.plantshare .change-email input[type='text'] { margin-bottom: 10px; width: 250px; }
+body.plantshare .change-password input[type='password'], body.plantshare .change-password input[type='text'], body.plantshare .change-email input[type='password'], body.plantshare .change-email input[type='text'] { margin-bottom: 10px; width: 250px !important; }
 body.plantshare #login.box { background-color: #d3eaad; border-color: #317b0c; max-width: 475px; padding: 0; }
 body.plantshare #login.box h4 { font-size: 20px; padding: 16px 16px 10px; }
 body.plantshare #login.box div { border-top: 1px solid #317b0c; padding: 16px; }
