@@ -495,6 +495,14 @@ class HomePageImageAdmin(admin.ModelAdmin):
     list_display = ('image', 'partner_site',)
     list_filter = ('partner_site',)
 
+class DefaultFilterAdmin(admin.ModelAdmin):
+    list_display = ('character', 'pile', 'order',)
+    list_filter = ('pile',)
+
+class PlantPreviewCharacterAdmin(admin.ModelAdmin):
+    list_display = ('character', 'pile', 'order',)
+    list_filter = ('pile',)
+
 # Registrations
 
 admin.site.register(models.Parameter)
@@ -517,3 +525,6 @@ admin.site.register(models.PartnerSite, PartnerSiteAdmin)
 admin.site.register(models.PartnerSpecies, PartnerSpeciesAdmin)
 admin.site.register(models.ConservationStatus, ConservationStatusAdmin)
 admin.site.register(models.Distribution, DistributionAdmin)
+admin.site.register(models.DefaultFilter, DefaultFilterAdmin)
+admin.site.register(models.PlantPreviewCharacter, PlantPreviewCharacterAdmin)
+
