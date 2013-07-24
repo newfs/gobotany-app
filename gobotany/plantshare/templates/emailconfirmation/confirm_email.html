@@ -1,0 +1,23 @@
+{% extends "gobotany/_page_free_sidebar.html" %}
+
+{% block title %}Email Address Confirmation: PlantShare{% endblock %}
+
+{% block body_attributes %}id="confirm-email"
+    class="plantshare"{% endblock %}
+
+{% block main_content %}
+
+{% if email_address %}
+    <h1>Email Address Confirmed</h1>
+    <p>You have confirmed that {{ email_address.email }} is your new email
+    address for PlantShare.</p>
+    {% else %}
+    <h1>Email Address Confirmation Failed</h1>
+    <p>Invalid confirmation key.</p>
+{% endif %}
+
+{% endblock %}
+
+{% block sidebar_content %}
+    {% include "_plantshare_navigation.html" %}
+{% endblock %}

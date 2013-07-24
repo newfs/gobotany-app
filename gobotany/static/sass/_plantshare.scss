@@ -1088,22 +1088,28 @@ body.plantshare {
                 }
             }
         }
+        .email-address {
+            margin-top: 32px;
+        }
     }
 
-    /* For: Your Profile page, Change Password page, etc. */
+    /* For: forms Your Profile page and also the separate form/error pages */
     .change-password, .change-email {
         input[type='submit'] {
-            margin: 8px 30px 0 0;
+            margin: 8px 28px 0 0;
             width: auto;
         }
         input[type='password'], input[type='text'] {
             margin-bottom: 10px;
             width: 250px !important;
         }
-        a {
-            font-family: $headings-font;
-            font-size: 11px;
-        }
+    }
+    .change-password a {
+        font-family: $headings-font;
+        font-size: 11px;
+    }
+    .change-email .verified-address {
+        margin: 28px 0;
     }
 
     &#forgot-password {

@@ -245,7 +245,10 @@ body {
         &#new-checklist #sidebar .checklists,
         &#edit-checklist #sidebar .checklists,
         &#change-password #sidebar .profile,
-        &#password-changed #sidebar .profile {
+        &#password-changed #sidebar .profile,
+        &#change-email-address #sidebar .profile,
+        &#change-email-sent-confirmation #sidebar .profile,
+        &#confirm-email #sidebar .profile {
             a::before {
                 @include highlight-sidebar-nav-item;
             }

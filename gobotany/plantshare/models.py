@@ -11,11 +11,15 @@ from django.contrib.auth.models import User
 from django.contrib.sites.models import Site
 from django.core.exceptions import ObjectDoesNotExist
 from django.core.files.storage import FileSystemStorage, Storage
-from django.db import models
+from django.db import IntegrityError, models
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 from django.template.loader import render_to_string
+from django.utils import timezone
 
+from emailconfirmation.models import (EmailAddressManager, EmailConfirmation,
+    EmailConfirmationManager)
+from emailconfirmation.signals import email_confirmed
 from facebook_connect.models import FacebookUser
 from imagekit import ImageSpec, register
 from imagekit.models import ImageSpecField, ProcessedImageField
@@ -55,6 +59,56 @@ DEFAULT_AVATAR_URL = urlparse.urljoin(settings.STATIC_URL,
     'images/icons/generic-avatar.png')
 DEFAULT_AVATAR_THUMB = urlparse.urljoin(settings.STATIC_URL,
     'images/icons/generic-avatar.png')
+
+
+# Patch a function in emailconfirmation to allow a confirmation email
+# to be sent even if the email address is already on file, to enable
+# changing an email address back to a previously used one.
+
+def add_email(self, user, email):
+    try:
+        email_address, created = self.get_or_create(user=user,
+            email=email) # was self.create(user=user, email=email)
+        EmailConfirmation.objects.send_confirmation(email_address)
+        return email_address
+    except IntegrityError:
+        return None
+
+EmailAddressManager.add_email = add_email
+
+# Patch a function in emailconfirmation to work around a dates comparison
+# error ("can't compare offset-naive and offset-aware datetimes").
+
+def key_expired(self):
+    expiration_date = self.sent + datetime.timedelta(
+        days=settings.EMAIL_CONFIRMATION_DAYS)
+    return expiration_date <= timezone.now() # was datetime.datetime.now()
+key_expired.boolean = True
+
+EmailConfirmation.key_expired = key_expired
+
+# Patch a function in email configuration to set the new email address
+# as primary every time rather than not doing so if the address is
+# already on file. This is for changing an email address back to one
+# that the user has previously used.
+
+def confirm_email(self, confirmation_key):
+    try:
+        confirmation = self.get(confirmation_key=confirmation_key)
+    except self.model.DoesNotExist:
+        return None
+    if not confirmation.key_expired():
+        email_address = confirmation.email_address
+        email_address.verified = True
+        email_address.set_as_primary() # was .set_as_primary(conditional=True)
+        email_address.save()
+        email_confirmed.send(sender=self.model, email_address=email_address)
+        return email_address
+
+EmailConfirmationManager.confirm_email = confirm_email
+
+
+# PlantShare models
 
 class Location(models.Model):
     """A location as specified by a user in one of several valid ways."""

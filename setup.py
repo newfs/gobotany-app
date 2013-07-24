@@ -31,6 +31,7 @@ requirements = [
 
     # Login and registration
 
+    'django-email-confirmation==0.2',
     'django-facebook-connect>=1.0.2',
     'django-recaptcha==0.0.6',
     # Installed in a separate step pending Django dependency issues

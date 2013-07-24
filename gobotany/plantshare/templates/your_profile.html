@@ -168,20 +168,18 @@
 <h2>Account Settings</h2>
 
 {% if password_exists %}
-<section>
+<section class="password">
     <h3>Change Password</h3>
     {% include "registration/_change_password_form.html" %}
 </section>
 {% endif %}
 
-{% comment %}
 {% if email_address_exists %}
-<section>
-    <h3>Change Email Address</h3>
-    <p>form here</p>
+<section class="email-address">
+    <h3>Email Address</h3>
+    {% include "emailconfirmation/_change_email_form.html" %}
 </section>
 {% endif %}
-{% endcomment %}
 
 </div>
 {% endblock %}

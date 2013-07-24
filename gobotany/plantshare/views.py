@@ -19,8 +19,12 @@ from django.shortcuts import (get_object_or_404, redirect, render,
 from django.template import RequestContext
 from django.utils import simplejson
 
-from gobotany.plantshare.forms import (ChecklistEntryForm, ChecklistForm,
-    QuestionForm, ScreenedImageForm, SightingForm, UserProfileForm)
+from emailconfirmation import views as emailconfirmation_views
+from emailconfirmation.models import EmailConfirmation
+
+from gobotany.plantshare.forms import (ChangeEmailForm, ChecklistEntryForm,
+    ChecklistForm, QuestionForm, ScreenedImageForm, SightingForm,
+    UserProfileForm)
 from gobotany.plantshare.models import (Checklist, ChecklistCollaborator,
     ChecklistEntry, Location, Question, ScreenedImage, Sighting,
     SIGHTING_VISIBILITY_CHOICES, UserProfile)
@@ -817,11 +821,13 @@ def your_profile_view(request):
     password_exists = False
     email_address_exists = False
     change_password_form = None
+    change_email_form = None
     if profile:
         password_exists = (len(profile.user.password) > 0)
         email_address_exists = (len(profile.user.email) > 0)
         change_password_form = PasswordChangeForm(data=None,
             user=profile.user)
+        change_email_form = ChangeEmailForm(data=None, user=profile.user)
 
     context = {
         'profile_form': profile_form,
@@ -830,9 +836,58 @@ def your_profile_view(request):
         'password_exists': password_exists,
         'email_address_exists': email_address_exists,
         'form': change_password_form,   # named as another view used expects
+        'change_email_form': change_email_form,
     }
     return render_to_response('your_profile.html', context,
             context_instance=RequestContext(request))
+
+
+@login_required
+def change_email(request):
+    if request.method not in ['GET', 'POST']:
+        return HttpResponse(status=405)   # HTTP method not allowed
+
+    try:
+        profile = UserProfile.objects.get(user=request.user)
+    except UserProfile.DoesNotExist:
+        profile = None
+
+    if request.method == 'POST':
+        change_email_form = ChangeEmailForm(request.POST, user=profile.user)
+        if change_email_form.is_valid():
+            # Create an EmailAddress record and send confirmation email.
+            change_email_form.save()
+            url = reverse('ps-change-email-confirmation-sent')
+            return HttpResponseRedirect(url)
+    else:
+        change_email_form = ChangeEmailForm(user=profile.user)
+
+    context = {
+        'change_email_form': change_email_form,
+    }
+
+    return render_to_response('emailconfirmation/change_email_address.html',
+        context, context_instance=RequestContext(request))
+
+
+@login_required
+def change_email_confirmation_sent(request):
+    return render_to_response(
+        'emailconfirmation/change_email_confirmation_sent.html',
+        {}, context_instance=RequestContext(request))
+
+
+# Patch the emailconfirmation view 'confirm_email' to make it require
+# that the user be logged in.
+@login_required
+def confirm_email(request, confirmation_key):
+    confirmation_key = confirmation_key.lower()
+    email_address = EmailConfirmation.objects.confirm_email(confirmation_key)
+    return render_to_response('emailconfirmation/confirm_email.html', {
+        'email_address': email_address,
+    }, context_instance=RequestContext(request))
+
+emailconfirmation_views.confirm_email = confirm_email
 
 
 @login_required

@@ -1,6 +1,6 @@
 from django import forms
-from django.contrib.auth.models import User
 from django.core.urlresolvers import reverse_lazy
+from emailconfirmation.models import EmailAddress
 
 from gobotany.plantshare.models import (Checklist, ChecklistEntry,
     Location, ScreenedImage, SIGHTING_DEFAULT_VISIBILITY,
@@ -132,6 +132,31 @@ class UserProfileForm(forms.ModelForm):
             avatar_info = UserProfile.default_avatar_image()
 
         return avatar_info
+
+
+class ChangeEmailForm(forms.ModelForm):
+    class Meta:
+        model = EmailAddress
+        fields = ('email',)
+
+    def __init__(self, data=None, user=None):
+        super(ChangeEmailForm, self).__init__(data=data)
+        self.user = user
+
+    email = forms.EmailField(label='New email address', required=True,
+        widget=forms.TextInput())
+
+    def clean_email(self):
+        email = self.cleaned_data['email']
+        if email == self.user.email:
+            raise forms.ValidationError(
+                u'This email address is already used by your account.')
+        else:
+            return email
+
+    def save(self):
+        email = self.cleaned_data['email']
+        return EmailAddress.objects.add_email(self.user, email)
 
 
 class ScreenedImageForm(forms.ModelForm):

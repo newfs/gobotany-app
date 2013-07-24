@@ -300,7 +300,7 @@ body.help #sidebar nav li:first-child, body.plantshare #sidebar nav li:first-chi
 body.help #sidebar nav li a:not([href])::before, body.plantshare #sidebar nav li a:not([href])::before { color: #000; content: "\25b8"; margin-left: -14px; padding-bottom: 5px; padding-right: 5px; }
 body.help #sidebar nav li > span, body.plantshare #sidebar nav li > span { color: #ccc; padding-left: 10px; }
 body.help#glossary #sidebar .glossary a::before, body.help#fullkey-placeholder #sidebar .advanced-id-tools a::before, body.help#dkey-placeholder #sidebar .advanced-id-tools a::before { color: #000; content: "\25b8"; margin-left: -14px; padding-bottom: 5px; padding-right: 5px; }
-body.plantshare#sighting #sidebar .sightings a::before, body.plantshare#edit-sighting #sidebar .manage-sightings a::before, body.plantshare#questions #sidebar .ask a::before, body.plantshare#checklist #sidebar .checklists a::before, body.plantshare#new-checklist #sidebar .checklists a::before, body.plantshare#edit-checklist #sidebar .checklists a::before, body.plantshare#change-password #sidebar .profile a::before, body.plantshare#password-changed #sidebar .profile a::before { color: #000; content: "\25b8"; margin-left: -14px; padding-bottom: 5px; padding-right: 5px; }
+body.plantshare#sighting #sidebar .sightings a::before, body.plantshare#edit-sighting #sidebar .manage-sightings a::before, body.plantshare#questions #sidebar .ask a::before, body.plantshare#checklist #sidebar .checklists a::before, body.plantshare#new-checklist #sidebar .checklists a::before, body.plantshare#edit-checklist #sidebar .checklists a::before, body.plantshare#change-password #sidebar .profile a::before, body.plantshare#password-changed #sidebar .profile a::before, body.plantshare#change-email-address #sidebar .profile a::before, body.plantshare#change-email-sent-confirmation #sidebar .profile a::before, body.plantshare#confirm-email #sidebar .profile a::before { color: #000; content: "\25b8"; margin-left: -14px; padding-bottom: 5px; padding-right: 5px; }
 
 /* Header */
 header { height: 120px; }
@@ -1100,7 +1100,7 @@ ul.get-more-questions-menu ul li[data-character] { color: black; }
 @media only screen and (max-width: 1024px) { body.skey.results #question-nav .option-list > li:hover, body.skey.results #question-nav .option-list > li.active, body.skey.results #question-nav .option-list > li.answered.active { background: #fff; } }
 /* End media queries styles for Simple and Full Keys */
 /* PlantShare */
-body.plantshare { /* end #sightings-locator */ /* For: Your Profile page, Change Password page, etc. */ }
+body.plantshare { /* end #sightings-locator */ /* For: forms Your Profile page and also the separate form/error pages */ }
 body.plantshare .recaptchatable a { color: #317b0c; }
 body.plantshare .recaptchatable #recaptcha_response_field { font-family: "Trebuchet MS", Helvetica, Arial, "Lucida Sans Unicode", sans-serif; font-size: 14px; }
 body.plantshare .content li { list-style-type: none; }
@@ -1328,9 +1328,11 @@ body.plantshare#profile .info-section .info.box table .edit, body.plantshare#pro
 body.plantshare#profile .info-section { margin: 0 0 20px; }
 body.plantshare#profile .info-section .info.box { min-height: 172px; padding: 10px 15px; }
 body.plantshare#profile .info-section .info.box table { margin: 0; }
-body.plantshare .change-password input[type='submit'], body.plantshare .change-email input[type='submit'] { margin: 8px 30px 0 0; width: auto; }
+body.plantshare#profile .email-address { margin-top: 32px; }
+body.plantshare .change-password input[type='submit'], body.plantshare .change-email input[type='submit'] { margin: 8px 28px 0 0; width: auto; }
 body.plantshare .change-password input[type='password'], body.plantshare .change-password input[type='text'], body.plantshare .change-email input[type='password'], body.plantshare .change-email input[type='text'] { margin-bottom: 10px; width: 250px !important; }
-body.plantshare .change-password a, body.plantshare .change-email a { font-family: "Trebuchet MS", Helvetica, Arial, "Lucida Sans Unicode", sans-serif; font-size: 11px; }
+body.plantshare .change-password a { font-family: "Trebuchet MS", Helvetica, Arial, "Lucida Sans Unicode", sans-serif; font-size: 11px; }
+body.plantshare .change-email .verified-address { margin: 28px 0; }
 body.plantshare#forgot-password #main form input[type='text'] { width: 250px; }
 body.plantshare#forgot-password #main form input[type='submit'] { margin-top: 8px; }
 body.plantshare #login.box { background-color: #d3eaad; border-color: #317b0c; max-width: 475px; padding: 0; }

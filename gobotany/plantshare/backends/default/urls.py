@@ -9,8 +9,13 @@ from django.contrib.auth.views import (password_change, password_reset,
     password_reset_complete, password_reset_confirm, password_reset_done)
 from django.views.generic.base import TemplateView
 
+from emailconfirmation.views import confirm_email
+
 from registration.backends.default.views import ActivationView
 from registration.backends.default.views import RegistrationView
+
+from gobotany.plantshare.views import (change_email,
+    change_email_confirmation_sent)
 from .forms import RegistrationFormWithCaptcha
 
 urlpatterns = patterns('',
@@ -50,7 +55,7 @@ urlpatterns = patterns('',
         name='ps-forgot-password'),
     url(r'^password/reset/done/$', password_reset_done,
         {'template_name': 'registration/reset_password_email_sent.html'},
-        name='ps-reset-password-email_sent'),
+        name='ps-reset-password-email-sent'),
     url(r'^password/reset/confirm/(?P<uidb36>[0-9A-Za-z]+)-(?P<token>.+)/$',
         password_reset_confirm,
         {'template_name': 'registration/choose_new_password.html'},
@@ -59,6 +64,12 @@ urlpatterns = patterns('',
         {'template_name': 'registration/change_password_done.html'},
         name='ps-reset-password-complete'),
 
+    url(r'^email/change/$', change_email,
+        name='ps-change-email'),
+    url(r'^email/change/confirmation-sent/$', change_email_confirmation_sent,
+        name='ps-change-email-confirmation-sent'),
+    url(r'^email/confirm/(\w+)/$', confirm_email,
+        name='ps-confirm-email'),
 
     (r'', include('registration.auth_urls')),
     )

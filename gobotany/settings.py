@@ -127,6 +127,7 @@ INSTALLED_APPS = [
 
     'haystack',
     'tinymce',
+    'emailconfirmation',
     'facebook_connect',
     'registration',
     'south',
@@ -198,6 +199,9 @@ EMAIL_HOST_USER = os.environ.get('SENDGRID_USERNAME', '')
 EMAIL_HOST_PASSWORD = os.environ.get('SENDGRID_PASSWORD', '')
 if EMAIL_HOST_USER:
     USE_TLS = True
+
+# For emailconfirmation
+EMAIL_CONFIRMATION_DAYS = 3
 
 # For django-recaptcha
 RECAPTCHA_PUBLIC_KEY = os.environ.get('RECAPTCHA_PUBLIC_KEY', '')

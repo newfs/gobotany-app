@@ -1,0 +1,12 @@
+    <form method="post" action="{% url 'ps-change-email' %}"
+        class="change-email">
+
+        <p class="verified-address">{{ request.user.email }}</p>
+
+        {% csrf_token %}
+        
+        {{ change_email_form.as_p }}
+
+        <p><input type="submit" value="Change Email Address"
+            class="orange-button caps"></p>
+    </form>
