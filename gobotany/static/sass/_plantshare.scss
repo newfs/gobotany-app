@@ -1109,7 +1109,11 @@ body.plantshare {
         font-size: 11px;
     }
     .change-email .verified-address {
+        background: url(/static/images/layout/check.png) no-repeat;
+        background-position: center left;
+        background-size: 18px 19px;
         margin: 28px 0;
+        padding-left: 26px;
     }
 
     &#forgot-password {

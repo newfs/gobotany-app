@@ -1332,7 +1332,7 @@ body.plantshare#profile .email-address { margin-top: 32px; }
 body.plantshare .change-password input[type='submit'], body.plantshare .change-email input[type='submit'] { margin: 8px 28px 0 0; width: auto; }
 body.plantshare .change-password input[type='password'], body.plantshare .change-password input[type='text'], body.plantshare .change-email input[type='password'], body.plantshare .change-email input[type='text'] { margin-bottom: 10px; width: 250px !important; }
 body.plantshare .change-password a { font-family: "Trebuchet MS", Helvetica, Arial, "Lucida Sans Unicode", sans-serif; font-size: 11px; }
-body.plantshare .change-email .verified-address { margin: 28px 0; }
+body.plantshare .change-email .verified-address { background: url(/static/images/layout/check.png) no-repeat; background-position: center left; background-size: 18px 19px; margin: 28px 0; padding-left: 26px; }
 body.plantshare#forgot-password #main form input[type='text'] { width: 250px; }
 body.plantshare#forgot-password #main form input[type='submit'] { margin-top: 8px; }
 body.plantshare #login.box { background-color: #d3eaad; border-color: #317b0c; max-width: 475px; padding: 0; }
