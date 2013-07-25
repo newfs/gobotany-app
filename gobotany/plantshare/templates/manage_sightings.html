@@ -33,11 +33,11 @@
             <thead>
                 <tr>
                     {# Label the columns, which will add filter boxes. #}
+                    <th class="action"></th>
                     <th class="identification">Identification</th>
                     <th class="location">Location</th>
                     <th class="posted">Date Posted</th>
                     <th class="visibility">Visibility</th>
-                    <th class="action"></th>
                     <th class="action"></th>
                     <th class="action"></th>
                 </tr>
@@ -45,13 +45,22 @@
             <tbody>
             {% for sighting in sightings %}
                 <tr id="sighting-{{ sighting.id }}">
-                    <td>{{ sighting.identification|italicize_if_scientific|safe }}</td>
+                    <td>
+                        {% if sighting.photo %}
+                            <a href="{% url 'ps-sighting' sighting.id %}">
+                                <img src="{{ sighting.photo.thumb.url }}" alt="">
+                            </a>
+                        {% endif %}
+                    </td>
+                    <td>
+                        <a 
+                        href="{% url 'ps-sighting' sighting.id %}"
+                        >{{ sighting.identification|italicize_if_scientific|safe }}
+                        </a>
+                    </td>
                     <td>{{ sighting.location }}</td>
                     <td>{{ sighting.created }}</td>
                     <td>{{ sighting.visibility }}</td>
-                    <td class="action">
-                        <a href="{% url 'ps-sighting' sighting.id %}">View</a>
-                    </td>
                     <td class="action">
                         <a href="{% url 'ps-edit-sighting' sighting.id %}">Edit</a>
                     </td>

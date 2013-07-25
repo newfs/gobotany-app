@@ -1219,12 +1219,14 @@ body.plantshare#new-sighting .visibility .label, body.plantshare#edit-sighting .
 body.plantshare#new-sighting .visibility select, body.plantshare#edit-sighting .visibility select { margin: 4px 0 0; }
 body.plantshare#manage-sightings { /* Hide the usual default Shadowbox close button. This is used for some dialogs that have their own interior close button, such as is seen on various PlantShare dialogs. */ }
 body.plantshare#manage-sightings .content table { width: 100%; }
-body.plantshare#manage-sightings .content table th.identification { width: 33%; }
+body.plantshare#manage-sightings .content table th.identification { width: 30%; }
 body.plantshare#manage-sightings .content table th.location { width: 20%; }
 body.plantshare#manage-sightings .content table th.posted { width: 20%; }
 body.plantshare#manage-sightings .content table th.visibility { width: 20%; }
 body.plantshare#manage-sightings .content table th.action { width: 7%; }
 body.plantshare#manage-sightings .content table td.action { text-align: center; }
+body.plantshare#manage-sightings .content table td:first-of-type a { border-bottom: 0; }
+body.plantshare#manage-sightings .content table img { max-width: 80px; }
 body.plantshare#manage-sightings #sb-nav-close { display: none; }
 body.plantshare#delete-sighting, body.plantshare#delete-checklist { background: none; }
 body.plantshare#delete-sighting div, body.plantshare#delete-checklist div { background: #fff; border: 5px solid #acac90; height: 100%; padding: 0 18px; text-align: center; }

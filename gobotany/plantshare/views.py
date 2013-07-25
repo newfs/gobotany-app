@@ -401,8 +401,12 @@ def manage_sightings_view(request):
     for sighting in sightings_queryset:
         visibility = [item for item in SIGHTING_VISIBILITY_CHOICES
                       if item[0] == sighting.visibility][0][1]
+        photo = ''
+        if sighting.approved_photos():
+            photo = sighting.approved_photos()[0]
         sightings.append({
             'id': sighting.id,
+            'photo': photo,
             'identification': sighting.identification,
             'location': sighting.location,
             'user': sighting.user,
