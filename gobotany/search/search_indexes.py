@@ -1,5 +1,3 @@
-from django.conf import settings
-
 from gobotany.core.models import Family, Genus, GlossaryTerm, Taxon
 from gobotany.dkey.models import Page
 from gobotany.plantshare.models import Question, Sighting
@@ -326,7 +324,5 @@ site.register(SubgroupResultsPage, SubgroupResultsPageIndex)
 
 site.register(Page, DichotomousKeyPageIndex)
 
-# Exclude PlantShare results in production until release.
-if settings.DEV_FEATURES == True:   # TODO: remove this line before release
-    site.register(Sighting, SightingPageIndex)
-    site.register(Question, QuestionIndex)
+site.register(Sighting, SightingPageIndex)
+site.register(Question, QuestionIndex)
