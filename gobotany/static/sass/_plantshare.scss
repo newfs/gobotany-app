@@ -658,7 +658,7 @@ body.plantshare {
             padding: 15px;
             position: absolute;
             top: 250px;
-            width: 400px;
+            width: 420px;
             z-index: 10;
             img {
                 float: left;
@@ -693,12 +693,14 @@ body.plantshare {
                 @include dialog-close-button;    
             }
             h4 {
+                float: right;
                 font-size: 18px;
                 margin: 0 0 5px;
+                width: 310px;
             }
             form {
                 float: right;
-                width: 290px;
+                width: 310px;
             }
             input {
                 border: 0 none !important;

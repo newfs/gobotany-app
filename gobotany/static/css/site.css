@@ -1237,15 +1237,15 @@ body.plantshare#delete-sighting .cancel-btn:hover, body.plantshare#delete-checkl
 body.plantshare#locator #main h3 { font-family: Verdana, Geneva, "Lucida Sans Unicode", sans-serif; font-size: 12px; line-height: 24px; }
 body.plantshare#locator #main #sightings-status { display: none; /* initially hide, until updating value via JS */ float: right; line-height: 24px; }
 body.plantshare .modal-container { position: relative; }
-body.plantshare .modal-container .image-modal { background-color: white; border: 5px solid #acac90; display: none; height: 160px; left: 0px; padding: 15px; position: absolute; top: 250px; width: 400px; z-index: 10; }
+body.plantshare .modal-container .image-modal { background-color: white; border: 5px solid #acac90; display: none; height: 160px; left: 0px; padding: 15px; position: absolute; top: 250px; width: 420px; z-index: 10; }
 body.plantshare .modal-container .image-modal img { float: left; margin: 0 20px 10px 0; max-height: 84px; max-width: 84px; }
 body.plantshare .modal-container .image-modal a.button { color: white; display: inline-block; margin: 10px 0; }
 body.plantshare .modal-container .image-modal a.disabled { display: none; }
 body.plantshare .modal-container .image-modal div.modal-footer { color: #888; display: block; float: left; position: relative; width: 100%; }
 body.plantshare .modal-container .image-modal div.modal-footer div.file-path { border: 1px solid #888; color: #888; margin: 2px 0 auto; padding: 2px; }
 body.plantshare .modal-container .image-modal a.close { background: transparent url(/static/images/icons/close.png) no-repeat; cursor: pointer; display: block; height: 16px; position: absolute; right: 15px; text-indent: -9999px; top: 15px; width: 16px; }
-body.plantshare .modal-container .image-modal h4 { font-size: 18px; margin: 0 0 5px; }
-body.plantshare .modal-container .image-modal form { float: right; width: 290px; }
+body.plantshare .modal-container .image-modal h4 { float: right; font-size: 18px; margin: 0 0 5px; width: 310px; }
+body.plantshare .modal-container .image-modal form { float: right; width: 310px; }
 body.plantshare .modal-container .image-modal input { border: 0 none !important; box-shadow: inset 0 0 0 white !important; }
 body.plantshare .modal-container .image-modal input#id_image { clear: both; display: block; margin: 0 0 10px; }
 body.plantshare .modal-container .image-modal div.screening-notify p { color: #888; font-size: 10px; margin: 5px 0; }
