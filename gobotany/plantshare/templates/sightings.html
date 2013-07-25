@@ -10,29 +10,39 @@
 {% block main_content %}
 <h1>Recent Sightings</h1>
 
-{% regroup sightings by created as created_date_list %}
-
-<ul>
-{% for sightings in created_date_list %}
-    <li>{{ sightings.grouper }}
+{% regroup sightings by year as sightings_list_by_year %}
+{% for year in sightings_list_by_year %}
+    <h2>{{ year.grouper }}</h2>
+    {% regroup year.list by created as sightings_list_by_created_date %}
     <ul>
-        {% for sighting in sightings.list %}
-            <li><a
-                href="{% url 'ps-sighting' sighting.id %}">{{ sighting.identification|italicize_if_scientific|safe }}
-                at {{ sighting.location|capfirst }}</a>
-                by
-                {% comment %}
-                TODO: revisit getting the user's display name here.
-                For now, just show the username to keep the query count low.
-                {% endcomment %}
-                {# unique_user_display_name sighting.user #}
-                {{ sighting.user }}
-                </li>
-        {% endfor %}
+    {% for sightings in sightings_list_by_created_date %}
+        <li>{{ sightings.grouper }}
+        <ul>
+            {% for sighting in sightings.list %}
+                <li>
+                    {% if sighting.photo %}
+                        <a class="photolink"
+                            href="{% url 'ps-sighting' sighting.id %}">
+                            <img src="{{ sighting.photo.thumb.url }}" alt="">
+                        </a>
+                    {% endif %}
+                    <a class="title"
+                    href="{% url 'ps-sighting' sighting.id %}">{{ sighting.identification|italicize_if_scientific|safe }}
+                    at {{ sighting.location|capfirst }}</a>
+                    by
+                    {% comment %}
+                    TODO: revisit getting the user's display name here.
+                    For now, just show the username to keep the query count low.
+                    {% endcomment %}
+                    {# unique_user_display_name sighting.user #}
+                    {{ sighting.user }}
+                    </li>
+            {% endfor %}
+        </ul>
+        </li>
+    {% endfor %}
     </ul>
-    </li>
 {% endfor %}
-</ul>
 
 {% endblock %}
 

@@ -754,18 +754,34 @@ body.plantshare {
 
 
     &#sightings {
+        h2 {
+            clear: both;
+        }
         #main > ul {
             margin-top: 14px;
             > li {
                 float: left;
                 margin-bottom: 14px;
                 ul {
-                    margin-left: 200px;
+                    margin-left: 180px;
                     margin-top: -20px;
                     li {
                         clear: left;
                     }
                 }
+            }
+            img {
+                max-width: 80px;
+                vertical-align: middle;
+            }
+            .photolink {
+                border-bottom: 0;
+            }
+            .title {
+                margin-left: 90px;
+            }
+            .photolink + .title {
+                margin-left: 6px;
             }
         }
     }

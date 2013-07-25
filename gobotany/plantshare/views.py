@@ -37,9 +37,11 @@ SIGHTINGS_MAP_DEFAULTS = {
     'zoom': '7'
 }
 
-SIGHTING_DATE_FORMAT = "%e %B %Y"
+SIGHTING_DATE_FORMAT = '%e %B'
+SIGHTING_DATE_YEAR_FORMAT = SIGHTING_DATE_FORMAT + ' %Y'
 SIGHTING_DAY_DATE_FORMAT = '%A, ' + SIGHTING_DATE_FORMAT
-SIGHTING_DATE_TIME_FORMAT = SIGHTING_DAY_DATE_FORMAT + " at %I:%M %p"
+SIGHTING_DATE_DAY_FORMAT = SIGHTING_DATE_FORMAT + ' (%A)'
+SIGHTING_DATE_TIME_FORMAT = SIGHTING_DATE_YEAR_FORMAT + " at %I:%M %p"
 
 
 # Function and decorator for determining if a logged-in PlantShare user
@@ -250,13 +252,19 @@ def sightings_view(request):
             may_show_sighting = _may_show_sighting(sighting, request.user)
 
             if may_show_sighting:
-                created = sighting.created.strftime(SIGHTING_DAY_DATE_FORMAT)
+                photo = ''
+                if sighting.approved_photos():
+                    photo = sighting.approved_photos()[0]
+                created = sighting.created.strftime(SIGHTING_DATE_DAY_FORMAT)
+                year = sighting.created.strftime('%Y')
                 sightings.append({
                     'id': sighting.id,
+                    'photo': photo,
                     'identification': sighting.identification,
                     'location': sighting.location,
                     'user': sighting.user,
                     'created': created,
+                    'year': year,
                 })
                 if len(sightings) == MAX_RECENT_SIGHTINGS:
                     break

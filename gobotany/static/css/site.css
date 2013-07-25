@@ -1257,10 +1257,15 @@ body.plantshare .thumb-frame .thumb { vertical-align: bottom; }
 body.plantshare .thumb-frame .delete-link { width: 100%; text-align: center; margin: 0; padding-top: 8px; }
 body.plantshare .thumb-frame .delete-link img { vertical-align: top; }
 body.plantshare .upload { display: inline-block; float: left; padding-bottom: 20px; }
+body.plantshare#sightings h2 { clear: both; }
 body.plantshare#sightings #main > ul { margin-top: 14px; }
 body.plantshare#sightings #main > ul > li { float: left; margin-bottom: 14px; }
-body.plantshare#sightings #main > ul > li ul { margin-left: 200px; margin-top: -20px; }
+body.plantshare#sightings #main > ul > li ul { margin-left: 180px; margin-top: -20px; }
 body.plantshare#sightings #main > ul > li ul li { clear: left; }
+body.plantshare#sightings #main > ul img { max-width: 80px; vertical-align: middle; }
+body.plantshare#sightings #main > ul .photolink { border-bottom: 0; }
+body.plantshare#sightings #main > ul .title { margin-left: 90px; }
+body.plantshare#sightings #main > ul .photolink + .title { margin-left: 6px; }
 body.plantshare.sighting .map { float: right; margin: 0 0 12px 12px; }
 body.plantshare.sighting .photos h2 { margin: 0; }
 body.plantshare.sighting .photos ul li { height: auto; list-style: none; margin: 0; padding: 10px 0; }
