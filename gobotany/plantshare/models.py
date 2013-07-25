@@ -305,6 +305,13 @@ def create_fbuser_profile(sender, **kwargs):
             is_owner=True, is_self_pod=True)
         membership.save()
 
+
+class SightingManager(models.Manager):
+    def public(self):
+        """Return sightings marked for public view."""
+        return self.filter(visibility='PUBLIC')
+
+
 class Sighting(models.Model):
     user = models.ForeignKey(User)
 
@@ -373,6 +380,8 @@ class Sighting(models.Model):
         return self.photos.filter(is_approved=True, deleted=False,
                 orphaned=False)
 
+    objects = SightingManager()
+
 
 # Storage location for uploaded images depends on environment.
 if settings.DEBUG:
@@ -406,7 +415,7 @@ def rename_image_by_type(instance, filename):
 
 class ExifGpsExtractor(object):
     """ Custom django-imagekit image processor to extract GPS coordinates
-    from original image. 
+    from original image.
     This is a little non-standard in that it requires an object
     of some sort with 'latitude' and 'longitude' attributes on which to store
     the extracted data. """
@@ -490,6 +499,7 @@ class PlantshareGpsImage(ImageSpec):
 register.generator('plantshare:screenedimage:plantsharegpsimage',
         PlantshareGpsImage)
 
+
 class ScreenedImage(models.Model):
     image = ProcessedImageField(upload_to=rename_image_by_type,
                 storage=upload_storage,
@@ -528,6 +538,7 @@ class QuestionManager(models.Manager):
         """Return questions with an answer approved for publication."""
         return self.filter(approved=True).exclude(
             answer__isnull=True).exclude(answer__exact='')
+
 
 class Question(models.Model):
     question = models.CharField(max_length=300, blank=False)

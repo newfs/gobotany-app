@@ -285,7 +285,12 @@ class SightingPageIndex(BaseRealTimeIndex):
         template_name='sighting_page_title_searchindex.txt')
 
     # Customization
-    # TODO: Index only publicly shared, non-rare-plant sightings
+
+    def index_queryset(self):
+        # Index only publicly shared (and non-rare) plant sightings.
+        # (Do not try to show private sightings for the logged-in user here,
+        # as it would complicate indexing.)
+        return Sighting.objects.public()
 
 
 class QuestionIndex(BaseRealTimeIndex):
