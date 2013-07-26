@@ -3,11 +3,19 @@
 {% load mapping_tags %}
 {% load plantshare_tags %}
 
-{% block title %}Sightings: PlantShare{% endblock %}
+{% block title %}Recent Sightings: PlantShare{% endblock %}
 
 {% block body_attributes %}id="sightings" class="plantshare"{% endblock %}
 
 {% block main_content %}
+
+<p>Recent |
+{% for year in years %}
+<a href="{% url 'ps-sightings-by-year' year %}">{{ year }}</a>
+    {% if not forloop.last %} | {% endif %}
+{% endfor %}
+</p>
+
 <h1>Recent Sightings</h1>
 
 {% regroup sightings by year as sightings_list_by_year %}

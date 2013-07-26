@@ -248,9 +248,7 @@ def sightings_view(request):
             prefetch_related('location')
         sightings = []
         for sighting in sightings_queryset:
-
             may_show_sighting = _may_show_sighting(sighting, request.user)
-
             if may_show_sighting:
                 photo = ''
                 if sighting.approved_photos():
@@ -269,12 +267,50 @@ def sightings_view(request):
                 if len(sightings) == MAX_RECENT_SIGHTINGS:
                     break
 
+        years = [dt.year for dt in
+                 Sighting.objects.dates('created', 'year', order='DESC')]
+
         return render_to_response('sightings.html', {
-                    'sightings': sightings
+                    'sightings': sightings,
+                    'years': years,
                }, context_instance=RequestContext(request))
     else:
         # For an unsupported HTTP method, return Method Not Allowed.
         return HttpResponse(status=405)
+
+
+@terms_agreed_on_login
+def sightings_by_year_view(request, year):
+    sightings_queryset = Sighting.objects.select_related().\
+        filter(created__year=year).prefetch_related('location')
+    sightings = []
+    for sighting in sightings_queryset:
+        may_show_sighting = _may_show_sighting(sighting, request.user)
+        if may_show_sighting:
+            photo = ''
+            if sighting.approved_photos():
+                photo = sighting.approved_photos()[0]
+            created = sighting.created.strftime(SIGHTING_DATE_FORMAT)
+            sightings.append({
+                'id': sighting.id,
+                'photo': photo,
+                'identification': sighting.identification,
+                'location': sighting.location,
+                'user': sighting.user,
+                'created': created,
+            })
+
+    years = [str(dt.year) for dt in
+             Sighting.objects.dates('created', 'year', order='DESC')]
+
+    if year in years:
+        return render_to_response('sightings_by_year.html', {
+                    'year': year,
+                    'sightings': sightings,
+                    'years': years,
+               }, context_instance=RequestContext(request))
+    else:
+        raise Http404
 
 
 @terms_agreed_on_login

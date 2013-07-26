@@ -40,8 +40,10 @@ urlpatterns = patterns(
     url(r'^sightings/(?P<sighting_id>[0-9]+)/$', views.sighting_view,
         name='ps-sighting'),
 
-    # Recent Sightings
+    # Recent Sightings, and sightings by year
     url(r'^sightings/$', views.sightings_view, name='ps-sightings'),
+    url(r'^sightings/year-(?P<year>[0-9]{4})/$',
+        views.sightings_by_year_view, name='ps-sightings-by-year'),
 
     # Ask the Botanist
     url(r'^questions/$', views.questions_view, name='ps-questions'),
