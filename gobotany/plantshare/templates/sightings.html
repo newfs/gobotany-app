@@ -31,7 +31,7 @@
                     {% if sighting.photo %}
                         <a class="photolink"
                             href="{% url 'ps-sighting' sighting.id %}">
-                            <img src="{{ sighting.photo.thumb.url }}" alt="">
+                            <img src="{{ sighting.photo.thumb_cropped.url }}" alt="">
                         </a>
                     {% endif %}
                     <a class="title"

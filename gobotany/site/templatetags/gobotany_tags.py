@@ -93,19 +93,19 @@ def split(value, arg):
     return value.split(arg)
 
 
-@register.filter
-@stringfilter
-def italicize_if_scientific(plant_name):
-    """Italicize a plant name if it appears to be a scientific name."""
+def _is_scientific_name(plant_name):
     genus_suffix_pattern = re.compile('^[a-z]*(aba|aca|ace|aea|aga|ago|ala|ale|ana|ans|apa|ari|asa|ata|aya|bar|bea|bes|bia|bis|boa|bum|bus|cca|cea|cer|che|cia|cio|cis|cos|cum|cus|dea|des|dia|dix|don|dra|dum|dus|eca|eda|ega|eja|ela|ema|ena|ene|ens|era|eta|eum|eza|fia|gea|gia|gma|gon|gus|har|hea|hes|hia|hin|his|hne|hoe|hra|hum|hus|hys|ias|ica|ida|ier|ies|ila|ile|ina|ine|ion|ios|ipa|ira|isa|ita|ium|ius|iva|iza|jas|jum|kea|kia|lax|lea|les|lex|lia|lis|lla|loa|lon|los|lox|lpa|lum|lus|lva|mba|mbo|mex|mia|mis|mma|mna|mon|mos|mum|mus|nax|nca|nda|nia|nis|nna|nos|num|nus|nya|oca|oce|oda|oea|oga|ola|oma|one|opa|ops|ora|osa|ota|oua|ous|oxa|pha|pia|ps|poa|pon|pos|ppa|pso|pta|pum|pus|ras|rba|rca|rda|rea|rex|ria|ris|rix|rma|roa|ron|ros|rta|rum|rus|rya|rys|ses|sia|sis|sma|spi|ssa|sta|sum|sus|tea|ter|tes|tha|the|tia|tis|ton|tra|tum|tus|tys|uca|uga|ugo|uja|ula|una|ura|usa|uta|uus|ver|via|vum|wia|xia|xis|xon|xus|xys|yia|yle|yma|yos|zia|zea|zus)$', re.IGNORECASE)
+    abbreviated_genus_suffix_pattern = re.compile('^[A-Z]{1}\.$')
 
-    first_word = plant_name.split(' ')[0].lower()
+    first_word = plant_name.split(' ')[0]
 
     # Start with checking the suffix of the first word to see if it
     # looks like a genus.
-    is_scientific_name = genus_suffix_pattern.match(first_word)
+    is_scientific_name = bool(genus_suffix_pattern.match(first_word.lower())
+        or abbreviated_genus_suffix_pattern.match(first_word))
 
     # Disqualify some false positives.
+    first_word = first_word.lower()
     if (first_word.find('-') > -1 or
         first_word.find('\'') > -1 or
         first_word in ['alpine', 'ambiguous', 'bitter', 'bulbous', 'button',
@@ -128,6 +128,14 @@ def italicize_if_scientific(plant_name):
                               ]):
         is_scientific_name = False
 
+    return is_scientific_name
+
+
+@register.filter
+@stringfilter
+def italicize_if_scientific(plant_name):
+    """Italicize a plant name if it appears to be a scientific name."""
+    is_scientific_name = _is_scientific_name(plant_name)
     if is_scientific_name:
         CONNECTING_TERMS = ['subsp.', 'ssp.', 'var.', 'subvar.', 'f.',
                             'forma', 'subf.']
@@ -140,6 +148,13 @@ def italicize_if_scientific(plant_name):
         return ' '.join(words)
     else:
         return plant_name
+
+
+@register.filter
+@stringfilter
+def is_scientific_name(plant_name):
+    """Return True if the plant name appears to be a scientific name."""
+    return str(_is_scientific_name(plant_name)).lower()
 
 
 @register.tag

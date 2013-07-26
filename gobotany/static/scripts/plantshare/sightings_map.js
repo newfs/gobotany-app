@@ -14,7 +14,7 @@ define([
         MarkerMap.apply(this, arguments);
 
         this.cookie_names = cookie_names;
-        this.MAX_INFO_DESC_LENGTH = 80;
+        this.MAX_INFO_DESC_LENGTH = 70;
 
         return this;
     };
@@ -67,14 +67,20 @@ define([
             var description = sighting.description.substr(0,
                 this.MAX_INFO_DESC_LENGTH);
             if (sighting.description.length > this.MAX_INFO_DESC_LENGTH) {
-                description += '...';
+                description += '... ';
             }
             html += description;
         }
-        html += '</p>';
+        var more_link = '<a href="/plantshare/sightings/' + sighting.id +
+            '/">more</a>'; 
         if (sighting.id !== undefined) {
-            html += '<p><a href="/plantshare/sightings/' + sighting.id +
-                    '/">more</a></p>';
+            if (sighting.description.length > 0) {
+                html += more_link;
+                html += '</p>';
+            }
+            else {
+                html += '<p>' + more_link + '</p>';
+            }
         }
         html += '</div>';
         return html;

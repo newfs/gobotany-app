@@ -1,4 +1,5 @@
 {% extends "gobotany/_page_free_sidebar.html" %}
+{% load gobotany_tags %}
 {% load mapping_tags %}
 {% load plantshare_tags %}
 
@@ -17,41 +18,67 @@
 <h1>PlantShare</h1>
 
 {% if user.is_authenticated %}
-<form id="find-people-form" method="get" action="{% url 'ps-find-people' %}">
-    <h2>Find People</h2>
-    <input type="text" name="n" class="suggest"
-        placeholder="Enter person's name"
-        autocomplete="off" role="textbox" aria-autocomplete="list"
-        aria-haspopup="true"
-        data-suggest-url="{% url 'ps-ajax-people-suggestions' %}?q=%s"
-        data-align-menu-inside-input="true" data-submit-on-select="true">
-    <input type="submit" value="Go">
-</form>
-<div class="profile box">
-    <h2>Your Profile</h2>
-    <a href="{% url 'ps-your-profile' %}" class="edit">Edit Profile</a>
-    <div>
-        {% if profile.location %}
-            {% location_map location=profile.location height_px="74" width_px="140" zoom="6" id="id_location_map" %}
-        {% endif %}
-        <img class="avatar" src="{{ avatar.thumb_url }}" alt="">
-        <h3>{% user_display_name user %}</h3>
-        {% if profile.location %}
-            <p>{{ profile.location }}</p>
-        {% endif %}
-        {% if profile.saying %}
-            <p>{{ profile.saying }}</p>
-        {% endif %}
+    <form id="find-people-form" method="get" action="{% url 'ps-find-people' %}">
+        <h2>Find People</h2>
+        <input type="text" name="n" class="suggest"
+            placeholder="Enter person's name"
+            autocomplete="off" role="textbox" aria-autocomplete="list"
+            aria-haspopup="true"
+            data-suggest-url="{% url 'ps-ajax-people-suggestions' %}?q=%s"
+            data-align-menu-inside-input="true" data-submit-on-select="true">
+        <input type="submit" value="Go">
+    </form>
+{% endif %}
+
+<div id="recent-sightings-gallery">
+    <h2>Recent Sightings</h2>
+    <div class="img-gallery" data-gallery-type="link">
+        <div class="frame"></div>
+        <div class="img-container">
+            <div class="images">
+                {% for sighting in recent_sightings %}
+                    <a href="{% url 'ps-sighting' sighting.id %}"
+                        title="{{ sighting.identification }}"
+                        data-is-scientific-name="{{ sighting.identification|is_scientific_name }}">
+                        <img src="{{ sighting.photos.all.0.thumb_cropped.url }}"
+                        alt="Sighting photo: {{ sighting.identification }}">
+                    </a>
+                {% endfor %}
+            </div>
+        </div>
+        <p class="plant-name">{{ recent_sightings.0.identification|italicize_if_scientific|safe }}</p>
+        <div class="controls">
+            <a class="prev disabled">Prev</a>
+            <a class="next">Next</a>
+        </div>
     </div>
-    {% comment %}
-    <table>
-        <tr><th>Total Species</th><td>None</td></tr>
-        <tr><th>Total Locations</th><td>None</td></tr>
-        <tr><th>Checklists</th><td>None</td></tr>
-        <tr><th>Groups</th><td>None</td></tr>
-    </table>
-    {% endcomment %}
 </div>
+
+{% if user.is_authenticated %}
+    <div class="profile box">
+        <a href="{% url 'ps-your-profile' %}" class="edit">Edit Profile</a>
+        <h2>Your Profile</h2>
+        <div>
+            {% if profile.location %}
+                {% location_map location=profile.location height_px="100" width_px="110" zoom="5" id="id_location_map" %}
+            {% endif %}
+            <img class="avatar" src="{{ avatar.thumb_url }}" alt="">
+            <h3>{% user_display_name user %}</h3>
+            {% if profile.location %}
+                <p>{{ profile.location }}</p>
+            {% endif %}
+            {% if profile.saying %}
+                <p>{{ profile.saying }}</p>
+            {% endif %}
+        </div>
+        <table>
+            <tr><th>Sightings</th><td>{{ sightings_count }}</td></tr>
+            <tr><th>Checklists</th><td>{{ checklists_count }}</td></tr>
+            {% comment %}
+            <tr><th>Groups</th><td>None</td></tr>
+            {% endcomment %}
+        </table>
+    </div>
 {% else %}
     {% if prior_signup_detected %}
         {% include "_login_box.html" %}

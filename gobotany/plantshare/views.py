@@ -39,6 +39,7 @@ SIGHTINGS_MAP_DEFAULTS = {
 
 SIGHTING_DATE_FORMAT = '%e %B'
 SIGHTING_DATE_YEAR_FORMAT = SIGHTING_DATE_FORMAT + ' %Y'
+SIGHTING_SHORT_DATE_YEAR_FORMAT = '%e %b %Y'
 SIGHTING_DAY_DATE_FORMAT = '%A, ' + SIGHTING_DATE_FORMAT
 SIGHTING_DATE_DAY_FORMAT = SIGHTING_DATE_FORMAT + ' (%A)'
 SIGHTING_DATE_TIME_FORMAT = SIGHTING_DATE_YEAR_FORMAT + " at %I:%M %p"
@@ -168,6 +169,25 @@ def plantshare_view(request):
         except UserProfile.DoesNotExist:
             avatar_info = UserProfile.default_avatar_image()
 
+    MAX_RECENT_SIGHTINGS = 20
+    recent_sightings = []
+    sightings_with_approved_photos = Sighting.objects.filter(
+        photos__isnull=False, photos__is_approved=True).order_by(
+        '-created')
+    for sighting in sightings_with_approved_photos:
+        may_show_sighting = _may_show_sighting(sighting, request.user)
+        if may_show_sighting:
+            recent_sightings.append(sighting)
+            if len(recent_sightings) == MAX_RECENT_SIGHTINGS:
+                break
+
+    sightings_count = 0
+    checklists_count = 0
+    if profile:
+        sightings_count = Sighting.objects.filter(
+            user=profile.user).count()
+        checklists_count = profile.checklists.count()
+
     return render_to_response('plantshare.html', {
                 'prior_signup_detected': prior_signup_detected,
                 'avatar': avatar_info,
@@ -176,7 +196,10 @@ def plantshare_view(request):
                 'max_questions': MAX_RECENTLY_ANSWERED_QUESTIONS,
                 'max_question_length': max_question_length,
                 'upload_photo_form': upload_photo_form,
-                'profile': profile
+                'profile': profile,
+                'recent_sightings': recent_sightings,
+                'sightings_count': sightings_count,
+                'checklists_count': checklists_count,
            }, context_instance=RequestContext(request))
 
 
@@ -1157,7 +1180,7 @@ def ajax_sightings(request):
         if may_show_sighting:
             photos = []
             for photo in sighting.approved_photos():
-                photos.append(photo.thumb.url)
+                photos.append(photo.thumb_cropped.url)
 
             # TODO: temporary, remove before release:
             # If there are no approved photos yet for this sighting, look
@@ -1177,7 +1200,7 @@ def ajax_sightings(request):
                 'id': sighting.id,
                 'identification': sighting.identification,
                 'created': unicode(sighting.created.strftime(
-                                   SIGHTING_DATE_FORMAT)),
+                                   SIGHTING_SHORT_DATE_YEAR_FORMAT)),
                 'location': sighting.location.user_input,
                 'latitude': sighting.location.latitude,
                 'longitude': sighting.location.longitude,

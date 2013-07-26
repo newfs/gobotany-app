@@ -24,7 +24,7 @@ from facebook_connect.models import FacebookUser
 from imagekit import ImageSpec, register
 from imagekit.models import ImageSpecField, ProcessedImageField
 from imagekit.utils import get_field_info
-from imagekit.processors.resize import ResizeToFit
+from imagekit.processors.resize import ResizeToFit, SmartResize
 from PIL import Image
 from PIL.ExifTags import TAGS
 from storages.backends.s3boto import S3BotoStorage
@@ -506,6 +506,11 @@ class ScreenedImage(models.Model):
                 spec_id='plantshare:screenedimage:plantsharegpsimage')
     thumb = ImageSpecField(source='image', format='PNG',
                 processors=[ResizeToFit(128, 128, upscale=True)])
+
+    # Add another thumbnail, cropped and centered with consistent
+    # dimensions regardless of portrait or landscape orientation.
+    thumb_cropped = ImageSpecField(source='image', format='PNG',
+                processors=[SmartResize(183, 149, upscale=True)])
 
     uploaded = models.DateTimeField(blank=False, auto_now_add=True)
     uploaded_by = models.ForeignKey(User, null=False,

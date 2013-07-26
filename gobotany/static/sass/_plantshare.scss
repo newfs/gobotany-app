@@ -120,6 +120,7 @@ body.plantshare {
         }
     }
     .sign-up-call {
+        clear: left;
         width: $plantshare-main-column-width;
         ul {
             line-height: 18px;
@@ -175,14 +176,15 @@ body.plantshare {
     }
 
     #main .profile {
+        clear: left;
         width: 471px;
         h2 {
-            float: left;
+            margin-bottom: 14px;
+            width: 200px;
         }
         a.edit {
             display: block;
             float: right;
-            padding-top: 12px;
         }
         h3 {
             font-size: 18px;
@@ -190,21 +192,22 @@ body.plantshare {
         }
         div {
             clear: left;
-            height: 84px;
+            height: 102px;
         }
         .avatar {
             background: $light-green;
             display: block;
             float: left;
-            height: 76px;
+            height: 102px;
             margin-right: $section-padding;
-            width: 84px;
+            width: 112px;
         }
         table {
             clear: left;
         }
         .map {
             float: right;
+            margin-left: $section-padding;
         }
         p {
             margin: 2px 0;
@@ -253,16 +256,59 @@ body.plantshare {
     }
 
     &#plantshare {   /* styles for the PlantShare main page */
-        #ask {
-            margin-top: 20px;
+        h1 {
+            float: left;
+        }
+        h2 {
+            line-height: 100%;
         }
         #find-people-form {
             float: right;
+            margin: 0 0 6px;
+            width: 184px;
+            h2 {
+                font-size: 18px;
+                margin-top: 0;
+            }
+            input[type='text'] {
+                width: 130px;
+            }
+        }
+        #recent-sightings-gallery {
+            clear: both;
+            float: right;
             margin: 0;
             width: 184px;
-            input[type='text'] {
-                width: 128px;
+            h2 {
+                font-size: 18px;
+                margin-top: 0;
             }
+        }
+        .img-gallery {
+            cursor: pointer;
+            width: auto;
+            .frame {
+                height: 139px;
+                width: 173px;
+            }
+            .img-container {
+                height: 149px;
+                width: 183px;
+            }
+            .plant-name {
+                font-size: 10px;
+                margin: 4px 0 0;
+                text-align: center;
+                &.scientific {
+                    font-style: italic;
+                }
+            }
+            .controls {
+                margin: 0;
+            }
+        }
+        #ask {
+            margin-top: 20px;
         }
     }
 
@@ -324,9 +370,6 @@ body.plantshare {
 
     #find-people-form {
         margin: 14px 0 0;
-        h2 {
-            font-size: 18px;
-        }
         input {
             &[type='text'] {
                 background: transparent url(../images/layout/plantshare-btns.png) no-repeat -1px -334px;
@@ -339,14 +382,14 @@ body.plantshare {
                 width: 309px;
             }
             &[type='submit'] {
-                background: transparent url(../images/layout/plantshare-btns.png) no-repeat -388px -4px;
+                background: transparent url(../images/layout/plantshare-btns.png) no-repeat -380px -4px;
                 border: 0 none;
                 display: block;
                 float: left;
                 height: 22px;
-                padding: 0 5px;
+                padding: 0;
                 text-indent: -9999px;
-                width: 39px;
+                width: 40px;
             }
             &:focus {
                outline: 0 none;
@@ -467,6 +510,7 @@ body.plantshare {
             margin-top: 36px;
         }
         &.mini {
+            clear: both;
             margin-top: 20px;
             .box {
                 font-size: $mini-input-font-size;
@@ -771,14 +815,14 @@ body.plantshare {
                 }
             }
             img {
-                max-width: 90px;
+                max-width: 140px;
                 vertical-align: middle;
             }
             .photolink {
                 border-bottom: 0;
             }
             .title {
-                margin-left: 90px;
+                margin-left: 150px;
             }
             .photolink + .title {
                 margin-left: 6px;
@@ -1062,6 +1106,9 @@ body.plantshare {
                     }
                 }
                 #id_location_map {
+                    border-bottom: 0;
+                    border-left: 0;
+                    border-top: 0;
                     float: left;
                     margin: 0 15px 0 0;
                     padding: 0;
@@ -1156,6 +1203,7 @@ body.plantshare {
     #login.box {
         background-color: $login-box-background-color;
         border-color: $link-green;
+        clear: left;
         max-width: $plantshare-main-column-width;
         padding: 0;
         h4 {
