@@ -385,6 +385,7 @@ def sighting_view(request, sighting_id):
             'location_notes': s.location_notes,
             'user': s.user,
             'created': s.created.strftime(SIGHTING_DATE_TIME_FORMAT),
+            'year': s.created.year,
             'photos': s.private_photos()
         }
         return render_to_response('sighting.html', {
