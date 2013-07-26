@@ -9,7 +9,7 @@
 
 {% block main_content %}
 
-<p><a href="{% url 'ps-sightings' %}">Recent</a> |
+<p class="nav-links"><a href="{% url 'ps-sightings' %}">Recent</a> |
 {% for y in years %}
     {% if y != year %}
         <a href="{% url 'ps-sightings-by-year' y %}">{{ y }}</a>

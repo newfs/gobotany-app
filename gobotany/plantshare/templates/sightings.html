@@ -9,7 +9,7 @@
 
 {% block main_content %}
 
-<p>Recent |
+<p class="nav-links">Recent |
 {% for year in years %}
 <a href="{% url 'ps-sightings-by-year' year %}">{{ year }}</a>
     {% if not forloop.last %} | {% endif %}

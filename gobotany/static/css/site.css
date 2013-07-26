@@ -1267,6 +1267,7 @@ body.plantshare .thumb-frame .thumb { vertical-align: bottom; }
 body.plantshare .thumb-frame .delete-link { width: 100%; text-align: center; margin: 0; padding-top: 8px; }
 body.plantshare .thumb-frame .delete-link img { vertical-align: top; }
 body.plantshare .upload { display: inline-block; float: left; padding-bottom: 20px; }
+body.plantshare#sightings .nav-links { font-family: "Trebuchet MS", Helvetica, Arial, "Lucida Sans Unicode", sans-serif; font-size: 14px; margin: 0 0 16px; }
 body.plantshare#sightings h2 { clear: both; }
 body.plantshare#sightings #main > ul { margin-top: 14px; }
 body.plantshare#sightings #main > ul > li { float: left; margin-bottom: 14px; }

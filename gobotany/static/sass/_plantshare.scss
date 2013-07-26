@@ -798,6 +798,11 @@ body.plantshare {
 
 
     &#sightings {
+        .nav-links {
+            font-family: $headings-font;
+            font-size: 14px;
+            margin: 0 0 16px;
+        }
         h2 {
             clear: both;
         }
