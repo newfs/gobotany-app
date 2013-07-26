@@ -1136,35 +1136,6 @@ def ajax_sightings(request):
     """Return sightings data for a plant."""
 
     MAX_TO_RETURN = 100
-
-    # TODO: replace dummy photos with actual ones
-    DUMMY_PHOTOS = {
-        'Acer saccharum': [
-            'Sapindaceae/acer-saccharum-ha-atal-a.jpg',
-            'Sapindaceae/acer-saccharum-ba-atal.jpg',
-            'Sapindaceae/acer-saccharum-fl-ahaines-a.jpg',
-            'Sapindaceae/acer-saccharum-fl-ahaines-b.jpg',
-            'Sapindaceae/acer-saccharum-fl-apratt.jpg',
-            'Sapindaceae/acer-saccharum-fl-dcameron-a.jpg',
-            'Sapindaceae/acer-saccharum-fl-dcameron-b.jpg',
-            'Sapindaceae/acer-saccharum-fr-sbaskauf.jpg',
-            'Sapindaceae/acer-saccharum-ha-fbramley-a.jpg',
-            'Sapindaceae/acer-saccharum-ha-fbramley-c.jpg',
-            'Sapindaceae/acer-saccharum-le-ahaines.jpg'
-        ],
-        'Nymphaea odorata': [
-            'Nymphaeaceae/nymphaea-odorata-ff-dkausen.jpg',
-            'Nymphaeaceae/nymphaea-odorata-ff-dcameron-b.jpg',
-            'Nymphaeaceae/nymphaea-odorata-ff-ahaines.jpg',
-            'Nymphaeaceae/nymphaea-odorata-ff-ddentzer.jpg',
-            'Nymphaeaceae/nymphaea-odorata-ha-dcameron-a.jpg',
-            'Nymphaeaceae/nymphaea-odorata-in-cevans.jpg',
-            'Nymphaeaceae/nymphaea-odorata-le-lnewcomb.jpg',
-            'Nymphaeaceae/nymphaea-odorata-sf-glienau.jpg',
-            'Nymphaeaceae/nymphaea-odorata-st-dcameron-c.jpg'
-        ],
-    }
-
     plant_name = request.GET.get('plant')
 
     sightings = Sighting.objects.select_related().all().\
@@ -1181,20 +1152,6 @@ def ajax_sightings(request):
             photos = []
             for photo in sighting.approved_photos():
                 photos.append(photo.thumb_cropped.url)
-
-            # TODO: temporary, remove before release:
-            # If there are no approved photos yet for this sighting, look
-            # through the test images and if such exist, assign one random
-            # dummy photo per sighting. This is just to keep the test data
-            # working a little while longer.
-            if len(photos) == 0 and DUMMY_PHOTOS.has_key(plant_name):
-                    num_photos = len(DUMMY_PHOTOS[plant_name])
-                    photo_index = randint(0, num_photos - 1)
-                    photos.append(
-                        'http://%s.s3.amazonaws.com/taxon-images-160x149/%s' \
-                            % (
-                        getattr(settings, 'AWS_STORAGE_BUCKET_NAME', 'newfs'),
-                        DUMMY_PHOTOS[plant_name][photo_index]))
 
             sightings_json.append({
                 'id': sighting.id,
