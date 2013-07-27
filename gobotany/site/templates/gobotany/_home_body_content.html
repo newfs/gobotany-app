@@ -31,7 +31,7 @@
                 discoveries, get help identifying plants, make maps, and
                 develop checklists of plants for particular sites you are
                 exploring.</p>
-                <a class="learn-more" href="{% url 'plantshare-placeholder' %}">Learn More</a>
+                <a class="orange-button caps" href="{% url 'plantshare-placeholder' %}">Learn More</a>
             </div>
             <div class="three-col">
                 <h3>Advanced ID Tools</h3>
@@ -40,7 +40,7 @@
                 Identification Key, including technical multiple-access and
                 dichotomous keys to families, genera, and species. Also learn
                 about subspecies and varieties native to our region.</p>
-                <a class="learn-more"
+                <a class="orange-button caps"
                     href="{% url 'advanced-id-tools' %}">Learn More</a>
             </div>
             <div class="three-col last">
@@ -50,7 +50,8 @@
                 botany for science students and beginning and amateur
                 botanists. Professors, teachers, and environmental educators
                 can share curricula and teaching ideas.</p>
-                <a class="learn-more" href="{% url 'site-teaching' %}" >Learn More</a>
+                <a class="orange-button caps"
+                    href="{% url 'site-teaching' %}" >Learn More</a>
             </div>
             {% endblock %}
 
@@ -71,7 +72,8 @@
                         </h3>
                         <p>{{ plant_of_the_day.factoid|slice:":274"}}
                         {% if plant_of_the_day.factoid|length > 274 %}...{% endif %}</p>
-                        <a class="learn-more" href="/species/{{ plant_of_the_day.genus_name|lower }}/{{ plant_of_the_day.epithet }}/">Learn More</a>
+                        <a class="orange-button caps" 
+                            href="/species/{{ plant_of_the_day.genus_name|lower }}/{{ plant_of_the_day.epithet }}/">Learn More</a>
                     </div>
                 {% else %}
                     <p>Error: Plant of the Day information missing</p>
@@ -84,7 +86,8 @@
                     <p>Please contribute to our mission to conserve and promote
                     the region&#8217;s plants by donating to New England Wild
                     Flower Society.
-                    <a href="http://www.newenglandwild.org/support/">Donate</a>
+                    <a class="orange-button caps"
+                        href="http://www.newenglandwild.org/support/">Donate</a>
                     </p>
                 </div>
             {% endblock %}

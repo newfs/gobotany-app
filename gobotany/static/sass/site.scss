@@ -438,18 +438,7 @@ header {
             margin-left: 0;
         }
         &.view-map-btn {
-            background: url(/static/images/layout/view-map-btn-orange.png) 0 0 no-repeat transparent;
-            display: block;
-            height: 32px;
             margin: 10px 0 20px;
-            text-indent: -9000px;
-            width: 113px;
-            &:hover {
-                background-position: 0 -32px;
-            }
-            &:active {
-                background-position: 0 -64px;
-            }
         }
     }
     nav a {
@@ -478,18 +467,7 @@ header {
     }
 }
 a.get-help-btn {
-    background: url(/static/images/layout/get-help-btn-orange.png) 0 0 no-repeat transparent;
-    display: block;
-    height: 32px;
     margin: 10px 0 20px;
-    text-indent: -9000px;
-    width: 104px;
-    &:hover {
-        background-position: 0 -32px;
-    }
-    &:active {
-        background-position: 0 -64px;
-    }
 }
 
 /* Footer */

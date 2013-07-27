@@ -108,7 +108,7 @@
             background: 0;	
             margin-right: 0;
             padding: 8px 0 0 0;
-            a.learn-more {
+            a.orange-button {
                 margin: 33px 0 0 0;
             }
         }
@@ -123,7 +123,7 @@
         p {
             margin: 0;
         }
-        a.learn-more {
+        a.orange-button {
             margin: 13px 0 0 0;	
         }
     }
@@ -209,23 +209,11 @@
     }
     .donate {
         a {
-            background: url(/static/images/layout/donate-btn.png) 0 0 no-repeat transparent;
             cursor: pointer;
-            display: block;
             float: right;
-            height: 32px;
-            padding: 0;
             position: absolute;
             right: 0;
-            text-indent: -9000px;
-            top: -6px;
-            width: 104px;
-            &:hover {
-	            background-position: 0 -32px;
-            }
-            &:active {
-	            background-position: 0 -64px;
-            }
+            top: -4px;
         }
     }
     footer {
@@ -353,7 +341,7 @@
             p {
                 margin-top: 0;
             }
-            a.learn-more, &.last a.learn-more {
+            a.orange-button, &.last a.orange-button {
                 margin-top: 6px;
                 @include smallscreen-side-margins;
             }
