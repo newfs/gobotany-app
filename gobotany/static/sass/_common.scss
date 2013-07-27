@@ -135,11 +135,11 @@ $disabled_orange_gradient: linear-gradient(
     font-size: 12px;
     letter-spacing: 1px;
     line-height: 18px;
-    min-width: 85px;
-    padding: 3.6px 12px;
+    min-width: 80px;
+    padding: 4px 12px;
     text-align: center;
     text-decoration: none;
-    @include border-radius(12px);
+    @include border-radius(14px);
     @include single-box-shadow(darken($inactive_bg, 30), 0px, 1px, 4px);
     @include background($orange_gradient);
     &:hover {
@@ -150,7 +150,7 @@ $disabled_orange_gradient: linear-gradient(
         background-color: $orange1;
         @include background($dull_orange_gradient);
     }
-    &:link, &:hover, &:visited, &:active {
+    &:hover, &:visited, &:active {
         color: white;
     }
     &.caps {
@@ -161,6 +161,13 @@ $disabled_orange_gradient: linear-gradient(
                                                            gradient support */
         border-color: mix($body_bg, $orange2, 75%) !important;
         @include background($disabled_orange_gradient);
+    }
+    &.large {
+        font-size: 16px;
+        letter-spacing: 1.5px;
+        min-width: 150px;
+        padding: 9px 30px;
+        @include border-radius(20px);
     }
 }
 

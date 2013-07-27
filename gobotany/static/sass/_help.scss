@@ -82,20 +82,9 @@ $image-box-shadow-color: rgba(0, 0, 0, 0.6);
             }
         }
         &.onward-btn {
-            cursor: pointer;
-            display: block;
             float: right;
-            width: 280px;
-            height: 32px;
+            width: 240px;
             margin: 10px 0;
-            background: url(/static/images/layout/onward-btn-orange.png) 0 0 no-repeat transparent;
-            text-indent: -9000px;
-            &:hover {
-                background-position: 0 -32px;
-            }
-            &:active {
-                background-position: 0 -64px;
-            }
         }
     }
     $video-height: 147px;
@@ -317,6 +306,49 @@ $image-box-shadow-color: rgba(0, 0, 0, 0.6);
         img {
             padding-left: 4px;
             padding-top: 1px;
+        }
+    }
+}
+
+/* "Advanced ID Tools" page */
+
+#advanced-id #main {
+    .dk-landing-section {
+	    float: left;
+	    font-family: $body-font;
+        height: 410px;
+        padding-left: 20px;
+        position: relative;
+	    width: 328px;
+        &:first-of-type {
+            border-right: 1px solid #b4d57f;
+            padding-left: 0;
+            padding-right: 10px;
+        }
+        h2 {
+            font-size: 18px;
+            line-height: 20px;
+        }
+        section {
+            margin: 10px 0 0;
+            p {
+                margin: 10px 0;
+            }
+            ul {
+                line-height: 16px;
+            	list-style-type: disc;
+	            margin: 10px 0;
+	            padding: 0 0 0 15px;
+                li {
+                    margin: 10px 0;
+                }
+            }
+        }
+        > a {
+            bottom: 10px;
+            margin: 0 0 0 20px;
+            position: absolute;
+            width: 224px;
         }
     }
 }

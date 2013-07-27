@@ -74,16 +74,8 @@
             text-shadow: 0px 1px 1px #fff;	
         }
         #cta {
-            height: 41px;
             margin: 21px 2px 0;
-            background: url(/static/images/layout/get-started-btn-orange.png) 0 0 no-repeat transparent;	
-            @include offscreen;
-            &:hover {
-                background-position: 0 -41px;	
-            }
-            &:active {
-                background-position: 0 -82px;		
-            }
+            width: 184px;
         }
     }
     #overlay {
@@ -312,14 +304,7 @@
                 }
             }
             #cta {
-                background-position: 50% 0;
                 margin: 6px;
-                &:hover {
-                    background-position: 50% -41px;	
-                }
-                &:active {
-                    background-position: 50% -82px;		
-                }
             }
         }
         .three-col {
@@ -375,7 +360,7 @@
                     overflow: inherit;
                 }
                 a {
-                    margin-top: 4px;
+                    margin-top: 6px;
                     position: inherit;
                     top: 0;
                 }
@@ -391,7 +376,7 @@
         .donate {
             a {
                 float: none;
-                margin: 6px 0;
+                margin: 6px 20px 0 0;
                 position: static;
             }
         }

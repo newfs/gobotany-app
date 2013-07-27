@@ -959,64 +959,6 @@ table.list {
     }
 }
 
-/* "Advanced ID Tools" placeholder page (delete after tools release) */
-
-#advanced-id #main {
-    .dk-landing-section {
-	    float: left;
-	    font-family: $body-font;
-        height: 410px;
-        padding-left: 20px;
-        position: relative;
-	    width: 328px;
-        &:first-of-type {
-            border-right: 1px solid #b4d57f;
-            padding-left: 0;
-            padding-right: 10px;
-        }
-        h2 {
-            font-size: 18px;
-            line-height: 20px;
-        }
-        section {
-            margin: 10px 0 0;
-            p {
-                margin: 10px 0;
-            }
-            ul {
-                line-height: 16px;
-            	list-style-type: disc;
-	            margin: 10px 0;
-	            padding: 0 0 0 15px;
-                li {
-                    margin: 10px 0;
-                }
-            }
-        }
-        > a {
-            bottom: 10px;
-            display: block;
-            height: 41px;
-            margin: 0 0 0 43px;
-            position: absolute;
-            text-indent: -9999px;
-            width: 244px;
-            &:hover {
-            	background-position: 0 -41px;
-            }
-            &:active {
-                background-position: 0 -82px;
-            }
-        }
-    }
-    a.go-fullkey-btn {
-    	background: url(/static/images/layout/go-fullkey-btn.png) 0 0 no-repeat transparent;
-    }
-    a.go-dichkey-btn {
-    	background: url(/static/images/layout/go-dichkey-btn.png) 0 0 no-repeat transparent;
-    }
-}
-
 /* For IE 6-9 browser compatibility prompts */
 
 #ie-note {
