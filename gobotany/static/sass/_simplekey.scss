@@ -366,9 +366,9 @@ body.skey {
                     margin: 0 0 20px;
                     text-align: center;
                     a {
+                        color: white;
                         cursor: pointer;
                         display: block;
-                        font-weight: bold;
                         margin: 18px 0 10px;
                         &.get-choices {
                             margin: 0 auto 4px;
@@ -466,18 +466,10 @@ body.skey {
         }
 
         a.get-choices {
-            background: url(/static/images/layout/get-choices-btn-orange.png) 0 0 no-repeat transparent;
-            display: block;
-            height: 32px;
+            color: white;
+            cursor: pointer;
             margin: 10px 0 4px 10px;
-            text-indent: -9000px;
             width: 171px;
-            &:hover {
-                background-position: 0 -32px;
-            }
-            &:active {
-                background-position: 0 -64px;
-            }
         }
 
         #intro-overlay {   /* for introductory overlay */
@@ -495,8 +487,7 @@ body.skey {
                 box-shadow: 0px 5px 20px rgba(0, 0, 0, 1);
                 -moz-box-shadow: 0px 5px 20px rgba(0, 0, 0, 1);
                 -webkit-box-shadow: 0px 5px 20px rgba(0, 0, 0, 1);
-                border-radius: 0.25em;
-                -moz-border-radius: 0.25em;
+                @include border-radius(0.25em);
             }
             .number-of-species, .number-of-questions {
                 background-color: #508e31;
@@ -505,11 +496,11 @@ body.skey {
                 background-color: #dc9402;
                 border: 2px solid #dc9402;
                 cursor: pointer;
+                font-family: ScalaSans, $headings-font;
                 letter-spacing: 3px;
                 text-shadow: 1px 1px 2px #dc9402;
                 text-transform: uppercase;
-                border-radius: 2em;
-                -moz-border-radius: 2em;
+                @include border-radius(2em);
 
                 /* Gradient generated using the tool "Ultimate CSS Gradient Generator":
                  * www.colorzilla.com/gradient-editor
@@ -777,23 +768,8 @@ body.skey {
             } /* end ul */
 
             .apply-btn {
-                background: url(/static/images/layout/apply-selection.png) no-repeat 0 0 transparent;
-                display: inline-block;
-                height: 41px;
-                margin: 4px 0 0;
-                text-align: left;
-                text-indent: -9000px;
-                width: 244px;
-                &.disabled {
-                    background-position: 0 0;
-                    opacity: 0.2;
-                }
-                &:hover {
-                    background-position: 0 -41px;
-                }
-                &:active {
-                    background-position: 0 -82px;
-                }
+                color: white;
+                width: 180px;
             }
             .choose_length label {   /* Length input */
                 margin: 0 10px 0 0;

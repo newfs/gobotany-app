@@ -157,9 +157,9 @@ $disabled_orange_gradient: linear-gradient(
         text-transform: uppercase;
     }
     &.disabled {
-        background-color: mix($body_bg, $orange2, 75%); /* for IE without
+        background-color: mix($body_bg, $orange2, 50%); /* for IE without
                                                            gradient support */
-        border-color: mix($body_bg, $orange2, 75%) !important;
+        border-color: mix($body_bg, $orange2, 50%) !important;
         @include background($disabled_orange_gradient);
     }
     &.large {

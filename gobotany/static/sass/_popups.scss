@@ -74,18 +74,8 @@
             }
         }
         &.go-to-species-page {
-            background: url(/static/images/layout/go-to-species-page.png)
-                0 0 no-repeat transparent;
-            height: 31px;
             margin: 20px 0 0 0;
-            width: 212px;
-            @include offscreen;
-            &:hover {
-                background-position: 0 -31px;
-            }
-            &:active {
-                background-position: 0 -62px;
-            }
+            width: 182px;
         }
     } /* end a */
 } /* end .modal-wrap */
