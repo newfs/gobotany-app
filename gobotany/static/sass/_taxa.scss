@@ -34,11 +34,9 @@ body.taxa {
     @include shadowbox-photo-titles-credits;
 
     .visit-dkey {
-        font-weight: normal;
         margin-top: 36px;
         a {
             margin-left: 4px;
-            @extend .orange-button;
         }
     }
 
