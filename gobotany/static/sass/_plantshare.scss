@@ -98,17 +98,8 @@ body.plantshare {
             border-color: $link-green;
             max-width: 246px;
             &.button {
-                background: transparent url(/static/images/layout/plantshare-btns.png) no-repeat -169px -231px;
-                border: 0;
-                height: 32px;
+                margin-top: 2px;
                 width: 99px;
-                @include offscreen;
-                &:hover {
-                    background-position: -169px -265px;
-                }
-                &:active {
-                    background-position: -169px -299px;
-                }
             }
         }
         a {
@@ -128,17 +119,8 @@ body.plantshare {
             margin: 10px 0 0 24px;
         }
         a {
-            background: transparent url(/static/images/layout/plantshare-btns.png) no-repeat 0 -3px;
-            height: 41px;
             margin: 12px auto;
-            width: 244px;
-            @include offscreen;
-            &:hover {
-                background-position: 0 -88px;
-            }
-            &:active {
-                background-position: 0 -46px;
-            }            
+            width: 204px;
         }
     }
     .notification {
@@ -437,18 +419,8 @@ body.plantshare {
         form input {
             width: 350px;
             &.button {
-                background: transparent url(../images/layout/plantshare-btns.png) no-repeat -1px -359px;
-                border: 0;
-                height: 41px;
                 margin-top: 12px;
-                width: 244px;
-                @include offscreen;
-                &:hover {
-                    background-position: -1px -402px;
-                }
-                &:active {
-                    background-position: -1px -444px;
-                }
+                width: 204px;
             }
         }
     }
