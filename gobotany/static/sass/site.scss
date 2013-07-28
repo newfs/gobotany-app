@@ -575,6 +575,7 @@ footer {
 	margin: 0 10px 0 0;	
 	position: relative;
 	width: 244px;
+    @include user-select(none);
     .img-container {
 	    height: 239px;
 	    overflow: hidden;
