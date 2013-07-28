@@ -1527,7 +1527,7 @@ body.search-results .search-navigation li { display: inline; margin: 0 2px; }
 /* Advanced Map to Groups */
 #advanced-map h2 { clear: left; padding-top: 8px; }
 #advanced-map #plant-map-list { margin: 10px 0; }
-#advanced-map #plant-map-list + h2 { padding-top: 36px; }
+#advanced-map #plant-map-list + h2 { padding-top: 48px; }
 #advanced-map #group-section { height: 200px; }
 #advanced-map .plant-group { cursor: pointer; float: left; height: 185px; margin: 0 10px 10px 0; padding: 2px 0 0; position: relative; width: 110px; }
 #advanced-map .plant-group.last { margin: 0 0 10px 0; }
