@@ -988,6 +988,12 @@ body.plantshare {
                         text-align: center;
                         margin: 0;
                     }
+                    &.uploading {
+                        background-image: url(/static/images/icons/preloaders-dot-net-lg.gif);
+                        background-color: white;
+                        background-position: center;
+                        background-repeat: no-repeat;
+                    }
                 }
                 #id_location_map {
                     border-bottom: 0;

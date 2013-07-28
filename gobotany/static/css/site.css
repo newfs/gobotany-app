@@ -1282,6 +1282,7 @@ body.plantshare#profile .info-section .info.box, body.plantshare#profile .locati
 body.plantshare#profile .info-section .info.box .avatar, body.plantshare#profile .location-section .info.box .avatar { float: left; margin-right: 15px; padding: 0; width: 170px; }
 body.plantshare#profile .info-section .info.box .avatar img, body.plantshare#profile .location-section .info.box .avatar img { background: #e1f0d1; border: 0; height: 153px; width: 169px; }
 body.plantshare#profile .info-section .info.box .avatar p, body.plantshare#profile .location-section .info.box .avatar p { text-align: center; margin: 0; }
+body.plantshare#profile .info-section .info.box .avatar.uploading, body.plantshare#profile .location-section .info.box .avatar.uploading { background-image: url(/static/images/icons/preloaders-dot-net-lg.gif); background-color: white; background-position: center; background-repeat: no-repeat; }
 body.plantshare#profile .info-section .info.box #id_location_map, body.plantshare#profile .location-section .info.box #id_location_map { border-bottom: 0; border-left: 0; border-top: 0; float: left; margin: 0 15px 0 0; padding: 0; }
 body.plantshare#profile .info-section .info.box table, body.plantshare#profile .location-section .info.box table { margin: 10px 0 0 0; padding: 0; width: 493px; }
 body.plantshare#profile .info-section .info.box table td, body.plantshare#profile .location-section .info.box table td { padding: 7px 10px; }
