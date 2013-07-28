@@ -78,6 +78,13 @@ define([
             onError: upload_error,
         });
 
+        $('#question').on('keypress keyup', function () {
+            var box_is_empty = ($(this).val() === '');
+            var $button = $('#ask-button');
+            $button.toggleClass('disabled', box_is_empty);
+            $button.prop('disabled', box_is_empty);
+        });
+
     });
 
 });

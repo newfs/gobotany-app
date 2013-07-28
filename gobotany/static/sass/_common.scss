@@ -130,6 +130,7 @@ $disabled_orange_gradient: linear-gradient(
     background-color: $orange1;   /* for IE without gradient support */
     border: 1px solid $orange1 !important;
     color: white;
+    cursor: pointer;
     display: inline-block;
     font-family: ScalaSans, $headings-font;
     font-size: 12px;

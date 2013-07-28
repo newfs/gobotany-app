@@ -115,7 +115,6 @@ define([
 
     function enable_disable_submit_button(allow_enable /* optional */) {
         // Enable or disable the submit ("Post Sighting") button.
-        var INACTIVE = 'inactive';
         var DISABLED = 'disabled';
         var $button = $('.post-sighting-btn');
         var enable = ($('#id_identification').val() !== '' &&
@@ -123,11 +122,11 @@ define([
         var allow_enable = (typeof allow_enable === 'undefined') ?
             true : allow_enable;
         if (enable === true && allow_enable === true) {
-            $button = $button.removeClass(INACTIVE);
+            $button = $button.removeClass(DISABLED);
             $button.removeAttr(DISABLED);
         }
         else if (enable === false) {
-            $button.addClass(INACTIVE);
+            $button.addClass(DISABLED);
             $button.prop(DISABLED, true);
         }
     }

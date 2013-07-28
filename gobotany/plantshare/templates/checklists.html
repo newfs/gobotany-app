@@ -19,11 +19,12 @@
 <div class="notification box">
     <p>Check out our plant checklists!<p>
     <ul>
-        <li>Create your own list of plants you have seen, or want to see.</li>
-        <li>Share plant checklists with friends, students, and colleagues.</li>
-        <li>Export the data in a plant checklist for use elsewhere.</li>
+        <li>Create your own list of plants you have seen, or want to see</li>
+        <li>Share plant checklists with friends, students, and colleagues</li>
+        <li>Export the data in a plant checklist for use elsewhere</li>
     </li>
-    <a class="ps-button" href="{% url 'ps-checklist-new' %}">Create New
+    <a class="ps-button orange-button caps" 
+        href="{% url 'ps-checklist-new' %}">Create New
         Plant Checklist</a>
 </div>
 <div class="ps-section">
@@ -49,7 +50,8 @@
                   <td class="last">
                       <a href="{% url 'ps-checklist' checklist.pk %}">View</a>
                       <a href="{% url 'ps-checklist-edit' checklist.pk %}">Edit</a>
-                      <a href="{% url 'ps-checklist-export' checklist.pk %}">Export</a>
+                      <a href="{% url 'ps-checklist-export' checklist.pk %}" 
+                          title="Export to CSV format">Export</a>
                       <a class="delete" href="{% url 'ps-checklist-delete' checklist.pk %}"
                           rel="shadowbox;width=700;height=180">Delete</a>
                   </td>

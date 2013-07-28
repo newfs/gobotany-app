@@ -132,22 +132,10 @@ body.plantshare {
         }
     }
     .ps-button {
-        @extend .orange-button;
-        display: inline-block;
-        color: white;
         margin: 10px 0;
-        text-transform: uppercase;
-
     }
     .save-btn {
-        background: transparent url(/static/images/layout/plantshare-btns.png) no-repeat -272px -231px;
         width: 99px !important;
-        height: 32px;
-        font-size: 0;
-        -moz-box-shadow: 0 !important;
-        border: 0 none !important;
-        display: block;
-        text-indent: -9999px;
     }
     a.close-btn {
         background: transparent url(/static/images/icons/close.png) no-repeat;
@@ -642,17 +630,9 @@ body.plantshare {
             display: none;
         }
         .cancel-btn {
-            background: url(/static/images/layout/plantshare2-btn.png) no-repeat -415px -297px;
-            cursor: pointer;
-            display: inline-block;
-            height: 32px;
+            color: white;
             margin: 0 10px 0 0;
-            text-indent: -9999px;
-            vertical-align: middle;
-            width: 143px;
-            &:hover {
-                background-position: -415px -336px;
-            }
+            width: 123px;
         }
     }
 
@@ -671,75 +651,79 @@ body.plantshare {
 
     .modal-container {
         position: relative;
-        .image-modal {
-            background-color: white;
-            border: 5px solid #acac90;
-            display: none;
-            height: 160px;
-            left: 0px;
-            padding: 15px;
-            position: absolute;
-            top: 250px;
-            width: 420px;
-            z-index: 10;
-            img {
-                float: left;
-                margin: 0 20px 10px 0;
-                max-height: 84px;
-                max-width: 84px;
-            }
-            a.button {
-                @extend .orange-button;
-                color: white;
-                display: inline-block;
-                margin: 10px 0;
-            }
+    }
 
-            a.disabled {
-                display: none;
-            }
-            div.modal-footer {
+    .image-modal {
+        background-color: white;
+        border: 5px solid #acac90;
+        display: none;
+        height: 160px;
+        left: 0px;
+        padding: 15px;
+        position: absolute;
+        top: 250px;
+        width: 420px;
+        z-index: 10;
+        img {
+            float: left;
+            margin: 0 20px 10px 0;
+            max-height: 84px;
+            max-width: 84px;
+        }
+        a.button {
+            @extend .orange-button;
+            color: white;
+            cursor: pointer;
+            display: inline-block;
+            margin: 10px 0;
+            width: 120px;
+        }
+
+        a.disabled {
+            display: none;
+        }
+        div.modal-footer {
+            color: #888;
+            display: block;
+            float: left;
+            position: relative;
+            width: 100%;
+            div.file-path {
+                border: 1px solid #888;
                 color: #888;
-                display: block;
-                float: left;
-                position: relative;
-                width: 100%;
-                div.file-path {
-                    border: 1px solid #888;
-                    color: #888;
-                    margin: 2px 0 auto;
-                    padding: 2px;
-                }
-            }
-            a.close {
-                @include dialog-close-button;    
-            }
-            h4 {
-                float: right;
-                font-size: 18px;
-                margin: 0 0 5px;
-                width: 310px;
-            }
-            form {
-                float: right;
-                width: 310px;
-            }
-            input {
-                border: 0 none !important;
-                box-shadow: inset 0 0 0 white !important;
-            }
-            input#id_image {
-                clear: both;
-                display: block;
-                margin: 0 0 10px;
-            }
-            div.screening-notify p {
-                color: #888;
-                font-size: 10px;
-                margin: 5px 0;
+                margin: 2px 0 auto;
+                padding: 2px;
             }
         }
+        a.close {
+            @include dialog-close-button;    
+        }
+        h4 {
+            float: right;
+            font-size: 18px;
+            margin: 0 0 5px;
+            width: 310px;
+        }
+        form {
+            float: right;
+            width: 310px;
+        }
+        input {
+            border: 0 none !important;
+            box-shadow: inset 0 0 0 white !important;
+        }
+        input#id_image {
+            clear: both;
+            display: block;
+            margin: 0 0 10px;
+        }
+        div.screening-notify p {
+            color: #888;
+            font-size: 10px;
+            margin: 5px 0;
+        }
     }
+
     .thumb-gallery {
         display: inline-block;
         float: left;
@@ -843,15 +827,7 @@ body.plantshare {
                 }
             }
             .post-sighting-btn {
-                background: transparent url(/static/images/layout/plantshare2-btn.png) no-repeat -372px -634px;
-                border: 0 none;
-                display: block;
                 width: 157px;
-                height: 32px;
-                text-indent: -9999px;
-                &.inactive {
-                    background-position: -372px -599px;
-                }
             }                
         }
     }
@@ -967,83 +943,14 @@ body.plantshare {
         }
         div.section-container {
             position: relative;
-            .image-modal {
-                background-color: white;
-                border: 5px solid #ACAC90;
-                display: none;
-                padding: 15px;
-                position: absolute;
-                width: 400px;
-                height: 160px;
-                z-index: 10;
-                img {
-                    float: left;
-                    margin: 0 20px 10px 0;
-                    max-height: 84px;
-                    max-width: 84px;
-                }
-                a.button {
-                    @extend .orange-button;
-                    display: inline-block;
-                    color: white;
-                    margin: 10px 0;
-                }
-                a.disabled {
-                    display: none;
-                }
-                div.modal-footer {
-                    display: block;
-                    position: relative;
-                    float: left;
-                    width: 100%;
-                    color: #888;
-                    div.file-path {
-                        margin: 2px 0 auto;
-                        border: 1px solid #888;
-                        padding: 2px;
-                        color: #888;
-                    }
-                }
-                a.close {
-                    background: transparent url(/static/images/icons/close.png) no-repeat;
-                    display: block;
-                    height: 16px;
-                    position: absolute;
-                    top: 15px;
-                    right: 15px;
-                    width: 16px;
-                    text-indent: -9999px;
-                }
-                h4 {
-                    margin: 0 0 5px;
-                    font-size: 18px;
-                }
-                form {
-                    float: right;
-                    margin: 0;
-                    width: 290px;
-                }
-                input {
-                    border: 0 none !important;
-                    box-shadow: inset 0 0 0 white !important;
-                }
-                input#id_image {
-                    clear: both;
-                    display: block;
-                    margin: 0 0 10px;
-                }
-                div.screening-notify p {
-                  margin: 5px 0;
-                  font-size: 10px;
-                  color: #888;
-                }
-            }
         }
         .info-section, .location-section {
             min-height: 140px;
             position: relative;
+            select {
+                margin-bottom: 10px;
+            }
             .field-controls {
-                margin-top: 10px;
                 padding: 5px 0 0;
                 input {
                     float: left;
@@ -1243,89 +1150,6 @@ body.plantshare {
         div.ps-section {
             margin: 0;
             padding: 0;
-        }
-        .image-modal {
-            background-color: white;
-            border: 5px solid #ACAC90;
-            display: none;
-            padding: 15px;
-            position: absolute;
-            width: 400px;
-            height: 160px;
-            z-index: 10;
-
-            img {
-                float: left;
-                margin: 0 20px 10px 0;
-                max-height: 84px;
-                max-width: 84px;
-            }
-
-            a.button {
-                @extend .orange-button;
-                display: inline-block;
-                color: white;
-                margin: 10px 0;
-            }
-
-            a.disabled {
-                display: none;
-            }
-
-            div.modal-footer {
-                display: block;
-                position: relative;
-                float: left;
-                width: 100%;
-                color: #888;
-
-                div.file-path {
-                    margin: 2px 0 auto;
-                    border: 1px solid #888;
-                    padding: 2px;
-                    color: #888;
-                }
-            }
-
-            a.close {
-                background: transparent url(/static/images/icons/close.png) no-repeat;
-                display: block;
-                height: 16px;
-                position: absolute;
-                top: 15px;
-                right: 15px;
-                width: 16px;
-                text-indent: -9999px;
-            }
-
-            h4 {
-                margin: 0 0 5px;
-                font-size: 18px;
-            }
-
-            form {
-                float: right;
-                margin: 0;
-                width: 290px;
-            }
-            
-            input {
-                border: 0 none !important;
-                box-shadow: inset 0 0 0 white !important;
-            }
-
-            input#id_image {
-                clear: both;
-                display: block;
-                margin: 0 0 10px;
-            }
-
-            div.screening-notify p {
-              margin: 5px 0;
-              font-size: 10px;
-              color: #888;
-            }
-
         }
 
         div#form-template {
@@ -1555,15 +1379,7 @@ body.plantshare {
                     vertical-align: middle;
                 }
                 #save-btn {
-                    height: 32px;
-                    width: 99px;
-                    border: 0 none;
                     margin: 0 20px 0 0;
-                    box-shadow: none;
-                    -moz-box-shadow: none;
-                    -webkit-box-shadow: none;
-                    white-space: nowrap;
-                    display: block;
                     float: left;
                     vertical-align: middle;
                 }
