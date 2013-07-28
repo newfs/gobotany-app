@@ -176,7 +176,8 @@
         a.button {                  /* big orange button */
             @extend .orange-button;
             display: inline-block;
-            font-size:  $base-font-size;
+            font-size: $base-font-size;
+            margin-top: 6px;
         }
         a.figure-link {             /* clickable figure numbers: [Fig. 3] */
             color: $text_dark_green;
@@ -194,7 +195,6 @@
     }
 
     .couplets .gloss {
-        border-bottom: none;  /* normally glossary terms are "underlined" */
         color: $text_dark_green;
         cursor: pointer;
     }
@@ -299,6 +299,9 @@
             float: none;
             display: block;
             margin: 1em auto;
+        }
+        a.what-lies-beneath {
+            text-decoration: underline;
         }
     }
 }

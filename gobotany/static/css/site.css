@@ -1450,11 +1450,11 @@ body.plantshare#screen-images div.form-control { margin: 0 30px; }
 #dkey #main ul.couplets .letter { /* "1a." or "12b." or whatever */ font-weight: bold; padding-right: 0.5em; }
 #dkey #main ul.couplets .button-block { /* contains what-lies-beneath and button */ float: right; margin: 0em 0em 0.4em 1.2em; text-align: right; }
 #dkey #main ul.couplets a.what-lies-beneath { /* message that sits above the button */ display: inline-block; /* other styles inherited from a.what-lies-beneath rule above */ }
-#dkey #main ul.couplets a.button { /* big orange button */ display: inline-block; font-size: 12px; }
+#dkey #main ul.couplets a.button { /* big orange button */ display: inline-block; font-size: 12px; margin-top: 6px; }
 #dkey #main ul.couplets a.figure-link { /* clickable figure numbers: [Fig. 3] */ color: #35661c; text-decoration: underline; font-weight: bold; }
 #dkey #main ul.couplets .chosen { border-color: #7abe58; }
 #dkey #main ul.active > li > .lead, #dkey #main ul:target > li > .lead { background-color: #b4d57f; border-color: #b4d57f; }
-#dkey #main .couplets .gloss { border-bottom: none; /* normally glossary terms are "underlined" */ color: #35661c; cursor: pointer; }
+#dkey #main .couplets .gloss { color: #35661c; cursor: pointer; }
 #dkey #main a.show-all-button { display: inline-block; font-size: 12px; font-weight: normal; text-transform: uppercase; }
 #dkey #main .image-type-selector { display: none; /* once images are loaded, our JS will un-hide */ max-width: none; }
 #dkey #main div.taxon-images { margin-left: 0.75em; text-align: center; }
@@ -1475,7 +1475,8 @@ body.plantshare#screen-images div.form-control { margin: 0 30px; }
 /* Landscape-orientation styles */
 /* These styles are common to both smartphone widths */
 @media only screen and (max-width: 600px) { #dkey #main .offer-help-aside { float: none; text-align: center; }
-  #dkey #main p.figure { float: none; display: block; margin: 1em auto; } }
+  #dkey #main p.figure { float: none; display: block; margin: 1em auto; }
+  #dkey #main a.what-lies-beneath { text-decoration: underline; } }
 /* These styles apply to smartphones and tablets */
 /* End media queries styles for Dichotomous Key */
 /* Search results */
