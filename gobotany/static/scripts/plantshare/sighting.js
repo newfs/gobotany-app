@@ -56,7 +56,10 @@ define([
                 var bounds = marker_map.get_bounds();
                 var places = possible_places.slice(0, MAX_PLACES_TO_GEOCODE);
                 for (var i = 0; i < places.length; i++) {
-                    geocoder.geocode(places[i], mark_location, bounds);
+                    var place = places[i];
+                    if (place !== '') {
+                        geocoder.geocode(places[i], mark_location, bounds);
+                    }
                 }
             }
         });
