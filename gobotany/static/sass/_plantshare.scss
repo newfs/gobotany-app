@@ -239,15 +239,17 @@ body.plantshare {
             float: right;
             margin: 0;
             width: 184px;
+            @include user-select(none);
             h2 {
                 font-size: 18px;
                 margin-top: 0;
+                @include user-select(text);
             }
         }
         .img-gallery {
-            cursor: pointer;
             width: auto;
             .frame {
+                cursor: pointer;
                 height: 139px;
                 width: 173px;
             }
@@ -259,12 +261,16 @@ body.plantshare {
                 font-size: 10px;
                 margin: 4px 0 0;
                 text-align: center;
+                @include user-select(text);
                 &.scientific {
                     font-style: italic;
                 }
             }
             .controls {
                 margin: 0;
+                a {
+                    cursor: pointer;
+                }
             }
         }
         #ask {

@@ -1116,14 +1116,15 @@ body.plantshare#plantshare h2 { line-height: 100%; }
 body.plantshare#plantshare #find-people-form { float: right; margin: 0 0 6px; width: 184px; }
 body.plantshare#plantshare #find-people-form h2 { font-size: 18px; margin-top: 0; }
 body.plantshare#plantshare #find-people-form input[type='text'] { width: 130px; }
-body.plantshare#plantshare #recent-sightings-gallery { clear: both; float: right; margin: 0; width: 184px; }
-body.plantshare#plantshare #recent-sightings-gallery h2 { font-size: 18px; margin-top: 0; }
-body.plantshare#plantshare .img-gallery { cursor: pointer; width: auto; }
-body.plantshare#plantshare .img-gallery .frame { height: 139px; width: 173px; }
+body.plantshare#plantshare #recent-sightings-gallery { clear: both; float: right; margin: 0; width: 184px; -webkit-user-select: none; -moz-user-select: none; user-select: none; }
+body.plantshare#plantshare #recent-sightings-gallery h2 { font-size: 18px; margin-top: 0; -webkit-user-select: text; -moz-user-select: text; user-select: text; }
+body.plantshare#plantshare .img-gallery { width: auto; }
+body.plantshare#plantshare .img-gallery .frame { cursor: pointer; height: 139px; width: 173px; }
 body.plantshare#plantshare .img-gallery .img-container { height: 149px; width: 183px; }
-body.plantshare#plantshare .img-gallery .plant-name { font-size: 10px; margin: 4px 0 0; text-align: center; }
+body.plantshare#plantshare .img-gallery .plant-name { font-size: 10px; margin: 4px 0 0; text-align: center; -webkit-user-select: text; -moz-user-select: text; user-select: text; }
 body.plantshare#plantshare .img-gallery .plant-name.scientific { font-style: italic; }
 body.plantshare#plantshare .img-gallery .controls { margin: 0; }
+body.plantshare#plantshare .img-gallery .controls a { cursor: pointer; }
 body.plantshare#plantshare #ask { margin-top: 20px; }
 body.plantshare#find-people { /* Hide the usual default Shadowbox close button. This is used for some dialogs that have their own interior close button, such as is seen on various PlantShare dialogs. */ }
 body.plantshare#find-people #main .box { padding: 10px; }
