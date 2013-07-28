@@ -11,7 +11,7 @@ define([
         function enable_disable_agree_button() {
             var num_checked = $(CHECKBOXES_SELECTOR + ':checked').length;
             var not_all_checked = (num_checkboxes !== num_checked);
-            $('.agree-btn').toggleClass('inactive', not_all_checked);
+            $('.agree-btn').toggleClass('disabled', not_all_checked);
             $('.agree-btn').prop('disabled', not_all_checked);
         };
 

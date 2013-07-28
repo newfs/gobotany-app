@@ -209,18 +209,8 @@ body.plantshare {
                 padding: 24px 36px 24px 18px;
             }
             .agree-btn {
-                background: transparent url(/static/images/layout/plantshare-btns.png)
-                    no-repeat -110px -131px;
-                border: 0 none;
-                cursor: pointer;
-                height: 32px;
                 margin-right: 14px;
-                text-indent: -9999px;
-                width: 173px;
-                &.inactive {
-                    background-position: -247px -57px;
-                    cursor: default !important;
-                }
+                width: 153px;
             }
         }
     }
