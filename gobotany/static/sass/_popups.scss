@@ -58,21 +58,10 @@
             width: 610px;
         }
     }
+    .img-gallery {
+        @include user-select(none);
+    }
     a {
-        &.get-more-info {
-            background: url(/static/images/layout/get-more-info.png)
-                0 0 no-repeat transparent;
-            height: 32px;
-            margin: 20px 0 0 0;
-            width: 163px;
-            @include offscreen;
-            &:hover {
-                background-position: 0 -32px;
-            }
-            &:active {
-                background-position: 0 -64px;
-            }
-        }
         &.go-to-species-page {
             margin: 20px 0 0 0;
             width: 182px;

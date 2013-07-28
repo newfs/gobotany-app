@@ -375,33 +375,15 @@ body.skey {
                         }
                     }
                 }
-                a.get-help-btn {
-                    background: url(/static/images/layout/get-help-btn-orange.png) 0 0 no-repeat transparent;
-                    height: 32px;
-                    margin: 10px 0 0 20px;
-                    width: 104px;
-                    @include offscreen;
-                    &:hover {
-	                    background-position: 0 -32px;
-                    }
-                    &:active {
-	                    background-position: 0 -64px;
-                    }
-                }
                 a.clear-all-btn {
-                    background: url(/static/images/layout/clear-all-btn.png) 0 0 no-repeat transparent;
-                    height: 32px;
-                    margin: 0 0 0 22px;
-                    width: 104px;
-                    @include offscreen;
-                    &:hover {
-	                    background-position: 0 -32px;
-                        cursor: pointer;
-                    }
-                    &:active {
-	                    background-position: 0 -64px;
-                        cursor: pointer;
-                    }
+                    color: white;
+                    margin: 0 0 0 20px;
+                    width: 80px;
+                }
+                a.get-help-btn {
+                    color: white;
+                    margin: 10px 0 0 18px;
+                    width: 80px;
                 }
             }
             h6 {
@@ -1286,7 +1268,6 @@ ul.get-more-questions-menu {
                 }
             }
             a.get-choices {
-                background: url(/static/images/layout/more-choices-btn.png) no-repeat scroll 0 0 transparent;
                 height: 29px;
             }
             .working-area {

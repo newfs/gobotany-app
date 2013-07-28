@@ -120,18 +120,6 @@
         }
     }
     a {
-        &.learn-more {
-            background: url(/static/images/layout/learn-more-btn.png) 0 0 no-repeat;
-            height: 32px;
-            width: 111px;
-            @include offscreen;
-            &:hover {
-                background-position: 0 -32px;	
-            }
-            &:active {
-                background-position: 0 -64px;	
-            }
-        }
         &.subscribe {
             background: url(/static/images/layout/subscribe.png) 0 0 no-repeat;
             cursor: pointer;

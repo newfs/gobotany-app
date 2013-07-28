@@ -508,9 +508,6 @@ table.list th td:first-child { font-family: "Trebuchet MS", Helvetica, Arial, "L
 #home .three-col h4 { margin: 0 0 3px 0; font-style: italic; color: #807121; }
 #home .three-col p { margin: 0; }
 #home .three-col a.orange-button, #home .three-col body.plantshare .image-modal a.button, body.plantshare .image-modal #home .three-col a.button, #home .three-col body.plantshare#ask #main a.submit, body.plantshare#ask #main #home .three-col a.submit, #home .three-col body.plantshare#plantshare #ask a.submit, body.plantshare#plantshare #ask #home .three-col a.submit, #home .three-col #dkey #main .offer-help-aside a.button, #dkey #main .offer-help-aside #home .three-col a.button, #home .three-col #dkey #main ul.couplets a.button, #dkey #main ul.couplets #home .three-col a.button, #home .three-col #dkey #main a.show-all-button, #dkey #main #home .three-col a.show-all-button { margin: 13px 0 0 0; }
-#home a.learn-more { background: url(/static/images/layout/learn-more-btn.png) 0 0 no-repeat; height: 32px; width: 111px; display: block; text-indent: -9000px; }
-#home a.learn-more:hover { background-position: 0 -32px; }
-#home a.learn-more:active { background-position: 0 -64px; }
 #home a.subscribe { background: url(/static/images/layout/subscribe.png) 0 0 no-repeat; cursor: pointer; height: 16px; width: 87px; display: block; text-indent: -9000px; }
 #home a.subscribe:hover { background-position: 0 -16px; }
 #home a.subscribe:active { background-position: 0 -32px; }
@@ -607,12 +604,10 @@ body.taxa img.zoom { display: inline-block; float: right; }
 body.taxa#family h2 { clear: left; font-size: 18px; padding-top: 30px; }
 body.taxa#family ul.genera { font-size: 14px; list-style: none; }
 body.taxa#family ul.genera li { margin: 0 0 5px 0; }
-body.taxa#family .family-genera-btn { background: url(/static/images/layout/family-btn.png) no-repeat scroll 0 0 transparent; clear: both; display: block; float: left; height: 32px; margin: 15px 0 0; text-indent: -9000px; width: 280px; }
 body.taxa#genus h2 { clear: left; font-size: 18px; padding-top: 30px; }
 body.taxa#genus ul.species { font-size: 14px; list-style: none; }
 body.taxa#genus ul.species li { margin: 0 0 5px 0; }
 body.taxa#genus p.family { font-size: 14px; margin: 0; }
-body.taxa#genus .genus-species-btn { background: url(/static/images/layout/genus-btn.png) no-repeat scroll 0 0 transparent; clear: both; display: block; float: left; height: 32px; margin: 15px 0 0; text-indent: -9000px; width: 280px; }
 body.taxa#species { /* end #main */ /* Larger gallery styles */ /* Smooth Div Scroll image area */ }
 body.taxa#species #main { background: url(/static/images/layout/sidebar-bg.png) repeat-y; /* layout: right-side content sections */ /* left-side content sections */ }
 body.taxa#species #main .common { margin: 6px 0 12px; }
@@ -786,12 +781,8 @@ body.skey.results #question-nav .section .left { float: left; }
 body.skey.results #question-nav .section p.get-more { position: relative; /* for Brandon experiment */ font-size: 11px; line-height: 16px; margin: 0 0 20px; text-align: center; }
 body.skey.results #question-nav .section p.get-more a { color: white; cursor: pointer; display: block; margin: 18px 0 10px; }
 body.skey.results #question-nav .section p.get-more a.get-choices { margin: 0 auto 4px; }
-body.skey.results #question-nav .section a.get-help-btn { background: url(/static/images/layout/get-help-btn-orange.png) 0 0 no-repeat transparent; height: 32px; margin: 10px 0 0 20px; width: 104px; display: block; text-indent: -9000px; }
-body.skey.results #question-nav .section a.get-help-btn:hover { background-position: 0 -32px; }
-body.skey.results #question-nav .section a.get-help-btn:active { background-position: 0 -64px; }
-body.skey.results #question-nav .section a.clear-all-btn { background: url(/static/images/layout/clear-all-btn.png) 0 0 no-repeat transparent; height: 32px; margin: 0 0 0 22px; width: 104px; display: block; text-indent: -9000px; }
-body.skey.results #question-nav .section a.clear-all-btn:hover { background-position: 0 -32px; cursor: pointer; }
-body.skey.results #question-nav .section a.clear-all-btn:active { background-position: 0 -64px; cursor: pointer; }
+body.skey.results #question-nav .section a.clear-all-btn { color: white; margin: 0 0 0 20px; width: 80px; }
+body.skey.results #question-nav .section a.get-help-btn { color: white; margin: 10px 0 0 18px; width: 80px; }
 body.skey.results #question-nav h6 { color: #807121; font-weight: bold; margin: 0 0 8px 0; }
 body.skey.results #question-nav .option-list > li { background: #fff; border-top: 1px solid #c3d941; cursor: pointer; display: block; height: auto; line-height: normal; margin: 0; padding: 12px; }
 body.skey.results #question-nav .option-list > li.last { border-bottom: 1px solid #c3d941; }
@@ -957,7 +948,7 @@ ul.get-more-questions-menu ul li[data-character] { color: black; }
   body.skey.results #results-display { margin: 12px 0 8px; text-align: center; }
   body.skey.results #results-display label, body.skey.results #results-display select { font-size: 13px; }
   body.skey.results #results-display img.icon { margin-left: 1px; vertical-align: -3px; }
-  body.skey.results a.get-choices { background: url(/static/images/layout/more-choices-btn.png) no-repeat scroll 0 0 transparent; height: 29px; }
+  body.skey.results a.get-choices { height: 29px; }
   body.skey.results .working-area { height: 100%; left: 0; margin-left: 0; padding-left: 8px; padding-right: 8px; position: fixed; top: 0 !important; width: 95%; }
   body.skey.results .working-area > div { height: 100%; }
   body.skey.results .working-area img.arrow { display: none; }
@@ -1137,7 +1128,7 @@ body.plantshare#find-people #main .person .name { font-family: "Trebuchet MS", H
 body.plantshare#find-people #main .person ul:first-child { /* when avatar is omitted */ margin-left: 98px; }
 body.plantshare#find-people #main .person p { float: right; margin: 12px 0 0; padding-right: 10px; }
 body.plantshare#find-people #main .person p a { border-bottom: 0; }
-body.plantshare#find-people #main .person .invite-group-btn { background: transparent url(/static/images/layout/plantshare-btns.png) no-repeat -1px -231px; display: block; font-size: 0; height: 32px; text-indent: -9999px; width: 163px; }
+body.plantshare#find-people #main .person .invite-group-btn { width: 143px; }
 body.plantshare#find-people #sb-nav-close { display: none; }
 body.plantshare #find-people-form { margin: 14px 0 0; }
 body.plantshare #find-people-form input[type='text'] { background: transparent url(../images/layout/plantshare-btns.png) no-repeat -1px -334px; border: 0 none; display: block; float: left; font-size: 11px; height: 22px; padding: 0 2px 0 12px; width: 309px; }
@@ -1554,12 +1545,8 @@ body.search-results .search-navigation li { display: inline; margin: 0 2px; }
 #advanced-map .plant-subgroup .frame { border: 5px solid #1a2e12; height: 129px; position: absolute; top: 0; width: 150px; z-index: 100; }
 #advanced-map .plant-subgroup h3 { background: #1a2e12; color: #fff; font-size: 12px; height: 50px; line-height: 120%; margin: 0 0 0 0; padding: 6px; }
 #advanced-map .plant-subgroup .img-container { height: 139px; overflow: hidden; width: 160px; }
-#advanced-map .plant-subgroup .more-info { background: url(/static/images/icons/more-info.png) left 4px no-repeat transparent; margin: 5px 0 0 0; padding: 0 0 0 19px; }
 #advanced-map p.video { background: url(/static/images/icons/icon3.png) left 4px no-repeat transparent; margin: 2px 0; padding: 3px 0 0 22px; }
 #advanced-map p.list { background: url(/static/images/icons/icon1.png) left 4px no-repeat transparent; margin: 2px 0 0; padding: 3px 0 0 22px; }
-#advanced-map .choose-btn { background: url(/static/images/layout/choose-btn.png) 0 0 no-repeat transparent; display: block; height: 32px; margin: 10px 0 5px; text-indent: -9000px; width: 104px; }
-#advanced-map .choose-btn:hover { background-position: 0 -32px; }
-#advanced-map .choose-btn:active { background-position: 0 -64px; }
 
 /* Glossary */
 #glossary #alphabet { height: 33px; list-style-type: none; margin: 7px 0; padding: 0; width: 712px; /* 2px wider than its parent box so no wrap in Moz */ }
@@ -1669,9 +1656,7 @@ body.search-results .search-navigation li { display: inline; margin: 0 2px; }
 .modal-wrap .list-item h4 { color: #807121; }
 .modal-wrap .list-item p { padding: 0 0 7px 0; }
 .modal-wrap .list-item .details { float: left; margin: 0 0 0 10px; width: 610px; }
-.modal-wrap a.get-more-info { background: url(/static/images/layout/get-more-info.png) 0 0 no-repeat transparent; height: 32px; margin: 20px 0 0 0; width: 163px; display: block; text-indent: -9000px; }
-.modal-wrap a.get-more-info:hover { background-position: 0 -32px; }
-.modal-wrap a.get-more-info:active { background-position: 0 -64px; }
+.modal-wrap .img-gallery { -webkit-user-select: none; -moz-user-select: none; user-select: none; }
 .modal-wrap a.go-to-species-page { margin: 20px 0 0 0; width: 182px; }
 
 /* end .modal-wrap */

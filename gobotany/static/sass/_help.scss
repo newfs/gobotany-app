@@ -213,11 +213,6 @@ $image-box-shadow-color: rgba(0, 0, 0, 0.6);
 	        overflow: hidden;
 	        width: 160px;
         }
-        .more-info {
-	        background: url(/static/images/icons/more-info.png) left 4px no-repeat transparent;	
-	        margin: 5px 0 0 0;
-	        padding: 0 0 0 19px;
-        }
     }
     p.video {
     	background: url(/static/images/icons/icon3.png) left 4px no-repeat transparent;
@@ -228,20 +223,6 @@ $image-box-shadow-color: rgba(0, 0, 0, 0.6);
 	    background: url(/static/images/icons/icon1.png) left 4px no-repeat transparent;
 	    margin: 2px 0 0;
 	    padding: 3px 0 0 22px;
-    }
-    .choose-btn {
-        background: url(/static/images/layout/choose-btn.png) 0 0 no-repeat transparent;
-        display: block;
-        height: 32px;
-        margin: 10px 0 5px;
-        text-indent: -9000px;
-        width: 104px;
-        &:hover {
-	        background-position: 0 -32px;
-        }
-        &:active {
-	        background-position: 0 -64px;
-        }
     }
 }
 

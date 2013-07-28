@@ -73,7 +73,7 @@
                         </h3>
                         <p>{{ plant_of_the_day.factoid|slice:":274"}}
                         {% if plant_of_the_day.factoid|length > 274 %}...{% endif %}</p>
-                        <a class="orange-button caps" 
+                        <a class="learn-more orange-button caps" 
                             href="/species/{{ plant_of_the_day.genus_name|lower }}/{{ plant_of_the_day.epithet }}/">Learn More</a>
                     </div>
                 {% else %}
