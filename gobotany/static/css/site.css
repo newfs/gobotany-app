@@ -1404,14 +1404,14 @@ body.plantshare#screen-images div.form-control { margin: 0 30px; }
   body.plantshare#find-people #find-people-form input[type='text'] { width: 249px; }
   body.plantshare#find-people #main .person ul { width: auto; }
   body.plantshare#find-people #main .person .name { font-size: 16px; }
-  body.plantshare#plantshare #mini-sightings-map, body.plantshare#ask #mini-sightings-map { margin-top: 6px; width: 90% !important; }
+  body.plantshare#plantshare #mini-sightings-map, body.plantshare#ask #mini-sightings-map { float: left; margin-top: 6px; width: 85% !important; }
   body.plantshare#plantshare #ask #question-form, body.plantshare#plantshare #main #question-form, body.plantshare#ask #ask #question-form, body.plantshare#ask #main #question-form { padding-left: 0; }
   body.plantshare#plantshare #ask textarea, body.plantshare#plantshare #main textarea, body.plantshare#ask #ask textarea, body.plantshare#ask #main textarea { width: 90%; }
   body.plantshare#sightings #main > ul > li ul { margin: 0; }
   body.plantshare#sightings #main > ul > li ul li { margin-bottom: 12px; }
   body.plantshare#sightings #main > ul .title { display: inline-block; margin: 0; }
   body.plantshare#sightings #main > ul .photolink + .title { margin-left: 0; }
-  body.plantshare.sighting .map { margin: 0; width: 100% !important; }
+  body.plantshare.sighting .map { float: left; margin: 0 20px; width: 85% !important; }
   body.plantshare.sighting .photos ul img { max-height: none; max-width: 100%; }
   body.plantshare#locator #main #sightings-status { clear: both; float: none; }
   body.plantshare#locator #sightings-locator .map { margin-top: 0; }

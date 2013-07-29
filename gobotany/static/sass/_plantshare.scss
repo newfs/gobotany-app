@@ -1561,8 +1561,9 @@ body.plantshare {
         }
         &#plantshare, &#ask {
             #mini-sightings-map {
+                float: left;
                 margin-top: 6px;
-                width: 90% !important;
+                width: 85% !important;
             }
             #ask, #main {
                 #question-form {
@@ -1592,8 +1593,9 @@ body.plantshare {
         }
         &.sighting {
             .map {
-                margin: 0;
-                width: 100% !important;
+                float: left;
+                margin: 0 20px;
+                width: 85% !important;
             }
             .photos ul img {
                 max-height: none;
