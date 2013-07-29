@@ -1541,7 +1541,7 @@ body.plantshare {
         }
     }
     body.plantshare {
-        #find-people {
+        &#find-people {
             #find-people-form input[type='text'] {
                 width: 249px;
             }
@@ -1554,12 +1554,12 @@ body.plantshare {
                 }
             }
         }
-        &#plantshare {
+        &#plantshare, &#ask {
             #mini-sightings-map {
                 margin-top: 6px;
                 width: 90% !important;
             }
-            #ask {
+            #ask, #main {
                 #question-form {
                     padding-left: 0;
                 }
@@ -1593,6 +1593,13 @@ body.plantshare {
             .photos ul img {
                 max-height: none;
                 max-width: 100%;
+            }
+        }
+        &#profile {
+            .info-section, .location-section {
+                .info.box table {
+                    width: 100%;
+                }
             }
         }
     }
