@@ -4,13 +4,12 @@
 {% block title %}Edit Plant Checklist: {{ checklist.name }}: PlantShare{% endblock %}
 
 {% block more_meta_link %}
-<link rel="stylesheet" href="/static/css/smoothness/jquery-ui-1.9.2.custom.min.css" />
+<link rel="stylesheet" href="/static/css/smoothness/jquery-ui-1.9.2.custom.min.css">
 {% endblock %}
 
 {% block js_require %}
     require([
         'util/suggester_init', 
-        'plantshare/plantshare',
         'plantshare/edit_checklist'
     ]);
 {% endblock %}
@@ -58,8 +57,10 @@
         {% csrf_token %}
         <header>
             {{ checklist_form.non_field_errors }}
+            <label>Checklist name (required)</label>
             {{ checklist_form.name }}
             {{ checklist_form.name.errors }}
+            <label>Comments</label>
             {{ checklist_form.comments }}
             {{ checklist_form.comments.errors }}
         </header>
@@ -78,7 +79,8 @@
             <tfoot>
                 <tr>
                     <td colspan="7">
-                        <a href="#" class="add-new-row">Add New Row &#43;</a>
+                        <a href="#" class="add-new-row"
+                            tabindex="500">Add New Row &#43;</a>
                     </td>
                 </tr>
             </tfoot>
@@ -129,8 +131,9 @@
         </table><!-- /#add-sightings-table -->
         <div class="form-actions">
             <input type="submit" class="ps-button orange-button caps"
-            id="save-btn" value="Save">
-            <a href="{% url 'ps-checklists' %}" class="cancel-link">Cancel</a>
+            id="save-btn" value="Save" tabindex="510">
+            <a href="{% url 'ps-checklists' %}" class="cancel-link"
+                tabindex="520">Cancel</a>
         </div><!-- /.form-actions -->
     </form><!-- /#checklist-fillout -->
 </div><!-- /.ps-section -->

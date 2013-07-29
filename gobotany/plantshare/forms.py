@@ -172,11 +172,13 @@ class ChecklistForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super(ChecklistForm, self).__init__(*args, **kwargs)
         self.fields['name'].widget = forms.TextInput(attrs={
-            'placeholder': 'Give your plant checklist a title (required)'
+            'placeholder': '',
+            'tabindex': '1',
             })
         self.fields['comments'].widget = forms.Textarea(attrs={
-            'placeholder': 'Notes about your plant checklist',
-            'rows': ''
+            'placeholder': '',
+            'rows': '',
+            'tabindex': '2',
             })
 
 class ChecklistEntryForm(forms.ModelForm):
@@ -192,21 +194,21 @@ class ChecklistEntryForm(forms.ModelForm):
             'autofocus': 'autofocus',
             'class': 'suggest',
             'data-suggest-url': plant_name_suggestions_url(),
-            'placeholder': 'Enter Plant Name',
+            'placeholder': 'enter plant name',
             'required': 'required',
         })
         self.fields['date_found'].widget = forms.DateInput(attrs={
             'placeholder': 'mm/dd/yyyy',
-            'class': 'date-input'
+            'class': 'date-input',
             }, format='%m/%d/%Y')
         self.fields['location'].widget = forms.TextInput(attrs={
-            'placeholder': 'Enter Location'
+            'placeholder': 'enter location',
             })
         self.fields['date_posted'].widget = forms.DateInput(attrs={
             'placeholder': 'mm/dd/yyyy',
-            'class': 'date-input'
+            'class': 'date-input',
             }, format='%m/%d/%Y')
         self.fields['note'].widget = forms.Textarea(attrs={
-            'placeholder': 'Write your notes here'
+            'placeholder': '',
             })
         self.fields['plant_photo'].widget = forms.HiddenInput()

@@ -96,9 +96,9 @@ def _sighting_form_page(request, form, edit=False, sighting=None):
            }, context_instance=RequestContext(request))
 
 
-def _create_checklistentry_formset(**kwargs):
+def _create_checklistentry_formset(extra=0, **kwargs):
     return modelformset_factory(ChecklistEntry, form=ChecklistEntryForm,
-            extra=1, **kwargs)
+            extra=extra, **kwargs)
 
 
 # Views
@@ -635,7 +635,7 @@ def new_checklist_view(request):
     entry_image_form = ScreenedImageForm(initial={
         'image_type': 'CHECKLIST'
     })
-    ChecklistEntryFormSet = _create_checklistentry_formset()
+    ChecklistEntryFormSet = _create_checklistentry_formset(extra=1)
     if request.method == 'POST':
         profile = request.user.userprofile
         user_pod = profile.get_user_pod()

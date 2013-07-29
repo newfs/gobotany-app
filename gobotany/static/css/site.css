@@ -1313,7 +1313,7 @@ body.plantshare.checklists table.checklists-list thead, body.plantshare.checklis
 body.plantshare.checklists table.checklists-list td { overflow: hidden; }
 body.plantshare.checklists table.checklists-list .first { white-space: nowrap; width: 0px; /* hidden */ }
 body.plantshare.checklists table.checklists-list .first input[type="checkbox"] { display: none; margin-left: 5px; margin-top: 10px; width: auto; }
-body.plantshare.checklists table.checklists-list .checklistview-name { white-space: nowrap; width: 368px; }
+body.plantshare.checklists table.checklists-list .checklistview-name { white-space: nowrap; width: 498px; }
 body.plantshare.checklists table.checklists-list .owner { white-space: nowrap; width: 120px; }
 body.plantshare.checklists table.checklists-list .last { text-align: right; white-space: nowrap; width: 180px; }
 body.plantshare.checklists table.checklists-list .last a { margin-right: 10px; }
@@ -1336,6 +1336,7 @@ body.plantshare.checklists .checklists-section { background-color: #fff; border:
 body.plantshare.checklists .checklists-section input, body.plantshare.checklists .checklists-section textarea { border: 1px solid #ababab; box-shadow: inset 1px 1px 2px #ccc; -moz-box-shadow: inset 1px 1px 2px #ccc; -webkit-box-shadow: inset 1px 1px 2px #ccc; display: block; font-size: inherit; line-height: 1em; padding: 7px 5px 5px; }
 body.plantshare.checklists .checklists-section h4 { margin: 0 0 15px; font-size: 18px; }
 body.plantshare.checklists .checklists-section header { margin: 0 0 10px; height: auto !important; }
+body.plantshare.checklists .checklists-section header label { text-transform: none; }
 body.plantshare.checklists .checklists-section header input, body.plantshare.checklists .checklists-section header textarea { margin: 5px 0 10px; width: 95%; height: auto; }
 body.plantshare.checklists .checklists-section .import-sightings-link { background-color: #e0f0d1; display: block; font-weight: bold; margin: 0 0 25px; padding: 5px 10px; }
 body.plantshare.checklists .checklists-section table#add-sightings-table { width: 678px; }
@@ -1352,9 +1353,9 @@ body.plantshare.checklists .checklists-section table#add-sightings-table .note {
 body.plantshare.checklists .checklists-section table#add-sightings-table .note .note-field { display: none; }
 body.plantshare.checklists .checklists-section table#add-sightings-table .note a { display: inline-block; }
 body.plantshare.checklists .checklists-section table#add-sightings-table .note a.row-btn { border-bottom: 0; float: right; margin: 5px 0 0 8px; }
-body.plantshare.checklists .checklists-section table#add-sightings-table thead { border-bottom: 1px solid #ccc; width: 678px; }
+body.plantshare.checklists .checklists-section table#add-sightings-table thead { border-bottom: 1px solid #ccc; font-weight: normal; width: 678px; }
 body.plantshare.checklists .checklists-section table#add-sightings-table thead th { text-transform: uppercase; }
-body.plantshare.checklists .checklists-section table#add-sightings-table thead th span { color: #999; font-style: italic; text-transform: none; }
+body.plantshare.checklists .checklists-section table#add-sightings-table thead th span { text-transform: none; }
 body.plantshare.checklists .checklists-section table#add-sightings-table tfoot { border-bottom: 1px solid #ccc; }
 body.plantshare.checklists .checklists-section table#add-sightings-table tfoot td { font-size: .9em; padding-bottom: 10px; padding-top: 10px; }
 body.plantshare.checklists .checklists-section .form-actions { padding: 15px 0 0; }

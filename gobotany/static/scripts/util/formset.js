@@ -7,7 +7,8 @@ define([
         'formTemplateSelector': '',
         'addLinkSelector': '',
         'removeLinkSelector': '',
-        'canDelete': false
+        'canDelete': false,
+        'onAfterAddForm': null
     };
 
     var $formContainer = null;
@@ -45,6 +46,10 @@ define([
                     .replace(/__prefix__/g, form_idx)
             );
             $('#id_form-TOTAL_FORMS').val(parseInt(form_idx) + 1);
+
+            if (configuration.onAfterAddForm !== null) {
+                configuration.onAfterAddForm();
+            }
         },
 
         remove_form: function(clicked) {

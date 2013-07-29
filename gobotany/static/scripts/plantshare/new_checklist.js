@@ -15,7 +15,7 @@ define([
 		'<section>' +
             '<textarea placeholder="Write your notes here"></textarea>' +
             '<div class="form-actions">' +
-                '<a href="#" class="ps-button save">Save</a>' +
+                '<a href="#" class="ps-button save orange-button caps">Save</a>' +
                 '<a href="#" class="clear-btn">Clear</a>' +
             '</div><!-- /.form-actions -->' +
 		'</section>' +
@@ -23,11 +23,28 @@ define([
 
     $(document).ready(function() {
 
+        function set_tab_order() {
+            // Set the tab order on all existing checklist entry fields.
+            var num_fields = 6; // Number of fields per entry row
+            var next_index = 3; // The two previous: checklist name, comments
+            $('#checklist-fillout tbody tr').each(function () {
+                var field_selectors = ['td.name input', 'td.image a',
+                    'td.date-sighted input', 'td.location input',
+                    'td.date-posted input', 'td.note a.note-link'];
+                for (var i = 0; i < field_selectors.length; i += 1) {
+                    var $element = $(this).find(field_selectors[i]);
+                    $element.attr('tabindex', next_index);
+                    next_index += 1;
+                }
+            });
+        }
+
         formset.init({
             'formSelector': '#formset tr',
             'formTemplateSelector': '#form-template tr',
             'addLinkSelector': '.add-new-row',
-            'removeLinkSelector': '.close-btn.row-btn'
+            'removeLinkSelector': '.close-btn.row-btn',
+            'onAfterAddForm': set_tab_order
         });
 
         $('body').on('focus', 'input.date-input', function() {
@@ -74,12 +91,12 @@ define([
 
         function startUpload($trigger) {
             console.log('Beginning upload...');
-            $trigger.html('<img src="' + UPLOAD_SPINNER + '" class="checklist-thumb" />');
+            $trigger.html('<img src="' + UPLOAD_SPINNER + '" class="checklist-thumb">');
         }
 
         function imageUploaded(imageInfo, $trigger) {
             console.log('Successfully uploaded checklist image');
-            $trigger.html('<img src="' + imageInfo.thumb + '" class="checklist-thumb" />');
+            $trigger.html('<img src="' + imageInfo.thumb + '" class="checklist-thumb">');
             $trigger.parent().find('input[type="hidden"]').val(imageInfo.id);
         }
 
@@ -93,5 +110,10 @@ define([
             onStartUpload: startUpload,
         });
 
+        // Start at the first field to fill out: the checklist title.
+        $('#id_name').focus();
+
+        // Set the tab order on the initial checklist entry row.
+        set_tab_order();
     });
 });

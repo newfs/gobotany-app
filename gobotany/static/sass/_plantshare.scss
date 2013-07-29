@@ -1176,7 +1176,7 @@ body.plantshare {
             }
             .checklistview-name {
                 white-space: nowrap;
-                width: 368px;
+                width: 498px;
             }
             .owner {
                 white-space: nowrap;
@@ -1276,6 +1276,10 @@ body.plantshare {
                 margin: 0 0 10px;
                 height: auto !important;
 
+                label {
+                    text-transform: none;
+                }
+
                 input, textarea {
                     margin: 5px 0 10px;
                     width: 95%;
@@ -1344,14 +1348,13 @@ body.plantshare {
 
                 thead { 
                     border-bottom: 1px solid #ccc;
+                    font-weight: normal;
                     width: 678px; 
 
                     th {
                         text-transform: uppercase;
 
                         span {
-                            color: #999;
-                            font-style: italic;
                             text-transform: none;
                         }
                     }
