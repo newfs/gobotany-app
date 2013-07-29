@@ -1404,7 +1404,13 @@ body.plantshare#screen-images div.form-control { margin: 0 30px; }
   body.plantshare #find-people #main .person .name { font-size: 16px; }
   body.plantshare#plantshare #mini-sightings-map { margin-top: 6px; width: 90% !important; }
   body.plantshare#plantshare #ask #question-form { padding-left: 0; }
-  body.plantshare#plantshare #ask textarea { width: 90%; } }
+  body.plantshare#plantshare #ask textarea { width: 90%; }
+  body.plantshare#sightings #main > ul > li ul { margin: 0; }
+  body.plantshare#sightings #main > ul > li ul li { margin-bottom: 12px; }
+  body.plantshare#sightings #main > ul .title { display: inline-block; margin: 0; }
+  body.plantshare#sightings #main > ul .photolink + .title { margin-left: 0; }
+  body.plantshare.sighting .map { height: 250px !important; width: 100% !important; }
+  body.plantshare.sighting .photos ul img { max-height: none; max-width: 100%; } }
 /* These styles apply to smartphones and tablets */
 @media only print { body.plantshare { background: white; }
   body.plantshare header, body.plantshare footer { display: none; }
