@@ -1445,7 +1445,7 @@ body.plantshare {
 /* Portrait-orientation styles */
 @media only screen and (max-width: 400px) {
     body.plantshare {
-        .box {
+        .box, .profile {
             width: $smallscreen-portrait-box-width;
     }
     .content form {
@@ -1458,7 +1458,7 @@ body.plantshare {
 /* Landscape-orientation styles */
 @media only screen and (min-width: 401px) and (max-width: 600px) {
     body.plantshare {
-        .box {
+        .box, .profile {
             width: $smallscreen-landscape-box-width;
     }
 }
@@ -1481,16 +1481,40 @@ body.plantshare {
         background: none;
         border: 0;
     }
-    &#plantshare .sign-up-call {
-        width: auto;
-        ul {
-            margin-left: 0;
+    &#plantshare {
+        h1, #find-people-form, #recent-sightings-gallery {
+            float: none;
         }
-    }
-    &#plantshare .notification {
-        width: auto;
-        ul {
-            margin-left: 0;
+        h1 {
+            margin-bottom: 12px;
+        }
+        #find-people-form, #recent-sightings-gallery {
+            clear: both;
+            h2 {
+                font-size: 16px;
+            }
+        }
+        .profile {
+            margin-top: 10px;
+            width: auto;
+            a.edit {
+                margin-top: 8px;
+            }
+            div {
+                height: auto;
+            }
+        }
+        .sign-up-call {
+            width: auto;
+            ul {
+                margin-left: 0;
+            }
+        }
+        .notification {
+            width: auto;
+            ul {
+                margin-left: 0;
+            }
         }
     }
     &.sighting form {
@@ -1513,6 +1537,35 @@ body.plantshare {
         &#sign-up {
             #main form input {
                 width: 290px;
+            }
+        }
+    }
+    body.plantshare {
+        #find-people {
+            #find-people-form input[type='text'] {
+                width: 249px;
+            }
+            #main .person {
+                ul {
+                    width: auto;
+                }
+                .name {
+                    font-size: 16px;
+                }
+            }
+        }
+        &#plantshare {
+            #mini-sightings-map {
+                margin-top: 6px;
+                width: 90% !important;
+            }
+            #ask {
+                #question-form {
+                    padding-left: 0;
+                }
+                textarea {
+                    width: 90%;
+                }
             }
         }
     }

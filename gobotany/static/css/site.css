@@ -1375,15 +1375,22 @@ body.plantshare#screen-images div.form-control { margin: 0 30px; }
 
 /* Begin media queries styles for PlantShare. */
 /* Portrait-orientation styles */
-@media only screen and (max-width: 400px) { body.plantshare .box { width: 302px; }
+@media only screen and (max-width: 400px) { body.plantshare .box, body.plantshare .profile { width: 302px; }
   body.plantshare .content form label, body.plantshare .content form input, body.plantshare .content form textarea { width: 292px; } }
 /* Landscape-orientation styles */
-@media only screen and (min-width: 401px) and (max-width: 600px) { body.plantshare .box { width: 462px; } }
+@media only screen and (min-width: 401px) and (max-width: 600px) { body.plantshare .box, body.plantshare .profile { width: 462px; } }
 /* These styles are common to both smartphone widths */
 @media only screen and (max-width: 600px) { body.plantshare #main .box { padding: 0; }
   body.plantshare #main .box > * { padding-left: 16px; padding-right: 16px; }
   body.plantshare #main .box > table { margin-left: 16px; width: 90%; }
   body.plantshare .content #sidebar { background: none; border: 0; }
+  body.plantshare#plantshare h1, body.plantshare#plantshare #find-people-form, body.plantshare#plantshare #recent-sightings-gallery { float: none; }
+  body.plantshare#plantshare h1 { margin-bottom: 12px; }
+  body.plantshare#plantshare #find-people-form, body.plantshare#plantshare #recent-sightings-gallery { clear: both; }
+  body.plantshare#plantshare #find-people-form h2, body.plantshare#plantshare #recent-sightings-gallery h2 { font-size: 16px; }
+  body.plantshare#plantshare .profile { margin-top: 10px; width: auto; }
+  body.plantshare#plantshare .profile a.edit { margin-top: 8px; }
+  body.plantshare#plantshare .profile div { height: auto; }
   body.plantshare#plantshare .sign-up-call { width: auto; }
   body.plantshare#plantshare .sign-up-call ul { margin-left: 0; }
   body.plantshare#plantshare .notification { width: auto; }
@@ -1391,7 +1398,13 @@ body.plantshare#screen-images div.form-control { margin: 0 30px; }
   body.plantshare.sighting form fieldset { width: auto; }
   body.plantshare.sighting form .location img { display: block; float: none; margin-bottom: 10px; }
   body.plantshare#profile .info.box img { padding: 16px; }
-  body.plantshare#sign-up #main form input { width: 290px; } }
+  body.plantshare#sign-up #main form input { width: 290px; }
+  body.plantshare #find-people #find-people-form input[type='text'] { width: 249px; }
+  body.plantshare #find-people #main .person ul { width: auto; }
+  body.plantshare #find-people #main .person .name { font-size: 16px; }
+  body.plantshare#plantshare #mini-sightings-map { margin-top: 6px; width: 90% !important; }
+  body.plantshare#plantshare #ask #question-form { padding-left: 0; }
+  body.plantshare#plantshare #ask textarea { width: 90%; } }
 /* These styles apply to smartphones and tablets */
 @media only print { body.plantshare { background: white; }
   body.plantshare header, body.plantshare footer { display: none; }
