@@ -1541,6 +1541,11 @@ body.plantshare {
         }
     }
     body.plantshare {
+        .content form {
+            input[type=text], input[type=password] {
+                width: $smallscreen-portrait-form-el-width;
+            }
+        }
         &#find-people {
             #find-people-form input[type='text'] {
                 width: 249px;
@@ -1587,12 +1592,24 @@ body.plantshare {
         }
         &.sighting {
             .map {
-                height: 250px !important;
+                margin: 0;
                 width: 100% !important;
             }
             .photos ul img {
                 max-height: none;
                 max-width: 100%;
+            }
+        }
+        &#locator {
+            #main #sightings-status {
+                clear: both;
+                float: none;
+            }
+            #sightings-locator .map {
+                margin-top: 0;
+            }
+            #sightings-map {
+                width: 90% !important;
             }
         }
         &#profile {

@@ -1399,6 +1399,7 @@ body.plantshare#screen-images div.form-control { margin: 0 30px; }
   body.plantshare.sighting form .location img { display: block; float: none; margin-bottom: 10px; }
   body.plantshare#profile .info.box img { padding: 16px; }
   body.plantshare#sign-up #main form input { width: 290px; }
+  body.plantshare .content form input[type=text], body.plantshare .content form input[type=password] { width: 292px; }
   body.plantshare#find-people #find-people-form input[type='text'] { width: 249px; }
   body.plantshare#find-people #main .person ul { width: auto; }
   body.plantshare#find-people #main .person .name { font-size: 16px; }
@@ -1409,8 +1410,11 @@ body.plantshare#screen-images div.form-control { margin: 0 30px; }
   body.plantshare#sightings #main > ul > li ul li { margin-bottom: 12px; }
   body.plantshare#sightings #main > ul .title { display: inline-block; margin: 0; }
   body.plantshare#sightings #main > ul .photolink + .title { margin-left: 0; }
-  body.plantshare.sighting .map { height: 250px !important; width: 100% !important; }
+  body.plantshare.sighting .map { margin: 0; width: 100% !important; }
   body.plantshare.sighting .photos ul img { max-height: none; max-width: 100%; }
+  body.plantshare#locator #main #sightings-status { clear: both; float: none; }
+  body.plantshare#locator #sightings-locator .map { margin-top: 0; }
+  body.plantshare#locator #sightings-map { width: 90% !important; }
   body.plantshare#profile .info-section .info.box table, body.plantshare#profile .location-section .info.box table { width: 100%; } }
 /* These styles apply to smartphones and tablets */
 @media only print { body.plantshare { background: white; }
