@@ -1267,9 +1267,6 @@ ul.get-more-questions-menu {
                     vertical-align: -3px;
                 }
             }
-            a.get-choices {
-                height: 29px;
-            }
             .working-area {
                 height: 100%;
                 left: 0;
@@ -1369,8 +1366,10 @@ ul.get-more-questions-menu {
                         font-size: 11px;
                         height: 44px;
                         margin: 0;
+                        /*
                         max-width: 0;
                         min-width: 0;
+                        */
                         padding-left: 4px;
                         padding-right: 12px;
                         width: 96%;
@@ -1487,9 +1486,6 @@ ul.get-more-questions-menu {
                     clear: left;
                     p.get-more {
                         margin-bottom: 35px;
-                    }
-                    a.get-choices {
-                        width: 139px;
                     }
                     &.family-genus .already-know {
                         margin-bottom: 25px;
