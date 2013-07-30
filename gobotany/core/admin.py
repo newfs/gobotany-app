@@ -452,8 +452,8 @@ class ContentImageAdmin(_Base):
     search_fields = ('image', 'alt', 'creator')
     list_display = ('alt', 'image', 'creator')
     list_display_links = ('alt', 'image', 'creator')
-    fields = ('image', 'alt', 'rank', 'image_type', 'content_type',
-        'object_id', 'creator', 'copyright')
+    fields = ('alt', 'rank', 'image_type', 'content_type',
+        'object_id', 'creator', 'copyright', 'image')
     readonly_fields = ('copyright',)
 
     def copyright(self, obj):
