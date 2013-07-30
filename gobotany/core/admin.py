@@ -448,6 +448,12 @@ class ContentImageAdmin(_Base):
     with the Copyright Holder information pulled from the source spreadsheet.
     Content images are separately managed from user-uploaded, ScreenImages.
     </p>
+    <p>
+    NOTE: Uploaded images will be named based on the other fields entered,
+    in the following format:<br />
+    taxon-images/Family/Genus-species-image_type-photographer.jpg<br />
+    Optional letters will be added to the name ensure uniqueness.
+    </p>
     """
     search_fields = ('image', 'alt', 'creator')
     list_display = ('alt', 'image', 'creator')
