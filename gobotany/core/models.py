@@ -1,3 +1,4 @@
+import string
 from collections import defaultdict, OrderedDict as odict
 from datetime import datetime
 
@@ -347,8 +348,59 @@ class ImageType(models.Model):
         return self.name
 
 
+# Converts a numeric index (e.g. 233) to a alpha index (e.g. aac)
+# See http://stackoverflow.com/questions/2063425/python-elegant-inverse-function-of-intstring-base
+# and linked thread.
+def _to_image_suffix(num):
+    digits = string.lowercase
+    base = len(digits)
+    if num == 0:
+        return ''
+    
+    result = []
+    current = num - 1
+    while current:
+        result.append(digits[(current % base)])
+        current = (current // base)
+    else:
+        if not result:
+            result = ['a']
+    
+    result.reverse()
+    return ''.join(result)
+
+def _content_image_filename(instance, filename):
+    """ Rename uploaded images based on other instance model information,
+    so the file naming scheme remains consistent when uploaded via the admin.
+    """
+    sections = []
+    # ContentType is assumed to be Taxon for all current ContentImages, because
+    # they currently all ARE associated with Taxon.  If this changes in the
+    # future this naming convention will need to be dropped or rethought.
+    taxon = Taxon.objects.get(pk=instance.object_id)
+    sections.extend(taxon.scientific_name.lower().split())
+    sections.append(instance.image_type.code)
+    sections.append(instance.creator)
+    # Find any matching images to get our subscript
+    base_name = '-'.join(sections)
+    image_query = ContentImage.objects.filter(image__contains=base_name)
+    if instance.pk:
+        image_query = image_query.exclude(pk=instance.pk)
+    matching_images = image_query.count()
+    image_index = ''
+    if matching_images > 0:
+        # Handle some seriously long image lists
+        image_index = _to_image_suffix(matching_images)
+        sections.append(image_index)
+
+    ext = filename[filename.rfind('.'):]
+    new_filename = '{0}{1}'.format('-'.join(sections), ext)
+
+    return new_filename
+
 def _content_image_path(instance, filename):
     ctype = instance.content_type
+    filename = _content_image_filename(instance, filename)
     dirname = 'content_images'
     if ctype is not None:
         dirname = settings.CONTENT_IMAGE_LOCATIONS.get(ctype.model,
@@ -371,7 +423,8 @@ class ContentImage(models.Model):
     """
     image = models.ImageField('content image',
                               max_length=300,  # long filenames
-                              upload_to=_content_image_path)
+                              upload_to=_content_image_path,
+                              help_text='Image will be renamed and moved based on other field information.')
     alt = models.CharField(max_length=300,
                            verbose_name=u'title (alt text)')
     rank = models.PositiveSmallIntegerField(
