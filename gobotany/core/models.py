@@ -776,6 +776,8 @@ class ConservationStatus(models.Model):
     s_rank = models.CharField(max_length=10)
     endangerment_code = models.CharField(max_length=10)
     allow_public_posting = models.BooleanField(default=True)
+    invasive_in_region = models.NullBooleanField(default=None)
+    prohibited_from_sale = models.NullBooleanField(default=None)
 
     class Meta:
         ordering = ('taxon', 'variety_subspecies_hybrid', 'region')
