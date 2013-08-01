@@ -487,6 +487,14 @@ class ConservationStatusAdmin(admin.ModelAdmin):
         'allow_public_posting')
 
 
+class InvasiveStatusAdmin(admin.ModelAdmin):
+    search_fields = ('taxon',)
+    list_display = ('taxon', 'region', 'invasive_in_region',
+        'prohibited_from_sale')
+    list_editable = ('invasive_in_region', 'prohibited_from_sale')
+    list_filter = ('region', 'invasive_in_region', 'prohibited_from_sale')
+
+
 class DistributionAdmin(admin.ModelAdmin):
     list_display = ('scientific_name', 'state', 'county', 'present', 'native')
     list_editable = ('present', 'native',)
@@ -530,6 +538,7 @@ admin.site.register(models.Genus, GenusAdmin)
 admin.site.register(models.PartnerSite, PartnerSiteAdmin)
 admin.site.register(models.PartnerSpecies, PartnerSpeciesAdmin)
 admin.site.register(models.ConservationStatus, ConservationStatusAdmin)
+admin.site.register(models.InvasiveStatus, InvasiveStatusAdmin)
 admin.site.register(models.Distribution, DistributionAdmin)
 admin.site.register(models.DefaultFilter, DefaultFilterAdmin)
 admin.site.register(models.PlantPreviewCharacter, PlantPreviewCharacterAdmin)
