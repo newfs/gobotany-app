@@ -793,9 +793,12 @@ class ConservationStatus(models.Model):
 
 
 class InvasiveStatus(models.Model):
-    STATE_NAMES = sorted([(abbrev.upper(), name)
-                         for abbrev, name in settings.STATE_NAMES.items()],
-                         key=lambda x: x[1])
+    """A list of states that have designated a plant as being invasive or
+    prohibited from being sold. Note that we store the lowercase state codes.
+
+    """
+
+    STATE_NAMES = sorted(settings.STATE_NAMES.items())
 
     taxon = models.ForeignKey(Taxon, related_name='invasive_statuses')
     region = models.CharField(choices=STATE_NAMES, max_length=80)

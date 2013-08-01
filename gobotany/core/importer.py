@@ -301,6 +301,7 @@ class Importer(object):
         pile_species_table = db.table('core_pile_species')
         commonname_table = db.table('core_commonname')
         synonym_table = db.table('core_synonym')
+        invasivestatus_table = db.table('core_invasivestatus')
 
         pile_map = db.map('core_pile', 'slug', 'id')
 
@@ -452,6 +453,34 @@ class Importer(object):
                         full_name=name,
                         )
 
+            # Add invasive statuses. Note that pipe_split returns a
+            # list of lowercase state codes, e.g. ['ct', 'vt']
+
+            invasive_state_codes = pipe_split(
+                row['invasive_in_which_states']
+                )
+            for state_code in invasive_state_codes:
+                invasivestatus_table.get(
+                    taxon_id=taxon_proxy_id,
+                    region=state_code,
+                    ).set(
+                    invasive_in_region=True
+                    )
+
+            # Add prohibited statuses.
+
+            prohibited_state_codes = pipe_split(
+                row['prohibited_from_sale_states']
+                )
+            for state_code in prohibited_state_codes:
+                invasivestatus_table.get(
+                    taxon_id=taxon_proxy_id,
+                    region=state_code,
+                    ).set(
+                    prohibited_from_sale=True
+                    )
+        
+
         # Write out the tables.
         family_table.save()
         family_map = db.map('core_family', 'name', 'id')
@@ -470,6 +499,8 @@ class Importer(object):
         commonname_table.save(delete_old=True)
         synonym_table.replace('taxon_id', taxon_map)
         synonym_table.save(delete_old=True)
+        invasivestatus_table.replace('taxon_id', taxon_map)
+        invasivestatus_table.save(delete_old=True)
 
     def import_families(self, db, family_file):
         """Load botanic families from a CSV file"""
