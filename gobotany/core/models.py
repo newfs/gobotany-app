@@ -776,8 +776,6 @@ class ConservationStatus(models.Model):
     s_rank = models.CharField(max_length=10)
     endangerment_code = models.CharField(max_length=10)
     allow_public_posting = models.BooleanField(default=True)
-    invasive_in_region = models.NullBooleanField(default=None)
-    prohibited_from_sale = models.NullBooleanField(default=None)
 
     class Meta:
         ordering = ('taxon', 'variety_subspecies_hybrid', 'region')
@@ -788,6 +786,31 @@ class ConservationStatus(models.Model):
         return u'%s %s in %s: %s %s' % (self.taxon.scientific_name,
             self.variety_subspecies_hybrid, self.region, self.s_rank,
             self.endangerment_code)
+
+    def region_name(self):
+        """Return the human-readable name for a region."""
+        return settings.STATE_NAMES[self.region.lower()]
+
+
+class InvasiveStatus(models.Model):
+    STATE_NAMES = sorted([(abbrev.upper(), name)
+                         for abbrev, name in settings.STATE_NAMES.items()],
+                         key=lambda x: x[1])
+
+    taxon = models.ForeignKey(Taxon, related_name='invasive_statuses')
+    region = models.CharField(choices=STATE_NAMES, max_length=80)
+    invasive_in_region = models.NullBooleanField(default=None)
+    prohibited_from_sale = models.NullBooleanField(default=None)
+
+    class Meta:
+        ordering = ('taxon', 'region')
+        verbose_name = 'invasive status'
+        verbose_name_plural = 'invasive statuses'
+
+    def __unicode__(self):
+        return u'%s in %s: %s %s' % (self.taxon.scientific_name,
+            self.region, self.invasive_in_region,
+            self.prohibited_from_sale)
 
     def region_name(self):
         """Return the human-readable name for a region."""
