@@ -290,3 +290,7 @@ if IN_PRODUCTION:
 AGREED_TO_TERMS_GROUP = 'Agreed to PlantShare Terms'
 
 ADMINS = (('Go Botany Dev', 'gobotanydev@newenglandwild.org'), )
+
+# https://docs.djangoproject.com/en/1.5/ref/settings/#secure-proxy-ssl-header
+# Use SSL
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
