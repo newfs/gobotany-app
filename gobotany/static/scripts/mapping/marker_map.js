@@ -147,14 +147,14 @@ define([
     MarkerMap.prototype.add_landmark_marker = function (latitude, longitude,
                                                         title) {
         // Create a marker in a secondary color to mark a landmark.
-        var PROTOCOL = 'http://';
-        var pin_image = new google_maps.MarkerImage(PROTOCOL +
+        var BASE = '//';   // base for protocol-relative URL
+        var pin_image = new google_maps.MarkerImage(BASE +
             location.host + "/static/images/icons/marker-pin-gray.png",
             new google.maps.Size(20, 34),
             new google.maps.Point(0, 0),
             new google.maps.Point(10, 34)
         );
-        var pin_shadow = new google_maps.MarkerImage(PROTOCOL +
+        var pin_shadow = new google_maps.MarkerImage(BASE +
             location.host + "/static/images/icons/marker-pin-shadow.png",
             new google.maps.Size(40, 37),
             new google.maps.Point(0, 0),
