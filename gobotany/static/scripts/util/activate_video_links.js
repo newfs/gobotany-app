@@ -14,7 +14,7 @@ require([
                 var start = this.href.lastIndexOf('/') + 1;
                 var end = this.href.indexOf('?');
                 var video_id = this.href.substring(start, end);
-                var youtube_app_url = 'http://www.youtube.com/v/' + video_id;
+                var youtube_app_url = '//www.youtube.com/v/' + video_id;
                 this.href = youtube_app_url;
             }
             else {

@@ -207,21 +207,21 @@ div.scrollableArea { position: relative; width: auto; height: 100%; }
 /* Go Botany common definitions */
 /* for gradient, etc. */
 /* Web fonts: style-linked groups */
-@font-face { font-family: ScalaSans; src: url(http://newfs.s3.amazonaws.com/fonts/ScalaSansWeb.woff) format("woff"); }
+@font-face { font-family: ScalaSans; src: url(//newfs.s3.amazonaws.com/fonts/ScalaSansWeb.woff) format("woff"); }
 
-@font-face { font-family: ScalaSans; font-weight: bold; src: url(http://newfs.s3.amazonaws.com/fonts/ScalaSansWeb-Bold.woff) format("woff"); }
+@font-face { font-family: ScalaSans; font-weight: bold; src: url(//newfs.s3.amazonaws.com/fonts/ScalaSansWeb-Bold.woff) format("woff"); }
 
-@font-face { font-family: ScalaSans; font-style: italic; src: url(http://newfs.s3.amazonaws.com/fonts/ScalaSansWeb-Ita.woff) format("woff"); }
+@font-face { font-family: ScalaSans; font-style: italic; src: url(//newfs.s3.amazonaws.com/fonts/ScalaSansWeb-Ita.woff) format("woff"); }
 
-@font-face { font-family: ScalaSans; font-style: italic; font-weight: bold; src: url(http://newfs.s3.amazonaws.com/fonts/ScalaSansWeb-BoldIta.woff) format("woff"); }
+@font-face { font-family: ScalaSans; font-style: italic; font-weight: bold; src: url(//newfs.s3.amazonaws.com/fonts/ScalaSansWeb-BoldIta.woff) format("woff"); }
 
-@font-face { font-family: ScalaSansSmallCaps; src: url(http://newfs.s3.amazonaws.com/fonts/ScalaSansScWeb.woff) format("woff"); }
+@font-face { font-family: ScalaSansSmallCaps; src: url(//newfs.s3.amazonaws.com/fonts/ScalaSansScWeb.woff) format("woff"); }
 
-@font-face { font-family: ScalaSansSmallCaps; font-weight: bold; src: url(http://newfs.s3.amazonaws.com/fonts/ScalaSansScWeb-Bold.woff) format("woff"); }
+@font-face { font-family: ScalaSansSmallCaps; font-weight: bold; src: url(//newfs.s3.amazonaws.com/fonts/ScalaSansScWeb-Bold.woff) format("woff"); }
 
-@font-face { font-family: ScalaSansSmallCaps; font-style: italic; src: url(http://newfs.s3.amazonaws.com/fonts/ScalaSansScWeb-Ita.woff) format("woff"); }
+@font-face { font-family: ScalaSansSmallCaps; font-style: italic; src: url(//newfs.s3.amazonaws.com/fonts/ScalaSansScWeb-Ita.woff) format("woff"); }
 
-@font-face { font-family: ScalaSansSmallCaps; font-style: italic; font-weight: bold; src: url(http://newfs.s3.amazonaws.com/fonts/ScalaSansScWeb-BoldIta.woff) format("woff"); }
+@font-face { font-family: ScalaSansSmallCaps; font-style: italic; font-weight: bold; src: url(//newfs.s3.amazonaws.com/fonts/ScalaSansScWeb-BoldIta.woff) format("woff"); }
 
 .orange-button, body.plantshare .image-modal a.button, body.plantshare#ask #main .submit, body.plantshare#plantshare #ask .submit, #dkey #main .offer-help-aside a.button, #dkey #main ul.couplets a.button, #dkey #main a.show-all-button { background-color: #dc9402; /* for IE without gradient support */ border: 1px solid #dc9402 !important; color: white; cursor: pointer; display: inline-block; font-family: ScalaSans, "Trebuchet MS", Helvetica, Arial, "Lucida Sans Unicode", sans-serif; font-size: 12px; letter-spacing: 1px; line-height: 18px; min-width: 80px; padding: 4px 12px; text-align: center; text-decoration: none; -webkit-border-radius: 14px; -moz-border-radius: 14px; -ms-border-radius: 14px; -o-border-radius: 14px; border-radius: 14px; -webkit-box-shadow: 0px 1px 4px #a2a64d; -moz-box-shadow: 0px 1px 4px #a2a64d; box-shadow: 0px 1px 4px #a2a64d; background: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #dc9402), color-stop(40%, #f0b448), color-stop(100%, #dc9402)); background: -webkit-linear-gradient(top, #dc9402 0%, #f0b448 40%, #dc9402 100%); background: -moz-linear-gradient(top, #dc9402 0%, #f0b448 40%, #dc9402 100%); background: -o-linear-gradient(top, #dc9402 0%, #f0b448 40%, #dc9402 100%); background: linear-gradient(top, #dc9402 0%, #f0b448 40%, #dc9402 100%); }
 .orange-button:hover, body.plantshare .image-modal a.button:hover, body.plantshare#ask #main .submit:hover, body.plantshare#plantshare #ask .submit:hover, #dkey #main .offer-help-aside a.button:hover, #dkey #main ul.couplets a.button:hover, #dkey #main a.show-all-button:hover { background-color: #e29b0b; /* for IE without gradient support */ background: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #e29b0b), color-stop(32%, #f6be59), color-stop(50%, #f6be59), color-stop(100%, #e39d0e)); background: -webkit-linear-gradient(top, #e29b0b 0%, #f6be59 32%, #f6be59 50%, #e39d0e 100%); background: -moz-linear-gradient(top, #e29b0b 0%, #f6be59 32%, #f6be59 50%, #e39d0e 100%); background: -o-linear-gradient(top, #e29b0b 0%, #f6be59 32%, #f6be59 50%, #e39d0e 100%); background: linear-gradient(top, #e29b0b 0%, #f6be59 32%, #f6be59 50%, #e39d0e 100%); }
