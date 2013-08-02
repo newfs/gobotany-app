@@ -1672,7 +1672,7 @@ body.search-results .search-navigation li { display: inline; margin: 0 2px; }
 .modal-wrap .inner { background: #fff; padding: 0 0 20px 0; }
 .modal-wrap .inner h4.heading, .modal-wrap .inner h3.heading { margin: 0; padding: 13px 0 0 20px; }
 .modal-wrap .inner h4.heading { font-size: 18px; }
-.modal-wrap .inner h3.heading { font-size: 24px; font-style: italic; margin-bottom: 0; margin-left: 245px; }
+.modal-wrap .inner h3.heading { font-size: 24px; font-style: italic; margin-bottom: 0; margin-left: 255px; }
 .modal-wrap .inner h3.heading span { color: #807121; font-size: 16px; font-style: normal; }
 .modal-wrap .inner p { font-size: 12px; margin: 0; padding: 4px 20px 0; }
 .modal-wrap #choices { padding: 10px 20px 0 20px; }
