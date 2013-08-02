@@ -3,7 +3,7 @@
     var callback = function () {},
         callbackName = 'gmapscallback' + (new Date()).getTime();
     window[callbackName] = callback;
-    define(['http://maps.googleapis.com/maps/api/js?sensor=false&callback=' +
+    define(['//maps.googleapis.com/maps/api/js?sensor=false&callback=' +
             callbackName], function () {
         return google.maps;
     });
