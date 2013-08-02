@@ -654,16 +654,33 @@ class Taxon(models.Model):
         return names
 
     def get_state_distribution_labels(self):
+        """For each state covered on the site, return a label indicating
+        the presence or absence of the species, and, where applicable,
+        any invasive status.
+        """
         states = [key.upper() for key in settings.STATE_NAMES.keys()]
-        records = Distribution.objects.filter(
+        distributions = Distribution.objects.filter(
             scientific_name=self.scientific_name).filter(
             state__in=states).values_list('state', 'present')
+        invasive_statuses = InvasiveStatus.objects.filter(
+            taxon=self).values_list('region', 'invasive_in_region',
+            'prohibited_from_sale')
+        invasive_dict = {state: (invasive, prohibited)
+            for state, invasive, prohibited in invasive_statuses}
         mapping = {settings.STATE_NAMES[state.lower()]: 'absent'
                    for state in states}
-        for state, present in records:
-            key = settings.STATE_NAMES[state.lower()]
+        for state, present in distributions:
             if present == True:
-                mapping[key] = 'present'
+                state = state.lower()
+                key = settings.STATE_NAMES[state]
+                label = 'present'
+                if state in invasive_dict.keys():
+                    invasive, prohibited = invasive_dict[state]
+                    if invasive:
+                        label += ', invasive'
+                    if prohibited:
+                        label += ', prohibited'
+                mapping[key] = label
         labels = odict(sorted(mapping.iteritems()))
         return labels
 
