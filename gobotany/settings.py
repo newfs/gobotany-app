@@ -294,3 +294,7 @@ ADMINS = (('Go Botany Dev', 'gobotanydev@newenglandwild.org'), )
 # https://docs.djangoproject.com/en/1.5/ref/settings/#secure-proxy-ssl-header
 # Use SSL
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+
+# https://docs.djangoproject.com/en/1.5/topics/security/#ssl-https
+SESSION_COOKIE_SECURE = True
+CSRF_COOKIE_SECURE = True
