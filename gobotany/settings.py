@@ -134,6 +134,7 @@ INSTALLED_APPS = [
     'captcha',
     ]
 MIDDLEWARE_CLASSES = (
+    'sslify.middleware.SSLifyMiddleware',
     'django.middleware.gzip.GZipMiddleware',
 
     ) + (('debug_toolbar.middleware.DebugToolbarMiddleware',)
