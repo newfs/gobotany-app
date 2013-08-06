@@ -134,13 +134,15 @@ INSTALLED_APPS = [
     'captcha',
     ]
 MIDDLEWARE_CLASSES = (
-    'sslify.middleware.SSLifyMiddleware',
+    ) + (('sslify.middleware.SSLifyMiddleware',)
+         if IN_PRODUCTION else ()) + (
+
+    'django.middleware.csrf.CsrfViewMiddleware',
     'django.middleware.gzip.GZipMiddleware',
 
     ) + (('debug_toolbar.middleware.DebugToolbarMiddleware',)
          if USE_DEBUG_TOOLBAR else ()) + (
 
-    'django.middleware.csrf.CsrfViewMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.locale.LocaleMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -296,6 +298,7 @@ ADMINS = (('Go Botany Dev', 'gobotanydev@newenglandwild.org'), )
 # Use SSL
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 
-# https://docs.djangoproject.com/en/1.5/topics/security/#ssl-https
-SESSION_COOKIE_SECURE = True
-CSRF_COOKIE_SECURE = True
+if IN_PRODUCTION:
+    # https://docs.djangoproject.com/en/1.5/topics/security/#ssl-https
+    SESSION_COOKIE_SECURE = True
+    CSRF_COOKIE_SECURE = True
