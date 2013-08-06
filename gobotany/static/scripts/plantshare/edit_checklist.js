@@ -4,8 +4,10 @@ define([
     'util/shadowbox_init',
     'util/formset',
     'util/suggester',
+    'plantshare/checklist_form',
     'plantshare/upload_modal'
-], function ($, jqueryUI, Shadowbox, formset, Suggester, upload_modal) {
+], function ($, jqueryUI, Shadowbox, formset, Suggester, ChecklistForm,
+             upload_modal) {
 
     var notes_modal = '' +
     '<div id="container" class="notes-modal">' +
@@ -23,29 +25,13 @@ define([
 
     $(document).ready(function() {
 
-        function set_tab_order() {
-            // Set the tab order on all existing checklist entry fields.
-            var num_fields = 6; // Number of fields per entry row
-            var next_index = 3; // The two previous: checklist name, comments
-            $('#checklist-fillout tbody tr').each(function () {
-                var field_selectors = ['td.name input', 'td.image a',
-                    'td.date-sighted input', 'td.location input',
-                    'td.date-posted input', 'td.note a.note-link'];
-                for (var i = 0; i < field_selectors.length; i += 1) {
-                    var $element = $(this).find(field_selectors[i]);
-                    $element.attr('tabindex', next_index);
-                    next_index += 1;
-                }
-            });
-        }
-
         formset.init({
             'formSelector': '#formset tr',
             'formTemplateSelector': '#form-template tr',
             'addLinkSelector': '.add-new-row',
             'removeLinkSelector': '.close-btn.row-btn',
             'canDelete': true,
-            'onAfterAddForm': set_tab_order
+            'onAfterAddForm': ChecklistForm.set_tab_order
         });
 
         $('body').on('focus', 'input.date-input', function() {
@@ -112,6 +98,6 @@ define([
         });
 
         // Set the tab order on the existing checklist entry rows.
-        set_tab_order();
+        ChecklistForm.set_tab_order();
     });
 });
