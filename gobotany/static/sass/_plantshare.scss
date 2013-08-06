@@ -112,11 +112,14 @@ body.plantshare {
     }
     .sign-up-call {
         clear: left;
+        padding: 12px 18px;
         width: $plantshare-main-column-width;
         ul {
             line-height: 18px;
-            list-style-position: inside;
             margin: 10px 0 0 24px;
+        }
+        li {
+            list-style-type: disc;
         }
         a {
             margin: 12px auto;
@@ -1507,6 +1510,7 @@ body.plantshare {
         .sign-up-call {
             width: auto;
             ul {
+                list-style-position: inside;
                 margin-left: 0;
             }
         }

@@ -1079,8 +1079,9 @@ body.plantshare form.login label { font-size: 10px; }
 body.plantshare form.login input { border-color: #317b0c; max-width: 246px; }
 body.plantshare form.login input.button { margin-top: 2px; width: 99px; }
 body.plantshare form.login a { float: right; font-family: "Trebuchet MS", Helvetica, Arial, "Lucida Sans Unicode", sans-serif; font-size: 11px; margin-top: 9px; padding-right: 1px; }
-body.plantshare .sign-up-call { clear: left; width: 475px; }
-body.plantshare .sign-up-call ul { line-height: 18px; list-style-position: inside; margin: 10px 0 0 24px; }
+body.plantshare .sign-up-call { clear: left; padding: 12px 18px; width: 475px; }
+body.plantshare .sign-up-call ul { line-height: 18px; margin: 10px 0 0 24px; }
+body.plantshare .sign-up-call li { list-style-type: disc; }
 body.plantshare .sign-up-call a { margin: 12px auto; width: 204px; }
 body.plantshare .notification { width: 475px; }
 body.plantshare .notification ul { line-height: 18px; list-style-position: inside; margin: 10px 0 0 24px; }
@@ -1393,7 +1394,7 @@ body.plantshare#screen-images div.form-control { margin: 0 30px; }
   body.plantshare#plantshare .profile a.edit { margin-top: 8px; }
   body.plantshare#plantshare .profile div { height: auto; }
   body.plantshare#plantshare .sign-up-call { width: auto; }
-  body.plantshare#plantshare .sign-up-call ul { margin-left: 0; }
+  body.plantshare#plantshare .sign-up-call ul { list-style-position: inside; margin-left: 0; }
   body.plantshare#plantshare .notification { width: auto; }
   body.plantshare#plantshare .notification ul { margin-left: 0; }
   body.plantshare.sighting form fieldset { width: auto; }
