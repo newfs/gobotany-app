@@ -22,6 +22,7 @@
                 'mapping/marker_map',
                 'mapping/place_parser',
                 'plantshare/ask_the_botanist',
+                'plantshare/checklist_form',
                 'plantshare/delete_checklist',
                 'plantshare/delete_sighting',
                 'plantshare/find_people',
