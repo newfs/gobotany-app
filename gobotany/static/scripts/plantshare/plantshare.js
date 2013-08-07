@@ -10,9 +10,5 @@ define([
         var sightings_locator_part =
             new SightingsLocatorPart('#sightings-locator');
         sightings_locator_part.setup();
-
-        $('.image-container .images').on('click', function () {
-            console.log('click: ', this());
-        });
     });
 });

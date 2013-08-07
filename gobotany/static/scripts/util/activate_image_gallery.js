@@ -44,9 +44,9 @@ require([
 
                 if (gallery_type !== undefined && gallery_type === 'link') {
                     // "Link" gallery: simple hyperlink on image
-                    caption = $(a).attr('title');
-                    console.log(caption);
-                    window.location.href = $(a).attr('href');
+                    if (a !== undefined) {
+                        window.location.href = $(a).attr('href');
+                    }
                 }
                 else {
                     // Default gallery type: lightboxed plant photo
