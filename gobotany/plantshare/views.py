@@ -382,6 +382,13 @@ def sighting_view(request, sighting_id):
             raise Http404
 
         SIGHTING_MAP_ZOOM = 14
+
+        photos = s.approved_photos()
+        if s.user == request.user:
+            # If the current user made this sighting, show the photos
+            # even if they have not yet been screened and approved.
+            photos = s.private_photos()
+
         sighting = {
             'id': s.id,
             'identification': s.identification,
@@ -391,7 +398,7 @@ def sighting_view(request, sighting_id):
             'user': s.user,
             'created': s.created.strftime(SIGHTING_DATE_TIME_FORMAT),
             'year': s.created.year,
-            'photos': s.private_photos()
+            'photos': photos
         }
         return render_to_response('sighting.html', {
                     'sighting': sighting,
