@@ -276,6 +276,11 @@ def sightings_view(request):
                 photo = ''
                 if sighting.approved_photos():
                     photo = sighting.approved_photos()[0]
+                elif sighting.user == request.user:
+                    # If there are approved photos yet, but the sighting
+                    # belongs to the current user, check for a photo to show.
+                    if sighting.private_photos():
+                        photo = sighting.private_photos()[0]
                 created = sighting.created.strftime(SIGHTING_DATE_DAY_FORMAT)
                 year = sighting.created.strftime('%Y')
                 sightings.append({
