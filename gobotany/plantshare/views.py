@@ -171,10 +171,20 @@ def plantshare_view(request):
 
     MAX_RECENT_SIGHTINGS = 20
     recent_sightings = []
-    sightings_with_approved_photos = Sighting.objects.filter(
-        photos__isnull=False, photos__is_approved=True).order_by(
-        '-created')
-    for sighting in sightings_with_approved_photos:
+    # Get the sightings with approved photos.
+    if profile:
+        # Also include any sightings the current user posted where the
+        # photos may not have been screened and approved yet (because
+        # it's always OK to show a user's own photos to that user).
+        sightings_with_photos = Sighting.objects.filter(
+            Q(photos__isnull=False, photos__is_approved=True) |
+            Q(photos__isnull=False, user=profile.user)).order_by('-created')
+    else:
+        sightings_with_photos = Sighting.objects.filter(
+            photos__isnull=False, photos__is_approved=True).order_by(
+            '-created')
+
+    for sighting in sightings_with_photos:
         may_show_sighting = _may_show_sighting(sighting, request.user)
         if may_show_sighting:
             recent_sightings.append(sighting)
