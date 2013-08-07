@@ -52,8 +52,8 @@ class SightingAdmin(admin.ModelAdmin):
     inlines = [SightingPhotoInline]
     exclude = ['photos']
     list_display = ('identification', 'location', 'display_name', 'created',
-        'flagged', 'approved')
-    list_filter = ('created', 'flagged', 'approved')
+        'visibility', 'flagged', 'approved')
+    list_filter = ('created', 'visibility', 'flagged', 'approved')
     search_fields = ('identification', 'location__city', 'location__state',)
 
     def display_name(self, obj):
