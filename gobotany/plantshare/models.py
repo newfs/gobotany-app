@@ -349,19 +349,6 @@ class Sighting(models.Model):
         return 'Sighting%s: %s at %s (user %d%s)' % (sighting_id,
             self.identification, self.location, self.user.id, created_at)
 
-    def save(self):
-        # If the plant is rare, ensure the visibility is set to private.
-        plant_list = restrictions(self.identification)
-        if plant_list:
-            sightings_restricted = False
-            for plant in plant_list:
-                if plant['sightings_restricted'] == True:
-                    sightings_restricted = True
-                    break
-            if sightings_restricted:
-                self.visibility = 'PRIVATE'
-        super(Sighting, self).save()
-
     def private_photos(self):
         '''Return photos which have either not been screened, or are screened
         and approved. This should only be used on views shown only to the user
