@@ -759,13 +759,10 @@ body.plantshare {
         #main > ul {
             margin-top: 14px;
             > li {
-                float: left;
                 margin-bottom: 14px;
                 ul {
-                    margin-left: 180px;
-                    margin-top: -20px;
                     li {
-                        clear: left;
+                        margin: 14px 0;
                     }
                 }
             }

@@ -1223,9 +1223,8 @@ body.plantshare .upload { display: inline-block; float: left; padding-bottom: 20
 body.plantshare#sightings .nav-links { font-family: "Trebuchet MS", Helvetica, Arial, "Lucida Sans Unicode", sans-serif; font-size: 14px; margin: 0 0 16px; }
 body.plantshare#sightings h2 { clear: both; }
 body.plantshare#sightings #main > ul { margin-top: 14px; }
-body.plantshare#sightings #main > ul > li { float: left; margin-bottom: 14px; }
-body.plantshare#sightings #main > ul > li ul { margin-left: 180px; margin-top: -20px; }
-body.plantshare#sightings #main > ul > li ul li { clear: left; }
+body.plantshare#sightings #main > ul > li { margin-bottom: 14px; }
+body.plantshare#sightings #main > ul > li ul li { margin: 14px 0; }
 body.plantshare#sightings #main > ul img { max-width: 140px; vertical-align: middle; }
 body.plantshare#sightings #main > ul .photolink { border-bottom: 0; }
 body.plantshare#sightings #main > ul .title { margin-left: 150px; }
