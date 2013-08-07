@@ -2,19 +2,4 @@
 
     <li class="home">{% nav_item 'Home' site-home %}</li>
     <li class="simple">{% nav_item 'Simple Key' level1 'simple' %}</li>
-    {% comment %}
-    Omit a bunch of sections for this partner site.
-    {% if dev_features %}
-        {# Development navigation, linking to all as if released #}
-        <li class="plantshare">{% nav_item 'PlantShare' ps-main %}</li>
-        <li class="full">{% nav_item 'Full Key' level1 'full' %}</li>
-        <li class="dkey">{% nav_item 'Dichotomous Key' dkey %}</li>
-    {% else %}
-        {# Production navigation, with some features unreleased yet #}
-        <li class="plantshare">{% nav_item 'PlantShare' plantshare-placeholder %}</li>
-        <li class="full">{% nav_item 'Full Key' full-key-placeholder %}</li>
-        <li class="dkey">{% nav_item 'Dichotomous Key' dkey %}</li>
-    {% endif %}
-    <li class="teaching">{% nav_item 'Teaching' site-teaching %}</li>
-    {% endcomment %}
     <li class="help">{% nav_item 'Help' site-help %}</li>
