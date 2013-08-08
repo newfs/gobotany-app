@@ -1741,12 +1741,19 @@ header.partner-site nav li a { padding: 5px 32px 0; /* fewer sections, more hori
 @media only screen and (max-width: 600px) { body { margin: 0 auto; padding: 0; }
   body#home header nav #search-suggest .menu { top: 83px; }
   body#home footer .navigation ul.sections li.home a { background-color: #85c446; color: #000; }
+  body#home footer .navigation ul.sections li.home a::after { border-color: #666; }
   body.simple footer .navigation ul.sections li.simple a { background-color: #85c446; color: #000; }
+  body.simple footer .navigation ul.sections li.simple a::after { border-color: #666; }
   body.plantshare footer .navigation ul.sections li.plantshare a { background-color: #85c446; color: #000; }
+  body.plantshare footer .navigation ul.sections li.plantshare a::after { border-color: #666; }
   body.full footer .navigation ul.sections li.full a { background-color: #85c446; color: #000; }
+  body.full footer .navigation ul.sections li.full a::after { border-color: #666; }
   body.dkey footer .navigation ul.sections li.dkey a { background-color: #85c446; color: #000; }
+  body.dkey footer .navigation ul.sections li.dkey a::after { border-color: #666; }
   body.teaching footer .navigation ul.sections li.teaching a { background-color: #85c446; color: #000; }
+  body.teaching footer .navigation ul.sections li.teaching a::after { border-color: #666; }
   body.help footer .navigation ul.sections li.help a { background-color: #85c446; color: #000; }
+  body.help footer .navigation ul.sections li.help a::after { border-color: #666; }
   #breadcrumb { font-size: 11px; margin: 6px 0; }
   #breadcrumb li { display: inline-block; height: 32px; list-style-type: none; margin: 0 2px 0 0; }
   #breadcrumb .label, #breadcrumb .this-page { display: none; /* Hide 'You are Here' and current page title */ }
@@ -1780,7 +1787,7 @@ header.partner-site nav li a { padding: 5px 32px 0; /* fewer sections, more hori
   footer .navigation > ul.sections li:after { content: none; }
   footer .navigation > ul.sections li a { background: #317b0c; color: #fff; display: block; font-family: "Trebuchet MS", Helvetica, Arial, "Lucida Sans Unicode", sans-serif; font-size: 14px; padding: 14px 14px; position: relative; text-decoration: none; }
   footer .navigation > ul.sections li a[href] { color: #fff; }
-  footer .navigation > ul.sections li a[href]:after { content: " >"; font-weight: bold; position: absolute; right: 14px; }
+  footer .navigation > ul.sections li a[href]::after { border-color: #ccc; border-style: solid; border-width: 3px 3px 0 0; content: " \a0"; display: inline-block; height: 6px; position: absolute; right: 14px; top: 16px; vertical-align: middle; width: 6px; -webkit-transform: rotate(45deg); -moz-transform: rotate(45deg); -ms-transform: rotate(45deg); -o-transform: rotate(45deg); transform: rotate(45deg); }
   footer .navigation > ul.sections + h6 { /* "Legal:" label */ display: none; }
   footer .navigation > h6:nth-of-type(2) { margin: 14px 14px 4px 71px; }
   footer .navigation > h6:nth-of-type(2):after { content: ":"; }
