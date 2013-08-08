@@ -180,6 +180,13 @@ define([
                     $(this).attr('disabled', false);
                 }
             });
+
+            // On a new sighting, automatically set the visibility back to
+            // its default. Skip this when editing a sighting so as to
+            // not be tricky with data that the user already saved.
+            if (window.location.href.indexOf('/new/') > -1) {
+                $('#id_visibility').val('PUBLIC');
+            }
         }
 
         enable_disable_submit_button();
