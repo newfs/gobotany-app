@@ -68,6 +68,8 @@
             <p class="restricted hidden">Rare plant. Only you and
             staff will see this sighting.</p>
         </div>
+        {{ form.flagged.as_hidden }}
+        {{ form.approved.as_hidden }}
 
         {% if edit %}
             <input type="submit" class="save-btn orange-button caps"

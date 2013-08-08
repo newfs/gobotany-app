@@ -170,7 +170,16 @@ define([
                     height: 400,
                     width: 320
                 });
+
+                // Reset the hidden "approved" field so that upon a
+                // significant change to a sighting, new approval will be
+                // needed. Reset this only after showing the dialog, which
+                // means that the plant or location was edited.
+                $('#id_approved').val('False');
             }
+
+            // Set the hidden "flagged" field to mark for admin. review.
+            $('#id_flagged').val('True');
         }
         else {
             // Hide messages and unrestrict visibility options.
@@ -187,6 +196,11 @@ define([
             if (window.location.href.indexOf('/new/') > -1) {
                 $('#id_visibility').val('PUBLIC');
             }
+
+            // Reset the hidden "flagged" and "approved" fields: admin.
+            // review is not needed.
+            $('#id_flagged').val('False');
+            $('#id_approved').val('False');
         }
 
         enable_disable_submit_button();

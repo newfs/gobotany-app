@@ -89,6 +89,14 @@ class SightingForm(forms.Form):
     )
     visibility = forms.ChoiceField(choices=SIGHTING_VISIBILITY_CHOICES,
                                    initial=SIGHTING_DEFAULT_VISIBILITY)
+    flagged = forms.BooleanField(
+        required=False,
+        initial=False
+    )
+    approved = forms.BooleanField(
+        required=False,
+        initial=False
+    )
 
 
 class QuestionForm(forms.Form):
