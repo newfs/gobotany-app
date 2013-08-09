@@ -3,7 +3,6 @@ from django.contrib import admin
 
 from gobotany.plantshare import models
 
-
 class QuestionAdminForm(forms.ModelForm):
     question = forms.CharField(
         widget=forms.Textarea(attrs={'rows':3, 'cols':80})
@@ -68,7 +67,20 @@ class SightingAdmin(admin.ModelAdmin):
 
 
 class ScreenedImageAdmin(admin.ModelAdmin):
-    pass
+    list_display = ('image_type', 'uploaded', 'uploaded_by',
+        'email', 'screened', 'screened_by', 'is_approved', 'admin_thumb')
+    list_filter = ('is_approved',)
+    list_editable = ('is_approved',)
+
+    def email(self, obj):
+        return obj.uploaded_by.email
+
+    def admin_thumb(self, obj):
+        """Show thumbnails. Doing this, because ImageKit's AdminThumbnail
+        would not render."""
+        return '<img src="%s">' % (obj.thumb_cropped.url)
+    admin_thumb.short_description = 'Thumbnail'
+    admin_thumb.allow_tags = True
 
 
 admin.site.register(models.Question, QuestionAdmin)
