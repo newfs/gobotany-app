@@ -4,7 +4,13 @@
     {% include "_login_form.html" %}
     <div>
         <a href="#">
-            {% facebook_button %}
+            {% comment %}
+            Use our own copy of the button (rather than the
+            facebook_button template tag) in order to serve it over HTTPS.
+            {% endcomment %}
+            <input onclick="facebook_connect()" type="image"
+                src="//{{ request.META.HTTP_HOST }}/static/images/layout/connect_light_large_long.gif"
+                alt="Facebook Connect">
         </a>
     </div>
 </div>
