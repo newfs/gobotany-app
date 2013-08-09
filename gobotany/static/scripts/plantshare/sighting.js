@@ -13,8 +13,9 @@ define([
         if (results[0]) {
             var first_result = results[0];
 
-            var latitude = first_result.geometry.location.jb;
-            var longitude = first_result.geometry.location.kb;
+            var loc = first_result.geometry.location; // a Google Maps LatLng
+            var latitude = loc.lat();
+            var longitude = loc.lng();
             var title = first_result.formatted_address;
 
             // If this location differs from the sighting location,
