@@ -9,13 +9,13 @@
 define([
     'bridge/jquery',
     'bridge/jquery.cookie',
-    'mapping/google_maps'
-], function ($, x1, google_maps) {
+    'mapping/google_maps',
+    'markerclusterer',
+], function ($, x1, google_maps, MarkerClusterer) {
 
     // Constructor
     function MarkerMap(map_div, cookie_names) {
         var DEFAULT_ZOOM_LEVEL = 6;
-
         // Set limits for latitude and longitude roughly corresponding to
         // North America. Upon restoring the map location, if the
         // location is found to be out of these limits, the default
@@ -24,6 +24,8 @@ define([
         var MAX_LATITUDE = 60;
         var MIN_LONGITUDE = -128;
         var MAX_LONGITUDE = -53;
+
+        this.use_marker_clusterer = true;
 
         this.$map_div = $(map_div);
         this.map_id = this.$map_div.attr('id');
@@ -78,6 +80,7 @@ define([
         this.last_viewed_cookie_name = cookie_names['last_viewed'];
         this.center_title = this.$map_div.attr('data-center-title');
         this.map = null;
+        this.marker_clusterer = null;
         this.info_window = null;    // InfoWindow: marker pop-up
         this.markers = [];
     };
@@ -94,6 +97,37 @@ define([
             }
         };
         this.map = new google_maps.Map(this.$map_div.get(0), map_options);
+
+        if (this.use_marker_clusterer === true) {
+            var BASE = '//';   // base for protocol-relative URL
+            var host = location.host;
+            var sizes = [53, 56, 66, 78, 90];
+            var mc_options = {
+                styles: [{
+                    height: sizes[0],
+                    url: BASE + host + '/static/images/icons/m1.png',
+                    width: sizes[0]
+                }, {
+                    height: sizes[1],
+                    url: BASE + host + '/static/images/icons/m2.png',
+                    width: sizes[1]
+                }, {
+                    height: sizes[2],
+                    url: BASE + host + '/static/images/icons/m3.png',
+                    width: sizes[2]
+                }, {
+                    height: sizes[3],
+                    url: BASE + host + '/static/images/icons/m4.png',
+                    width: sizes[3]
+                }, {
+                    height: sizes[4],
+                    url: BASE + host + '/static/images/icons/m5.png',
+                    width: sizes[4]
+                }
+            ]};
+            this.marker_clusterer = new MarkerClusterer(this.map, [],
+                mc_options);
+        }
 
         // When the user moves the map around, store the location center.
         var center_cookie_name = this.center_cookie_name;
@@ -123,10 +157,16 @@ define([
     };
 
     MarkerMap.prototype.clear_markers = function () {
-        // Clear the stored array of markers to clear them from the map.
-        if (this.markers) {
-            for (i in this.markers) {
-                this.markers[i].setMap(null);
+        if (this.use_marker_clusterer === true) {
+            // Clear the markers from the marker clusterer.
+            this.marker_clusterer.clearMarkers();
+        }
+        else {
+            // Clear the stored array of markers to clear them from the map.
+            if (this.markers) {
+                for (i in this.markers) {
+                    this.markers[i].setMap(null);
+                }
             }
         }
     };
@@ -160,13 +200,17 @@ define([
             new google.maps.Point(0, 0),
             new google.maps.Point(12, 35)
         );
-        var marker = new google_maps.Marker({
+        var options = {
             position: new google_maps.LatLng(latitude, longitude), 
-            map: this.map,
+            //map: this.map,
             icon: pin_image,
             shadow: pin_shadow,
             title: title
-        });
+        };
+        if (this.use_marker_clusterer === false) {
+            options.map = this.map;
+        }
+        var marker = new google_maps.Marker(options);
 
         // Show title in an information popup upon clicking the marker.
         var info_window = this.info_window;
@@ -175,21 +219,30 @@ define([
             info_window.open(this.map, marker);
         });
 
-        this.markers.push(marker);
+        if (this.use_marker_clusterer === true) {
+            // Add the marker to the marker clusterer.
+            this.marker_clusterer.addMarker(marker);
+        }
+        else {
+            // Add the marker to the array of markers that must be kept in
+            // order to be able to clear all markers.
+            this.markers.push(marker);
+        }
     };
 
     MarkerMap.prototype.add_marker = function (latitude, longitude, title,
                                                info_window_html, sighting_id,
                                                show_info) {
-        // Create a marker and add it to the array of markers that must
-        // be kept in order to be able to clear all markers.
+        // Create a marker.
         var lat_long = new google_maps.LatLng(latitude, longitude);
-        var marker = new google_maps.Marker({
+        var options = {
             position: lat_long,
-            map: this.map,
             title: title
-        });
-        this.markers.push(marker);
+        };
+        if (this.use_marker_clusterer === false) {
+            options.map = this.map;
+        }
+        var marker = new google_maps.Marker(options);
 
         // Allow for showing an information popup upon clicking a marker.
         var info_window = this.info_window;
@@ -206,6 +259,16 @@ define([
             info_window.setContent(info_window_html);
             info_window.open(this.map, marker);
             save_last_viewed(sighting_id, cookie_name);
+        }
+
+        if (this.use_marker_clusterer === true) {
+            // Add the marker to the marker clusterer.
+            this.marker_clusterer.addMarker(marker);
+        }
+        else {
+            // Add the marker to the array of markers that must be kept in
+            // order to be able to clear all markers.
+            this.markers.push(marker);
         }
     };
 
