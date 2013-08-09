@@ -33,6 +33,7 @@ define([
         var map_div = $('.map').first();
         var cookie_names = {};
         marker_map = new MarkerMap(map_div, cookie_names);
+        marker_map.use_marker_clusterer = false;
         marker_map.setup();
         
         // Add the primary marker for the sighting.
