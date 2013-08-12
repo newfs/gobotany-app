@@ -10,6 +10,7 @@ requirements = [
     'django-haystack==2.4.0',
     'django-imagekit==3.2.6',
     'django-tinymce',
+    'inflect',
     'lxml',
     'psycopg2>=2.4.5',
     'python-memcached',
