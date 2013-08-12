@@ -39,38 +39,39 @@ class LookalikeItemNode(template.Node):
 @register.simple_tag
 def s_rank_label(code):
     label = code
-    if code.startswith('S1'):
-        label = 'extremely rare'
-    elif code.startswith('S1S2'):
+    if code.startswith('S1S2'):
         label = 'extremely rare to rare'
     elif code.startswith('S1S3'):
         label = 'extremely rare to uncommon'
-    elif code.startswith('S2'):
-        label = 'rare'
+    elif code.startswith('S1'):   # must come last of all that begin with S1
+        label = 'extremely rare'
     elif code.startswith('S2S3'):
         label = 'rare to uncommon'
     elif code.startswith('S2S4'):
         label = 'rare to fairly widespread'
-    elif code.startswith('S3'):
-        label = 'uncommon'
+    elif code.startswith('S2'):   # must come last of all that begin with S2
+        label = 'rare'
     elif code.startswith('S3S4'):
         label = 'uncommon to fairly widespread'
     elif code.startswith('S3S5'):
         label = 'uncommon to widespread'
+    elif code.startswith('S3'):   # must come last of all that begin with S3
+        label = 'uncommon'
     elif code.startswith('S4'):
         label = 'fairly widespread'
     elif code.startswith('S5'):
         label = 'widespread'
-    elif code == 'SH':
+    elif code.startswith('SH'):
         label = 'historical'
-    elif code == 'SNA':
+    elif code.startswith('SNA'):
         label = 'not applicable'
-    elif code == 'SNR':
+    elif code.startswith('SNR'):
         label = 'unranked'
-    elif code == 'SU':
+    elif code.startswith('SU'):
         label = 'unrankable'
-    elif code == 'SX':
+    elif code.startswith('SX'):
         label = 'extirpated'
+
     if code.endswith('?'):
         label += ' (uncertain)'
     return label

@@ -5,6 +5,8 @@ import os
 import re
 import unittest
 
+from collections import OrderedDict
+
 from django.db import connection
 from django.forms import ValidationError
 from django.test import TestCase
@@ -478,91 +480,44 @@ class ImportTestCase(TestCase):
         self.assertEqual('Leaf disposition', friendly_name)
 
 
-class StateStatusTestCase(TestCase):
+class StateDistributionLabelsTestCase(TestCase):
 
-    DISTRIBUTION = ['MA', 'VT']
-
-    def test_get_state_status_is_present(self):
+    def setUp(self):
+        self.db = bulkup.Database(connection)
         im = importer.Importer()
-        status = im._get_state_status('MA', self.DISTRIBUTION)
-        self.assertEqual('present', ', '.join(status))
+        im.import_partner_sites(self.db)
+        im.import_pile_groups(self.db,
+            importer.PlainFile('.', testdata('pile_group_info.csv')))
+        im.import_piles(self.db,
+            importer.PlainFile('.', testdata('pile_info.csv')))
+        im.import_taxa(self.db,
+            importer.PlainFile('.', testdata('taxa.csv')))
+        im.import_distributions(
+            importer.PlainFile('.', testdata('dist_north_america.csv')))
 
-    def test_get_state_status_is_absent(self):
-        im = importer.Importer()
-        status = im._get_state_status('CT', self.DISTRIBUTION)
-        self.assertEqual('absent', ', '.join(status))
+    def test_get_state_distribution_labels_all_present(self):
+        taxon = models.Taxon.objects.get(scientific_name='Acer rubrum')
+        expected = OrderedDict()
+        expected[u'Connecticut'] = 'present'
+        expected[u'Maine'] = 'present'
+        expected[u'Massachusetts'] = 'present'
+        expected[u'New Hampshire'] = 'present'
+        expected[u'Rhode Island'] = 'present'
+        expected[u'Vermont'] = 'present'
+        labels = taxon.get_state_distribution_labels()
+        self.assertEqual(labels, expected)
 
-    def test_get_state_status_is_absent_and_has_conservation_status(self):
-        # Exclude extinct status ('X') from this list; it is an exception
-        # and has its own test.
-        im = importer.Importer()
-        status_codes = ['E', 'T', 'SC', 'SC*', 'H', 'C']
-        for status_code in status_codes:
-            status = im._get_state_status('CT', self.DISTRIBUTION,
-                conservation_status_code=status_code)
-            self.assertEqual('absent', ', '.join(status))
-
-    def test_get_state_status_is_endangered(self):
-        im = importer.Importer()
-        status = im._get_state_status('MA', self.DISTRIBUTION,
-                                      conservation_status_code='E')
-        self.assertEqual('present, endangered', ', '.join(status))
-
-    def test_get_state_status_is_threatened(self):
-        im = importer.Importer()
-        status = im._get_state_status('MA', self.DISTRIBUTION,
-                                      conservation_status_code='T')
-        self.assertEqual('present, threatened', ', '.join(status))
-
-    def test_get_state_status_has_special_concern(self):
-        im = importer.Importer()
-        status_codes = ['SC', 'SC*']
-        for status_code in status_codes:
-            status = im._get_state_status('MA', self.DISTRIBUTION,
-                conservation_status_code=status_code)
-            self.assertEqual('present, special concern', ', '.join(status))
-
-    def test_get_state_status_is_historic(self):
-        im = importer.Importer()
-        status = im._get_state_status('MA', self.DISTRIBUTION,
-                                      conservation_status_code='H')
-        self.assertEqual('present, historic', ', '.join(status))
-
-    def test_get_state_status_is_extirpated(self):
-        # Extinct status ('X') is mapped to 'extipated.'
-        im = importer.Importer()
-        status = im._get_state_status('ME', self.DISTRIBUTION,
-                                      conservation_status_code='X')
-        self.assertEqual('extirpated', ', '.join(status))
-        # Extirpated should appear alone even if the plant is marked present.
-        status = im._get_state_status('MA', self.DISTRIBUTION,
-                                      conservation_status_code='X')
-        self.assertEqual('extirpated', ', '.join(status))
-
-    def test_get_state_status_is_rare(self):
-        im = importer.Importer()
-        status = im._get_state_status('MA', self.DISTRIBUTION,
-                                      conservation_status_code='C')
-        self.assertEqual('present, rare', ', '.join(status))
-
-    def test_get_state_status_is_invasive(self):
-        im = importer.Importer()
-        status = im._get_state_status('MA', self.DISTRIBUTION,
-                                      is_invasive=True)
-        self.assertEqual('present, invasive', ', '.join(status))
-
-    def test_get_state_status_is_invasive_and_prohibited(self):
-        im = importer.Importer()
-        status = im._get_state_status('MA', self.DISTRIBUTION,
-                                      is_invasive=True,
-                                      is_prohibited=True)
-        self.assertEqual('present, invasive, prohibited', ', '.join(status))
-
-    def test_get_state_status_is_absent_and_prohibited(self):
-        im = importer.Importer()
-        status = im._get_state_status('ME', self.DISTRIBUTION,
-                                      is_prohibited=True)
-        self.assertEqual('absent, prohibited', ', '.join(status))
+    def test_get_state_distribution_labels_mixed(self):
+        taxon = models.Taxon.objects.get(scientific_name='Carex kobomugi')
+        expected = OrderedDict()
+        expected[u'Connecticut'] = 'absent'
+        expected[u'Maine'] = 'absent'
+        expected[u'Massachusetts'] = 'present, invasive, prohibited'
+        expected[u'New Hampshire'] = 'absent'
+        expected[u'Rhode Island'] = 'present'
+        expected[u'Vermont'] = 'absent'
+        labels = taxon.get_state_distribution_labels()
+        self.assertEqual(labels, expected)
 
 
 class StripTaxonomicAuthorityTestCase(TestCase):
