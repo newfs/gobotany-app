@@ -1,4 +1,5 @@
 import hashlib
+import inflect
 import json
 from collections import defaultdict
 from operator import itemgetter
@@ -26,6 +27,9 @@ from gobotany.core.questions import get_questions
 from gobotany.mapping.map import (NewEnglandPlantDistributionMap,
                                   NorthAmericanPlantDistributionMap,
                                   UnitedStatesPlantDistributionMap)
+
+
+inflector = inflect.engine()
 
 
 def jsonify(value, headers=None, indent=1):
@@ -93,7 +97,12 @@ def glossary_blob(request):
     """
     glossaryterms = list(GlossaryTerm.objects.filter(highlight=True)
                          .extra(where=['CHAR_LENGTH(term) > 2']))
-    definitions = { gt.term: gt.lay_definition for gt in glossaryterms }
+
+    definitions = {}
+    for gt in glossaryterms:
+        gt.plural = inflector.plural(gt.term)
+        definitions[gt.term] = gt.lay_definition
+        definitions[gt.plural] = gt.lay_definition
 
     # Calling gt.image.url is very slow, because this is Django, so we
     # only do it once; this will work fine as long as we do not start
@@ -110,8 +119,12 @@ def glossary_blob(request):
             except ValueError:  # Image not found in storage.
                 pass
 
-    images = { gt.term: prefix + gt.image_path for gt in glossaryterms
-               if gt.image_path is not None and prefix is not None }
+    images = {}
+    for gt in glossaryterms:
+        if gt.image_path is None or prefix is None:
+            continue
+        images[gt.term] = prefix + gt.image_path
+        images[gt.plural] = prefix + gt.image_path
 
     return jsonify({'definitions': definitions, 'images': images})
 

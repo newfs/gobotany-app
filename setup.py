@@ -12,6 +12,7 @@ requirements = [
     'django-imagekit==2.0.2',
     'django-piston==0.2.2',
     'django-tinymce',
+    'inflect',
     'lxml',
     'psycopg2>=2.3',
     'python-memcached',
