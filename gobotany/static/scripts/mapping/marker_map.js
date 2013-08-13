@@ -94,7 +94,8 @@ define([
             mapTypeControl: true,
             mapTypeControlOptions: {
                 style: google_maps.MapTypeControlStyle.DROPDOWN_MENU
-            }
+            },
+            scaleControl: true
         };
         this.map = new google_maps.Map(this.$map_div.get(0), map_options);
 
