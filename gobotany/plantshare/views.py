@@ -1,7 +1,6 @@
 import csv
 
 from datetime import datetime
-from random import randint
 
 from django.conf import settings
 from django.contrib.auth.decorators import login_required, user_passes_test
