@@ -531,6 +531,8 @@ def edit_sighting_view(request, sighting_id):
         'notes': sighting.notes,
         'location': sighting.location.id, # Set foreign key of Location record
         'location_notes': sighting.location_notes,
+        'latitude': sighting.location.latitude,
+        'longitude': sighting.location.longitude,
         'visibility': sighting.visibility,
         'flagged': sighting.flagged,
         'approved': sighting.approved

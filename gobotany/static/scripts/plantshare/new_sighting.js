@@ -86,6 +86,24 @@ define([
         });
     });
 
+    function get_offset_coordinate(coordinate) {
+        // "Offset" a coordinate by a random minimum-to-maximum amount
+        // in either direction, in order to be able to produce map
+        // markers that avoid fully overlapping so can each be accessed.
+        var DEC_PLACES = 6;
+        var MIN_DEC_DEGREES = 0.0001; // approx. 25 ft. min. to keep markers
+                                      // from bunching up at center
+        var MAX_DEC_DEGREES = 0.001;  // approx. 250 ft. max.
+
+        var offset = (Math.random() *
+            MAX_DEC_DEGREES + MIN_DEC_DEGREES).toFixed(DEC_PLACES);
+        var plus_or_minus = Math.random() < 0.5 ? -1 : 1;
+        offset = offset * plus_or_minus;
+        var offset_coordinate = (coordinate + offset).toFixed(DEC_PLACES);
+
+        return offset_coordinate;
+    }
+
     function update_latitude_longitude(location, geocoder) {
         // Geocode the location unless it already looks like a pair of
         // coordinates.
@@ -107,8 +125,11 @@ define([
                 var lat_lng = geocoder.handle_response(results, status);
                 latitude = lat_lng.lat();
                 longitude = lat_lng.lng();
-                $('#id_latitude').val(latitude);
-                $('#id_longitude').val(longitude);
+                // Offset the coordinates slightly to avoid marker overlap.
+                var offset_latitude = get_offset_coordinate(latitude);
+                var offset_longitude = get_offset_coordinate(longitude);
+                $('#id_latitude').val(offset_latitude);
+                $('#id_longitude').val(offset_longitude);
             });
         }
     }
@@ -238,10 +259,7 @@ define([
         
         var initial_identification = $identification_box.val();
         var initial_location = $location_box.val();
-        // Set the latitude and longitude for any initial location value.
-        if (initial_location !== '') {
-            update_latitude_longitude(initial_location, geocoder);
-        }
+
         // Check the conservation status for any initial identification
         // value and location value.
         if (initial_identification !== '' && initial_location !== '') {
@@ -297,9 +315,13 @@ define([
             if (location !== '') {
                 var show_dialog = true;
                 if (location === initial_location) {
+                    // Location has not changed, so no need to geocode now.
                     show_dialog = false;
                 }
-                update_latitude_longitude(location, geocoder);
+                else {
+                    // Location has changed: geocode it if necessary.
+                    update_latitude_longitude(location, geocoder);
+                }
 
                 // Check visibility restrictions for the plant and location.
                 check_restrictions($identification_box.val(), location,
@@ -311,7 +333,7 @@ define([
                 var is_restricted = false;
                 var state = '';
                 set_visibility_restriction(is_restricted, state);
-                enable_submit_button(false);
+                enable_disable_submit_button(false);
             }
         });
         $location_box.on('keypress keyup', function (event) {
