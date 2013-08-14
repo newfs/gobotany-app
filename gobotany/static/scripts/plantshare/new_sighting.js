@@ -93,7 +93,7 @@ define([
         var DEC_PLACES = 6;
         var MIN_DEC_DEGREES = 0.0001; // approx. 25 ft. min. to keep markers
                                       // from bunching up at center
-        var MAX_DEC_DEGREES = 0.001;  // approx. 250 ft. max.
+        var MAX_DEC_DEGREES = 0.002;  // approx. 500 ft. max.
 
         var offset = (Math.random() *
             MAX_DEC_DEGREES + MIN_DEC_DEGREES).toFixed(DEC_PLACES);
