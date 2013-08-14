@@ -24,7 +24,7 @@ define([
         if (this.$location_map !== undefined) {
             this.update_map();
             this.$input_box.blur($.proxy(this.update_map, this));
-            this.$input_box.on('keypress keyup', $.proxy(function () {
+            this.$input_box.on('keypress keyup', $.proxy(function (event) {
                 if (event.which === 13) {   // Enter key
                     this.update_map();
                 }
