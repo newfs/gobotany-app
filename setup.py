@@ -2,7 +2,7 @@ from distutils.core import setup
 from setuptools import find_packages
 
 requirements = [
-    'django==1.5',
+    'django==1.5.2',
 
     'PIL',
     'South==0.7.6',
