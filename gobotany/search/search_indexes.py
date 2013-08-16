@@ -42,6 +42,7 @@ class BaseIndex(indexes.SearchIndex):
 
     url = indexes.CharField(use_template=True,
                             template_name='search_result_url.txt')
+    suggestions = indexes.CharField()
 
     def read_queryset(self):
         """Bypass `index_queryset()` when we just need to read a model.
@@ -56,6 +57,18 @@ class BaseIndex(indexes.SearchIndex):
         # Copied from base class index_queryset():
 
         return self.model._default_manager.all()
+
+    def prepare(self, obj):
+        """Prepare data for index.
+
+        We make the (spelling) suggestions field mirror the text field,
+        but without post-processing.
+        (see http://django-haystack.readthedocs.org/en/v1.2.7/installing_search_engines.html#spelling-suggestions)
+        """
+        prepared_data = super(BaseIndex, self).prepare(obj)
+        if 'text' in prepared_data:
+            prepared_data['suggestions'] = prepared_data['text']
+        return prepared_data
 
 
 class BaseRealTimeIndex(indexes.RealTimeSearchIndex):
