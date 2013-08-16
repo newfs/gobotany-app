@@ -42,7 +42,7 @@ class BaseIndex(indexes.SearchIndex):
 
     url = indexes.CharField(use_template=True,
                             template_name='search_result_url.txt')
-    suggestions = indexes.CharField()
+    textSpell = indexes.CharField()
 
     def read_queryset(self):
         """Bypass `index_queryset()` when we just need to read a model.
@@ -67,7 +67,7 @@ class BaseIndex(indexes.SearchIndex):
         """
         prepared_data = super(BaseIndex, self).prepare(obj)
         if 'text' in prepared_data:
-            prepared_data['suggestions'] = prepared_data['text']
+            prepared_data['textSpell'] = prepared_data['text']
         return prepared_data
 
 
