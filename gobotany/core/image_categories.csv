@@ -1,8 +1,13 @@
 Code,Category,Pile
 fl,"flowers, fl",Orchid monocots
 fr,"fruits, fr",Orchid monocots
-ha,"plant form, ha",Orchid monocots
+ha,"habit, ha",Orchid monocots
+pf,"plant form, pf",Orchid monocots
 in,"inflorescences, in",Orchid monocots
 le,"leaves, le",Orchid monocots
-co,comparison,Orchid monocots
-pc,protocorm,Orchid monocots
+co,"comparison, co",Orchid monocots
+pc,"protocorm, pc",Orchid monocots
+rh,"rhizome, rh",Orchid monocots
+in,"inflorescences, in",Orchid monocots
+st,"stem, st",Orchid monocots
+lf,"leaf, lf",Orchid monocots
