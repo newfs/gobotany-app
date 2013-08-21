@@ -1152,7 +1152,9 @@ class Importer(object):
         parts = pattern.split(filename)
         name = parts[0].split('-')
         image_type = parts[1][1:3]
-        photographer = parts[2].split('-')[0]
+        end_parts = parts[2].split('-')
+        photographer = end_parts[0]
+        rank = len(end_parts) > 1 and int(end_parts[1]) or None
         genus = name[0]
 
         # Support the use of underscores in filenames to indicate
@@ -1181,7 +1183,8 @@ class Importer(object):
         species = {'genus': genus,
                    'species': epithet,
                    'image_type': image_type,
-                   'photographer': photographer}
+                   'photographer': photographer,
+                   'rank': rank}
         return species
 
     def import_taxon_images(self, db):
@@ -1224,7 +1227,7 @@ class Importer(object):
         ls = gzip.GzipFile(fileobj=lsgz)
 
         count = 0
-        already_seen = set()
+        already_seen = {}
 
         for line in ls:
             image_path = re.split(' s3://\w+/', line)[1].strip()
@@ -1278,15 +1281,16 @@ class Importer(object):
             image_type_name = taxon_image_types[key]
             table_imagetype.get(name=image_type_name)
 
+            rank = species['rank']
+            rank_key = (taxon_id, image_type_name)
             # Arbitrarily promote the first image for each
             # species-type to Rank 1.
-
-            rank_key = (taxon_id, image_type_name)
-            if rank_key in already_seen:
-                rank = 2
-            else:
-                rank = 1
-                already_seen.add(rank_key)
+            if not rank or rank == 1 and already_seen.get(rank_key, None) == 1:
+                if rank_key in already_seen:
+                    rank = 2
+                else:
+                    rank = 1
+            already_seen[rank_key] = rank
 
             table_contentimage.get(
                 object_id = taxon_id,
