@@ -27,4 +27,4 @@ echo 'Running Solr in the background'
 
 cd $EXAMPLE
 rm -f nohup.out
-nohup java -jar start.jar "$@" &
+nohup java -jar start.jar "$@" > output.log 2>&1 &
