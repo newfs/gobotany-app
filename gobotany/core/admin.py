@@ -485,7 +485,7 @@ class ConservationStatusAdmin(admin.ModelAdmin):
         'endangerment_code', 'allow_public_posting')
     list_filter = ('region', 's_rank', 'endangerment_code',
         'allow_public_posting')
-
+    search_fields = ['taxon__scientific_name', 'variety_subspecies_hybrid',]
 
 class InvasiveStatusAdmin(admin.ModelAdmin):
     search_fields = ('taxon',)
