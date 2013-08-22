@@ -2,7 +2,8 @@
 
 import unittest
 
-from django.contrib.auth.models import User
+from django.conf import settings
+from django.contrib.auth.models import Group, User
 from django.test import TestCase
 from django.test.client import Client
 
@@ -14,15 +15,22 @@ from gobotany.plantshare.models import Location
 
 class PlantShareTests(FunctionalCase):
 
-    PLANTSHARE_BASE = '/ps'
+    PLANTSHARE_BASE = '/plantshare'
 
     TEST_USERNAME = 'test'
     TEST_EMAIL = 'test@test.com'
     TEST_PASSWORD = 'testpass'
 
     def setUp(self):
+        self.group, created = Group.objects.get_or_create(
+            name=settings.AGREED_TO_TERMS_GROUP)
+
         self.user = User.objects.create_user(
             self.TEST_USERNAME, self.TEST_EMAIL, self.TEST_PASSWORD)
+
+        # Add the test user to the "agreed to terms" group, so tests can
+        # run as if the user already accepted the PlantShare Terms.
+        self.group.user_set.add(self.user)
 
     def _get_plantshare(self, url_path, log_in=False, username=TEST_USERNAME,
                         password=TEST_PASSWORD):
@@ -236,11 +244,11 @@ class PlantShareTests(FunctionalCase):
 
     def test_registration_complete_page_title(self):
         self.assertEqual(self._page_title(self.REG_COMPLETE_URL),
-                         'Registration Complete: PlantShare: Go Botany')
+                         'Sign Up Complete: PlantShare: Go Botany')
 
     def test_registration_complete_page_main_heading(self):
         self.assertEqual(self._page_heading(self.REG_COMPLETE_URL),
-                                            'Registration Complete')
+                                            'Sign Up Complete')
 
     def test_registration_complete_page_has_plantshare_nav_item(self):
         self._get_plantshare(self.REG_COMPLETE_URL)
