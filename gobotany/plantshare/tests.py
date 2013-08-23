@@ -1,5 +1,6 @@
 """Basic PlantShare functional tests that do not require a browser."""
 
+import json
 import unittest
 
 from django.conf import settings
@@ -11,6 +12,8 @@ from selenium.common.exceptions import NoSuchElementException
 
 from gobotany.libtest import FunctionalCase
 
+from gobotany.core.models import (ConservationStatus, CommonName, Family,
+    Genus, Synonym, Taxon)
 from gobotany.plantshare.models import Location
 
 class PlantShareTests(FunctionalCase):
@@ -443,3 +446,150 @@ class LocationModelTests(TestCase):
         self.assertIsNone(location.postal_code)
         self.assertIsNone(location.latitude)
         self.assertIsNone(location.longitude)
+
+
+class SightingsRestrictionsTests(TestCase):
+
+    URL_BASE = '/plantshare/api/restrictions/?'
+
+    TEST_USERNAME = 'test'
+    TEST_EMAIL = 'test@test.com'
+    TEST_PASSWORD = 'testpass'
+
+    def setUp(self):
+        self.group, created = Group.objects.get_or_create(
+            name=settings.AGREED_TO_TERMS_GROUP)
+
+        self.user = User.objects.create_user(
+            self.TEST_USERNAME, self.TEST_EMAIL, self.TEST_PASSWORD)
+
+        # Add the test user to the "agreed to terms" group, so tests can
+        # run as if the user already accepted the PlantShare Terms.
+        self.group.user_set.add(self.user)
+
+        # Set up test data.
+
+        family = Family(name='TestFamily')
+        family.save()
+        genus = Genus(name='TestGenus', family=family)
+        genus.save()
+
+        taxon = Taxon(scientific_name='Calystegia spithamaea', family=family,
+            genus=genus)
+        taxon.save()
+        common_name = CommonName(common_name='upright false bindweed',
+            taxon=taxon)
+        common_name.save()
+        synonym = Synonym(scientific_name='Convolvulus spithamaeus',
+            full_name='Convolvulus spithamaeus L.', taxon=taxon)
+        synonym.save()
+
+        conservation_status = ConservationStatus(taxon=taxon, region='CT',
+            allow_public_posting=True)
+        conservation_status.save()
+
+        conservation_status = ConservationStatus(taxon=taxon, region='NH',
+            allow_public_posting=True)
+        conservation_status.save()
+
+        conservation_status = ConservationStatus(taxon=taxon, region='MA',
+            allow_public_posting=False)
+        conservation_status.save()
+
+        # From a bug fixed with Issue #526: a subsp., but without restriction
+        conservation_status = ConservationStatus(taxon=taxon, region='MA',
+            variety_subspecies_hybrid='ssp. spithamaea',
+            allow_public_posting=True)
+        conservation_status.save()
+
+        conservation_status = ConservationStatus(taxon=taxon, region='ME',
+            allow_public_posting=True)
+        conservation_status.save()
+
+        conservation_status = ConservationStatus(taxon=taxon, region='RI',
+            allow_public_posting=True)
+        conservation_status.save()
+
+        conservation_status = ConservationStatus(taxon=taxon, region='VT',
+            allow_public_posting=False)
+        conservation_status.save()
+
+    def _get_restrictions(self, url_params, username=TEST_USERNAME,
+            password=TEST_PASSWORD):
+        """Get a sightings restrictions API response."""
+        url = self.URL_BASE + url_params
+        client = Client()
+        client.login(username=username, password=password)
+        return client.get(url)
+
+    def test_restricted_scientific_name_new_england(self):
+        response = self._get_restrictions(
+            'plant=calystegia+spithamaea&location=Boston,%20MA')
+        json_object = json.loads(response.content)
+        self.assertTrue(json_object[0]['sightings_restricted'])
+
+    def test_restricted_scientific_name_new_england_2(self):
+        response = self._get_restrictions(
+            'plant=calystegia+spithamaea&location=Burlington,%20VT')
+        json_object = json.loads(response.content)
+        self.assertTrue(json_object[0]['sightings_restricted'])
+
+    def test_restricted_synonym_new_england(self):
+        response = self._get_restrictions(
+            'plant=convolvulus+spithamaeus&location=Boston,%20MA')
+        json_object = json.loads(response.content)
+        self.assertTrue(json_object[0]['sightings_restricted'])
+
+    def test_restricted_synonym_new_england_2(self):
+        response = self._get_restrictions(
+            'plant=convolvulus+spithamaeus&location=Burlington,%20VT')
+        json_object = json.loads(response.content)
+        self.assertTrue(json_object[0]['sightings_restricted'])
+
+    def test_restricted_common_name_new_england(self):
+        response = self._get_restrictions(
+            'plant=upright+false+bindweed&location=Boston,%20MA')
+        json_object = json.loads(response.content)
+        self.assertTrue(json_object[0]['sightings_restricted'])
+
+    def test_restricted_common_name_new_england_2(self):
+        response = self._get_restrictions(
+            'plant=upright+false+bindweed&location=Burlington,%20VT')
+        json_object = json.loads(response.content)
+        self.assertTrue(json_object[0]['sightings_restricted'])
+
+    def test_unrestricted_scientific_name_new_england(self):
+        response = self._get_restrictions(
+            'plant=calystegia+spithamaea&location=Danbury,%20CT')
+        json_object = json.loads(response.content)
+        self.assertFalse(json_object[0]['sightings_restricted'])
+
+    def test_unrestricted_scientific_name_new_england_2(self):
+        response = self._get_restrictions(
+            'plant=calystegia+spithamaea&location=Providence,%20RI')
+        json_object = json.loads(response.content)
+        self.assertFalse(json_object[0]['sightings_restricted'])
+
+    def test_unrestricted_synonym_new_england(self):
+        response = self._get_restrictions(
+            'plant=convolvulus+spithamaeus&location=Danbury,%20CT')
+        json_object = json.loads(response.content)
+        self.assertFalse(json_object[0]['sightings_restricted'])
+
+    def test_unrestricted_synonym_new_england_2(self):
+        response = self._get_restrictions(
+            'plant=convolvulus+spithamaeus&location=Providence,%20RI')
+        json_object = json.loads(response.content)
+        self.assertFalse(json_object[0]['sightings_restricted'])
+
+    def test_unrestricted_common_name_new_england(self):
+        response = self._get_restrictions(
+            'plant=upright+false+bindweed&location=Danbury,%20CT')
+        json_object = json.loads(response.content)
+        self.assertFalse(json_object[0]['sightings_restricted'])
+
+    def test_unrestricted_common_name_new_england_2(self):
+        response = self._get_restrictions(
+            'plant=upright+false+bindweed&location=Providence,%20RI')
+        json_object = json.loads(response.content)
+        self.assertFalse(json_object[0]['sightings_restricted'])

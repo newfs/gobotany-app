@@ -82,6 +82,8 @@ def restrictions(plant_name, location=None):
     covered_state = get_covered_state(location)
     restrictions = []
 
+    # Restrictions apply for all names for a plant: scientific name,
+    # synonyms, and common names.
     scientific_name_taxa = Taxon.objects.filter(
         scientific_name__iregex=plant_regex)
     common_name_taxa = Taxon.objects.filter(
@@ -98,7 +100,11 @@ def restrictions(plant_name, location=None):
         allow_public_posting = {}
         for status in taxon.conservation_statuses.all():
             state_name = settings.STATE_NAMES[status.region.lower()]
-            allow_public_posting[state_name] = status.allow_public_posting
+            # If a status entry has already set a state's "allow public
+            # posting" value to False, prevent another from overwriting it.
+            if (state_name not in allow_public_posting.keys() or
+                    allow_public_posting[state_name] != False):
+                allow_public_posting[state_name] = status.allow_public_posting
         # Fill in any states that do not have conservation status
         # records.
         for key in settings.STATE_NAMES.keys():
