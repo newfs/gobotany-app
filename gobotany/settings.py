@@ -178,6 +178,7 @@ HAYSTACK_SEARCH_ENGINE = 'solr'
 HAYSTACK_SOLR_URL = 'http://127.0.0.1:8983/solr'
 HAYSTACK_SEARCH_RESULTS_PER_PAGE = 10
 HAYSTACK_SOLR_TIMEOUT = 20  # Longer than default timeout; added for indexing
+HAYSTACK_INCLUDE_SPELLING = True
 
 # https://docs.djangoproject.com/en/dev/topics/i18n/timezones/#time-zones-faq
 TIME_ZONE = 'America/New_York'

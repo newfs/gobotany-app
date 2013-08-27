@@ -23,6 +23,11 @@
                     <strong>{{ query }}</strong>
                 </h1>
 
+                {% if suggestion %}
+                    <p>Did you mean
+                    <a href=".?q={{suggestion}}">{{suggestion}}</a>?</p>
+                {% endif %}
+                
                 {% if page.object_list|length == 0 %}
                     <p>Please adjust your search and try again.</p>
                 {% else %}
