@@ -152,8 +152,8 @@ define([
         }
     }
 
-    function set_visibility_restriction(is_restricted, is_flagged, state,
-            show_dialog) {
+    function set_visibility_restriction(is_restricted, is_flagged, is_unknown,
+            state, show_dialog) {
         var has_state = (state !== undefined && state !== null &&
                          state !== '');
         var show_dialog = (show_dialog === false) ? false : true;
@@ -168,13 +168,23 @@ define([
             });
             if (show_dialog) {
                 // Show a dialog with details about the restriction.
-                var intro = 'Congratulations! You have found a plant that ' +
-                    'is <b>rare in ';
-                intro += (has_state) ? state : 'New England';
-                intro += '</b>.';
-                var details = 'To protect the plant, this sighting <b>will ' +
-                    'not be publicly visible.</b>' +
-                    ' A botanist may contact you.';
+                
+                var intro, details;
+                if (is_unknown) {
+                    intro = 'You have found a plant that <b>does not ' +
+                        'appear to be in our database</b>.';
+                    details = 'This sighting <b>will be not be able to ' +
+                        'be made publicly visible</b> until we review it.';
+                }
+                else {
+                    intro = 'Congratulations! You have found a plant that ' +
+                        'is <b>rare in ';
+                    intro += (has_state) ? state : 'New England';
+                    intro += '</b>.';
+                    details = 'To protect the plant, this sighting ' +
+                        '<b>will not be publicly visible.</b>' +
+                        ' A botanist may contact you.';
+                }
                 var html = '<div class="restricted-dialog">' +
                     '<p>' + intro + '</p>' +
                     '<p>' + details + '</p>' +
@@ -237,6 +247,7 @@ define([
         }).done(function (json) {
             var is_restricted = false;
             var is_flagged = false;
+            var is_unknown = false;
             var state = '';
 
             if (json.length > 0) {
@@ -265,20 +276,25 @@ define([
             }
             else {
                 // The plant sighted did not be match any in the database.
-                // Mark the sighting as flagged for admin. review.
+                // Restrict the sighting to private and flag it for
+                // admin. review.
+                is_restricted = true;
                 is_flagged = true;
+                is_unknown = true;
             }
 
-            set_visibility_restriction(is_restricted, is_flagged, state,
-                show_dialog);
+            set_visibility_restriction(is_restricted, is_flagged, is_unknown,
+                state, show_dialog);
         });
     }
 
     function clear_restrictions() {
         var is_restricted = false;
         var is_flagged = false;
+        var is_unknown = false;
         var state = '';
-        set_visibility_restriction(is_restricted, is_flagged, state);
+        set_visibility_restriction(is_restricted, is_flagged, is_unknown,
+            state);
     }
 
     $(window).load(function () {   

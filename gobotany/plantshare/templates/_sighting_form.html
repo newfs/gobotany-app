@@ -9,7 +9,7 @@
             (required)</label>
         {{ form.identification }}
         <p class="restricted name hidden">
-            Rare plant. Only you and staff will see this sighting.
+            Restricted: only you and staff will see this sighting.
         </p>
 
         {{ form.notes.errors }}
@@ -65,7 +65,7 @@
         <div class="visibility">
             <p class="label">Visibility</p>
             <p>{{ form.visibility }}</p>
-            <p class="restricted hidden">Rare plant. Only you and
+            <p class="restricted hidden">Restricted: only you and
             staff will see this sighting.</p>
         </div>
         {{ form.flagged.as_hidden }}
