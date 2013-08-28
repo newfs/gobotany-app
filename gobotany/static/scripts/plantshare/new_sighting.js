@@ -152,7 +152,8 @@ define([
         }
     }
 
-    function set_visibility_restriction(is_restricted, state, show_dialog) {
+    function set_visibility_restriction(is_restricted, is_flagged, state,
+            show_dialog) {
         var has_state = (state !== undefined && state !== null &&
                          state !== '');
         var show_dialog = (show_dialog === false) ? false : true;
@@ -198,9 +199,6 @@ define([
                 // means that the plant or location was edited.
                 $('#id_approved').val('False');
             }
-
-            // Set the hidden "flagged" field to mark for admin. review.
-            $('#id_flagged').val('True');
         }
         else {
             // Hide messages and unrestrict visibility options.
@@ -218,10 +216,16 @@ define([
                 $('#id_visibility').val('PUBLIC');
             }
 
-            // Reset the hidden "flagged" and "approved" fields: admin.
-            // review is not needed.
-            $('#id_flagged').val('False');
+            // Reset the hidden "approved" field: admin. review is not needed.
             $('#id_approved').val('False');
+        }
+
+        if (is_flagged) {
+            // Set the hidden "flagged" field to mark for admin. review.
+            $('#id_flagged').val('True');            
+        }
+        else {
+            $('#id_flagged').val('False');
         }
 
         enable_disable_submit_button();
@@ -236,6 +240,7 @@ define([
             url: url
         }).done(function (json) {
             var is_restricted = false;
+            var is_flagged = false;
             var state = '';
             // If any result says that sightings are restricted,
             // consider sightings restricted for this plant. (Multiple
@@ -244,12 +249,31 @@ define([
             $.each(json, function (i, taxon) {
                 if (taxon.sightings_restricted === true) {
                     is_restricted = true;
+                    if (taxon.sightings_flagged === true) {
+                        is_flagged = true;
+                    }
                     state = taxon.covered_state;
-                    return false;   // to break out of the loop
+                    return false;   // break out of the loop
                 }
             });
-            set_visibility_restriction(is_restricted, state, show_dialog);
+            // As above, if any result says that sightings are flagged,
+            // consider sightings flagged for this plant.
+            $.each(json, function(i, taxon) {
+                if (taxon.sightings_flagged === true) {
+                    is_flagged = true;
+                    return false;   // break out of the loop
+                }
+            });
+            set_visibility_restriction(is_restricted, is_flagged, state,
+                show_dialog);
         });
+    }
+
+    function clear_restrictions() {
+        var is_restricted = false;
+        var is_flagged = false;
+        var state = '';
+        set_visibility_restriction(is_restricted, is_flagged, state);
     }
 
     $(window).load(function () {   
@@ -296,9 +320,7 @@ define([
 
             if ($(this).val() === '') {
                 // ID box is empty, so clear any restriction message.
-                var is_restricted = false;
-                var state = '';
-                set_visibility_restriction(is_restricted, state);
+                clear_restrictions();
             }
             else if (event.which == 13) {   // Enter key
                 if ($location_box.val() !== '') {
@@ -330,9 +352,7 @@ define([
             }
             else {
                 // Location box is empty, so clear any restriction message.
-                var is_restricted = false;
-                var state = '';
-                set_visibility_restriction(is_restricted, state);
+                clear_restrictions();
                 enable_disable_submit_button(false);
             }
         });
