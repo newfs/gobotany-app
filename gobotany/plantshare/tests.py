@@ -593,3 +593,29 @@ class SightingsRestrictionsTests(TestCase):
             'plant=upright+false+bindweed&location=Providence,%20RI')
         json_object = json.loads(response.content)
         self.assertFalse(json_object[0]['sightings_restricted'])
+
+    def test_restricted_and_flagged_when_in_restricted_state(self):
+        response = self._get_restrictions(
+            'plant=calystegia+spithamaea&location=Boston,%20MA')
+        json_object = json.loads(response.content)
+        self.assertTrue(json_object[0]['sightings_restricted'])
+        self.assertTrue(json_object[0]['sightings_flagged'])
+
+    def test_only_flagged_when_outside_restricted_state_and_region(self):
+        # This state exists outside the region for which there are
+        # conservation status data, so flagging for review is just an
+        # extra safety check, mainly for bordering states and provinces.
+        response = self._get_restrictions(
+            'plant=calystegia+spithamaea&location=Orlando,%20FL')
+        json_object = json.loads(response.content)
+        self.assertFalse(json_object[0]['sightings_restricted'])
+        self.assertTrue(json_object[0]['sightings_flagged'])
+
+    def test_not_flagged_when_outside_restricted_state_within_region(self):
+        # This state is known to not need restriction, so no admin. review
+        # should be needed.
+        response = self._get_restrictions(
+            'plant=calystegia+spithamaea&location=Providence,%20RI')
+        json_object = json.loads(response.content)
+        self.assertFalse(json_object[0]['sightings_restricted'])
+        self.assertFalse(json_object[0]['sightings_flagged'])

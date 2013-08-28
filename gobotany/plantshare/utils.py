@@ -113,21 +113,27 @@ def restrictions(plant_name, location=None):
                 allow_public_posting[state_name] = True
 
         sightings_restricted = False
+        sightings_flagged = False
+
+        # Terms used here:
+        # 'restrict': allow only private sighting visibility
+        # 'flag': set a flag on the sighting to alert for admin. review
 
         # If the location is in a state covered by the site, restrict
-        # only if the plant is rare in that state.
+        # (and flag) only if the plant is rare in that state.
         if covered_state is not None and covered_state:
             if not allow_public_posting[covered_state]:
                 sightings_restricted = True
+                sightings_flagged = True
         else:
-            # If the location is anywhere else (or is unknown), restrict
-            # if the plant is rare in any New England state, as a fallback.
+            # If the location is anywhere else (or is unknown), flag
+            # if the plant is rare in any New England state.
             # This is a conservative measure for various edge cases
             # such as plants that may be rare outside New England,
             # incorrect location detection, etc.
             for state in allow_public_posting.keys():
                 if not allow_public_posting[state]:
-                    sightings_restricted = True
+                    sightings_flagged = True
                     break
 
         restrictions.append({
@@ -137,6 +143,7 @@ def restrictions(plant_name, location=None):
             'covered_state': covered_state,
             'allow_public_posting': allow_public_posting,
             'sightings_restricted': sightings_restricted,
+            'sightings_flagged': sightings_flagged,
         })
 
     return restrictions
