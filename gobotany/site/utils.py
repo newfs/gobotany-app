@@ -25,7 +25,7 @@ def query_regex(plant_name, anchor_at_start=False, anchor_at_end=False):
             regex_word = '%s[%s]{%d,%d}%s' % (
                 re.escape(word[0]),   # First character: an anchor
                 re.escape(interior_chars),  # Allow any: handle transpositions
-                interior_length,   # Allow typo with an extra character
+                interior_length - 1,   # Allow typo with an extra character
                 interior_length + 1,
                 re.escape(word[-1]))  # Last character: another anchor
         else:
