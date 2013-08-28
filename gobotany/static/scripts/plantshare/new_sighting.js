@@ -173,12 +173,8 @@ define([
                 intro += (has_state) ? state : 'New England';
                 intro += '</b>.';
                 var details = 'To protect the plant, this sighting <b>will ' +
-                    'not be publicly visible.</b>';
-                if (has_state) {
-                    // A botanist may contact the user if the sighting
-                    // occurs in one of the covered states.
-                    details += ' A botanist may contact you.';
-                }
+                    'not be publicly visible.</b>' +
+                    ' A botanist may contact you.';
                 var html = '<div class="restricted-dialog">' +
                     '<p>' + intro + '</p>' +
                     '<p>' + details + '</p>' +
