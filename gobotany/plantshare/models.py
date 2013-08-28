@@ -118,6 +118,7 @@ class Location(models.Model):
     user_input = models.CharField(max_length=255, blank=False)
 
     # Location details are parsed from the user input or otherwise derived.
+    street = models.CharField(max_length=200, null=True, blank=True)
     city = models.CharField(max_length=120, null=True, blank=True)
     state = models.CharField(max_length=60, null=True, blank=True)
     postal_code = models.CharField(max_length=12, null=True, blank=True)
@@ -131,17 +132,14 @@ class Location(models.Model):
         """Parse the raw input and fill the appropriate detail fields."""
         user_input = self.user_input.strip()
         if user_input:
-            if user_input.find(',') > -1:
-                # Location is either city/state or latitude/longitude.
-                if user_input[0].isalpha():
-                    # City, state (lat/long handled elsewhere)
-                    city, state = [x.strip() for x in user_input.split(',')]
-                    self.city = city
-                    self.state = state
-            elif (len(user_input) <= 10 and
-                  user_input[1].isdigit()): # 2nd char in US/Can. postal codes
-                # Postal code
-                self.postal_code = user_input.strip()
+            if user_input[:-1].isalpha():   # last character is a letter
+                # Location format is address: street, city, state.
+                # (Latitude/longitude is handled elsewhere.)
+                street, city, state = [x.strip()
+                                       for x in user_input.split(',')]
+                self.street = street
+                self.city = city
+                self.state = state
 
     def save(self, *args, **kwargs):
         self._parse_user_input()

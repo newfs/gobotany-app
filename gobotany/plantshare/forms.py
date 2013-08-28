@@ -23,10 +23,9 @@ class LocationTextInput(forms.TextInput):
 
 
 class LocationField(forms.RegexField):
-    VALIDATION_MESSAGE = 'city, state OR postal code OR latitude, longitude'
+    VALIDATION_MESSAGE = 'address (street, city, state) OR latitude, longitude'
     VALIDATION_PATTERN = (
-        '(^([-\w\s]*\w)([, ]+)([-\w\s]*\w)$)|'
-        '(^([a-zA-Z0-9][0-9][a-zA-Z0-9] ?[0-9][a-zA-Z0-9][0-9]?)(-\d{4})?$)|'
+        '(^([-\w\s]*\w)([, ]+)([-\w\s]*\w)([, ]+)([-\w\s]*\w)$)|'
         '(^(-?(\d{1,3}.?\d{1,6}? ?[nNsS]?))([, ]+)'
         '(-?(\d{1,3}.?\d{1,6}? ?[wWeE]?))$)'
     )
