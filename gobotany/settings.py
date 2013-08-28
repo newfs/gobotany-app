@@ -127,7 +127,6 @@ INSTALLED_APPS = [
 
     'haystack',
     'tinymce',
-    'emailconfirmation',
     'facebook_connect',
     'registration',
     'south',
