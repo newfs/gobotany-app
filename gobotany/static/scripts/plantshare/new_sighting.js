@@ -238,54 +238,57 @@ define([
     }
 
     function check_restrictions(plant_name, location, show_dialog) {
-        var is_restricted = false;
-        var url = '/plantshare/api/restrictions/';
-        url += '?plant=' + encodeURIComponent(plant_name) + '&location=' +
-            encodeURIComponent(location);
-        $.ajax({
-            url: url
-        }).done(function (json) {
-            var is_restricted = false;
-            var is_flagged = false;
-            var is_unknown = false;
-            var state = '';
+        var has_name = (plant_name !== undefined && plant_name !== null &&
+            plant_name !== '');
+        if (has_name) {
+            var url = '/plantshare/api/restrictions/';
+            url += '?plant=' + encodeURIComponent(plant_name) + '&location=' +
+                encodeURIComponent(location);
+            $.ajax({
+                url: url
+            }).done(function (json) {
+                var is_restricted = false;
+                var is_flagged = false;
+                var is_unknown = false;
+                var state = '';
 
-            if (json.length > 0) {
-                // If any result says that sightings are restricted,
-                // consider sightings restricted for this plant. (Multiple
-                // results are for supporting common names, where the same
-                // name can apply to more than one plant.)
-                $.each(json, function (i, taxon) {
-                    if (taxon.sightings_restricted === true) {
-                        is_restricted = true;
+                if (json.length > 0) {
+                    // If any result says that sightings are restricted,
+                    // consider sightings restricted for this plant. (Multiple
+                    // results are for supporting common names, where the same
+                    // name can apply to more than one plant.)
+                    $.each(json, function (i, taxon) {
+                        if (taxon.sightings_restricted === true) {
+                            is_restricted = true;
+                            if (taxon.sightings_flagged === true) {
+                                is_flagged = true;
+                            }
+                            state = taxon.covered_state;
+                            return false;   // break out of the loop
+                        }
+                    });
+                    // As above, if any result says that sightings are
+                    // flagged, consider sightings flagged for this plant.
+                    $.each(json, function(i, taxon) {
                         if (taxon.sightings_flagged === true) {
                             is_flagged = true;
+                            return false;   // break out of the loop
                         }
-                        state = taxon.covered_state;
-                        return false;   // break out of the loop
-                    }
-                });
-                // As above, if any result says that sightings are flagged,
-                // consider sightings flagged for this plant.
-                $.each(json, function(i, taxon) {
-                    if (taxon.sightings_flagged === true) {
-                        is_flagged = true;
-                        return false;   // break out of the loop
-                    }
-                });
-            }
-            else {
-                // The plant sighted did not be match any in the database.
-                // Restrict the sighting to private and flag it for
-                // admin. review.
-                is_restricted = true;
-                is_flagged = true;
-                is_unknown = true;
-            }
+                    });
+                }
+                else {
+                    // The plant sighted did not be match any in the database.
+                    // Restrict the sighting to private and flag it for
+                    // admin. review.
+                    is_restricted = true;
+                    is_flagged = true;
+                    is_unknown = true;
+                }
 
-            set_visibility_restriction(is_restricted, is_flagged, is_unknown,
-                state, show_dialog);
-        });
+                set_visibility_restriction(is_restricted, is_flagged,
+                    is_unknown, state, show_dialog);
+            });
+        }
     }
 
     function clear_restrictions() {
