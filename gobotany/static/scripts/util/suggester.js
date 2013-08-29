@@ -47,7 +47,7 @@ define([
 
         /* data-submit-on-select
          *
-         * Set this to "true" if the form should automatically submit on
+         * When set to "true", the form automatically submits upon
          * selecting a suggestion, such as for a search feature. */
         this.submit_on_select = false;
         if (this.$input_box.is('[data-submit-on-select]')) {
@@ -57,9 +57,9 @@ define([
 
         /* data-align-menu-inside-input
          *
-         * Set this to "true" to align the left edge of the menu with the
-         * padded inside left of the input box. This is for handling an
-         * input box that is styled to have curved corners outside its
+         * When set to "true", the left edge of the menu is aligned with
+         * the padded inside left of the input box. This is for handling
+         * an input box that is styled to have curved corners outside its
          * rectangular input area. */
         this.align_menu_inside_input = false;
         if (this.$input_box.is('[data-align-menu-inside-input]')) {
@@ -67,6 +67,18 @@ define([
                 (this.$input_box.attr('data-align-menu-inside-input') ===
                  'true');
         }
+
+        /* data-truncate-on-select
+         * 
+         * When set to "true", anything in parentheses at the end of a
+         * suggestion is truncated upon selection so it appears in the
+         * input box without the paranthetical segment. */
+         this.truncate_on_select = true;   // enabled by default
+         if (this.$input_box.is('[data-truncate-on-select]')) {
+             this.truncate_on_select =
+                 (this.$input_box.attr('data-truncate-on-select') ===
+                  'true');
+         }
     };
 
     Suggester.prototype.setup = function () {
@@ -369,6 +381,13 @@ define([
         if (selected_index > -1) {
             var selected_value =
                 this.$menu.find('li').eq(selected_index).text();
+            if (this.truncate_on_select === true) {
+                // Truncate a parenthetical segment at the end of the
+                // suggestion value.
+                selected_value = selected_value.substring(
+                    0, selected_value.lastIndexOf('('));
+                selected_value = selected_value.replace(/\s+$/g, '');
+            }
             this.fill_box(selected_value);
         }
     };
