@@ -92,6 +92,7 @@ define([
 
         // Show the status message with sightings count.
         $('#sightings-status').show();
+        $('#sightings-status').css('color', '#000');
         $('#sightings-status span').html(sightings_count);
     };
 

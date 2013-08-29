@@ -22,6 +22,14 @@ define([
             this.current_plant_name = plant_name;
             this.$plant_name_field.val(this.current_plant_name);
         }
+
+        this.$plant_name_field.on('keyup', function (event) {
+            if (event.keyCode !== 13) {   // Enter key
+                // Hide the results status message as soon as typing starts.
+                var color = $('#sightings-status').css('background-color');
+                $('#sightings-status').css('color', color);
+            }
+        });
     };
 
     SightingsLocatorPart.prototype.show_sightings = function (plant_name,
