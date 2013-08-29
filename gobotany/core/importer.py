@@ -32,7 +32,7 @@ from gobotany.core.pile_suffixes import pile_suffixes
 from gobotany.search.models import (GroupsListPage, PlainPage,
                                     SubgroupResultsPage, SubgroupsListPage)
 from gobotany.simplekey.groups_order import ordered_pilegroups, ordered_piles
-from gobotany.site.models import SearchSuggestion
+from gobotany.site.models import PlantNameSuggestion, SearchSuggestion
 
 DEBUG=False
 log = logging.getLogger('gobotany.import')
@@ -572,15 +572,22 @@ class Importer(object):
 
         genus_table.save()
 
-    def import_plant_name_suggestions(self, taxaf):
+    def import_plant_name_suggestions(self):
         log.info('Setting up plant name suggestions')
+
+        PlantNameSuggestion.objects.all().delete()
 
         db = bulkup.Database(connection)
         names = set()
 
         names.update(db.map('core_taxon', 'scientific_name'))
         names.update(db.map('core_commonname', 'common_name'))
-        names.update(db.map('core_synonym', 'scientific_name'))
+
+        synonyms = set()
+        for s in models.Synonym.objects.all():
+            synonyms.add('%s (formerly %s)' % (s.taxon.scientific_name,
+                                               s.scientific_name))
+        names.update(synonyms)
 
         # Populate records for model PlantNameSuggestion
         table = db.table('site_plantnamesuggestion')
@@ -2122,7 +2129,7 @@ full_import_steps = (
     (Importer.import_videos, 'videos.csv'),
     (Importer.import_constants, 'characters.csv'),
     (Importer.import_copyright_holders, 'copyright_holders.csv'),
-    (Importer.import_plant_name_suggestions, 'taxa.csv'),
+    (Importer.import_plant_name_suggestions,),
 
     (Importer.import_distributions,
      'New-England-tracheophyte-county-level-nativity.csv'),
