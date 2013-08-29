@@ -384,9 +384,11 @@ define([
             if (this.truncate_on_select === true) {
                 // Truncate a parenthetical segment at the end of the
                 // suggestion value.
-                selected_value = selected_value.substring(
-                    0, selected_value.lastIndexOf('('));
-                selected_value = selected_value.replace(/\s+$/g, '');
+                if (selected_value.indexOf('(') > -1) {
+                    selected_value = selected_value.substring(
+                        0, selected_value.lastIndexOf('('));
+                    selected_value = selected_value.replace(/\s+$/g, '');
+                }
             }
             this.fill_box(selected_value);
         }
