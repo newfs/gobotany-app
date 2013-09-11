@@ -50,8 +50,9 @@ class SightingPhotoInline(admin.StackedInline):
 class SightingAdmin(admin.ModelAdmin):
     inlines = [SightingPhotoInline]
     exclude = ['photos']
-    list_display = ('identification', 'location', 'display_name', 'created',
-        'visibility', 'flagged', 'approved')
+    fields = ('email')
+    list_display = ('identification', 'location', 'display_name', 'email',
+        'created', 'visibility', 'flagged', 'approved')
     list_filter = ('created', 'visibility', 'flagged', 'approved')
     search_fields = ('identification', 'location__city', 'location__state',)
 
@@ -64,6 +65,10 @@ class SightingAdmin(admin.ModelAdmin):
             display_name = obj.user.username
         return display_name
     display_name.short_description = 'User'
+
+    def email(self, obj):
+        email_address = obj.user.email or ''
+        return email_address
 
 
 class ScreenedImageAdmin(admin.ModelAdmin):
