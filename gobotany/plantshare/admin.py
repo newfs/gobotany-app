@@ -50,7 +50,7 @@ class SightingPhotoInline(admin.StackedInline):
 class SightingAdmin(admin.ModelAdmin):
     inlines = [SightingPhotoInline]
     exclude = ['photos']
-    fields = ('email')
+    readonly_fields = ('email',)
     list_display = ('identification', 'location', 'display_name', 'email',
         'created', 'visibility', 'flagged', 'approved')
     list_filter = ('created', 'visibility', 'flagged', 'approved')
