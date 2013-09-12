@@ -1177,6 +1177,7 @@ body.plantshare#new-sighting .restricted-dialog p, body.plantshare#edit-sighting
 body.plantshare#new-sighting .restricted-dialog .ok, body.plantshare#edit-sighting .restricted-dialog .ok { margin: 20px 0 0; text-align: center; }
 body.plantshare#new-sighting .restricted-dialog .ok a, body.plantshare#edit-sighting .restricted-dialog .ok a { color: #fff; cursor: pointer; display: inline-block; width: 80px; }
 body.plantshare#new-sighting fieldset, body.plantshare#edit-sighting fieldset { margin-bottom: 10px; }
+body.plantshare#new-sighting #id_location_notes, body.plantshare#edit-sighting #id_location_notes { height: 113px; }
 body.plantshare#new-sighting .visibility, body.plantshare#edit-sighting .visibility { clear: left; margin-bottom: 50px; }
 body.plantshare#new-sighting .visibility p, body.plantshare#edit-sighting .visibility p { display: inline-block; }
 body.plantshare#new-sighting .visibility .label, body.plantshare#edit-sighting .visibility .label { display: block; }

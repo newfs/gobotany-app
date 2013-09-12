@@ -21,7 +21,7 @@ define([
         // If there is a map for this location input field, update the map
         // once now. Also update it whenever focus shifts away from the field
         // or when user presses Enter within it.
-        if (this.$location_map !== undefined) {
+        if (this.$location_map.length > 0) {
             this.update_map();
             this.$input_box.blur($.proxy(this.update_map, this));
             this.$input_box.on('keypress keyup', $.proxy(function (event) {
@@ -36,22 +36,23 @@ define([
         // Update the map if necessary.
         var location_input_value = this.$input_box.val();
         if (location_input_value !== '') {
+            if (this.$location_map.length > 0) {
+                var current_map_location =
+                    this.$location_map.attr('alt').slice(5);
 
-            var current_map_location =
-                this.$location_map.attr('alt').slice(5);
+                if (location_input_value !== current_map_location) {
 
-            if (location_input_value !== current_map_location) {
+                    // Update map URL.
+                    var current_map_url = this.$location_map.attr('src');
+                    var new_map_url = current_map_url.replace(
+                        new RegExp(current_map_location, 'g'),
+                        location_input_value);
+                    this.$location_map.attr('src', new_map_url);
 
-                // Update map URL.
-                var current_map_url = this.$location_map.attr('src');
-                var new_map_url = current_map_url.replace(
-                    new RegExp(current_map_location, 'g'),
-                    location_input_value);
-                this.$location_map.attr('src', new_map_url);
-
-                // Update map image alt text.
-                this.$location_map.attr('alt',
-                                        'Map: ' + location_input_value);
+                    // Update map image alt text.
+                    this.$location_map.attr('alt',
+                                            'Map: ' + location_input_value);
+                }
             }
         }
     };

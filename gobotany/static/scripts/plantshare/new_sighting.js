@@ -3,8 +3,11 @@ define([
     'bridge/jquery.form',
     'plantshare/upload_modal',
     'mapping/geocoder',
+    'mapping/google_maps',
+    'mapping/marker_map',
     'util/shadowbox_init'
-], function ($, jqueryForm, upload_modal, Geocoder, Shadowbox) {
+], function ($, jqueryForm, upload_modal, Geocoder, google_maps, MarkerMap,
+        Shadowbox) {
 
     var UPLOAD_SPINNER = '/static/images/icons/preloaders-dot-net-lg.gif';
     var DELETE_ICON = '/static/images/icons/close.png';
@@ -104,7 +107,7 @@ define([
         return offset_coordinate;
     }
 
-    function update_latitude_longitude(location, geocoder) {
+    function update_latitude_longitude(location, geocoder, marker_map) {
         // Geocode the location unless it already looks like a pair of
         // coordinates.
         var lat_long_regex = new RegExp(
@@ -130,7 +133,12 @@ define([
                 var offset_longitude = get_offset_coordinate(longitude);
                 $('#id_latitude').val(offset_latitude);
                 $('#id_longitude').val(offset_longitude);
-            });
+
+                // Update location on dynamic map.
+                var offset_lat_lng = new google_maps.LatLng(offset_latitude,
+                    offset_longitude);
+                marker_map.place_marker(offset_lat_lng, location);
+            });       
         }
     }
 
@@ -301,13 +309,29 @@ define([
     }
 
     $(window).load(function () {   
-        var geocoder = new Geocoder(); // geocoder must be created at onload
+        // The map and geocoder must be created at page "onload."
+
+        var map_div = $('#location-map');
+        var cookie_names = {};
+        var marker_map = new MarkerMap(map_div, cookie_names);
+        marker_map.use_marker_clusterer = false;
+        marker_map.setup();
+        var title = marker_map.center_title;
+        marker_map.add_marker(marker_map.latitude, marker_map.longitude,
+            title);
+
+        var geocoder = new Geocoder();
         var $identification_box = $('#id_identification');
         var $location_box = $('#id_location');
-        
+
         var initial_identification = $identification_box.val();
         var initial_location = $location_box.val();
 
+        // Set the map marker for an initial location value.
+        if (initial_location !== '') {
+            update_latitude_longitude(initial_location, geocoder, marker_map);
+        }
+        
         // Check the conservation status for any initial identification
         // value and location value.
         if (initial_identification !== '' && initial_location !== '') {
@@ -315,6 +339,20 @@ define([
             check_restrictions(initial_identification, initial_location,
                                show_dialog);
         }
+
+        // Allow clicking on the map to set the location.
+        google_maps.event.addListener(marker_map.map, 'click',
+                function (event) {
+            var NUM_DECIMALS = 3;
+            var latitude = event.latLng.lat().toFixed(NUM_DECIMALS);
+            var longitude = event.latLng.lng().toFixed(NUM_DECIMALS);
+            $('#id_latitude').val(latitude);
+            $('#id_longitude').val(longitude);
+            var location = latitude + ', ' + longitude;
+            $location_box.val(location);
+            marker_map.place_marker(event.latLng, location);
+            enable_disable_submit_button();
+        });
 
         // When the user enters a plant name in the identification
         // field, check the name and location to see if there are
@@ -366,7 +404,7 @@ define([
                 }
                 else {
                     // Location has changed: geocode it if necessary.
-                    update_latitude_longitude(location, geocoder);
+                    update_latitude_longitude(location, geocoder, marker_map);
                 }
 
                 // Check visibility restrictions for the plant and location.
@@ -397,7 +435,7 @@ define([
                 var value = $(this).val();
                 if (value !== '') {
                     event.preventDefault();
-                    update_latitude_longitude(value, geocoder);
+                    update_latitude_longitude(value, geocoder, marker_map);
 
                     // Check visibility restrictions for the plant and
                     // location.
