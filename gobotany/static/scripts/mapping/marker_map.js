@@ -277,18 +277,18 @@ define([
         this.add_marker(this.latitude, this.longitude, this.center_title);
     };
 
+    MarkerMap.prototype.pan_to = function (latitude, longitude) {
+        var lat_lng = new google_maps.LatLng(latitude, longitude);
+        this.map.panTo(lat_lng);
+    };
+
     MarkerMap.prototype.place_marker = function (lat_lng, location) {
         // Place a single marker and pan the map to center the marker.
         var latitude = lat_lng.lat();
         var longitude = lat_lng.lng();
         this.clear_markers();
         this.add_marker(latitude, longitude, location);
-        this.map.panTo(lat_lng);
-    };
-
-    MarkerMap.prototype.pan_to = function (latitude, longitude) {
-        var lat_lng = new google_maps.LatLng(latitude, longitude);
-        this.map.panTo(lat_lng);
+        this.pan_to(latitude, longitude);
     };
 
     // Return the constructor function.
