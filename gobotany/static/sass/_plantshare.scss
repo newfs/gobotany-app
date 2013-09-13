@@ -634,6 +634,9 @@ body.plantshare {
     }
 
     &#locator #main {
+        h1 + p {
+            margin-bottom: 4px;
+        }
         h3 {
             font-family: $body-font;
             font-size: 12px;
@@ -643,6 +646,24 @@ body.plantshare {
             display: none;  /* initially hide, until updating value via JS */
             float: right;
             line-height: 24px;
+        }
+        /* Smooth Div Scroll image area */
+        #species-images {
+            border: 5px solid rgba(255, 255, 255, 0.8);
+            height: 150px;
+            margin: 0 0 20px 0;
+            overflow: hidden;
+            position: relative;
+            top: 0;
+            width: 700px;
+            z-index: 100;
+            @include box-shadow (0px 0px 4px rgba(0, 0, 0, 0.6));
+            .scrollableArea a {
+                border-right: 5px solid #fff;
+                float: left;
+                margin: 0;
+                padding: 0;
+            }
         }
     }
 
@@ -1450,6 +1471,12 @@ body.plantshare {
     body.plantshare {
         .box, .profile {
             width: $smallscreen-portrait-box-width;
+        }
+        &#locator #main {
+            #species-images {
+                width: 304px;
+            }
+        }
     }
     .content form {
         label, input, textarea {
@@ -1457,14 +1484,18 @@ body.plantshare {
         }
     }
 }
-}
 /* Landscape-orientation styles */
 @media only screen and (min-width: 401px) and (max-width: 600px) {
     body.plantshare {
         .box, .profile {
             width: $smallscreen-landscape-box-width;
+        }
+        &#locator #main {
+            #species-images {
+                width: 462px;
+            }
+        }
     }
-}
 }
 /* These styles are common to both smartphone widths */
 @media only screen and (max-width: 600px) {

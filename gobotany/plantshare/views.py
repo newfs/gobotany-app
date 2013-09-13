@@ -145,6 +145,33 @@ def _get_recently_answered_questions(number_of_questions):
     return questions
 
 
+def _get_recent_sightings(request, profile):
+    MAX_RECENT_SIGHTINGS = 20
+    recent_sightings = []
+
+    # Get the sightings with approved photos.
+    if profile:
+        # Also include any sightings the current user posted where the
+        # photos may not have been screened and approved yet (because
+        # it's always OK to show a user's own photos to that user).
+        sightings_with_photos = Sighting.objects.filter(
+            Q(photos__isnull=False, photos__is_approved=True) |
+            Q(photos__isnull=False, user=profile.user)).order_by('-created')
+    else:
+        sightings_with_photos = Sighting.objects.filter(
+            photos__isnull=False, photos__is_approved=True).order_by(
+            '-created')
+
+    for sighting in sightings_with_photos:
+        may_show_sighting = _may_show_sighting(sighting, request.user)
+        if may_show_sighting:
+            recent_sightings.append(sighting)
+            if len(recent_sightings) == MAX_RECENT_SIGHTINGS:
+                break
+
+    return recent_sightings
+
+
 @terms_agreed_on_login
 def plantshare_view(request):
     """View for the main PlantShare page."""
@@ -168,27 +195,7 @@ def plantshare_view(request):
         except UserProfile.DoesNotExist:
             avatar_info = UserProfile.default_avatar_image()
 
-    MAX_RECENT_SIGHTINGS = 20
-    recent_sightings = []
-    # Get the sightings with approved photos.
-    if profile:
-        # Also include any sightings the current user posted where the
-        # photos may not have been screened and approved yet (because
-        # it's always OK to show a user's own photos to that user).
-        sightings_with_photos = Sighting.objects.filter(
-            Q(photos__isnull=False, photos__is_approved=True) |
-            Q(photos__isnull=False, user=profile.user)).order_by('-created')
-    else:
-        sightings_with_photos = Sighting.objects.filter(
-            photos__isnull=False, photos__is_approved=True).order_by(
-            '-created')
-
-    for sighting in sightings_with_photos:
-        may_show_sighting = _may_show_sighting(sighting, request.user)
-        if may_show_sighting:
-            recent_sightings.append(sighting)
-            if len(recent_sightings) == MAX_RECENT_SIGHTINGS:
-                break
+    recent_sightings = _get_recent_sightings(request, profile)
 
     sightings_count = 0
     checklists_count = 0
@@ -356,8 +363,16 @@ def sightings_by_year_view(request, year):
 
 @terms_agreed_on_login
 def sightings_locator_view(request):
+    profile = None
+    if request.user.is_authenticated():
+        try:
+            profile = UserProfile.objects.get(user=request.user)
+        except UserProfile.DoesNotExist:
+            pass
+    recent_sightings = _get_recent_sightings(request, profile)
     return render_to_response('sightings_locator.html', {
-                'map': SIGHTINGS_MAP_DEFAULTS
+                'map': SIGHTINGS_MAP_DEFAULTS,
+                'recent_sightings': recent_sightings,
            }, context_instance=RequestContext(request))
 
 
@@ -1165,15 +1180,20 @@ def ajax_image_reject(request, image_id):
 
 
 def ajax_sightings(request):
-    """Return sightings data for a plant."""
+    """Return sightings data: the most recent sightings, or the most
+    recent sightings for a plant name, or a recent sighting by sighting id.
+    """
 
     MAX_TO_RETURN = 100
     plant_name = request.GET.get('plant')
+    sighting_id = request.GET.get('id')
 
     sightings = Sighting.objects.select_related().all().\
         prefetch_related('location').order_by('-created')
     if plant_name:
         sightings = sightings.filter(identification__iexact=plant_name)
+    elif sighting_id:
+        sightings = sightings.filter(id=sighting_id)
 
     sightings_json = []
     for sighting in sightings:
