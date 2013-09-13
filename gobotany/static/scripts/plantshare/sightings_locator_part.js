@@ -43,7 +43,7 @@ define([
 
     SightingsLocatorPart.prototype.setup = function () {
         // Set up the map and form.
-        
+
         var map_div = this.$locator_element.find('.map').first();
 
         // Restore the last map location, zoom level, and sighting
@@ -51,7 +51,8 @@ define([
         var cookie_names = {
             'center': 'last_locator_center',
             'zoom': 'last_locator_zoom',
-            'last_viewed': 'last_locator_sighting'
+            'last_viewed': 'last_locator_sighting',
+            'last_plant_name': 'last_locatior_name'
         }
         var sightings_map = new SightingsMap(map_div, cookie_names);
         sightings_map.setup();
@@ -75,6 +76,15 @@ define([
                 }
             }, this)
         );
+
+        // For the full-page Sightings Locator, allow clicking on its
+        // sightings gallery images to show their locations on the map.
+        $('#species-images a').unbind('click');   // prevent multiple bindings
+        $('#species-images a').bind('click', function (event) {
+            event.preventDefault();
+            var sighting_id = $(this).attr('href').split('/')[3];
+            sightings_map.show_sighting(sighting_id, cookie_names);
+        });
     };
 
     // Return the constructor function.

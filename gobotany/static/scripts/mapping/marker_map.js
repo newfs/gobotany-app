@@ -286,7 +286,8 @@ define([
         this.map.panTo(lat_lng);
     };
 
-    MarkerMap.prototype.pan_to = function (lat_lng) {
+    MarkerMap.prototype.pan_to = function (latitude, longitude) {
+        var lat_lng = new google_maps.LatLng(latitude, longitude);
         this.map.panTo(lat_lng);
     };
 

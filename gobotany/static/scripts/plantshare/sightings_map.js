@@ -141,6 +141,36 @@ define([
         });
     };
 
+    SightingsMap.prototype.show_sighting = function (sighting_id,
+            cookie_names) {
+        // Show a single recent sighting on the map.
+        var url = '/plantshare/api/sightings/?id=' + sighting_id;
+        $.ajax({
+            url: url,
+            context: this
+        }).done(function (json) {
+            // Clear any markers, the plant name box, and the search
+            // results status message.
+            this.clear_markers();
+            $('#plant-name').val('');
+            var color = $('#sightings-status').css('background-color');
+            $('#sightings-status').css('color', color);
+
+            // Add a marker for the sighting and pan to show it.
+            var marker;
+            var sighting = json.sightings[0];
+            var name = sighting.identification;
+            var title = this.get_sighting_title(name, sighting, false);
+            var info_window_html = this.build_info_window_html(name,
+                                                               sighting);
+            var show_info = true;
+            marker = this.add_marker(sighting.latitude,
+                sighting.longitude, title, info_window_html, sighting.id,
+                show_info);
+            this.pan_to(sighting.latitude, sighting.longitude);
+        });
+    };
+
     // Return the constructor function.
     return SightingsMap;
 });
