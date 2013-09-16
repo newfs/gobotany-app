@@ -36,7 +36,8 @@ define([], function() {
         },
         "orchid-monocots": {
             "default": "flowers",
-            "omit": ["comparison"]
+            "omit": ["comparison", "fruits", "habit", "plant form", "protocorm", "root",
+                     "rhizome", "stem", "leaf"]
         },
         "non-orchid-monocots": {
             "default": "flowers",
