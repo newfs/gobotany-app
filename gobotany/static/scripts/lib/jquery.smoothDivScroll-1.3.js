@@ -170,9 +170,7 @@ define([
 			*****************************************/
 			if (o.touchScrolling && el.data("enabled")) {
 				// Use jquery.kinetic.js for touch scrolling
-				// Vertical scrolling disabled
 				el.data("scrollWrapper").kinetic({
-					y: false,
 					moved: function (settings) {
 						if (o.manualContinuousScrolling) {
 							if (el.data("scrollWrapper").scrollLeft() <= 0) {
