@@ -1,4 +1,5 @@
 import re
+
 from django import template
 from django.utils.safestring import mark_safe
 
@@ -7,6 +8,17 @@ from haystack.templatetags.highlight import HighlightNode
 from gobotany.search.highlight import ExtendedHighlighter
 
 register = template.Library()
+
+html_escape_dict = {
+    '&': '&amp;',
+    '"': '&quot;',
+    "'": '&#39;',
+    '>': '&gt;',
+    '<': '&lt;',
+    }
+
+def html_escape(text):
+    return "".join(html_escape_dict.get(c,c) for c in text)
 
 
 class ExtendedHighlightNode(HighlightNode):
@@ -29,7 +41,7 @@ class ExtendedHighlightNode(HighlightNode):
 
     def render(self, context):
         text_block = self.text_block.resolve(context)
-        query = self.query.resolve(context)
+        query = html_escape(self.query.resolve(context))
         kwargs = {}
 
         if self.html_tag is not None:
@@ -165,7 +177,7 @@ def quick_highlight(text, query):
 
     # Without a query, there are no words to highlight.
 
-    words = query.split()
+    words = html_escape(query).split()
     if not words:
         return text
 

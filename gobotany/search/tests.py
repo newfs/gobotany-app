@@ -641,6 +641,29 @@ class HaystackHighlighterTestCase(unittest.TestCase):
                     '<span class="highlighted">highlight</span>.')
         self.assertEqual(expected, highlighter.highlight(text))
 
+    def test_highlight_multiple_words(self):
+        text = 'This is some text with words to highlight.'
+        query = 'words to highlight'
+        expected = ('...<span class="highlighted">words</span> '
+                    '<span class="highlighted">to</span> '
+                    '<span class="highlighted">highlight</span>.')
+        highlighter = self.new_highlighter(query)
+        self.assertEqual(expected, highlighter.highlight(text))
+
+    def test_highlight_word_possessive(self):
+        text = 'This is some text about Chamaelirium, or devil\'s bit.'
+        query = 'devil\'s'
+        expected = ('...<span class="highlighted">devil\'s</span> bit.')
+        highlighter = self.new_highlighter(query)
+        self.assertEqual(expected, highlighter.highlight(text))
+
+    def test_highlight_word_possessive_html_entity(self):
+        text = 'This is some text about Chamaelirium, or devil&#39;s bit.'
+        query = 'devil&#39;s'
+        expected = ('...<span class="highlighted">devil&#39;s</span> bit.')
+        highlighter = self.new_highlighter(query)
+        self.assertEqual(expected, highlighter.highlight(text))
+
 
 class ExtendedHighlighterTestCase(HaystackHighlighterTestCase):
 
@@ -707,6 +730,29 @@ class ExtendedHighlighterTestCase(HaystackHighlighterTestCase):
                     'excerpt this text. \n--\nThis is text that could be '
                     'ignored.\n--\n Here is some more text to '
                     '<span class="highlighted">highlight</span>.')
+        self.assertEqual(expected, highlighter.highlight(text))
+
+    def test_highlight_multiple_words(self):
+        text = 'This is some text with words to highlight.'
+        query = 'words to highlight'
+        expected = ('...with <span class="highlighted">words</span> '
+                    '<span class="highlighted">to</span> '
+                    '<span class="highlighted">highlight</span>.')
+        highlighter = self.new_highlighter(query)
+        self.assertEqual(expected, highlighter.highlight(text))
+
+    def test_highlight_word_possessive(self):
+        text = 'This is some text about Chamaelirium, or devil\'s bit.'
+        query = 'devil\'s'
+        expected = ('...or <span class="highlighted">devil\'s</span> bit.')
+        highlighter = self.new_highlighter(query)
+        self.assertEqual(expected, highlighter.highlight(text))
+
+    def test_highlight_word_possessive_html_entity(self):
+        text = 'This is some text about Chamaelirium, or devil&#39;s bit.'
+        query = 'devil&#39;s'
+        expected = ('...or <span class="highlighted">devil&#39;s</span> bit.')
+        highlighter = self.new_highlighter(query)
         self.assertEqual(expected, highlighter.highlight(text))
 
     # Add new tests for options that the regular highlighter doesn't
