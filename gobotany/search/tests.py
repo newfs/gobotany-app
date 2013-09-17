@@ -434,7 +434,7 @@ class SearchTests(FunctionalCase):
             result_links, 'Ferns',
             'Clubmosses and relatives, plus quillworts'))
 
-    # Search on lookalike name.
+    # Search on lookalike name
 
     def test_lookalikes_are_in_search_indexes_for_many_pages(self):
         self.get('/search/?q=sometimes+confused+with')
@@ -516,7 +516,6 @@ class SearchTests(FunctionalCase):
         self.assertTrue(result_excerpts[0].text.find(
             '...the understories of cool woods.') > -1);
 
-
     # Test searching miscellaneous pages around the site (about, etc.)
 
     def test_search_results_contain_about_page(self):
@@ -570,6 +569,16 @@ class SearchTests(FunctionalCase):
         result_links = self._result_links()
         self.assertTrue(len(result_links) > 0)
         self.assertTrue(self._is_page_found(result_links, 'Teaching'))
+
+    # Search on terms containing various special characters.
+
+    def test_search_results_found_hyphenated_words(self):
+        self.get('/search/?q=meadow-rue')
+        self.assertTrue(len(self._result_links()) > 0)
+
+    def test_search_results_found_hyphenated_words_first_possessive(self):
+        self.get('/search/?q=wild+goat%27s-rue')
+        self.assertTrue(len(self._result_links()) > 0)
 
 
 class HaystackHighlighterTestCase(unittest.TestCase):

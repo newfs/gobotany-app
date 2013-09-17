@@ -23,6 +23,10 @@ echo 'Installing Solr XML schema'
 
 ./django build_solr_schema > $EXAMPLE/solr/conf/schema.xml
 
+cd usr
+patch -p0 < patch-solrschema
+cd ..
+
 echo 'Running Solr in the background'
 
 cd $EXAMPLE
