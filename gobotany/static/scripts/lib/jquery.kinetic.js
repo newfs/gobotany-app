@@ -290,13 +290,11 @@ define([
 				touchStart: function (e) {
 					if (useTarget(e.target)) {
 						start(e.touches[0].clientX, e.touches[0].clientY);
-						e.stopPropagation();
 					}
 				},
 				touchMove: function (e) {
 					if (mouseDown) {
 						inputmove(e.touches[0].clientX, e.touches[0].clientY);
-						if (e.preventDefault) { e.preventDefault(); }
 					}
 				},
 				inputDown: function (e) {
