@@ -1958,6 +1958,8 @@ class Importer(object):
         """Set up the search-suggestions table"""
         log.info('Setting up search suggestions')
 
+        SearchSuggestion.objects.all().delete()
+
         db = bulkup.Database(connection)
         terms = set()
 
