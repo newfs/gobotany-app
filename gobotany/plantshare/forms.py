@@ -66,7 +66,7 @@ class SightingForm(forms.Form):
         # __init__, an error occurs. Using reverse_lazy alone does not work.
         # http://stackoverflow.com/questions/7430502/
     )
-    created = forms.CharField(
+    created = forms.DateField(
         required=True,
         widget=forms.DateInput(attrs={
             'autocomplete': 'off',
