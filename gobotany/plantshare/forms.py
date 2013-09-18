@@ -66,6 +66,13 @@ class SightingForm(forms.Form):
         # __init__, an error occurs. Using reverse_lazy alone does not work.
         # http://stackoverflow.com/questions/7430502/
     )
+    created = forms.CharField(
+        required=True,
+        widget=forms.DateInput(attrs={
+            'placeholder': 'mm/dd/yyyy',
+            'class': 'date-input',
+        }, format='%m/%d/%Y'),
+    )
     notes = forms.CharField(
         required=False,
         widget=forms.Textarea(),

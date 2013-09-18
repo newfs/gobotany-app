@@ -489,7 +489,9 @@ def sighting_view(request, sighting_id):
 @terms_agreed_on_login
 def new_sighting_view(request):
     """View for a blank form for posting a new sighting."""
-    form = SightingForm()
+    form = SightingForm(initial={
+        'created': datetime.now()
+    })
     return _sighting_form_page(request, form)
 
 
@@ -543,11 +545,12 @@ def edit_sighting_view(request, sighting_id):
         return HttpResponse(status=403)   # 401 Forbidden
     form = SightingForm(initial={
         'identification': sighting.identification,
-        'notes': sighting.notes,
         'location': sighting.location.id, # Set foreign key of Location record
         'location_notes': sighting.location_notes,
         'latitude': sighting.location.latitude,
         'longitude': sighting.location.longitude,
+        'created': sighting.created,
+        'notes': sighting.notes,
         'visibility': sighting.visibility,
         'flagged': sighting.flagged,
         'approved': sighting.approved

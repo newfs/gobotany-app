@@ -1,13 +1,14 @@
 define([
     'bridge/jquery', 
     'bridge/jquery.form',
+    'bridge/jquery-ui',
     'plantshare/upload_modal',
     'mapping/geocoder',
     'mapping/google_maps',
     'mapping/marker_map',
     'util/shadowbox_init'
-], function ($, jqueryForm, upload_modal, Geocoder, google_maps, MarkerMap,
-        Shadowbox) {
+], function ($, jqueryForm, jQueryUI, upload_modal, Geocoder, google_maps,
+        MarkerMap, Shadowbox) {
 
     var UPLOAD_SPINNER = '/static/images/icons/preloaders-dot-net-lg.gif';
     var DELETE_ICON = '/static/images/icons/close.png';
@@ -72,6 +73,10 @@ define([
         function upload_error(errorInfo) {
             console.log('Error: ' + errorInfo);
         }
+
+        $('body').on('focus', '#id_created', function () {
+            $(this).datepicker({dateFormat: 'mm/dd/yy'});
+        });
 
         $('.delete-link a').live('click', function () {
             $this = $(this);

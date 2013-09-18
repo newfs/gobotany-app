@@ -17,9 +17,6 @@
 <h1>Edit Sighting: <i>{{ sighting.identification }}</i> at
     {{ sighting.location|capfirst }}</h1>
 
-<p>You posted this sighting on {{ created }},
-{% user_first_name user %}.</p>
-
 <div class="modal-container">
     {% include "_image_upload_form.html" with image_form=upload_photo_form %}
 </div>

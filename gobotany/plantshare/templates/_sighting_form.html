@@ -30,6 +30,10 @@
             {{ form.longitude.as_hidden }}
         </fieldset>
 
+        {{ form.created.errors }}
+        <label for="id_created">Date</label>
+        {{ form.created }}
+
         {{ form.notes.errors }}
         <label for="id_notes">Comments</label>
         {{ form.notes }}
