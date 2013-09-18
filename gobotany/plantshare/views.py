@@ -41,7 +41,6 @@ SIGHTING_DATE_YEAR_FORMAT = SIGHTING_DATE_FORMAT + ' %Y'
 SIGHTING_SHORT_DATE_YEAR_FORMAT = '%e %b %Y'
 SIGHTING_DAY_DATE_FORMAT = '%A, ' + SIGHTING_DATE_FORMAT
 SIGHTING_DATE_DAY_FORMAT = SIGHTING_DATE_FORMAT + ' (%A)'
-SIGHTING_DATE_TIME_FORMAT = SIGHTING_DATE_YEAR_FORMAT + " at %I:%M %p"
 
 
 # Function and decorator for determining if a logged-in PlantShare user
@@ -425,7 +424,7 @@ def sighting_view(request, sighting_id):
             'location': s.location,
             'location_notes': s.location_notes,
             'user': s.user,
-            'created': s.created.strftime(SIGHTING_DATE_TIME_FORMAT),
+            'created': s.created.strftime(SIGHTING_DATE_YEAR_FORMAT),
             'year': s.created.year,
             'photos': photos
         }
