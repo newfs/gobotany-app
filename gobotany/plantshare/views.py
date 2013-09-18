@@ -1,6 +1,6 @@
 import csv
 
-from datetime import datetime
+from datetime import datetime, timedelta
 
 from django.conf import settings
 from django.contrib.auth.decorators import login_required, user_passes_test
@@ -79,9 +79,7 @@ def _sighting_form_page(request, form, edit=False, sighting=None):
     upload_photo_form = ScreenedImageForm(initial={
         'image_type': 'SIGHTING'
     })
-    created = None
     if sighting:
-        created = sighting.created.strftime(SIGHTING_DAY_DATE_FORMAT)
         upload_photo_form = ScreenedImageForm(initial={
             'image_type': 'SIGHTING'
         })
@@ -90,7 +88,6 @@ def _sighting_form_page(request, form, edit=False, sighting=None):
                'form': form,
                'upload_photo_form': upload_photo_form,
                'sighting': sighting,
-               'created': created,
            }, context_instance=RequestContext(request))
 
 
@@ -257,7 +254,13 @@ def sightings_view(request):
                 location.save()
 
                 identification = form.cleaned_data['identification']
-                created = form.cleaned_data['created']
+                date_time = form.cleaned_data['created']
+                # Add the current time in case the user changed the date,
+                # just for ordering entries as they were posted.
+                now = datetime.now()
+                date_time = date_time + timedelta(
+                    hours=now.hour, minutes=now.minute)
+                created = date_time
                 notes = form.cleaned_data['notes']
                 location_notes = form.cleaned_data['location_notes']
                 visibility = form.cleaned_data['visibility']
@@ -265,6 +268,7 @@ def sightings_view(request):
                 approved = form.cleaned_data['approved']
                 sighting = Sighting(user=request.user,
                                     identification=identification,
+                                    created=created,
                                     notes=notes, location=location,
                                     location_notes=location_notes,
                                     visibility=visibility,
@@ -445,7 +449,13 @@ def sighting_view(request, sighting_id):
                 location.save()
                 s.location = location
                 s.identification = form.cleaned_data['identification']
-                s.created = form.cleaned_data['created']
+                updated_date_time = form.cleaned_data['created']
+                # Add the current time, just for ordering entries as
+                # they were edited.
+                now = datetime.now()
+                updated_date_time = updated_date_time + timedelta(
+                    hours=now.hour, minutes=now.minute)
+                s.created = updated_date_time
                 s.notes = form.cleaned_data['notes']
                 s.location_notes = form.cleaned_data['location_notes']
                 s.visibility = form.cleaned_data['visibility']
