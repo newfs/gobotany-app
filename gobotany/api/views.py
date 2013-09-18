@@ -112,7 +112,7 @@ def glossary_blob(request):
 
     for gt in glossaryterms:
         gt.image_path = gt.__dict__['image']
-        if gt.image_path is not None and prefix is None:
+        if gt.image_path and prefix is None:
             try:
                 url = gt.image.url
                 prefix = url[:-len(gt.image_path)]
@@ -121,7 +121,7 @@ def glossary_blob(request):
 
     images = {}
     for gt in glossaryterms:
-        if gt.image_path is None or prefix is None:
+        if not gt.image_path or prefix is None:
             continue
         images[gt.term] = prefix + gt.image_path
         images[gt.plural] = prefix + gt.image_path
