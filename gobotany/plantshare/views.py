@@ -258,6 +258,7 @@ def sightings_view(request):
                 location.save()
 
                 identification = form.cleaned_data['identification']
+                created = form.cleaned_data['created']
                 notes = form.cleaned_data['notes']
                 location_notes = form.cleaned_data['location_notes']
                 visibility = form.cleaned_data['visibility']
@@ -445,6 +446,7 @@ def sighting_view(request, sighting_id):
                 location.save()
                 s.location = location
                 s.identification = form.cleaned_data['identification']
+                s.created = form.cleaned_data['created']
                 s.notes = form.cleaned_data['notes']
                 s.location_notes = form.cleaned_data['location_notes']
                 s.visibility = form.cleaned_data['visibility']
@@ -522,7 +524,7 @@ def manage_sightings_view(request):
             'identification': sighting.identification,
             'location': sighting.location,
             'user': sighting.user,
-            'created': sighting.created.strftime(SIGHTING_DATE_FORMAT),
+            'created': sighting.created.strftime(SIGHTING_DATE_YEAR_FORMAT),
             'visibility': visibility,
         })
     return render_to_response('manage_sightings.html', {
