@@ -28,9 +28,11 @@ define([
     };
 
     $(document).ready(function() {
-        Shadowbox.init({
-            onOpen: shadowbox_on_open
-        });
+        if ($(window).width() > 600) {
+            Shadowbox.init({
+                onOpen: shadowbox_on_open
+            });
+        }
     });
 
     /* Return Shadowbox as a convenience, so users do not have to import
