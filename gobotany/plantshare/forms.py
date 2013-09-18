@@ -69,6 +69,7 @@ class SightingForm(forms.Form):
     created = forms.CharField(
         required=True,
         widget=forms.DateInput(attrs={
+            'autocomplete': 'off',
             'placeholder': 'mm/dd/yyyy',
             'class': 'date-input',
         }, format='%m/%d/%Y'),
