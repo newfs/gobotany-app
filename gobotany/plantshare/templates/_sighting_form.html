@@ -12,6 +12,24 @@
             Restricted: only you and staff will see this sighting.
         </p>
 
+        <fieldset>
+            <legend>Location</legend>
+
+            {{ form.location.errors }}
+            <label for="id_location">Location (required)</label>
+            <div class="location">
+                {{ form.location }}
+                {% sightings_map latitude="42.342" longitude="-71.425" center_title="180 Hemenway Road, Framingham, MA" height="180px" width="302px" zoom="10" id="location-map" %}
+            </div>
+
+            {{ form.location_notes.errors }}
+            <label for="id_location_notes">Notes on location</label>
+            {{ form.location_notes }}
+
+            {{ form.latitude.as_hidden }}
+            {{ form.longitude.as_hidden }}
+        </fieldset>
+
         {{ form.notes.errors }}
         <label for="id_notes">Comments</label>
         {{ form.notes }}
@@ -44,31 +62,13 @@
             </p>
         </div>
 
-        <fieldset>
-            <legend>Location</legend>
-
-            {{ form.location.errors }}
-            <label for="id_location">Location (required)</label>
-            <div class="location">
-                {{ form.location }}
-                {% sightings_map latitude="42.342" longitude="-71.425" center_title="180 Hemenway Road, Framingham, MA" height="180px" width="302px" zoom="10" id="location-map" %}
-            </div>
-
-
-            {{ form.location_notes.errors }}
-            <label for="id_location_notes">Notes on location</label>
-            {{ form.location_notes }}
-
-            {{ form.latitude.as_hidden }}
-            {{ form.longitude.as_hidden }}
-        </fieldset>
-
         <div class="visibility">
             <p class="label">Visibility</p>
             <p>{{ form.visibility }}</p>
             <p class="restricted hidden">Restricted: only you and
             staff will see this sighting.</p>
         </div>
+
         {{ form.flagged.as_hidden }}
         {{ form.approved.as_hidden }}
 

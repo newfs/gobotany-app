@@ -74,8 +74,7 @@ class SightingForm(forms.Form):
     location_notes = forms.CharField(
         required=False,
         widget=forms.Textarea({
-            'placeholder': ('optional notes about plant location such as: '
-                           'end of road, near oak tree'),
+            'placeholder': ('such as: end of road, near oak tree'),
         })
     )
     latitude = forms.CharField(

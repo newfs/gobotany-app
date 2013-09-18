@@ -46,6 +46,7 @@ body.plantshare {
                 margin: 0;
             }
             label {
+                clear: left;
                 display: block;
                 margin-bottom: 4px;
                 text-transform: uppercase;
@@ -517,6 +518,7 @@ body.plantshare {
             border: 1px solid $border-green;
             margin-bottom: $section-padding;
             padding: 5px $section-padding;
+            width: 654px;
         }
     }
     &#new-sighting, &#edit-sighting {
@@ -554,6 +556,10 @@ body.plantshare {
         }
         #id_location_notes {
             height: 113px;
+        }
+        #id_notes {
+            height: 62px;
+            margin-bottom: 10px;
         }
         .visibility {
             clear: left;
@@ -1479,8 +1485,8 @@ body.plantshare {
         }
     }
     .content form {
-        label, input, textarea {
-            width: $smallscreen-portrait-form-el-width;
+        label, input:not([type="submit"]), textarea {
+            width: $smallscreen-portrait-form-el-width !important;
         }
     }
 }
@@ -1552,6 +1558,14 @@ body.plantshare {
             }
         }
     }
+    &#new-sighting {
+        h1 {
+            margin-bottom: 10px;
+        }
+        h1 + div {
+            display: none;
+        }
+    }
     &.sighting form {
         fieldset {
             width: auto;
@@ -1563,6 +1577,9 @@ body.plantshare {
                 margin-bottom: 10px;
                 }
             }
+        }
+        #location-map {
+            margin: 0;
         }
         &#profile .info.box {
             img {

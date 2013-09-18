@@ -1064,7 +1064,7 @@ body.plantshare .recaptchatable a { color: #317b0c; }
 body.plantshare .recaptchatable #recaptcha_response_field { font-family: "Trebuchet MS", Helvetica, Arial, "Lucida Sans Unicode", sans-serif; font-size: 14px; }
 body.plantshare .content li { list-style-type: none; }
 body.plantshare .content form p { margin: 0; }
-body.plantshare .content form label { display: block; margin-bottom: 4px; text-transform: uppercase; width: 353px; }
+body.plantshare .content form label { clear: left; display: block; margin-bottom: 4px; text-transform: uppercase; width: 353px; }
 body.plantshare .content form input { margin-bottom: 10px; }
 body.plantshare .content form input[type=text], body.plantshare .content form input[type=password] { height: 16px; border: 1px solid #c3d941; padding: 5px; width: 353px; }
 body.plantshare .content form textarea { height: 82px; border: 1px solid #c3d941; padding: 5px; width: 353px; }
@@ -1168,7 +1168,7 @@ body.plantshare #sightings-locator.mini .box form p { line-height: 14px; margin:
 body.plantshare #sightings-locator.mini .box form p#sightings-status { margin-left: -1000px; /* hide until JS shows it */ padding: 65px 0 0; }
 body.plantshare #sightings-locator.mini .box form p.full-link { margin-top: 10px; }
 body.plantshare #sightings-locator.mini .box .map { clear: none; border-bottom: 0; border-right: 0; border-top: 0; float: right; margin-top: 0; }
-body.plantshare#new-sighting h1 + div { background: #fff; border: 1px solid #c3d941; margin-bottom: 16px; padding: 5px 16px; }
+body.plantshare#new-sighting h1 + div { background: #fff; border: 1px solid #c3d941; margin-bottom: 16px; padding: 5px 16px; width: 654px; }
 body.plantshare#new-sighting #id_identification, body.plantshare#new-sighting .restricted, body.plantshare#edit-sighting #id_identification, body.plantshare#edit-sighting .restricted { display: inline-block; }
 body.plantshare#new-sighting .images, body.plantshare#edit-sighting .images { margin-top: 10px; }
 body.plantshare#new-sighting .restricted, body.plantshare#edit-sighting .restricted { margin-left: 14px; }
@@ -1178,6 +1178,7 @@ body.plantshare#new-sighting .restricted-dialog .ok, body.plantshare#edit-sighti
 body.plantshare#new-sighting .restricted-dialog .ok a, body.plantshare#edit-sighting .restricted-dialog .ok a { color: #fff; cursor: pointer; display: inline-block; width: 80px; }
 body.plantshare#new-sighting fieldset, body.plantshare#edit-sighting fieldset { margin-bottom: 10px; }
 body.plantshare#new-sighting #id_location_notes, body.plantshare#edit-sighting #id_location_notes { height: 113px; }
+body.plantshare#new-sighting #id_notes, body.plantshare#edit-sighting #id_notes { height: 62px; margin-bottom: 10px; }
 body.plantshare#new-sighting .visibility, body.plantshare#edit-sighting .visibility { clear: left; margin-bottom: 50px; }
 body.plantshare#new-sighting .visibility p, body.plantshare#edit-sighting .visibility p { display: inline-block; }
 body.plantshare#new-sighting .visibility .label, body.plantshare#edit-sighting .visibility .label { display: block; }
@@ -1383,7 +1384,7 @@ body.plantshare#screen-images div.form-control { margin: 0 30px; }
 /* Portrait-orientation styles */
 @media only screen and (max-width: 400px) { body.plantshare .box, body.plantshare .profile { width: 302px; }
   body.plantshare#locator #main #species-images { width: 304px; }
-  .content form label, .content form input, .content form textarea { width: 292px; } }
+  .content form label, .content form input:not([type="submit"]), .content form textarea { width: 292px !important; } }
 /* Landscape-orientation styles */
 @media only screen and (min-width: 401px) and (max-width: 600px) { body.plantshare .box, body.plantshare .profile { width: 462px; }
   body.plantshare#locator #main #species-images { width: 462px; } }
@@ -1403,8 +1404,11 @@ body.plantshare#screen-images div.form-control { margin: 0 30px; }
   body.plantshare#plantshare .sign-up-call ul { list-style-position: inside; margin-left: 0; }
   body.plantshare#plantshare .notification { width: auto; }
   body.plantshare#plantshare .notification ul { margin-left: 0; }
+  body.plantshare#new-sighting h1 { margin-bottom: 10px; }
+  body.plantshare#new-sighting h1 + div { display: none; }
   body.plantshare.sighting form fieldset { width: auto; }
   body.plantshare.sighting form .location img { display: block; float: none; margin-bottom: 10px; }
+  body.plantshare #location-map { margin: 0; }
   body.plantshare#profile .info.box img { padding: 16px; }
   body.plantshare#sign-up #main form input { width: 290px; }
   body.plantshare .content form input[type=text], body.plantshare .content form input[type=password] { width: 292px; }
