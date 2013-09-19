@@ -17,6 +17,7 @@ from django.shortcuts import (get_object_or_404, redirect, render,
     render_to_response)
 from django.template import RequestContext
 from django.utils import simplejson
+from django.utils.timezone import utc
 
 from emailconfirmation import views as emailconfirmation_views
 from emailconfirmation.models import EmailConfirmation
@@ -257,7 +258,7 @@ def sightings_view(request):
                 date_time = form.cleaned_data['created']
                 # Add the current time in case the user changed the date,
                 # just for ordering entries as they were posted.
-                now = datetime.now()
+                now = datetime.utcnow().replace(tzinfo=utc)
                 date_time = date_time + timedelta(
                     hours=now.hour, minutes=now.minute)
                 created = date_time
@@ -452,7 +453,7 @@ def sighting_view(request, sighting_id):
                 updated_date_time = form.cleaned_data['created']
                 # Add the current time, just for ordering entries as
                 # they were edited.
-                now = datetime.now()
+                now = datetime.utcnow().replace(tzinfo=utc)
                 updated_date_time = updated_date_time + timedelta(
                     hours=now.hour, minutes=now.minute)
                 s.created = updated_date_time
@@ -500,8 +501,9 @@ def sighting_view(request, sighting_id):
 @terms_agreed_on_login
 def new_sighting_view(request):
     """View for a blank form for posting a new sighting."""
+    now = datetime.utcnow().replace(tzinfo=utc)
     form = SightingForm(initial={
-        'created': datetime.now()
+        'created': now
     })
     return _sighting_form_page(request, form)
 
@@ -1039,7 +1041,7 @@ def screen_images(request):
     if request.method == 'POST':
         formset = ScreeningFormSet(request.POST)
         for form in formset.initial_forms:
-            form.instance.screened = datetime.now()
+            form.instance.screened = datetime.utcnow().replace(tzinfo=utc)
             form.instance.screened_by = request.user
             # Forms left as "unapproved" appear unchanged, so they won't be
             # saved with formset.save()
@@ -1181,7 +1183,7 @@ def ajax_image_reject(request, image_id):
         }), mimetype='application/json')
 
     image.is_approved = False
-    image.screened = datetime.now()
+    image.screened = datetime.utcnow().replace(tzinfo=utc)
     image.screened_by = request.user
 
     image.save()

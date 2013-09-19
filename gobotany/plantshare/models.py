@@ -577,7 +577,8 @@ class Question(models.Model):
         # Auto-populate the "answered" date the first time a question is
         # approved in the the Admin, and notify the user by email.
         if self.answer and self.approved == True and not self.answered:
-            self.answered = datetime.datetime.now()
+            now = datetime.datetime.utcnow().replace(tzinfo=timezone.utc)
+            self.answered = now
             self.notify_user()
 
         # If the question is answered or approved, then any attached images
