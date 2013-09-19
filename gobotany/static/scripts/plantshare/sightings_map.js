@@ -117,6 +117,8 @@ define([
             if (show_plant) {
                 this.show_sightings_count(sightings_count);
             }
+
+            var coordinates = [];
             var marker;
             for (var i = 0; i < sightings_count; i++) {
                 var sighting = json.sightings[i];
@@ -134,10 +136,19 @@ define([
                     show_info = true;
                 }
 
+                // Record the coordinates in a list that will be used to
+                // set the viewport bounds.
+                coordinates.push(
+                    new Array(sighting.latitude, sighting.longitude));
+                
+                // Add a marker for this sighting.
                 marker = this.add_marker(sighting.latitude,
                     sighting.longitude, title, info_window_html, sighting.id,
                     show_info);
             }
+
+            // Set the viewport bounds to show all the markers.
+            this.fit_bounds_to_coordinates(coordinates);
         });
     };
 

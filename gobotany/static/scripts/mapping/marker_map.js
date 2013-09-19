@@ -185,6 +185,20 @@ define([
         return bounds;
     };
 
+    MarkerMap.prototype.fit_bounds_to_coordinates = function (coordinates) {
+        // Fit the map bounds to a list of coordinates.
+        if (coordinates.length) {
+            var bounds = new google_maps.LatLngBounds();
+            for (var i = 0; i < coordinates.length; i++) {
+                var latitude = coordinates[i][0];
+                var longitude = coordinates[i][1];
+                var lat_lng = new google_maps.LatLng(latitude, longitude);
+                bounds.extend(lat_lng);
+            }
+            this.map.fitBounds(bounds);
+        }
+    };
+
     MarkerMap.prototype.add_landmark_marker = function (latitude, longitude,
                                                         title) {
         // Create a marker in a secondary color to mark a landmark.
