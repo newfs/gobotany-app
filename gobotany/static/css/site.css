@@ -1321,7 +1321,7 @@ body.plantshare.checklists table.checklists-list thead, body.plantshare.checklis
 body.plantshare.checklists table.checklists-list td { overflow: hidden; }
 body.plantshare.checklists table.checklists-list .first { white-space: nowrap; width: 0px; /* hidden */ }
 body.plantshare.checklists table.checklists-list .first input[type="checkbox"] { display: none; margin-left: 5px; margin-top: 10px; width: auto; }
-body.plantshare.checklists table.checklists-list .checklistview-name { white-space: nowrap; width: 498px; }
+body.plantshare.checklists table.checklists-list .checklistview-name { width: 498px; }
 body.plantshare.checklists table.checklists-list .owner { white-space: nowrap; width: 120px; }
 body.plantshare.checklists table.checklists-list .last { text-align: right; white-space: nowrap; width: 180px; }
 body.plantshare.checklists table.checklists-list .last a { margin-right: 10px; }
@@ -1385,38 +1385,49 @@ body.plantshare#screen-images div.form-control { margin: 0 30px; }
 /* Portrait-orientation styles */
 @media only screen and (max-width: 400px) { body.plantshare .box, body.plantshare .profile { width: 302px; }
   body.plantshare#locator #main #species-images { width: 304px; }
-  .content form label, .content form input:not([type="submit"]), .content form textarea { width: 292px !important; } }
+  body.plantshare#new-sighting textarea { width: 292px; }
+  body.plantshare#find-people .person li a { display: none; /* hide for now: lightbox too big */ }
+  .content form label, .content form input:not([type="submit"]), .content form textarea { width: 292px; } }
 /* Landscape-orientation styles */
 @media only screen and (min-width: 401px) and (max-width: 600px) { body.plantshare .box, body.plantshare .profile { width: 462px; }
   body.plantshare#locator #main #species-images { width: 462px; } }
 /* These styles are common to both smartphone widths */
 @media only screen and (max-width: 600px) { body.plantshare #main .box { padding: 0; }
   body.plantshare #main .box > * { padding-left: 16px; padding-right: 16px; }
-  body.plantshare #main .box > table { margin-left: 16px; width: 90%; }
+  body.plantshare > table { margin-left: 16px; width: 90%; }
   body.plantshare .content #sidebar { background: none; border: 0; }
   body.plantshare#plantshare h1, body.plantshare#plantshare #find-people-form, body.plantshare#plantshare #recent-sightings-gallery { float: none; }
   body.plantshare#plantshare h1 { margin-bottom: 12px; }
   body.plantshare#plantshare #find-people-form, body.plantshare#plantshare #recent-sightings-gallery { clear: both; }
   body.plantshare#plantshare #find-people-form h2, body.plantshare#plantshare #recent-sightings-gallery h2 { font-size: 16px; }
+  body.plantshare#plantshare #recent-sightings-gallery .img-gallery { padding-bottom: 10px; }
   body.plantshare#plantshare .profile { margin-top: 10px; width: auto; }
   body.plantshare#plantshare .profile a.edit { margin-top: 8px; }
   body.plantshare#plantshare .profile div { height: auto; }
+  body.plantshare#plantshare #sightings-locator.mini .box { height: 424px; width: auto; }
+  body.plantshare#plantshare #sightings-locator.mini .box h4, body.plantshare#plantshare #sightings-locator.mini .box h4 + p { display: none; }
+  body.plantshare#plantshare #sightings-locator.mini .box form { padding: 0 10px 0 0; width: auto; }
   body.plantshare#plantshare .sign-up-call { width: auto; }
   body.plantshare#plantshare .sign-up-call ul { list-style-position: inside; margin-left: 0; }
   body.plantshare#plantshare .notification { width: auto; }
   body.plantshare#plantshare .notification ul { margin-left: 0; }
-  body.plantshare#new-sighting h1 { margin-bottom: 10px; }
-  body.plantshare#new-sighting h1 + div { display: none; }
-  body.plantshare.sighting form fieldset { width: auto; }
-  body.plantshare.sighting form .location img { display: block; float: none; margin-bottom: 10px; }
+  body.plantshare#plantshare#new-sighting h1 { margin-bottom: 10px; }
+  body.plantshare#plantshare#new-sighting h1 + div { display: none; }
+  body.plantshare#plantshare#new-sighting div.location + label { padding-top: 8px; }
+  body.plantshare#plantshare.sighting form fieldset { width: auto; }
+  body.plantshare#plantshare.sighting form .location img { display: block; float: none; margin-bottom: 10px; }
   body.plantshare #location-map { margin: 0; }
+  body.plantshare#profile .info.box { width: auto; }
+  body.plantshare#profile .info.box .info-section .info.box .avatar { padding: 0 0 4px 0; width: auto; }
   body.plantshare#profile .info.box img { padding: 16px; }
-  body.plantshare#sign-up #main form input { width: 290px; }
+  body.plantshare #sign-up #main form input { width: 290px; }
   body.plantshare .content form input[type=text], body.plantshare .content form input[type=password] { width: 292px; }
+  body.plantshare #sightings-locator input[type=text] { clear: left; }
   body.plantshare#find-people #find-people-form input[type='text'] { width: 249px; }
+  body.plantshare#find-people #main .box { width: auto; }
   body.plantshare#find-people #main .person ul { width: auto; }
   body.plantshare#find-people #main .person .name { font-size: 16px; }
-  body.plantshare#plantshare #mini-sightings-map, body.plantshare#ask #mini-sightings-map { float: left; margin-top: 6px; width: 85% !important; }
+  body.plantshare#plantshare #mini-sightings-map, body.plantshare#ask #mini-sightings-map { float: left; margin-bottom: 12px; margin-top: 14px; width: 85% !important; }
   body.plantshare#plantshare #ask #question-form, body.plantshare#plantshare #main #question-form, body.plantshare#ask #ask #question-form, body.plantshare#ask #main #question-form { padding-left: 0; }
   body.plantshare#plantshare #ask textarea, body.plantshare#plantshare #main textarea, body.plantshare#ask #ask textarea, body.plantshare#ask #main textarea { width: 90%; }
   body.plantshare#sightings #main > ul > li ul { margin: 0; }
@@ -1428,8 +1439,10 @@ body.plantshare#screen-images div.form-control { margin: 0 30px; }
   body.plantshare#locator #main #sightings-status { clear: both; float: none; }
   body.plantshare#locator #sightings-locator .map { margin-top: 0; }
   body.plantshare#locator #sightings-map { width: 90% !important; }
-  body.plantshare#profile .info-section .info.box table, body.plantshare#profile .location-section .info.box table { width: 100%; } }
+  body.plantshare#profile .info-section .info.box table, body.plantshare#profile .location-section .info.box table { width: 100%; }
+  body.plantshare.checklists #checklist-fillout #id_name { width: 95%; } }
 /* These styles apply to smartphones and tablets */
+/* Print styles for checklists */
 @media only print { body.plantshare { background: white; }
   body.plantshare header, body.plantshare footer { display: none; }
   body.plantshare div#sidebar { display: none; }

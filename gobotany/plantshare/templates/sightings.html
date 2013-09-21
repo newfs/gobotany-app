@@ -35,8 +35,8 @@
                         </a>
                     {% endif %}
                     <a class="title"
-                    href="{% url 'ps-sighting' sighting.id %}">{{ sighting.identification|italicize_if_scientific|safe }}
-                    at {{ sighting.location|capfirst }}</a>
+                    href="{% url 'ps-sighting' sighting.id %}">{{ sighting.identification|italicize_if_scientific|safe }}</a>
+                    at {{ sighting.location|capfirst }}
                     by
                     {% comment %}
                     TODO: revisit getting the user's display name here.

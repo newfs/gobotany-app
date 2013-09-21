@@ -1208,7 +1208,6 @@ body.plantshare {
                 }
             }
             .checklistview-name {
-                white-space: nowrap;
                 width: 498px;
             }
             .owner {
@@ -1486,10 +1485,20 @@ body.plantshare {
                 width: 304px;
             }
         }
+        &#new-sighting {
+            textarea {
+                width: $smallscreen-portrait-form-el-width;
+            }
+        }
+        &#find-people .person {
+            li a {
+                display: none; /* hide for now: lightbox too big */
+            }
+        }
     }
     .content form {
         label, input:not([type="submit"]), textarea {
-            width: $smallscreen-portrait-form-el-width !important;
+            width: $smallscreen-portrait-form-el-width;
         }
     }
 }
@@ -1514,19 +1523,19 @@ body.plantshare {
             > * {
                 padding-left: $section-padding;
                 padding-right: $section-padding;
+            }
         }
         > table {
             margin-left: $section-padding;
             width: 90%;
         }
-    }
-    .content #sidebar {
-        background: none;
-        border: 0;
-    }
-    &#plantshare {
-        h1, #find-people-form, #recent-sightings-gallery {
-            float: none;
+        .content #sidebar {
+            background: none;
+            border: 0;
+        }
+        &#plantshare {
+            h1, #find-people-form, #recent-sightings-gallery {
+                float: none;
         }
         h1 {
             margin-bottom: 12px;
@@ -1537,6 +1546,9 @@ body.plantshare {
                 font-size: 16px;
             }
         }
+        #recent-sightings-gallery .img-gallery {
+            padding-bottom: 10px;
+        }
         .profile {
             margin-top: 10px;
             width: auto;
@@ -1545,6 +1557,17 @@ body.plantshare {
             }
             div {
                 height: auto;
+            }
+        }
+        #sightings-locator.mini .box {
+            height: 424px;
+            width: auto;
+            h4, h4 + p {
+                display: none;
+            }
+            form {
+                padding: 0 10px 0 0;
+                width: auto;
             }
         }
         .sign-up-call {
@@ -1560,24 +1583,27 @@ body.plantshare {
                 margin-left: 0;
             }
         }
-    }
-    &#new-sighting {
-        h1 {
-            margin-bottom: 10px;
-        }
-        h1 + div {
-            display: none;
-        }
-    }
-    &.sighting form {
-        fieldset {
-            width: auto;
-        }
-        .location {
-            img {
-                display: block;
-                float: none;
+        &#new-sighting {
+            h1 {
                 margin-bottom: 10px;
+            }
+            h1 + div {
+                display: none;
+            }
+            div.location + label {
+                padding-top: 8px;
+            }
+        }
+        &.sighting form {
+            fieldset {
+                width: auto;
+            }
+            .location {
+                img {
+                    display: block;
+                    float: none;
+                    margin-bottom: 10px;
+                    }
                 }
             }
         }
@@ -1585,39 +1611,53 @@ body.plantshare {
             margin: 0;
         }
         &#profile .info.box {
+            width: auto;
+            .info-section .info.box {
+                .avatar {
+                    padding: 0 0 4px 0;
+                    width: auto;
+                }
+            }
             img {
                 padding: $section-padding;
             }
         }
-        &#sign-up {
+        #sign-up {
             #main form input {
                 width: 290px;
             }
         }
-    }
-    body.plantshare {
         .content form {
             input[type=text], input[type=password] {
                 width: $smallscreen-portrait-form-el-width;
             }
         }
+        #sightings-locator input[type=text] {
+            clear: left;
+        }
         &#find-people {
             #find-people-form input[type='text'] {
                 width: 249px;
             }
-            #main .person {
-                ul {
+            #main {
+                .box {
                     width: auto;
                 }
-                .name {
-                    font-size: 16px;
+                .person {
+                    ul {
+                        width: auto;
+                    }
+                    .name {
+                        font-size: 16px;
+                    }
                 }
             }
         }
         &#plantshare, &#ask {
             #mini-sightings-map {
                 float: left;
-                margin-top: 6px;
+                margin-bottom: 12px;
+                margin-top: 14px;
                 width: 85% !important;
             }
             #ask, #main {
@@ -1676,12 +1716,16 @@ body.plantshare {
                 }
             }
         }
+        &.checklists #checklist-fillout #id_name {
+            width: 95%;
+        }
     }
 }
 /* These styles apply to smartphones and tablets */
 @media only screen and (max-width: 1024px) {
 }
 
+/* Print styles for checklists */
 @media only print {
     body.plantshare {
         background: white;
