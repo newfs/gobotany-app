@@ -132,14 +132,13 @@ class Location(models.Model):
         """Parse the raw input and fill the appropriate detail fields."""
         user_input = self.user_input.strip()
         if user_input:
-            if user_input[:-1].isalpha():   # last character is a letter
-                # Location format is address: street, city, state.
+            if user_input[-1].isalpha():   # last character is a letter
+                # Location format is address: street (optional), city, state.
                 # (Latitude/longitude is handled elsewhere.)
-                street, city, state = [x.strip()
-                                       for x in user_input.split(',')]
-                self.street = street
-                self.city = city
-                self.state = state
+                parts = [x.strip() for x in user_input.split(',')]
+                self.street = parts[-3] if len(parts) > 2 else None
+                self.city = parts[-2]
+                self.state = parts[-1]
 
     def save(self, *args, **kwargs):
         self._parse_user_input()
