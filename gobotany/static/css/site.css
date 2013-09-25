@@ -1390,32 +1390,33 @@ body.plantshare#screen-images div.form-control { margin: 0 30px; }
   .content form label, .content form input:not([type="submit"]), .content form textarea { width: 292px; } }
 /* Landscape-orientation styles */
 @media only screen and (min-width: 401px) and (max-width: 600px) { body.plantshare .box, body.plantshare .profile { width: 462px; }
-  body.plantshare#locator #main #species-images { width: 462px; } }
+  body.plantshare#locator #main #species-images { width: 462px; }
+  body.plantshare#new-sighting #id_identification, body.plantshare#new-sighting #id_location { width: 353px; } }
 /* These styles are common to both smartphone widths */
 @media only screen and (max-width: 600px) { body.plantshare #main .box { padding: 0; }
   body.plantshare #main .box > * { padding-left: 16px; padding-right: 16px; }
   body.plantshare > table { margin-left: 16px; width: 90%; }
   body.plantshare .content #sidebar { background: none; border: 0; }
   body.plantshare#plantshare h1, body.plantshare#plantshare #find-people-form, body.plantshare#plantshare #recent-sightings-gallery { float: none; }
-  body.plantshare#plantshare h1 { margin-bottom: 12px; }
-  body.plantshare#plantshare #find-people-form, body.plantshare#plantshare #recent-sightings-gallery { clear: both; }
-  body.plantshare#plantshare #find-people-form h2, body.plantshare#plantshare #recent-sightings-gallery h2 { font-size: 16px; }
-  body.plantshare#plantshare #recent-sightings-gallery .img-gallery { padding-bottom: 10px; }
-  body.plantshare#plantshare .profile { margin-top: 10px; width: auto; }
-  body.plantshare#plantshare .profile a.edit { margin-top: 8px; }
-  body.plantshare#plantshare .profile div { height: auto; }
-  body.plantshare#plantshare #sightings-locator.mini .box { height: 424px; width: auto; }
-  body.plantshare#plantshare #sightings-locator.mini .box h4, body.plantshare#plantshare #sightings-locator.mini .box h4 + p { display: none; }
-  body.plantshare#plantshare #sightings-locator.mini .box form { padding: 0 10px 0 0; width: auto; }
-  body.plantshare#plantshare .sign-up-call { width: auto; }
-  body.plantshare#plantshare .sign-up-call ul { list-style-position: inside; margin-left: 0; }
-  body.plantshare#plantshare .notification { width: auto; }
-  body.plantshare#plantshare .notification ul { margin-left: 0; }
-  body.plantshare#plantshare#new-sighting h1 { margin-bottom: 10px; }
-  body.plantshare#plantshare#new-sighting h1 + div { display: none; }
-  body.plantshare#plantshare#new-sighting div.location + label { padding-top: 8px; }
-  body.plantshare#plantshare.sighting form fieldset { width: auto; }
-  body.plantshare#plantshare.sighting form .location img { display: block; float: none; margin-bottom: 10px; }
+  body.plantshare h1 { margin-bottom: 12px; }
+  body.plantshare #find-people-form, body.plantshare #recent-sightings-gallery { clear: both; }
+  body.plantshare #find-people-form h2, body.plantshare #recent-sightings-gallery h2 { font-size: 16px; }
+  body.plantshare #recent-sightings-gallery .img-gallery { padding-bottom: 10px; }
+  body.plantshare .profile { margin-top: 10px; width: auto; }
+  body.plantshare .profile a.edit { margin-top: 8px; }
+  body.plantshare .profile div { height: auto; }
+  body.plantshare #sightings-locator.mini .box { height: 424px; width: auto; }
+  body.plantshare #sightings-locator.mini .box h4, body.plantshare #sightings-locator.mini .box h4 + p { display: none; }
+  body.plantshare #sightings-locator.mini .box form { padding: 0 10px 0 0; width: auto; }
+  body.plantshare .sign-up-call { width: auto; }
+  body.plantshare .sign-up-call ul { list-style-position: inside; margin-left: 0; }
+  body.plantshare .notification { width: auto; }
+  body.plantshare .notification ul { margin-left: 0; }
+  body.plantshare#new-sighting h1 { margin-bottom: 10px; }
+  body.plantshare#new-sighting h1 + div { display: none; }
+  body.plantshare#new-sighting div.location + label { padding-top: 8px; }
+  body.plantshare.sighting form fieldset { width: auto; }
+  body.plantshare.sighting form .location img { display: block; float: none; margin-bottom: 10px; }
   body.plantshare #location-map { margin: 0; }
   body.plantshare#profile .info.box { width: auto; }
   body.plantshare#profile .info.box .info-section .info.box .avatar { padding: 0 0 4px 0; width: auto; }

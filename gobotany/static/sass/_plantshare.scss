@@ -1513,6 +1513,11 @@ body.plantshare {
                 width: 462px;
             }
         }
+        &#new-sighting {
+            #id_identification, #id_location {
+                width: $form-field-width;
+            }
+        }
     }
 }
 /* These styles are common to both smartphone widths */
@@ -1536,6 +1541,7 @@ body.plantshare {
         &#plantshare {
             h1, #find-people-form, #recent-sightings-gallery {
                 float: none;
+            }
         }
         h1 {
             margin-bottom: 12px;
@@ -1603,7 +1609,6 @@ body.plantshare {
                     display: block;
                     float: none;
                     margin-bottom: 10px;
-                    }
                 }
             }
         }
