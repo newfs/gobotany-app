@@ -223,9 +223,18 @@ TINYMCE_JS_URL = "tiny_mce/tiny_mce.js"
 # developer runs us locally with that environment variable set.
 
 if 'MEMCACHIER_SERVERS' in os.environ:
-    CACHES = {'default': {
-        'BACKEND': 'django_pylibmc.memcached.PyLibMCCache'
-        }}
+    os.environ['MEMCACHE_SERVERS'] = os.environ.get('MEMCACHIER_SERVERS', '')
+    os.environ['MEMCACHE_USERNAME'] = os.environ.get('MEMCACHIER_USERNAME', '')
+    os.environ['MEMCACHE_PASSWORD'] = os.environ.get('MEMCACHIER_PASSWORD', '')
+
+    CACHES = {
+      'default': {
+        'BACKEND': 'django_pylibmc.memcached.PyLibMCCache',
+        'TIMEOUT': 500,
+        'BINARY': True,
+        'OPTIONS': { 'tcp_nodelay': True }
+      }
+    }
 
 # Normally we pull images in read-only mode from our NEWFS S3 bucket.
 # Environment variables can be set to provide real AWS keys for writing
