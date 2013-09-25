@@ -195,15 +195,15 @@ define([
 
         var viewport_width = $(window).width();
 
-        // skip animation when there are many plants, or on small screens
-        var do_animation = ((items.length < 50) &&
-                            (viewport_width > 600));
+        // skip animation on small screens
+        var do_animation = (viewport_width > 600);
 
         var WIDTH = 178;
         var HEIGHT = 232;
 
         var displayed_plants = [];
         var displayed_divs = [];
+        var destx, desty;
 
         var n = 0;  // count of plants actually displayed
         for (var i = 0; i < this.plant_divs.length; i++) {
@@ -215,8 +215,8 @@ define([
                 displayed_plants.push(plant);
                 displayed_divs.push($div);
 
-                var destx = WIDTH * (n % SPECIES_PER_ROW);
-                var desty = HEIGHT * Math.floor(n / SPECIES_PER_ROW);
+                destx = WIDTH * (n % SPECIES_PER_ROW);
+                desty = HEIGHT * Math.floor(n / SPECIES_PER_ROW);
                 n += 1;
 
                 $div.removeClass('genus_alt');

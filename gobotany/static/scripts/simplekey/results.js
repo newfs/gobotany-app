@@ -42,32 +42,6 @@ results_page_init: function(args) {
         filtered_sorted_taxadata_ready,
         taxa_by_sciname_ready
     ).done(function() {
-        /* Set the initial view to Photos for a full-size page, or List for 
-           small screens. */
-        /* Disable for now the code that makes the list view the
-         * default on small screens. It is causing trouble with maintaining
-         * state upon pressing the Back button, because the hash does
-         * not seem to be initializing like it should, and does, when
-         * photos is the initial view. Perhaps this needs to be done
-         * *after* the species section is initialized and resolved, below. */
-        /*
-        if ($(window).width() > MAX_SMALLSCREEN_WIDTH) {
-            // "Photos" view is the initial view on full-size screens.
-            App3.set('show_grid', true);
-            App3.set('show_list', false);
-        }
-        else {
-            // "List" view is the usual initial view on small screens. (It can
-            // be overridden to be the "photos" view instead.)
-            var initial_smallscreen_view = DEFAULT_SMALLSCREEN_VIEW;
-            if ($('body').hasClass('mobile-photos')) {
-                initial_smallscreen_view = 'photos';
-            }
-            App3.set('show_grid', (initial_smallscreen_view === 'photos'));
-            App3.set('show_list', (initial_smallscreen_view === 'list'));
-        }
-        */
-
         /* Initialize the species results section. */
 
         species_section.init(pile_slug, taxa_ready, plant_divs_ready,
