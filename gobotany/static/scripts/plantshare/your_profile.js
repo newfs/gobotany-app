@@ -74,9 +74,10 @@ define([
 
         function avatarUploaded(imageInfo) {
             console.log('Successfully uploaded avatar');
+            $('#avatar-image').attr('src', imageInfo.thumb);
             $('.avatar').removeClass('uploading');
-            $('#avatar-image').css('opacity', '1');
-            $('#upload-link').css('opacity', '1');
+            $('#avatar-image').animate({ opacity: 1 }, 500);
+            $('#upload-link').animate({ opacity: 1 }, 500);
         }
 
         function uploadError(errorInfo) {
