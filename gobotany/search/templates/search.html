@@ -23,22 +23,24 @@
                     <strong>{{ query }}</strong>
                 </h1>
 
+                {% comment %}
+                Only include the spelling suggestion for simple
+                one-word queries, because 'suggestion' just has the
+                various words concatenated. For example, if you
+                search on post oak, the suggestion variable returns
+                the string hosta rank. The underlying Solr result
+                does return individual words, however. Probably need
+                to customize the Haystack view/form to return a list
+                of suggestion words.
+                TODO: on Heroku, search returns "Did you mean True?"
+                for valid queries such as Acer. Disabled for now.
                 {% if query|wordcount == 1 %}
-                    {% comment %}
-                    Only include the spelling suggestion for simple
-                    one-word queries, because 'suggestion' just has the
-                    various words concatenated. For example, if you
-                    search on post oak, the suggestion variable returns
-                    the string hosta rank. The underlying Solr result
-                    does return individual words, however. Probably need
-                    to customize the Haystack view/form to return a list
-                    of suggestion words.
-                    {% endcomment %}
                     {% if suggestion %}
                         <p>Did you mean <b><a 
                             href=".?q={{ suggestion }}">{{ suggestion }}</a></b>?</p>
                     {% endif %}
                 {% endif %}
+                {% endcomment %}
                 
                 {% if page.object_list|length == 0 %}
                     <p>
