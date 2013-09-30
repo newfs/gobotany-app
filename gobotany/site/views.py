@@ -285,7 +285,7 @@ def placeholder_view(request, template):
 
 def sitemap_view(request):
     URL_FORMAT = '%s://%s%s'
-    PROTOCOL = 'http'   # TODO: change when moving to https
+    PROTOCOL = 'https'
     host = request.get_host()
 
     partner_name = partner_short_name(request)
