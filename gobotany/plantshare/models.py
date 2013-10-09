@@ -312,7 +312,7 @@ class SightingManager(models.Manager):
 class Sighting(models.Model):
     user = models.ForeignKey(User)
 
-    created = models.DateTimeField(blank=False, auto_now_add=True)
+    created = models.DateTimeField(blank=False)
     identification = models.CharField(max_length=120, blank=True)
     notes = models.TextField(blank=True)
 
