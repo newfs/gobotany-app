@@ -1097,9 +1097,9 @@ body.plantshare #main .profile .avatar { background: #e1f0d1; display: block; fl
 body.plantshare #main .profile table { clear: left; }
 body.plantshare #main .profile .map { float: right; margin-left: 16px; }
 body.plantshare #main .profile p { margin: 2px 0; }
-body.plantshare#terms-of-agreement #main form input[type="checkbox"] { float: left; margin: 3px 14px 0 0; width: auto; }
+body.plantshare#terms-of-agreement #main form input[type="checkbox"] { clear: both; float: left; margin: 3px 14px 0 0; width: auto; }
 body.plantshare#terms-of-agreement #main form fieldset { background: #fff; border: 0; }
-body.plantshare#terms-of-agreement #main form label { line-height: 150%; margin: 0 0 24px 32px; text-transform: none; width: auto; }
+body.plantshare#terms-of-agreement #main form label { float: right; line-height: 150%; margin: -16px 0 24px 32px; text-transform: none; width: auto; }
 body.plantshare#terms-of-agreement #main form label:last-of-type { margin-bottom: 0; }
 body.plantshare#terms-of-agreement #main form div { margin: 14px 0; padding: 24px 36px 24px 18px; }
 body.plantshare#terms-of-agreement #main form .agree-btn { margin-right: 14px; width: 153px; }

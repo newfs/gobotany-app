@@ -191,6 +191,7 @@ body.plantshare {
     &#terms-of-agreement {
         #main form {
             input[type="checkbox"] {
+                clear: both;
                 float: left;
                 margin: 3px 14px 0 0;
                 width: auto;
@@ -200,8 +201,9 @@ body.plantshare {
                 border: 0;
             }
             label {
+                float: right;
                 line-height: 150%;
-                margin: 0 0 24px 32px;
+                margin: -16px 0 24px 32px;
                 text-transform: none;
                 width: auto;
                 &:last-of-type {
