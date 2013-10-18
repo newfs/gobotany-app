@@ -71,7 +71,7 @@ define([
             }
             html += description;
         }
-        var more_link = '<a href="/plantshare/sightings/' + sighting.id +
+        var more_link = ' <a href="/plantshare/sightings/' + sighting.id +
             '/">more</a>'; 
         if (sighting.id !== undefined) {
             if (sighting.description.length > 0) {
