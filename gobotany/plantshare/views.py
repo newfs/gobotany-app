@@ -153,11 +153,12 @@ def _get_recent_sightings(request, profile):
         # it's always OK to show a user's own photos to that user).
         sightings_with_photos = Sighting.objects.filter(
             Q(photos__isnull=False, photos__is_approved=True) |
-            Q(photos__isnull=False, user=profile.user)).order_by('-created')
+            Q(photos__isnull=False, user=profile.user)).order_by(
+            '-created').distinct('created')
     else:
         sightings_with_photos = Sighting.objects.filter(
             photos__isnull=False, photos__is_approved=True).order_by(
-            '-created')
+            '-created').distinct('created')
 
     for sighting in sightings_with_photos:
         may_show_sighting = _may_show_sighting(sighting, request.user)
