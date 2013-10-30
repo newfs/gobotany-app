@@ -566,6 +566,7 @@ class Question(models.Model):
             'site': site,
             'question_id': self.id,
             'question': self.question,
+            'in_production': settings.IN_PRODUCTION,
         }
         subject = render_to_string('question_answered_email_subject.txt')
         subject = ''.join(subject.splitlines())   # remove newlines

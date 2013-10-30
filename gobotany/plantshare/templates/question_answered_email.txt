@@ -1,6 +1,6 @@
 Hello, {{ user_name }}. Your question has been answered on the Go Botany site:
 
-https://{{ site.domain }}{% url 'ps-all-questions' %}#q{{ question_id }}
+http{% if in_production %}s{% endif %}://{{ site.domain }}{% url 'ps-all-questions' %}#q{{ question_id }}
 
 Thanks for asking!
 
