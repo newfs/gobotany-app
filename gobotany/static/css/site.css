@@ -1097,6 +1097,8 @@ body.plantshare #main .profile .avatar { background: #e1f0d1; display: block; fl
 body.plantshare #main .profile table { clear: left; }
 body.plantshare #main .profile .map { float: right; margin-left: 16px; }
 body.plantshare #main .profile p { margin: 2px 0; }
+body.plantshare#activation-expired .content ul.causes { padding: 0 0 0 18px; }
+body.plantshare#activation-expired .content ul.causes li { list-style-type: disc; margin: 0 0 2px 0; }
 body.plantshare#terms-of-agreement #main form input[type="checkbox"] { clear: both; float: left; margin: 3px 14px 0 0; width: auto; }
 body.plantshare#terms-of-agreement #main form fieldset { background: #fff; border: 0; }
 body.plantshare#terms-of-agreement #main form label { float: right; line-height: 150%; margin: -16px 0 24px 32px; text-transform: none; width: auto; }

@@ -188,6 +188,16 @@ body.plantshare {
         }
     }
     
+    &#activation-expired {
+        .content ul.causes {
+            padding: 0 0 0 18px;
+            li {
+                list-style-type: disc;
+                margin: 0 0 2px 0;
+            }
+        }
+    }
+
     &#terms-of-agreement {
         #main form {
             input[type="checkbox"] {
