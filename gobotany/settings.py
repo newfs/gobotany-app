@@ -129,7 +129,7 @@ INSTALLED_APPS = [
     'tinymce',
     'facebook_connect',
     'registration',
-    'emailconfirmation',
+    #'emailconfirmation', # uncomment to create tables with syncdb
     'south',
     'captcha',
     ]
