@@ -129,7 +129,10 @@ INSTALLED_APPS = [
     'tinymce',
     'facebook_connect',
     'registration',
-    #'emailconfirmation', # uncomment to create tables with syncdb
+    #'emailconfirmation', # Temporarily uncomment to create this app's
+                          # tables using syncdb. Otherwise, keep commented
+                          # out to avoid a NoMigrations error when
+                          # applying South migrations.
     'south',
     'captcha',
     ]
