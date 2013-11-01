@@ -1,4 +1,4 @@
-from django import forms
+from django import db, forms
 from django.contrib import admin
 
 from gobotany.plantshare import models
@@ -42,17 +42,17 @@ class QuestionAdmin(admin.ModelAdmin):
     image_links.allow_tags = True
 
 
-class SightingPhotoInline(admin.StackedInline):
-    model = models.Sighting.photos.through
-    extra = 0
-
-
 class SightingAdmin(admin.ModelAdmin):
-    inlines = [SightingPhotoInline]
-    exclude = ['photos']
-    readonly_fields = ('email',)
-    list_display = ('identification', 'location', 'display_name', 'email',
-        'created', 'visibility', 'flagged', 'approved')
+    fields = ('user', 'created', 'identification', 'notes', 'location',
+        'location_notes', 'photographs', 'visibility', 'flagged',
+        'approved', 'email')
+    readonly_fields = ('location', 'photographs', 'email',)
+    formfield_overrides = {
+        db.models.TextField:
+            {'widget': forms.Textarea(attrs={'rows': 3, 'cols': 80})},
+    }
+    list_display = ('identification', 'location', 'display_name', 'pics',
+        'email', 'created', 'visibility', 'flagged', 'approved')
     list_filter = ('created', 'visibility', 'flagged', 'approved')
     search_fields = ('identification', 'location__city', 'location__state',)
 
@@ -70,6 +70,17 @@ class SightingAdmin(admin.ModelAdmin):
         email_address = obj.user.email or ''
         return email_address
 
+    def pics(self, obj):
+        return len(obj.private_photos())
+
+    def photographs(self, obj):
+        html = ''
+        for photo in obj.private_photos():
+            html += '<a href="%s"><img src="%s"></a> ' % (photo.image.url,
+                photo.thumb.url)
+        return html
+    photographs.short_description = 'Photos'
+    photographs.allow_tags = True
 
 class ScreenedImageAdmin(admin.ModelAdmin):
     list_display = ('image_type', 'uploaded', 'uploaded_by',
@@ -83,7 +94,7 @@ class ScreenedImageAdmin(admin.ModelAdmin):
     def admin_thumb(self, obj):
         """Show thumbnails. Doing this, because ImageKit's AdminThumbnail
         would not render."""
-        return '<img src="%s">' % (obj.thumb_cropped.url)
+        return '<img src="%s">' % (obj.thumb.url)
     admin_thumb.short_description = 'Thumbnail'
     admin_thumb.allow_tags = True
 
