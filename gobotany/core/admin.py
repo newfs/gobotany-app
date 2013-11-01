@@ -1,11 +1,15 @@
 # -*- encoding: utf-8 -*-
 
 from django import forms
-from django.core.urlresolvers import reverse
+from django.conf import settings
 from django.contrib import admin
+from django.core.urlresolvers import reverse
 from django.db import models as dbmodels
 from django.template import Context, Template
+from django.template.defaultfilters import slugify
 from django.utils.safestring import mark_safe
+from django.utils.translation import ugettext_lazy as _
+
 from gobotany.core import models
 
 # View classes
@@ -495,11 +499,35 @@ class InvasiveStatusAdmin(admin.ModelAdmin):
     list_filter = ('region', 'invasive_in_region', 'prohibited_from_sale')
 
 
+class DistributionRegionFilter(admin.SimpleListFilter):
+    title = _('region')   # appears in the filter sidebar: 'By {title}'
+    parameter_name = 'region'  # for the URL query string
+
+    def lookups(self, request, model_admin):
+        """Returns a list of tuples: the first element is the coded value
+        that will appear in the URL query, and the second element is the
+        name for the option that will appear in the filter sidebar.
+        """
+        return (
+            # Example: ('new-england', _('New England')),
+            (slugify(settings.REGION_NAME), _(settings.REGION_NAME)),
+        )
+
+    def queryset(self, request, queryset):
+        """Returns the filtered queryset based on the query string value."""
+        states_in_region = [k.upper()
+                            for k, v in settings.STATE_NAMES.iteritems()]
+        if self.value() == slugify(settings.REGION_NAME): # e.g. 'New England'
+            return queryset.filter(state__in=states_in_region)
+
+
 class DistributionAdmin(admin.ModelAdmin):
     list_display = ('scientific_name', 'state', 'county', 'present', 'native')
     list_editable = ('present', 'native',)
-    list_filter = ('state', 'county', 'present', 'native')
+    list_filter = (DistributionRegionFilter, 'native', 'present', 'state',
+        'county')
     search_fields = ('scientific_name',)
+
 
 class LookalikeAdmin(admin.ModelAdmin):
     list_display = ('taxon', 'lookalike_scientific_name',

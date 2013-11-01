@@ -269,6 +269,7 @@ else:
     INSTALLED_APPS.append('gunicorn')
 
 
+REGION_NAME = 'New England'
 STATE_NAMES = {
     'ct': u'Connecticut',
     'ma': u'Massachusetts',
