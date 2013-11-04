@@ -1,11 +1,17 @@
 import re
+
 from os.path import abspath, dirname
+
+from django.conf import settings
 from django.core.exceptions import ObjectDoesNotExist
+
 from lxml import etree
+
 from gobotany.core import models
 
 GRAPHICS_ROOT = abspath(dirname(__file__) + '/../static/graphics')
 NAMESPACES = {'svg': 'http://www.w3.org/2000/svg'}
+STATES = [k.upper() for k, v in settings.STATE_NAMES.iteritems()]
 
 class Path(object):
     """Class for operating on a SVG path node."""
@@ -179,9 +185,9 @@ class PlantDistributionMap(ChloroplethMap):
         return ordered_labels
 
     def _shade_areas(self):
-        """Set the colors of the counties (or, in the case of Canada,
-        provinces, until county/district data become available) based
-        on distribution data.
+        """Set the colors of the counties or states/provinces based
+        on distribution data. Return a list of the legend labels to be
+        displayed as a result of this shading.
         """
         legend_labels_found = []
         if self.distribution_records:
@@ -227,7 +233,23 @@ class PlantDistributionMap(ChloroplethMap):
                         box.color(Legend.COLORS[label])
                         break   # Move on to the next distribution record.
 
-            legend_labels_found = self._order_labels(legend_labels_found)
+            # Check all legend labels found to verify they should still
+            # be visible on the map. Drop any labels that no longer have
+            # any shaded areas visible on the map due to overrides.
+            final_labels = []
+            for label in legend_labels_found:
+                color = Legend.COLORS[label]
+                for node in path_nodes:
+                    node_id = node.get('id')
+                    if node_id[0:2] in STATES:
+                        style = Path(node).get_style()
+                        if style.find('fill:%s' % color) > 0:
+                            # Found a node with this label's color, so
+                            # this label should still be included.
+                            final_labels.append(label)
+                            break
+
+            legend_labels_found = self._order_labels(final_labels)
 
         return legend_labels_found
 

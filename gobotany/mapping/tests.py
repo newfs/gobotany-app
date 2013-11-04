@@ -6,6 +6,11 @@ from gobotany.mapping.map import (NAMESPACES, Path, Legend,
                                   NorthAmericanPlantDistributionMap,
                                   UnitedStatesPlantDistributionMap)
 
+def get_legend_labels(legend):
+    return [label_node.text for label_node in legend.svg_map.xpath(
+        'svg:text/svg:tspan', namespaces=NAMESPACES)]
+
+
 class PathTestCase(TestCase):
     def setUp(self):
         dist_map = NewEnglandPlantDistributionMap()
@@ -50,10 +55,6 @@ class LegendTestCase(TestCase):
         label_text_node = label_node.find('{http://www.w3.org/2000/svg}tspan')
         self.assertEqual(LABEL, label_text_node.text)
 
-    def _get_labels(self):
-        return [label_node.text for label_node in self.legend.svg_map.xpath(
-            'svg:text/svg:tspan', namespaces=NAMESPACES)]
-
     def _get_paths(self):
         return [Path(box_node) for box_node in self.legend.svg_map.xpath(
             'svg:rect', namespaces=NAMESPACES)]
@@ -65,7 +66,7 @@ class LegendTestCase(TestCase):
         LABEL = 'native'
         self.legend._set_item(SLOT, FILL_COLOR, STROKE_COLOR, LABEL)
 
-        labels = self._get_labels()
+        labels = get_legend_labels(self.legend)
         self.assertEqual('native', labels[0])
 
         paths = self._get_paths()
@@ -78,7 +79,7 @@ class LegendTestCase(TestCase):
         legend_labels_found = ['native', 'absent']
         self.legend.show_items(legend_labels_found)
 
-        labels = self._get_labels()
+        labels = get_legend_labels(self.legend)
         self.assertEqual('native', labels[0])
         self.assertEqual('absent', labels[1])
         [self.assertEqual('', label) for label in labels[2:]]
@@ -137,6 +138,8 @@ def create_distribution_records():
     # Currently, North America distribution data is at the state,
     # province, or territory level. These records will be present
     # alongside the New England records.
+    #
+    # format: county, state, present, native
     distribution_data = {
         'Dendrolycopodium dendroideum': [
             ('Piscataquis', 'ME', True, True),
@@ -187,8 +190,41 @@ def create_distribution_records():
             ('', 'CT', False, False),
             ('', 'NY', False, False),
             ('', 'NJ', False, False),
-            ('', 'pa', False, False)
-            ]
+            ('', 'pa', False, False),
+            ],
+            'Sambucus nigra': [
+            ('', 'CT', True, False),
+            ('Fairfield', 'CT', False, False),
+            ('Hartford', 'CT', False, False),
+            ('Litchfield', 'CT', False, False),
+            ('Middlesex', 'CT', False, False),
+            ('New Haven', 'CT', False, False),
+            ('New London', 'CT', False, False),
+            ('Tolland', 'CT', False, False),
+            ('Windham', 'CT', False, False),
+            ],
+            'Sambucus nigra ssp. canadensis': [
+            ('', 'CT', True, True),
+            ('Fairfield', 'CT', True, True),
+            ('Hartford', 'CT', True, True),
+            ('Litchfield', 'CT', True, True),
+            ('Middlesex', 'CT', True, True),
+            ('New Haven', 'CT', True, True),
+            ('New London', 'CT', True, True),
+            ('Tolland', 'CT', True, True),
+            ('Windham', 'CT', True, True),
+            ],
+            'Sambucus nigra ssp. nigra': [
+            ('', 'CT', True, False),
+            ('Fairfield', 'CT', False, False),
+            ('Hartford', 'CT', False, False),
+            ('Litchfield', 'CT', False, False),
+            ('Middlesex', 'CT', False, False),
+            ('New Haven', 'CT', False, False),
+            ('New London', 'CT', False, False),
+            ('Tolland', 'CT', False, False),
+            ('Windham', 'CT', False, False),
+            ],
         }
     for scientific_name, data_list in distribution_data.items():
         for entry in data_list:
@@ -272,9 +308,7 @@ class PlantDistributionMapTestCase(TestCase):
         self.distribution_map.set_plant(SCIENTIFIC_NAME)
         self.distribution_map.shade()
         self._verify_shaded_counties(['native', 'absent'])
-        labels = [label_node.text for label_node in
-            self.distribution_map.legend.svg_map.xpath('svg:text/svg:tspan',
-            namespaces=NAMESPACES)]
+        labels = get_legend_labels(self.distribution_map.legend)
         self.assertEqual('native', labels[0])
         self.assertEqual('absent', labels[1])
         [self.assertEqual('', label) for label in labels[2:]]
@@ -299,9 +333,7 @@ class PlantDistributionMapTestCase(TestCase):
             self.assertTrue(style.find('fill:#fff') > -1 or
                             style.find('fill:none') > -1)
         # Verify that the legend contains only a 'no data' label.
-        labels = [label_node.text for label_node in
-            self.distribution_map.legend.svg_map.xpath('svg:text/svg:tspan',
-            namespaces=NAMESPACES)]
+        labels = get_legend_labels(self.distribution_map.legend)
         self.assertEqual(['no data', '', '', '', ''], labels)
 
     def test_plant_with_no_distribution_data_has_no_plant_name_in_title(self):
@@ -318,9 +350,7 @@ class PlantDistributionMapTestCase(TestCase):
         self.distribution_map.set_plant(SCIENTIFIC_NAME)
         self.distribution_map.shade()
         self._verify_shaded_counties(['present', 'absent'])
-        labels = [label_node.text for label_node in
-            self.distribution_map.legend.svg_map.xpath('svg:text/svg:tspan',
-            namespaces=NAMESPACES)]
+        labels = get_legend_labels(self.distribution_map.legend)
         self.assertEqual(['native', 'absent', '', '', ''], labels)
         self.assertEqual('%s: New England Distribution Map' % SCIENTIFIC_NAME,
                          self.distribution_map.get_title())
@@ -341,6 +371,17 @@ class NewEnglandPlantDistributionMapTestCase(TestCase):
         records = (self.distribution_map._get_distribution_records(
                    SCIENTIFIC_NAME))
         self.assertTrue(len(records) > 0)
+
+    def test_legend_correct_with_conflicting_state_and_county_records(self):
+        # Ensure that if all of a plant's county-level records override
+        # its state-level record, that the map legend lists only those
+        # items that are visible on the final map.
+        SCIENTIFIC_NAME = 'Sambucus nigra'
+        self.distribution_map.set_plant(SCIENTIFIC_NAME)
+        self.distribution_map.shade()
+        labels = get_legend_labels(self.distribution_map.legend)
+        legend_shows_non_native = ('non-native' in labels)
+        self.assertFalse(legend_shows_non_native)
 
 
 class UnitedStatesPlantDistributionMapTestCase(TestCase):
