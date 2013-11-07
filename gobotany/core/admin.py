@@ -504,7 +504,7 @@ class ConservationStatusAdmin(admin.ModelAdmin):
     search_fields = ['taxon__scientific_name', 'variety_subspecies_hybrid',]
 
 class InvasiveStatusAdmin(admin.ModelAdmin):
-    search_fields = ('taxon',)
+    search_fields = ['taxon__scientific_name']
     list_display = ('taxon', 'region', 'invasive_in_region',
         'prohibited_from_sale')
     list_editable = ('invasive_in_region', 'prohibited_from_sale')
