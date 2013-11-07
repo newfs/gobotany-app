@@ -52,7 +52,20 @@ class TaxonCommonNameInline(admin.TabularInline):
     model = models.CommonName
     extra = 1
 
+class LookalikeAdminForm(forms.ModelForm):
+    class Meta:
+        model = models.Lookalike
+        widgets = {
+            'lookalike_characteristic': forms.Textarea(attrs={
+                'cols': 80,
+                'rows': 10,
+                'maxlength': model._meta.get_field(
+                    'lookalike_characteristic').max_length,
+            })
+        }
+
 class TaxonLookalikeInline(admin.TabularInline):
+    form = LookalikeAdminForm
     model = models.Lookalike
     extra = 1
 
@@ -66,7 +79,6 @@ class TaxonAdminForm(forms.ModelForm):
                     'maxlength': model._meta.get_field('factoid').max_length,
             })
         }
-
 
 class TaxonAdmin(_Base):
     """
@@ -530,6 +542,7 @@ class DistributionAdmin(admin.ModelAdmin):
 
 
 class LookalikeAdmin(admin.ModelAdmin):
+    form = LookalikeAdminForm
     list_display = ('taxon', 'lookalike_scientific_name',
         'lookalike_characteristic')
 
