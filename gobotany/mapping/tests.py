@@ -192,7 +192,7 @@ def create_distribution_records():
             ('', 'NJ', False, False),
             ('', 'pa', False, False),
             ],
-            'Sambucus nigra': [
+        'Sambucus nigra': [
             ('', 'CT', True, False),
             ('Fairfield', 'CT', False, False),
             ('Hartford', 'CT', False, False),
@@ -203,7 +203,7 @@ def create_distribution_records():
             ('Tolland', 'CT', False, False),
             ('Windham', 'CT', False, False),
             ],
-            'Sambucus nigra ssp. canadensis': [
+        'Sambucus nigra ssp. canadensis': [
             ('', 'CT', True, True),
             ('Fairfield', 'CT', True, True),
             ('Hartford', 'CT', True, True),
@@ -214,7 +214,7 @@ def create_distribution_records():
             ('Tolland', 'CT', True, True),
             ('Windham', 'CT', True, True),
             ],
-            'Sambucus nigra ssp. nigra': [
+        'Sambucus nigra ssp. nigra': [
             ('', 'CT', True, False),
             ('Fairfield', 'CT', False, False),
             ('Hartford', 'CT', False, False),
@@ -224,6 +224,36 @@ def create_distribution_records():
             ('New London', 'CT', False, False),
             ('Tolland', 'CT', False, False),
             ('Windham', 'CT', False, False),
+            ],
+        'Leptochloa fusca': [
+            ('', 'MA', True, False),
+            ('Middlesex', 'MA', True, False),
+            ],
+        'Leptochloa fusca ssp. fascicularis': [
+            ('', 'CT', True, False),
+            ('Fairfield', 'CT', True, True),
+            ('New Haven', 'CT', True, True),
+            ('New London', 'CT', True, True),
+            ('', 'MA', True, False),
+            ('Barnstable', 'MA', True, True),
+            ('Dukes', 'MA', True, True),
+            ('Franklin', 'MA', True, True),
+            ('Middlesex', 'MA', True, True),
+            ('Nantucket', 'MA', True, True),
+            ('Suffolk', 'MA', True, True),
+            ('Worcester', 'MA', True, True),
+            ('', 'ME', True, False),
+            ('', 'NH', True, False),
+            ('Rockingham', 'NH', True, True),
+            ('', 'RI', True, False),
+            ('Newport', 'RI', True, True),
+            ('Washington', 'RI', True, True),
+            ('', 'VT', True, False),
+            ('Chittenden', 'VT', True, True),
+            ],
+        'Leptochloa fusca ssp. uninervia': [
+            ('', 'MA', True, False),
+            ('Middlesex', 'MA', True, False),
             ],
         }
     for scientific_name, data_list in distribution_data.items():
@@ -355,6 +385,28 @@ class PlantDistributionMapTestCase(TestCase):
         self.assertEqual('%s: New England Distribution Map' % SCIENTIFIC_NAME,
                          self.distribution_map.get_title())
 
+    def test_legend_correct_with_conflicting_state_and_county_records(self):
+        # Ensure that if all of a plant's county-level records override
+        # its state-level record, that the map legend lists only those
+        # items that are visible on the final map.
+        SCIENTIFIC_NAME = 'Sambucus nigra'
+        self.distribution_map.set_plant(SCIENTIFIC_NAME)
+        self.distribution_map.shade()
+        labels = get_legend_labels(self.distribution_map.legend)
+        legend_shows_non_native = ('non-native' in labels)
+        self.assertFalse(legend_shows_non_native)
+
+    def test_species_and_infraspecific_taxa_shaded_together(self):
+        # Ensure that the distribution records for a species and any
+        # associated infraspecific taxa are shaded together on the map,
+        # with native overriding non-native.
+        SCIENTIFIC_NAME = 'Sambucus nigra'
+        self.distribution_map.set_plant(SCIENTIFIC_NAME)
+        self.distribution_map.shade()
+        labels = get_legend_labels(self.distribution_map.legend)
+        legend_shows_native = ('native' in labels)
+        self.assertTrue(legend_shows_native)
+
 
 class NewEnglandPlantDistributionMapTestCase(TestCase):
     def setUp(self):
@@ -372,17 +424,6 @@ class NewEnglandPlantDistributionMapTestCase(TestCase):
                    SCIENTIFIC_NAME))
         self.assertTrue(len(records) > 0)
 
-    def test_legend_correct_with_conflicting_state_and_county_records(self):
-        # Ensure that if all of a plant's county-level records override
-        # its state-level record, that the map legend lists only those
-        # items that are visible on the final map.
-        SCIENTIFIC_NAME = 'Sambucus nigra'
-        self.distribution_map.set_plant(SCIENTIFIC_NAME)
-        self.distribution_map.shade()
-        labels = get_legend_labels(self.distribution_map.legend)
-        legend_shows_non_native = ('non-native' in labels)
-        self.assertFalse(legend_shows_non_native)
-
 
 class UnitedStatesPlantDistributionMapTestCase(TestCase):
     def setUp(self):
@@ -398,41 +439,8 @@ class NorthAmericanPlantDistributionMapTestCase(TestCase):
         self.distribution_map = NorthAmericanPlantDistributionMap()
         create_distribution_records()
 
-    def test_is_correct_map(self):
-        self.assertEqual('North American Distribution Map',
-                         self.distribution_map.get_title())
-
-    def test_distribution_areas_are_shaded_correctly(self):
-        SCIENTIFIC_NAME = 'Dendrolycopodium dendroideum'
-        COLORS = Legend.COLORS
-        # Currently, data for North America are only available at the
-        # state, province, and territory level.
-        EXPECTED_SHADED_AREAS = {
-            'CT': COLORS['native'],
-            'MA': COLORS['native'],
-            'ME': COLORS['native'],
-            'NH': COLORS['native'],
-            'NJ': COLORS['native'],
-            'NY': COLORS['native'],
-            'PA': COLORS['native'],
-            'NC': COLORS['native'],
-            'RI': COLORS['native'],
-            'VT': COLORS['native'],
-            'NS': COLORS['native'],
-            'NB': COLORS['native'],
-            'QC': COLORS['native'],
-            'ON': COLORS['native'],
-            'MB': COLORS['native'],
-            'SK': COLORS['native'],
-            'AB': COLORS['native'],
-            'BC': COLORS['native'],
-            }
-        self.distribution_map.set_plant(SCIENTIFIC_NAME)
-        records = (self.distribution_map._get_distribution_records(
-                   SCIENTIFIC_NAME))
-        self.assertTrue(len(records) > 0)
-        self.distribution_map.shade()
-        path_nodes = self.distribution_map.svg_map.xpath(
+    def _get_shaded_paths(self, distribution_map):
+        path_nodes = distribution_map.svg_map.xpath(
             'svg:g/svg:path', namespaces=NAMESPACES)
         paths = [Path(path_node) for path_node in path_nodes]
         shaded_paths = []
@@ -440,16 +448,95 @@ class NorthAmericanPlantDistributionMapTestCase(TestCase):
             style = path.get_style()
             if style.find('fill:#') > -1 and style.find('fill:#fff') == -1:
                 shaded_paths.append(path)
+        return shaded_paths
+
+    def _verify_number_expected_shaded_areas(self, expected_shaded_areas,
+            shaded_paths):
+        # Verify that the number of expected shaded areas is found, at a
+        # minimum, among the full list of shaded paths.
         # There can be more shaded paths than expected shaded areas.
         # Example: BC has two paths, one for the mainland and one for
         # Vancouver Island.
-        self.assertTrue(len(shaded_paths) >= len(EXPECTED_SHADED_AREAS))
+        #
+        # To debug a failing test, uncomment the following line and run
+        # the failing test alone:
+        #print 'shaded_paths: %d  expected_shaded_areas: %d' % (
+        #    len(shaded_paths), len(expected_shaded_areas))
+        self.assertTrue(len(shaded_paths) >= len(expected_shaded_areas))
+
+    def _verify_expected_shaded_areas(self, expected_shaded_areas,
+            shaded_paths):
         # Check that each shaded area and its color is expected.
         for path in shaded_paths:
             path_id = path.path_node.get('id')
             area_key = path_id[0:2]
-            self.assertTrue(area_key in EXPECTED_SHADED_AREAS.keys())
-            expected_color = EXPECTED_SHADED_AREAS[area_key]
-            fill_declaration = 'fill:%s' % expected_color
+            self.assertTrue(area_key in expected_shaded_areas.keys())
+            label = expected_shaded_areas[area_key]
+            # To debug a failing test, uncomment the following line and
+            # run the failing test alone:
+            #print 'area_key: %s  label: %s' % (area_key, label)
+            fill_declaration = 'fill:%s' % Legend.COLORS[label]
             self.assertTrue(path.get_style().find(fill_declaration) > -1)
 
+    def test_is_correct_map(self):
+        self.assertEqual('North American Distribution Map',
+                         self.distribution_map.get_title())
+
+    def test_distribution_areas_are_shaded_correctly(self):
+        SCIENTIFIC_NAME = 'Dendrolycopodium dendroideum'
+        # Currently, data for North America are only available at the
+        # state, province, and territory level.
+        EXPECTED_SHADED_AREAS = {
+            'CT': 'native',
+            'MA': 'native',
+            'ME': 'native',
+            'NH': 'native',
+            'NJ': 'native',
+            'NY': 'native',
+            'PA': 'native',
+            'NC': 'native',
+            'RI': 'native',
+            'VT': 'native',
+            'NS': 'native',
+            'NB': 'native',
+            'QC': 'native',
+            'ON': 'native',
+            'MB': 'native',
+            'SK': 'native',
+            'AB': 'native',
+            'BC': 'native',
+            }
+        self.distribution_map.set_plant(SCIENTIFIC_NAME)
+        records = (self.distribution_map._get_distribution_records(
+                   SCIENTIFIC_NAME))
+        self.assertTrue(len(records) > 0)
+        self.distribution_map.shade()
+        shaded_paths = self._get_shaded_paths(self.distribution_map)
+        self._verify_number_expected_shaded_areas(EXPECTED_SHADED_AREAS,
+            shaded_paths)
+        self._verify_expected_shaded_areas(EXPECTED_SHADED_AREAS,
+            shaded_paths)
+
+    def test_county_level_native_overrides_state_level_non_native(self):
+        # Ensure that if a plant is marked non-native at the state
+        # level, but native in one or more counties, that the state is
+        # then overridden to be shaded as native on the map.
+        SCIENTIFIC_NAME = 'Leptochloa fusca'
+        EXPECTED_SHADED_AREAS = {
+            'CT': 'native',
+            'MA': 'native',
+            'ME': 'non-native',
+            'NH': 'native',
+            'RI': 'native',
+            'VT': 'native',
+        }
+        self.distribution_map.set_plant(SCIENTIFIC_NAME)
+        records = (self.distribution_map._get_distribution_records(
+                   SCIENTIFIC_NAME))
+        self.assertTrue(len(records) > 0)
+        self.distribution_map.shade()
+        shaded_paths = self._get_shaded_paths(self.distribution_map)
+        self._verify_number_expected_shaded_areas(EXPECTED_SHADED_AREAS,
+            shaded_paths)
+        self._verify_expected_shaded_areas(EXPECTED_SHADED_AREAS,
+            shaded_paths)

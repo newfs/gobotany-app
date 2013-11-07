@@ -151,7 +151,7 @@ class PlantDistributionMap(ChloroplethMap):
         """Look up the plant and get its distribution records.
         """
         return models.Distribution.objects.filter(
-                    scientific_name=scientific_name)
+                    scientific_name__startswith=scientific_name)
 
     def set_plant(self, scientific_name):
         """Set the plant to be shown and gather its data."""
@@ -184,6 +184,23 @@ class PlantDistributionMap(ChloroplethMap):
         ordered_labels = [label for label in all_labels if label in labels]
         return ordered_labels
 
+    def _should_shade(self, area, is_present, is_native):
+        should_shade = False
+        style = area.get_style()
+        shaded_absent = (style.find('fill:%s' % Legend.COLORS['absent']) > 0)
+        if shaded_absent and is_present:
+            # If the area is shaded absent but the new record is
+            # present, shade the area.
+            should_shade = True
+        else:
+            # if the area is shaded non-native but the new record is
+            # native, override the area with native.
+            shaded_non_native = (style.find(
+                'fill:%s' % Legend.COLORS['non-native']) > 0)
+            if shaded_non_native and is_native:
+                should_shade = True
+        return should_shade
+
     def _shade_areas(self):
         """Set the colors of the counties or states/provinces based
         on distribution data. Return a list of the legend labels to be
@@ -211,7 +228,9 @@ class PlantDistributionMap(ChloroplethMap):
                         if label not in legend_labels_found:
                             legend_labels_found.append(label)
                         box = Path(node)
-                        box.color(Legend.COLORS[label])
+                        if self._should_shade(box, record.present,
+                                record.native):
+                            box.color(Legend.COLORS[label])
                         # Keep going rather than break, because for each
                         # state-level record there will be multiple
                         # counties to shade.
@@ -230,7 +249,9 @@ class PlantDistributionMap(ChloroplethMap):
                         if label not in legend_labels_found:
                             legend_labels_found.append(label)
                         box = Path(node)
-                        box.color(Legend.COLORS[label])
+                        if self._should_shade(box, record.present,
+                                record.native):
+                            box.color(Legend.COLORS[label])
                         break   # Move on to the next distribution record.
 
             # Check all legend labels found to verify they should still
@@ -304,16 +325,6 @@ class NorthAmericanPlantDistributionMap(PlantDistributionMap):
         super(NorthAmericanPlantDistributionMap, self).__init__(
             blank_map_path)
 
-    def _get_distribution_records(self, scientific_name):
-        """Look up the plant and get its distribution records.
-        Exclude county-level records seen in the New England data.
-        """
-        return models.Distribution.objects.filter(
-                    scientific_name=scientific_name
-                ).exclude(
-                    county__gt=''
-                )
-
     def _shade_areas(self):
         """Set the colors of the states, provinces, or territories.
         Originally we expected county-level data, at least for the U.S.,
@@ -323,7 +334,11 @@ class NorthAmericanPlantDistributionMap(PlantDistributionMap):
         if self.distribution_records:
             path_nodes = self.svg_map.xpath(self.PATH_NODES_XPATH,
                 namespaces=NAMESPACES)
-            for record in self.distribution_records.filter(county=''):
+
+            # Take a pass through the nodes and shade any
+            # state-/province-/territory-level records.
+            state_records = self.distribution_records.filter(county='')
+            for record in state_records:
                 for node in path_nodes:
                     id_province = node.get('id').split('_')[0].upper()
                     if id_province == record.state.upper():
@@ -331,9 +346,27 @@ class NorthAmericanPlantDistributionMap(PlantDistributionMap):
                         if label not in legend_labels_found:
                             legend_labels_found.append(label)
                         box = Path(node)
-                        box.color(Legend.COLORS[label])
+                        if self._should_shade(box, record.present,
+                                record.native):
+                            box.color(Legend.COLORS[label])
                         # Keep going rather than break, because
                         # there are often multiple paths to shade.
+
+            # Take a pass through the nodes and override state shading 
+            # if necessary based on county-level records.
+            county_records = self.distribution_records.exclude(county='')
+            for record in county_records:
+                for node in path_nodes:
+                    id_province = node.get('id').split('_')[0].upper()
+                    if id_province == record.state.upper():
+                        label = self._get_label(record.present, record.native)
+                        if label not in legend_labels_found:
+                            legend_labels_found.append(label)
+                        box = Path(node)
+                        if self._should_shade(box, record.present,
+                                record.native):
+                            box.color(Legend.COLORS[label])
+                        break   # Move on to the next distribution record.
 
             legend_labels_found = self._order_labels(legend_labels_found)
 
