@@ -184,10 +184,23 @@ def terms_of_use_view(request):
 
 # API calls for input suggestions (search, plant names, etc.)
 
+def clean_input_string(input_string):
+    """Remove any special characters from a search-suggestion input string
+    that could cause an error.
+    """
+    ALLOWED_CHARACTERS = 'abcdefghijklmnopqrstuvwxyz01234567890 !%&-+\'",.'
+    input_characters = []
+    for character in input_string.lower():
+        if character in ALLOWED_CHARACTERS:
+            input_characters.append(character)
+    return ''.join(input_characters)
+
 def search_suggestions_view(request):
     """Return some search suggestions for search."""
     MAX_RESULTS = 10
     query = request.GET.get('q', '').lower()
+    query = clean_input_string(query)
+
     suggestions = []
     if query != '':
         regex = query_regex(query)
@@ -234,6 +247,7 @@ def plant_name_suggestions_view(request):
     """Return some suggestions for plant name input."""
     MAX_RESULTS = 10
     query = request.GET.get('q', '').lower()
+    query = clean_input_string(query)
 
     suggestions = []
     if query != '':
