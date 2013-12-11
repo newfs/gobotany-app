@@ -618,7 +618,7 @@ body.taxa#species #main .section p { margin-bottom: 0; }
 body.taxa#species #main #maps, body.taxa#species #main #side { position: absolute; }
 body.taxa#species #main #maps h2, body.taxa#species #main #side h2 { font-size: 14px; margin: 0 0 4px 0; }
 body.taxa#species #main #maps { border-top: 1px solid #c3d941; top: 128px; }
-body.taxa#species #main #side { top: 668px; }
+body.taxa#species #main #side { top: 698px; }
 body.taxa#species #main #side dt, body.taxa#species #main #side dd { display: inline-block; }
 body.taxa#species #main #side .lookalikes dl { line-height: 20px; margin: 0; }
 body.taxa#species #main #side .lookalikes dt { font-weight: bold; margin: 2px 0; display: block; }
