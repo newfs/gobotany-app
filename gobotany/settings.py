@@ -130,8 +130,10 @@ INSTALLED_APPS = [
     'facebook_connect',
     'registration',
     #'emailconfirmation', # Temporarily uncomment to create this app's
-                          # tables using syncdb. Otherwise, keep commented
-                          # out to avoid a NoMigrations error when
+                          # tables using syncdb. This will also allow
+                          # the app's tables to be visible in the Admin.
+                          # Otherwise, keep this app commented out in
+                          # order to avoid a NoMigrations error when
                           # applying South migrations.
     'south',
     'captcha',
