@@ -396,20 +396,12 @@ class LocationModelTests(TestCase):
         self.assertEqual(location.city, 'Framingham')
         self.assertEqual(location.state, 'MA')
 
-    def test_location_save_parses_input_zip_code(self):
-        location = Location(user_input='01701')
+    def test_location_save_parses_input_address_city_state(self):
+        location = Location(user_input='180 Hemenway Road, Framingham, MA')
         location.save()
-        self.assertEqual(location.postal_code, '01701')
-
-    def test_location_save_parses_input_zip_plus_four(self):
-        location = Location(user_input='01701-2699')
-        location.save()
-        self.assertEqual(location.postal_code, '01701-2699')
-
-    def test_location_save_parses_input_canadian_postal_code(self):
-        location = Location(user_input='E7B 1A3')
-        location.save()
-        self.assertEqual(location.postal_code, 'E7B 1A3')
+        self.assertEqual(location.street, '180 Hemenway Road')
+        self.assertEqual(location.city, 'Framingham')
+        self.assertEqual(location.state, 'MA')
 
     def test_location_save_parses_input_ignores_lat_long_numeric(self):
         location = Location(user_input='41.2342, -76.2928')
@@ -423,6 +415,7 @@ class LocationModelTests(TestCase):
     def test_location_save_parses_input_ignores_garbage_letters(self):
         location = Location(user_input='enutharocegusahosecsahkm')
         location.save()
+        self.assertIsNone(location.street)
         self.assertIsNone(location.city)
         self.assertIsNone(location.state)
         self.assertIsNone(location.postal_code)
@@ -432,6 +425,7 @@ class LocationModelTests(TestCase):
     def test_location_save_parses_input_ignores_garbage_numbers(self):
         location = Location(user_input='12873498712983749182')
         location.save()
+        self.assertIsNone(location.street)
         self.assertIsNone(location.city)
         self.assertIsNone(location.state)
         self.assertIsNone(location.postal_code)
@@ -441,6 +435,7 @@ class LocationModelTests(TestCase):
     def test_location_save_parses_input_ignores_garbage_mixed(self):
         location = Location(user_input='aoeua87aoe349a8712b8qjk37a')
         location.save()
+        self.assertIsNone(location.street)
         self.assertIsNone(location.city)
         self.assertIsNone(location.state)
         self.assertIsNone(location.postal_code)

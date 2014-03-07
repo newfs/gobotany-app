@@ -136,9 +136,10 @@ class Location(models.Model):
                 # Location format is address: street (optional), city, state.
                 # (Latitude/longitude is handled elsewhere.)
                 parts = [x.strip() for x in user_input.split(',')]
-                self.street = parts[-3] if len(parts) > 2 else None
-                self.city = parts[-2]
-                self.state = parts[-1]
+                if len(parts) > 1:
+                    self.street = parts[-3] if len(parts) > 2 else None
+                    self.city = parts[-2]
+                    self.state = parts[-1]
 
     def save(self, *args, **kwargs):
         self._parse_user_input()
