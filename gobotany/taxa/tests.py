@@ -128,13 +128,6 @@ class SpeciesPageTests(FunctionalCase):
         species_page_url = ('/species/gymnocarpium/dryopteris/')
         self._photos_have_expected_caption_format(species_page_url)
 
-    # Temporarily, non-Simple-Key pages show a data disclaimer.
-
-    def test_non_simple_key_species_page_has_note_about_data(self):
-        self.get('/species/adiantum/aleuticum/')
-        note = self.css('.content .note')[0].text
-        self.assertEqual(note, ('Data collection in progress. Complete data '
-                                'coming soon.'))
 
 class LookalikesTests(FunctionalCase):
 

@@ -634,7 +634,6 @@ body.taxa#species #main h5 { font-size: 14px; }
 body.taxa#species #main p { margin: 0 0 15px; }
 body.taxa#species #sb-player.html { background: #fff; overflow: hidden; /* Get rid of vertical scrollbar in WebKit on enlarged N. America dist. map. */ padding: 0 5px 5px; }
 body.taxa#species #sb-player #na-dist-county-map { background: #fff; height: 100%; width: 100%; }
-body.taxa#species .note { background: rgba(196, 189, 147, 0.7); border-bottom: 1px solid #ad9f50; border-top: 1px solid #ad9f50; color: #000; font-family: "Trebuchet MS", Helvetica, Arial, "Lucida Sans Unicode", sans-serif; font-size: 22px; padding: 8px 0; position: relative; text-align: center; width: 100%; z-index: 11; }
 body.taxa#species a.description-control { background: url(/static/images/icons/plus.png) left 50% no-repeat; display: block; margin: 10px 0 12px 0; padding: 3px 0 3px 25px; }
 body.taxa#species a.description-control.expanded { background: url(/static/images/icons/minus.png) left 50% no-repeat; }
 body.taxa#species ul.full-description { background: #fbfbf8; border: 1px solid #e1e1dc; display: none; margin: 0 0 15px 0; }
@@ -691,7 +690,6 @@ body.taxa#species #species-images .scrollableArea a { border-right: 5px solid #f
   body.taxa#species #main #species-images .scrollableArea a { border-right: 20px solid #f0f0c0; }
   body.taxa#species #main #species-images .scrollableArea a img { height: 120px; width: 120px; }
   body.taxa#species #main p { margin-bottom: 10px; }
-  body.taxa#species #main .note { font-size: 18px; }
   body.taxa#species #main ul.full-description > li div { padding-left: 0; }
   body.taxa#species #main .characteristics.full { margin-bottom: 0; }
   body.taxa#species #main .characteristics dl dt { clear: none; float: none; text-align: left; width: auto; }
