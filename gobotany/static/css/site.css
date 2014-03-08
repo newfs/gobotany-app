@@ -611,7 +611,7 @@ body.taxa#genus p.family { font-size: 14px; margin: 0; }
 body.taxa#species { /* end #main */ /* Larger gallery styles */ /* Smooth Div Scroll image area */ }
 body.taxa#species #main { background: url(/static/images/layout/sidebar-bg.png) repeat-y; /* layout: right-side content sections */ /* left-side content sections */ }
 body.taxa#species #main .common { margin: 6px 0 12px; }
-body.taxa#species #main #breadcrumb, body.taxa#species #main #name, body.taxa#species #main #species-images, body.taxa#species #main #partner, body.taxa#species #main #facts, body.taxa#species #main #habitat, body.taxa#species #main #chars, body.taxa#species #main #wetland, body.taxa#species #main #status, body.taxa#species #main #info-dkey { clear: left; margin-left: 250px; }
+body.taxa#species #main #breadcrumb, body.taxa#species #main #name, body.taxa#species #main #species-images, body.taxa#species #main #images-note, body.taxa#species #main #partner, body.taxa#species #main #facts, body.taxa#species #main #habitat, body.taxa#species #main #chars, body.taxa#species #main #wetland, body.taxa#species #main #status, body.taxa#species #main #info-dkey { clear: left; margin-left: 250px; }
 body.taxa#species #main .section { padding: 16px 16px 0; width: 197px; }
 body.taxa#species #main .section h4 { font-size: 14px; margin: 0; padding: 0; }
 body.taxa#species #main .section p { margin-bottom: 0; }
@@ -655,8 +655,9 @@ body.taxa#species .img-gallery .images img { float: none; }
 body.taxa#species .img-gallery p.caption { bottom: -22px; margin: 0 0 0 0; position: absolute; right: 0; }
 body.taxa#species .controls { position: relative; }
 body.taxa#species .controls span { position: relative; top: -22px; }
-body.taxa#species #species-images { border: 5px solid rgba(255, 255, 255, 0.8); height: 239px; margin: 0 0 20px 0; overflow: hidden; position: relative; top: 0; width: 700px; z-index: 100; -webkit-box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.6); -moz-box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.6); box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.6); }
+body.taxa#species #species-images { border: 5px solid rgba(255, 255, 255, 0.8); height: 239px; margin: 0 0 8px 0; overflow: hidden; position: relative; top: 0; width: 700px; z-index: 100; -webkit-box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.6); -moz-box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.6); box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.6); }
 body.taxa#species #species-images .scrollableArea a { border-right: 5px solid #fff; float: left; margin: 0; padding: 0; }
+body.taxa#species #images-note { font-size: 9px; margin-bottom: 20px; margin-left: 250px; }
 
 /* Begin media queries styles for taxa pages. */
 /* Portrait-orientation styles */
@@ -677,8 +678,10 @@ body.taxa#species #species-images .scrollableArea a { border-right: 5px solid #f
   body.taxa#family #main h2, body.taxa#genus #main h2 { font-size: 15px; padding-top: 12px; }
   body.taxa#family ul.genera, body.taxa#genus ul.species { line-height: 24px; margin-bottom: 18px; }
   body.taxa .visit-dkey { font-size: 12px; }
-  body.taxa#species #main { background: none; /* layout for smartphones: sections in document sequence */ }
+  body.taxa#species #main { background: none; /* layout for smartphones: sections in document sequence */ /* omit images notice on smartphones, as it takes up two lines there of an already small space */ }
   body.taxa#species #main #breadcrumb, body.taxa#species #main #name, body.taxa#species #main #species-images, body.taxa#species #main #partner, body.taxa#species #main #facts, body.taxa#species #main #habitat, body.taxa#species #main #chars, body.taxa#species #main #wetland, body.taxa#species #main #status, body.taxa#species #main #info-dkey { margin-left: 0; }
+  body.taxa#species #main #species-images { margin-bottom: 20px; }
+  body.taxa#species #main #images-note { display: none; }
   body.taxa#species #main h2 { margin-top: 14px; line-height: 18px; }
   body.taxa#species #main .section { padding: 0; width: auto; }
   body.taxa#species #main .section.help { display: none; }
@@ -1659,6 +1662,7 @@ body.search-results .search-navigation li { display: inline; margin: 0 2px; }
 .legal #main ol.terms ul { list-style-type: disc; }
 .legal #main ol.terms li p, .legal #main ol.terms li li { font-family: Verdana, Geneva, "Lucida Sans Unicode", sans-serif; font-size: 12px; }
 .legal #main ol.terms li li { line-height: 20px; }
+.legal #main ol.terms li li li { margin-left: 26px; }
 
 /* Begin media queries styles for the Help section. */
 /* Portrait-orientation styles */
