@@ -103,8 +103,8 @@ var PhotoHelper = {
         }
 
         var html = '<div><h6>' + title + '</h6><span>' + copyright_holder +
-            ' ' + copyright + ' <a class="contact">Permission and ' +
-            'Terms of Use</a></span>';
+            ' ' + copyright + ' <a class="contact">For Reuse: Contact</a>' +
+            '</span>';
         if (source !== '') {
             html += '<br><span>' + source + '</span>';
         }
@@ -125,7 +125,7 @@ var PhotoHelper = {
             var anchored_contact_info = PhotoHelper.link_urls(
                 anchored_contact_info);
 
-            tooltip_html += 'Contact: ' + anchored_contact_info +
+            tooltip_html += 'For reuse, contact: ' + anchored_contact_info +
                             '</p><p>Also, ';
         }
         tooltip_html += 'Go Botany <a ' +
