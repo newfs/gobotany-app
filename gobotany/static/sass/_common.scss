@@ -240,6 +240,8 @@ $disabled_orange_gradient: linear-gradient(
             }
             &.contact {
                 cursor: pointer;
+                display: inline-block; /* prevent link from wrapping, which
+                                          makes tooltip position incorrect */
                 text-decoration: none;
             }
         }

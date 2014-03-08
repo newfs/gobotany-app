@@ -593,7 +593,7 @@ body.taxa #sb-title-inner h6 { font-size: 16px; line-height: 110%; margin: 0 0 2
 body.taxa #sb-title-inner span { font-family: "Trebuchet MS", Helvetica, Arial, "Lucida Sans Unicode", sans-serif; font-size: 10px; }
 body.taxa #sb-title-inner a { border-bottom: 1px solid #ccc; color: #fff; }
 body.taxa #sb-title-inner a:hover { text-decoration: none; }
-body.taxa #sb-title-inner a.contact { cursor: pointer; text-decoration: none; }
+body.taxa #sb-title-inner a.contact { cursor: pointer; display: inline-block; /* prevent link from wrapping, which makes tooltip position incorrect */ text-decoration: none; }
 body.taxa #sb-nav-close { top: 56px !important; }
 body.taxa .visit-dkey { margin-top: 36px; }
 body.taxa .visit-dkey a { margin-left: 4px; }
@@ -709,7 +709,7 @@ body.skey.groups-subgroups #sb-title-inner h6 { font-size: 16px; line-height: 11
 body.skey.groups-subgroups #sb-title-inner span { font-family: "Trebuchet MS", Helvetica, Arial, "Lucida Sans Unicode", sans-serif; font-size: 10px; }
 body.skey.groups-subgroups #sb-title-inner a { border-bottom: 1px solid #ccc; color: #fff; }
 body.skey.groups-subgroups #sb-title-inner a:hover { text-decoration: none; }
-body.skey.groups-subgroups #sb-title-inner a.contact { cursor: pointer; text-decoration: none; }
+body.skey.groups-subgroups #sb-title-inner a.contact { cursor: pointer; display: inline-block; /* prevent link from wrapping, which makes tooltip position incorrect */ text-decoration: none; }
 body.skey.groups-subgroups #sb-nav-close { top: 56px !important; }
 body.skey.groups-subgroups p.question, body.skey.groups-subgroups p.tip { font-family: "Trebuchet MS", Helvetica, Arial, "Lucida Sans Unicode", sans-serif; font-size: 24px; margin: 12px 0 0; padding: 0; }
 body.skey.groups-subgroups p.tip { font-size: 18px; margin: 8px 0 0; padding: 0; }
