@@ -60,10 +60,12 @@ define([
             }
     
             // Set the tooltip position.
+            var scroll_top = $(window).scrollTop();
             var tooltip_height = $(tooltip_element).height();
             tooltip_element.css({
                 'left': left,
-                'top': top - tooltip_height - this.options.vertical_adjust_px
+                'top': (top - tooltip_height -
+                        this.options.vertical_adjust_px - scroll_top)
             });
 
             // Set the arrow position.
