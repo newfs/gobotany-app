@@ -89,8 +89,8 @@ body.taxa {
                 margin: 6px 0 12px;
             }
             /* layout: right-side content sections */
-            #breadcrumb, #name, #species-images, #partner, #facts,
-            #habitat, #chars, #wetland, #status, #info-dkey {
+            #breadcrumb, #name, #species-images, #images-note, #partner,
+            #facts, #habitat, #chars, #wetland, #status, #info-dkey {
                 clear: left;
                 margin-left: $species-sidebar-margin;
             }
@@ -282,7 +282,7 @@ body.taxa {
         #species-images {
             border: 5px solid rgba(255, 255, 255, 0.8);
             height: 239px;
-            margin: 0 0 20px 0;
+            margin: 0 0 8px 0;
             overflow: hidden;
             position: relative;
             top: 0;
@@ -295,6 +295,11 @@ body.taxa {
                 margin: 0;
                 padding: 0;
             }
+        }
+        #images-note {
+            font-size: 9px;
+            margin-bottom: 20px;
+            margin-left: 250px;
         }
     }
 }
@@ -383,6 +388,14 @@ $mini-table-font-size: 10px;
             #breadcrumb, #name, #species-images, #partner, #facts,
             #habitat, #chars, #wetland, #status, #info-dkey {
                 margin-left: 0;
+            }
+            #species-images {
+                margin-bottom: 20px;
+            }
+            /* omit images notice on smartphones, as it takes up two
+               lines there of an already small space */
+            #images-note {
+                display: none;
             }
             h2 {
                 margin-top: 14px;
