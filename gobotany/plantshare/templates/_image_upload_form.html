@@ -11,8 +11,12 @@
         <div style="display: none;">
             {{ image_form.image }}
             {{ image_form.image_type }}
-            {{ image_form.latitude }}
-            {{ image_form.longitude }}
+            {# Temporarily disable sending coordinates due to ValueError #}
+            {# TODO: test, determine if needed #}
+            {# image_form.latitude #}
+            {# image_form.longitude #}
+            <img id="hidden_image" src="/static/images/icons/no-image.png">
+            <canvas id="image_canvas"></canvas>
         </div>
         <a class="button file-select">CHOOSE FILE</a>
         <a class="button disabled" id="upload-image-submit">UPLOAD</a>

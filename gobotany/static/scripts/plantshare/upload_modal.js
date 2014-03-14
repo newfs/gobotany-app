@@ -31,6 +31,39 @@ define([
         }
     }
 
+    function resize(image, $thumbnail_element) {
+        var MAX_WIDTH = 1000;
+        var MAX_HEIGHT = 1000;
+        var width = image.width;
+        var height = image.height;
+        console.log('width:', width);
+        console.log('height:', height);
+
+        if (width > height) {
+            if (width > MAX_WIDTH) {
+                height = height * (MAX_WIDTH / width);
+                width = MAX_WIDTH;
+            }
+        } else {
+            if (height > MAX_HEIGHT) {
+                width = width * (MAX_HEIGHT / height);
+                height = MAX_HEIGHT;
+            }
+        }
+        var canvas = document.getElementById('image_canvas');
+        canvas.width = width;
+        canvas.height = height;
+        console.log('canvas:', canvas);
+        var context = canvas.getContext('2d');
+        console.log('image:', image);
+        context.drawImage(image, 0, 0, width, height);
+        console.log('image resized to ' + width + ' px wide and ' +
+            height + ' px high');
+
+        // Copy the resized image back to the thumbnail element for upload.
+        $thumbnail_element.attr('src', canvas.toDataURL());
+    }
+
     function setup(modalSelector, linkSelector, options) {
         var $modal = $(modalSelector);
         var $link = $(linkSelector);
@@ -63,14 +96,19 @@ define([
         $modal.find('input[type="file"]').change(function() {
             var reader = new FileReader();
             var $thumbnail_image = $modal.find('img');
+            var $hidden_image = $modal.find('#hidden_image');
             var files = this.files;
 
             reader.onloadend = function (e) {
                 var image_result = e.target.result;
                 $thumbnail_image.attr('src', image_result);
+                $hidden_image.attr('src', image_result);
                 
                 // Try getting EXIF GPS data from the file.
                 get_gps(atob(image_result.replace(/^.*?,/,'')), files[0]);
+
+                // Resize the file so uploads will not take too long.
+                resize($hidden_image[0], $thumbnail_image);
             }
 
             // Read the file that the user picked.
