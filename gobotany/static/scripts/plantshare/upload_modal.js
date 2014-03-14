@@ -1,10 +1,35 @@
 define([
     'bridge/jquery', 
     'bridge/jquery.form',
-], function($, jqueryForm) {
+    'bridge/jpegmeta',
+], function($, jqueryForm, JpegMeta) {
 
     var EMPTY_FILE_PATH = 'None Selected';
     var EMPTY_IMAGE_URL = '/static/images/icons/no-image.png';
+
+    function get_gps(data, filename) {
+        // If the file is a JPEG image, extract any GPS coordinates so
+        // they can be sent to the server after resizing the image.
+        // (Currently we only bother to check JPEG images for GPS data.)
+        try {
+            jpeg = new JpegMeta.JpegFile(data, filename);
+        } catch (e) {
+            // In the event of an error, such as a file not being a
+            // JPEG, cancel looking for GPS coordinates.
+            console.error('Unable to get GPS coordinates:', e);
+            return;
+        }
+
+        if (jpeg.gps && jpeg.gps.longitude) {
+            var latitude = jpeg.gps.latitude.value;
+            var longitude = jpeg.gps.longitude.value;
+            console.log('latitude:', latitude);
+            console.log('longitude:', longitude);
+            // Put the values into hidden form fields.
+            $('#id_latitude').val(latitude);
+            $('#id_longitude').val(longitude);
+        }
+    }
 
     function setup(modalSelector, linkSelector, options) {
         var $modal = $(modalSelector);
@@ -37,13 +62,20 @@ define([
         // changes.
         $modal.find('input[type="file"]').change(function() {
             var reader = new FileReader();
-            var $avatar_image = $modal.find('img');
+            var $thumbnail_image = $modal.find('img');
+            var files = this.files;
 
-            reader.onload = function(e) {
-                $avatar_image.attr('src', e.target.result);
+            reader.onloadend = function (e) {
+                var image_result = e.target.result;
+                $thumbnail_image.attr('src', image_result);
+                
+                // Try getting EXIF GPS data from the file.
+                get_gps(atob(image_result.replace(/^.*?,/,'')), files[0]);
             }
 
-            reader.readAsDataURL(this.files[0]);
+            // Read the file that the user picked.
+            reader.readAsDataURL(files[0]);
+
             // For security reasons, all browsers will report our file input box's file
             // path as C:\fakepath\<filename> so just strip off the fake path
             var path = $(this).val().replace(/C:\\fakepath\\/i, '');

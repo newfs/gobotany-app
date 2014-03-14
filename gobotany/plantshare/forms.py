@@ -177,7 +177,8 @@ class ChangeEmailForm(forms.ModelForm):
 class ScreenedImageForm(forms.ModelForm):
     class Meta:
         model = ScreenedImage
-        fields = ('image', 'image_type')
+        fields = ('image', 'image_type', 'latitude', 'longitude')
+
 
 class ChecklistForm(forms.ModelForm):
     class Meta:
