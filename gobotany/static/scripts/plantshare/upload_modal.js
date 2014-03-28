@@ -39,29 +39,32 @@ define([
         console.log('width:', width);
         console.log('height:', height);
 
-        if (width > height) {
-            if (width > MAX_WIDTH) {
-                height = height * (MAX_WIDTH / width);
-                width = MAX_WIDTH;
+        if ((width > MAX_WIDTH) || (height > MAX_HEIGHT)) {
+            console.log('image larger than site max: resize');
+            if (width > height) {
+                if (width > MAX_WIDTH) {
+                    height = height * (MAX_WIDTH / width);
+                    width = MAX_WIDTH;
+                }
+            } else {
+                if (height > MAX_HEIGHT) {
+                    width = width * (MAX_HEIGHT / height);
+                    height = MAX_HEIGHT;
+                }
             }
-        } else {
-            if (height > MAX_HEIGHT) {
-                width = width * (MAX_HEIGHT / height);
-                height = MAX_HEIGHT;
-            }
-        }
-        var canvas = document.getElementById('image_canvas');
-        canvas.width = width;
-        canvas.height = height;
-        console.log('canvas:', canvas);
-        var context = canvas.getContext('2d');
-        console.log('image:', image);
-        context.drawImage(image, 0, 0, width, height);
-        console.log('image resized to ' + width + ' px wide and ' +
-            height + ' px high');
+            var canvas = document.getElementById('image_canvas');
+            canvas.width = width;
+            canvas.height = height;
+            console.log('canvas:', canvas);
+            var context = canvas.getContext('2d');
+            console.log('image:', image);
+            context.drawImage(image, 0, 0, width, height);
+            console.log('image resized to ' + width + ' px wide and ' +
+                height + ' px high');
 
-        // Copy the resized image back to the thumbnail element for upload.
-        $thumbnail_element.attr('src', canvas.toDataURL());
+            // Copy the resized image back to the original element for upload.
+            $thumbnail_element.attr('src', canvas.toDataURL());
+        }
     }
 
     function setup(modalSelector, linkSelector, options) {
