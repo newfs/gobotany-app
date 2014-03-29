@@ -22,8 +22,9 @@ define([
             $last_image.attr('src', thumb_url);
             $last_image.wrap('<a href="' + full_url +
                 '" class="preview"></a>');
-            $last_image.parent().after('<div class="delete-link"><a href="' +
-                id + '"><img src="' + DELETE_ICON + '" /> Remove</a></div>');
+            $last_image.parent().after('<div class="delete-link"><a ' +
+                'href="#" data-thumb-id="' + id + '"><img src="' + 
+                DELETE_ICON + '"> Remove</a></div>');
 
             Shadowbox.setup('a.preview');
         }
@@ -82,8 +83,7 @@ define([
             $this = $(this);
             console.log('Delete image');
             $frame = $('.thumb-gallery .thumb-frame').has($this);
-            removeThumb($this.attr('href'), $frame);
-
+            remove_thumb($this.attr('data-thumb-id'), $frame);
             return false;
         });
 
