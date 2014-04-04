@@ -1,35 +1,10 @@
 define([
     'bridge/jquery', 
     'bridge/jquery.form',
-    'bridge/jpegmeta',
-], function($, jqueryForm, JpegMeta) {
+], function($, jqueryForm) {
 
     var EMPTY_FILE_PATH = 'None Selected';
     var EMPTY_IMAGE_URL = '/static/images/icons/no-image.png';
-
-    function get_gps(data, filename) {
-        // If the file is a JPEG image, extract any GPS coordinates so
-        // they can be sent to the server after resizing the image.
-        // (Currently we only bother to check JPEG images for GPS data.)
-        try {
-            jpeg = new JpegMeta.JpegFile(data, filename);
-        } catch (e) {
-            // In the event of an error, such as a file not being a
-            // JPEG, cancel looking for GPS coordinates.
-            console.error('Unable to get GPS coordinates:', e);
-            return;
-        }
-
-        if (jpeg.gps && jpeg.gps.longitude) {
-            var latitude = jpeg.gps.latitude.value;
-            var longitude = jpeg.gps.longitude.value;
-            console.log('latitude:', latitude);
-            console.log('longitude:', longitude);
-            // Put the values into hidden form fields.
-            $('#id_latitude').val(latitude);
-            $('#id_longitude').val(longitude);
-        }
-    }
 
     function resize(image, $thumbnail_element) {
         var MAX_WIDTH = 1000;
@@ -107,9 +82,6 @@ define([
                 $thumbnail_image.attr('src', image_result);
                 $hidden_image.attr('src', image_result);
                 
-                // Try getting EXIF GPS data from the file.
-                get_gps(atob(image_result.replace(/^.*?,/,'')), files[0]);
-
                 // Resize the file so uploads will not take too long.
                 resize($hidden_image[0], $thumbnail_image);
             }

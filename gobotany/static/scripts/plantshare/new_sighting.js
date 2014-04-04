@@ -65,6 +65,8 @@ define([
             add_new_thumb(info.thumb, info.url, info.id);
             attach_sighting_photo(info.id);
             if ((info.latitude !== null) && (info.longitude !== null)) {
+                console.log('latitude: ' + info.latitude + ' longitude: ' +
+                    info.longitude);
                 var $location = $('#id_location');
                 $location.val(info.latitude + ', ' + info.longitude);
                 $location.trigger('blur');   // trigger map update
