@@ -42,6 +42,13 @@ define([
         }
     }
 
+    function reset_dialog_controls($modal) {
+        // Clear any thumbnail and filename, and disable the Upload button.
+        $modal.find('img').attr('src', '/static/images/icons/no-image.png');
+        $modal.find('.file-path').text(EMPTY_FILE_PATH);
+        $modal.find('#upload-image-submit').addClass('disabled');
+    }
+
     function setup(modalSelector, linkSelector, options) {
         var $modal = $(modalSelector);
         var $link = $(linkSelector);
@@ -67,6 +74,9 @@ define([
                 closeOnClick: false,
                 load: true
             });
+
+            // Upon activating the dialog, reset its controls.
+            reset_dialog_controls($modal);
         });
 
         // Update filename box, image, and buttons when the selected file
@@ -89,16 +99,15 @@ define([
             // Read the file that the user picked.
             reader.readAsDataURL(files[0]);
 
-            // For security reasons, all browsers will report our file input box's file
-            // path as C:\fakepath\<filename> so just strip off the fake path
+            // For security reasons, all browsers will report our file
+            // input box's file path as C:\fakepath\<filename> so just
+            // strip off the fake path.
             var path = $(this).val().replace(/C:\\fakepath\\/i, '');
-            if(path) {
+            if (path) {
                 $modal.find('.file-path').text(path);
                 $modal.find('#upload-image-submit').removeClass('disabled');
             } else {
-                $avatar_image.attr('src', EMPTY_IMAGE_URL);
-                $modal.find('.file-path').text(EMPTY_FILE_PATH);
-                $modal.find('#upload-image-submit').addClass('disabled');
+                reset_dialog_controls($modal);
             }
         });
 
