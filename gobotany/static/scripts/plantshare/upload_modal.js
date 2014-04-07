@@ -104,11 +104,16 @@ define([
                 $thumbnail_image.attr('src', image_result);
                 $hidden_image.attr('src', image_result);
                 
-                // Resize the file so uploads will not take too long.
-                resize($hidden_image[0], $thumbnail_image);
+                // Wait just a bit before resizing the image, to give the
+                // image enough time to appear in its assigned element.
+                setTimeout(function () {
+                    // Resize the file so uploads will not take too long.
+                    resize($hidden_image[0], $thumbnail_image);
 
-                // Enable the Upload button.
-                $modal.find('#upload-image-submit').removeClass('disabled');
+                    // Enable the Upload button.
+                    $modal.find('#upload-image-submit').removeClass(
+                        'disabled');
+                }, 500);
             }
 
             // Read the file that the user picked.
