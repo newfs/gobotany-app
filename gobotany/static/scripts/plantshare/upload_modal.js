@@ -5,6 +5,7 @@ define([
 
     var EMPTY_FILE_PATH = 'None Selected';
     var EMPTY_IMAGE_URL = '/static/images/icons/no-image.png';
+    var LOADING_IMAGE_URL = '/static/images/icons/preloaders-dot-net-lg.gif';
 
     function resize(image, $thumbnail_element) {
         var MAX_WIDTH = 1000;
@@ -44,7 +45,7 @@ define([
 
     function reset_dialog_controls($modal) {
         // Clear any thumbnail and filename, and disable the Upload button.
-        $modal.find('img').attr('src', '/static/images/icons/no-image.png');
+        $modal.find('img').attr('src', EMPTY_IMAGE_URL);
         $modal.find('.file-path').text(EMPTY_FILE_PATH);
         $modal.find('#upload-image-submit').addClass('disabled');
     }
@@ -82,10 +83,17 @@ define([
         // Update filename box, image, and buttons when the selected file
         // changes.
         $modal.find('input[type="file"]').change(function() {
+
             var reader = new FileReader();
             var $thumbnail_image = $modal.find('img');
             var $hidden_image = $modal.find('#hidden_image');
             var files = this.files;
+
+            reader.onloadstart = function () {
+                // Temporarily change the thumbnail area to a spinner.
+                // (Known issue: animation is often blocked during load.)
+                $thumbnail_image.attr('src', LOADING_IMAGE_URL);
+            }
 
             reader.onloadend = function (e) {
                 var image_result = e.target.result;
@@ -113,6 +121,7 @@ define([
 
         // Choose File button
         $modal.find('.file-select').click(function() {
+            // Activate the actual file form element.
             $modal.find('input[type="file"]').click();
         });
 
