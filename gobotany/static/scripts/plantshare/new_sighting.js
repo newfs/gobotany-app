@@ -114,6 +114,12 @@ define([
         return offset_coordinate;
     }
 
+    function update_location_on_map(map, latitude, longitude, location) {
+        // Update location on dynamic map.
+        var lat_lng = new google_maps.LatLng(latitude, longitude);
+        map.place_marker(lat_lng, location);
+    }
+
     function update_latitude_longitude(location, geocoder, marker_map) {
         // Geocode the location unless it already looks like a pair of
         // coordinates.
@@ -129,6 +135,8 @@ define([
             longitude = coordinates[1];
             $('#id_latitude').val(latitude);
             $('#id_longitude').val(longitude);
+
+            update_location_on_map(marker_map, latitude, longitude);
         }
         else {
             geocoder.geocode(location, function (results, status) {
@@ -141,10 +149,8 @@ define([
                 $('#id_latitude').val(offset_latitude);
                 $('#id_longitude').val(offset_longitude);
 
-                // Update location on dynamic map.
-                var offset_lat_lng = new google_maps.LatLng(offset_latitude,
+                update_location_on_map(marker_map, offset_latitude,
                     offset_longitude);
-                marker_map.place_marker(offset_lat_lng, location);
             });       
         }
     }
