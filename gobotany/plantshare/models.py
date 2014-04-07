@@ -478,7 +478,7 @@ class PlantshareGpsImage(ImageSpec):
         instance, field_name = get_field_info(self.source)
         return [
             ExifGpsExtractor(instance),
-            ResizeToFit(1000, 1000),
+            ResizeToFit(1000, 1000, False),
         ]
 
 register.generator('plantshare:screenedimage:plantsharegpsimage',
