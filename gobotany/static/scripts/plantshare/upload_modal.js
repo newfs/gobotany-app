@@ -1,7 +1,7 @@
 define([
     'bridge/jquery', 
     'bridge/jquery.form',
-], function($, jqueryForm) {
+], function ($, jqueryForm) {
 
     var EMPTY_FILE_PATH = 'None Selected';
     var EMPTY_IMAGE_URL = '/static/images/icons/no-image.png';
@@ -55,14 +55,14 @@ define([
         var $link = $(linkSelector);
         var $lastTrigger = null;
         var settings = $.extend({
-            'onUploadComplete': function(imageInfo) {},
-            'onError': function(errorInfo) {},
-            'onStartUpload': function() {},
+            'onUploadComplete': function (imageInfo) {},
+            'onError': function (errorInfo) {},
+            'onStartUpload': function () {},
         }, options);
 
         // Set up overlay handling for any dynamic links
         // matching the selector
-        $(document).on('click', linkSelector, function(e) {
+        $(document).on('click', linkSelector, function (e) {
             e.preventDefault();
             $lastTrigger = $(this);
 
@@ -82,7 +82,7 @@ define([
 
         // Update filename box, image, and buttons when the selected file
         // changes.
-        $modal.find('input[type="file"]').change(function() {
+        $modal.find('input[type="file"]').change(function () {
 
             var reader = new FileReader();
             var $thumbnail_image = $modal.find('img');
@@ -102,6 +102,9 @@ define([
                 
                 // Resize the file so uploads will not take too long.
                 resize($hidden_image[0], $thumbnail_image);
+
+                // Enable the Upload button.
+                $modal.find('#upload-image-submit').removeClass('disabled');
             }
 
             // Read the file that the user picked.
@@ -113,27 +116,26 @@ define([
             var path = $(this).val().replace(/C:\\fakepath\\/i, '');
             if (path) {
                 $modal.find('.file-path').text(path);
-                $modal.find('#upload-image-submit').removeClass('disabled');
             } else {
                 reset_dialog_controls($modal);
             }
         });
 
         // Choose File button
-        $modal.find('.file-select').click(function() {
+        $modal.find('.file-select').click(function () {
             // Activate the actual file form element.
             $modal.find('input[type="file"]').click();
         });
 
         // Close button
-        $modal.find('.close').click(function() {
+        $modal.find('.close').click(function () {
             $lastTrigger.overlay().close();
             return false;
         });
 
         // Submit button
-        $modal.find('#upload-image-submit').click(function() {
-            $modal.find('#upload-image-form').ajaxSubmit(function(response) {
+        $modal.find('#upload-image-submit').click(function () {
+            $modal.find('#upload-image-form').ajaxSubmit(function (response) {
                 if(response.success) {
                     console.log('Upload complete');
                     var imageInfo = {
@@ -143,7 +145,8 @@ define([
                         'latitude': response.latitude,
                         'longitude': response.longitude
                     };
-                    settings.onUploadComplete.call(this, imageInfo, $lastTrigger); 
+                    settings.onUploadComplete.call(this, imageInfo,
+                        $lastTrigger); 
                 } else {
                     console.log('Error during upload: ' + response.info);
                     settings.onError.call(this, response.info, $lastTrigger);
@@ -161,4 +164,3 @@ define([
 
     return obj;
 });
-
