@@ -46,8 +46,9 @@ define([
     function reset_dialog_controls($modal) {
         // Clear any thumbnail and filename, and disable the Upload button.
         $modal.find('img').attr('src', EMPTY_IMAGE_URL);
-        $modal.find('.file-path').text(EMPTY_FILE_PATH);
+        $modal.find('.file-select').removeClass('disabled');
         $modal.find('#upload-image-submit').addClass('disabled');
+        $modal.find('.file-path').text(EMPTY_FILE_PATH);
     }
 
     function setup(modalSelector, linkSelector, options) {
@@ -93,6 +94,9 @@ define([
                 // Temporarily change the thumbnail area to a spinner.
                 // (Known issue: animation is often blocked during load.)
                 $thumbnail_image.attr('src', LOADING_IMAGE_URL);
+
+                // Make the Choose File button appear disabled.
+                $modal.find('.file-select').addClass('disabled');
             }
 
             reader.onloadend = function (e) {

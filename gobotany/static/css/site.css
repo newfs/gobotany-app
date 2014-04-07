@@ -1216,7 +1216,6 @@ body.plantshare .modal-container { position: relative; }
 body.plantshare .image-modal { background-color: white; border: 5px solid #acac90; display: none; height: 160px; left: 0px; padding: 15px; position: absolute; top: 250px; width: 420px; z-index: 10; }
 body.plantshare .image-modal img { float: left; margin: 0 20px 10px 0; max-height: 84px; max-width: 84px; }
 body.plantshare .image-modal a.button { color: white; cursor: pointer; display: inline-block; margin: 10px 0; width: 120px; }
-body.plantshare .image-modal a.disabled { display: none; }
 body.plantshare .image-modal div.modal-footer { color: #888; display: block; float: left; position: relative; width: 100%; }
 body.plantshare .image-modal div.modal-footer div.file-path { border: 1px solid #888; color: #888; margin: 2px 0 auto; padding: 2px; }
 body.plantshare .image-modal a.close { background: transparent url(/static/images/icons/close.png) no-repeat; cursor: pointer; display: block; height: 16px; position: absolute; right: 15px; text-indent: -9999px; top: 15px; width: 16px; }
