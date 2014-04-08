@@ -776,11 +776,12 @@ body.plantshare {
             margin-bottom: 40px;
         }
         .delete-link {
-            width: 100%;
-            text-align: center;
-            margin: 0;
+            display: table;
+            margin: 0 auto;
             padding-top: 8px;
             img {
+                float: left;
+                padding-right: 4px;
                 vertical-align: top;
             }
         }

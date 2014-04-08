@@ -244,10 +244,10 @@ a:active { color: #45ac11; }
 a:not([href]) { color: black; }
 a:not([href]):hover { text-decoration: none; }
 
-#main p a, #main li > a, #main dt a, #main td a, #main h2 a, #main form > a, #sidebar form > a { border-bottom: 1px solid #c3d941; }
-#main p a:hover, #main li > a:hover, #main dt a:hover, #main td a:hover, #main h2 a:hover, #main form > a:hover, #sidebar form > a:hover { border-color: #317b0c; }
-#main p a:active, #main li > a:active, #main dt a:active, #main td a:active, #main h2 a:active, #main form > a:active, #sidebar form > a:active { border-color: #45ac11; }
-#main p a:not([href]), #main li > a:not([href]), #main dt a:not([href]), #main td a:not([href]), #main h2 a:not([href]), #main form > a:not([href]), #sidebar form > a:not([href]) { border: 0; }
+#main p a, #main li > a, #main dt a, #main td a, #main h2 a, #main form > a, #main form div > a, #sidebar form > a { border-bottom: 1px solid #c3d941; }
+#main p a:hover, #main li > a:hover, #main dt a:hover, #main td a:hover, #main h2 a:hover, #main form > a:hover, #main form div > a:hover, #sidebar form > a:hover { border-color: #317b0c; }
+#main p a:active, #main li > a:active, #main dt a:active, #main td a:active, #main h2 a:active, #main form > a:active, #main form div > a:active, #sidebar form > a:active { border-color: #45ac11; }
+#main p a:not([href]), #main li > a:not([href]), #main dt a:not([href]), #main td a:not([href]), #main h2 a:not([href]), #main form > a:not([href]), #main form div > a:not([href]), #sidebar form > a:not([href]) { border: 0; }
 
 #main td.scientific-name a { border-bottom: 0; }
 
@@ -1228,8 +1228,8 @@ body.plantshare .thumb-gallery { display: inline-block; float: left; padding: 4p
 body.plantshare .thumb-frame { display: inline-block; margin: 0 14px 0 0; vertical-align: bottom; }
 body.plantshare .thumb-frame .thumb { vertical-align: bottom; }
 body.plantshare .thumb-frame .wait { margin-bottom: 40px; }
-body.plantshare .thumb-frame .delete-link { width: 100%; text-align: center; margin: 0; padding-top: 8px; }
-body.plantshare .thumb-frame .delete-link img { vertical-align: top; }
+body.plantshare .thumb-frame .delete-link { display: table; margin: 0 auto; padding-top: 8px; }
+body.plantshare .thumb-frame .delete-link img { float: left; padding-right: 4px; vertical-align: top; }
 body.plantshare .upload { display: inline-block; float: left; padding-bottom: 20px; }
 body.plantshare#sightings .nav-links { font-family: "Trebuchet MS", Helvetica, Arial, "Lucida Sans Unicode", sans-serif; font-size: 14px; margin: 0 0 16px; }
 body.plantshare#sightings h2 { clear: both; }
