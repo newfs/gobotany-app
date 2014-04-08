@@ -101,11 +101,10 @@ define([
 
             reader.onloadend = function (e) {
                 var image_result = e.target.result;
-                $thumbnail_image.attr('src', image_result);
                 $hidden_image.attr('src', image_result);
                 
                 // Wait just a bit before resizing the image, to give the
-                // image enough time to appear in its assigned element.
+                // image enough time to be put into the hidden image element.
                 setTimeout(function () {
                     // Resize the file so uploads will not take too long.
                     resize($hidden_image[0], $thumbnail_image);
