@@ -392,7 +392,7 @@ def rename_image_by_type(instance, filename):
     else:
         md5.update(f.read())
 
-    new_name = '{0}_{1}.png'.format(instance.uploaded_by.username.lower(),
+    new_name = '{0}_{1}.jpg'.format(instance.uploaded_by.username.lower(),
             md5.hexdigest())
 
     return os.path.join(instance.image_type.lower(), new_name)
@@ -469,7 +469,8 @@ class PlantshareGpsImage(ImageSpec):
     """ Custom ImageKit ImageSpec to extract GPS data from an image and
     resize it appropriately.
     """
-    format = 'PNG'
+    format = 'JPEG'
+    options = {'quality': 60}
 
     @property
     def processors(self):
@@ -489,12 +490,14 @@ class ScreenedImage(models.Model):
     image = ProcessedImageField(upload_to=rename_image_by_type,
                 storage=upload_storage,
                 spec_id='plantshare:screenedimage:plantsharegpsimage')
-    thumb = ImageSpecField(source='image', format='PNG',
+    thumb = ImageSpecField(source='image', format='JPEG',
+                options={'quality': 60},
                 processors=[ResizeToFit(128, 128, upscale=True)])
 
     # Add another thumbnail, cropped and centered with consistent
     # dimensions regardless of portrait or landscape orientation.
-    thumb_cropped = ImageSpecField(source='image', format='PNG',
+    thumb_cropped = ImageSpecField(source='image', format='JPEG',
+                options={'quality': 60},
                 processors=[SmartResize(183, 149, upscale=True)])
 
     uploaded = models.DateTimeField(blank=False, auto_now_add=True)

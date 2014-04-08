@@ -1117,6 +1117,7 @@ def ajax_image_upload(request):
         form = ScreenedImageForm(request.POST, request.FILES)
         if form.is_valid():
             new_image = form.save(commit=False)
+            print 'new_image.image:', new_image.image
             new_image.uploaded_by = request.user
             new_image.save()
 
