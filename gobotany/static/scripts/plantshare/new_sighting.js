@@ -19,6 +19,7 @@ define([
             // Set the last image's URL, which should be the spinner,
             // to the real image URL.
             var $last_image = $('.thumb-gallery img.thumb').last();
+            $last_image.removeClass('wait');
             $last_image.attr('src', thumb_url);
             $last_image.wrap('<a href="' + full_url +
                 '" class="preview"></a>');
@@ -54,7 +55,7 @@ define([
         function start_upload() {
             // Add the spinner to the gallery
             $('.thumb-gallery').append(
-                '<div class="thumb-frame"><img class="thumb" src="' + 
+                '<div class="thumb-frame"><img class="thumb wait" src="' + 
                 UPLOAD_SPINNER + '"></div>');
         }
 

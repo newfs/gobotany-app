@@ -1227,6 +1227,7 @@ body.plantshare .image-modal div.screening-notify p { color: #888; font-size: 10
 body.plantshare .thumb-gallery { display: inline-block; float: left; padding: 4px 0 20px 0; }
 body.plantshare .thumb-frame { display: inline-block; margin: 0 14px 0 0; vertical-align: bottom; }
 body.plantshare .thumb-frame .thumb { vertical-align: bottom; }
+body.plantshare .thumb-frame .wait { margin-bottom: 40px; }
 body.plantshare .thumb-frame .delete-link { width: 100%; text-align: center; margin: 0; padding-top: 8px; }
 body.plantshare .thumb-frame .delete-link img { vertical-align: top; }
 body.plantshare .upload { display: inline-block; float: left; padding-bottom: 20px; }
