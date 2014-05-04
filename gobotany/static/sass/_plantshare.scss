@@ -701,7 +701,7 @@ body.plantshare {
         padding: 15px;
         position: absolute;
         top: 250px;
-        width: 390px;
+        width: 360px;
         z-index: 10;
         img {
             float: left;
@@ -714,8 +714,8 @@ body.plantshare {
             color: white;
             cursor: pointer;
             display: inline-block;
-            margin: 10px 0;
-            width: 120px;
+            margin: 10px 6px 0 0;
+            width: 100px;
         }
 
         div.modal-footer {
@@ -738,11 +738,11 @@ body.plantshare {
             float: right;
             font-size: 18px;
             margin: 0 0 5px;
-            width: 300px;
+            width: 270px;
         }
         form {
             float: right;
-            width: 300px;
+            width: 270px;
         }
         input {
             border: 0 none !important;

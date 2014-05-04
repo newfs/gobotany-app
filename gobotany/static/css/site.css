@@ -1213,14 +1213,14 @@ body.plantshare#locator #main #sightings-status { display: none; /* initially hi
 body.plantshare#locator #main #species-images { border: 5px solid rgba(255, 255, 255, 0.8); height: 150px; margin: 0 0 20px 0; overflow: hidden; position: relative; top: 0; width: 700px; z-index: 100; -webkit-box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.6); -moz-box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.6); box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.6); }
 body.plantshare#locator #main #species-images .scrollableArea a { border-right: 5px solid #fff; float: left; margin: 0; padding: 0; }
 body.plantshare .modal-container { position: relative; }
-body.plantshare .image-modal { background-color: white; border: 5px solid #acac90; display: none; height: 160px; left: 0px; padding: 15px; position: absolute; top: 250px; width: 390px; z-index: 10; }
+body.plantshare .image-modal { background-color: white; border: 5px solid #acac90; display: none; height: 160px; left: 0px; padding: 15px; position: absolute; top: 250px; width: 360px; z-index: 10; }
 body.plantshare .image-modal img { float: left; margin: 0 5px 10px 0; max-height: 84px; max-width: 84px; }
-body.plantshare .image-modal a.button { color: white; cursor: pointer; display: inline-block; margin: 10px 0; width: 120px; }
+body.plantshare .image-modal a.button { color: white; cursor: pointer; display: inline-block; margin: 10px 6px 0 0; width: 100px; }
 body.plantshare .image-modal div.modal-footer { color: #888; display: block; float: left; position: relative; width: 100%; }
 body.plantshare .image-modal div.modal-footer div.file-path { border: 1px solid #888; color: #888; margin: 2px 0 auto; padding: 2px; }
 body.plantshare .image-modal a.close { background: transparent url(/static/images/icons/close.png) no-repeat; cursor: pointer; display: block; height: 16px; position: absolute; right: 15px; text-indent: -9999px; top: 15px; width: 16px; }
-body.plantshare .image-modal h4 { float: right; font-size: 18px; margin: 0 0 5px; width: 300px; }
-body.plantshare .image-modal form { float: right; width: 300px; }
+body.plantshare .image-modal h4 { float: right; font-size: 18px; margin: 0 0 5px; width: 270px; }
+body.plantshare .image-modal form { float: right; width: 270px; }
 body.plantshare .image-modal input { border: 0 none !important; box-shadow: inset 0 0 0 white !important; }
 body.plantshare .image-modal input#id_image { clear: both; display: block; margin: 0 0 10px; }
 body.plantshare .image-modal div.screening-notify p { color: #888; font-size: 10px; margin: 5px 0; }
