@@ -55,17 +55,27 @@ define([
             }
             // If the horizontal position would start off the screen to
             // the left, adjust it to start at the left edge.
-            if (left < scroll_left) {
-                left = scroll_left;
+            var left_px = left;
+            if (left_px < scroll_left) {
+                left_px = scroll_left;
             }
-    
-            // Set the tooltip position.
-            var scroll_top = $(window).scrollTop();
+
             var tooltip_height = $(tooltip_element).height();
+            var top_px = (top - tooltip_height -
+                this.options.vertical_adjust_px);
+
+            // If this tooltip is on a fixed-position background such as
+            // a modal dialog, ensure the tooltip is placed correctly
+            // regardless of the page scroll position.
+            if (tooltip_element.css('position') === 'fixed') {
+                var scroll_top = $(window).scrollTop();
+                top_px = top_px - scroll_top;
+            }
+            
+            // Set the tooltip position.
             tooltip_element.css({
-                'left': left,
-                'top': (top - tooltip_height -
-                        this.options.vertical_adjust_px - scroll_top)
+                'left': left_px,
+                'top': top_px
             });
 
             // Set the arrow position.
