@@ -924,7 +924,7 @@ class Distribution(models.Model):
     """County- or state-level distribution data for plants."""
     scientific_name = models.CharField(max_length=100, db_index=True)
     state = models.CharField(max_length=2, db_index=True)
-    county = models.CharField(max_length=50)
+    county = models.CharField(max_length=50, blank=True)
     present = models.BooleanField(default=False)
     native = models.BooleanField(default=False)
 
