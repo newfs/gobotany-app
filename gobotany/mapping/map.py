@@ -46,12 +46,12 @@ class Legend(object):
     """Class for configuring the legend on a SVG plant distribution map."""
 
     # This list controls the order, label and color of legend items.
-    ITEMS = [('native', '#78bf47'),     # green
-             ('native, st.', '#78bf47'),
-             ('native, co.', '#98f25a'), # lighter green for county level
+    ITEMS = [('county non-native', '#c091fa'), # lighter for county level
+             ('state non-native', '#9973c7'),
              ('non-native', '#9973c7'), # purple: avoid red for colorblindness
-             ('non-native, st.', '#9973c7'),
-             ('non-native, co.', '#c091fa'), # lighter for county level
+             ('county native', '#98f25a'), # lighter green for county level
+             ('state native', '#78bf47'),
+             ('native', '#78bf47'),     # green
              ('absent', '#fff'),        # white
              ]
     COLORS = dict(ITEMS)  # Color lookup for labels, ex.: COLORS['rare'].
@@ -142,11 +142,7 @@ class PlantDistributionMap(ChloroplethMap):
                 label = 'non-native'
 
             if level is not None:
-                if level == 'state':
-                    level = 'st.'
-                elif level == 'county':
-                    level = 'co.'
-                label += ', %s' % level
+                label = '%s %s' % (level, label)
         return label
 
     def _add_name_to_title(self, scientific_name):
@@ -200,13 +196,13 @@ class PlantDistributionMap(ChloroplethMap):
         style = area.get_style()
         shaded_absent = (style.find('fill:%s' % Legend.COLORS['absent']) > 0)
         shaded_non_native = ((style.find(
-            'fill:%s' % Legend.COLORS['non-native, st.']) > 0) or
+            'fill:%s' % Legend.COLORS['state non-native']) > 0) or
             (style.find(
-            'fill:%s' % Legend.COLORS['non-native, co.']) > 0))
+            'fill:%s' % Legend.COLORS['county non-native']) > 0))
         shaded_native = ((style.find(
-            'fill:%s' % Legend.COLORS['native, st.']) > 0) or
+            'fill:%s' % Legend.COLORS['state native']) > 0) or
             (style.find(
-            'fill:%s' % Legend.COLORS['native, co.']) > 0))
+            'fill:%s' % Legend.COLORS['county native']) > 0))
 
         if shaded_absent and is_present:
             # If the area is shaded absent but the new record is
