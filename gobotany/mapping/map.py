@@ -47,7 +47,11 @@ class Legend(object):
 
     # This list controls the order, label and color of legend items.
     ITEMS = [('native', '#78bf47'),     # green
-             ('non-native', '#c091fa'), # purple: avoid red for colorblindness
+             ('native, st.', '#78bf47'),
+             ('native, co.', '#98f25a'), # lighter green for county level
+             ('non-native', '#9973c7'), # purple: avoid red for colorblindness
+             ('non-native, st.', '#9973c7'),
+             ('non-native, co.', '#c091fa'), # lighter for county level
              ('absent', '#fff'),        # white
              ]
     COLORS = dict(ITEMS)  # Color lookup for labels, ex.: COLORS['rare'].
@@ -128,7 +132,7 @@ class PlantDistributionMap(ChloroplethMap):
             self.maximum_legend_items)
         self.legend = Legend(self.svg_map, self.maximum_legend_items)
 
-    def _get_label(self, is_present, is_native):
+    def _get_label(self, is_present, is_native, level=None):
         """Return the appropriate label for distribution data."""
         label = 'absent'
         if is_present:
@@ -136,6 +140,13 @@ class PlantDistributionMap(ChloroplethMap):
                 label = 'native'
             else:
                 label = 'non-native'
+
+            if level is not None:
+                if level == 'state':
+                    level = 'st.'
+                elif level == 'county':
+                    level = 'co.'
+                label += ', %s' % level
         return label
 
     def _add_name_to_title(self, scientific_name):
@@ -184,21 +195,36 @@ class PlantDistributionMap(ChloroplethMap):
         ordered_labels = [label for label in all_labels if label in labels]
         return ordered_labels
 
-    def _should_shade(self, area, is_present, is_native):
+    def _should_shade(self, area, is_present, is_native, level=None):
         should_shade = False
         style = area.get_style()
         shaded_absent = (style.find('fill:%s' % Legend.COLORS['absent']) > 0)
+        shaded_non_native = ((style.find(
+            'fill:%s' % Legend.COLORS['non-native, st.']) > 0) or
+            (style.find(
+            'fill:%s' % Legend.COLORS['non-native, co.']) > 0))
+        shaded_native = ((style.find(
+            'fill:%s' % Legend.COLORS['native, st.']) > 0) or
+            (style.find(
+            'fill:%s' % Legend.COLORS['native, co.']) > 0))
+
         if shaded_absent and is_present:
             # If the area is shaded absent but the new record is
             # present, shade the area.
             should_shade = True
-        else:
-            # if the area is shaded non-native but the new record is
-            # native, override the area with native.
-            shaded_non_native = (style.find(
-                'fill:%s' % Legend.COLORS['non-native']) > 0)
-            if shaded_non_native and is_native:
+        elif shaded_non_native:
+            if is_present:
+                if is_native:
+                    # If the new record is native, override with native.
+                    should_shade = True
+                elif level == 'county':
+                    # If the new record is county-level non-native, override.
+                    should_shade = True
+        elif shaded_native:
+            # If the new record is county-level native, override.
+            if is_present and level == 'county':
                 should_shade = True
+
         return should_shade
 
     def _shade_areas(self):
@@ -224,7 +250,8 @@ class PlantDistributionMap(ChloroplethMap):
                 for node in path_nodes:
                     node_id = node.get('id').lower()
                     if node_id.startswith(state_id_piece):
-                        label = self._get_label(record.present, record.native)
+                        label = self._get_label(record.present, record.native,
+                            level='state')
                         if label not in legend_labels_found:
                             legend_labels_found.append(label)
                         box = Path(node)
@@ -245,12 +272,13 @@ class PlantDistributionMap(ChloroplethMap):
                 for node in path_nodes:
                     node_id = node.get('id').lower()
                     if node_id == state_and_county:
-                        label = self._get_label(record.present, record.native)
+                        label = self._get_label(record.present, record.native,
+                            level='county')
                         if label not in legend_labels_found:
                             legend_labels_found.append(label)
                         box = Path(node)
                         if self._should_shade(box, record.present,
-                                record.native):
+                                record.native, level='county'):
                             box.color(Legend.COLORS[label])
                         break   # Move on to the next distribution record.
 

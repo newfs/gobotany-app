@@ -339,9 +339,10 @@ class PlantDistributionMapTestCase(TestCase):
         self.distribution_map.shade()
         self._verify_shaded_counties(['native', 'absent'])
         labels = get_legend_labels(self.distribution_map.legend)
-        self.assertEqual('native', labels[0])
-        self.assertEqual('absent', labels[1])
-        [self.assertEqual('', label) for label in labels[2:]]
+        self.assertEqual('native, st.', labels[0])
+        self.assertEqual('native, co.', labels[1])
+        self.assertEqual('absent', labels[2])
+        [self.assertEqual('', label) for label in labels[3:]]
 
     def test_plant_with_distribution_data_has_plant_name_in_title(self):
         SCIENTIFIC_NAME = 'Dendrolycopodium dendroideum'
@@ -381,7 +382,8 @@ class PlantDistributionMapTestCase(TestCase):
         self.distribution_map.shade()
         self._verify_shaded_counties(['present', 'absent'])
         labels = get_legend_labels(self.distribution_map.legend)
-        self.assertEqual(['native', 'absent', '', '', ''], labels)
+        self.assertEqual(['native, st.', 'native, co.', 'absent', '', ''],
+            labels)
         self.assertEqual('%s: New England Distribution Map' % SCIENTIFIC_NAME,
                          self.distribution_map.get_title())
 
@@ -404,7 +406,7 @@ class PlantDistributionMapTestCase(TestCase):
         self.distribution_map.set_plant(SCIENTIFIC_NAME)
         self.distribution_map.shade()
         labels = get_legend_labels(self.distribution_map.legend)
-        legend_shows_native = ('native' in labels)
+        legend_shows_native = ('native, st.' or 'native, co.' in labels)
         self.assertTrue(legend_shows_native)
 
 
