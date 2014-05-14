@@ -660,7 +660,7 @@ class Taxon(models.Model):
         """
         states = [key.upper() for key in settings.STATE_NAMES.keys()]
         distributions = Distribution.objects.filter(
-            scientific_name=self.scientific_name).filter(
+            scientific_name__in=self.all_scientific_names).filter(
             state__in=states).values_list('state', 'present')
         invasive_statuses = InvasiveStatus.objects.filter(
             taxon=self).values_list('region', 'invasive_in_region',
