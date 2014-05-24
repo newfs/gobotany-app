@@ -23,7 +23,7 @@ define([
             characters = data;
             compute_coverage_lists();
 
-            $p = $('#sidebar .get-more');
+            $p = $('#question-nav .get-more');
             $button = $p.find('.get-choices');
 
             $button.on('click', toggle_group_list);
