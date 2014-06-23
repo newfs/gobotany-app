@@ -141,6 +141,11 @@ define([
                 'swing'
             );
         });
+
+        // With a filter having been chosen, dismiss the menu.
+        $ul = $('.get-more-questions-menu')[0];
+        $ul.remove();
+        $ul = null;
     };
 
     return exports;
