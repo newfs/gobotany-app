@@ -131,8 +131,15 @@ define([
             var $filters = $('#sidebar ul li');
             var $new = $filters.eq(-1);
             animation.bright_change($new);  /* why doesn't this work? */
-            $('.scroll').data('jsp').reinitialise();
-            $('.scroll').data('jsp').scrollToPercentY(100, true);
+            // Scroll to the bottom of the list to reveal the new filter. 
+            var $filter_list = $('.scroll');
+            var scroll_position =
+                $filter_list[0].scrollHeight - $filter_list.height();
+            $filter_list.animate(
+                {scrollTop: scroll_position + 'px'},
+                'fast',
+                'swing'
+            );
         });
     };
 
