@@ -863,6 +863,9 @@ body.skey.results img.char-value-larger { height: 160px !important; /* Consisten
 body.skey .toplink { display: none; }
 body.skey #filters-preview { display: none; }
 
+.more-questions-dialog { min-height: 300px; }
+.more-questions-dialog .questions { border: 1px solid gray; display: none; height: 200px; overflow-y: scroll; }
+
 /* Experiment by Brandon */
 ul.get-more-questions-menu { -webkit-box-shadow: 0px 1px 4px rgba(0, 0, 0, 0.6); -moz-box-shadow: 0px 1px 4px rgba(0, 0, 0, 0.6); box-shadow: 0px 1px 4px rgba(0, 0, 0, 0.6); z-index: 200; position: absolute; right: 0; display: block; bottom: 110%; border: 1px solid black; font-size: 12px; text-indent: 0px; /* undo the -9000px */ white-space: nowrap; }
 ul.get-more-questions-menu li { cursor: pointer; position: relative; display: block; margin: 0; background-color: #d9dbb1; /*#dce890;*/ padding: 0 1em; line-height: 2em; text-align: left; }

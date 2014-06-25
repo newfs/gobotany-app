@@ -730,7 +730,19 @@ results_page_init: function(args) {
                 player: 'html',
                 options: {
                     fadeDuration: 0.1,
-                    onFinish: function() {
+                    onFinish: function () {
+                        // Set up tabs.
+                        $('.more-questions-dialog a.pick').click(function () {
+                            //alert('switch to pick tab');
+                            $('.more-questions-dialog .char-groups').hide();
+                            $('.more-questions-dialog .questions').show();
+                        });
+                        $('.more-questions-dialog a.auto').click(function () {
+                            //alert('switch to auto tab');
+                            $('.more-questions-dialog .questions').hide();
+                            $('.more-questions-dialog .char-groups').show();
+                        });
+
                         // Re-check any check boxes that were set last time.
                         $container = $('#sb-container');
                         $inputs = $container.find('input');

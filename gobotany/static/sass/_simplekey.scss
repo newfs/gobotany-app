@@ -893,6 +893,18 @@ body.skey {
     }
 }
 
+
+.more-questions-dialog {
+    min-height: 400px;
+    .questions {
+        border: 1px solid gray;
+        display: none;
+        height: 200px;
+        overflow-y: scroll;
+    }
+}
+
+
 /* Experiment by Brandon */
 
 ul.get-more-questions-menu {
