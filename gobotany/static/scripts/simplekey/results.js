@@ -477,7 +477,7 @@ results_page_init: function(args) {
                 species_section.display_results();
             }
         });
-        App3.species_view_tabs.appendTo('#results-tabs');
+        App3.species_view_tabs.appendTo('#results-section .view-tabs');
     });
 
     /* All filters can be cleared with a single button click. */
@@ -734,13 +734,19 @@ results_page_init: function(args) {
                         // Set up tabs.
                         $('.more-questions-dialog a.pick').click(function () {
                             //alert('switch to pick tab');
-                            $('.more-questions-dialog .char-groups').hide();
-                            $('.more-questions-dialog .questions').show();
+                            $('.more-questions-dialog #choices .auto').hide();
+                            $('.more-questions-dialog #choices .pick').show();
+                            $(this).toggleClass('current');
+                            $('.more-questions-dialog a.auto').toggleClass(
+                                'current');
                         });
                         $('.more-questions-dialog a.auto').click(function () {
                             //alert('switch to auto tab');
-                            $('.more-questions-dialog .questions').hide();
-                            $('.more-questions-dialog .char-groups').show();
+                            $('.more-questions-dialog #choices .pick').hide();
+                            $('.more-questions-dialog #choices .auto').show();
+                            $(this).toggleClass('current');
+                            $('.more-questions-dialog a.pick').toggleClass(
+                                'current');
                         });
 
                         // Re-check any check boxes that were set last time.
