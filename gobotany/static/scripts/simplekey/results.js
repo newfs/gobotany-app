@@ -733,7 +733,6 @@ results_page_init: function(args) {
                     onFinish: function () {
                         // Set up tabs.
                         $('.more-questions-dialog a.pick').click(function () {
-                            //alert('switch to pick tab');
                             $('.more-questions-dialog #choices .auto').hide();
                             $('.more-questions-dialog #choices .pick').show();
                             $(this).toggleClass('current');
@@ -741,13 +740,20 @@ results_page_init: function(args) {
                                 'current');
                         });
                         $('.more-questions-dialog a.auto').click(function () {
-                            //alert('switch to auto tab');
                             $('.more-questions-dialog #choices .pick').hide();
                             $('.more-questions-dialog #choices .auto').show();
                             $(this).toggleClass('current');
                             $('.more-questions-dialog a.pick').toggleClass(
                                 'current');
                         });
+
+                        // Set default tab.
+                        $('.more-questions-dialog a.auto').addClass(
+                            'current');
+                        $('.more-questions-dialog a.pick').removeClass(
+                            'current');
+                        $('.more-questions-dialog #choices .auto').show();
+                        $('.more-questions-dialog #choices .pick').hide();
 
                         // Re-check any check boxes that were set last time.
                         $container = $('#sb-container');
