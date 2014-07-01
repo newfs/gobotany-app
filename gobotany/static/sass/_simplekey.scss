@@ -369,8 +369,9 @@ body.skey {
                         color: white;
                         cursor: pointer;
                         display: block;
-                        margin: 18px 0 10px;
-                        &.get-choices {
+                        margin: 18px auto 10px;
+                        width: 170px;
+                        &.get-questions {
                             margin: 0 auto 4px;
                         }
                     }
@@ -447,7 +448,7 @@ body.skey {
             width: 710px;
         }
 
-        a.get-choices {
+        a.get-questions, a.add-questions {
             color: white;
             cursor: pointer;
             margin: 10px 0 4px 10px;
@@ -1109,7 +1110,6 @@ ul.get-more-questions-menu {
             .section + .section {
                 margin-bottom: 16px;
             }
-            #question-nav .section.family-genus h6,
             #question-nav .section button, #question-nav .section.clear h5,
             #question-nav .section.help h5 {
                 display: none;
@@ -1143,10 +1143,6 @@ ul.get-more-questions-menu {
                     }
                     p.get-more {
                         margin-bottom: 50px;
-                        span {
-                            display: none;
-                            margin: 0;
-                        }
                     }
                     a.clear-all-btn, a.get-help-btn {
                         margin: 6px 0 6px 16px;

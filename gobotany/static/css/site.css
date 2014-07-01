@@ -228,7 +228,7 @@ div.scrollableArea { position: relative; width: auto; height: 100%; }
 .orange-button:active, body.plantshare .image-modal a.button:active, body.plantshare#ask #main .submit:active, body.plantshare#plantshare #ask .submit:active, #dkey #main .offer-help-aside a.button:active, #dkey #main ul.couplets a.button:active, #dkey #main a.show-all-button:active { background-color: #dc9402; background: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #dc9402), color-stop(60%, #f0b448), color-stop(100%, #dc9402)); background: -webkit-linear-gradient(top, #dc9402 0%, #f0b448 60%, #dc9402 100%); background: -moz-linear-gradient(top, #dc9402 0%, #f0b448 60%, #dc9402 100%); background: -o-linear-gradient(top, #dc9402 0%, #f0b448 60%, #dc9402 100%); background: linear-gradient(top, #dc9402 0%, #f0b448 60%, #dc9402 100%); }
 .orange-button:hover, body.plantshare .image-modal a.button:hover, body.plantshare#ask #main .submit:hover, body.plantshare#plantshare #ask .submit:hover, #dkey #main .offer-help-aside a.button:hover, #dkey #main ul.couplets a.button:hover, #dkey #main a.show-all-button:hover, .orange-button:visited, body.plantshare .image-modal a.button:visited, body.plantshare#ask #main .submit:visited, body.plantshare#plantshare #ask .submit:visited, #dkey #main .offer-help-aside a.button:visited, #dkey #main ul.couplets a.button:visited, #dkey #main a.show-all-button:visited, .orange-button:active, body.plantshare .image-modal a.button:active, body.plantshare#ask #main .submit:active, body.plantshare#plantshare #ask .submit:active, #dkey #main .offer-help-aside a.button:active, #dkey #main ul.couplets a.button:active, #dkey #main a.show-all-button:active { color: white; }
 .orange-button.caps, body.plantshare .image-modal a.caps.button, body.plantshare#ask #main .caps.submit, body.plantshare#plantshare #ask .caps.submit, #dkey #main .offer-help-aside a.caps.button, #dkey #main ul.couplets a.caps.button, #dkey #main a.caps.show-all-button { text-transform: uppercase; }
-.orange-button.disabled, body.plantshare .image-modal a.disabled.button, body.plantshare#ask #main .disabled.submit, body.plantshare#plantshare #ask .disabled.submit, #dkey #main .offer-help-aside a.disabled.button, #dkey #main ul.couplets a.disabled.button, #dkey #main a.disabled.show-all-button { background-color: #e9c565; /* for IE without gradient support */ border-color: #e9c565 !important; cursor: default; background: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #ecda92), color-stop(32%, #f1e3a6), color-stop(50%, #f1e3a6), color-stop(100%, #ecdb93)); background: -webkit-linear-gradient(top, #ecda92 0%, #f1e3a6 32%, #f1e3a6 50%, #ecdb93 100%); background: -moz-linear-gradient(top, #ecda92 0%, #f1e3a6 32%, #f1e3a6 50%, #ecdb93 100%); background: -o-linear-gradient(top, #ecda92 0%, #f1e3a6 32%, #f1e3a6 50%, #ecdb93 100%); background: linear-gradient(top, #ecda92 0%, #f1e3a6 32%, #f1e3a6 50%, #ecdb93 100%); }
+.orange-button.disabled, body.plantshare .image-modal a.disabled.button, body.plantshare#ask #main .disabled.submit, body.plantshare#plantshare #ask .disabled.submit, #dkey #main .offer-help-aside a.disabled.button, #dkey #main ul.couplets a.disabled.button, #dkey #main a.disabled.show-all-button { background-color: #e9c565; /* for IE without gradient support */ border-color: #e9c565 !important; cursor: default !important; background: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #ecda92), color-stop(32%, #f1e3a6), color-stop(50%, #f1e3a6), color-stop(100%, #ecdb93)); background: -webkit-linear-gradient(top, #ecda92 0%, #f1e3a6 32%, #f1e3a6 50%, #ecdb93 100%); background: -moz-linear-gradient(top, #ecda92 0%, #f1e3a6 32%, #f1e3a6 50%, #ecdb93 100%); background: -o-linear-gradient(top, #ecda92 0%, #f1e3a6 32%, #f1e3a6 50%, #ecdb93 100%); background: linear-gradient(top, #ecda92 0%, #f1e3a6 32%, #f1e3a6 50%, #ecdb93 100%); }
 .orange-button.large, body.plantshare .image-modal a.large.button, body.plantshare#ask #main .large.submit, body.plantshare#plantshare #ask .large.submit, #dkey #main .offer-help-aside a.large.button, #dkey #main ul.couplets a.large.button, #dkey #main a.large.show-all-button { font-size: 16px; letter-spacing: 1.5px; min-width: 150px; padding: 9px 30px; -webkit-border-radius: 20px; -moz-border-radius: 20px; -ms-border-radius: 20px; -o-border-radius: 20px; border-radius: 20px; }
 
 .hidden { display: none !important; }
@@ -780,8 +780,8 @@ body.skey.results #question-nav .section.instructions { background: #9cc86b; col
 body.skey.results #question-nav .section.instructions h5 { font-size: 14px; line-height: 120%; margin: 0; }
 body.skey.results #question-nav .section .left { float: left; }
 body.skey.results #question-nav .section p.get-more { position: relative; /* for Brandon experiment */ font-size: 11px; line-height: 16px; margin: 0 0 20px; text-align: center; }
-body.skey.results #question-nav .section p.get-more a { color: white; cursor: pointer; display: block; margin: 18px 0 10px; }
-body.skey.results #question-nav .section p.get-more a.get-choices { margin: 0 auto 4px; }
+body.skey.results #question-nav .section p.get-more a { color: white; cursor: pointer; display: block; margin: 18px auto 10px; width: 170px; }
+body.skey.results #question-nav .section p.get-more a.get-questions { margin: 0 auto 4px; }
 body.skey.results #question-nav .section a.clear-all-btn { color: white; margin: 0 0 0 20px; width: 80px; }
 body.skey.results #question-nav .section a.get-help-btn { color: white; margin: 10px 0 0 18px; width: 80px; }
 body.skey.results #question-nav h6 { color: #807121; font-weight: bold; margin: 0 0 8px 0; }
@@ -794,7 +794,7 @@ body.skey.results #question-nav .option-list .option .name { display: block; fon
 body.skey.results #question-nav .option-list .clear-filter { color: #317b0c; display: block; margin-left: 0; margin-top: 4px; width: 45px; }
 body.skey.results #question-nav .loading { background: url(/static/images/icons/preloaders-dot-net-sm.gif) no-repeat scroll 0 0 transparent; font-weight: bold; margin: 12px; padding: 0 0 0 20px; }
 body.skey.results #results-section { float: left; margin: -8px 0 28px 18px; width: 710px; }
-body.skey.results a.get-choices { color: white; cursor: pointer; margin: 10px 0 4px 10px; width: 171px; }
+body.skey.results a.get-questions, body.skey.results a.add-questions { color: white; cursor: pointer; margin: 10px 0 4px 10px; width: 171px; }
 body.skey.results #intro-overlay { /* for introductory overlay */ display: none; font-family: "Trebuchet MS", Helvetica, Arial, "Lucida Sans Unicode", sans-serif; font-size: 40px; text-align: center; z-index: 1000; /* Arrows */ }
 body.skey.results #intro-overlay div { background-color: #f0f0c0; color: #fff; margin-bottom: 10%; padding: 0.6em 0.8em; position: relative; box-shadow: 0px 5px 20px black; -moz-box-shadow: 0px 5px 20px black; -webkit-box-shadow: 0px 5px 20px black; -webkit-border-radius: 0.25em; -moz-border-radius: 0.25em; -ms-border-radius: 0.25em; -o-border-radius: 0.25em; border-radius: 0.25em; }
 body.skey.results #intro-overlay .number-of-species, body.skey.results #intro-overlay .number-of-questions { background-color: #508e31; }
@@ -917,7 +917,7 @@ ul.get-more-questions-menu ul li[data-character] { color: black; }
   body.skey.results #question-nav { /* TODO: resolve with #question-nav section below */ float: left; margin: 0; padding: 0; width: 228px; }
   body.skey.results #question-nav .scroll + .section { margin: 0 0 32px; }
   body.skey.results .section + .section { margin-bottom: 16px; }
-  body.skey.results #question-nav .section.family-genus h6, body.skey.results #question-nav .section button, body.skey.results #question-nav .section.clear h5, body.skey.results #question-nav .section.help h5 { display: none; }
+  body.skey.results #question-nav .section button, body.skey.results #question-nav .section.clear h5, body.skey.results #question-nav .section.help h5 { display: none; }
   body.skey.results #page-head { left: 8px; margin: 0 8px; }
   body.skey.results #question-nav { font-size: 10px; margin-right: 3px; margin-top: 0; min-height: 666px; width: 149px; }
   body.skey.results #question-nav .section { padding: 0 0 0 4px; }
@@ -926,7 +926,6 @@ ul.get-more-questions-menu ul li[data-character] { color: black; }
   body.skey.results #question-nav .section.family-genus select { margin-bottom: 16px; width: 139px; }
   body.skey.results #question-nav .section.help { margin-bottom: 8px; }
   body.skey.results #question-nav .section p.get-more { margin-bottom: 50px; }
-  body.skey.results #question-nav .section p.get-more span { display: none; margin: 0; }
   body.skey.results #question-nav .section a.clear-all-btn, body.skey.results #question-nav .section a.get-help-btn { margin: 6px 0 6px 16px; }
   body.skey.results #question-nav .scroll { height: 261px; width: 149px; }
   body.skey.results #question-nav .option-list .clear-filter { background-color: #ddd; border-radius: 8px; margin: 8px 0 0; padding: 6px 0; text-align: center; width: 100%; }

@@ -721,7 +721,7 @@ results_page_init: function(args) {
             return;
         }
 
-        $('.get-choices').click(function() {
+        $('.get-choices').click(function () {
             dismiss_any_working_area();
 
             Shadowbox.open({
@@ -793,7 +793,7 @@ results_page_init: function(args) {
         });
     };
 
-    $('#sb-container a.get-choices').live('click', function() {
+    $('#sb-container a.get-questions').live('click', function () {
         checked_groups = [];  // reset array in enclosing scope
         $('#sb-container input').each(function(i, input) {
             if ($(input).prop('checked'))
@@ -813,6 +813,10 @@ results_page_init: function(args) {
 
         Shadowbox.close();
     });
+
+
+    /* TODO: function to handle new Add Questions button */
+
 
     var receive_new_filters = function(items) {
         if (items.length === 0) {

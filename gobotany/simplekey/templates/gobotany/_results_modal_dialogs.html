@@ -16,6 +16,10 @@
 
                     <ul class="char-groups">
                     </ul>
+
+                    {# The empty onclick makes $.live() work in Mobile Safari #}
+                    <a class="get-questions orange-button caps" 
+                        onclick="">Get Questions</a>
                 </div>
 
                 <div class="pick">
@@ -34,11 +38,12 @@
                         <p>Item 11</p>
                         <p>Item 12</p>
                     </div>
+
+                    {# The empty onclick makes $.live() work in Mobile Safari #}
+                    <a class="add-questions orange-button caps disabled" 
+                        onclick="">Add Questions</a>
                 </div>
 
-                <!-- The empty onclick makes $.live() work in Mobile Safari -->
-                <a class="get-choices orange-button caps" onclick="">Get More Questions</a>
-				<div class="clearit"></div>
             </div>
         </div>
 	</div>
