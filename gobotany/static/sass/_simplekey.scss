@@ -584,7 +584,7 @@ body.skey {
             }
             a.current, a.current:hover {
                 background: #fff;
-                background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#ffffff), color-stop(100%,#f0f0c0));
+                background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#ffffff), color-stop(100%,#f0f0c0)) !important;
                 background: -moz-linear-gradient(center top, #ffffff, #f0f0c0);
                 border-bottom: 0 !important;
                 color: #1a2e11;
@@ -897,7 +897,6 @@ body.skey {
 
 .modal-wrap.more-questions-dialog {
     background-color: #f0f0c0;
-    /*min-height: 400px;*/
     .inner {
         background-color: #f0f0c0;
         h4.heading {
@@ -1437,19 +1436,15 @@ ul.get-more-questions-menu {
             
             .modal-wrap .inner { /* More Questions dialog */
                 h4.heading {
-                    font-size: 13px;
-                    padding-left: 10px;
+                    font-size: 15px;
                     padding-right: 10px;
-                    padding-top: 8px;
-                }
-                p {
-                    display: none;
+                    padding-top: 12px;
                 }
                 #choices {
-                    font-size: 10px;
+                    font-size: 12px;
                     padding-left: 10px;
                     li {
-                        margin-bottom: 8px;
+                        margin-bottom: 10px;
                     }
                 }
             }
