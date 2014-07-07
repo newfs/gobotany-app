@@ -899,12 +899,15 @@ body.skey {
     background-color: #f0f0c0;
     .inner {
         background-color: #f0f0c0;
-        h4.heading {
-            padding: 0;
-        }
         p {
-            padding: 10px 0;
+            padding: 4px 0 10px;
         }
+    }
+    .title {
+        font-family: $headings-font;
+        font-size: 16px !important;
+        padding: 0 !important;
+        text-align: center;
     }
     .view-tabs a {
         font-size: 14px !important;
@@ -1435,11 +1438,6 @@ ul.get-more-questions-menu {
             } /* end .working-area */
             
             .modal-wrap .inner { /* More Questions dialog */
-                h4.heading {
-                    font-size: 15px;
-                    padding-right: 10px;
-                    padding-top: 12px;
-                }
                 #choices {
                     font-size: 12px;
                     padding-left: 10px;

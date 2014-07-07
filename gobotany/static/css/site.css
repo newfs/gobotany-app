@@ -865,8 +865,8 @@ body.skey #filters-preview { display: none; }
 
 .modal-wrap.more-questions-dialog { background-color: #f0f0c0; }
 .modal-wrap.more-questions-dialog .inner { background-color: #f0f0c0; }
-.modal-wrap.more-questions-dialog .inner h4.heading { padding: 0; }
-.modal-wrap.more-questions-dialog .inner p { padding: 10px 0; }
+.modal-wrap.more-questions-dialog .inner p { padding: 4px 0 10px; }
+.modal-wrap.more-questions-dialog .title { font-family: "Trebuchet MS", Helvetica, Arial, "Lucida Sans Unicode", sans-serif; font-size: 16px !important; padding: 0 !important; text-align: center; }
 .modal-wrap.more-questions-dialog .view-tabs a { font-size: 14px !important; }
 .modal-wrap.more-questions-dialog #choices { padding-top: 0; }
 .modal-wrap.more-questions-dialog #choices .pick { display: none; }
@@ -987,7 +987,6 @@ min-width: 0;
   body.skey.results .working-area .choice-label { display: table-cell; vertical-align: middle; }
   body.skey.results .working-area .actions { bottom: 0; height: 50px; position: fixed; width: 100%; }
   body.skey.results .modal-wrap .inner { /* More Questions dialog */ }
-  body.skey.results .modal-wrap .inner h4.heading { font-size: 15px; padding-right: 10px; padding-top: 12px; }
   body.skey.results .modal-wrap .inner #choices { font-size: 12px; padding-left: 10px; }
   body.skey.results .modal-wrap .inner #choices li { margin-bottom: 10px; }
   body.skey.results.mobile-wide { /* Styles for testing: mobile variant where filters list is full width of screen */ /* end #question-nav */ }

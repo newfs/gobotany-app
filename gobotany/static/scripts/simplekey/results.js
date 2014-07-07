@@ -766,6 +766,63 @@ results_page_init: function(args) {
                         _disable_exhausted_groups($inputs);
                         $container.find('a.get-choices')
                             .addClass('get-choices-ready');  // for tests
+
+                        // List the questions for the Pick Your Own tab.
+                        console.log('pile_slug:', pile_slug);
+                        filter_controller_is_built.done(function (filter_controller) {
+                            
+                            console.log('filter_controller:');
+                            console.log(filter_controller);
+
+                            var not_already_displayed = function (character) {
+                                return ! _.has(filter_controller.filtermap,
+                                    character.slug);
+                            };
+
+                            /* TODO: fill list */
+                            var characters;
+                            resources.pile_set(pile_slug).done(function (data) {
+                                characters = data;
+
+                                // Compute coverage lists.
+                                for (var i = 0; i < characters.length; i++) {
+                                    var character = characters[i];
+                                    var values = character.values;
+                                    character.taxon_ids_covered = _.intersection(values);
+                                }
+
+                                // Sort questions.
+                                var sorted_characters = _.chain(characters)
+                                    .filter(not_already_displayed)
+                                    .sortBy('ease')
+                                    .sortBy('group_name')
+                                    .value();
+                                
+                                // Display questions.
+                                var group_name = null;
+                                _.each(sorted_characters, function (character) {
+                                    if (character.group_name !== group_name) {
+                                        group_name = character.group_name;
+                                        console.log(group_name.charAt(0).toUpperCase() +
+                                            group_name.substring(1) + ':');
+                                        //$group_ul = $('<ul>').appendTo(
+                                        //    $('<li>').text(group_name + ' ▸').appendTo($ul));
+                                    }
+                                    /*
+                                    var debug_info = '(ease ' + character.ease + ') ';
+                                    $group_ul.append($('<li>', {
+                                        'text': debug_info + character.name,
+                                        // 'text': character.name,
+                                        'data-character': character.slug
+                                    }));
+                                    */
+                                    console.log('    ' + character.name +
+                                        ' (ease=' + character.ease + ')');
+                                });
+
+                            });
+
+                        });
                     }
                 }
             });
@@ -793,6 +850,7 @@ results_page_init: function(args) {
         });
     };
 
+    // Get More Questions: button handler for Automatic tab
     $('#sb-container a.get-questions').live('click', function () {
         checked_groups = [];  // reset array in enclosing scope
         $('#sb-container input').each(function(i, input) {
@@ -815,8 +873,33 @@ results_page_init: function(args) {
     });
 
 
-    /* TODO: function to handle new Add Questions button */
+    // Get More Questions: button handler for Pick Your Own tab
+    $('#sb-container a.add-questions').live('click', function () {
+        if ($(this).hasClass('disabled')) {
+            alert('button disabled: skip event');
+            return;
+        }
+        alert('TODO: add questions');
 
+        var checked_questions = [];
+        /* TODO: get checked questions */
+
+        var existing = [];
+        _.each(App3.filter_controller.content, function(filter) {
+            existing.push(filter.slug);
+        });
+        /* TODO: pass in character ids for selected questions */
+        /*
+        simplekey_resources.more_questions({
+            pile_slug: pile_slug,
+            species_ids: App3.filter_controller.taxa,
+            character_ids: checked_questions, // TODO: new
+            exclude_characters: existing
+        }).done(receive_new_filters);
+        */
+
+        Shadowbox.close();
+    });
 
     var receive_new_filters = function(items) {
         if (items.length === 0) {
