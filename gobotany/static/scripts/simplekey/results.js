@@ -799,12 +799,17 @@ results_page_init: function(args) {
                                     .value();
                                 
                                 // Display questions.
+                                var $questions = $(
+                                    '.more-questions-dialog .questions');
+                                $questions.empty();
                                 var group_name = null;
                                 _.each(sorted_characters, function (character) {
                                     if (character.group_name !== group_name) {
                                         group_name = character.group_name;
-                                        console.log(group_name.charAt(0).toUpperCase() +
-                                            group_name.substring(1) + ':');
+                                        group_string = group_name.charAt(0).toUpperCase() +
+                                            group_name.substring(1) + ':';
+                                        $questions.append('<p class="category">' +
+                                            group_string + '</p>');
                                         //$group_ul = $('<ul>').appendTo(
                                         //    $('<li>').text(group_name + ' ▸').appendTo($ul));
                                     }
@@ -816,8 +821,11 @@ results_page_init: function(args) {
                                         'data-character': character.slug
                                     }));
                                     */
-                                    console.log('    ' + character.name +
-                                        ' (ease=' + character.ease + ')');
+                                    var question_string = character.name +
+                                        '?'; //(ease=' + character.ease + ')'; 
+                                    $questions.append('<p><label><input ' +
+                                        'type="checkbox" name="" value=""> ' +
+                                        question_string + '</label></p>');
                                 });
 
                             });
