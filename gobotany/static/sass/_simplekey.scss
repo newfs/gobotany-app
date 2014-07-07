@@ -351,7 +351,6 @@ body.skey {
                     color: #fff;
                     padding: 16px;
                     h5 {
-                        font-size: 14px;
                         line-height: 120%;
                         margin: 0;
                     }
@@ -533,6 +532,7 @@ body.skey {
             }
         }
         h5.help {
+            clear: left;
             font-size: 14px;
             margin: 0 0 0 0;
             padding: 3px 0 0 0;

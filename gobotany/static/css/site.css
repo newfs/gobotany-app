@@ -777,7 +777,7 @@ body.skey.results #question-nav .scroll::-webkit-scrollbar-track { background-co
 body.skey.results #question-nav .scroll::-webkit-scrollbar-thumb:vertical { background-color: #fff; border-left: 1px solid #c3d941; background-image: url(/static/images/layout/scroll-thumb-top.png), url(/static/images/layout/scroll-thumb-bottom.png), url(/static/images/layout/scroll-thumb.png); background-position: center top, center bottom, center; background-repeat: no-repeat, no-repeat, repeat-y; }
 body.skey.results #question-nav .section { padding: 0 17px 16px; }
 body.skey.results #question-nav .section.instructions { background: #9cc86b; color: #fff; padding: 16px; }
-body.skey.results #question-nav .section.instructions h5 { font-size: 14px; line-height: 120%; margin: 0; }
+body.skey.results #question-nav .section.instructions h5 { line-height: 120%; margin: 0; }
 body.skey.results #question-nav .section .left { float: left; }
 body.skey.results #question-nav .section p.get-more { position: relative; /* for Brandon experiment */ font-size: 11px; line-height: 16px; margin: 0 0 20px; text-align: center; }
 body.skey.results #question-nav .section p.get-more a { color: white; cursor: pointer; display: block; margin: 18px auto 10px; width: 170px; }
@@ -805,7 +805,7 @@ body.skey.results #intro-overlay .number-of-species:before { border-color: trans
 body.skey.results #intro-overlay .number-of-questions:before { border-color: transparent #508e31 transparent transparent; left: -3.9em; top: 0.4em; }
 body.skey.results h3.species-count-heading { /* Move "18 matching species" to the right of Photos/List tab */ font-size: 24px; margin: 0; padding: 0; position: relative; }
 body.skey.results h3.species-count-heading > span { left: 330px; position: absolute; top: 0px; }
-body.skey.results h5.help { font-size: 14px; margin: 0 0 0 0; padding: 3px 0 0 0; }
+body.skey.results h5.help { clear: left; font-size: 14px; margin: 0 0 0 0; padding: 3px 0 0 0; }
 body.skey.results h5.help.last { margin-top: 12px; }
 body.skey.results .view-tabs { border-bottom: 1px solid #c3d941; clear: left; height: 28px; margin: 10px 0; }
 body.skey.results .view-tabs a { background: #d6e6c5; background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #eaf2e2), color-stop(100%, #d6e6c5)); background: -moz-linear-gradient(center top, #eaf2e2, #d6e6c5); border: 1px solid #c3d941 !important; color: #354d1e; cursor: pointer; display: block; float: left; font-family: "Trebuchet MS", Helvetica, Arial, "Lucida Sans Unicode", sans-serif; font-size: 18px; line-height: 18px; margin: 0; min-width: 100px; padding: 5px 10px 4px; text-align: center; -webkit-border-top-left-radius: 6px; -webkit-border-top-right-radius: 6px; -moz-border-radius-topleft: 6px; -moz-border-radius-topright: 6px; border-top-left-radius: 6px; border-top-right-radius: 6px; }
