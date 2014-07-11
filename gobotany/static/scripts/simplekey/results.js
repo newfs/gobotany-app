@@ -724,6 +724,13 @@ results_page_init: function(args) {
         $('.get-choices').click(function () {
             dismiss_any_working_area();
 
+            // Set default tab before opening the dialog, so there is no
+            // flash of tabs switching when the dialog first appears.
+            $('.more-questions-dialog a.auto').addClass('current');
+            $('.more-questions-dialog a.pick').removeClass('current');
+            $('.more-questions-dialog #choices .auto').show();
+            $('.more-questions-dialog #choices .pick').hide();
+
             Shadowbox.open({
                 content: $('#modal').html(),
                 height: 550,
@@ -747,15 +754,7 @@ results_page_init: function(args) {
                                 'current');
                         });
 
-                        // Set default tab.
-                        $('.more-questions-dialog a.auto').addClass(
-                            'current');
-                        $('.more-questions-dialog a.pick').removeClass(
-                            'current');
-                        $('.more-questions-dialog #choices .auto').show();
-                        $('.more-questions-dialog #choices .pick').hide();
-
-                        // Re-check any check boxes that were set last time.
+                        // Set any Automatic check boxes that were set last time.
                         $container = $('#sb-container');
                         $inputs = $container.find('input');
                         $inputs.each(function(i, input) {
@@ -764,31 +763,27 @@ results_page_init: function(args) {
                             $(input).prop('checked', check);
                         });
                         _disable_exhausted_groups($inputs);
-                        $container.find('a.get-choices')
+                        $container.find('a.get-questions')
                             .addClass('get-choices-ready');  // for tests
 
                         // List the questions for the Pick Your Own tab.
-                        console.log('pile_slug:', pile_slug);
+                        $container.find('a.add-questions').addClass('disabled');
                         filter_controller_is_built.done(function (filter_controller) {
                             
-                            console.log('filter_controller:');
-                            console.log(filter_controller);
-
                             var not_already_displayed = function (character) {
                                 return ! _.has(filter_controller.filtermap,
                                     character.slug);
                             };
 
-                            /* TODO: fill list */
                             var characters;
                             resources.pile_set(pile_slug).done(function (data) {
                                 characters = data;
 
                                 // Compute coverage lists.
                                 for (var i = 0; i < characters.length; i++) {
-                                    var character = characters[i];
-                                    var values = character.values;
-                                    character.taxon_ids_covered = _.intersection(values);
+                                    var ch = characters[i];
+                                    var values = ch.values;
+                                    ch.taxon_ids_covered = _.intersection(values);
                                 }
 
                                 // Sort questions.
@@ -799,33 +794,31 @@ results_page_init: function(args) {
                                     .value();
                                 
                                 // Display questions.
-                                var $questions = $(
-                                    '.more-questions-dialog .questions');
+                                var $questions = $('.pick .questions');
                                 $questions.empty();
-                                var group_name = null;
+                                var group, group_str = null;
                                 _.each(sorted_characters, function (character) {
-                                    if (character.group_name !== group_name) {
-                                        group_name = character.group_name;
-                                        group_string = group_name.charAt(0).toUpperCase() +
-                                            group_name.substring(1) + ':';
+                                    if (character.group_name !== group) {
+                                        group = character.group_name;
+                                        group_str = group.charAt(0).toUpperCase() +
+                                            group.substring(1) + ':';
                                         $questions.append('<p class="category">' +
-                                            group_string + '</p>');
-                                        //$group_ul = $('<ul>').appendTo(
-                                        //    $('<li>').text(group_name + ' ▸').appendTo($ul));
+                                            group_str + '</p>');
                                     }
-                                    /*
-                                    var debug_info = '(ease ' + character.ease + ') ';
-                                    $group_ul.append($('<li>', {
-                                        'text': debug_info + character.name,
-                                        // 'text': character.name,
-                                        'data-character': character.slug
-                                    }));
-                                    */
-                                    var question_string = character.name +
-                                        '?'; //(ease=' + character.ease + ')'; 
+                                    var question_str = character.name + '?';
                                     $questions.append('<p><label><input ' +
-                                        'type="checkbox" name="" value=""> ' +
-                                        question_string + '</label></p>');
+                                        'type="checkbox" name="char-' +
+                                        character.slug + '" value="' +
+                                        character.slug + '"> ' +
+                                        question_str + '</label></p>');
+                                });
+
+                                // Enable Add button when boxes are checked.
+                                $('.pick .questions input').on('click', function () {
+                                    var num_checked = $(
+                                        '.questions input:checked').length;
+                                    $('.pick .add-questions').toggleClass(
+                                        'disabled', (num_checked === 0));
                                 });
 
                             });
@@ -884,27 +877,19 @@ results_page_init: function(args) {
     // Get More Questions: button handler for Pick Your Own tab
     $('#sb-container a.add-questions').live('click', function () {
         if ($(this).hasClass('disabled')) {
-            alert('button disabled: skip event');
             return;
         }
-        alert('TODO: add questions');
 
         var checked_questions = [];
-        /* TODO: get checked questions */
-
-        var existing = [];
-        _.each(App3.filter_controller.content, function(filter) {
-            existing.push(filter.slug);
+        $('.questions input').each(function () {
+            if ($(this).prop('checked'))
+                checked_questions.push($(this).val());
         });
-        /* TODO: pass in character ids for selected questions */
-        /*
-        simplekey_resources.more_questions({
+
+        simplekey_resources.add_questions({
             pile_slug: pile_slug,
-            species_ids: App3.filter_controller.taxa,
-            character_ids: checked_questions, // TODO: new
-            exclude_characters: existing
+            include: checked_questions
         }).done(receive_new_filters);
-        */
 
         Shadowbox.close();
     });

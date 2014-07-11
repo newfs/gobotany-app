@@ -923,9 +923,19 @@ body.skey {
         border: 1px solid gray;
         height: 200px;
         margin-bottom: 10px;
+        padding: 4px;
         overflow-y: scroll;
         p {
-            padding: 4px;
+            padding: 5px 4px;
+        }
+        label {
+            display: block;
+            margin-left: 16px;
+        }
+        input[type="checkbox"] {
+            float: left;
+            margin-left: -16px;
+            margin-top: 3px;
         }
     }
     .category {
