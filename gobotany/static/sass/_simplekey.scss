@@ -907,7 +907,6 @@ body.skey {
     }
     .title {
         font-family: $headings-font;
-        font-size: 15px !important;
         padding: 0 !important;
         text-align: center;
     }
@@ -1070,6 +1069,9 @@ ul.get-more-questions-menu {
                     margin-left: 112px;  /* for the Results tabs */
                 }
             }
+            .more-questions-dialog .questions {
+                max-height: 160px;
+            }
         } /* end &.results.mobile-wide */
     }
 }
@@ -1140,9 +1142,6 @@ ul.get-more-questions-menu {
                     li:first-child a {
                         margin-left: 10px !important;
                     }
-                }
-                .questions {
-                    height: 160px;
                 }
             }
 
@@ -1490,7 +1489,7 @@ ul.get-more-questions-menu {
                     padding-left: 10px;
                     padding-right: 10px;
                     li {
-                        margin-bottom: 10px;
+                        margin-bottom: 8px;
                     }
                 }
             }
