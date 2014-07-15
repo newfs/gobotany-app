@@ -794,7 +794,7 @@ body.skey.results #question-nav .option-list .option .name { display: block; fon
 body.skey.results #question-nav .option-list .clear-filter { color: #317b0c; display: block; margin-left: 0; margin-top: 4px; width: 45px; }
 body.skey.results #question-nav .loading { background: url(/static/images/icons/preloaders-dot-net-sm.gif) no-repeat scroll 0 0 transparent; font-weight: bold; margin: 12px; padding: 0 0 0 20px; }
 body.skey.results #results-section { float: left; margin: -8px 0 28px 18px; width: 710px; }
-body.skey.results a.get-questions, body.skey.results a.add-questions { color: white; cursor: pointer; margin: 10px 0 4px 10px; width: 171px; }
+body.skey.results a.get-questions, body.skey.results a.add-questions { color: white; cursor: pointer; margin: 2px 0 0 10px; width: 171px; }
 body.skey.results #intro-overlay { /* for introductory overlay */ display: none; font-family: "Trebuchet MS", Helvetica, Arial, "Lucida Sans Unicode", sans-serif; font-size: 40px; text-align: center; z-index: 1000; /* Arrows */ }
 body.skey.results #intro-overlay div { background-color: #f0f0c0; color: #fff; margin-bottom: 10%; padding: 0.6em 0.8em; position: relative; box-shadow: 0px 5px 20px black; -moz-box-shadow: 0px 5px 20px black; -webkit-box-shadow: 0px 5px 20px black; -webkit-border-radius: 0.25em; -moz-border-radius: 0.25em; -ms-border-radius: 0.25em; -o-border-radius: 0.25em; border-radius: 0.25em; }
 body.skey.results #intro-overlay .number-of-species, body.skey.results #intro-overlay .number-of-questions { background-color: #508e31; }
@@ -807,7 +807,7 @@ body.skey.results h3.species-count-heading { /* Move "18 matching species" to th
 body.skey.results h3.species-count-heading > span { left: 330px; position: absolute; top: 0px; }
 body.skey.results h5.help { clear: left; font-size: 14px; margin: 0 0 0 0; padding: 3px 0 0 0; }
 body.skey.results h5.help.last { margin-top: 12px; }
-body.skey.results .view-tabs { border-bottom: 1px solid #c3d941; clear: left; height: 28px; margin: 10px 0 0; }
+body.skey.results .view-tabs { border-bottom: 1px solid #c3d941; clear: left; height: 28px; margin: 5px 0 0; }
 body.skey.results .view-tabs a { background: #d6e6c5; background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #eaf2e2), color-stop(100%, #d6e6c5)); background: -moz-linear-gradient(center top, #eaf2e2, #d6e6c5); border: 1px solid #c3d941 !important; color: #354d1e; cursor: pointer; display: block; float: left; font-family: "Trebuchet MS", Helvetica, Arial, "Lucida Sans Unicode", sans-serif; font-size: 18px; line-height: 18px; margin: 0; min-width: 100px; padding: 5px 10px 4px; text-align: center; -webkit-border-top-left-radius: 6px; -webkit-border-top-right-radius: 6px; -moz-border-radius-topleft: 6px; -moz-border-radius-topright: 6px; border-top-left-radius: 6px; border-top-right-radius: 6px; }
 body.skey.results .view-tabs a:hover { background: #e1f2cd; background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #f0f8e7), color-stop(100%, #e1f2cd)); background: -moz-linear-gradient(center top, #f0f8e7, #e1f2cd); cursor: pointer; text-decoration: none; }
 body.skey.results .view-tabs li { list-style-type: none; }
@@ -864,15 +864,15 @@ body.skey .toplink { display: none; }
 body.skey #filters-preview { display: none; }
 
 .modal-wrap.more-questions-dialog { background-color: #f0f0c0; }
-.modal-wrap.more-questions-dialog .inner { background-color: #f0f0c0; }
+.modal-wrap.more-questions-dialog .inner { background-color: #f0f0c0; padding-bottom: 10px; }
 .modal-wrap.more-questions-dialog .inner p { clear: left; padding: 10px 0; }
-.modal-wrap.more-questions-dialog .title { font-family: "Trebuchet MS", Helvetica, Arial, "Lucida Sans Unicode", sans-serif; font-size: 16px !important; padding: 0 !important; text-align: center; }
+.modal-wrap.more-questions-dialog .title { font-family: "Trebuchet MS", Helvetica, Arial, "Lucida Sans Unicode", sans-serif; font-size: 15px !important; padding: 0 !important; text-align: center; }
 .modal-wrap.more-questions-dialog .view-tabs a { font-size: 13px !important; }
 .modal-wrap.more-questions-dialog #choices { padding-top: 0; }
 .modal-wrap.more-questions-dialog #choices .pick { display: none; }
 .modal-wrap.more-questions-dialog .char-groups input + span { margin-left: 4px; }
 .modal-wrap.more-questions-dialog .char-groups input[disabled] + span { color: #999; }
-.modal-wrap.more-questions-dialog .questions { background-color: #fff; border: 1px solid gray; height: 200px; margin-bottom: 10px; padding: 4px; overflow-y: scroll; -webkit-overflow-scrolling: touch; }
+.modal-wrap.more-questions-dialog .questions { background-color: #fff; border: 1px solid gray; height: 200px; margin: 10px 0; padding: 4px; overflow-y: scroll; -webkit-overflow-scrolling: touch; }
 .modal-wrap.more-questions-dialog .questions p { padding: 5px 4px; }
 .modal-wrap.more-questions-dialog .questions label { display: block; margin-left: 20px; }
 .modal-wrap.more-questions-dialog .questions input[type="checkbox"] { float: left; margin-left: -20px; margin-top: 3px; }
@@ -920,10 +920,10 @@ ul.get-more-questions-menu ul li[data-character] { color: black; }
   body.skey.results #main { margin-left: 0; margin-right: 0; width: auto; }
   body.skey.results .content .container { padding: 0; width: auto; }
   body.skey.results #sb-title { display: none; }
-  body.skey.results #sb-nav-close { right: -18px !important; top: -36px !important; }
+  body.skey.results #sb-nav-close { right: -20px !important; top: -22px !important; }
   body.skey.results .more-questions-dialog .view-tabs a { padding: 5px 0 !important; }
   body.skey.results .more-questions-dialog .view-tabs li:first-child a { margin-left: 10px !important; }
-  body.skey.results .more-questions-dialog .questions { height: 140px; }
+  body.skey.results .more-questions-dialog .questions { height: 160px; }
   body.skey.results #question-nav { /* TODO: resolve with #question-nav section below */ float: left; margin: 0; padding: 0; width: 228px; }
   body.skey.results #question-nav .scroll + .section { margin: 0 0 32px; }
   body.skey.results .section + .section { margin-bottom: 16px; }

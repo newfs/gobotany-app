@@ -450,7 +450,7 @@ body.skey {
         a.get-questions, a.add-questions {
             color: white;
             cursor: pointer;
-            margin: 10px 0 4px 10px;
+            margin: 2px 0 0 10px;
             width: 171px;
         }
 
@@ -545,7 +545,7 @@ body.skey {
             border-bottom: 1px solid #c3d941;
             clear: left;
             height: 28px;
-            margin: 10px 0 0;
+            margin: 5px 0 0;
             a {
                 background: #d6e6c5;
                 background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#eaf2e2), color-stop(100%,#d6e6c5));
@@ -899,6 +899,7 @@ body.skey {
     background-color: #f0f0c0;
     .inner {
         background-color: #f0f0c0;
+        padding-bottom: 10px;
         p {
             clear: left;
             padding: 10px 0;
@@ -906,7 +907,7 @@ body.skey {
     }
     .title {
         font-family: $headings-font;
-        font-size: 16px !important;
+        font-size: 15px !important;
         padding: 0 !important;
         text-align: center;
     }
@@ -931,7 +932,7 @@ body.skey {
         background-color: #fff;
         border: 1px solid gray;
         height: 200px;
-        margin-bottom: 10px;
+        margin: 10px 0;
         padding: 4px;
         overflow-y: scroll;
         -webkit-overflow-scrolling: touch;
@@ -1128,8 +1129,8 @@ ul.get-more-questions-menu {
                 display: none;
             }
             #sb-nav-close {
-                right: -18px !important;
-                top: -36px !important;
+                right: -20px !important;
+                top: -22px !important;
             }
             .more-questions-dialog {
                 .view-tabs {
@@ -1137,11 +1138,11 @@ ul.get-more-questions-menu {
                         padding: 5px 0 !important;
                     }
                     li:first-child a {
-                        margin-left: 10px !important;  // for the dialog tabs
+                        margin-left: 10px !important;
                     }
                 }
                 .questions {
-                    height: 140px;
+                    height: 160px;
                 }
             }
 
