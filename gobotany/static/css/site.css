@@ -865,9 +865,9 @@ body.skey #filters-preview { display: none; }
 
 .modal-wrap.more-questions-dialog { background-color: #f0f0c0; }
 .modal-wrap.more-questions-dialog .inner { background-color: #f0f0c0; }
-.modal-wrap.more-questions-dialog .inner p { padding: 4px 0 10px; }
+.modal-wrap.more-questions-dialog .inner p { clear: left; padding: 4px 0 10px; }
 .modal-wrap.more-questions-dialog .title { font-family: "Trebuchet MS", Helvetica, Arial, "Lucida Sans Unicode", sans-serif; font-size: 16px !important; padding: 0 !important; text-align: center; }
-.modal-wrap.more-questions-dialog .view-tabs a { font-size: 14px !important; }
+.modal-wrap.more-questions-dialog .view-tabs a { font-size: 13px !important; }
 .modal-wrap.more-questions-dialog #choices { padding-top: 0; }
 .modal-wrap.more-questions-dialog #choices .pick { display: none; }
 .modal-wrap.more-questions-dialog .questions { background-color: #fff; border: 1px solid gray; height: 200px; margin-bottom: 10px; padding: 4px; overflow-y: scroll; -webkit-overflow-scrolling: touch; }
@@ -894,14 +894,16 @@ ul.get-more-questions-menu ul li[data-character] { color: black; }
   body.skey.results.mobile-wide { /* Styles for testing: mobile variant where filters list is full width of screen */ }
   body.skey.results.mobile-wide #question-nav .section a.clear-all-btn, body.skey.results.mobile-wide #question-nav .section a.get-help-btn { margin: 0 100px; }
   body.skey.results.mobile-wide .species-count-heading { left: -235px; }
-  body.skey.results.mobile-wide .view-tabs li:first-child a { margin-left: 32px; } }
+  body.skey.results.mobile-wide .view-tabs li:first-child a { margin-left: 32px; }
+  body.skey.results.mobile-wide .more-questions-dialog .view-tabs li:first-child a { margin-left: 5px; } }
 /* Landscape-orientation styles */
 @media only screen and (min-width: 401px) and (max-width: 600px) { body.skey { /* end &.results.mobile-wide */ }
   body.skey.results #intro-overlay { left: 26% !important; }
   body.skey.results.mobile-wide { /* Styles for testing: mobile variant where filters list is full width of screen */ }
   body.skey.results.mobile-wide #question-nav .section a.clear-all-btn, body.skey.results.mobile-wide #question-nav .section a.get-help-btn { margin: 0 180px; }
   body.skey.results.mobile-wide .species-count-heading { left: -310px; }
-  body.skey.results.mobile-wide .view-tabs li:first-child a { margin-left: 112px; } }
+  body.skey.results.mobile-wide .view-tabs li:first-child a { margin-left: 112px; }
+  body.skey.results.mobile-wide .more-questions-dialog .view-tabs li:first-child a { margin-left: 22px; } }
 /* These styles are common to both smartphone widths */
 @media only screen and (max-width: 600px) { body.skey { /* end &.skey */ /* end &.results */ /* end &.results.mobile-wide */ /* end &.results.mobile-gloss */ /* end &.results.mobile-inline */ }
   body.skey.groups-subgroups p.question { font-size: 18px; line-height: 24px; }
@@ -917,6 +919,10 @@ ul.get-more-questions-menu ul li[data-character] { color: black; }
   body.skey.results #intro-overlay { font-size: 170%; }
   body.skey.results #main { margin-left: 0; margin-right: 0; width: auto; }
   body.skey.results .content .container { padding: 0; width: auto; }
+  body.skey.results #sb-title { display: none; }
+  body.skey.results #sb-nav-close { right: -18px !important; top: -36px !important; }
+  body.skey.results .more-questions-dialog .view-tabs a { padding: 5px 0 !important; }
+  body.skey.results .more-questions-dialog .questions { height: 140px; }
   body.skey.results #question-nav { /* TODO: resolve with #question-nav section below */ float: left; margin: 0; padding: 0; width: 228px; }
   body.skey.results #question-nav .scroll + .section { margin: 0 0 32px; }
   body.skey.results .section + .section { margin-bottom: 16px; }
@@ -990,7 +996,7 @@ min-width: 0;
   body.skey.results .working-area .choice-label { display: table-cell; vertical-align: middle; }
   body.skey.results .working-area .actions { bottom: 0; height: 50px; position: fixed; width: 100%; }
   body.skey.results .modal-wrap .inner { /* More Questions dialog */ }
-  body.skey.results .modal-wrap .inner #choices { font-size: 12px; padding-left: 10px; }
+  body.skey.results .modal-wrap .inner #choices { font-size: 12px; padding-left: 10px; padding-right: 10px; }
   body.skey.results .modal-wrap .inner #choices li { margin-bottom: 10px; }
   body.skey.results.mobile-wide { /* Styles for testing: mobile variant where filters list is full width of screen */ /* end #question-nav */ }
   body.skey.results.mobile-wide #intro-overlay .number-of-questions:before { display: none; }

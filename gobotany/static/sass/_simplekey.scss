@@ -900,6 +900,7 @@ body.skey {
     .inner {
         background-color: #f0f0c0;
         p {
+            clear: left;
             padding: 4px 0 10px;
         }
     }
@@ -910,7 +911,7 @@ body.skey {
         text-align: center;
     }
     .view-tabs a {
-        font-size: 14px !important;
+        font-size: 13px !important;
     }
     #choices {
         padding-top: 0;
@@ -1031,6 +1032,11 @@ ul.get-more-questions-menu {
                     margin-left: 32px;
                 }
             }
+            .more-questions-dialog .view-tabs {
+                li:first-child a {
+                    margin-left: 5px;
+                }
+            }
         } /* end &.results.mobile-wide */
     }
 }
@@ -1058,6 +1064,11 @@ ul.get-more-questions-menu {
             .view-tabs {
                 li:first-child a {
                     margin-left: 112px;
+                }
+            }
+            .more-questions-dialog .view-tabs {
+                li:first-child a {
+                    margin-left: 22px;
                 }
             }
         } /* end &.results.mobile-wide */
@@ -1114,6 +1125,25 @@ ul.get-more-questions-menu {
                 padding: 0;
                 width: auto;
             }
+            
+            #sb-title {
+                display: none;
+            }
+            #sb-nav-close {
+                right: -18px !important;
+                top: -36px !important;
+            }
+            .more-questions-dialog {
+                .view-tabs {
+                    a {
+                        padding: 5px 0 !important;
+                    }
+                }
+                .questions {
+                    height: 140px;
+                }
+            }
+
             #question-nav { /* TODO: resolve with #question-nav section below */
                 float: left;
                 margin: 0;
@@ -1454,6 +1484,7 @@ ul.get-more-questions-menu {
                 #choices {
                     font-size: 12px;
                     padding-left: 10px;
+                    padding-right: 10px;
                     li {
                         margin-bottom: 10px;
                     }

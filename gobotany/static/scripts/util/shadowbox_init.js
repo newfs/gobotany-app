@@ -36,7 +36,8 @@ define([
         Shadowbox.init({
             onClose: shadowbox_on_close,
             onOpen: shadowbox_on_open,
-            overlayOpacity: 0.8
+            overlayOpacity: 0.8,
+            viewportPadding: 0
         });
     });
 
