@@ -338,10 +338,13 @@ $mini-table-font-size: 10px;
                 padding-bottom: 14px;
             }
             #maps {
-                height: 350px;
+                height: 380px;
                 width: 428px;
                 .nemap {
                     float: left;
+                    > p {
+                        width: 200px;
+                    }
                 }
                 .namap {
                     float: right;

@@ -667,8 +667,9 @@ body.taxa#species #images-note { font-size: 9px; margin-bottom: 20px; margin-lef
 /* Landscape-orientation styles */
 @media only screen and (min-width: 401px) and (max-width: 600px) { body.taxa#species #main #species-images { width: 462px; }
   body.taxa#species #main #sidebar { margin-bottom: 14px; padding-bottom: 14px; }
-  body.taxa#species #main #maps { height: 350px; width: 428px; }
+  body.taxa#species #main #maps { height: 380px; width: 428px; }
   body.taxa#species #main #maps .nemap { float: left; }
+  body.taxa#species #main #maps .nemap > p { width: 200px; }
   body.taxa#species #main #maps .namap { float: right; } }
 /* These styles are common to both smartphone widths */
 @media only screen and (max-width: 600px) { body.taxa #main { padding-bottom: 8px; }
