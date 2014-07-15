@@ -872,8 +872,8 @@ body.skey #filters-preview { display: none; }
 .modal-wrap.more-questions-dialog #choices .pick { display: none; }
 .modal-wrap.more-questions-dialog .questions { background-color: #fff; border: 1px solid gray; height: 200px; margin-bottom: 10px; padding: 4px; overflow-y: scroll; -webkit-overflow-scrolling: touch; }
 .modal-wrap.more-questions-dialog .questions p { padding: 5px 4px; }
-.modal-wrap.more-questions-dialog .questions label { display: block; margin-left: 16px; }
-.modal-wrap.more-questions-dialog .questions input[type="checkbox"] { float: left; margin-left: -16px; margin-top: 3px; }
+.modal-wrap.more-questions-dialog .questions label { display: block; margin-left: 20px; }
+.modal-wrap.more-questions-dialog .questions input[type="checkbox"] { float: left; margin-left: -20px; margin-top: 3px; }
 .modal-wrap.more-questions-dialog .category { font-weight: bold; }
 
 /* Experiment by Brandon */
