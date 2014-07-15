@@ -738,7 +738,7 @@ body.skey.results .already-know label { color: #807121; display: block; font-fam
 body.skey.results .already-know select { font-size: 13px; height: 21px; width: 143px; background: #ebf6df; border: 1px solid #9cc86b; font-family: "Trebuchet MS", Helvetica, Arial, "Lucida Sans Unicode", sans-serif; padding: 0; -webkit-appearance: menulist; }
 body.skey.results .already-know button { background: #ebf6df; border: 1px solid #9cc86b; font: -webkit-control; padding: 2px 6px; -webkit-appearance: button; }
 body.skey.results .show-me { float: right; margin: 0 0 15px 0; }
-body.skey.results #results-display { margin-bottom: 8px; }
+body.skey.results #results-display { margin: 8px 0; }
 body.skey.results #results-display label { color: #000; font-family: "Trebuchet MS", Helvetica, Arial, "Lucida Sans Unicode", sans-serif; font-size: 15px; font-weight: normal; }
 body.skey.results #results-display select { font-size: 15px; background: #ebf6df; border: 1px solid #9cc86b; font-family: "Trebuchet MS", Helvetica, Arial, "Lucida Sans Unicode", sans-serif; padding: 0; -webkit-appearance: menulist; }
 body.skey.results #results-display img.icon { margin: 0 3px 0 0; vertical-align: -1px; }
@@ -807,7 +807,7 @@ body.skey.results h3.species-count-heading { /* Move "18 matching species" to th
 body.skey.results h3.species-count-heading > span { left: 330px; position: absolute; top: 0px; }
 body.skey.results h5.help { clear: left; font-size: 14px; margin: 0 0 0 0; padding: 3px 0 0 0; }
 body.skey.results h5.help.last { margin-top: 12px; }
-body.skey.results .view-tabs { border-bottom: 1px solid #c3d941; clear: left; height: 28px; margin: 10px 0; }
+body.skey.results .view-tabs { border-bottom: 1px solid #c3d941; clear: left; height: 28px; margin: 10px 0 0; }
 body.skey.results .view-tabs a { background: #d6e6c5; background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #eaf2e2), color-stop(100%, #d6e6c5)); background: -moz-linear-gradient(center top, #eaf2e2, #d6e6c5); border: 1px solid #c3d941 !important; color: #354d1e; cursor: pointer; display: block; float: left; font-family: "Trebuchet MS", Helvetica, Arial, "Lucida Sans Unicode", sans-serif; font-size: 18px; line-height: 18px; margin: 0; min-width: 100px; padding: 5px 10px 4px; text-align: center; -webkit-border-top-left-radius: 6px; -webkit-border-top-right-radius: 6px; -moz-border-radius-topleft: 6px; -moz-border-radius-topright: 6px; border-top-left-radius: 6px; border-top-right-radius: 6px; }
 body.skey.results .view-tabs a:hover { background: #e1f2cd; background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #f0f8e7), color-stop(100%, #e1f2cd)); background: -moz-linear-gradient(center top, #f0f8e7, #e1f2cd); cursor: pointer; text-decoration: none; }
 body.skey.results .view-tabs li { list-style-type: none; }
@@ -865,7 +865,7 @@ body.skey #filters-preview { display: none; }
 
 .modal-wrap.more-questions-dialog { background-color: #f0f0c0; }
 .modal-wrap.more-questions-dialog .inner { background-color: #f0f0c0; }
-.modal-wrap.more-questions-dialog .inner p { clear: left; padding: 4px 0 10px; }
+.modal-wrap.more-questions-dialog .inner p { clear: left; padding: 10px 0; }
 .modal-wrap.more-questions-dialog .title { font-family: "Trebuchet MS", Helvetica, Arial, "Lucida Sans Unicode", sans-serif; font-size: 16px !important; padding: 0 !important; text-align: center; }
 .modal-wrap.more-questions-dialog .view-tabs a { font-size: 13px !important; }
 .modal-wrap.more-questions-dialog #choices { padding-top: 0; }
@@ -941,8 +941,8 @@ ul.get-more-questions-menu ul li[data-character] { color: black; }
   body.skey.results #question-nav .option-list .clear-filter:hover, body.skey.results #question-nav .option-list .clear-filter:active { text-decoration: none; }
   body.skey.results #question-nav .option-list > li { padding-left: 8px; padding-right: 8px; -webkit-tap-highlight-color: rgba(0, 0, 0, 0); }
   body.skey.results #results-section { float: none; margin: 0 0 28px; width: 100%; }
+  body.skey.results #results-section .view-tabs li + li a.current, body.skey.results #results-section .view-tabs li + li a.current:hover { background: #fff; }
   body.skey.results .view-tabs { height: 26px; }
-  body.skey.results .view-tabs li + li a.current, body.skey.results .view-tabs li + li a.current:hover { background: #fff; }
   body.skey.results .view-tabs a { font-size: 16px; line-height: 16px; }
   body.skey.results .plant-list { height: auto !important; width: 100%; }
   body.skey.results .plant-list .wait { background-position: center 10%; }

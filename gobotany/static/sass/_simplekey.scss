@@ -143,7 +143,7 @@ body.skey {
             margin: 0 0 15px 0;
         }
         #results-display {
-            margin-bottom: 8px;
+            margin: 8px 0;
             label {
                 color: #000;
                 font-family: $headings-font;
@@ -545,7 +545,7 @@ body.skey {
             border-bottom: 1px solid #c3d941;
             clear: left;
             height: 28px;
-            margin: 10px 0;
+            margin: 10px 0 0;
             a {
                 background: #d6e6c5;
                 background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#eaf2e2), color-stop(100%,#d6e6c5));
@@ -901,7 +901,7 @@ body.skey {
         background-color: #f0f0c0;
         p {
             clear: left;
-            padding: 4px 0 10px;
+            padding: 10px 0;
         }
     }
     .title {
@@ -1221,12 +1221,14 @@ ul.get-more-questions-menu {
                 float: none;
                 margin: 0 0 28px;
                 width: 100%;
+                .view-tabs {
+                    li + li a.current, li + li a.current:hover {
+                        background: #fff;
+                    }
+                }
             }
             .view-tabs {
                 height: 26px;
-                li + li a.current, li + li a.current:hover {
-                    background: #fff;
-                }
                 a {
                     font-size: 16px;
                     line-height: 16px;
