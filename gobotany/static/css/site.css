@@ -894,16 +894,14 @@ ul.get-more-questions-menu ul li[data-character] { color: black; }
   body.skey.results.mobile-wide { /* Styles for testing: mobile variant where filters list is full width of screen */ }
   body.skey.results.mobile-wide #question-nav .section a.clear-all-btn, body.skey.results.mobile-wide #question-nav .section a.get-help-btn { margin: 0 0 0 95px; }
   body.skey.results.mobile-wide .species-count-heading { left: -235px; }
-  body.skey.results.mobile-wide .view-tabs li:first-child a { margin-left: 32px; }
-  body.skey.results.mobile-wide .more-questions-dialog .view-tabs li:first-child a { margin-left: 5px; } }
+  body.skey.results.mobile-wide .view-tabs li:first-child a { margin-left: 32px; /* for the Results tabs */ } }
 /* Landscape-orientation styles */
 @media only screen and (min-width: 401px) and (max-width: 600px) { body.skey { /* end &.results.mobile-wide */ }
   body.skey.results #intro-overlay { left: 26% !important; }
   body.skey.results.mobile-wide { /* Styles for testing: mobile variant where filters list is full width of screen */ }
   body.skey.results.mobile-wide #question-nav .section a.clear-all-btn, body.skey.results.mobile-wide #question-nav .section a.get-help-btn { margin: 0 170px; }
   body.skey.results.mobile-wide .species-count-heading { left: -310px; }
-  body.skey.results.mobile-wide .view-tabs li:first-child a { margin-left: 112px; }
-  body.skey.results.mobile-wide .more-questions-dialog .view-tabs li:first-child a { margin-left: 22px; } }
+  body.skey.results.mobile-wide .view-tabs li:first-child a { margin-left: 112px; /* for the Results tabs */ } }
 /* These styles are common to both smartphone widths */
 @media only screen and (max-width: 600px) { body.skey { /* end &.skey */ /* end &.results */ /* end &.results.mobile-wide */ /* end &.results.mobile-gloss */ /* end &.results.mobile-inline */ }
   body.skey.groups-subgroups p.question { font-size: 18px; line-height: 24px; }
@@ -922,6 +920,7 @@ ul.get-more-questions-menu ul li[data-character] { color: black; }
   body.skey.results #sb-title { display: none; }
   body.skey.results #sb-nav-close { right: -18px !important; top: -36px !important; }
   body.skey.results .more-questions-dialog .view-tabs a { padding: 5px 0 !important; }
+  body.skey.results .more-questions-dialog .view-tabs li:first-child a { margin-left: 10px !important; }
   body.skey.results .more-questions-dialog .questions { height: 140px; }
   body.skey.results #question-nav { /* TODO: resolve with #question-nav section below */ float: left; margin: 0; padding: 0; width: 228px; }
   body.skey.results #question-nav .scroll + .section { margin: 0 0 32px; }

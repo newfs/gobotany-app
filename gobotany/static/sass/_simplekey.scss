@@ -1029,12 +1029,7 @@ ul.get-more-questions-menu {
             }
             .view-tabs {
                 li:first-child a {
-                    margin-left: 32px;
-                }
-            }
-            .more-questions-dialog .view-tabs {
-                li:first-child a {
-                    margin-left: 5px;
+                    margin-left: 32px;  /* for the Results tabs */
                 }
             }
         } /* end &.results.mobile-wide */
@@ -1063,12 +1058,7 @@ ul.get-more-questions-menu {
             }
             .view-tabs {
                 li:first-child a {
-                    margin-left: 112px;
-                }
-            }
-            .more-questions-dialog .view-tabs {
-                li:first-child a {
-                    margin-left: 22px;
+                    margin-left: 112px;  /* for the Results tabs */
                 }
             }
         } /* end &.results.mobile-wide */
@@ -1137,6 +1127,9 @@ ul.get-more-questions-menu {
                 .view-tabs {
                     a {
                         padding: 5px 0 !important;
+                    }
+                    li:first-child a {
+                        margin-left: 10px !important;  // for the dialog tabs
                     }
                 }
                 .questions {
