@@ -925,6 +925,7 @@ body.skey {
         margin-bottom: 10px;
         padding: 4px;
         overflow-y: scroll;
+        -webkit-overflow-scrolling: touch;
         p {
             padding: 5px 4px;
         }
