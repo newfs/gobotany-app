@@ -919,6 +919,14 @@ body.skey {
             display: none;
         }
     }
+    .char-groups input {
+        & + span {
+            margin-left: 4px;
+        }
+        &[disabled] + span {
+            color: #999;
+        }
+    }
     .questions {
         background-color: #fff;
         border: 1px solid gray;

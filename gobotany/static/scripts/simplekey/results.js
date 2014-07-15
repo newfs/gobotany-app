@@ -141,7 +141,7 @@ results_page_init: function(args) {
                     $('<label>').append(
                         $('<input>', {type: 'checkbox',
                                       value: character_group.id}),
-                        ' ' + character_group.name
+                        ' <span>' + character_group.name + '</span>'
                     )
                 )
             );

@@ -870,6 +870,8 @@ body.skey #filters-preview { display: none; }
 .modal-wrap.more-questions-dialog .view-tabs a { font-size: 13px !important; }
 .modal-wrap.more-questions-dialog #choices { padding-top: 0; }
 .modal-wrap.more-questions-dialog #choices .pick { display: none; }
+.modal-wrap.more-questions-dialog .char-groups input + span { margin-left: 4px; }
+.modal-wrap.more-questions-dialog .char-groups input[disabled] + span { color: #999; }
 .modal-wrap.more-questions-dialog .questions { background-color: #fff; border: 1px solid gray; height: 200px; margin-bottom: 10px; padding: 4px; overflow-y: scroll; -webkit-overflow-scrolling: touch; }
 .modal-wrap.more-questions-dialog .questions p { padding: 5px 4px; }
 .modal-wrap.more-questions-dialog .questions label { display: block; margin-left: 20px; }
