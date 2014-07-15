@@ -1224,7 +1224,7 @@ ul.get-more-questions-menu {
                 width: 100%;
                 .view-tabs {
                     li + li a.current, li + li a.current:hover {
-                        background: #fff;
+                        background: #fff !important;
                     }
                 }
             }

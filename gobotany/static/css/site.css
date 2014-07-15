@@ -942,7 +942,7 @@ ul.get-more-questions-menu ul li[data-character] { color: black; }
   body.skey.results #question-nav .option-list .clear-filter:hover, body.skey.results #question-nav .option-list .clear-filter:active { text-decoration: none; }
   body.skey.results #question-nav .option-list > li { padding-left: 8px; padding-right: 8px; -webkit-tap-highlight-color: rgba(0, 0, 0, 0); }
   body.skey.results #results-section { float: none; margin: 0 0 28px; width: 100%; }
-  body.skey.results #results-section .view-tabs li + li a.current, body.skey.results #results-section .view-tabs li + li a.current:hover { background: #fff; }
+  body.skey.results #results-section .view-tabs li + li a.current, body.skey.results #results-section .view-tabs li + li a.current:hover { background: #fff !important; }
   body.skey.results .view-tabs { height: 26px; }
   body.skey.results .view-tabs a { font-size: 16px; line-height: 16px; }
   body.skey.results .plant-list { height: auto !important; width: 100%; }
