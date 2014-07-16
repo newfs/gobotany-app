@@ -1,8 +1,6 @@
-/* Code for allowing the Google Chrome frame installation message on
- * Internet Explorer to be dismissed. This was requested because some
- * users reported problems with installing the plug-in. It was desired
- * to allow the option of viewing without the plug-in, even though things
- * may not work without it. */
+/* Code for allowing the browser upgrade message for Internet Explorer < 10
+ * to be skipped for the current session, so the user can continue to use
+ * parts of the site anyway. */
 
 function get_cookie(name) {
     var search = name + '=';
@@ -22,7 +20,7 @@ function get_cookie(name) {
 }
 
 function dismiss_gcf_install() {
-    // Hide the installation elements.
+    // Hide the message.
     document.getElementById('ie-note').style.display = 'none';
     var elements = document.body.getElementsByTagName('iframe');
     for (var i = 0; i < elements.length; i++) {
@@ -30,8 +28,8 @@ function dismiss_gcf_install() {
     }
 
     // Set a cookie that will expire when the browser session does,
-    // to be used for deciding whether to show or hide the installation
-    // message. On subsequent visits in a new browser session, the
-    // installation message will be shown again.
+    // to be used for deciding whether to show or hide the browser
+    // version message. On subsequent visits in a new browser session,
+    // the message will be shown again.
     document.cookie = 'hide_gcf_install=true;path=/';
 }

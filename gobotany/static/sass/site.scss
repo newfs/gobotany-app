@@ -998,13 +998,13 @@ table.list {
     }
     img {
         background-color: #fff;
-        clip: rect(0px,255px,78px,0px);
+        clip: rect(0px,255px,72px,0px);
         overflow: hidden;
         position: absolute;
-        top: 41px;
+        top: 24px;
         z-index: 1;
-        opacity: 0.5;
-        filter:alpha(opacity=50); /* For IE8 and earlier */
+        opacity: 0.3;
+        filter:alpha(opacity=30); /* For IE8 and earlier */
     }
 }
 .chromeFrameInstallDefaultStyle {
