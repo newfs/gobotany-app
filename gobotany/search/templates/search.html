@@ -43,12 +43,16 @@
                 {% endcomment %}
                 
                 {% if page.object_list|length == 0 %}
-                    <p>
+                <p>
+                    {% comment %}
+                    This conditional is disabled for now. See notes above.
                     {% if suggestion %}
                         If not, please
                     {% else %}
                         Please
                     {% endif %}
+                    {% endcomment %}
+                    Please
                     adjust your search and try again.</p>
                 {% else %}
                     <ul id="search-results-list">

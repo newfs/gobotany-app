@@ -339,8 +339,8 @@ class PlantDistributionMapTestCase(TestCase):
         self.distribution_map.shade()
         self._verify_shaded_counties(['native', 'absent'])
         labels = get_legend_labels(self.distribution_map.legend)
-        self.assertEqual('native, st.', labels[0])
-        self.assertEqual('native, co.', labels[1])
+        self.assertEqual('county native', labels[0])
+        self.assertEqual('state native', labels[1])
         self.assertEqual('absent', labels[2])
         [self.assertEqual('', label) for label in labels[3:]]
 
@@ -382,7 +382,7 @@ class PlantDistributionMapTestCase(TestCase):
         self.distribution_map.shade()
         self._verify_shaded_counties(['present', 'absent'])
         labels = get_legend_labels(self.distribution_map.legend)
-        self.assertEqual(['native, st.', 'native, co.', 'absent', '', ''],
+        self.assertEqual(['county native', 'state native', 'absent', '', ''],
             labels)
         self.assertEqual('%s: New England Distribution Map' % SCIENTIFIC_NAME,
                          self.distribution_map.get_title())
