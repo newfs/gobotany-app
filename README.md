@@ -138,7 +138,7 @@ Our selenium-powered browser tests are intended to cover things that
 cannot be tested without a browser and JavaScript.  To run them:
 
     dev/test-browser                           # to run all tests
-    dev/test-browser.sh FilterFunctionalTests  # select which tests
+    dev/test-browser FilterFunctionalTests     # select which tests
 
 Detailed notes about testing under selenium can be found in:
 
