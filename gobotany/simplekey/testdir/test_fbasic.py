@@ -51,6 +51,7 @@ class FunctionalTestCase(unittest.TestCase):
     @classmethod
     def tearDownClass(cls):
         cls.driver.close()
+        cls.driver.quit()
         del cls.driver
 
     def setUp(self):
