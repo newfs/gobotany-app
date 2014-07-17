@@ -604,8 +604,8 @@ class FilterFunctionalTests(FunctionalTestCase):
 
 class SearchSuggestionsFunctionalTests(FunctionalTestCase):
     SEARCH_INPUT_CSS = '#search input'
-    SEARCH_MENU_CSS = '#search .menu:not(.hidden)'
-    SEARCH_SUGGESTIONS_CSS = '#search .menu li'
+    SEARCH_MENU_CSS = '#search .suggester-menu:not(.hidden)'
+    SEARCH_SUGGESTIONS_CSS = '#search .suggester-menu li'
 
     def test_search_suggestions_menu_appears_on_home_page(self):
         self.get('/')
