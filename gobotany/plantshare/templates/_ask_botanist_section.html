@@ -3,11 +3,11 @@
 <img class="botanist" src="/static/images/icons/botanist.jpg" alt="Ace Acer">
 
 <p>
-Our ace botanists are here to help you identify a plant, suggest locations
-for seeing plants, and provide you with expert scientific guidance on all
-things in the New England plant kingdom.</p>
-<p>Logged-in users can ask
-questions, and all visitors can see the answers.
+Our ace botanists are here to help you identify <b>New England</b> plants, 
+suggest locations for seeing them, and provide you with expert scientific
+guidance on all things in the  plant kingdom.</p>
+<p>Everyone can read the answers, but only logged-in users can ask
+questions.
 {% if not user.is_authenticated %}
 <a href="{% url 'ps-main' %}">Log in</a> to ask a question.
 {% endif %}
@@ -16,13 +16,13 @@ questions, and all visitors can see the answers.
 {% if user.is_authenticated %}
 <form id="question-form" method="post" action="{% url 'ps-questions' %}">
     {% csrf_token %}
-    <label for="question">Your Question</label>
+    <label for="question">Your Question (include location of plant)</label>
     <textarea id="question" name="question" required
         maxlength="{{ max_question_length }}"
         placeholder="Up to {{ max_question_length }} characters"></textarea>
 
     <div class="images">
-        <label for="upload-link">Images (optional)</label>
+        <label for="upload-link">Images (photos of leaves, and fruit, or flower greatly help id)</label>
         <div id="question-images">
             <input type="hidden" name="__template__question_images"
             class="template-image"></input>
