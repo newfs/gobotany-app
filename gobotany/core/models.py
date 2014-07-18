@@ -930,6 +930,7 @@ class Distribution(models.Model):
 
     class Meta:
         ordering = ('scientific_name', 'state', 'county')
+        verbose_name = 'Distribution record'
 
     def __unicode__(self):
         county = ' (%s County)' % self.county if len(self.county) > 0 else ''

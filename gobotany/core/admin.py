@@ -5,7 +5,9 @@ from django.conf import settings
 from django.contrib import admin
 from django.core.urlresolvers import reverse
 from django.db import models as dbmodels
-from django.template import Context, Template
+from django.http import HttpResponseRedirect
+from django.shortcuts import render_to_response
+from django.template import Context, RequestContext, Template
 from django.template.defaultfilters import slugify
 from django.utils.safestring import mark_safe
 from django.utils.translation import ugettext_lazy as _
@@ -569,6 +571,49 @@ class DistributionAdmin(admin.ModelAdmin):
     list_max_show_all = 700   # to allow showing all for a species including
                               # subspecies and varieties
     search_fields = ('scientific_name',)
+    actions = ['rename_records']
+
+    class RenameRecordsForm(forms.Form):
+        _selected_action = forms.CharField(widget=forms.MultipleHiddenInput)
+        new_scientific_name = forms.CharField(
+            widget=forms.TextInput(attrs={
+                'size': '100',
+                'style': 'display:block'
+            }),
+            label='Scientific name',
+            max_length=100)
+
+    def rename_records(self, request, queryset):
+        form = None
+
+        if 'rename' in request.POST:
+            form = self.RenameRecordsForm(request.POST)
+
+            if form.is_valid():
+                number_of_records = queryset.count()
+                new_scientific_name = form.cleaned_data['new_scientific_name']
+
+                queryset.update(scientific_name=new_scientific_name)
+
+                message = ('Successfully renamed %d records to %s.' % (
+                    number_of_records, new_scientific_name))
+                self.message_user(request, message)
+                return HttpResponseRedirect(request.get_full_path())
+
+        if not form:
+            form = self.RenameRecordsForm(
+                initial={'_selected_action': request.POST.getlist(
+                    admin.ACTION_CHECKBOX_NAME)}
+                )
+
+        return render_to_response(
+            'admin/core/distribution/rename_records.html', {
+                'records': queryset,
+                'rename_records_form': form,
+            }, context_instance=RequestContext(request))
+    rename_records.short_description = 'Rename selected Distribution records'
+
+
 
 
 class LookalikeAdmin(admin.ModelAdmin):
