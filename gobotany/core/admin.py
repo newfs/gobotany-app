@@ -538,6 +538,8 @@ class DistributionAdmin(admin.ModelAdmin):
     list_editable = ('present', 'native',)
     list_filter = (DistributionRegionFilter, 'native', 'present', 'state',
         'county')
+    list_max_show_all = 700   # to allow showing all for a species including
+                              # subspecies and varieties
     search_fields = ('scientific_name',)
 
 
