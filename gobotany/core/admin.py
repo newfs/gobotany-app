@@ -533,11 +533,39 @@ class DistributionRegionFilter(admin.SimpleListFilter):
             return queryset.filter(state__in=states_in_region)
 
 
+class RankFilter(admin.SimpleListFilter):
+    title = _('rank')
+    parameter_name = 'rank'
+
+    def lookups(self, request, model_admin):
+        return (
+                ('species', 'species'),
+                ('subspecies', 'subspecies'),
+                ('variety', 'variety'),
+                ('form', 'form'),
+        )
+
+    def queryset(self, request, queryset):
+        if self.value() == 'species':
+            qs = queryset.exclude(
+                scientific_name__contains='var.').exclude(
+                scientific_name__contains='sp.')  # handle subsp. and ssp.
+        elif self.value() == 'subspecies':
+            qs = queryset.filter(scientific_name__contains='sp.')
+        elif self.value() == 'variety':
+            qs = queryset.filter(scientific_name__contains='var.')
+        elif self.value() == 'form':
+            qs = queryset.filter(scientific_name__contains='f.')
+        else:
+            qs = queryset
+        return qs
+
+
 class DistributionAdmin(admin.ModelAdmin):
     list_display = ('scientific_name', 'state', 'county', 'present', 'native')
     list_editable = ('present', 'native',)
-    list_filter = (DistributionRegionFilter, 'native', 'present', 'state',
-        'county')
+    list_filter = (DistributionRegionFilter, RankFilter, 'native', 'present',
+        'state', 'county')
     list_max_show_all = 700   # to allow showing all for a species including
                               # subspecies and varieties
     search_fields = ('scientific_name',)
