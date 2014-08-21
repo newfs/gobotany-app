@@ -498,12 +498,29 @@ class CopyrightHolderAdmin(_Base):
         return models.ContentImage.objects.filter(creator=obj.coded_name).count()
 
 
+class ConservationStatusForm(forms.ModelForm):
+    class Meta:
+        model = models.ConservationStatus
+
+    def clean(self):
+        s_rank = self.cleaned_data.get('s_rank')
+        endangerment_code = self.cleaned_data.get('endangerment_code')
+
+        if s_rank == '' and endangerment_code == '':
+            raise forms.ValidationError(
+                'Both S Rank and Endangement Code cannot be blank.')
+
+        return self.cleaned_data
+
+
 class ConservationStatusAdmin(admin.ModelAdmin):
+    form = ConservationStatusForm
     list_display = ('taxon', 'variety_subspecies_hybrid', 'region', 's_rank',
         'endangerment_code', 'allow_public_posting')
     list_filter = ('region', 's_rank', 'endangerment_code',
         'allow_public_posting')
     search_fields = ['taxon__scientific_name', 'variety_subspecies_hybrid',]
+
 
 class InvasiveStatusAdmin(admin.ModelAdmin):
     search_fields = ['taxon__scientific_name']

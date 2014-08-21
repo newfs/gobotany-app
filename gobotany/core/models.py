@@ -788,10 +788,10 @@ class ConservationStatus(models.Model):
                          key=lambda x: x[1])
 
     taxon = models.ForeignKey(Taxon, related_name='conservation_statuses')
-    variety_subspecies_hybrid = models.CharField(max_length=80)
+    variety_subspecies_hybrid = models.CharField(max_length=80, blank=True)
     region = models.CharField(choices=STATE_NAMES, max_length=80)
-    s_rank = models.CharField(max_length=10)
-    endangerment_code = models.CharField(max_length=10)
+    s_rank = models.CharField(max_length=10, blank=True)
+    endangerment_code = models.CharField(max_length=10, blank=True)
     allow_public_posting = models.BooleanField(default=True)
 
     class Meta:
