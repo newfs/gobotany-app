@@ -583,6 +583,8 @@ table.list th td:first-child { font-family: "Trebuchet MS", Helvetica, Arial, "L
 .section #na-dist-county-map { /* SVG map: WebKit needs height and width set */ height: 109px; width: 187px; }
 
 /* Styles for taxa (family, genus, species) pages */
+.text-dialog-content p { font-size: 11px !important; }
+
 body.taxa { /* Override Shadowbox styles to allow multiple title lines for showing a photo title, photographer credit, and copyright. */ /* For family and genus pages */ }
 body.taxa #main ol, body.taxa #main ul { line-height: inherit; }
 body.taxa #main .common { color: #807121; font-family: "Trebuchet MS", Helvetica, Arial, "Lucida Sans Unicode", sans-serif; font-size: 28px; line-height: 105%; margin: 0 0 12px 0; }
@@ -618,7 +620,9 @@ body.taxa#species #main .section p { margin-bottom: 0; }
 body.taxa#species #main #maps, body.taxa#species #main #side { position: absolute; }
 body.taxa#species #main #maps h2, body.taxa#species #main #side h2 { font-size: 14px; margin: 0 0 4px 0; }
 body.taxa#species #main #maps { border-top: 1px solid #c3d941; top: 128px; }
-body.taxa#species #main #side { top: 698px; }
+body.taxa#species #main .definitions-link { font-size: 10px; margin: 4px 0; }
+body.taxa#species #main .definitions-link img { vertical-align: text-top; }
+body.taxa#species #main #side { top: 718px; /* remaining side content is positioned further down to leave room for maps in full-width layout */ }
 body.taxa#species #main #side dt, body.taxa#species #main #side dd { display: inline-block; }
 body.taxa#species #main #side .lookalikes dl { line-height: 20px; margin: 0; }
 body.taxa#species #main #side .lookalikes dt { font-weight: bold; margin: 2px 0; display: block; }
@@ -667,7 +671,7 @@ body.taxa#species #images-note { font-size: 11px; font-style: italic; margin-bot
 /* Landscape-orientation styles */
 @media only screen and (min-width: 401px) and (max-width: 600px) { body.taxa#species #main #species-images { width: 462px; }
   body.taxa#species #main #sidebar { margin-bottom: 14px; padding-bottom: 14px; }
-  body.taxa#species #main #maps { height: 380px; width: 428px; }
+  body.taxa#species #main #maps { height: 405px; width: 428px; }
   body.taxa#species #main #maps .nemap { float: left; }
   body.taxa#species #main #maps .nemap > p { width: 200px; }
   body.taxa#species #main #maps .namap { float: right; } }

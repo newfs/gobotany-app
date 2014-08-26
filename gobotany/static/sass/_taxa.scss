@@ -14,6 +14,12 @@
     padding-top: 30px;
 }
 
+.text-dialog-content {
+    p {
+        font-size: 11px !important;
+    }
+}
+
 body.taxa {
     #main {
         ol, ul {
@@ -118,8 +124,17 @@ body.taxa {
                 border-top: 1px solid $border-green;
                 top: 128px;
             }
+            .definitions-link {
+                font-size: 10px;
+                margin: 4px 0;
+                img {
+                    vertical-align: text-top;
+                }
+            }
             #side {
-                top: 698px;
+                top: 718px;   /* remaining side content is positioned
+                                 further down to leave room for maps
+                                 in full-width layout */
                 dt, dd {
                     display: inline-block;
                 }
@@ -339,7 +354,7 @@ $mini-table-font-size: 10px;
                 padding-bottom: 14px;
             }
             #maps {
-                height: 380px;
+                height: 405px;
                 width: 428px;
                 .nemap {
                     float: left;

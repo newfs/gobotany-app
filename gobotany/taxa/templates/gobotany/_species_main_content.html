@@ -46,6 +46,10 @@
         <div class="section map nemap">
             <h2>New England Distribution</h2>
             {% include "gobotany/_map_attribution.html" %}
+            <p class="definitions-link">
+                <a href=""><img src="/static/images/icons/more-info.png">
+                legend definitions</a>
+            </p>
             {% with map_title='New England distribution: '|add:scientific_name|add:'.' %}
             <!--[if !IE]>-->
             <object
@@ -67,6 +71,28 @@
                 id="ne-dist-county-map"> <![endif]-->
             </object>
             {% endwith %}
+            <div id="legend-definitions" class="hidden">
+                <div class="text-dialog-content">
+                <p class="nogloss"><b>Native:</b> indigenous.</p>
+                <p class="nogloss"><b>Non-native:</b> introduced
+                (intentionally or
+                unintentionally); has become naturalized.</p>
+                <p class="nogloss"><b>Present:</b> documented to exist in
+                the county by
+                evidence (herbarium specimen, photograph). Also covers
+                those considered historical (not seen in 20 years).
+                <p class="nogloss"><b>Undocumented:</b> never been
+                documented from the
+                county, but known from the state. May be present. Or,
+                may be restricted to a small area or a habitat (alpine,
+                marsh, etc.), so unlikely found in some
+                counties.</p>
+                <p class="nogloss">Note: when native and non-native
+                populations both exist in a county, only native status
+                is shown on the map.</p>
+                </div>
+            </div>
+            
             <p>Where native and non-native distributions co-occur in a county, only native is shown.</p>
         </div>
 
