@@ -85,7 +85,7 @@ class LegendTestCase(TestCase):
         [self.assertEqual('', label) for label in labels[2:]]
 
         paths = self._get_paths()
-        self.assertTrue(paths[0].get_style().find('fill:#78bf47') > -1)
+        self.assertTrue(paths[0].get_style().find('fill:#98f25a') > -1)
         self.assertTrue(paths[1].get_style().find('fill:#fff') > -1)
         [self.assertTrue(path.get_style().find('fill:#fff') > -1)
          for path in paths[2:]]
