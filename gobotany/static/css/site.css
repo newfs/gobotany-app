@@ -611,7 +611,7 @@ body.taxa#genus ul.species { font-size: 14px; list-style: none; }
 body.taxa#genus ul.species li { margin: 0 0 5px 0; }
 body.taxa#genus p.family { font-size: 14px; margin: 0; }
 body.taxa#species { /* end #main */ /* Larger gallery styles */ /* Smooth Div Scroll image area */ }
-body.taxa#species #main { background: url(/static/images/layout/sidebar-bg.png) repeat-y; /* layout: right-side content sections */ /* left-side content sections */ }
+body.taxa#species #main { background: url(/static/images/layout/sidebar-bg.png) repeat-y; /* layout: right-side content sections */ /* left-side content sections */ /* space maps enough away from text atop them */ }
 body.taxa#species #main .common { margin: 6px 0 12px; }
 body.taxa#species #main #breadcrumb, body.taxa#species #main #name, body.taxa#species #main #species-images, body.taxa#species #main #images-note, body.taxa#species #main #partner, body.taxa#species #main #facts, body.taxa#species #main #habitat, body.taxa#species #main #chars, body.taxa#species #main #wetland, body.taxa#species #main #status, body.taxa#species #main #info-dkey { clear: left; margin-left: 250px; }
 body.taxa#species #main .section { padding: 16px 16px 0; width: 197px; }
@@ -620,9 +620,10 @@ body.taxa#species #main .section p { margin-bottom: 0; }
 body.taxa#species #main #maps, body.taxa#species #main #side { position: absolute; }
 body.taxa#species #main #maps h2, body.taxa#species #main #side h2 { font-size: 14px; margin: 0 0 4px 0; }
 body.taxa#species #main #maps { border-top: 1px solid #c3d941; top: 128px; }
-body.taxa#species #main .definitions-link { font-size: 10px; margin: 4px 0; }
+body.taxa#species #main .definitions-link { font-size: 10px; margin: 4px 0; padding-bottom: 8px; }
 body.taxa#species #main .definitions-link img { vertical-align: text-top; }
-body.taxa#species #main #side { top: 718px; /* remaining side content is positioned further down to leave room for maps in full-width layout */ }
+body.taxa#species #main .definitions-link, body.taxa#species #main .namap p { padding-bottom: 8px; }
+body.taxa#species #main #side { top: 734px; /* remaining side content is positioned further down to leave room for maps in full-width layout */ }
 body.taxa#species #main #side dt, body.taxa#species #main #side dd { display: inline-block; }
 body.taxa#species #main #side .lookalikes dl { line-height: 20px; margin: 0; }
 body.taxa#species #main #side .lookalikes dt { font-weight: bold; margin: 2px 0; display: block; }
@@ -671,7 +672,7 @@ body.taxa#species #images-note { font-size: 11px; font-style: italic; margin-bot
 /* Landscape-orientation styles */
 @media only screen and (min-width: 401px) and (max-width: 600px) { body.taxa#species #main #species-images { width: 462px; }
   body.taxa#species #main #sidebar { margin-bottom: 14px; padding-bottom: 14px; }
-  body.taxa#species #main #maps { height: 405px; width: 428px; }
+  body.taxa#species #main #maps { height: 421px; width: 428px; }
   body.taxa#species #main #maps .nemap { float: left; }
   body.taxa#species #main #maps .nemap > p { width: 200px; }
   body.taxa#species #main #maps .namap { float: right; } }
