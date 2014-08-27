@@ -46,20 +46,46 @@ class Legend(object):
     """Class for configuring the legend on a SVG plant distribution map."""
 
     # This list controls the order, label and color of legend items.
-    ITEMS = [('county non-native', '#8e54d6'), # darker for county level
-             ('state non-native', '#c091fa'),
-             ('non-native', '#c091fa'), # purple: avoid red for colorblindness
-             ('county native', '#35880c'), # darker for county level
-             ('state native', '#98f25a'),
-             ('native', '#98f25a'),     # green
-             ('absent', '#fff'),        # white
+    # Purple is used instead of red, partly to avoid problems for those
+    # with red-green color blindness.
+    # Some items' labels are suffixed with 'nn' for non-native; this is
+    # so the COLORS dictionary can have unique keys. This suffix is
+    # removed upon display in the legend.
+    ITEMS = [('present na', '#35880c'), # dark green, county native
+             ('undocumented na', '#98f25a'),  # light green, state native
+             ('native', '#98f25a'),     # light green (for U.S. map)
+             ('present nn', '#8e54d6'), # dark purple, county non-native
+             ('undocumented nn', '#c091fa'), # lt. purple, state non-native
+             ('non-native', '#c091fa'), # light purple (for U.S. map)
+             ('absent', '#fff'),   # absent no longer shown in legend
              ]
     COLORS = dict(ITEMS)  # Color lookup for labels, ex.: COLORS['rare'].
                           # This does not preserve the order of items.
 
-    def __init__(self, svg_map, maximum_items):
+    def __init__(self, svg_map, maximum_categories, maximum_items):
         self.svg_map = svg_map
+        self.maximum_categories = maximum_categories
         self.maximum_items = maximum_items
+
+    def _set_category_label(self, category_number, label):
+        label_node_id = 'category%s' % str(category_number)
+        try:
+            label_node = self.svg_map.xpath(
+                'svg:text[@id="%s"]' % label_node_id,
+                namespaces=NAMESPACES)[0]
+            if label_node:
+                label_text_node = label_node.find(
+                    '{http://www.w3.org/2000/svg}tspan')
+                label_text_node.text = label
+        except:
+            pass
+
+    def _get_item_label(self, slot_number):
+        label_node_id = 'label%s' % str(slot_number)
+        label_node = self.svg_map.xpath('svg:text[@id="%s"]' % label_node_id,
+            namespaces=NAMESPACES)[0]
+        label_text_node = label_node.find('{http://www.w3.org/2000/svg}tspan')
+        return label_text_node.text
 
     def _set_item_label(self, label_node, label):
         label_text_node = label_node.find('{http://www.w3.org/2000/svg}tspan')
@@ -77,25 +103,62 @@ class Legend(object):
             namespaces=NAMESPACES)[0]
         self._set_item_label(label_node, item_label)
 
+    def _num_native_labels_found(self, legend_labels_found):
+        num_native_found = 0
+        for label in legend_labels_found:
+            if label.find(' na') > -1:
+                num_native_found += 1
+        return num_native_found
+
     def show_items(self, legend_labels_found):
         """Set the colors and labels of the legend items."""
+
+        # For county-level maps, start with category labels hidden.
+        for category_number in range(1, self.maximum_categories + 1):
+            self._set_category_label(category_number, '')
+
         for item_slot_number in range(1, self.maximum_items + 1):
             # Only show legend items for data values shown on this map.
             if len(legend_labels_found) >= item_slot_number:
                 # Show the legend item.
                 label = legend_labels_found[item_slot_number - 1]
                 fill_color = Legend.COLORS[label]
-                stroke_color = '#000'
-            else:
-                # Do not show the legend item, and hide its box.
-                label = ''
-                fill_color = '#fff'
-                stroke_color = '#fff'
-            self._set_item(item_slot_number, fill_color, stroke_color, label)
+                stroke_color = '#fff'   # hide box borders on legend items
+
+                # For county-level maps, set the category labels for
+                # the given legend items.
+                if label.find(' na') > 1:
+                    self._set_category_label(1, 'Native')
+                elif label.find(' nn') > 1:
+                    category_number = 1
+                    if self._num_native_labels_found(legend_labels_found) > 0:
+                        category_number = 2
+                    self._set_category_label(category_number, 'Non-native')
+
+                # For a non-native label on the county-level map, skip
+                # to a second label group if there are also any native
+                # labels.
+                num_native_labels = self._num_native_labels_found(
+                    legend_labels_found)
+                if label.find(' nn') > -1 and num_native_labels > 0:
+                    item_slot_number += 2 - num_native_labels
+
+                if label.find(' na') > -1 or label.find(' nn') > -1:
+                    # Remove any category suffix before label display.
+                    label = label[:-3]
+
+                self._set_item(item_slot_number, fill_color, stroke_color,
+                    label)
 
         # If no distribution data were mapped, set a label saying so.
         if len(legend_labels_found) == 0:
             self._set_item(1, '#fff', '#fff', 'no data')
+
+        # Hide any unused boxes.
+        for item_slot_number in range(1, self.maximum_items + 1):
+            current_label = self._get_item_label(item_slot_number)
+            if current_label.find('label') > -1:
+                self._set_item(item_slot_number, '#fff', '#fff', '')
 
 
 class ChloroplethMap(object):
@@ -126,11 +189,13 @@ class PlantDistributionMap(ChloroplethMap):
     PATH_NODES_XPATH = 'svg:path'
 
     def __init__(self, blank_map_path):
-        self.maximum_legend_items = 5
+        self.maximum_legend_categories = 2
+        self.maximum_legend_items = 4
         self.scientific_name = None
         super(PlantDistributionMap, self).__init__(blank_map_path,
             self.maximum_legend_items)
-        self.legend = Legend(self.svg_map, self.maximum_legend_items)
+        self.legend = Legend(self.svg_map, self.maximum_legend_categories,
+            self.maximum_legend_items)
 
     def _get_label(self, is_present, is_native, level=None):
         """Return the appropriate label for distribution data."""
@@ -142,7 +207,14 @@ class PlantDistributionMap(ChloroplethMap):
                 label = 'non-native'
 
             if level is not None:
-                label = '%s %s' % (level, label)
+                if level == 'county':
+                    label = 'present'
+                else:
+                    label = 'undocumented'
+                if is_native:
+                    label = label + ' na'
+                else:
+                    label = label + ' nn'
         return label
 
     def _add_name_to_title(self, scientific_name):
@@ -196,13 +268,13 @@ class PlantDistributionMap(ChloroplethMap):
         style = area.get_style()
         shaded_absent = (style.find('fill:%s' % Legend.COLORS['absent']) > 0)
         shaded_non_native = ((style.find(
-            'fill:%s' % Legend.COLORS['state non-native']) > 0) or
+            'fill:%s' % Legend.COLORS['undocumented nn']) > 0) or
             (style.find(
-            'fill:%s' % Legend.COLORS['county non-native']) > 0))
+            'fill:%s' % Legend.COLORS['present nn']) > 0))
         shaded_native = ((style.find(
-            'fill:%s' % Legend.COLORS['state native']) > 0) or
+            'fill:%s' % Legend.COLORS['undocumented na']) > 0) or
             (style.find(
-            'fill:%s' % Legend.COLORS['county native']) > 0))
+            'fill:%s' % Legend.COLORS['present na']) > 0))
 
         if shaded_absent and is_present:
             # If the area is shaded absent but the new record is
@@ -295,6 +367,10 @@ class PlantDistributionMap(ChloroplethMap):
                             break
 
             legend_labels_found = self._order_labels(final_labels)
+
+            # Omit 'absent' from the items to display in the legend.
+            if 'absent' in legend_labels_found:
+                legend_labels_found.remove('absent')
 
         return legend_labels_found
 
@@ -393,5 +469,9 @@ class NorthAmericanPlantDistributionMap(PlantDistributionMap):
                         break   # Move on to the next distribution record.
 
             legend_labels_found = self._order_labels(legend_labels_found)
+
+            # Omit 'absent' from the items to display in the legend.
+            if 'absent' in legend_labels_found:
+                legend_labels_found.remove('absent')
 
         return legend_labels_found
