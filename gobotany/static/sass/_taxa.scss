@@ -132,12 +132,16 @@ body.taxa {
                     vertical-align: text-top;
                 }
             }
+            .found-plant {
+                background-color: #f0f0c0;
+                padding: 4px 12px;
+            }
             /* space maps enough away from text atop them */
-            .definitions-link, .namap p {
+            .nemap h2 + p, .namap h2 + p {
                 padding-bottom: 8px;
             }
             #side {
-                top: 734px;   /* remaining side content is positioned
+                top: 754px;   /* remaining side content is positioned
                                  further down to leave room for maps
                                  in full-width layout */
                 dt, dd {
@@ -359,7 +363,7 @@ $mini-table-font-size: 10px;
                 padding-bottom: 14px;
             }
             #maps {
-                height: 421px;
+                height: 435px;
                 width: 428px;
                 .nemap {
                     float: left;

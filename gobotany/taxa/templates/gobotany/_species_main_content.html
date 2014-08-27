@@ -46,10 +46,6 @@
         <div class="section map nemap">
             <h2>New England Distribution</h2>
             {% include "gobotany/_map_attribution.html" %}
-            <p class="definitions-link">
-                <a href=""><img src="/static/images/icons/more-info.png">
-                legend definitions</a>
-            </p>
             {% with map_title='New England distribution: '|add:scientific_name|add:'.' %}
             <!--[if !IE]>-->
             <object
@@ -92,8 +88,13 @@
                 is shown on the map.</p>
                 </div>
             </div>
-            
-            <p>Did you find this plant? Take a photo and
+
+            <p class="definitions-link">
+                <a href=""><img src="/static/images/icons/more-info.png">
+                legend definitions</a>
+            </p>
+
+            <p class="found-plant">Did you find this plant? Take a photo and
             <a href="{% url 'ps-new-sighting' %}">post a sighting</a>
             on PlantShare.
             </p>

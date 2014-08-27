@@ -622,8 +622,9 @@ body.taxa#species #main #maps h2, body.taxa#species #main #side h2 { font-size: 
 body.taxa#species #main #maps { border-top: 1px solid #c3d941; top: 128px; }
 body.taxa#species #main .definitions-link { font-size: 10px; margin: 4px 0; padding-bottom: 8px; }
 body.taxa#species #main .definitions-link img { vertical-align: text-top; }
-body.taxa#species #main .definitions-link, body.taxa#species #main .namap p { padding-bottom: 8px; }
-body.taxa#species #main #side { top: 734px; /* remaining side content is positioned further down to leave room for maps in full-width layout */ }
+body.taxa#species #main .found-plant { background-color: #f0f0c0; padding: 4px 12px; }
+body.taxa#species #main .nemap h2 + p, body.taxa#species #main .namap h2 + p { padding-bottom: 8px; }
+body.taxa#species #main #side { top: 754px; /* remaining side content is positioned further down to leave room for maps in full-width layout */ }
 body.taxa#species #main #side dt, body.taxa#species #main #side dd { display: inline-block; }
 body.taxa#species #main #side .lookalikes dl { line-height: 20px; margin: 0; }
 body.taxa#species #main #side .lookalikes dt { font-weight: bold; margin: 2px 0; display: block; }
@@ -672,7 +673,7 @@ body.taxa#species #images-note { font-size: 11px; font-style: italic; margin-bot
 /* Landscape-orientation styles */
 @media only screen and (min-width: 401px) and (max-width: 600px) { body.taxa#species #main #species-images { width: 462px; }
   body.taxa#species #main #sidebar { margin-bottom: 14px; padding-bottom: 14px; }
-  body.taxa#species #main #maps { height: 421px; width: 428px; }
+  body.taxa#species #main #maps { height: 435px; width: 428px; }
   body.taxa#species #main #maps .nemap { float: left; }
   body.taxa#species #main #maps .nemap > p { width: 200px; }
   body.taxa#species #main #maps .namap { float: right; } }
