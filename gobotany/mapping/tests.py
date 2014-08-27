@@ -45,7 +45,8 @@ class PathTestCase(TestCase):
 class LegendTestCase(TestCase):
     def setUp(self):
         self.dist_map = NewEnglandPlantDistributionMap()
-        self.legend = Legend(self.dist_map.svg_map, maximum_items=5)
+        self.legend = Legend(self.dist_map.svg_map, maximum_categories=2,
+            maximum_items=5)
 
     def test_set_item_label(self):
         LABEL = 'native'
@@ -63,11 +64,11 @@ class LegendTestCase(TestCase):
         SLOT = 1
         FILL_COLOR = '#ff0'
         STROKE_COLOR = '#ccc'
-        LABEL = 'native'
+        LABEL = 'present'
         self.legend._set_item(SLOT, FILL_COLOR, STROKE_COLOR, LABEL)
 
         labels = get_legend_labels(self.legend)
-        self.assertEqual('native', labels[0])
+        self.assertEqual('present', labels[0])
 
         paths = self._get_paths()
         self.assertTrue(paths[0].get_style().find(
@@ -76,20 +77,18 @@ class LegendTestCase(TestCase):
             'stroke:%s' % STROKE_COLOR) > -1)
 
     def test_show_items(self):
-        legend_labels_found = ['native', 'absent']
+        legend_labels_found = ['present na']
         self.legend.show_items(legend_labels_found)
 
         labels = get_legend_labels(self.legend)
-        self.assertEqual('native', labels[0])
-        self.assertEqual('absent', labels[1])
-        [self.assertEqual('', label) for label in labels[2:]]
+        self.assertEqual('present', labels[0])
 
         paths = self._get_paths()
-        self.assertTrue(paths[0].get_style().find('fill:#98f25a') > -1)
+        self.assertTrue(paths[0].get_style().find('fill:#35880c') > -1)
         self.assertTrue(paths[1].get_style().find('fill:#fff') > -1)
         [self.assertTrue(path.get_style().find('fill:#fff') > -1)
          for path in paths[2:]]
-        [self.assertTrue(path.get_style().find('stroke:#000') > -1)
+        [self.assertTrue(path.get_style().find('stroke:#fff') > -1)
          for path in paths[0:2]]
         [self.assertTrue(path.get_style().find('stroke:#fff') > -1)
          for path in paths[2:]]
@@ -339,10 +338,8 @@ class PlantDistributionMapTestCase(TestCase):
         self.distribution_map.shade()
         self._verify_shaded_counties(['native', 'absent'])
         labels = get_legend_labels(self.distribution_map.legend)
-        self.assertEqual('county native', labels[0])
-        self.assertEqual('state native', labels[1])
-        self.assertEqual('absent', labels[2])
-        [self.assertEqual('', label) for label in labels[3:]]
+        self.assertEqual('present', labels[0])
+        self.assertEqual('undocumented', labels[1])
 
     def test_plant_with_distribution_data_has_plant_name_in_title(self):
         SCIENTIFIC_NAME = 'Dendrolycopodium dendroideum'
@@ -365,7 +362,7 @@ class PlantDistributionMapTestCase(TestCase):
                             style.find('fill:none') > -1)
         # Verify that the legend contains only a 'no data' label.
         labels = get_legend_labels(self.distribution_map.legend)
-        self.assertEqual(['no data', '', '', '', ''], labels)
+        self.assertEqual(['no data', '', '', '', '', ''], labels)
 
     def test_plant_with_no_distribution_data_has_no_plant_name_in_title(self):
         SCIENTIFIC_NAME = 'Foo bar'
@@ -382,7 +379,7 @@ class PlantDistributionMapTestCase(TestCase):
         self.distribution_map.shade()
         self._verify_shaded_counties(['present', 'absent'])
         labels = get_legend_labels(self.distribution_map.legend)
-        self.assertEqual(['county native', 'state native', 'absent', '', ''],
+        self.assertEqual(['present', 'undocumented', '', '', 'Native', ''],
             labels)
         self.assertEqual('%s: New England Distribution Map' % SCIENTIFIC_NAME,
                          self.distribution_map.get_title())

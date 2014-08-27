@@ -81,11 +81,19 @@ class Legend(object):
             pass
 
     def _get_item_label(self, slot_number):
+        label = ''
         label_node_id = 'label%s' % str(slot_number)
-        label_node = self.svg_map.xpath('svg:text[@id="%s"]' % label_node_id,
-            namespaces=NAMESPACES)[0]
-        label_text_node = label_node.find('{http://www.w3.org/2000/svg}tspan')
-        return label_text_node.text
+        try:
+            label_node = self.svg_map.xpath(
+                'svg:text[@id="%s"]' % label_node_id,
+                namespaces=NAMESPACES)[0]
+            if label_node:
+                label_text_node = label_node.find(
+                    '{http://www.w3.org/2000/svg}tspan')
+                label = label_text_node.text
+        except:
+            pass
+        return label
 
     def _set_item_label(self, label_node, label):
         label_text_node = label_node.find('{http://www.w3.org/2000/svg}tspan')
