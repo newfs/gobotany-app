@@ -125,12 +125,14 @@ body.taxa {
                 top: 128px;
             }
             .definitions-link {
+                background-image: url(/static/images/icons/icon-info.png);
+                background-position: 0px 0px;
+                background-repeat: no-repeat;
+                background-size: auto 12px;
+                display: inline-block;
                 font-size: 10px;
-                margin: 4px 0;
-                padding-bottom: 8px;
-                img {
-                    vertical-align: text-top;
-                }
+                margin: 4px 0 8px;
+                padding: 0 0 0 15px;
             }
             .found-plant {
                 background-color: #f0f0c0;
@@ -252,7 +254,6 @@ body.taxa {
         }
         a {
             &.enlarge {
-                color: #1a2e11;
                 display: block;
                 margin: 0 0 8px 0;
                 &:hover {

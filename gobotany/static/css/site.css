@@ -244,10 +244,10 @@ a:active { color: #45ac11; }
 a:not([href]) { color: black; }
 a:not([href]):hover { text-decoration: none; }
 
-#main p a, #main li > a, #main li > i a, #main dt a, #main td a, #main h2 a, #main form > a, #main form div > a, #sidebar form > a { border-bottom: 1px solid #c3d941; }
-#main p a:hover, #main li > a:hover, #main li > i a:hover, #main dt a:hover, #main td a:hover, #main h2 a:hover, #main form > a:hover, #main form div > a:hover, #sidebar form > a:hover { border-color: #317b0c; }
-#main p a:active, #main li > a:active, #main li > i a:active, #main dt a:active, #main td a:active, #main h2 a:active, #main form > a:active, #main form div > a:active, #sidebar form > a:active { border-color: #45ac11; }
-#main p a:not([href]), #main li > a:not([href]), #main li > i a:not([href]), #main dt a:not([href]), #main td a:not([href]), #main h2 a:not([href]), #main form > a:not([href]), #main form div > a:not([href]), #sidebar form > a:not([href]) { border: 0; }
+#main p a, #main li > a, #main li > i a, #main dt a, #main td a, #main h2 a, #main form > a, #main form div > a, #sidebar form > a, .nemap a { border-bottom: 1px solid #c3d941; }
+#main p a:hover, #main li > a:hover, #main li > i a:hover, #main dt a:hover, #main td a:hover, #main h2 a:hover, #main form > a:hover, #main form div > a:hover, #sidebar form > a:hover, .nemap a:hover { border-color: #317b0c; }
+#main p a:active, #main li > a:active, #main li > i a:active, #main dt a:active, #main td a:active, #main h2 a:active, #main form > a:active, #main form div > a:active, #sidebar form > a:active, .nemap a:active { border-color: #45ac11; }
+#main p a:not([href]), #main li > a:not([href]), #main li > i a:not([href]), #main dt a:not([href]), #main td a:not([href]), #main h2 a:not([href]), #main form > a:not([href]), #main form div > a:not([href]), #sidebar form > a:not([href]), .nemap a:not([href]) { border: 0; }
 
 #main td.scientific-name a { border-bottom: 0; }
 
@@ -620,8 +620,7 @@ body.taxa#species #main .section p { margin-bottom: 0; }
 body.taxa#species #main #maps, body.taxa#species #main #side { position: absolute; }
 body.taxa#species #main #maps h2, body.taxa#species #main #side h2 { font-size: 14px; margin: 0 0 4px 0; }
 body.taxa#species #main #maps { border-top: 1px solid #c3d941; top: 128px; }
-body.taxa#species #main .definitions-link { font-size: 10px; margin: 4px 0; padding-bottom: 8px; }
-body.taxa#species #main .definitions-link img { vertical-align: text-top; }
+body.taxa#species #main .definitions-link { background-image: url(/static/images/icons/icon-info.png); background-position: 0px 0px; background-repeat: no-repeat; background-size: auto 12px; display: inline-block; font-size: 10px; margin: 4px 0 8px; padding: 0 0 0 15px; }
 body.taxa#species #main .found-plant { background-color: #f0f0c0; padding: 4px 12px; }
 body.taxa#species #main .nemap h2 + p, body.taxa#species #main .namap h2 + p { padding-bottom: 8px; }
 body.taxa#species #main #side { top: 754px; /* remaining side content is positioned further down to leave room for maps in full-width layout */ }
@@ -649,7 +648,7 @@ body.taxa#species ul.full-description > li:hover { background-color: #fff; }
 body.taxa#species ul.full-description > li h5 { background: url(/static/images/icons/plus.png) left 50% no-repeat; cursor: pointer; padding-left: 28px; }
 body.taxa#species ul.full-description > li h5.expanded { background: url(/static/images/icons/minus.png) left 50% no-repeat; }
 body.taxa#species ul.full-description > li div { display: none; padding-left: 28px; }
-body.taxa#species a.enlarge { color: #1a2e11; display: block; margin: 0 0 8px 0; }
+body.taxa#species a.enlarge { display: block; margin: 0 0 8px 0; }
 body.taxa#species a.enlarge:hover { text-decoration: none; }
 body.taxa#species a.enlarge img { vertical-align: middle; }
 body.taxa#species a.more { cursor: pointer; }

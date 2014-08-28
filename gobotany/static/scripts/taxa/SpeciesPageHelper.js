@@ -108,7 +108,7 @@ var SpeciesPageHelper = {
     },
 
     enable_map_definitions_link: function () {
-        $('.definitions-link a').click(function (event) {
+        $('.definitions-link').click(function (event) {
             event.preventDefault();
             Shadowbox.open({
                 content: $('#legend-definitions').html(),
