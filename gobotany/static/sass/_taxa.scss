@@ -126,16 +126,19 @@ body.taxa {
             }
             .definitions-link {
                 background-image: url(/static/images/icons/icon-info.png);
-                background-position: 0px 0px;
+                background-position: 0px 1px;
                 background-repeat: no-repeat;
                 background-size: auto 12px;
+                clear: left;
                 display: inline-block;
-                font-size: 10px;
+                font-size: 12px;
                 margin: 4px 0 8px;
                 padding: 0 0 0 15px;
             }
             .found-plant {
                 background-color: #f0f0c0;
+                font-size: 12px;
+                line-height: 16px;
                 padding: 4px 12px;
             }
             /* space maps enough away from text atop them */
@@ -449,6 +452,10 @@ $mini-table-font-size: 10px;
                 padding-left: 16px;
                 padding-right: 16px;
                 z-index: 10;
+            }
+            .definitions-link, .found-plant {
+                font-size: 10px;
+                line-height: 14px;
             }
             #side h2 {
                 font-size: 16px;

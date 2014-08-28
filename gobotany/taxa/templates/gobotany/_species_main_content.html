@@ -67,6 +67,11 @@
                 id="ne-dist-county-map"> <![endif]-->
             </object>
             {% endwith %}
+
+            <div>
+                <a class="definitions-link" href="">about the labels on this map</a>
+            </div>
+
             <div id="legend-definitions" class="hidden">
                 <div class="text-dialog-content">
                 <p class="nogloss"><b>Native:</b> indigenous.</p>
@@ -88,12 +93,9 @@
                 is shown on the map.</p>
                 </div>
             </div>
-
-            <a class="definitions-link" href="">legend definitions</a>
-
-            <p class="found-plant">Did you find this plant? Take a photo and
-            <a href="{% url 'ps-new-sighting' %}">post a sighting</a>
-            on PlantShare.
+            
+            <p class="found-plant">Found this plant? Take a photo and
+            <a href="{% url 'ps-new-sighting' %}">post a sighting</a>.
             </p>
         </div>
 
