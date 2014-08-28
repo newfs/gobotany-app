@@ -111,7 +111,8 @@ def glossary_blob(request):
                 pass
 
     images = { gt.term: prefix + gt.image_path for gt in glossaryterms
-               if gt.image_path is not None and prefix is not None }
+               if (gt.image_path is not None and gt.image_path != '' and
+                   prefix is not None) }
 
     return jsonify({'definitions': definitions, 'images': images})
 
