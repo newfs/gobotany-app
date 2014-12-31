@@ -4,6 +4,7 @@ from os.path import abspath, dirname
 
 from django.conf import settings
 from django.core.exceptions import ObjectDoesNotExist
+from django.db.models import Q
 
 from lxml import etree
 
@@ -236,9 +237,22 @@ class PlantDistributionMap(ChloroplethMap):
 
     def _get_distribution_records(self, scientific_name):
         """Look up the plant and get its distribution records.
+
+        Get two sets of records together:
+        1. All the records for the exact scientific name
+        2. Any additional records that start with the scientific name
+           followed by a space
+
+        This is done to safely pick up any additional records with
+        subspecific epithets (ssp., var., etc.). These are included on the
+        map because the maps are made for the species pages, which feature
+        both the species information and any subspecific information.
         """
         return models.Distribution.objects.filter(
-                    scientific_name__startswith=scientific_name)
+            Q(scientific_name=scientific_name) |
+            Q(scientific_name__startswith=scientific_name + ' ')
+        )
+
 
     def set_plant(self, scientific_name):
         """Set the plant to be shown and gather its data."""

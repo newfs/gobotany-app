@@ -254,6 +254,12 @@ def create_distribution_records():
             ('', 'MA', True, False),
             ('Middlesex', 'MA', True, False),
             ],
+        'Carex arcta': [
+            ('Piscataquis', 'ME', True, True),
+            ],
+        'Carex arctata': [
+            ('Barnstable', 'MA', True, True),
+            ],
         }
     for scientific_name, data_list in distribution_data.items():
         for entry in data_list:
@@ -422,6 +428,83 @@ class NewEnglandPlantDistributionMapTestCase(TestCase):
         records = (self.distribution_map._get_distribution_records(
                    SCIENTIFIC_NAME))
         self.assertTrue(len(records) > 0)
+
+    def _get_shaded_paths(self, distribution_map):
+        path_nodes = distribution_map.svg_map.xpath(
+            'svg:path', namespaces=NAMESPACES)
+        paths = [Path(path_node) for path_node in path_nodes]
+        shaded_paths = []
+        for path in paths:
+            style = path.get_style()
+            if style.find('fill:#') > -1 and style.find('fill:#fff') == -1:
+                shaded_paths.append(path)
+        return shaded_paths
+
+    def _verify_number_expected_shaded_areas(self, expected_shaded_areas,
+            shaded_paths):
+        # Verify that the number of expected shaded areas is found, at a
+        # minimum, among the full list of shaded paths.
+        # There can be more shaded paths than expected shaded areas.
+        # Example: BC has two paths, one for the mainland and one for
+        # Vancouver Island.
+        #
+        # To debug a failing test, uncomment the following line and run
+        # the failing test alone:
+        #print 'shaded_paths: %d  expected_shaded_areas: %d' % (
+        #    len(shaded_paths), len(expected_shaded_areas))
+        self.assertTrue(len(shaded_paths) >= len(expected_shaded_areas))
+
+    def _verify_expected_shaded_areas(self, expected_shaded_areas,
+            shaded_paths):
+        # Check that each shaded area and its color is expected.
+        for path in shaded_paths:
+            path_id = path.path_node.get('id')
+            area_key = path_id[0:2]
+            self.assertTrue(area_key in expected_shaded_areas.keys())
+            label = expected_shaded_areas[area_key]
+            # To debug a failing test, uncomment the following line and
+            # run the failing test alone:
+            #print 'area_key: %s  label: %s' % (area_key, label)
+            fill_declaration = 'fill:%s' % Legend.COLORS[label]
+            self.assertTrue(path.get_style().find(fill_declaration) > -1)
+
+    def test_plants_with_similar_names_do_not_conflate_records_1of2(self):
+        # Bug fix from Issue #595: ensure that two plants whose names
+        # only differ at the very end do not mistakenly get combined.
+        # First plant:
+        SCIENTIFIC_NAME = 'Carex arcta'
+        EXPECTED_SHADED_AREAS = {
+            'ME': 'present na',   # From the test data, expect only ME
+        }
+        self.distribution_map.set_plant(SCIENTIFIC_NAME)
+        records = self.distribution_map._get_distribution_records(
+            SCIENTIFIC_NAME)
+        self.assertTrue(len(records) == 1)
+        self.distribution_map.shade()
+        shaded_paths = self._get_shaded_paths(self.distribution_map)
+        self._verify_number_expected_shaded_areas(EXPECTED_SHADED_AREAS,
+            shaded_paths)
+        self._verify_expected_shaded_areas(EXPECTED_SHADED_AREAS,
+            shaded_paths)
+
+    def test_plants_with_similar_names_do_not_conflate_records_2of2(self):
+        # Bug fix from Issue #595: ensure that two plants whose names
+        # only differ at the very end do not mistakenly get combined.
+        # Second plant:
+        SCIENTIFIC_NAME = 'Carex arctata'
+        EXPECTED_SHADED_AREAS = {
+            'MA': 'present na',   # From the test data, expect only MA
+        }
+        self.distribution_map.set_plant(SCIENTIFIC_NAME)
+        records = self.distribution_map._get_distribution_records(
+            SCIENTIFIC_NAME)
+        self.assertTrue(len(records) == 1)
+        self.distribution_map.shade()
+        shaded_paths = self._get_shaded_paths(self.distribution_map)
+        self._verify_number_expected_shaded_areas(EXPECTED_SHADED_AREAS,
+            shaded_paths)
+        self._verify_expected_shaded_areas(EXPECTED_SHADED_AREAS,
+            shaded_paths)
 
 
 class UnitedStatesPlantDistributionMapTestCase(TestCase):
