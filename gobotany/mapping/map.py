@@ -74,7 +74,7 @@ class Legend(object):
             label_node = self.svg_map.xpath(
                 'svg:text[@id="%s"]' % label_node_id,
                 namespaces=NAMESPACES)[0]
-            if label_node:
+            if label_node is not None:
                 label_text_node = label_node.find(
                     '{http://www.w3.org/2000/svg}tspan')
                 label_text_node.text = label
@@ -88,7 +88,7 @@ class Legend(object):
             label_node = self.svg_map.xpath(
                 'svg:text[@id="%s"]' % label_node_id,
                 namespaces=NAMESPACES)[0]
-            if label_node:
+            if label_node is not None:
                 label_text_node = label_node.find(
                     '{http://www.w3.org/2000/svg}tspan')
                 label = label_text_node.text
