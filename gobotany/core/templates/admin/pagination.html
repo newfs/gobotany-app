@@ -1,0 +1,26 @@
+{% load admin_list %}
+{% load i18n %}
+<p class="paginator">
+{% if pagination_required %}
+{% for i in page_range %}
+    {% paginator_number cl i %}
+{% endfor %}
+
+{# Go Botany customization: add Go To Page #}
+
+&nbsp;&nbsp;
+Go to page:
+<input type="text" size="5" id="p" name="p" value="{{ cl.page_num|add:'2' }}"
+onkeypress="if (event.keyCode == 13) { var b = document.getElementById('go-to-page-button'); b.onclick.apply(b); return false; }">
+<button class="button" id="go-to-page-button"
+onclick="var url = window.location.href; var page = document.getElementById('p').value; window.location.href = window.location.href.split('?')[0] + '?p=' + (page - 1); return false;">Go</button>
+&nbsp;&nbsp;
+
+{# end Go Botany customization #}
+
+{% endif %}
+
+{{ cl.result_count }} {% ifequal cl.result_count 1 %}{{ cl.opts.verbose_name }}{% else %}{{ cl.opts.verbose_name_plural }}{% endifequal %}
+{% if show_all_url %}&nbsp;&nbsp;<a href="{{ show_all_url }}" class="showall">{% trans 'Show all' %}</a>{% endif %}
+{% if cl.formset and cl.result_count %}<input type="submit" name="_save" class="default" value="{% trans 'Save' %}"/>{% endif %}
+</p>
