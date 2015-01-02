@@ -19,3 +19,12 @@ Original CSS, to be re-activated selectively:
     margin: 3em 4em 3em 0;
     line-height: 1.5em;
 }
+
+
+/* Pagination: Go to Page customization */
+
+#go-to-page-number {
+    margin-bottom: 5px;
+}
+
+/* End Pagination: Go to Page customization */

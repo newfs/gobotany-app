@@ -10,10 +10,9 @@
 
 &nbsp;&nbsp;
 Go to page:
-<input type="text" size="5" id="p" name="p" value="{{ cl.page_num|add:'2' }}"
-onkeypress="if (event.keyCode == 13) { var b = document.getElementById('go-to-page-button'); b.onclick.apply(b); return false; }">
-<button class="button" id="go-to-page-button"
-onclick="var url = window.location.href; var page = document.getElementById('p').value; window.location.href = window.location.href.split('?')[0] + '?p=' + (page - 1); return false;">Go</button>
+<input type="text" size="5" id="go-to-page-number"
+value="{% if cl.page_num < cl.paginator.num_pages|add:'-1' %}{{ cl.page_num|add:'2' }}{% else %}1{% endif %}">
+<button class="button" id="go-to-page-button">Go</button>
 &nbsp;&nbsp;
 
 {# end Go Botany customization #}

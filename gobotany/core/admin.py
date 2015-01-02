@@ -43,7 +43,10 @@ class _Base(admin.ModelAdmin):
         return fieldsets
 
     class Media:
-        css = {'all': ('/static/admin_styles.css',)}
+        css = {
+            'all': ('/static/admin/admin_gb.css',)
+        }
+        js = ('/static/admin/admin_gb.js',)
 
 
 class TaxonSynonymInline(admin.TabularInline):
@@ -513,7 +516,7 @@ class ConservationStatusForm(forms.ModelForm):
         return self.cleaned_data
 
 
-class ConservationStatusAdmin(admin.ModelAdmin):
+class ConservationStatusAdmin(_Base):
     form = ConservationStatusForm
     list_display = ('taxon', 'variety_subspecies_hybrid', 'region', 's_rank',
         'endangerment_code', 'allow_public_posting')
@@ -522,7 +525,7 @@ class ConservationStatusAdmin(admin.ModelAdmin):
     search_fields = ['taxon__scientific_name', 'variety_subspecies_hybrid',]
 
 
-class InvasiveStatusAdmin(admin.ModelAdmin):
+class InvasiveStatusAdmin(_Base):
     search_fields = ['taxon__scientific_name']
     list_display = ('taxon', 'region', 'invasive_in_region',
         'prohibited_from_sale')
@@ -580,7 +583,7 @@ class RankFilter(admin.SimpleListFilter):
         return qs
 
 
-class DistributionAdmin(admin.ModelAdmin):
+class DistributionAdmin(_Base):
     list_display = ('scientific_name', 'state', 'county', 'present', 'native')
     list_editable = ('present', 'native',)
     list_filter = (DistributionRegionFilter, RankFilter, 'native', 'present',
@@ -633,20 +636,20 @@ class DistributionAdmin(admin.ModelAdmin):
 
 
 
-class LookalikeAdmin(admin.ModelAdmin):
+class LookalikeAdmin(_Base):
     form = LookalikeAdminForm
     list_display = ('taxon', 'lookalike_scientific_name',
         'lookalike_characteristic')
 
-class HomePageImageAdmin(admin.ModelAdmin):
+class HomePageImageAdmin(_Base):
     list_display = ('image', 'partner_site',)
     list_filter = ('partner_site',)
 
-class DefaultFilterAdmin(admin.ModelAdmin):
+class DefaultFilterAdmin(_Base):
     list_display = ('character', 'pile', 'order',)
     list_filter = ('pile',)
 
-class PlantPreviewCharacterAdmin(admin.ModelAdmin):
+class PlantPreviewCharacterAdmin(_Base):
     list_display = ('character', 'pile', 'order',)
     list_filter = ('pile',)
 
