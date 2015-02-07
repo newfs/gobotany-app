@@ -2,7 +2,7 @@
 
 from django import forms
 from django.conf import settings
-from django.contrib import admin
+from django.contrib import admin, messages
 from django.core.urlresolvers import reverse
 from django.db import models as dbmodels
 from django.http import HttpResponseRedirect
@@ -593,6 +593,53 @@ class DistributionAdmin(_Base):
     list_per_page = 150
     search_fields = ('scientific_name',)
     actions = ['rename_records']
+
+    # Override the change view to handle the Save and Edit Next button.
+    def add_view(self, request, extra_context=None):
+        result = super(DistributionAdmin, self).add_view(request,
+            extra_context=extra_context)
+
+        # Although it would be preferable to hide the button for this
+        # view, for now just make it do something reasonable: the
+        # same thing as the Save and Add Another button.
+        if request.POST.has_key('_editnext'):
+            result['Location'] = '/admin/core/distribution/add/'
+
+        return result
+
+    # Override the change view to handle the Save and Edit Next button.
+    def change_view(self, request, object_id, extra_context=None):
+        result = super(DistributionAdmin, self).change_view(request,
+            object_id, extra_context=extra_context)
+
+        if request.POST.has_key('_editnext'):
+            if request.GET.has_key('ids'):
+                ids = request.GET['ids'].split(',');
+
+                try:
+                    # All the ids on the user's last list page are
+                    # passed on the URL. Find the current object id,
+                    # and the next in the sequence will be the id
+                    # of the next record on the page.
+                    current_id_index = ids.index(object_id);
+                    next_object_id = ids[current_id_index + 1];
+
+                    # Go to the next record, passing again the list of
+                    # all ids as a request parameter.
+                    request_path_parts = request.path.split('/')
+                    request_path_parts[4] = str(next_object_id)
+                    new_path = '/'.join(request_path_parts)
+                    new_path += '?ids=' + request.GET['ids']
+                    result['Location'] = new_path
+                except IndexError:
+                    # If there is no next record to edit, tell the user.
+                    message = ''.join([
+                        'Changed the last record on your page. ',
+                        'To edit more records in sequence, first search, ',
+                        'filter, sort, and go to a desired page.'])
+                    messages.info(request, message)
+
+        return result
 
     class RenameRecordsForm(forms.Form):
         _selected_action = forms.CharField(widget=forms.MultipleHiddenInput)

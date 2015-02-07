@@ -27,4 +27,10 @@ Original CSS, to be re-activated selectively:
     margin-bottom: 5px;
 }
 
-/* End Pagination: Go to Page customization */
+
+/* Distribution model change form: Save and Edit Next button */
+
+/* Hide the button on all other models' forms. */
+form:not(#distribution_form) input[name="_editnext"] {
+    display: none;
+}
