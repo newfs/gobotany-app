@@ -52,14 +52,14 @@ class Legend(object):
     # Some items' labels are suffixed with 'nn' for non-native; this is
     # so the COLORS dictionary can have unique keys. This suffix is
     # removed upon display in the legend.
-    ITEMS = [('present na', '#35880c'), # dark green, county native
-             ('undocumented na', '#98f25a'),  # light green, state native
-             ('native', '#98f25a'),     # light green (for U.S. map)
-             ('present nn', '#8e54d6'), # dark purple, county non-native
-             ('undocumented nn', '#c091fa'), # lt. purple, state non-native
-             ('non-native', '#c091fa'), # light purple (for U.S. map)
-             ('absent', '#fff'),   # absent no longer shown in legend
-             ]
+    ITEMS = [('county documented na', '#35880c'), # dark green, county native
+        ('state documented na', '#98f25a'),  # light green, state native
+        ('native', '#98f25a'),     # light green (for U.S. map)
+        ('county documented nn', '#8e54d6'), # dark purple, county non-native
+        ('state documented nn', '#c091fa'), # lt. purple, state non-native
+        ('non-native', '#c091fa'), # light purple (for U.S. map)
+        ('absent', '#fff'),   # absent no longer shown in legend
+    ]
     COLORS = dict(ITEMS)  # Color lookup for labels, ex.: COLORS['rare'].
                           # This does not preserve the order of items.
 
@@ -97,8 +97,20 @@ class Legend(object):
         return label
 
     def _set_item_label(self, label_node, label):
-        label_text_node = label_node.find('{http://www.w3.org/2000/svg}tspan')
-        label_text_node.text = label
+        # Because SVG does not handle multi-line text easily, first
+        # check for multiple lines in the label area and if found,
+        # split the label text over the lines. Currently this handles
+        # only one word per line (e.g., 2 lines, 2-word labels).
+        label_text_nodes = label_node.findall(
+            '{http://www.w3.org/2000/svg}tspan')
+        lines_available = len(label_text_nodes)
+        text_parts = label.split(' ')
+        for i in range(lines_available):
+            line = label_text_nodes[i]
+            if i <= len(text_parts) - 1:
+                line.text = text_parts[i]
+            else:
+                line.text = ''
 
     def _set_item(self, slot_number, fill_color, stroke_color, item_label):
         box_node_id = 'box%s' % str(slot_number)
@@ -217,9 +229,9 @@ class PlantDistributionMap(ChloroplethMap):
 
             if level is not None:
                 if level == 'county':
-                    label = 'present'
+                    label = 'county documented'
                 else:
-                    label = 'undocumented'
+                    label = 'state documented'
                 if is_native:
                     label = label + ' na'
                 else:
@@ -290,13 +302,13 @@ class PlantDistributionMap(ChloroplethMap):
         style = area.get_style()
         shaded_absent = (style.find('fill:%s' % Legend.COLORS['absent']) > 0)
         shaded_non_native = ((style.find(
-            'fill:%s' % Legend.COLORS['undocumented nn']) > 0) or
+            'fill:%s' % Legend.COLORS['state documented nn']) > 0) or
             (style.find(
-            'fill:%s' % Legend.COLORS['present nn']) > 0))
+            'fill:%s' % Legend.COLORS['county documented nn']) > 0))
         shaded_native = ((style.find(
-            'fill:%s' % Legend.COLORS['undocumented na']) > 0) or
+            'fill:%s' % Legend.COLORS['state documented na']) > 0) or
             (style.find(
-            'fill:%s' % Legend.COLORS['present na']) > 0))
+            'fill:%s' % Legend.COLORS['county documented na']) > 0))
 
         if shaded_absent and is_present:
             # If the area is shaded absent but the new record is

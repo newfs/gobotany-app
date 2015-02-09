@@ -7,9 +7,20 @@ from gobotany.mapping.map import (NAMESPACES, Path, Legend,
                                   UnitedStatesPlantDistributionMap)
 
 def get_legend_labels(legend):
-    return [label_node.text for label_node in legend.svg_map.xpath(
-        'svg:text/svg:tspan', namespaces=NAMESPACES)]
+    labels = []
+    for label_node in legend.svg_map.xpath('svg:text',
+            namespaces=NAMESPACES):
+        label_words = []
+        for label_line in label_node.xpath('svg:tspan',
+                namespaces=NAMESPACES):
+            label_words.append(label_line.text)
+        label = ''
+        label_words = [word.strip() for word in label_words]
+        label_words = [word for word in label_words if len(word) > 0]
+        label = ' '.join(label_words)
+        labels.append(label)
 
+    return labels
 
 class PathTestCase(TestCase):
     def setUp(self):
@@ -64,11 +75,11 @@ class LegendTestCase(TestCase):
         SLOT = 1
         FILL_COLOR = '#ff0'
         STROKE_COLOR = '#ccc'
-        LABEL = 'present'
+        LABEL = 'county documented'
         self.legend._set_item(SLOT, FILL_COLOR, STROKE_COLOR, LABEL)
 
         labels = get_legend_labels(self.legend)
-        self.assertEqual('present', labels[0])
+        self.assertEqual('county documented', labels[0])
 
         paths = self._get_paths()
         self.assertTrue(paths[0].get_style().find(
@@ -77,11 +88,11 @@ class LegendTestCase(TestCase):
             'stroke:%s' % STROKE_COLOR) > -1)
 
     def test_show_items(self):
-        legend_labels_found = ['present na']
+        legend_labels_found = ['county documented na']
         self.legend.show_items(legend_labels_found)
 
         labels = get_legend_labels(self.legend)
-        self.assertEqual('present', labels[0])
+        self.assertEqual('county documented', labels[0])
 
         paths = self._get_paths()
         self.assertTrue(paths[0].get_style().find('fill:#35880c') > -1)
@@ -342,10 +353,10 @@ class PlantDistributionMapTestCase(TestCase):
         SCIENTIFIC_NAME = 'Vaccinium vitis-idaea ssp. minus'
         self.distribution_map.set_plant(SCIENTIFIC_NAME)
         self.distribution_map.shade()
-        self._verify_shaded_counties(['native', 'absent'])
+        self._verify_shaded_counties(['county documented', 'absent'])
         labels = get_legend_labels(self.distribution_map.legend)
-        self.assertEqual('present', labels[0])
-        self.assertEqual('undocumented', labels[1])
+        self.assertEqual('county documented', labels[0])
+        self.assertEqual('state documented', labels[1])
 
     def test_plant_with_distribution_data_has_plant_name_in_title(self):
         SCIENTIFIC_NAME = 'Dendrolycopodium dendroideum'
@@ -383,10 +394,10 @@ class PlantDistributionMapTestCase(TestCase):
         SCIENTIFIC_NAME = 'Vaccinium vitis-idaea'
         self.distribution_map.set_plant(SCIENTIFIC_NAME)
         self.distribution_map.shade()
-        self._verify_shaded_counties(['present', 'absent'])
+        self._verify_shaded_counties(['county documented', 'absent'])
         labels = get_legend_labels(self.distribution_map.legend)
-        self.assertEqual(['present', 'undocumented', '', '', 'Native', ''],
-            labels)
+        self.assertEqual(['county documented', 'state documented', '', '',
+            'Native', ''], labels)
         self.assertEqual('%s: New England Distribution Map' % SCIENTIFIC_NAME,
                          self.distribution_map.get_title())
 
@@ -474,7 +485,7 @@ class NewEnglandPlantDistributionMapTestCase(TestCase):
         # First plant:
         SCIENTIFIC_NAME = 'Carex arcta'
         EXPECTED_SHADED_AREAS = {
-            'ME': 'present na',   # From the test data, expect only ME
+            'ME': 'county documented na',   # From test data, expect only ME
         }
         self.distribution_map.set_plant(SCIENTIFIC_NAME)
         records = self.distribution_map._get_distribution_records(
@@ -493,7 +504,7 @@ class NewEnglandPlantDistributionMapTestCase(TestCase):
         # Second plant:
         SCIENTIFIC_NAME = 'Carex arctata'
         EXPECTED_SHADED_AREAS = {
-            'MA': 'present na',   # From the test data, expect only MA
+            'MA': 'county documented na',   # From test data, expect only MA
         }
         self.distribution_map.set_plant(SCIENTIFIC_NAME)
         records = self.distribution_map._get_distribution_records(
