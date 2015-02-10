@@ -13,6 +13,7 @@ from django.utils.safestring import mark_safe
 from django.utils.translation import ugettext_lazy as _
 
 from gobotany.core import models
+from gobotany.core.distribution_places import DISTRIBUTION_PLACES
 
 # View classes
 
@@ -640,6 +641,52 @@ class DistributionAdmin(_Base):
                     messages.info(request, message)
 
         return result
+
+    # Allow creating a set of Distribution records for a new plant, one
+    # for each state, province and New England county, all at once. In
+    # the UI, this is a custom object-actions button at the top right
+    # of the list view, labeled "Add set of Distribution records."
+    @staticmethod
+    def add_set_view(request):
+        errors = []
+        scientific_name = ''
+
+        if request.POST.has_key('scientific_name'):
+            scientific_name = request.POST['scientific_name']
+            if not scientific_name:
+                errors.append('This field is required.')
+
+        if request.method == 'GET' or errors:
+            # Return the form page.
+            return render_to_response(
+                    'admin/core/distribution/add_set_form.html', {
+                        'title': 'Add set of Distribution records',
+                        'errors': errors,
+                        'scientific_name': scientific_name,
+                    }, context_instance=RequestContext(request))
+        elif request.method == 'POST':
+            # Get any defaults.
+            present = request.POST.get('present', False)
+            native = request.POST.get('native', False)
+            # Create the set of distribution records.
+            records_created = 0
+            for place in DISTRIBUTION_PLACES:
+                state, county = (place)
+                results = models.Distribution.objects.filter(
+                    scientific_name=scientific_name, state=state,
+                    county=county)
+                # If no record exists yet for this plant in this place,
+                # create one, setting any requested defaults.
+                if not results.exists():
+                    models.Distribution.objects.create(
+                        scientific_name=scientific_name, state=state,
+                        county=county, present=present, native=native)
+                    records_created += 1
+            # Return to the list page with a message to display.
+            message = ('Added %d Distribution records for %s.' %
+                (records_created, scientific_name))
+            messages.info(request, message)
+            return HttpResponseRedirect('/admin/core/distribution/')
 
     class RenameRecordsForm(forms.Form):
         _selected_action = forms.CharField(widget=forms.MultipleHiddenInput)

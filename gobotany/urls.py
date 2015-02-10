@@ -3,6 +3,8 @@ from django.conf.urls import include, patterns, url
 from django.contrib import admin
 from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 
+from gobotany.core.admin import DistributionAdmin
+
 handler404 = 'django.views.defaults.page_not_found'
 handler500 = 'django.views.defaults.server_error'
 
@@ -10,6 +12,7 @@ admin.autodiscover()
 
 urlpatterns = patterns(
     '',
+    url(r'^admin/core/distribution/addset/', DistributionAdmin.add_set_view),
     url(r'^admin/', include(admin.site.urls)),
     url(r'^api/', include('gobotany.api.urls')),
     url(r'^dkey/', include('gobotany.dkey.urls')),
