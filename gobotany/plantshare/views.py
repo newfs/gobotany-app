@@ -28,7 +28,7 @@ from gobotany.plantshare.forms import (ChangeEmailForm, ChecklistEntryForm,
 from gobotany.plantshare.models import (Checklist, ChecklistCollaborator,
     ChecklistEntry, Location, Question, ScreenedImage, Sighting,
     SIGHTING_VISIBILITY_CHOICES, UserProfile)
-from gobotany.plantshare.utils import restrictions
+from gobotany.plantshare.utils import prior_signup_detected, restrictions
 
 SIGHTINGS_MAP_DEFAULTS = {
     'latitude': '43.66',
@@ -181,9 +181,6 @@ def plantshare_view(request):
                 MAX_RECENTLY_ANSWERED_QUESTIONS)
     max_question_length = Question._meta.get_field('question').max_length
 
-    prior_signup_detected = request.COOKIES.get('registration_complete',
-                                                False)
-
     avatar_info = UserProfile.default_avatar_image()
     profile = None
     if request.user.is_authenticated():
@@ -203,7 +200,7 @@ def plantshare_view(request):
         checklists_count = profile.checklists.count()
 
     return render_to_response('plantshare.html', {
-                'prior_signup_detected': prior_signup_detected,
+                'prior_signup_detected': prior_signup_detected(request),
                 'avatar': avatar_info,
                 'map': SIGHTINGS_MAP_DEFAULTS,
                 'questions': questions,

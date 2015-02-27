@@ -19,6 +19,7 @@ from gobotany.core.models import (
 from gobotany.core.partner import (which_partner, per_partner_template,
                                    render_to_response_per_partner)
 from gobotany.dkey import models as dkey_models
+from gobotany.plantshare.utils import prior_signup_detected
 
 def _images_with_copyright_holders(images):
     # Reduce a live query object to a list to only run it once.
@@ -334,6 +335,7 @@ def species_view(request, genus_slug, epithet):
            'epithet': epithet,
            'native_to_north_america': native_to_north_america,
            'conservation_statuses': conservation_statuses,
+           'prior_signup_detected': prior_signup_detected(request),
            }, request)
 
 

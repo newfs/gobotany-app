@@ -147,3 +147,7 @@ def restrictions(plant_name, location=None):
         })
 
     return restrictions
+
+def prior_signup_detected(request):
+    """Detect whether the user has already signed up for PlantShare."""
+    return request.COOKIES.get('registration_complete', False)

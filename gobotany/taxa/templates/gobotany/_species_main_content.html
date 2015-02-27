@@ -95,7 +95,7 @@
             </div>
             
             <p class="found-plant">Found this plant? Take a photo and
-            {% if user.is_authenticated %}<a href="{% url 'ps-new-sighting' %}">{% else %}<a href="{% url 'ps-main' %}">{% endif %}post
+            {% if prior_signup_detected %}<a href="{% url 'ps-new-sighting' %}">{% else %}<a href="{% url 'ps-main' %}">{% endif %}post
             a sighting</a>.
             </p>
         </div>
