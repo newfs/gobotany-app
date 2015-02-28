@@ -4,6 +4,7 @@ from datetime import datetime
 
 from django.conf import settings
 from django.db import models
+from django.db.models import Q
 from django.contrib.auth.models import User
 from django.contrib.contenttypes.models import ContentType
 from django.contrib.contenttypes import generic
@@ -659,9 +660,9 @@ class Taxon(models.Model):
         any invasive status.
         """
         states = [key.upper() for key in settings.STATE_NAMES.keys()]
-        distributions = Distribution.objects.filter(
-            scientific_name__in=self.all_scientific_names).filter(
-            state__in=states).values_list('state', 'present')
+        distributions = Distribution.objects.all_records_for_plant(
+            self.scientific_name).filter(state__in=states).values_list(
+            'state', 'present')
         invasive_statuses = InvasiveStatus.objects.filter(
             taxon=self).values_list('region', 'invasive_in_region',
             'prohibited_from_sale')
@@ -920,6 +921,26 @@ class PlantPreviewCharacter(models.Model):
                               self.character.friendly_name)
 
 
+class DistributionManager(models.Manager):
+    def all_records_for_plant(self, scientific_name):
+        """Look up the plant and get its distribution records.
+
+        Get two sets of records together:
+        1. All the records for the exact scientific name
+        2. Any additional records that start with the scientific name
+           followed by a space
+
+        This is done to safely pick up any additional records with
+        subspecific epithets (ssp., var., etc.). These are included on the
+        map because the maps are made for the species pages, which feature
+        both the species information and any subspecific information.
+        """
+        return self.filter(
+            Q(scientific_name=scientific_name) |
+            Q(scientific_name__startswith=scientific_name + ' ')
+        )
+
+
 class Distribution(models.Model):
     """County- or state-level distribution data for plants."""
     scientific_name = models.CharField(max_length=100, db_index=True)
@@ -945,6 +966,8 @@ class Distribution(models.Model):
             status = 'absent'
         return '%s: %s%s: %s' % (self.scientific_name, self.state,
                                  county, status)
+
+    objects = DistributionManager()
 
 
 class CopyrightHolder(models.Model):

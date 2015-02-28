@@ -4,7 +4,6 @@ from os.path import abspath, dirname
 
 from django.conf import settings
 from django.core.exceptions import ObjectDoesNotExist
-from django.db.models import Q
 
 from lxml import etree
 
@@ -247,29 +246,11 @@ class PlantDistributionMap(ChloroplethMap):
         title_text = '%s: %s' % (scientific_name, title_text)
         self.set_title(title_text)
 
-    def _get_distribution_records(self, scientific_name):
-        """Look up the plant and get its distribution records.
-
-        Get two sets of records together:
-        1. All the records for the exact scientific name
-        2. Any additional records that start with the scientific name
-           followed by a space
-
-        This is done to safely pick up any additional records with
-        subspecific epithets (ssp., var., etc.). These are included on the
-        map because the maps are made for the species pages, which feature
-        both the species information and any subspecific information.
-        """
-        return models.Distribution.objects.filter(
-            Q(scientific_name=scientific_name) |
-            Q(scientific_name__startswith=scientific_name + ' ')
-        )
-
-
     def set_plant(self, scientific_name):
         """Set the plant to be shown and gather its data."""
         self.scientific_name = scientific_name
-        records = self._get_distribution_records(self.scientific_name)
+        records = models.Distribution.objects.all_records_for_plant(
+            self.scientific_name)
         if not records:
             # Distribution records might be listed under one of the
             # synonyms for this plant instead.
@@ -279,7 +260,8 @@ class PlantDistributionMap(ChloroplethMap):
                 if taxon.synonyms:
                     for synonym in taxon.synonyms.all():
                         name = synonym.scientific_name
-                        records = self._get_distribution_records(name)
+                        records = models.Distribution.objects.all_records_for_plant(
+                            name)
                         if records:
                             break
             except ObjectDoesNotExist:
