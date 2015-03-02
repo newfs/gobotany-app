@@ -1654,6 +1654,13 @@ body.search-results .search-navigation li { display: inline; margin: 0 2px; }
 #advanced-id #main .dk-landing-section section ul li { margin: 10px 0; }
 #advanced-id #main .dk-landing-section > a { bottom: 10px; margin: 0 0 0 20px; position: absolute; width: 224px; }
 
+/* System Requirements */
+#system-requirements #main p + div { background-image: url(/static/images/layout/screen-desktop-laptop.svg); background-position: top 9px left; background-repeat: no-repeat; background-size: 173px 121px; }
+#system-requirements #main div + div { background-image: url(/static/images/layout/screen-tablet.svg), url(/static/images/layout/screen-smartphone.svg); background-position: top 9px left 20px, top 9px left 122px; background-repeat: no-repeat, no-repeat; background-size: 74px 98px, 30px 57px; }
+#system-requirements #main p + div, #system-requirements #main div + div { padding-left: 200px; }
+#system-requirements #main div + div, #system-requirements #main div + h2 { clear: left; }
+#system-requirements #main div + h2 { padding-top: 10px; }
+
 /* Video Help Topics */
 #video .video-topic { float: left; height: 176px; margin: 10px 16px 10px 0; position: relative; width: 220px; }
 #video .video-topic img { height: 137px; width: 220px; }
@@ -1693,6 +1700,9 @@ body.search-results .search-navigation li { display: inline; margin: 0 2px; }
 @media only screen and (max-width: 400px) { #about #main > img { width: 57%; }
   #about #main img.bookcover { width: auto; }
   #advanced-map #group-section { height: 600px; }
+  #system-requirements #main p + div, #system-requirements #main div + div { padding-left: 0; }
+  #system-requirements #main p + div { padding-top: 135px; }
+  #system-requirements #main div + div { padding-top: 115px; }
   #glossary #alphabet { height: 99px; } }
 /* Landscape-orientation styles */
 @media only screen and (min-width: 401px) and (max-width: 600px) { #advanced-map #group-section { height: 400px; }

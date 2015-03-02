@@ -83,6 +83,11 @@ def help_dkey_view(request):
            }, request)
 
 @vary_on_headers('Host')
+def system_requirements_view(request):
+    return render_to_response_per_partner('system_requirements.html', {
+           }, request)
+
+@vary_on_headers('Host')
 def about_view(request):
     return render_to_response_per_partner('about.html', {
            }, request)

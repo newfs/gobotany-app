@@ -27,6 +27,8 @@ urlpatterns = patterns(
     url(r'^glossary/$', views.glossary_main_view, name='site-glossary-main'),
     url('^advanced/$', views.placeholder_view,
         {'template': 'gobotany/advanced.html'}, name='advanced-id-tools'),
+    url(r'^requirements/', views.system_requirements_view,
+        name='site-system-requirements'),
     url(r'^about/$', views.about_view, name='site-about'),
     url(r'^contributors/$', views.contributors_view,
         name='site-contributors'),

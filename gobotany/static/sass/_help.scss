@@ -334,6 +334,32 @@ $image-box-shadow-color: rgba(0, 0, 0, 0.6);
     }
 }
 
+/* System Requirements */
+
+#system-requirements #main {
+    p + div {
+        background-image: url(/static/images/layout/screen-desktop-laptop.svg);
+        background-position: top 9px left;
+        background-repeat: no-repeat;
+        background-size: 173px 121px;
+    }
+    div + div {
+        background-image: url(/static/images/layout/screen-tablet.svg), url(/static/images/layout/screen-smartphone.svg);
+        background-position: top 9px left 20px, top 9px left 122px;
+        background-repeat: no-repeat, no-repeat;
+        background-size: 74px 98px, 30px 57px;
+    }
+    p + div, div + div {
+        padding-left: 200px;
+    }
+    div + div, div + h2 {
+        clear: left;
+    }
+    div + h2 {
+        padding-top: 10px;
+    }
+}
+
 /* Video Help Topics */
 
 #video {
@@ -472,6 +498,17 @@ $image-box-shadow-color: rgba(0, 0, 0, 0.6);
     }
     #advanced-map #group-section {
         height: 600px;
+    }
+    #system-requirements #main {
+        p + div, div + div {
+            padding-left: 0;
+        }
+        p + div {
+            padding-top: 135px;
+        }
+        div + div {
+            padding-top: 115px;
+        }
     }
     #glossary #alphabet {
         height: 99px;
