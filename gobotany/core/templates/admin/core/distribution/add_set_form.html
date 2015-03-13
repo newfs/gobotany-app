@@ -27,7 +27,7 @@
     {% blocktrans count counter=errors|length %}Please correct the error below.{% plural %}Please correct the errors below.{% endblocktrans %}
     </p>
     {% endif %}
-    <p>Enter a plant name and set any desired defaults.</p>
+    <p>Enter the plant name and set any desired defaults.</p>
     <p>A set of distribution records will be created for the plant: one for
     each state, province, and New England county.</p>
     <p>If some records already exist for this plant, they will remain
@@ -54,6 +54,24 @@
                     <input class="vTextField" id="id_scientific_name"
                         maxlength="100" name="scientific_name"
                         type="text" value="{{ scientific_name }}">
+                </div>
+            </div>
+            <div class="form-row field-species-name">
+                <div>
+                    <label for="id_species_name"
+                        class="required">Species name:</label>
+                    <input class="vTextField" id="id_species_name"
+                        maxlength="60" name="species_name"
+                        type="text" value="{{ species_name }}">
+                </div>
+            </div>
+            <div class="form-row field-subspecific_epithet">
+                <div>
+                    <label for="id_subspecific_epithet"
+                        class="required">Subspecific epithet:</label>
+                    <input class="vTextField" id="id_subspecific_epithet"
+                        maxlength="60" name="subspecific_epithet"
+                        type="text" value="{{ subspecific_epithet }}">
                 </div>
             </div>
             <div class="form-row field-present">

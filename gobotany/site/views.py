@@ -424,8 +424,7 @@ def species_list_view(request):
     states = [state.upper() for state in settings.STATE_NAMES.keys()]
     d = Distribution.objects.filter(present=True).filter(
         county__exact='').filter(state__in=states).filter(
-        scientific_name__in=sci_names).values_list(
-        'scientific_name', 'state')
+        species_name__in=sci_names).values_list('species_name', 'state')
     ids_by_name = {name: id for id, name in t}
     for scientific_name, state in d:
         taxon_id = ids_by_name[scientific_name]

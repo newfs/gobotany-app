@@ -585,7 +585,8 @@ class RankFilter(admin.SimpleListFilter):
 
 
 class DistributionAdmin(_Base):
-    list_display = ('scientific_name', 'state', 'county', 'present', 'native')
+    list_display = ('scientific_name', 'species_name', 'subspecific_epithet',
+        'state', 'county', 'present', 'native')
     list_editable = ('present', 'native',)
     list_filter = (DistributionRegionFilter, RankFilter, 'native', 'present',
         'state', 'county')
@@ -650,10 +651,16 @@ class DistributionAdmin(_Base):
     def add_set_view(request):
         errors = []
         scientific_name = ''
+        species_name = ''
 
         if request.POST.has_key('scientific_name'):
             scientific_name = request.POST['scientific_name']
             if not scientific_name:
+                errors.append('This field is required.')
+
+        if request.POST.has_key('species_name'):
+            species_name = request.POST['species_name']
+            if not species_name:
                 errors.append('This field is required.')
 
         if request.method == 'GET' or errors:
@@ -665,6 +672,7 @@ class DistributionAdmin(_Base):
                         'scientific_name': scientific_name,
                     }, context_instance=RequestContext(request))
         elif request.method == 'POST':
+            subspecific_epithet = request.POST.get('subspecific_epithet', '')
             # Get any defaults.
             present = request.POST.get('present', False)
             native = request.POST.get('native', False)
@@ -679,7 +687,9 @@ class DistributionAdmin(_Base):
                 # create one, setting any requested defaults.
                 if not results.exists():
                     models.Distribution.objects.create(
-                        scientific_name=scientific_name, state=state,
+                        scientific_name=scientific_name,
+                        species_name=species_name,
+                        subspecific_epithet=subspecific_epithet, state=state,
                         county=county, present=present, native=native)
                     records_created += 1
             # Return to the list page with a message to display.
