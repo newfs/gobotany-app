@@ -306,7 +306,7 @@ class PlantDistributionMap(ChloroplethMap):
                     should_shade = True
         elif shaded_native:
             # If the new record is county-level native, override.
-            if is_present and level == 'county':
+            if is_present and level == 'county' and is_native:
                 should_shade = True
 
         return should_shade
