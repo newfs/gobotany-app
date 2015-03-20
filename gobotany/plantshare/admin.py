@@ -3,6 +3,15 @@ from django.contrib import admin
 
 from gobotany.plantshare import models
 
+
+class _Base(admin.ModelAdmin):
+    class Media:
+        css = {
+            'all': ('/static/admin/admin_gb.css',)
+        }
+        js = ('/static/admin/admin_gb.js',)
+
+
 class QuestionAdminForm(forms.ModelForm):
     question = forms.CharField(
         widget=forms.Textarea(attrs={'rows':3, 'cols':80})
@@ -14,7 +23,7 @@ class QuestionAdminForm(forms.ModelForm):
         model = models.Question
 
 
-class QuestionAdmin(admin.ModelAdmin):
+class QuestionAdmin(_Base):
     date_hierarchy = 'asked'
     fields = ('question', 'image_links', 'asked_by', 'answer', 'category',
               'approved')
@@ -42,7 +51,7 @@ class QuestionAdmin(admin.ModelAdmin):
     image_links.allow_tags = True
 
 
-class SightingAdmin(admin.ModelAdmin):
+class SightingAdmin(_Base):
     fields = ('user', 'created', 'identification', 'notes', 'location',
         'location_notes', 'photographs', 'visibility', 'flagged',
         'approved', 'email')
@@ -82,7 +91,7 @@ class SightingAdmin(admin.ModelAdmin):
     photographs.short_description = 'Photos'
     photographs.allow_tags = True
 
-class ScreenedImageAdmin(admin.ModelAdmin):
+class ScreenedImageAdmin(_Base):
     list_display = ('image_type', 'uploaded', 'uploaded_by',
         'email', 'screened', 'screened_by', 'is_approved', 'admin_thumb')
     list_filter = ('is_approved',)

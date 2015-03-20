@@ -11,6 +11,13 @@
 }
 
 
+/* List view links: allow wrapping long labels (see Question model) */
+
+#result_list th a {
+    word-break: break-all;
+}
+
+
 /* Distribution model change form: Save and Edit Next button */
 
 /* Hide the button on all other models' forms. */
