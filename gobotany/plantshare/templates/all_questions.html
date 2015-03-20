@@ -13,34 +13,19 @@
 {% block main_content %}
 <h1>Questions and Answers</h1>
 
-{% regroup questions by category as category_list %}
-
-<div id="category-nav">
-    <p>Categories:</p>
-    <ul>
-    {% for category in category_list %}
-        <li><a href="#{{ category.grouper|lower }}">{{ category.grouper }}</a>
-        ({{ category.list|length }})</li>
-        {% endfor %}
-    </ul>
-</div>
-
-{% for category in category_list %}
-    <h2 id="{{ category.grouper|lower }}">{{ category.grouper }}</h2>
-    <ul class="questions">
-        {% for question in category.list %}
-            <li id="q{{ question.id }}">
-                {% include "_question_images.html" %}
-                <dl>
-                    <dt>Question</dt>
-                    <dd>{{ question.question }}</dd>
-                    <dt>Answer</dt>
-                    <dd>{{ question.answer }}</dd>
-                </dl>
-            </li>
-        {% endfor %}
-    </ul>
-{% endfor %}
+<ul class="questions">
+	{% for question in questions %}
+		<li id="q{{ question.id }}">
+			{% include "_question_images.html" %}
+			<dl>
+				<dt>Question</dt>
+				<dd>{{ question.question }}</dd>
+				<dt>Answer</dt>
+				<dd>{{ question.answer }}</dd>
+			</dl>
+		</li>
+	{% endfor %}
+</ul>
 
 {% endblock %}
 

@@ -661,8 +661,7 @@ def questions_view(request):
 @terms_agreed_on_login
 def all_questions_view(request):
     """View for the full list of Questions and Answers."""
-    questions = Question.objects.answered().order_by(
-        'category', '-answered')
+    questions = Question.objects.answered().order_by('-answered')
     return render_to_response('all_questions.html', {
             'questions': questions
         }, context_instance=RequestContext(request))
