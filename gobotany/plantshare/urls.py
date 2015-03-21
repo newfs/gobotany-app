@@ -49,7 +49,10 @@ urlpatterns = patterns(
     url(r'^questions/$', views.questions_view, name='ps-questions'),
     url(r'^questions/new/done/$', views.new_question_done_view,
         name='ps-new-question-done'),
-    url(r'^questions/all/$', views.all_questions_view,
+    url(r'^questions/all/(?P<year>[0-9]{4})/$',
+        views.all_questions_by_year_view,
+        name='ps-all-questions-by-year'),
+    url(r'^questions/all/$', views.all_questions_by_year_view,
         name='ps-all-questions'),
 
     # Checklists

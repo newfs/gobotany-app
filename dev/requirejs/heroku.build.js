@@ -28,6 +28,7 @@
                 'plantshare/find_people',
                 'plantshare/find_people_profile',
                 'plantshare/manage_sightings',
+                'plantshare/redirect_old_question_urls',
                 'plantshare/terms_of_agreement',
                 'plantshare/your_profile',
                 'plantshare/plantshare',

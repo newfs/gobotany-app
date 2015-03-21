@@ -27,7 +27,7 @@ class QuestionAdmin(_Base):
     date_hierarchy = 'asked'
     fields = ('question', 'image_links', 'asked_by', 'answer', 'approved')
     form = QuestionAdminForm
-    list_display = ('question', 'answer', 'asked', 'approved')
+    list_display = ('question', 'answer', 'asked', 'approved', 'id')
     list_filter = ('approved', 'answered', 'asked')
     ordering = ['-answered']
     readonly_fields = ['image_links', 'asked_by']

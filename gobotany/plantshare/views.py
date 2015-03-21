@@ -659,12 +659,41 @@ def questions_view(request):
 
 
 @terms_agreed_on_login
-def all_questions_view(request):
-    """View for the full list of Questions and Answers."""
-    questions = Question.objects.answered().order_by('-answered')
-    return render_to_response('all_questions.html', {
-            'questions': questions
-        }, context_instance=RequestContext(request))
+def all_questions_by_year_view(request, year=None):
+    """View for a list of all Questions and Answers for a year."""
+
+    years = [str(dt.year) for dt in
+        Question.objects.dates('asked', 'year', order='DESC')]
+    # If this view was not called with a year, use the latest year.
+    if not year:
+        year = years[0]
+
+    # If this view was called with a q?= parameter, look up the year
+    # of the question id in the database and redirect to that year. This
+    # is to handle redirects from the client side for old-format URLs.
+    question_id = request.GET.get('q', None)
+    if (question_id):
+        question_id = int(question_id)
+        question = get_object_or_404(Question, pk=question_id)
+        if question:
+            if question.answered:
+                year = question.asked.year
+                url = reverse('ps-all-questions-by-year', args=(year,))
+                return HttpResponseRedirect(url)
+            else:
+                raise Http404
+
+    questions = Question.objects.answered().filter(
+        asked__year=year).order_by('-answered')
+
+    if questions:
+        return render_to_response('all_questions.html', {
+                'questions': questions,
+                'year': year,
+                'years': years
+            }, context_instance=RequestContext(request))
+    else:
+        raise Http404
 
 
 @login_required

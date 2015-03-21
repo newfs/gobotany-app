@@ -4,14 +4,28 @@
 
 {% block js_require %}
     require([
-        'plantshare/ask_the_botanist'
+        'plantshare/ask_the_botanist',
+        'plantshare/redirect_old_question_urls'
     ]);
 {% endblock %}
 
 {% block body_attributes %}id="questions" class="plantshare ask"{% endblock %}
 
 {% block main_content %}
+<p class="nav-links">
+{% for y in years %}
+    {% if y = year %}
+        {{ y }}
+    {% else %}
+        <a href="{% url 'ps-all-questions-by-year' y %}">{{ y }}</a>
+    {% endif %}
+    {% if not forloop.last %} | {% endif %}
+{% endfor %}
+</p>
+
 <h1>Questions and Answers</h1>
+
+<h2>{{ year }}</h2>
 
 <ul class="questions">
 	{% for question in questions %}

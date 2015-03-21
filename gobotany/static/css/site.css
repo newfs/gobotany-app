@@ -1088,6 +1088,7 @@ min-width: 0;
 body.plantshare { /* end #sightings-locator */ /* For: forms Your Profile page and also the separate form/error pages */ }
 body.plantshare .recaptchatable a { color: #317b0c; }
 body.plantshare .recaptchatable #recaptcha_response_field { font-family: "Trebuchet MS", Helvetica, Arial, "Lucida Sans Unicode", sans-serif; font-size: 14px; }
+body.plantshare .nav-links { font-family: "Trebuchet MS", Helvetica, Arial, "Lucida Sans Unicode", sans-serif; font-size: 14px; margin: 0 0 16px; }
 body.plantshare .content li { list-style-type: none; }
 body.plantshare .content form p { margin: 0; }
 body.plantshare .content form label { clear: left; display: block; margin-bottom: 4px; text-transform: uppercase; width: 353px; }
@@ -1255,7 +1256,6 @@ body.plantshare .thumb-frame .wait { margin-bottom: 40px; }
 body.plantshare .thumb-frame .delete-link { display: table; margin: 0 auto; padding-top: 8px; }
 body.plantshare .thumb-frame .delete-link img { float: left; padding-right: 4px; vertical-align: top; }
 body.plantshare .upload { display: inline-block; float: left; padding-bottom: 20px; }
-body.plantshare#sightings .nav-links { font-family: "Trebuchet MS", Helvetica, Arial, "Lucida Sans Unicode", sans-serif; font-size: 14px; margin: 0 0 16px; }
 body.plantshare#sightings h2 { clear: both; }
 body.plantshare#sightings #main > ul { margin-top: 14px; }
 body.plantshare#sightings #main > ul > li { margin-bottom: 14px; }

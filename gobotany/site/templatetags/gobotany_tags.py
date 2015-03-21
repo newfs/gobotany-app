@@ -60,7 +60,9 @@ def url(obj):
         return reverse('ps-sighting', args=(obj.id,))
 
     if isinstance(obj, plantshare_models.Question):
-        return '%s#q%d' % (reverse('ps-all-questions'), obj.id)
+        year = obj.answered.year
+        return '%s#q%d' % (reverse('ps-all-questions-by-year',
+            args=(year,)), obj.id)
 
     # Pages.
 
