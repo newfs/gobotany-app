@@ -185,6 +185,15 @@ define([
         return bounds;
     };
 
+    MarkerMap.prototype.coordinates_valid = function (latitude, longitude) {
+        // Check for valid coordinates.
+        var valid = true;
+        if (latitude === null || longitude === null) {
+            valid = false;
+        }
+        return valid;
+    };
+
     MarkerMap.prototype.fit_bounds_to_coordinates = function (coordinates) {
         // Fit the map bounds to a list of coordinates.
         if (coordinates.length) {
@@ -192,6 +201,9 @@ define([
             for (var i = 0; i < coordinates.length; i++) {
                 var latitude = coordinates[i][0];
                 var longitude = coordinates[i][1];
+                if (this.coordinates_valid(latitude, longitude) === false) {
+                    continue;
+                }
                 var lat_lng = new google_maps.LatLng(latitude, longitude);
                 bounds.extend(lat_lng);
             }
@@ -248,6 +260,13 @@ define([
     MarkerMap.prototype.add_marker = function (latitude, longitude, title,
                                                info_window_html, sighting_id,
                                                show_info) {
+        // Check for valid coordinates.
+        if (this.coordinates_valid(latitude, longitude) === false) {
+            console.error('Invalid latitude or longitude value (sighting ' +
+                sighting_id + ')');
+            return;
+        }
+        
         // Create a marker.
         var lat_long = new google_maps.LatLng(latitude, longitude);
         var options = {
