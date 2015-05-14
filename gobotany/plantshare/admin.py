@@ -1,5 +1,7 @@
 from django import db, forms
 from django.contrib import admin
+from django.core import urlresolvers
+from django.utils.safestring import mark_safe
 
 from gobotany.plantshare import models
 
@@ -55,10 +57,10 @@ class LocationAdmin(_Base):
 
 
 class SightingAdmin(_Base):
-    fields = ('user', 'created', 'identification', 'notes', 'location',
+    fields = ('user', 'created', 'identification', 'notes', 'location_link',
         'location_notes', 'photographs', 'visibility', 'flagged',
         'approved', 'email')
-    readonly_fields = ('location', 'photographs', 'email',)
+    readonly_fields = ('user', 'location_link', 'photographs', 'email',)
     formfield_overrides = {
         db.models.TextField:
             {'widget': forms.Textarea(attrs={'rows': 3, 'cols': 80})},
@@ -67,6 +69,13 @@ class SightingAdmin(_Base):
         'email', 'created', 'visibility', 'flagged', 'approved')
     list_filter = ('created', 'visibility', 'flagged', 'approved')
     search_fields = ('identification', 'location__city', 'location__state',)
+
+    def location_link(self, obj):
+        change_url = urlresolvers.reverse('admin:plantshare_location_change',
+            args=(obj.location.id,))
+        return mark_safe('<a href="%s">%s</a>' % (change_url,
+            obj.location.user_input))
+    location_link.short_description = 'Location'
 
     def display_name(self, obj):
         display_name = ''
