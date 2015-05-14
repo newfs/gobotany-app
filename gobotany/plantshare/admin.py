@@ -50,6 +50,10 @@ class QuestionAdmin(_Base):
     image_links.allow_tags = True
 
 
+class LocationAdmin(_Base):
+    pass
+
+
 class SightingAdmin(_Base):
     fields = ('user', 'created', 'identification', 'notes', 'location',
         'location_notes', 'photographs', 'visibility', 'flagged',
@@ -108,5 +112,6 @@ class ScreenedImageAdmin(_Base):
 
 
 admin.site.register(models.Question, QuestionAdmin)
+admin.site.register(models.Location, LocationAdmin)
 admin.site.register(models.Sighting, SightingAdmin)
 admin.site.register(models.ScreenedImage, ScreenedImageAdmin)
