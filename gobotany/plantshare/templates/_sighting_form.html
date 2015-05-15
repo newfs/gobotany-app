@@ -16,11 +16,12 @@
             <legend>Location</legend>
 
             {{ form.location.errors }}
-            <label for="id_location">Location (required)</label>
+            <label id="location_label" for="id_location">Location (required)</label>
             <div class="location">
                 {{ form.location }}
                 {% sightings_map latitude="42.342" longitude="-71.425" center_title="180 Hemenway Road, Framingham, MA" height="180px" width="302px" zoom="10" id="location-map" %}
             </div>
+            <input type="hidden" id="location_valid"></input>
 
             {{ form.location_notes.errors }}
             <label for="id_location_notes">Notes on location</label>

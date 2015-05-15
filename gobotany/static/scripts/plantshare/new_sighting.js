@@ -115,10 +115,42 @@ define([
         return offset_coordinate;
     }
 
+    function coordinates_valid(latitude, longitude) {
+        // Check for valid coordinates.
+        var valid = true;
+        if (isNaN(latitude) || isNaN(longitude)) {
+            valid = false;
+        }
+        return valid;
+    }
+
+    function set_location_valid(is_valid) {
+        // Set a hidden field value that tracks whether the current
+        // location is valid or not. A location is valid if its input
+        // string geocoded into valid coordinate values.
+        $('#location_valid').val(is_valid);
+    }
+
+    function update_location_message(is_valid) {
+        // If the location is invalid, show an error message with the
+        // location field label.
+        var $label = $('#location_label');
+        $label.children('.error').remove();
+        if (is_valid === false) {
+            $label.append(' <span class="error">Invalid location: ' +
+                'please edit.</span>');
+        }
+    }
+
     function update_location_on_map(map, latitude, longitude, location) {
         // Update location on dynamic map.
-        var lat_lng = new google_maps.LatLng(latitude, longitude);
-        map.place_marker(lat_lng, location);
+        var is_valid = coordinates_valid(latitude, longitude);
+        set_location_valid(is_valid);
+        update_location_message(is_valid);
+        if (is_valid) {
+            var lat_lng = new google_maps.LatLng(latitude, longitude);
+            map.place_marker(lat_lng, location);
+        }
     }
 
     function update_latitude_longitude(location, geocoder, marker_map) {
@@ -157,11 +189,11 @@ define([
     }
 
     function enable_disable_submit_button(allow_enable /* optional */) {
-        // Enable or disable the submit ("Post Sighting") button.
         var DISABLED = 'disabled';
-        var $button = $('.post-sighting-btn');
+        var $button = $('form input[type="submit"]');
         var enable = ($('#id_identification').val() !== '' &&
-                      $('#id_location').val() !== '');
+            $('#id_location').val() !== '' &&
+            $('#location_valid').val() === 'true');
         var allow_enable = (typeof allow_enable === 'undefined') ?
             true : allow_enable;
         if (enable === true && allow_enable === true) {
@@ -364,7 +396,7 @@ define([
             $('#id_longitude').val(longitude);
             var location = latitude + ', ' + longitude;
             $location_box.val(location);
-            marker_map.place_marker(event.latLng, location);
+            update_location_on_map(marker_map, latitude, longitude);
             enable_disable_submit_button();
         });
 
