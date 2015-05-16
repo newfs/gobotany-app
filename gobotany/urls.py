@@ -35,6 +35,12 @@ if settings.DEBUG:
        )
 # For now, always have staticfiles turned on, even in production.
 
+if settings.USE_DEBUG_TOOLBAR and settings.DEBUG:
+    import debug_toolbar
+    urlpatterns += patterns('',
+        url(r'^__debug__/', include(debug_toolbar.urls)),
+    )
+
 class FakeSettings():
     DEBUG = True
 

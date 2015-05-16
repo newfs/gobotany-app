@@ -66,6 +66,8 @@ USE_DEBUG_TOOLBAR = False
 # following line to turn it on.
 #USE_DEBUG_TOOLBAR = not IN_PRODUCTION and DEBUG_TOOLBAR_AVAILABLE
 
+DEBUG_TOOLBAR_PATCH_SETTINGS = False
+
 DEBUG = 'DEBUG' in os.environ or not IN_PRODUCTION
 
 # This setting is for showing features that are still being developed.
