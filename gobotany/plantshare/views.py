@@ -340,8 +340,9 @@ def sightings_by_year_view(request, year):
         may_show_sighting = _may_show_sighting(sighting, request.user)
         if may_show_sighting:
             photo = ''
-            if sighting.approved_photos():
-                photo = sighting.approved_photos()[0]
+            approved_photos = sighting.approved_photos()
+            if len(approved_photos) > 0:
+                photo = approved_photos[0]
             created = sighting.created.strftime(SIGHTING_DATE_FORMAT)
             sightings.append({
                 'id': sighting.id,
