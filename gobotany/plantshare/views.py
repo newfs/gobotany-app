@@ -235,6 +235,20 @@ def _may_show_sighting(sighting, user):
     return may_show_sighting
 
 
+def _get_photo_for_thumbnail(sighting, request):
+    """Look for a photo that can be used for a thumbnail image for a
+    sighting on the Recent Sightings page or sightings by year pages.
+    """
+    photo = ''
+    for p in sighting.photos.all():
+        # If the photo is approved, or the user viewing the page
+        # is the owner of the sighting photo, show the photo.
+        if p.is_approved or (sighting.user == request.user):
+            photo = p
+            break
+    return photo
+
+
 @terms_agreed_on_login
 def sightings_view(request):
     """View for the sightings collection: showing a list of recent sightings
@@ -292,19 +306,12 @@ def sightings_view(request):
     elif request.method == 'GET':
         # Return a representation of the collection of sightings.
         sightings_queryset = Sighting.objects.select_related().all().\
-            prefetch_related('location')
+            prefetch_related('location', 'photos', 'user')
         sightings = []
         for sighting in sightings_queryset:
             may_show_sighting = _may_show_sighting(sighting, request.user)
             if may_show_sighting:
-                photo = ''
-                if sighting.approved_photos():
-                    photo = sighting.approved_photos()[0]
-                elif sighting.user == request.user:
-                    # If there are approved photos yet, but the sighting
-                    # belongs to the current user, check for a photo to show.
-                    if sighting.private_photos():
-                        photo = sighting.private_photos()[0]
+                photo = _get_photo_for_thumbnail(sighting, request)
                 created = sighting.created.strftime(SIGHTING_DATE_DAY_FORMAT)
                 year = sighting.created.strftime('%Y')
                 sightings.append({
@@ -334,15 +341,13 @@ def sightings_view(request):
 @terms_agreed_on_login
 def sightings_by_year_view(request, year):
     sightings_queryset = Sighting.objects.select_related().\
-        filter(created__year=year).prefetch_related('location')
+        filter(created__year=year).prefetch_related('location', 'photos',
+        'user')
     sightings = []
     for sighting in sightings_queryset:
         may_show_sighting = _may_show_sighting(sighting, request.user)
         if may_show_sighting:
-            photo = ''
-            approved_photos = sighting.approved_photos()
-            if len(approved_photos) > 0:
-                photo = approved_photos[0]
+            photo = _get_photo_for_thumbnail(sighting, request)
             created = sighting.created.strftime(SIGHTING_DATE_FORMAT)
             sightings.append({
                 'id': sighting.id,
