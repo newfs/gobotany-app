@@ -10,7 +10,15 @@ handler500 = 'django.views.defaults.server_error'
 
 admin.autodiscover()
 
-urlpatterns = patterns(
+urlpatterns = patterns('',)
+
+if settings.USE_DEBUG_TOOLBAR and settings.DEBUG:
+    import debug_toolbar
+    urlpatterns += patterns('',
+        url(r'^__debug__/', include(debug_toolbar.urls)),
+    )
+
+urlpatterns += patterns(
     '',
     url(r'^admin/core/distribution/addset/', DistributionAdmin.add_set_view),
     url(r'^admin/', include(admin.site.urls)),
@@ -34,12 +42,6 @@ if settings.DEBUG:
             }),
        )
 # For now, always have staticfiles turned on, even in production.
-
-if settings.USE_DEBUG_TOOLBAR and settings.DEBUG:
-    import debug_toolbar
-    urlpatterns += patterns('',
-        url(r'^__debug__/', include(debug_toolbar.urls)),
-    )
 
 class FakeSettings():
     DEBUG = True
