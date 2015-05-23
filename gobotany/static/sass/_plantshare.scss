@@ -805,29 +805,54 @@ body.plantshare {
     &#sightings {
         h2 {
             clear: both;
+            font-size: 22px;
         }
         #main > ul {
             margin-top: 14px;
             > li {
+                clear: both;
+                font-family: $headings-font;
+                font-size: 18px;
                 margin-bottom: 14px;
+                margin-top: 22px;
                 ul {
                     li {
-                        margin: 14px 0;
+                        clear: both;
+                        font-size: 14px;
+                        margin: 22px 0;
                     }
                 }
             }
-            img {
-                max-width: 140px;
-                vertical-align: middle;
-            }
             .photolink {
                 border-bottom: 0;
+                box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.6);
+                display: inline-block;
+                float: left;
+                height: 149px;
+                margin: 0 16px 22px 0;
+                overflow: hidden;
+                position: relative;
+                vertical-align: middle;
+                width: 183px;
+
+                &:before {
+                    border: 5px solid rgba(255, 255, 255, 0.8);
+                    content: ' ';
+                    height: 139px;
+                    position: absolute;
+                    width: 173px;
+                    z-index: 100;
+                }
             }
             .title {
-                margin-left: 150px;
+                line-height: 150%;
+                margin-left: 200px;
             }
             .photolink + .title {
-                margin-left: 6px;
+                margin-left: 12px;
+            }
+            .title a {
+                font-size: 16px;
             }
         }
     }
@@ -1692,6 +1717,9 @@ body.plantshare {
             }
         }
         &#sightings {
+            #main .nav-links {
+                padding: 8px 0;
+            }
             #main > ul {
                 > li ul {
                     margin: 0;
@@ -1701,10 +1729,16 @@ body.plantshare {
                 }
                 .title {
                     display: inline-block;
-                    margin: 0;
+                    margin: 8px 0 12px 0;
+                }
+                .photolink {
+                    float: none;
+                    margin: 8px 0 8px;
                 }
                 .photolink + .title {
+                    display: block;
                     margin-left: 0;
+                    margin-top: 0;
                 }
             }
         }

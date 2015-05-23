@@ -244,10 +244,10 @@ a:active { color: #45ac11; }
 a:not([href]) { color: black; }
 a:not([href]):hover { text-decoration: none; }
 
-#main p a, #main li > a, #main li > i a, #main dt a, #main td a, #main h2 a, #main form > a, #main form div > a, #sidebar form > a, .nemap a { border-bottom: 1px solid #c3d941; }
-#main p a:hover, #main li > a:hover, #main li > i a:hover, #main dt a:hover, #main td a:hover, #main h2 a:hover, #main form > a:hover, #main form div > a:hover, #sidebar form > a:hover, .nemap a:hover { border-color: #317b0c; }
-#main p a:active, #main li > a:active, #main li > i a:active, #main dt a:active, #main td a:active, #main h2 a:active, #main form > a:active, #main form div > a:active, #sidebar form > a:active, .nemap a:active { border-color: #45ac11; }
-#main p a:not([href]), #main li > a:not([href]), #main li > i a:not([href]), #main dt a:not([href]), #main td a:not([href]), #main h2 a:not([href]), #main form > a:not([href]), #main form div > a:not([href]), #sidebar form > a:not([href]), .nemap a:not([href]) { border: 0; }
+#main p a, #main li > a, #main li > i a, #main dt a, #main td a, #main h2 a, #main form > a, #main form div > a, #main li li a, #sidebar form > a, .nemap a { border-bottom: 1px solid #c3d941; }
+#main p a:hover, #main li > a:hover, #main li > i a:hover, #main dt a:hover, #main td a:hover, #main h2 a:hover, #main form > a:hover, #main form div > a:hover, #main li li a:hover, #sidebar form > a:hover, .nemap a:hover { border-color: #317b0c; }
+#main p a:active, #main li > a:active, #main li > i a:active, #main dt a:active, #main td a:active, #main h2 a:active, #main form > a:active, #main form div > a:active, #main li li a:active, #sidebar form > a:active, .nemap a:active { border-color: #45ac11; }
+#main p a:not([href]), #main li > a:not([href]), #main li > i a:not([href]), #main dt a:not([href]), #main td a:not([href]), #main h2 a:not([href]), #main form > a:not([href]), #main form div > a:not([href]), #main li li a:not([href]), #sidebar form > a:not([href]), .nemap a:not([href]) { border: 0; }
 
 #main td.scientific-name a { border-bottom: 0; }
 
@@ -1257,14 +1257,15 @@ body.plantshare .thumb-frame .wait { margin-bottom: 40px; }
 body.plantshare .thumb-frame .delete-link { display: table; margin: 0 auto; padding-top: 8px; }
 body.plantshare .thumb-frame .delete-link img { float: left; padding-right: 4px; vertical-align: top; }
 body.plantshare .upload { display: inline-block; float: left; padding-bottom: 20px; }
-body.plantshare#sightings h2 { clear: both; }
+body.plantshare#sightings h2 { clear: both; font-size: 22px; }
 body.plantshare#sightings #main > ul { margin-top: 14px; }
-body.plantshare#sightings #main > ul > li { margin-bottom: 14px; }
-body.plantshare#sightings #main > ul > li ul li { margin: 14px 0; }
-body.plantshare#sightings #main > ul img { max-width: 140px; vertical-align: middle; }
-body.plantshare#sightings #main > ul .photolink { border-bottom: 0; }
-body.plantshare#sightings #main > ul .title { margin-left: 150px; }
-body.plantshare#sightings #main > ul .photolink + .title { margin-left: 6px; }
+body.plantshare#sightings #main > ul > li { clear: both; font-family: "Trebuchet MS", Helvetica, Arial, "Lucida Sans Unicode", sans-serif; font-size: 18px; margin-bottom: 14px; margin-top: 22px; }
+body.plantshare#sightings #main > ul > li ul li { clear: both; font-size: 14px; margin: 22px 0; }
+body.plantshare#sightings #main > ul .photolink { border-bottom: 0; box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.6); display: inline-block; float: left; height: 149px; margin: 0 16px 22px 0; overflow: hidden; position: relative; vertical-align: middle; width: 183px; }
+body.plantshare#sightings #main > ul .photolink:before { border: 5px solid rgba(255, 255, 255, 0.8); content: ' '; height: 139px; position: absolute; width: 173px; z-index: 100; }
+body.plantshare#sightings #main > ul .title { line-height: 150%; margin-left: 200px; }
+body.plantshare#sightings #main > ul .photolink + .title { margin-left: 12px; }
+body.plantshare#sightings #main > ul .title a { font-size: 16px; }
 body.plantshare.sighting .map { float: right; margin: 0 0 12px 12px; }
 body.plantshare.sighting .photos h2 { margin: 0; }
 body.plantshare.sighting .photos ul li { height: auto; list-style: none; margin: 0; padding: 10px 0; }
@@ -1460,10 +1461,12 @@ body.plantshare#screen-images div.form-control { margin: 0 30px; }
   body.plantshare#plantshare #mini-sightings-map, body.plantshare#ask #mini-sightings-map { float: left; margin-bottom: 12px; margin-top: 14px; width: 85% !important; }
   body.plantshare#plantshare #ask #question-form, body.plantshare#plantshare #main #question-form, body.plantshare#ask #ask #question-form, body.plantshare#ask #main #question-form { padding-left: 0; }
   body.plantshare#plantshare #ask textarea, body.plantshare#plantshare #main textarea, body.plantshare#ask #ask textarea, body.plantshare#ask #main textarea { width: 90%; }
+  body.plantshare#sightings #main .nav-links { padding: 8px 0; }
   body.plantshare#sightings #main > ul > li ul { margin: 0; }
   body.plantshare#sightings #main > ul > li ul li { margin-bottom: 12px; }
-  body.plantshare#sightings #main > ul .title { display: inline-block; margin: 0; }
-  body.plantshare#sightings #main > ul .photolink + .title { margin-left: 0; }
+  body.plantshare#sightings #main > ul .title { display: inline-block; margin: 8px 0 12px 0; }
+  body.plantshare#sightings #main > ul .photolink { float: none; margin: 8px 0 8px; }
+  body.plantshare#sightings #main > ul .photolink + .title { display: block; margin-left: 0; margin-top: 0; }
   body.plantshare.sighting .map { float: left; margin: 0 20px; width: 85% !important; }
   body.plantshare.sighting .photos ul img { max-height: none; max-width: 100%; }
   body.plantshare#locator #main #sightings-status { clear: both; float: none; }
