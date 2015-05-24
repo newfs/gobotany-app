@@ -465,7 +465,7 @@ header nav #search input { padding-left: 4px; width: 215px; }
 body.teaching #main li { list-style-type: none; }
 
 /* List-style tables (Species List page, Manage Your Sightings page, etc.) */
-table.list { background: #f1fcde; border-collapse: collapse; color: #000; font-size: 11px; margin: 18px 0; }
+table.list { background: #f1fcde; border-collapse: collapse; color: #000; font-size: 12px; margin: 18px 0; }
 table.list tbody tr:hover { background: #e3fabe; }
 table.list th, table.list td { padding: 4px; }
 table.list th, table.list tr.filters { background: #b4d57f; font-weight: normal; }
