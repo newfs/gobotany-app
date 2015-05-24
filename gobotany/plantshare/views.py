@@ -248,6 +248,26 @@ def _get_photo_for_thumbnail(sighting, request):
     return photo
 
 
+def _get_display_names(sightings_queryset):
+    """Get a list of tuples of user ids and display names for a queryset
+    of sightings.
+    """
+    user_ids = set()
+    for sighting in sightings_queryset:
+        user_ids.add(sighting.user.id)
+    display_names = UserProfile.objects.filter(
+        user__id__in=user_ids).values_list('user__id', 'display_name')
+    return display_names
+
+def _get_user_display_name(display_names, sighting):
+    user_display_name = None
+    for display_name in display_names:
+        if int(display_name[0]) == sighting.user.id:
+            user_display_name = display_name[1]
+            break
+    return user_display_name
+
+
 @terms_agreed_on_login
 def sightings_view(request):
     """View for the sightings collection: showing a list of recent sightings
@@ -306,6 +326,8 @@ def sightings_view(request):
         # Return a representation of the collection of sightings.
         sightings_queryset = Sighting.objects.select_related().all().\
             prefetch_related('location', 'photos', 'user')
+        display_names = _get_display_names(sightings_queryset)
+
         sightings = []
         for sighting in sightings_queryset:
             may_show_sighting = _may_show_sighting(sighting, request.user)
@@ -313,12 +335,15 @@ def sightings_view(request):
                 photo = _get_photo_for_thumbnail(sighting, request)
                 created = sighting.created.strftime(SIGHTING_DATE_FORMAT)
                 year = sighting.created.strftime('%Y')
+                user_display_name = _get_user_display_name(display_names,
+                    sighting)
                 sightings.append({
                     'id': sighting.id,
                     'photo': photo,
                     'identification': sighting.identification,
                     'location': sighting.location,
                     'user': sighting.user,
+                    'user_display_name': user_display_name,
                     'created': created,
                     'year': year,
                 })
@@ -342,18 +367,23 @@ def sightings_by_year_view(request, year):
     sightings_queryset = Sighting.objects.select_related().\
         filter(created__year=year).prefetch_related('location', 'photos',
         'user')
+    display_names = _get_display_names(sightings_queryset)
+
     sightings = []
     for sighting in sightings_queryset:
         may_show_sighting = _may_show_sighting(sighting, request.user)
         if may_show_sighting:
             photo = _get_photo_for_thumbnail(sighting, request)
             created = sighting.created.strftime(SIGHTING_DATE_FORMAT)
+            user_display_name = _get_user_display_name(display_names,
+                sighting)
             sightings.append({
                 'id': sighting.id,
                 'photo': photo,
                 'identification': sighting.identification,
                 'location': sighting.location,
                 'user': sighting.user,
+                'user_display_name': user_display_name,
                 'created': created,
             })
 
