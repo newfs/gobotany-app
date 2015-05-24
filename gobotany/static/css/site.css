@@ -1261,6 +1261,7 @@ body.plantshare#sightings h2 { clear: both; font-size: 22px; }
 body.plantshare#sightings #main > ul { margin-top: 14px; }
 body.plantshare#sightings #main > ul > li { clear: both; font-family: "Trebuchet MS", Helvetica, Arial, "Lucida Sans Unicode", sans-serif; font-size: 18px; margin-bottom: 14px; margin-top: 22px; }
 body.plantshare#sightings #main > ul > li ul li { clear: both; font-size: 14px; margin: 22px 0; }
+body.plantshare#sightings #main > ul img { height: 149px; width: 183px; }
 body.plantshare#sightings #main > ul .photolink { border-bottom: 0; box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.6); display: inline-block; float: left; height: 149px; margin: 0 16px 22px 0; overflow: hidden; position: relative; vertical-align: middle; width: 183px; }
 body.plantshare#sightings #main > ul .photolink:before { border: 5px solid rgba(255, 255, 255, 0.8); content: ' '; height: 139px; position: absolute; width: 173px; z-index: 100; }
 body.plantshare#sightings #main > ul .title { line-height: 150%; margin-left: 200px; }

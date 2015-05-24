@@ -5,6 +5,12 @@
 
 {% block title %}Recent Sightings: PlantShare{% endblock %}
 
+{% block js_require %}
+    require([
+        'plantshare/sightings'
+    ]);
+{% endblock %}
+
 {% block body_attributes %}id="sightings" class="plantshare"{% endblock %}
 
 {% block main_content %}
@@ -31,7 +37,8 @@
                     {% if sighting.photo %}
                         <a class="photolink"
                             href="{% url 'ps-sighting' sighting.id %}">
-                            <img src="{{ sighting.photo.thumb_cropped.url }}" alt="">
+                            <img src="" alt=""
+                            data-lazy-img-src="{{ sighting.photo.thumb_cropped.url }}">
                         </a>
                     {% endif %}
                     <div class="title">

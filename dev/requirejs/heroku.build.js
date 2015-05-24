@@ -34,6 +34,7 @@
                 'plantshare/plantshare',
                 'plantshare/registration_complete',
                 'plantshare/sighting',
+                'plantshare/sightings',
                 'plantshare/sightings_locator',
                 'plantshare/sightings_locator_part',
                 'plantshare/sightings_map',
