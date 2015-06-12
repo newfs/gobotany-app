@@ -5,11 +5,11 @@ define([
     'lib/Hash',
     'plantpreview/popup',
     'util/glossarizer',
-    'util/lazy_images',
-    'util/tooltip'
+    'util/image_popup',
+    'util/lazy_images'
 ], function(
     $, ignore, _, Hash, plantpreview_popup,
-    glossarizer, lazy_images, tooltip_js
+    glossarizer, image_popup, lazy_images
 ) {$(document).ready(function() {
 
     /* Remove spinner that is hiding couplets until we can arrange them. */
@@ -256,31 +256,7 @@ define([
 
     /* Clicking on a figure should pop it up without leaving the page. */
 
-    $('.figure-link').each(function() {
-        var $figure_link = $(this);
-
-        var tooltip = new tooltip_js.Tooltip($figure_link, {
-            content: $('<p>', {'class': 'glosstip'}).append(
-                $('<img>', {src: $(this).attr('href'), height: 240}),
-                $('<b>', {text: 'Figure ' + $(this).html() + '. '}),
-                $(this).attr('data-caption'),
-                '<br>(Click to view larger image)'
-            )
-        });
-
-        $figure_link.on('click', function(event) {
-            event.preventDefault();
-            var $target = $(event.delegateTarget);
-            if ($figure_link[0].timeout_id) {
-                clearTimeout($figure_link[0].timeout_id);
-                delete $figure_link[0].timeout_id;
-            }
-            tooltip.hide_tooltip();
-            $popup.empty();
-            $('<img>').attr('src', $target.attr('href')).appendTo($popup);
-            display_popup();
-        });
-    });
+    image_popup.pop_up_links('.figure-link');
 
     /* Download and display images, narrowing the taxa images to match
        the currently selected lead, and letting the user select the

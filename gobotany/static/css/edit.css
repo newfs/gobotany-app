@@ -1,66 +1,112 @@
-/* Quick informal CSS for the edit pages. */
-/* Go Botany common definitions */
-/* for gradient, etc. */
-/* Web fonts: style-linked groups */
-@font-face { font-family: ScalaSans; src: url(//newfs.s3.amazonaws.com/fonts/ScalaSansWeb.woff) format("woff"); }
+/*
+Syntax error: Undefined mixin 'hover-link'.
+        on line 309 of /Users/john/Documents/dev/newfs/gobotany-app/gobotany/static/sass/_common.scss, in `hover-link'
+        from line 309 of /Users/john/Documents/dev/newfs/gobotany-app/gobotany/static/sass/_common.scss
+        from line 3 of /Users/john/Documents/dev/newfs/gobotany-app/gobotany/static/sass/edit.scss
 
-@font-face { font-family: ScalaSans; font-weight: bold; src: url(//newfs.s3.amazonaws.com/fonts/ScalaSansWeb-Bold.woff) format("woff"); }
-
-@font-face { font-family: ScalaSans; font-style: italic; src: url(//newfs.s3.amazonaws.com/fonts/ScalaSansWeb-Ita.woff) format("woff"); }
-
-@font-face { font-family: ScalaSans; font-style: italic; font-weight: bold; src: url(//newfs.s3.amazonaws.com/fonts/ScalaSansWeb-BoldIta.woff) format("woff"); }
-
-@font-face { font-family: ScalaSansSmallCaps; src: url(//newfs.s3.amazonaws.com/fonts/ScalaSansScWeb.woff) format("woff"); }
-
-@font-face { font-family: ScalaSansSmallCaps; font-weight: bold; src: url(//newfs.s3.amazonaws.com/fonts/ScalaSansScWeb-Bold.woff) format("woff"); }
-
-@font-face { font-family: ScalaSansSmallCaps; font-style: italic; src: url(//newfs.s3.amazonaws.com/fonts/ScalaSansScWeb-Ita.woff) format("woff"); }
-
-@font-face { font-family: ScalaSansSmallCaps; font-style: italic; font-weight: bold; src: url(//newfs.s3.amazonaws.com/fonts/ScalaSansScWeb-BoldIta.woff) format("woff"); }
-
-.orange-button, span.all-species-button, span.simple-key-button, .save-button, .length-save-button { background-color: #dc9402; /* for IE without gradient support */ border: 1px solid #dc9402 !important; color: white; cursor: pointer; display: inline-block; font-family: ScalaSans, "Trebuchet MS", Helvetica, Arial, "Lucida Sans Unicode", sans-serif; font-size: 12px; letter-spacing: 1px; line-height: 18px; min-width: 80px; padding: 4px 12px; text-align: center; text-decoration: none; -webkit-border-radius: 14px; -moz-border-radius: 14px; -ms-border-radius: 14px; -o-border-radius: 14px; border-radius: 14px; -webkit-box-shadow: 0px 1px 4px #a2a64d; -moz-box-shadow: 0px 1px 4px #a2a64d; box-shadow: 0px 1px 4px #a2a64d; background: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #dc9402), color-stop(40%, #f0b448), color-stop(100%, #dc9402)); background: -webkit-linear-gradient(top, #dc9402 0%, #f0b448 40%, #dc9402 100%); background: -moz-linear-gradient(top, #dc9402 0%, #f0b448 40%, #dc9402 100%); background: -o-linear-gradient(top, #dc9402 0%, #f0b448 40%, #dc9402 100%); background: linear-gradient(top, #dc9402 0%, #f0b448 40%, #dc9402 100%); }
-.orange-button:hover, span.all-species-button:hover, span.simple-key-button:hover, .save-button:hover, .length-save-button:hover { background-color: #e29b0b; /* for IE without gradient support */ background: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #e29b0b), color-stop(32%, #f6be59), color-stop(50%, #f6be59), color-stop(100%, #e39d0e)); background: -webkit-linear-gradient(top, #e29b0b 0%, #f6be59 32%, #f6be59 50%, #e39d0e 100%); background: -moz-linear-gradient(top, #e29b0b 0%, #f6be59 32%, #f6be59 50%, #e39d0e 100%); background: -o-linear-gradient(top, #e29b0b 0%, #f6be59 32%, #f6be59 50%, #e39d0e 100%); background: linear-gradient(top, #e29b0b 0%, #f6be59 32%, #f6be59 50%, #e39d0e 100%); }
-.orange-button:active, span.all-species-button:active, span.simple-key-button:active, .save-button:active, .length-save-button:active { background-color: #dc9402; background: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #dc9402), color-stop(60%, #f0b448), color-stop(100%, #dc9402)); background: -webkit-linear-gradient(top, #dc9402 0%, #f0b448 60%, #dc9402 100%); background: -moz-linear-gradient(top, #dc9402 0%, #f0b448 60%, #dc9402 100%); background: -o-linear-gradient(top, #dc9402 0%, #f0b448 60%, #dc9402 100%); background: linear-gradient(top, #dc9402 0%, #f0b448 60%, #dc9402 100%); }
-.orange-button:hover, span.all-species-button:hover, span.simple-key-button:hover, .save-button:hover, .length-save-button:hover, .orange-button:visited, span.all-species-button:visited, span.simple-key-button:visited, .save-button:visited, .length-save-button:visited, .orange-button:active, span.all-species-button:active, span.simple-key-button:active, .save-button:active, .length-save-button:active { color: white; }
-.orange-button.caps, span.caps.all-species-button, span.caps.simple-key-button, .caps.save-button, .caps.length-save-button { text-transform: uppercase; }
-.orange-button.disabled, span.disabled.all-species-button, span.disabled.simple-key-button, .disabled.save-button, .disabled.length-save-button { background-color: #e9c565; /* for IE without gradient support */ border-color: #e9c565 !important; cursor: default !important; background: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #ecda92), color-stop(32%, #f1e3a6), color-stop(50%, #f1e3a6), color-stop(100%, #ecdb93)); background: -webkit-linear-gradient(top, #ecda92 0%, #f1e3a6 32%, #f1e3a6 50%, #ecdb93 100%); background: -moz-linear-gradient(top, #ecda92 0%, #f1e3a6 32%, #f1e3a6 50%, #ecdb93 100%); background: -o-linear-gradient(top, #ecda92 0%, #f1e3a6 32%, #f1e3a6 50%, #ecdb93 100%); background: linear-gradient(top, #ecda92 0%, #f1e3a6 32%, #f1e3a6 50%, #ecdb93 100%); }
-.orange-button.large, span.large.all-species-button, span.large.simple-key-button, .large.save-button, .large.length-save-button { font-size: 16px; letter-spacing: 1.5px; min-width: 150px; padding: 9px 30px; -webkit-border-radius: 20px; -moz-border-radius: 20px; -ms-border-radius: 20px; -o-border-radius: 20px; border-radius: 20px; }
-
-.hidden { display: none !important; }
-
-.edit-page #all { margin: 2em; }
-
-.edit-character-definition { margin-top: 0; margin-left: 2em; margin-bottom: 0; }
-
-span.all-species-button, span.simple-key-button, .save-button, .length-save-button { cursor: pointer; display: inline-block; margin: 0.8em 1em; font-weight: normal; }
-
-.pile-character-grid { position: relative; margin-top: 2em; /* Editing a single character for many taxa: */ /* For editing numeric values. */ /* http://stackoverflow.com/questions/8669413/ */ }
-.pile-character-grid .column { z-index: -1; position: absolute; background-color: #fafae9; }
-.pile-character-grid h3 { background-color: #f3d281; }
-.pile-character-grid select { width: 25em; }
-.pile-character-grid div { white-space: nowrap; }
-.pile-character-grid div.expanded { border-top: 1px solid #519136; border-bottom: 1px solid #519136; }
-.pile-character-grid div:hover { background-color: #fafae9; }
-.pile-character-grid div:hover.expanded { background-color: transparent; }
-.pile-character-grid span { margin: 0px 2px; background-color: #dc9402; padding: 2px 8px 4px; vertical-align: 2px; color: white; font-size: 0.8em; }
-.pile-character-grid i { position: relative; display: inline-block; width: 20em; padding: 4px 0px; }
-.pile-character-grid i .expand-button { cursor: pointer; position: absolute; right: 2px; top: 2px; font-style: normal; }
-.pile-character-grid b { cursor: pointer; display: inline-block; padding: 4px 2px; font-weight: normal; }
-.pile-character-grid b.x { background-color: #519136; color: white; }
-.pile-character-grid b.highlight { z-index: 2; background-color: #fafae9; }
-.pile-character-grid b.highlight.x { background-color: #3c6c28; }
-.pile-character-grid b.changed { border-style: solid; border-color: #dc9402; border-width: 4px 2px; padding: 0; }
-.pile-character-grid input { margin: 4px 2px; }
-.pile-character-grid input.empty { background-color: #e6e697; }
-.pile-character-grid input.illegal { background-color: #fdb014; }
-
-/* Styles specific to editing all characters of a single taxon, kept separate here in the hopes of not slowing down the browser when it is trying to render the full-out .pile-character-grid given above. */
-.taxon-character-grid div { clear: both; }
-.taxon-character-grid i { font-weight: bold; font-style: normal; }
-.taxon-character-grid .charactername { margin-top: 1em; border-top: 1px solid #dc9402; padding: 4px; background-color: #ebebab; }
-.taxon-character-grid .charactername:hover { background-color: #ebebab; }
-.taxon-character-grid input { margin: 4px 8px 4px 2px; }
-.taxon-character-grid label { cursor: pointer; display: block; padding: 4px 2px; white-space: normal; }
-.taxon-character-grid :checked, .taxon-character-grid :checked + label { background-color: #519136; color: white; }
-
-.value-tips div { display: none; position: absolute; padding: 0.5em; background-color: #fafae9; border: 2px solid #dc9402; -webkit-border-radius: 1em; -moz-border-radius: 1em; -ms-border-radius: 1em; -o-border-radius: 1em; border-radius: 1em; -webkit-box-shadow: 0px 1px 4px #d3d344; -moz-box-shadow: 0px 1px 4px #d3d344; box-shadow: 0px 1px 4px #d3d344; }
+Backtrace:
+/Users/john/Documents/dev/newfs/gobotany-app/gobotany/static/sass/_common.scss:309:in `hover-link'
+/Users/john/Documents/dev/newfs/gobotany-app/gobotany/static/sass/_common.scss:309
+/Users/john/Documents/dev/newfs/gobotany-app/gobotany/static/sass/edit.scss:3
+/Library/Ruby/Gems/1.8/gems/sass-3.2.9/lib/sass/../sass/tree/visitors/perform.rb:253:in `visit_mixin'
+/Library/Ruby/Gems/1.8/gems/sass-3.2.9/lib/sass/../sass/tree/visitors/base.rb:37:in `send'
+/Library/Ruby/Gems/1.8/gems/sass-3.2.9/lib/sass/../sass/tree/visitors/base.rb:37:in `visit'
+/Library/Ruby/Gems/1.8/gems/sass-3.2.9/lib/sass/../sass/tree/visitors/perform.rb:100:in `visit'
+/Library/Ruby/Gems/1.8/gems/sass-3.2.9/lib/sass/../sass/tree/visitors/base.rb:53:in `visit_children'
+/Library/Ruby/Gems/1.8/gems/sass-3.2.9/lib/sass/../sass/tree/visitors/base.rb:53:in `map'
+/Library/Ruby/Gems/1.8/gems/sass-3.2.9/lib/sass/../sass/tree/visitors/base.rb:53:in `visit_children'
+/Library/Ruby/Gems/1.8/gems/sass-3.2.9/lib/sass/../sass/tree/visitors/perform.rb:109:in `visit_children'
+/Library/Ruby/Gems/1.8/gems/sass-3.2.9/lib/sass/../sass/tree/visitors/perform.rb:121:in `with_environment'
+/Library/Ruby/Gems/1.8/gems/sass-3.2.9/lib/sass/../sass/tree/visitors/perform.rb:108:in `visit_children'
+/Library/Ruby/Gems/1.8/gems/sass-3.2.9/lib/sass/../sass/tree/visitors/base.rb:37:in `visit'
+/Library/Ruby/Gems/1.8/gems/sass-3.2.9/lib/sass/../sass/tree/visitors/perform.rb:320:in `visit_rule'
+/Library/Ruby/Gems/1.8/gems/sass-3.2.9/lib/sass/../sass/tree/visitors/base.rb:37:in `send'
+/Library/Ruby/Gems/1.8/gems/sass-3.2.9/lib/sass/../sass/tree/visitors/base.rb:37:in `visit'
+/Library/Ruby/Gems/1.8/gems/sass-3.2.9/lib/sass/../sass/tree/visitors/perform.rb:100:in `visit'
+/Library/Ruby/Gems/1.8/gems/sass-3.2.9/lib/sass/../sass/tree/visitors/base.rb:53:in `visit_children'
+/Library/Ruby/Gems/1.8/gems/sass-3.2.9/lib/sass/../sass/tree/visitors/base.rb:53:in `map'
+/Library/Ruby/Gems/1.8/gems/sass-3.2.9/lib/sass/../sass/tree/visitors/base.rb:53:in `visit_children'
+/Library/Ruby/Gems/1.8/gems/sass-3.2.9/lib/sass/../sass/tree/visitors/perform.rb:109:in `visit_children'
+/Library/Ruby/Gems/1.8/gems/sass-3.2.9/lib/sass/../sass/tree/visitors/perform.rb:121:in `with_environment'
+/Library/Ruby/Gems/1.8/gems/sass-3.2.9/lib/sass/../sass/tree/visitors/perform.rb:108:in `visit_children'
+/Library/Ruby/Gems/1.8/gems/sass-3.2.9/lib/sass/../sass/tree/visitors/base.rb:37:in `visit'
+/Library/Ruby/Gems/1.8/gems/sass-3.2.9/lib/sass/../sass/tree/visitors/perform.rb:320:in `visit_rule'
+/Library/Ruby/Gems/1.8/gems/sass-3.2.9/lib/sass/../sass/tree/visitors/base.rb:37:in `send'
+/Library/Ruby/Gems/1.8/gems/sass-3.2.9/lib/sass/../sass/tree/visitors/base.rb:37:in `visit'
+/Library/Ruby/Gems/1.8/gems/sass-3.2.9/lib/sass/../sass/tree/visitors/perform.rb:100:in `visit'
+/Library/Ruby/Gems/1.8/gems/sass-3.2.9/lib/sass/../sass/tree/visitors/base.rb:53:in `visit_children'
+/Library/Ruby/Gems/1.8/gems/sass-3.2.9/lib/sass/../sass/tree/visitors/base.rb:53:in `map'
+/Library/Ruby/Gems/1.8/gems/sass-3.2.9/lib/sass/../sass/tree/visitors/base.rb:53:in `visit_children'
+/Library/Ruby/Gems/1.8/gems/sass-3.2.9/lib/sass/../sass/tree/visitors/perform.rb:109:in `visit_children'
+/Library/Ruby/Gems/1.8/gems/sass-3.2.9/lib/sass/../sass/tree/visitors/perform.rb:121:in `with_environment'
+/Library/Ruby/Gems/1.8/gems/sass-3.2.9/lib/sass/../sass/tree/visitors/perform.rb:108:in `visit_children'
+/Library/Ruby/Gems/1.8/gems/sass-3.2.9/lib/sass/../sass/tree/visitors/base.rb:37:in `visit'
+/Library/Ruby/Gems/1.8/gems/sass-3.2.9/lib/sass/../sass/tree/visitors/perform.rb:320:in `visit_rule'
+/Library/Ruby/Gems/1.8/gems/sass-3.2.9/lib/sass/../sass/tree/visitors/base.rb:37:in `send'
+/Library/Ruby/Gems/1.8/gems/sass-3.2.9/lib/sass/../sass/tree/visitors/base.rb:37:in `visit'
+/Library/Ruby/Gems/1.8/gems/sass-3.2.9/lib/sass/../sass/tree/visitors/perform.rb:100:in `visit'
+/Library/Ruby/Gems/1.8/gems/sass-3.2.9/lib/sass/../sass/tree/visitors/perform.rb:227:in `visit_import'
+/Library/Ruby/Gems/1.8/gems/sass-3.2.9/lib/sass/../sass/tree/visitors/perform.rb:227:in `map'
+/Library/Ruby/Gems/1.8/gems/sass-3.2.9/lib/sass/../sass/tree/visitors/perform.rb:227:in `visit_import'
+/Library/Ruby/Gems/1.8/gems/sass-3.2.9/lib/sass/../sass/tree/visitors/base.rb:37:in `send'
+/Library/Ruby/Gems/1.8/gems/sass-3.2.9/lib/sass/../sass/tree/visitors/base.rb:37:in `visit'
+/Library/Ruby/Gems/1.8/gems/sass-3.2.9/lib/sass/../sass/tree/visitors/perform.rb:100:in `visit'
+/Library/Ruby/Gems/1.8/gems/sass-3.2.9/lib/sass/../sass/tree/visitors/base.rb:53:in `visit_children'
+/Library/Ruby/Gems/1.8/gems/sass-3.2.9/lib/sass/../sass/tree/visitors/base.rb:53:in `map'
+/Library/Ruby/Gems/1.8/gems/sass-3.2.9/lib/sass/../sass/tree/visitors/base.rb:53:in `visit_children'
+/Library/Ruby/Gems/1.8/gems/sass-3.2.9/lib/sass/../sass/tree/visitors/perform.rb:109:in `visit_children'
+/Library/Ruby/Gems/1.8/gems/sass-3.2.9/lib/sass/../sass/tree/visitors/perform.rb:121:in `with_environment'
+/Library/Ruby/Gems/1.8/gems/sass-3.2.9/lib/sass/../sass/tree/visitors/perform.rb:108:in `visit_children'
+/Library/Ruby/Gems/1.8/gems/sass-3.2.9/lib/sass/../sass/tree/visitors/base.rb:37:in `visit'
+/Library/Ruby/Gems/1.8/gems/sass-3.2.9/lib/sass/../sass/tree/visitors/perform.rb:128:in `visit_root'
+/Library/Ruby/Gems/1.8/gems/sass-3.2.9/lib/sass/../sass/tree/visitors/base.rb:37:in `send'
+/Library/Ruby/Gems/1.8/gems/sass-3.2.9/lib/sass/../sass/tree/visitors/base.rb:37:in `visit'
+/Library/Ruby/Gems/1.8/gems/sass-3.2.9/lib/sass/../sass/tree/visitors/perform.rb:100:in `visit'
+/Library/Ruby/Gems/1.8/gems/sass-3.2.9/lib/sass/../sass/tree/visitors/perform.rb:7:in `send'
+/Library/Ruby/Gems/1.8/gems/sass-3.2.9/lib/sass/../sass/tree/visitors/perform.rb:7:in `visit'
+/Library/Ruby/Gems/1.8/gems/sass-3.2.9/lib/sass/../sass/tree/root_node.rb:20:in `render'
+/Library/Ruby/Gems/1.8/gems/sass-3.2.9/lib/sass/../sass/engine.rb:315:in `_render'
+/Library/Ruby/Gems/1.8/gems/sass-3.2.9/lib/sass/../sass/engine.rb:262:in `render'
+/Library/Ruby/Gems/1.8/gems/compass-0.12.2/lib/compass/compiler.rb:140:in `compile'
+/Library/Ruby/Gems/1.8/gems/compass-0.12.2/lib/compass/compiler.rb:126:in `timed'
+/Library/Ruby/Gems/1.8/gems/compass-0.12.2/lib/compass/compiler.rb:139:in `compile'
+/Library/Ruby/Gems/1.8/gems/compass-0.12.2/lib/compass/logger.rb:45:in `red'
+/Library/Ruby/Gems/1.8/gems/compass-0.12.2/lib/compass/compiler.rb:138:in `compile'
+/Library/Ruby/Gems/1.8/gems/compass-0.12.2/lib/compass/compiler.rb:118:in `compile_if_required'
+/Library/Ruby/Gems/1.8/gems/compass-0.12.2/lib/compass/compiler.rb:103:in `run'
+/Library/Ruby/Gems/1.8/gems/compass-0.12.2/lib/compass/compiler.rb:101:in `each'
+/Library/Ruby/Gems/1.8/gems/compass-0.12.2/lib/compass/compiler.rb:101:in `run'
+/Library/Ruby/Gems/1.8/gems/compass-0.12.2/lib/compass/compiler.rb:126:in `timed'
+/Library/Ruby/Gems/1.8/gems/compass-0.12.2/lib/compass/compiler.rb:100:in `run'
+/Library/Ruby/Gems/1.8/gems/compass-0.12.2/lib/compass/commands/watch_project.rb:147:in `recompile'
+/Library/Ruby/Site/1.8/rubygems/core_ext/kernel_require.rb:45:in `to_proc'
+/Library/Ruby/Gems/1.8/gems/fssm-0.2.9/lib/fssm/path.rb:73:in `call'
+/Library/Ruby/Gems/1.8/gems/fssm-0.2.9/lib/fssm/path.rb:73:in `run_callback'
+/Library/Ruby/Gems/1.8/gems/fssm-0.2.9/lib/fssm/path.rb:55:in `callback_action'
+/Library/Ruby/Gems/1.8/gems/fssm-0.2.9/lib/fssm/path.rb:35:in `update'
+/Library/Ruby/Gems/1.8/gems/fssm-0.2.9/lib/fssm/state/directory.rb:39:in `modified'
+/Library/Ruby/Gems/1.8/gems/fssm-0.2.9/lib/fssm/state/directory.rb:37:in `each'
+/Library/Ruby/Gems/1.8/gems/fssm-0.2.9/lib/fssm/state/directory.rb:37:in `modified'
+/Library/Ruby/Gems/1.8/gems/fssm-0.2.9/lib/fssm/state/directory.rb:18:in `refresh'
+/Library/Ruby/Gems/1.8/gems/fssm-0.2.9/lib/fssm/backends/polling.rb:17:in `run'
+/Library/Ruby/Gems/1.8/gems/fssm-0.2.9/lib/fssm/backends/polling.rb:17:in `each'
+/Library/Ruby/Gems/1.8/gems/fssm-0.2.9/lib/fssm/backends/polling.rb:17:in `run'
+/Library/Ruby/Gems/1.8/gems/fssm-0.2.9/lib/fssm/backends/polling.rb:15:in `loop'
+/Library/Ruby/Gems/1.8/gems/fssm-0.2.9/lib/fssm/backends/polling.rb:15:in `run'
+/Library/Ruby/Gems/1.8/gems/fssm-0.2.9/lib/fssm/monitor.rb:26:in `run'
+/Library/Ruby/Gems/1.8/gems/fssm-0.2.9/lib/fssm.rb:70:in `monitor'
+/Library/Ruby/Gems/1.8/gems/compass-0.12.2/lib/compass/commands/watch_project.rb:87:in `perform'
+/Library/Ruby/Gems/1.8/gems/compass-0.12.2/lib/compass/commands/base.rb:18:in `execute'
+/Library/Ruby/Gems/1.8/gems/compass-0.12.2/lib/compass/commands/project_base.rb:19:in `execute'
+/Library/Ruby/Gems/1.8/gems/compass-0.12.2/lib/compass/exec/sub_command_ui.rb:43:in `perform!'
+/Library/Ruby/Gems/1.8/gems/compass-0.12.2/lib/compass/exec/sub_command_ui.rb:15:in `run!'
+/Library/Ruby/Gems/1.8/gems/compass-0.12.2/bin/compass:30
+/Library/Ruby/Gems/1.8/gems/compass-0.12.2/bin/compass:44:in `call'
+/Library/Ruby/Gems/1.8/gems/compass-0.12.2/bin/compass:44
+/usr/bin/compass:23:in `load'
+/usr/bin/compass:23
+*/
+body:before {
+  white-space: pre;
+  font-family: monospace;
+  content: "Syntax error: Undefined mixin 'hover-link'.\A         on line 309 of /Users/john/Documents/dev/newfs/gobotany-app/gobotany/static/sass/_common.scss, in `hover-link'\A         from line 309 of /Users/john/Documents/dev/newfs/gobotany-app/gobotany/static/sass/_common.scss\A         from line 3 of /Users/john/Documents/dev/newfs/gobotany-app/gobotany/static/sass/edit.scss"; }
