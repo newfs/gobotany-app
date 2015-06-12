@@ -56,6 +56,7 @@
                 'site/maps_test',
                 'util/suggester_init',
                 'util/formset',
+                'util/image_popup',
                 'util/location_field_init'
             ],
             create: true

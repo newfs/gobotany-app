@@ -233,50 +233,6 @@
         }
     }
 
-    div.shadow {                    /* shadow that hides the whole page */
-        display: none;
-        position: fixed;
-        z-index: 1000;
-        top: 0;
-        left: 0;
-        height: 100%;
-        width: 100%;
-        background-color: rgba(0,0,0, 0.45);
-        text-align: center;
-    }
-    div.popup {                     /* for displaying quick lists of taxa */
-        display: inline-block;
-        margin: 5% auto;
-        max-height: 90%;
-        overflow-y: auto;
-        overflow-x: hidden;         /* otherwise scrolling can leak to page */
-        border: 0.5em solid $list_popup_border;
-        @include border-radius(1em);
-        background-color: lighten($body_bg, 5);
-        padding: 1em 2em;
-        text-align: left;
-        font-size: $base-font-size;
-        line-height: 1.25em;
-        h2 {                        /* "See list of 14 species in 1b" */
-            border-bottom: 1px solid $text_green;
-            padding-bottom: 0.5em;
-            color: $text_green;
-            font-family: $headings-font;
-            font-weight: normal;
-
-            /* For tall lists a scrollbar appears, and tends to make the last word
-               of the title wrap unattractively. */
-            white-space: nowrap;
-        }
-        a {
-            @include hover-link;
-            color: #000;
-            &:hover {
-                color: $text_dark_green;
-            }
-        }
-    }
-
 } /* end #dkey #main */
 
 

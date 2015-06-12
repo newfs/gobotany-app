@@ -233,6 +233,14 @@ div.scrollableArea { position: relative; width: auto; height: 100%; }
 
 .hidden { display: none !important; }
 
+/* image popups (used in D. Key, and in D. Key section of species page) */
+#main div.shadow { /* shadow that hides the whole page */ display: none; position: fixed; z-index: 1000; top: 0; left: 0; height: 100%; width: 100%; background-color: rgba(0, 0, 0, 0.45); text-align: center; }
+#main div.popup { /* for displaying quick lists of taxa */ display: inline-block; margin: 5% auto; max-height: 90%; overflow-y: auto; overflow-x: hidden; /* otherwise scrolling can leak to page */ border: 0.5em solid #acac90; -webkit-border-radius: 1em; -moz-border-radius: 1em; -ms-border-radius: 1em; -o-border-radius: 1em; border-radius: 1em; background-color: #f5f5d5; padding: 1em 2em; text-align: left; font-size: 12px; line-height: 1.25em; }
+#main div.popup h2 { /* "See list of 14 species in 1b" */ border-bottom: 1px solid #519136; padding-bottom: 0.5em; color: #519136; font-family: "Trebuchet MS", Helvetica, Arial, "Lucida Sans Unicode", sans-serif; font-weight: normal; /* For tall lists a scrollbar appears, and tends to make the last word of the title wrap unattractively. */ white-space: nowrap; }
+#main div.popup a { text-decoration: none; color: #000; }
+#main div.popup a:hover { text-decoration: underline; }
+#main div.popup a:hover { color: #35661c; }
+
 /* Site-wide styles */
 body { background-color: #f0f0c0; background-image: url(/static/images/layout/little-plants.png); background-position: bottom 140px center; background-repeat: no-repeat; color: black; font-family: Verdana, Geneva, "Lucida Sans Unicode", sans-serif; font-size: 12px; }
 
@@ -1547,12 +1555,6 @@ body.plantshare#screen-images div.form-control { margin: 0 30px; }
 #dkey #main div.taxon-images img { display: block; margin-bottom: 0.4em; border: 4px solid black; width: 160px; height: 149px; }
 #dkey #main div.taxon-images a { font-size: 12px; text-decoration: none; }
 #dkey #main div.taxon-images a:hover { text-decoration: underline; }
-#dkey #main div.shadow { /* shadow that hides the whole page */ display: none; position: fixed; z-index: 1000; top: 0; left: 0; height: 100%; width: 100%; background-color: rgba(0, 0, 0, 0.45); text-align: center; }
-#dkey #main div.popup { /* for displaying quick lists of taxa */ display: inline-block; margin: 5% auto; max-height: 90%; overflow-y: auto; overflow-x: hidden; /* otherwise scrolling can leak to page */ border: 0.5em solid #acac90; -webkit-border-radius: 1em; -moz-border-radius: 1em; -ms-border-radius: 1em; -o-border-radius: 1em; border-radius: 1em; background-color: #f5f5d5; padding: 1em 2em; text-align: left; font-size: 12px; line-height: 1.25em; }
-#dkey #main div.popup h2 { /* "See list of 14 species in 1b" */ border-bottom: 1px solid #519136; padding-bottom: 0.5em; color: #519136; font-family: "Trebuchet MS", Helvetica, Arial, "Lucida Sans Unicode", sans-serif; font-weight: normal; /* For tall lists a scrollbar appears, and tends to make the last word of the title wrap unattractively. */ white-space: nowrap; }
-#dkey #main div.popup a { text-decoration: none; color: #000; }
-#dkey #main div.popup a:hover { text-decoration: underline; }
-#dkey #main div.popup a:hover { color: #35661c; }
 
 /* end #dkey #main */
 /* Begin media queries styles for Dichotomous Key. */
