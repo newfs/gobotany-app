@@ -165,3 +165,21 @@ Admin full interface, which allows examining details including ranking
 scores, may also be helpful:
 
     http://localhost:8983/solr/admin/form.jsp
+
+
+Debugging using the production JS locally
+-----------------------------------------
+
+After you are done with developing using the individual non-minified JS
+files locally, and you build the single production JS file, it is a good
+idea to test with that file a bit. Sometimes things load a bit
+differently with the production JS file, and it can happen that things
+work fine using the individual JS files but fail with the production JS
+file.
+
+To temporarily use the production JS file, edit the file:
+gobotany/app/gobotany/site/templates/gobotany/_js.html
+
+Change the if statement there to evaluate to False, such as with
+'if 1 == 0'. Ensure Django reloads (if not, restart Django), then
+reload the page.
