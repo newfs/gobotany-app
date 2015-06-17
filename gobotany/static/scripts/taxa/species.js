@@ -16,6 +16,7 @@ define([
         helper.setup();
 
         // Clicking on D. Key figure links pops up a larger image.
+        image_popup.init();
         image_popup.pop_up_links('.figure-link');
     });
 });

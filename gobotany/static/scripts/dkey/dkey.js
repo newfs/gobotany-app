@@ -256,6 +256,7 @@ define([
 
     /* Clicking on a figure should pop it up without leaving the page. */
 
+    image_popup.init();
     image_popup.pop_up_links('.figure-link');
 
     /* Download and display images, narrowing the taxa images to match

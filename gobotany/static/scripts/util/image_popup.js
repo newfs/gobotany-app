@@ -7,31 +7,36 @@ define([
 
     var module = {};
 
-    module.$shadow = $('<div>').appendTo('#main').addClass('shadow');
-    module.$popup = $('<div>').appendTo(module.$shadow).addClass('popup');
+    // Call this once after document.ready(), to initialize the module.
 
-    // The popup can be dismissed with the mouse or keyboard.
+    module.init = function () {
 
-    module.display_popup = function () {
-        module.$shadow.css('display', 'block');
-    };
-    module.dismiss_popup = function () {
-        module.$shadow.css('display', '');
-    };
-    module.$shadow.on('click', module.dismiss_popup);
-    $('body').on('keydown', function (event) {
-        if (module.$shadow.css('display') === 'block') { // popup is active
-            var c = event.which;
-            if (c === 13 || c === 27 || c === 32) { // esc, enter, space
-                module.dismiss_popup();
-                return false;
+        module.$shadow = $('<div>').appendTo('#main').addClass('shadow');
+        module.$popup = $('<div>').appendTo(module.$shadow).addClass('popup');
+
+        // The popup can be dismissed with the mouse or keyboard.
+
+        module.display_popup = function () {
+            module.$shadow.css('display', 'block');
+        };
+        module.dismiss_popup = function () {
+            module.$shadow.css('display', '');
+        };
+        module.$shadow.on('click', module.dismiss_popup);
+        $('body').on('keydown', function (event) {
+            if (module.$shadow.css('display') === 'block') { // popup active
+                var c = event.which;
+                if (c === 13 || c === 27 || c === 32) { // esc, enter, space
+                    module.dismiss_popup();
+                    return false;
+                }
+                // PageUp, PageDown, up arrow, down arrow - move whole page
+                if (c === 33 || c === 34 || c === 38 || c === 40) {
+                    return false;
+                }
             }
-            // PageUp, PageDown, up arrow, down arrow - move the whole page
-            if (c === 33 || c === 34 || c === 38 || c === 40) {
-                return false;
-            }
-        }
-    });
+        });
+    };
 
     // Call this with a CSS selector in order to set up links as popups.
     // Example: image_popup.popup_links('.figure-link');
