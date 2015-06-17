@@ -167,8 +167,8 @@ scores, may also be helpful:
     http://localhost:8983/solr/admin/form.jsp
 
 
-Debugging using the production JS locally
------------------------------------------
+Using the production JS locally
+-------------------------------
 
 After you are done with developing using the individual non-minified JS
 files locally, and you build the single production JS file, it is a good
