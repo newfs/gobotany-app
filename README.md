@@ -170,12 +170,17 @@ scores, may also be helpful:
 Using the production JS locally
 -------------------------------
 
-After you are done with developing using the individual non-minified JS
-files locally, and you build the single production JS file, it is a good
-idea to test with that file a bit. Sometimes things load a bit
-differently with the production JS file, and it can happen that things
-work fine using the individual JS files but fail with the production JS
-file.
+When developing locally, the default is to use the individual
+non-minified JS files, as they require no separate build step before
+testing.
+
+After working on these JS files, you build the combined and minified
+production JS file to be used on the site.
+
+It is a good idea to test with this file to make sure the changes work
+as expected. Sometimes things load a bit differently when using this
+file, and it can happen that things worked with the individual JS
+files fail with the production JS file.
 
 To temporarily use the production JS file, edit the file:
 gobotany/app/gobotany/site/templates/gobotany/_js.html
