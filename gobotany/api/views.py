@@ -414,8 +414,8 @@ def glossary_blob(request):
     definitions = {}
     for gt in glossaryterms:
         gt.plural = inflector.plural(gt.term)
-        definitions[gt.term] = gt.lay_definition
-        definitions[gt.plural] = gt.lay_definition
+        definitions[gt.term.lower()] = gt.lay_definition
+        definitions[gt.plural.lower()] = gt.lay_definition
 
     # Calling gt.image.url is very slow, because this is Django, so we
     # only do it once; this will work fine as long as we do not start
@@ -436,8 +436,8 @@ def glossary_blob(request):
     for gt in glossaryterms:
         if not gt.image_path or prefix is None:
             continue
-        images[gt.term] = prefix + gt.image_path
-        images[gt.plural] = prefix + gt.image_path
+        images[gt.term.lower()] = prefix + gt.image_path
+        images[gt.plural.lower()] = prefix + gt.image_path
 
     return jsonify({'definitions': definitions, 'images': images})
 

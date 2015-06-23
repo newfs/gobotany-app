@@ -8,6 +8,7 @@ from datetime import date
 
 from django.conf import settings
 from django.core.exceptions import ObjectDoesNotExist
+from django.db.models import Q
 from django.core.urlresolvers import reverse
 from django.http import HttpResponse
 from django.shortcuts import render_to_response, redirect
@@ -122,7 +123,9 @@ def glossary_view(request, letter):
 
     # Skip any glossary terms that start with a number, and filter to the
     # desired letter.
-    glossary = glossary.filter(term__gte='a', term__startswith=letter)
+    glossary = glossary.filter(
+        Q(term__startswith=letter) | Q(term__startswith=letter.upper()),
+        term__gte='A')
 
     return render_to_response_per_partner('glossary.html', {
             'this_letter': letter,
