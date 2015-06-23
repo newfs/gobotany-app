@@ -2,7 +2,7 @@ from distutils.core import setup
 from setuptools import find_packages
 
 requirements = [
-    'django==1.5.2',
+    'django==1.6.11',
 
     'Pillow==2.4.0',
     'South==0.7.6',
@@ -34,8 +34,7 @@ requirements = [
     'django-email-confirmation==0.2',
     'django-facebook-connect>=1.0.2',
     'django-recaptcha==0.0.6',
-    # Installed in a separate step pending Django dependency issues
-    'django-registration==0.9b1',
+    'django-registration-redux==1.2',
 
     # For storing images on S3.
 

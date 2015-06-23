@@ -1,8 +1,8 @@
 """Import CSV files related to the dichotomous key."""
 
-from gobotany import settings
-from django.core import management
-management.setup_environ(settings)
+import os
+os.environ.setdefault("DJANGO_SETTINGS_MODULE", "gobotany.settings")
+from django.conf import settings
 
 import argparse
 import csv

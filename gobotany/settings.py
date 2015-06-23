@@ -172,6 +172,7 @@ APPEND_SLASH = False
 SMART_APPEND_SLASH = True
 ROOT_URLCONF = 'gobotany.urls'
 INTERNAL_IPS = ('127.0.0.1',)
+STATIC_ROOT = ''
 STATIC_URL = '/static/'
 STATICFILES_DIRS = [('', os.path.join(THIS_DIRECTORY, 'static'))]
 MEDIA_ROOT = os.path.join(THIS_DIRECTORY, 'media')
@@ -221,8 +222,6 @@ if 'WEBSOLR_URL' in os.environ:
     HAYSTACK_SOLR_URL = os.environ['WEBSOLR_URL']
 
 TINYMCE_JS_URL = "tiny_mce/tiny_mce.js"
-# With no local static root, what should we do with the following setting?
-# TINYMCE_JS_ROOT = os.path.join(STATIC_ROOT, "tiny_mce")
 
 # Use memcached for caching if Heroku provides MEMCACHIER_SERVERS, or if a
 # developer runs us locally with that environment variable set.
