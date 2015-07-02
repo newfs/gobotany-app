@@ -287,10 +287,8 @@ class PlantDistributionMap(ChloroplethMap):
             'fill:%s' % Legend.COLORS['state documented nn']) > 0) or
             (style.find(
             'fill:%s' % Legend.COLORS['county documented nn']) > 0))
-        shaded_native = ((style.find(
-            'fill:%s' % Legend.COLORS['state documented na']) > 0) or
-            (style.find(
-            'fill:%s' % Legend.COLORS['county documented na']) > 0))
+        shaded_state_native = (style.find(
+            'fill:%s' % Legend.COLORS['state documented na']) > 0)
 
         if shaded_absent and is_present:
             # If the area is shaded absent but the new record is
@@ -299,14 +297,14 @@ class PlantDistributionMap(ChloroplethMap):
         elif shaded_non_native:
             if is_present:
                 if is_native:
-                    # If the new record is native, override with native.
+                    # If the new record is native, override.
                     should_shade = True
                 elif level == 'county':
                     # If the new record is county-level non-native, override.
                     should_shade = True
-        elif shaded_native:
-            # If the new record is county-level native, override.
-            if is_present and level == 'county' and is_native:
+        elif shaded_state_native:
+            # If the new record is county level, override.
+            if is_present and level == 'county':
                 should_shade = True
 
         return should_shade
