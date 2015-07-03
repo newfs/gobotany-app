@@ -246,11 +246,15 @@ class PlantDistributionMap(ChloroplethMap):
         title_text = '%s: %s' % (scientific_name, title_text)
         self.set_title(title_text)
 
+    def _get_distribution_records(self, scientific_name):
+        """Look up the plant and get its distribution records."""
+        return models.Distribution.objects.all_records_for_plant(
+            scientific_name)
+
     def set_plant(self, scientific_name):
         """Set the plant to be shown and gather its data."""
         self.scientific_name = scientific_name
-        records = models.Distribution.objects.all_records_for_plant(
-            self.scientific_name)
+        records = self._get_distribution_records(self.scientific_name)
         if not records:
             # Distribution records might be listed under one of the
             # synonyms for this plant instead.
@@ -260,8 +264,7 @@ class PlantDistributionMap(ChloroplethMap):
                 if taxon.synonyms:
                     for synonym in taxon.synonyms.all():
                         name = synonym.scientific_name
-                        records = models.Distribution.objects.all_records_for_plant(
-                            name)
+                        records = self._get_distribution_records(name)
                         if records:
                             break
             except ObjectDoesNotExist:
