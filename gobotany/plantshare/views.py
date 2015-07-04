@@ -20,8 +20,8 @@ from django.template import RequestContext
 from django.utils import simplejson
 from django.utils.timezone import utc
 
-from emailconfirmation import views as emailconfirmation_views
-from emailconfirmation.models import EmailConfirmation
+import emailconfirmation_views
+from emailconfirmation_models import EmailConfirmation
 
 from gobotany.plantshare.forms import (ChangeEmailForm, ChecklistEntryForm,
     ChecklistForm, QuestionForm, ScreenedImageForm, SightingForm,

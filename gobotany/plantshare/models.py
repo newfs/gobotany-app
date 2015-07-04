@@ -17,7 +17,7 @@ from django.dispatch import receiver
 from django.template.loader import render_to_string
 from django.utils import timezone
 
-from emailconfirmation.models import (EmailAddressManager, EmailConfirmation,
+from emailconfirmation_models import (EmailAddressManager, EmailConfirmation,
     EmailConfirmationManager)
 from emailconfirmation.signals import email_confirmed
 from facebook_connect.models import FacebookUser
