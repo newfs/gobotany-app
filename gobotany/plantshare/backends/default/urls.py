@@ -9,11 +9,10 @@ from django.contrib.auth.views import (password_change, password_reset,
     password_reset_complete, password_reset_confirm, password_reset_done)
 from django.views.generic.base import TemplateView
 
-from emailconfirmation.views import confirm_email
-
 from registration.backends.default.views import ActivationView
 from registration.backends.default.views import RegistrationView
 
+from gobotany.plantshare.emailconfirmation_views import confirm_email
 from gobotany.plantshare.views import (change_email,
     change_email_confirmation_sent)
 from .forms import RegistrationFormWithCaptcha
