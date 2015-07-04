@@ -53,7 +53,7 @@ requirements = [
     ]
 
 dependency_links = [
-    'git+https://github.com/jrrickerson/django-facebook-connect'
+    'git+https://github.com/noamsu/django-facebook-connect'
     + '#egg=django-facebook-connect-1.0.2',
     'https://bitbucket.org/alper/django-registration/get/tip.tar.gz'
     + '#egg=django-registration-0.9b1'
