@@ -17,8 +17,6 @@ from django.dispatch import receiver
 from django.template.loader import render_to_string
 from django.utils import timezone
 
-from emailconfirmation_models import (EmailAddressManager, EmailConfirmation,
-    EmailConfirmationManager)
 from emailconfirmation.signals import email_confirmed
 from facebook_connect.models import FacebookUser
 from imagekit import ImageSpec, register
@@ -29,6 +27,8 @@ from PIL import Image
 from PIL.ExifTags import TAGS
 from storages.backends.s3boto import S3BotoStorage
 
+from gobotany.plantshare.emailconfirmation_models import (
+    EmailAddressManager, EmailConfirmation, EmailConfirmationManager)
 from gobotany.plantshare.utils import restrictions
 
 VISIBILITY_CHOICES = (

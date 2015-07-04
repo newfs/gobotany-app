@@ -1,7 +1,7 @@
 from django.shortcuts import render_to_response
 from django.template import RequestContext
 
-from emailconfirmation_models import EmailConfirmation
+from gobotany.plantshare.emailconfirmation_models import EmailConfirmation
 
 
 def confirm_email(request, confirmation_key):
