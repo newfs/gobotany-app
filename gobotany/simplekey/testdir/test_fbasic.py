@@ -19,13 +19,14 @@ import re
 import time
 import unittest
 from contextlib import contextmanager
+from django.test.testcases import TestCase
 from selenium import webdriver
 from selenium.common.exceptions import (
     NoSuchElementException, StaleElementReferenceException
     )
 from selenium.webdriver.common.keys import Keys
 
-class FunctionalTestCase(unittest.TestCase):
+class FunctionalTestCase(TestCase):
 
     @classmethod
     def setUpClass(cls):
