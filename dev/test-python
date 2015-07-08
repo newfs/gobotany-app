@@ -4,9 +4,9 @@ set -e
 
 if [ -z "$*" ]
 then
-    APPS="api core dkey mapping plantoftheday plantshare search simplekey site taxa"
+    APPS="gobotany.api.tests gobotany.core.tests gobotany.dkey.tests gobotany.mapping.tests gobotany.plantoftheday.tests gobotany.plantshare.tests gobotany.search.tests gobotany.simplekey.tests gobotany.site.tests gobotany.taxa.tests"
 else
-    APPS="$@"
+    APPS=$(echo "$@" | sed -E 's/([a-z0-9_]*)/gobotany.\1.tests/g')
 fi
 
 DEV=$(dirname ${BASH_SOURCE[0]})
