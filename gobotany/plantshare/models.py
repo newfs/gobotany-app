@@ -270,14 +270,10 @@ def create_user_profile(sender, **kwargs):
             # the FacebookUser signal handle it instead
             return
 
-        print 'New standard user creation [Username: {0}]'.format(
-            user.username)
         profile = UserProfile(user=user)
         profile.save()
-        print 'Created new UserProfile'
         user_pod = Pod(name=user.username)
         user_pod.save()
-        print 'Created default Pod'
         membership = PodMembership(member=profile, pod=user_pod,
             is_owner=True, is_self_pod=True)
         membership.save()
@@ -291,14 +287,10 @@ def create_fbuser_profile(sender, **kwargs):
     # and his personal Pod.
     if created:
         user = fbuser.contrib_user
-        print 'New Facebook user creation [Username: {0}]'.format(
-            user.username)
         profile = UserProfile(user=user)
         profile.save()
-        print 'Created new UserProfile'
         user_pod = Pod(name=user.username)
         user_pod.save()
-        print 'Created default Pod'
         membership = PodMembership(member=profile, pod=user_pod,
             is_owner=True, is_self_pod=True)
         membership.save()
