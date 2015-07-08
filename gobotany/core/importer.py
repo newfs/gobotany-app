@@ -1687,6 +1687,8 @@ class Importer(object):
                 row[status_column_name])
             distribution.get(
                 scientific_name=row['scientific_name'],
+                species_name=row['species_name'],
+                subspecific_epithet=row['subspecific_epithet'],
                 state=row['state'],
                 county=row['county'],
                 ).set(
