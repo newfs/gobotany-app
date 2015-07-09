@@ -55,49 +55,29 @@ def _taxon_image(image):
         }
     return json
 
-def _simple_taxon(taxon, pile_slug):
+def _simple_taxon(taxon, pile_slug=None):
     genus_name, epithet = taxon.scientific_name.lower().split(None, 1)
     url = reverse('taxa-species', args=(genus_name, epithet))
-    url += '?' + urlencode({'pile': pile_slug})
-    return {
-        'id': taxon.id,
-        'scientific_name': taxon.scientific_name,
-        'common_name': taxon.common_name,
-        'genus': taxon.scientific_name.split()[0],  # faster than .genus.name
-        'family': taxon.family_name,
-        'taxonomic_authority': taxon.taxonomic_authority,
-        'url': url,
-        }
-
-def _taxon_image(image):
-    if image:
-        return {'url': image.image.url,
-                'type': image.image_type.name,
-                'rank': image.rank,
-                'title': image.alt,
-                'thumb_url': image.thumb_small(),
-                'large_thumb_url': image.thumb_large(),
-                }
-    return ''
-
-def _simple_taxon(taxon):
-    res = {}
+    if pile_slug:
+        url += '?' + urlencode({'pile': pile_slug})
 
     first_common_name = '';
     common_names = taxon.common_names.all()
     if (common_names):
         first_common_name = common_names[0].common_name
 
-    res['scientific_name'] = taxon.scientific_name
-    res['common_name'] = first_common_name
-    res['genus'] = taxon.scientific_name.split()[0] # faster than .genus.name
-    res['family'] = taxon.family.name
-    res['id'] = taxon.id
-    res['taxonomic_authority'] = taxon.taxonomic_authority
-    res['default_image'] = _taxon_image(taxon.get_default_image())
-    res['images'] = [_taxon_image(i) for i in botany.species_images(taxon)]
-    res['factoid'] = taxon.factoid
-    return res
+    return {
+        'id': taxon.id,
+        'scientific_name': taxon.scientific_name,
+        'common_name': first_common_name,
+        'genus': taxon.scientific_name.split()[0],  # faster than .genus.name
+        'family': taxon.family.name,
+        'taxonomic_authority': taxon.taxonomic_authority,
+        'url': url,
+        'default_image': _taxon_image(taxon.get_default_image()),
+        'images': [_taxon_image(i) for i in botany.species_images(taxon)],
+        'factoid': taxon.factoid,
+        }
 
 def _taxon_with_chars(taxon):
     res = _simple_taxon(taxon)
@@ -184,6 +164,35 @@ def taxa(request, scientific_name=None):
         # Return full taxon with characters for single item query
         return jsonify(_taxon_with_chars(taxon))
     return jsonify({})
+
+def taxa_count(request):
+    kwargs = {}
+    for k, v in request.GET.items():
+        kwargs[str(k)] = v
+    try:
+        species = botany.query_species(**kwargs)
+    except models.Character.DoesNotExist:
+        return rc.NOT_FOUND
+
+    matched = species.count()
+    return jsonify({'matched': matched,
+        'excluded': models.Taxon.objects.count() - matched})
+
+def taxon_image(request):
+    kwargs = {}
+    items = request.GET.items()
+    if items:
+        for k, v in items:
+            kwargs[str(k)] = v
+        try:
+            images = botany.species_images(**kwargs)
+        except models.Taxon.DoesNotExist:
+            return rc.NOT_FOUND
+    else:
+        return rc.BAD_REQUEST
+
+    return jsonify([_taxon_image(image) for image in images])
+
 
 
 def glossary_blob(request):

@@ -32,11 +32,9 @@ urlpatterns = patterns(
         views.taxa), name='api-taxa'),
     url(r'^taxa/$', views.taxa, name='api-taxa-list'),
 
-    url(r'^taxa-count/$',
-        Resource(handler=handlers.TaxonCountHandler), name='api-taxa-count'),
+    url(r'^taxa-count/$', views.taxa_count, name='api-taxa-count'),
 
-    url(r'^taxon-image/$',
-        Resource(handler=handlers.TaxonImageHandler), name='api-taxon-image'),
+    url(r'^taxon-image/$', views.taxon_image, name='api-taxon-image'),
 
     url(r'^characters/$',
         Resource(handler=handlers.CharactersHandler)),
