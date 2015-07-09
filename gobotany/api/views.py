@@ -8,6 +8,7 @@ from django.conf import settings
 from django.contrib.contenttypes.models import ContentType
 from django.core.urlresolvers import reverse
 from django.db import connection
+from django.forms.models import model_to_dict
 from django.http import HttpResponse, Http404
 from django.shortcuts import get_object_or_404
 from django.views.decorators.cache import cache_page
@@ -220,6 +221,10 @@ def character(request, character_short_name):
             r['type'] = 'length'
             r['list'].append([cv.value_min, cv.value_max])
     return jsonify(r)
+
+def pile_listing(request):
+    lst = [model_to_dict(x) for x in models.Pile.objects.all()]
+    return jsonify({'items': lst})
 
 
 

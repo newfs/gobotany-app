@@ -40,8 +40,7 @@ urlpatterns = patterns(
     url(r'^characters/(?P<character_short_name>[^/]+)/$', views.character,
         name='api-character'),
 
-    url(r'^piles/$',
-        Resource(handler=handlers.PileListingHandler), name='api-pile-list'),
+    url(r'^piles/$', views.pile_listing, name='api-pile-list'),
 
 
     # Redirects for the split Remaining Non-Monocots piles, so that the
