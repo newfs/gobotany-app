@@ -222,12 +222,92 @@ def character(request, character_short_name):
             r['list'].append([cv.value_min, cv.value_max])
     return jsonify(r)
 
+def _character_groups(pile=None):
+    groups = models.CharacterGroup.objects.filter(
+        character__pile=pile).distinct()
+    return [dict(name=group.name,
+                 id=group.id) for group in groups]
+
+def _default_filters(pile=None):
+    filters = []
+    default_filters = list(
+        models.DefaultFilter.objects.filter(pile=pile)
+        .select_related('character')
+        )
+    for default_filter in default_filters:
+        filter = _jsonify_character(default_filter.character, pile.slug)
+        filter['key'] = default_filter.key
+        filter['order'] = default_filter.order
+        filters.append(filter)
+    return filters
+
+def _plant_preview_characters(pile=None):
+    characters_list = []
+    plant_preview_characters = list(
+        models.PlantPreviewCharacter.objects.filter(pile=pile)
+        .select_related('character', 'partner_site')
+        )
+    for preview_character in plant_preview_characters:
+        character = {}
+        character['character_short_name'] = \
+            preview_character.character.short_name
+        character['friendly_name'] = \
+            preview_character.character.friendly_name
+        character['order'] = preview_character.order
+        partner_site = None
+        if preview_character.partner_site:
+            partner_site = preview_character.partner_site.short_name
+        character['partner_site'] = partner_site
+        character['unit'] = preview_character.character.unit
+        character['value_type'] = preview_character.character.value_type
+        characters_list.append(character)
+    return characters_list
+
+def _default_image(pile_or_pilegroup=None):
+    if pile_or_pilegroup is not None:
+        return _taxon_image(pile_or_pilegroup.get_default_image()) or ''
+
 def pile_listing(request):
-    lst = [model_to_dict(x) for x in models.Pile.objects.all()]
+    lst = []
+    for pile in models.Pile.objects.all():
+        pile_dict = model_to_dict(pile)
+        pile_dict['resource_uri'] = reverse('api-pile', args=(pile.slug,))
+        pile_dict['character_groups'] = _character_groups(pile)
+        pile_dict['default_filters'] = _default_filters(pile)
+        pile_dict['plant_preview_characters'] = _plant_preview_characters(
+            pile)
+        pile_dict['default_image'] = _default_image(pile)
+
+        # Delete some items not needed here yet.
+        del pile_dict['friendly_title']
+        del pile_dict['id']
+        del pile_dict['pilegroup']
+        del pile_dict['sample_species_images']
+        del pile_dict['slug']
+        del pile_dict['species']
+        del pile_dict['video']
+
+        lst.append(pile_dict)
+
     return jsonify({'items': lst})
 
 def pile_group_listing(request):
-    lst = [model_to_dict(x) for x in models.PileGroup.objects.all()]
+    lst = []
+    for pilegroup in models.PileGroup.objects.all():
+        pilegroup_dict = model_to_dict(pilegroup)
+        pilegroup_dict['resource_uri'] = reverse('api-pilegroup',
+            args=(pilegroup.slug,))
+        pilegroup_dict['default_image'] = _default_image(pilegroup)
+
+        # Delete some items not needed here yet.
+        del pilegroup_dict['friendly_title']
+        del pilegroup_dict['id']
+        del pilegroup_dict['sample_species_images']
+        del pilegroup_dict['slug']
+        del pilegroup_dict['video']
+
+        lst.append(pilegroup_dict)
+
     return jsonify({'items': lst})
 
 def _character_values(request, pile_slug, character_short_name):
