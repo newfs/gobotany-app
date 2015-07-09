@@ -291,24 +291,36 @@ def pile_listing(request):
 
     return jsonify({'items': lst})
 
+def _process_pilegroup_dict(pilegroup_dict, pilegroup):
+    pilegroup_dict['resource_uri'] = reverse('api-pilegroup',
+        args=(pilegroup.slug,))
+    pilegroup_dict['default_image'] = _default_image(pilegroup)
+
+    # Delete some items not needed here yet.
+    del pilegroup_dict['friendly_title']
+    del pilegroup_dict['id']
+    del pilegroup_dict['sample_species_images']
+    del pilegroup_dict['slug']
+    del pilegroup_dict['video']
+
+    return pilegroup_dict
+
 def pile_group_listing(request):
     lst = []
     for pilegroup in models.PileGroup.objects.all():
         pilegroup_dict = model_to_dict(pilegroup)
-        pilegroup_dict['resource_uri'] = reverse('api-pilegroup',
-            args=(pilegroup.slug,))
-        pilegroup_dict['default_image'] = _default_image(pilegroup)
-
-        # Delete some items not needed here yet.
-        del pilegroup_dict['friendly_title']
-        del pilegroup_dict['id']
-        del pilegroup_dict['sample_species_images']
-        del pilegroup_dict['slug']
-        del pilegroup_dict['video']
-
+        pilegroup_dict = _process_pilegroup_dict(pilegroup_dict, pilegroup)
         lst.append(pilegroup_dict)
-
     return jsonify({'items': lst})
+
+def pile_group(request, slug):
+    try:
+        pilegroup = models.PileGroup.objects.get(slug=slug)
+    except models.PileGroup.DoesNotExist:
+        return rc.NOT_FOUND
+    pilegroup_dict = model_to_dict(pilegroup)
+    pilegroup_dict = _process_pilegroup_dict(pilegroup_dict, pilegroup)
+    return jsonify(pilegroup_dict)
 
 def _character_values(request, pile_slug, character_short_name):
     character = models.Character.objects.get(

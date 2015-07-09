@@ -74,8 +74,8 @@ urlpatterns = patterns(
         views.character_values, name='api-character-values'),
 
     url(r'^pilegroups/$', views.pile_group_listing, name='api-pilegroup-list'),
-    url(r'^pilegroups/(?P<slug>[^/]+)/$',
-        Resource(handler=handlers.PileGroupHandler), name='api-pilegroup'),
+    url(r'^pilegroups/(?P<slug>[^/]+)/$', views.pile_group,
+        name='api-pilegroup'),
 
     # Plant distribution maps
     url(r'^maps/(?P<genus>[^/-]+)-(?P<epithet>[^/]+)'
