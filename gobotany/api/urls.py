@@ -36,10 +36,9 @@ urlpatterns = patterns(
 
     url(r'^taxon-image/$', views.taxon_image, name='api-taxon-image'),
 
-    url(r'^characters/$',
-        Resource(handler=handlers.CharactersHandler)),
-    url(r'^characters/(?P<character_short_name>[^/]+)/$',
-        Resource(handler=handlers.CharacterHandler)),
+    url(r'^characters/$', views.characters, name='api-characters'),
+    url(r'^characters/(?P<character_short_name>[^/]+)/$', views.character,
+        name='api-character'),
 
     url(r'^piles/$',
         Resource(handler=handlers.PileListingHandler), name='api-pile-list'),

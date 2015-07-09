@@ -193,6 +193,34 @@ def taxon_image(request):
 
     return jsonify([_taxon_image(image) for image in images])
 
+def characters(request):
+    """List characters and character values across all piles."""
+    group_map = {}
+    for character_group in models.CharacterGroup.objects.all():
+        group_map[character_group.id] = {
+            'name': character_group.name,
+            'characters': [],
+        }
+    for character in models.Character.objects.all():
+        group_map[character.character_group_id]['characters'].append({
+            'short_name': character.short_name,
+            'name': character.name,
+        })
+    return jsonify(sorted(group_map.values(), key=itemgetter('name')))
+
+def character(request, character_short_name):
+    """Retrieve all character values for a character regardless of pile."""
+    r = {'type': '', 'list': []}
+    for cv in models.CharacterValue.objects.filter(
+        character__short_name=character_short_name):
+        if cv.value_str:
+            r['type'] = 'str'
+            r['list'].append(cv.value_str)
+        elif cv.value_min is not None and cv.value_max is not None:
+            r['type'] = 'length'
+            r['list'].append([cv.value_min, cv.value_max])
+    return jsonify(r)
+
 
 
 def glossary_blob(request):
