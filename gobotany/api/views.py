@@ -230,6 +230,30 @@ def pile_group_listing(request):
     lst = [model_to_dict(x) for x in models.PileGroup.objects.all()]
     return jsonify({'items': lst})
 
+def _character_values(request, pile_slug, character_short_name):
+    character = models.Character.objects.get(
+        short_name=character_short_name)
+
+    for cv in models.CharacterValue.objects.filter(
+        character=character):
+
+        image_url = ''
+        thumbnail_url = ''
+        if cv.image:
+            image_url = cv.image.url
+            thumbnail_url = cv.image.thumbnail.absolute_url
+
+        yield {'value': cv.value,
+               'friendly_text': cv.friendly_text,
+               'image_url': image_url,
+               'thumbnail_url': thumbnail_url}
+
+def character_values(request, pile_slug, character_short_name):
+    try:
+        return jsonify([x for x in _character_values(request, pile_slug,
+            character_short_name)])
+    except (models.Pile.DoesNotExist, models.Character.DoesNotExist):
+        return rc.NOT_FOUND
 
 
 def glossary_blob(request):
