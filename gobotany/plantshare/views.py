@@ -1,4 +1,5 @@
 import csv
+import json
 import math
 
 from datetime import datetime, timedelta
@@ -17,7 +18,6 @@ from django.http import Http404, HttpResponse, HttpResponseRedirect
 from django.shortcuts import (get_object_or_404, redirect, render,
     render_to_response)
 from django.template import RequestContext
-from django.utils import simplejson
 from django.utils.timezone import utc
 
 import emailconfirmation_views
@@ -1137,7 +1137,7 @@ def screen_images(request):
 def ajax_profile_edit(request):
     """ Ajax form submission of profile form """
     if not request.user.is_authenticated():
-        return HttpResponse(simplejson.dumps({
+        return HttpResponse(json.dumps({
             'error': True,
             'info': 'User is not authenticated.'
         }), mimetype='application/json')
@@ -1153,20 +1153,20 @@ def ajax_profile_edit(request):
             profile.save()
             profile_form.save_m2m()
         else:
-            return HttpResponse(simplejson.dumps({
+            return HttpResponse(json.dumps({
                 'error': True,
                 'info': 'Form Validation error:\n{0}'.format(
                     profile_form.errors.as_text())
             }), mimetype='application/json')
 
-    return HttpResponse(simplejson.dumps({'success': True}),
+    return HttpResponse(json.dumps({'success': True}),
                                          mimetype='application/json')
 
 
 def ajax_image_upload(request):
     """ Ajax form submission of image upload form """
     if not request.user.is_authenticated():
-        return HttpResponse(simplejson.dumps({
+        return HttpResponse(json.dumps({
             'error': True,
             'info': 'Authentication error'
         }), mimetype='application/json')
@@ -1223,14 +1223,14 @@ def ajax_image_upload(request):
                 'longitude': longitude
             })
 
-    return HttpResponse(simplejson.dumps(response),
+    return HttpResponse(json.dumps(response),
                         mimetype='application/json')
 
 
 def ajax_image_reject(request, image_id):
     """ Reject an image that was previously uploaded. """
     if not request.user.is_authenticated():
-        return HttpResponse(simplejson.dumps({
+        return HttpResponse(json.dumps({
             'error': True,
             'info': 'Authentication error'
         }), mimetype='application/json')
@@ -1239,7 +1239,7 @@ def ajax_image_reject(request, image_id):
 
     # Only staff or the user who originally uploaded the image may reject it.
     if not (request.user.is_staff or request.user == image.uploaded_by):
-        return HttpResponse(simplejson.dumps({
+        return HttpResponse(json.dumps({
             'error': True,
             'info': 'Authentication error'
         }), mimetype='application/json')
@@ -1254,7 +1254,7 @@ def ajax_image_reject(request, image_id):
         'success': True
     }
 
-    return HttpResponse(simplejson.dumps(response), mimetype='application/json')
+    return HttpResponse(json.dumps(response), mimetype='application/json')
 
 
 def ajax_sightings(request):
@@ -1313,7 +1313,7 @@ def ajax_sightings(request):
         'sightings': sightings_json
     }
 
-    return HttpResponse(simplejson.dumps(json),
+    return HttpResponse(json.dumps(json),
                         mimetype='application/json; charset=utf-8')
 
 
@@ -1381,7 +1381,7 @@ def ajax_people_suggestions(request):
             else:
                 ordered_suggestions.append(suggestion)
 
-    return HttpResponse(simplejson.dumps(ordered_suggestions),
+    return HttpResponse(json.dumps(ordered_suggestions),
                         mimetype='application/json; charset=utf-8')
 
 
@@ -1403,5 +1403,5 @@ def ajax_restrictions(request):
     location = request.GET.get('location')
     if plant_name:
         restrictions_info = restrictions(plant_name, location)
-    return HttpResponse(simplejson.dumps(restrictions_info),
+    return HttpResponse(json.dumps(restrictions_info),
                         mimetype='application/json; charset=utf-8')
