@@ -6,8 +6,11 @@ if [ -z "$*" ]
 then
     APPS="gobotany.api.tests gobotany.core.tests gobotany.dkey.tests gobotany.mapping.tests gobotany.plantoftheday.tests gobotany.plantshare.tests gobotany.search.tests gobotany.simplekey.tests gobotany.site.tests gobotany.taxa.tests"
 else
-    APPS=$(echo "$@" | sed -E 's/([a-z0-9_]*)/gobotany.\1.tests/g')
+    # Format each piece as: gobotany.{app}.tests{.TestClass.test_function}
+    APPS=$(echo "$@" | sed -E 's/([a-zA-Z0-9_]+)((\.[a-zA-Z0-9_.]+)?)/gobotany.\1.tests\2/g')
 fi
+
+echo -e "\nRunning: $APPS\n"
 
 DEV=$(dirname ${BASH_SOURCE[0]})
 $DEV/django test $APPS
