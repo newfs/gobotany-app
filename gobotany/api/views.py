@@ -226,6 +226,10 @@ def pile_listing(request):
     lst = [model_to_dict(x) for x in models.Pile.objects.all()]
     return jsonify({'items': lst})
 
+def pile_group_listing(request):
+    lst = [model_to_dict(x) for x in models.PileGroup.objects.all()]
+    return jsonify({'items': lst})
+
 
 
 def glossary_blob(request):

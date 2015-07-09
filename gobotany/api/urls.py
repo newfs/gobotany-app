@@ -74,9 +74,7 @@ urlpatterns = patterns(
         Resource(handler=handlers.CharacterValuesHandler),
         name='api-character-values'),
 
-    url(r'^pilegroups/$',
-        Resource(handler=handlers.PileGroupListingHandler),
-        name='api-pilegroup-list'),
+    url(r'^pilegroups/$', views.pile_group_listing, name='api-pilegroup-list'),
     url(r'^pilegroups/(?P<slug>[^/]+)/$',
         Resource(handler=handlers.PileGroupHandler), name='api-pilegroup'),
 
