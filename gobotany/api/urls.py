@@ -29,9 +29,8 @@ urlpatterns = patterns(
     '',
 
     url(r'^taxa/(?P<scientific_name>[^/]+)/$', allow_cross_site_access(
-            Resource(handler=handlers.TaxonQueryHandler)), name='api-taxa'),
-    url(r'^taxa/$',
-        Resource(handler=handlers.TaxonQueryHandler), name='api-taxa-list'),
+        views.taxa), name='api-taxa'),
+    url(r'^taxa/$', views.taxa, name='api-taxa-list'),
 
     url(r'^taxa-count/$',
         Resource(handler=handlers.TaxonCountHandler), name='api-taxa-count'),

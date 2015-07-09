@@ -15,7 +15,7 @@ from django.views.decorators.http import etag
 from django.views.decorators.vary import vary_on_headers
 
 import gobotany.dkey.models as dkey_models
-from gobotany.core import igdt
+from gobotany.core import botany, igdt, models
 from gobotany.core.models import (
     Character, ContentImage,
     GlossaryTerm, PartnerSpecies, Pile,
@@ -69,7 +69,122 @@ def _simple_taxon(taxon, pile_slug):
         'url': url,
         }
 
+def _taxon_image(image):
+    if image:
+        return {'url': image.image.url,
+                'type': image.image_type.name,
+                'rank': image.rank,
+                'title': image.alt,
+                'thumb_url': image.thumb_small(),
+                'large_thumb_url': image.thumb_large(),
+                }
+    return ''
+
+def _simple_taxon(taxon):
+    res = {}
+
+    first_common_name = '';
+    common_names = taxon.common_names.all()
+    if (common_names):
+        first_common_name = common_names[0].common_name
+
+    res['scientific_name'] = taxon.scientific_name
+    res['common_name'] = first_common_name
+    res['genus'] = taxon.scientific_name.split()[0] # faster than .genus.name
+    res['family'] = taxon.family.name
+    res['id'] = taxon.id
+    res['taxonomic_authority'] = taxon.taxonomic_authority
+    res['default_image'] = _taxon_image(taxon.get_default_image())
+    res['images'] = [_taxon_image(i) for i in botany.species_images(taxon)]
+    res['factoid'] = taxon.factoid
+    return res
+
+def _taxon_with_chars(taxon):
+    res = _simple_taxon(taxon)
+    piles = taxon.piles.all()
+    res['piles'] = [pile.name for pile in piles]
+    res['pile_slugs'] = [pile.slug for pile in piles]
+    for cv in taxon.character_values.all():
+        name = cv.character.short_name
+        # Any character might have multiple values. For any that do,
+        # return a list instead of a single value.
+        if not res.has_key(name):
+            # Add a single value the first time this name comes up.
+            res[name] = cv.friendliest_text()
+        else:
+            # This name exists. Its value is either already a list,
+            # or needs to be converted into one before adding the value.
+            if not type(res[name]) == type(list()):
+                new_list = [res[name]]
+                res[name] = new_list
+            res[name].append(cv.friendliest_text())
+    return res
+
+
+# Include some helper code originally from django-piston.
+
+class rc_factory(object):
+    """
+    Status codes.
+    """
+    CODES = dict(ALL_OK = ('OK', 200),
+                 CREATED = ('Created', 201),
+                 DELETED = ('', 204), # 204 says "Don't send a body!"
+                 BAD_REQUEST = ('Bad Request', 400),
+                 FORBIDDEN = ('Forbidden', 401),
+                 NOT_FOUND = ('Not Found', 404),
+                 DUPLICATE_ENTRY = ('Conflict/Duplicate', 409),
+                 NOT_HERE = ('Gone', 410),
+                 NOT_IMPLEMENTED = ('Not Implemented', 501),
+                 THROTTLED = ('Throttled', 503))
+
+    def __getattr__(self, attr):
+        """
+        Returns a fresh `HttpResponse` when getting
+        an "attribute". This is backwards compatible
+        with 0.2, which is important.
+        """
+        try:
+            (r, c) = self.CODES.get(attr)
+        except TypeError:
+            raise AttributeError(attr)
+
+        return HttpResponse(r, content_type='text/plain', status=c)
+
+rc = rc_factory()
+
+
 # API views.
+
+def taxa(request, scientific_name=None):
+    getdict = dict(request.GET.items())  # call items() to avoid lists
+    kwargs = {}
+    for k, v in getdict.items():
+        kwargs[str(k)] = v
+    try:
+        species = botany.query_species(**kwargs)
+    except models.Character.DoesNotExist:
+        return rc.NOT_FOUND
+
+    if not scientific_name:
+        # Only return character values for single item lookup, keep the
+        # result list simple
+        listing = [_simple_taxon(s) for s in species.all()]
+
+        return jsonify({'items': listing,
+                'label': 'scientific_name',
+                'identifier': 'scientific_name'})
+    elif species.exists():
+        try:
+            taxon = species.filter(scientific_name=scientific_name)[0]
+        except IndexError:
+            # A taxon wasn't returned from the database.
+            return rc.NOT_FOUND
+
+        # Return full taxon with characters for single item query
+        return jsonify(_taxon_with_chars(taxon))
+    return jsonify({})
+
 
 def glossary_blob(request):
     """Return a dictionary of glossary terms and definitions.
