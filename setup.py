@@ -10,7 +10,6 @@ requirements = [
     'django-debug-toolbar==1.3.0',
     'django-haystack==1.2.7',
     'django-imagekit==3.0.2',
-    'django-piston==0.2.2',
     'django-tinymce',
     'lxml',
     'psycopg2>=2.3',

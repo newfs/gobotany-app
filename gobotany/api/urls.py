@@ -4,8 +4,7 @@ from django.contrib import admin
 from django.views.decorators.cache import cache_control, cache_page
 from django.views.generic import RedirectView
 
-from gobotany.api import handlers, views
-from piston.resource import Resource
+from gobotany.api import views
 
 admin.autodiscover()
 
@@ -67,8 +66,7 @@ urlpatterns = patterns(
     url(r'^piles/(?P<pile_slug>[^/]+)/questions/$',
         'gobotany.api.views.questions', name='api-questions'),
 
-    url(r'^piles/(?P<slug>[^/]+)/?$',
-        Resource(handler=handlers.PileHandler), name='api-pile'),
+    url(r'^piles/(?P<slug>[^/]+)/?$', views.pile, name='api-pile'),
 
     url(r'^piles/(?P<pile_slug>[^/]+)/(?P<character_short_name>[^/]+)/$',
         views.character_values, name='api-character-values'),
