@@ -63,6 +63,7 @@ def _simple_taxon(taxon, pile_slug=None, include_default_image=False,
     url = reverse('taxa-species', args=(genus_name, epithet))
     if pile_slug:
         url += '?' + urlencode({'pile': pile_slug})
+    common_name = ''
     common_names = taxon.common_names.all()
     if common_names:
         common_name = common_names[0].common_name
