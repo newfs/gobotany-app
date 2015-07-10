@@ -56,29 +56,43 @@ def _taxon_image(image):
         }
     return json
 
-def _simple_taxon(taxon, pile_slug=None):
+def _simple_taxon(taxon, pile_slug=None, common_name=None, family_name=None,
+    include_default_image=False, include_factoid=False):
+
     genus_name, epithet = taxon.scientific_name.lower().split(None, 1)
     url = reverse('taxa-species', args=(genus_name, epithet))
     if pile_slug:
         url += '?' + urlencode({'pile': pile_slug})
 
-    first_common_name = '';
-    common_names = taxon.common_names.all()
-    if (common_names):
-        first_common_name = common_names[0].common_name
+    # If the common name was not passed in, fetch it from the database.
+    # This slows things down, thus the option to pass it after a custom query.
+    if common_name is None:
+        print 'common_name not passed in'
+        common_names = taxon.common_names.all()
+        if common_names:
+            common_name = common_names[0].common_name
 
-    return {
+    # If the family name was not passed in, fetch it from the database.
+    # This slows things down, thus the option to pass it after a custom query.
+    if family_name is None:
+        print 'family_name not passed in'
+        family_name = taxon.family.name
+
+    json = {
         'id': taxon.id,
         'scientific_name': taxon.scientific_name,
-        'common_name': first_common_name,
+        'common_name': common_name,
         'genus': taxon.scientific_name.split()[0],  # faster than .genus.name
-        'family': taxon.family.name,
+        'family': family_name,
         'taxonomic_authority': taxon.taxonomic_authority,
         'url': url,
-        'default_image': _taxon_image(taxon.get_default_image()),
         'images': [_taxon_image(i) for i in botany.species_images(taxon)],
-        'factoid': taxon.factoid,
-        }
+    }
+    if include_default_image:
+        json['default_image'] = _taxon_image(taxon.get_default_image())
+    if include_factoid:
+        json['factoid'] = taxon.factoid
+    return json
 
 def _taxon_with_chars(taxon):
     res = _simple_taxon(taxon)
@@ -748,7 +762,7 @@ def species(request, pile_slug):
     # closed the connection.
     # Somehow the cached response has a much shorter Content-Length than the
     # original response.
-    #
+    # Tried re-enabling after upgrade to Django 1.6, but got same error.
     #if pile_slug in _species_cache:
     #    return _species_cache[pile_slug]
 
@@ -799,7 +813,8 @@ def species(request, pile_slug):
     result = []
     while species_list:
         species = species_list.pop()  # pop() to free memory as we go
-        d = _simple_taxon(species, pile_slug)
+        d = _simple_taxon(species, pile_slug, common_name=species.common_name,
+            family_name=species.family_name)
         d['images'] = images = []
         image_list = image_dict.pop(species.id, ())
         for image in image_list:
