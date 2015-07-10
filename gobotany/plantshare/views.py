@@ -351,7 +351,7 @@ def sightings_view(request):
                     break
 
         years = [dt.year for dt in
-                 Sighting.objects.dates('created', 'year', order='DESC')]
+            Sighting.objects.datetimes('created', 'year', order='DESC')]
 
         return render_to_response('sightings.html', {
                     'sightings': sightings,
@@ -388,7 +388,7 @@ def sightings_by_year_view(request, year):
             })
 
     years = [str(dt.year) for dt in
-             Sighting.objects.dates('created', 'year', order='DESC')]
+        Sighting.objects.datetimes('created', 'year', order='DESC')]
 
     if year in years:
         return render_to_response('sightings_by_year.html', {
@@ -699,7 +699,7 @@ def all_questions_by_year_view(request, year=None):
     """View for a list of all Questions and Answers for a year."""
 
     years = [str(dt.year) for dt in
-        Question.objects.dates('asked', 'year', order='DESC')]
+        Question.objects.datetimes('asked', 'year', order='DESC')]
     # If this view was not called with a year, use the latest year.
     if not year:
         year = years[0]
