@@ -1285,19 +1285,26 @@ def ajax_sightings(request):
 
             # If the location coordinates are not valid numbers,
             # set them to None, which converts to null in the JSON.
-            latitude = sighting.location.latitude
-            if math.isnan(latitude):
-                latitude = None
-            longitude = sighting.location.longitude
-            if math.isnan(longitude):
-                longitude = None
+            latitude = None
+            longitude = None
+            location_user_input = None
+            if sighting.location and sighting.location.latitude and \
+                sighting.location.longitude:
+
+                latitude = sighting.location.latitude
+                if math.isnan(latitude):
+                    latitude = None
+                longitude = sighting.location.longitude
+                if math.isnan(longitude):
+                    longitude = None
+                location_user_input = sighting.location.user_input
 
             sightings_json.append({
                 'id': sighting.id,
                 'identification': sighting.identification,
                 'created': unicode(sighting.created.strftime(
                                    SIGHTING_SHORT_DATE_YEAR_FORMAT)),
-                'location': sighting.location.user_input,
+                'location': location_user_input,
                 'latitude': latitude,
                 'longitude': longitude,
                 'user': sighting.user.username, # TODO: fast way of getting
@@ -1309,11 +1316,11 @@ def ajax_sightings(request):
             if len(sightings_json) == MAX_TO_RETURN:
                 break
 
-    json = {
+    output = {
         'sightings': sightings_json
     }
 
-    return HttpResponse(json.dumps(json),
+    return HttpResponse(json.dumps(output),
                         content_type='application/json; charset=utf-8')
 
 
