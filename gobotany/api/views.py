@@ -56,34 +56,22 @@ def _taxon_image(image):
         }
     return json
 
-def _simple_taxon(taxon, pile_slug=None, common_name=None, family_name=None,
-    include_default_image=False, include_factoid=False):
+def _simple_taxon(taxon, pile_slug=None, include_default_image=False,
+    include_factoid=False):
 
     genus_name, epithet = taxon.scientific_name.lower().split(None, 1)
     url = reverse('taxa-species', args=(genus_name, epithet))
     if pile_slug:
         url += '?' + urlencode({'pile': pile_slug})
-
-    # If the common name was not passed in, fetch it from the database.
-    # This slows things down, thus the option to pass it after a custom query.
-    if common_name is None:
-        print 'common_name not passed in'
-        common_names = taxon.common_names.all()
-        if common_names:
-            common_name = common_names[0].common_name
-
-    # If the family name was not passed in, fetch it from the database.
-    # This slows things down, thus the option to pass it after a custom query.
-    if family_name is None:
-        print 'family_name not passed in'
-        family_name = taxon.family.name
-
+    common_names = taxon.common_names.all()
+    if common_names:
+        common_name = common_names[0].common_name
     json = {
         'id': taxon.id,
         'scientific_name': taxon.scientific_name,
         'common_name': common_name,
         'genus': taxon.scientific_name.split()[0],  # faster than .genus.name
-        'family': family_name,
+        'family': taxon.family.name,
         'taxonomic_authority': taxon.taxonomic_authority,
         'url': url,
         'images': [_taxon_image(i) for i in botany.species_images(taxon)],
@@ -93,6 +81,24 @@ def _simple_taxon(taxon, pile_slug=None, common_name=None, family_name=None,
     if include_factoid:
         json['factoid'] = taxon.factoid
     return json
+
+def _species_simple_taxon(taxon, pile_slug):
+    """Optimized version of the _simple_taxon helper function, for use with
+    the species/ URL, which does custom querying and passes a modified taxon
+    object.
+    """
+    genus_name, epithet = taxon.scientific_name.lower().split(None, 1)
+    url = reverse('taxa-species', args=(genus_name, epithet))
+    url += '?' + urlencode({'pile': pile_slug})
+    return {
+        'id': taxon.id,
+        'scientific_name': taxon.scientific_name,
+        'common_name': taxon.common_name,
+        'genus': taxon.scientific_name.split()[0],  # faster than .genus.name
+        'family': taxon.family_name,
+        'taxonomic_authority': taxon.taxonomic_authority,
+        'url': url,
+        }
 
 def _taxon_with_chars(taxon):
     res = _simple_taxon(taxon)
@@ -813,8 +819,7 @@ def species(request, pile_slug):
     result = []
     while species_list:
         species = species_list.pop()  # pop() to free memory as we go
-        d = _simple_taxon(species, pile_slug, common_name=species.common_name,
-            family_name=species.family_name)
+        d = _species_simple_taxon(species, pile_slug)
         d['images'] = images = []
         image_list = image_dict.pop(species.id, ())
         for image in image_list:
