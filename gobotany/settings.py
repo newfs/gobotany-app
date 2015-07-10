@@ -136,7 +136,8 @@ INSTALLED_APPS = [
                           # Otherwise, keep this app commented out in
                           # order to avoid a NoMigrations error when
                           # applying South migrations.
-    'south',
+                          # Update: also keep commented out for the Django 1.7
+                          # upgrade when running: dev/django makemigrations
     'captcha',
     ]
 MIDDLEWARE_CLASSES = (
