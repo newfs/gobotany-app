@@ -244,7 +244,7 @@ def search_suggestions_view(request):
             suggestions.extend(more_suggestions)
 
     return HttpResponse(json.dumps(suggestions),
-                        mimetype='application/json; charset=utf-8')
+        content_type='application/json; charset=utf-8')
 
 # Plant name suggestions API call
 
@@ -279,7 +279,7 @@ def plant_name_suggestions_view(request):
             suggestions.extend(more_suggestions)
 
     return HttpResponse(json.dumps(suggestions),
-                        mimetype='application/json; charset=utf-8')
+        content_type='application/json; charset=utf-8')
 
 
 # Maps test page

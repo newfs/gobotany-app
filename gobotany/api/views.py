@@ -33,7 +33,7 @@ def jsonify(value, headers=None, indent=1):
     """Convert the value into a JSON HTTP response."""
     response = HttpResponse(
         json.dumps(value, indent=indent if settings.DEBUG else None),
-        mimetype='application/json; charset=utf-8',
+        content_type='application/json; charset=utf-8',
         )
     if headers:
         for k, v in headers.items():  # set headers
@@ -1005,7 +1005,7 @@ def _distribution_map(request, distribution_map, genus, epithet):
         genus, epithet = 'mahonia', 'aquifolium'
 
     shaded_map = _shade_map(distribution_map, genus, epithet)
-    return HttpResponse(shaded_map.tostring(), mimetype='image/svg+xml')
+    return HttpResponse(shaded_map.tostring(), content_type='image/svg+xml')
 
 def new_england_distribution_map(request, genus, epithet):
     """Return a vector map of New England showing county-level

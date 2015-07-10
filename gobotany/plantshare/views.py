@@ -1140,7 +1140,7 @@ def ajax_profile_edit(request):
         return HttpResponse(json.dumps({
             'error': True,
             'info': 'User is not authenticated.'
-        }), mimetype='application/json')
+        }), content_type='application/json')
 
     if request.method == 'POST':
         profile, created = UserProfile.objects.get_or_create(
@@ -1157,10 +1157,10 @@ def ajax_profile_edit(request):
                 'error': True,
                 'info': 'Form Validation error:\n{0}'.format(
                     profile_form.errors.as_text())
-            }), mimetype='application/json')
+            }), content_type='application/json')
 
     return HttpResponse(json.dumps({'success': True}),
-                                         mimetype='application/json')
+                                         content_type='application/json')
 
 
 def ajax_image_upload(request):
@@ -1169,7 +1169,7 @@ def ajax_image_upload(request):
         return HttpResponse(json.dumps({
             'error': True,
             'info': 'Authentication error'
-        }), mimetype='application/json')
+        }), content_type='application/json')
 
     response = {
         'success': True
@@ -1224,7 +1224,7 @@ def ajax_image_upload(request):
             })
 
     return HttpResponse(json.dumps(response),
-                        mimetype='application/json')
+                        content_type='application/json')
 
 
 def ajax_image_reject(request, image_id):
@@ -1233,7 +1233,7 @@ def ajax_image_reject(request, image_id):
         return HttpResponse(json.dumps({
             'error': True,
             'info': 'Authentication error'
-        }), mimetype='application/json')
+        }), content_type='application/json')
 
     image = ScreenedImage.objects.get(pk=image_id)
 
@@ -1242,7 +1242,7 @@ def ajax_image_reject(request, image_id):
         return HttpResponse(json.dumps({
             'error': True,
             'info': 'Authentication error'
-        }), mimetype='application/json')
+        }), content_type='application/json')
 
     image.is_approved = False
     image.screened = datetime.utcnow().replace(tzinfo=utc)
@@ -1254,7 +1254,7 @@ def ajax_image_reject(request, image_id):
         'success': True
     }
 
-    return HttpResponse(json.dumps(response), mimetype='application/json')
+    return HttpResponse(json.dumps(response), content_type='application/json')
 
 
 def ajax_sightings(request):
@@ -1314,7 +1314,7 @@ def ajax_sightings(request):
     }
 
     return HttpResponse(json.dumps(json),
-                        mimetype='application/json; charset=utf-8')
+                        content_type='application/json; charset=utf-8')
 
 
 @login_required
@@ -1382,7 +1382,7 @@ def ajax_people_suggestions(request):
                 ordered_suggestions.append(suggestion)
 
     return HttpResponse(json.dumps(ordered_suggestions),
-                        mimetype='application/json; charset=utf-8')
+                        content_type='application/json; charset=utf-8')
 
 
 @login_required
@@ -1404,4 +1404,4 @@ def ajax_restrictions(request):
     if plant_name:
         restrictions_info = restrictions(plant_name, location)
     return HttpResponse(json.dumps(restrictions_info),
-                        mimetype='application/json; charset=utf-8')
+                        content_type='application/json; charset=utf-8')
