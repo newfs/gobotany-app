@@ -23,6 +23,7 @@ class QuestionAdminForm(forms.ModelForm):
     )
     class Meta:
         model = models.Question
+        exclude = {}
 
 
 class QuestionAdmin(_Base):
