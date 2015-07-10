@@ -71,7 +71,6 @@ class FunctionalCase(TestCase):
 
         for db in databases:
             transaction.enter_transaction_management(using=db)
-            transaction.managed(True, using=db)
         disable_transaction_methods()
 
     def _fixture_teardown(self):

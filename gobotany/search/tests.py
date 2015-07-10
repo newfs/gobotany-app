@@ -16,7 +16,7 @@ class SearchTests(FunctionalCase):
     def setUpClass(cls):
         super(SearchTests, cls).setUpClass()
         try:
-            requests.get(settings.HAYSTACK_SOLR_URL)
+            requests.get(settings.HAYSTACK_CONNECTIONS['default']['URL'])
         except requests.RequestException:
             cls.solr_available = False
         else:

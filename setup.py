@@ -8,7 +8,7 @@ requirements = [
     'South==1.0',
     'cssselect',
     'django-debug-toolbar==1.3.0',
-    'django-haystack==1.2.7',
+    'django-haystack==2.0.0',
     'django-imagekit==3.0.2',
     'django-tinymce',
     'lxml',

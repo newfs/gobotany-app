@@ -177,12 +177,6 @@ STATICFILES_DIRS = [('', os.path.join(THIS_DIRECTORY, 'static'))]
 MEDIA_ROOT = os.path.join(THIS_DIRECTORY, 'media')
 MEDIA_URL = '/media/'
 SESSION_COOKIE_AGE = 2 * 24 * 60 * 60  # two days
-HAYSTACK_SITECONF = 'gobotany.search.haystack_conf'
-HAYSTACK_SEARCH_ENGINE = 'solr'
-HAYSTACK_SOLR_URL = 'http://127.0.0.1:8983/solr'
-HAYSTACK_SEARCH_RESULTS_PER_PAGE = 10
-HAYSTACK_SOLR_TIMEOUT = 20  # Longer than default timeout; added for indexing
-HAYSTACK_INCLUDE_SPELLING = True
 
 SOUTH_MIGRATION_MODULES = {
     'registration': 'registration.south_migrations',
@@ -191,6 +185,22 @@ SOUTH_MIGRATION_MODULES = {
 # https://docs.djangoproject.com/en/dev/topics/i18n/timezones/#time-zones-faq
 TIME_ZONE = 'America/New_York'
 USE_TZ = True
+
+# For django-haystack
+HAYSTACK_CONNECTIONS = {
+    'default': {
+        'ENGINE': 'haystack.backends.solr_backend.SolrEngine',
+        'URL': 'http://127.0.0.1:8983/solr',
+        'TIMEOUT': 20,  # Longer than default timeout; added for indexing
+        'INCLUDE_SPELLING': True,
+        'BATCH_SIZE': 100,
+    },
+}
+HAYSTACK_SEARCH_RESULTS_PER_PAGE = 10
+HAYSTACK_SIGNAL_PROCESSOR = 'haystack.signals.RealtimeSignalProcessor'
+# For when we are running on Heroku:
+if 'WEBSOLR_URL' in os.environ:
+    HAYSTACK_CONNECTIONS['default']['URL'] = os.environ['WEBSOLR_URL']
 
 # For django-facebook-connect
 FACEBOOK_LOGIN_REDIRECT = '/plantshare/'
@@ -219,10 +229,6 @@ EMAIL_CONFIRMATION_DAYS = 3
 RECAPTCHA_PUBLIC_KEY = os.environ.get('RECAPTCHA_PUBLIC_KEY', '')
 RECAPTCHA_PRIVATE_KEY = os.environ.get('RECAPTCHA_PRIVATE_KEY', '')
 RECAPTCHA_USE_SSL = True
-
-# For when we are running on Heroku:
-if 'WEBSOLR_URL' in os.environ:
-    HAYSTACK_SOLR_URL = os.environ['WEBSOLR_URL']
 
 TINYMCE_JS_URL = "tiny_mce/tiny_mce.js"
 
