@@ -299,7 +299,7 @@ class FilterFunctionalTests(FunctionalTestCase):
         # Does the page load and show 18 species?
 
         prevent_intro_overlay = '#_view=photos'
-        self.get('/ferns/lycophytes/' + prevent_intro_overlay)
+        self.get('/simple/ferns/lycophytes/' + prevent_intro_overlay)
         self.wait_on_species(18)
 
         # Do the family and genus dropdowns start by displaying all options?
@@ -355,7 +355,7 @@ class FilterFunctionalTests(FunctionalTestCase):
         # Are different images shown upon selecting "Show photos of" choices?
 
         prevent_intro_overlay = '#_view=photos'
-        self.get('/ferns/lycophytes/' + prevent_intro_overlay)
+        self.get('/simple/ferns/lycophytes/' + prevent_intro_overlay)
         self.wait_on_species(18)
         e = self.css1('.plant-list div a div.plant-img-container img')
         assert '-ha-' in e.get_attribute('src')
@@ -367,7 +367,7 @@ class FilterFunctionalTests(FunctionalTestCase):
 
         # Verify that "plant form" is the default menu item for lycophytes.
 
-        self.get('/ferns/lycophytes/')
+        self.get('/simple/ferns/lycophytes/')
         self.wait_on_species(18)
         self.css1('#intro-overlay .continue').click()
         e = self.css1('.plant-list div a div.plant-img-container img')
@@ -387,7 +387,7 @@ class FilterFunctionalTests(FunctionalTestCase):
 
         OMITTED_ITEMS = ['flowers and fruits', 'inflorescences', 'leaves',
                          'stems']
-        self.get('/ferns/lycophytes/')
+        self.get('/simple/ferns/lycophytes/')
         self.wait_on_species(18)
         self.css1('#intro-overlay .continue').click()
         for i in range(4):
@@ -404,7 +404,7 @@ class FilterFunctionalTests(FunctionalTestCase):
             self.assertTrue(menu_item.text not in OMITTED_ITEMS)
 
     def test_missing_image_has_placeholder_text(self):
-        self.get('/aquatic-plants/non-thalloid-aquatic/')
+        self.get('/simple/aquatic-plants/non-thalloid-aquatic/')
         self.wait_on_species(52)
         self.css1('#intro-overlay .continue').click()
         self.css1(
@@ -445,7 +445,7 @@ class FilterFunctionalTests(FunctionalTestCase):
         FILTER_LINK_CSS = '#plant_height_rn'
 
         self.get(
-            '/non-monocots/remaining-non-monocots/#_filters=family,genus,plant_height_rn'
+            '/simple/non-monocots/remaining-non-monocots/#_filters=family,genus,plant_height_rn'
             )
         self.wait_on_species(501, seconds=11)   # Big subgroup, wait longer
 
@@ -553,7 +553,7 @@ class FilterFunctionalTests(FunctionalTestCase):
 
     def test_length_filter_display_on_page_load(self):
         self.get('/')  # to start fresh and prevent partial reload
-        self.get('/non-monocots/remaining-non-monocots/'
+        self.get('/simple/non-monocots/remaining-non-monocots/'
                  '#_filters=family,genus,plant_height_rn'
                  '&plant_height_rn=5000')
         unknowns = 18
@@ -571,7 +571,7 @@ class FilterFunctionalTests(FunctionalTestCase):
         self.assertEqual(sidebar_value_span.text, '5000 mm')
 
     def test_plant_preview_popup_appears(self):
-        d = self.get('/ferns/lycophytes')
+        d = self.get('/simple/ferns/lycophytes')
         self.wait_on_species(18)
         self.css1('#intro-overlay .continue').click()
         plant_links = self.css('.plant-list .plant a')
@@ -590,7 +590,7 @@ class FilterFunctionalTests(FunctionalTestCase):
         # same one that is showing on the page. (If the photo is missing
         # on the page, it doesn't matter which one the popup shows first.)
 
-        d = self.get('/ferns/lycophytes')
+        d = self.get('/simple/ferns/lycophytes')
         self.wait_on_species(18)
         self.css1('#intro-overlay .continue').click()
         plant_links = self.css('.plant-list .plant a')
