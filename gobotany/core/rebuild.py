@@ -258,7 +258,7 @@ def main():
     function_name = 'rebuild_' + thing
     if function_name in globals():
         function = globals()[function_name]
-        wrapped_function = transaction.commit_on_success(function)
+        wrapped_function = transaction.atomic(function)
         wrapped_function(*sys.argv[2:])
     else:
         print >>sys.stderr, "Error: rebuild target %r unknown" % thing

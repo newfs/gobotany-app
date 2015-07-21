@@ -1,5 +1,5 @@
 from django.conf import settings
-from django.conf.urls import include, patterns, url
+from django.conf.urls import include, url
 from django.contrib import admin
 from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 
@@ -10,16 +10,15 @@ handler500 = 'django.views.defaults.server_error'
 
 admin.autodiscover()
 
-urlpatterns = patterns('',)
+urlpatterns = []
 
 if settings.USE_DEBUG_TOOLBAR and settings.DEBUG:
     import debug_toolbar
-    urlpatterns += patterns('',
+    urlpatterns.extend([
         url(r'^__debug__/', include(debug_toolbar.urls)),
-    )
+    ])
 
-urlpatterns += patterns(
-    '',
+urlpatterns.extend([
     url(r'^admin/core/distribution/addset/', DistributionAdmin.add_set_view),
     url(r'^admin/', include(admin.site.urls)),
     url(r'^api/', include('gobotany.api.urls')),
@@ -32,15 +31,15 @@ urlpatterns += patterns(
     url(r'^', include('gobotany.site.urls')),
     url(r'^', include('gobotany.taxa.urls')),
     url(r'^', include('gobotany.simplekey.urls')),
-    )
+])
 
 # Serve uploaded media files as static files in development
 if settings.DEBUG:
-    urlpatterns += patterns('',
-            url(r'^media/(?P<path>.*)$', 'django.views.static.serve', {
-                'document_root': settings.MEDIA_ROOT,
-            }),
-       )
+    urlpatterns.extend([
+        url(r'^media/(?P<path>.*)$', 'django.views.static.serve', {
+            'document_root': settings.MEDIA_ROOT,
+        }),
+    ])
 # For now, always have staticfiles turned on, even in production.
 
 class FakeSettings():
@@ -54,4 +53,4 @@ def fix_staticfiles():
     django.contrib.staticfiles.views.settings = FakeSettings()
 
 fix_staticfiles()
-urlpatterns += staticfiles_urlpatterns()
+urlpatterns.extend(staticfiles_urlpatterns())

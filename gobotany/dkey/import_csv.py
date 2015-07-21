@@ -24,7 +24,7 @@ def main():
     csvfile.open = lambda: open(args.csvpath)
     import_illustrative_species(csvfile)
 
-@transaction.commit_on_success
+@transaction.atomic
 def import_illustrative_species(csvfile):
     """Read a CSV file full of illustrative species."""
 

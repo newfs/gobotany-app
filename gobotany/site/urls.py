@@ -1,5 +1,5 @@
 from django.conf.urls import patterns, url
-from django.views.generic import RedirectView
+from django.views.generic.base import RedirectView
 
 from gobotany.site import views
 
@@ -44,26 +44,32 @@ urlpatterns = patterns(
     url(r'^plant-name-suggestions/', views.plant_name_suggestions_view,
         name='site-plant-name-suggestions'),
 
-    # Temporary placeholder page for unreleased feature
-    # TODO: redirect this URL at release
-    url('^ps/$', views.placeholder_view,
-        {'template': 'gobotany/plantshare_placeholder.html'},
-        name='plantshare-placeholder'),
-
     # Redirects for old URLs
-    url('^teaching-tools/$', RedirectView.as_view(url='/teaching/')),
-    url(r'^help/about/$', RedirectView.as_view(url='/about/')),
-    url(r'^help/start/$', RedirectView.as_view(url='/start/')),
-    url('^help/map/$', RedirectView.as_view(url='/map/')),
+    url('^teaching-tools/$', RedirectView.as_view(url='/teaching/',
+        permanent=True)),
+    url(r'^help/about/$', RedirectView.as_view(url='/about/',
+        permanent=True)),
+    url(r'^help/start/$', RedirectView.as_view(url='/start/',
+        permanent=True)),
+    url('^help/map/$', RedirectView.as_view(url='/map/',
+        permanent=True)),
     url('^help/glossary/(?P<letter>[1a-z])/$',
-        RedirectView.as_view(url='/glossary/%(letter)s/')),
-    url('^help/glossary/$', RedirectView.as_view(url='/glossary/')),
-    url('^help/video/$', RedirectView.as_view(url='/video/')),
-    url('^help/contributors/$', RedirectView.as_view(url='/contributors/')),
-    url('^legal/privacy-policy/$', RedirectView.as_view(url='/privacy/')),
-    url('^legal/terms-of-use/$', RedirectView.as_view(url='/terms-of-use/')),
-    url('^advanced/full-key/$', RedirectView.as_view(url='/full/')),
-    url('^advanced/dich-key/$', RedirectView.as_view(url='/dkey/')),
+        RedirectView.as_view(url='/glossary/%(letter)s/',
+            permanent=True)),
+    url('^help/glossary/$', RedirectView.as_view(url='/glossary/',
+        permanent=True)),
+    url('^help/video/$', RedirectView.as_view(url='/video/',
+        permanent=True)),
+    url('^help/contributors/$', RedirectView.as_view(url='/contributors/',
+        permanent=True)),
+    url('^legal/privacy-policy/$', RedirectView.as_view(url='/privacy/',
+        permanent=True)),
+    url('^legal/terms-of-use/$', RedirectView.as_view(url='/terms-of-use/',
+        permanent=True)),
+    url('^advanced/full-key/$', RedirectView.as_view(url='/full/',
+        permanent=True)),
+    url('^advanced/dich-key/$', RedirectView.as_view(url='/dkey/',
+        permanent=True)),
 
     # Unlinked pages for development and testing: even though unlinked,
     # comment out at release time anyway

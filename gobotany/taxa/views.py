@@ -343,6 +343,7 @@ def species_view(request, genus_slug, epithet):
 
 class UppercaseFamilyRedirectView(RedirectView):
     query_string = True
+    permanent = True
 
     def get_redirect_url(self, family_slug):
         return reverse('taxa-family', args=(family_slug.lower(),))
@@ -350,6 +351,7 @@ class UppercaseFamilyRedirectView(RedirectView):
 
 class UppercaseGenusRedirectView(RedirectView):
     query_string = True
+    permanent = True
 
     def get_redirect_url(self, genus_slug):
         return reverse('taxa-genus', args=(genus_slug.lower(),))
@@ -357,6 +359,7 @@ class UppercaseGenusRedirectView(RedirectView):
 
 class SpeciesUppercaseGenusRedirectView(RedirectView):
     query_string = True
+    permanent = True
 
     def get_redirect_url(self, genus_slug, epithet):
         return reverse('taxa-species', args=(genus_slug.lower(), epithet,))

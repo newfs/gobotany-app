@@ -2,16 +2,16 @@ from distutils.core import setup
 from setuptools import find_packages
 
 requirements = [
-    'django==1.7.9',
+    'django==1.8.3',
 
     'Pillow==2.4.0',
     'cssselect',
-    'django-debug-toolbar==1.3.0',
+    'django-debug-toolbar==1.3.2',
     'django-haystack==2.4.0',
-    'django-imagekit==3.0.2',
+    'django-imagekit==3.2.6',
     'django-tinymce',
     'lxml',
-    'psycopg2>=2.3',
+    'psycopg2>=2.4.5',
     'python-memcached',
     'pytz',
     'tablib==0.9.11',

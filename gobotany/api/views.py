@@ -380,6 +380,9 @@ def character_values(request, pile_slug, character_short_name):
     except (models.Pile.DoesNotExist, models.Character.DoesNotExist):
         return rc.NOT_FOUND
 
+def nonexistent(request):
+    """Dummy view for an URL that is only used to output a base API URL."""
+    return rc.NOT_FOUND
 
 def glossary_blob(request):
     """Return a dictionary of glossary terms and definitions.

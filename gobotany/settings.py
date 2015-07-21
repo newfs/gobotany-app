@@ -21,9 +21,26 @@ ALLOWED_HOSTS = ['.newenglandwild.org', # any subdomain of newenglandwild.org
                  'gobotany-dev.herokuapp.com',
                 ]
 
-TEMPLATE_DIRS = (
-    os.path.join(PROJECT_ROOT, 'templates'),
-)
+TEMPLATES = [
+    {
+        'BACKEND': 'django.template.backends.django.DjangoTemplates',
+        'DIRS': [
+            os.path.join(PROJECT_ROOT, 'templates'),
+        ],
+        'APP_DIRS': True,
+        'OPTIONS': {
+            'context_processors': [
+                'django.contrib.auth.context_processors.auth',
+                'django.contrib.messages.context_processors.messages',
+                'django.core.context_processors.i18n',
+                'django.core.context_processors.request',
+                'django.core.context_processors.media',
+                'django.core.context_processors.static',
+                'gobotany.core.context_processors.gobotany_specific_context',
+            ],
+        },
+    },
+]
 
 # We define these database specifications as constants, so that we can
 # retrieve whichever one we need from our test suites.
@@ -156,15 +173,6 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'gobotany.middleware.SmartAppendSlashMiddleware',
-)
-TEMPLATE_CONTEXT_PROCESSORS = (
-    'django.contrib.auth.context_processors.auth',
-    'django.contrib.messages.context_processors.messages',
-    'django.core.context_processors.i18n',
-    'django.core.context_processors.request',
-    'django.core.context_processors.media',
-    'django.core.context_processors.static',
-    'gobotany.core.context_processors.gobotany_specific_context',
 )
 
 APPEND_SLASH = False

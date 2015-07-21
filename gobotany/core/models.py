@@ -6,8 +6,8 @@ from django.conf import settings
 from django.db import models
 from django.db.models import Q
 from django.contrib.auth.models import User
+from django.contrib.contenttypes.fields import GenericForeignKey, GenericRelation
 from django.contrib.contenttypes.models import ContentType
-from django.contrib.contenttypes import generic
 from django.core.exceptions import ObjectDoesNotExist
 from django.core.validators import MaxValueValidator
 from django.forms import ValidationError
@@ -253,7 +253,7 @@ class PileInfo(models.Model):
     slug = models.SlugField(max_length=100, unique=True)
     friendly_name = models.CharField(max_length=100, blank=True)
     friendly_title = models.CharField(max_length=100, blank=True)
-    images = generic.GenericRelation('ContentImage')
+    images = GenericRelation('ContentImage')
     video = models.ForeignKey('Video', null=True)
     key_characteristics = tinymce_models.HTMLField(blank=True)
     notable_exceptions = tinymce_models.HTMLField(blank=True)
@@ -436,7 +436,7 @@ class ContentImage(models.Model):
                                    verbose_name='image type')
     content_type = models.ForeignKey(ContentType)
     object_id = models.PositiveIntegerField()
-    content_object = generic.GenericForeignKey('content_type', 'object_id')
+    content_object = GenericForeignKey('content_type', 'object_id')
 
     def thumb_small(self):
         return add_suffix_to_base_directory(self.image, '160x149')
@@ -511,7 +511,7 @@ class Family(models.Model):
     description = models.TextField(verbose_name=u'description',
                                    blank=True)
     # We use 'example image' and 'example drawing' for the image types here
-    images = generic.GenericRelation(ContentImage)
+    images = GenericRelation(ContentImage)
 
     class Meta:
         verbose_name = 'family'
@@ -532,7 +532,7 @@ class Genus(models.Model):
     description = models.TextField(verbose_name=u'description', blank=True)
     family = models.ForeignKey(Family, related_name='genera')
     # We use 'example image' and 'example drawing' for the image types here
-    images = generic.GenericRelation(ContentImage)
+    images = GenericRelation(ContentImage)
 
     class Meta:
         verbose_name = 'genus'
@@ -614,7 +614,7 @@ class Taxon(models.Model):
         CharacterValue,
         through='TaxonCharacterValue')
     taxonomic_authority = models.CharField(max_length=100)
-    images = generic.GenericRelation(ContentImage)
+    images = GenericRelation(ContentImage)
     factoid = models.CharField(max_length=1000, blank=True)
     wetland_indicator_code = models.CharField(max_length=15, blank=True,
                                               null=True)

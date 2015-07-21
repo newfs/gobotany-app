@@ -1142,7 +1142,8 @@ class PlantPreviewCharactersFunctionalTests(FunctionalTestCase):
         'lycophytes': 'ferns',
         'equisetaceae': 'ferns',
         'composites': 'non-monocots',
-        'remaining-non-monocots': 'non-monocots'
+        'alternate-remaining-non-monocots': 'non-monocots',
+        'non-alternate-remaining-non-monocots': 'non-monocots',
         }
     SPECIES = {
         'woody-angiosperms': ['Acer negundo', 'Ilex glabra'],
@@ -1159,9 +1160,12 @@ class PlantPreviewCharactersFunctionalTests(FunctionalTestCase):
         'lycophytes': ['Dendrolycopodium dendroideum', 'Isoetes echinospora'],
         'equisetaceae': ['Equisetum arvense', 'Equisetum palustre'],
         'composites': ['Achillea millefolium', 'Packera obovata'],
-        'remaining-non-monocots': ['Abutilon theophrasti', 'Nelumbo lutea'],
-        # Why does 'Acorus americanus', once in non-orchid-monocots but now
-        # in remaining-non-monocots, only have 2 attributes?
+        'alternate-remaining-non-monocots': ['Abutilon theophrasti',
+            'Nelumbo lutea'],
+        'non-alternate-remaining-non-monocots': ['Agalinis maritima',
+            'Galium palustre'],
+        # Why does 'Acorus americanus', in alternate-remaining-non-monocots,
+        # only have 2 attributes?
         }
 
     # Plant subgroups pages tests: the "plant preview" popups should
@@ -1277,8 +1281,11 @@ class PlantPreviewCharactersFunctionalTests(FunctionalTestCase):
     def test_composites_preview_popups_have_characters(self):
         self._preview_popups_have_characters('composites')
 
-    def test_remaining_non_monocots_preview_popups_have_characters(self):
-        self._preview_popups_have_characters('remaining-non-monocots')
+    def test_alternate_remaining_non_monocots_preview_popups_have_characters(self):
+        self._preview_popups_have_characters('alternate-remaining-non-monocots')
+
+    def test_non_alternate_remaining_non_monocots_preview_popups_have_characters(self):
+        self._preview_popups_have_characters('non-alternate-remaining-non-monocots')
 
     # Plant preview popups: Verify some expected characters and values.
     def test_plant_preview_popups_have_expected_values(self):

@@ -312,7 +312,7 @@ class Sighting(models.Model):
     location = models.ForeignKey(Location, null=True)
     location_notes = models.TextField(blank=True)
 
-    photos = models.ManyToManyField('ScreenedImage', null=True, blank=True)
+    photos = models.ManyToManyField('ScreenedImage', blank=True)
 
     visibility = models.CharField(blank=False, max_length=7,
         choices=SIGHTING_VISIBILITY_CHOICES,
@@ -527,7 +527,7 @@ class QuestionManager(models.Manager):
 
 class Question(models.Model):
     question = models.CharField(max_length=500, blank=False)
-    images = models.ManyToManyField('ScreenedImage', null=True, blank=True)
+    images = models.ManyToManyField('ScreenedImage', blank=True)
     answer = models.CharField(max_length=3000, blank=True)
     asked = models.DateTimeField(blank=False, auto_now_add=True)
     asked_by = models.ForeignKey(User, blank=False,

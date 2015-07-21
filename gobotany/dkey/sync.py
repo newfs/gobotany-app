@@ -30,7 +30,7 @@ def cache_taxon(pagedict, leadindict, rank, taxon, page):
         if not is_major_taxon(page2):
             cache_taxon(pagedict, leadindict, rank, taxon, page2)
 
-@transaction.commit_on_success
+@transaction.atomic
 def sync():
     """Update the breadcrumbs and taxa caches."""
 

@@ -2354,7 +2354,7 @@ def zipimport(name):
         print 'Calling', function.__name__ + '()'
         print
 
-        wrapped_function = transaction.commit_on_success(function)
+        wrapped_function = transaction.atomic(function)
         try:
             wrapped_function(*args)
         except CannotOpen as e:
@@ -2488,7 +2488,7 @@ def main():
     if hasattr(args, 'filenames'):
         function_args.extend(PlainFile('.', f) for f in args.filenames)
 
-    wrapped_function = transaction.commit_on_success(function)
+    wrapped_function = transaction.atomic(function)
     wrapped_function(*function_args)
 
 if __name__ == '__main__':

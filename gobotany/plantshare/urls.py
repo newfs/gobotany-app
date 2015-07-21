@@ -1,10 +1,8 @@
-from django.conf.urls import patterns, url, include
+from django.conf.urls import include, url
 
 from gobotany.plantshare import views
 
-urlpatterns = patterns(
-    '',
-
+urlpatterns = [
     # PlantShare main page
     url(r'^$', views.plantshare_view, name='ps-main'),
 
@@ -94,4 +92,4 @@ urlpatterns = patterns(
         name='ps-ajax-people-suggestions'),
     url(r'^api/restrictions/$', views.ajax_restrictions,
         name='ps-ajax-restrictions'),
-    )
+]
