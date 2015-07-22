@@ -29,7 +29,6 @@ div.scrollingHotSpotLeftVisible
 	opacity: 0.35; /* Standard CSS3 opacity setting */
 	-moz-opacity: 0.35; /* Opacity for really old versions of Mozilla Firefox (0.9 or older) */
 	filter: alpha(opacity = 35); /* Opacity for Internet Explorer. */
-	zoom: 1; /* Trigger "hasLayout" in Internet Explorer 6 or older versions */
 }
 
 /* Invisible right hotspot */
@@ -56,7 +55,6 @@ div.scrollingHotSpotRightVisible
 	opacity: 0.35;
 	filter: alpha(opacity = 35);
 	-moz-opacity: 0.35;
-	zoom: 1;
 }
 
 /* The scroll wrapper is always the same width and height as the containing element (div).

@@ -53,6 +53,19 @@ define([
                    args.species_ids;
         }
     );
+
+    module.add_questions = _.memoize(function(args) {
+        return module.get('piles/' + args.pile_slug + '/characters/', {
+            include: args.include
+        });
+    },
+        /* Custom hash function, so arguments that vary will always
+         * be considered. */
+        function(args) {
+            return args.include;
+        }
+    );
+
     module.pile_species = _.memoize(function(pile_slug) {
         return module.get('species/' + pile_slug + '/');
     });

@@ -1,25 +1,27 @@
 {% extends "gobotany/_page_free_sidebar.html" %}
+{% load gobotany_tags %}
 {% load mapping_tags %}
 
-{% block title %}Checklists: Plantshare{% endblock %}
+{% block title %}Plant Checklist: {{ checklist.name }}: PlantShare{% endblock %}
 
 {% block js_require %}
     require(['util/suggester_init', 'plantshare/plantshare']);
 {% endblock %}
 
-{% block body_attributes %}id="checklists" class="plantshare checklists"{% endblock %}
+{% block body_attributes %}id="checklist" class="plantshare checklists"{% endblock %}
 
 {% block main_content %}
-<h1>Checklists</h1>
+<h1>Plant Checklist: {{ checklist.name }}</h1>
 
 <div class="ps-section">
-    <h3>{{ checklist.name }}</h3>
-    <p><em>Comments: {{ checklist.comments }}</em></p>
+    {% if checklist.comments %}
+        <p>Comments: {{ checklist.comments }}</p>
+    {% endif %}
     {% if checklist.entries %}
     <table id="checklist-detail" class="checklists-list">
         <thead>
             <tr>
-                <th class="name">Name<span></span></th>
+                <th class="name">Plant Name<span></span></th>
                 <th class="image">Image</th>
                 <th class="date-sighted">Date Sighted</th>
                 <th class="location">Location</th>
@@ -31,14 +33,14 @@
             {% for entry in checklist.entries.all %}
             <tr>
                 
-                <td class="name"><em>{{ entry.plant_name }}</em></td>
-                <td class="image"><div class="thumb"></div></td>
-                <td class="date-sighted">{{ entry.date_found|date:"m/d/Y"|default:"N/A" }}</td>
-                <td class="location">{{ entry.location|default:"N/A" }}</td>
-                <td class="date-posted">{{ entry.date_posted|date:"m/d/Y"|default:"N/A" }}</td>
+                <td class="name">{{ entry.plant_name|italicize_if_scientific|safe }}</td>
+                <td class="image"><img class="checklist-thumb" src="{{entry.plant_photo.thumb.url}}" /></td>
+                <td class="date-sighted">{{ entry.date_found|date:"m/d/Y"|default:"" }}</td>
+                <td class="location">{{ entry.location|default:"" }}</td>
+                <td class="date-posted">{{ entry.date_posted|date:"m/d/Y"|default:"" }}</td>
                 <td class="note">
                     <a href="javascript:alert('Coming soon!');" rel="shadowbox;height=240;width=550">View</a>
-                    <a href="javascript:alert('Coming soon!');" rel="shadowbox;height=200;width=550;" class="close-btn row-btn">Close</a>
+                    <div class="note-text">{{ entry.note|default:"&nbsp;" }}</div>
                 </td>
             </tr>
             {% endfor %}

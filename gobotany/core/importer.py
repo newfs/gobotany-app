@@ -32,7 +32,7 @@ from gobotany.core.pile_suffixes import pile_suffixes
 from gobotany.search.models import (GroupsListPage, PlainPage,
                                     SubgroupResultsPage, SubgroupsListPage)
 from gobotany.simplekey.groups_order import ordered_pilegroups, ordered_piles
-from gobotany.site.models import SearchSuggestion
+from gobotany.site.models import PlantNameSuggestion, SearchSuggestion
 
 DEBUG=False
 log = logging.getLogger('gobotany.import')
@@ -79,29 +79,6 @@ class CSVReader(object):
         for row in r:
             yield [c.decode('Windows-1252') for c in row]
 
-
-# Precendence of distribution status to be assigned
-# when a species has differing status per subspecies
-# or variety.  Higher values will override lower.
-status_precedence = {
-    'Species noxious' : 16,
-    'present, non-native' : 15,   # New England data value
-    'Species present in state and exotic' : 14,
-    'Species exotic and present' : 13,
-    'Species waif' : 12,
-    'present, native' : 11,   # New England data value
-    'Species present in state and native' : 10,
-    'Species present and not rare' : 9,
-    'Species native, but adventive in state' : 8,
-    'Species present and rare' : 7,
-    'Species extirpated (historic)' : 6,
-    'Species extinct' : 5,
-    'Species not present in state' : 4,
-    'Species eradicated' : 3,
-    'Questionable Presence (cross-hatched)' : 2,
-    'absent' : 1,   # New England data value
-    '' : 0,
-}
 
 def read_default_filters(characters_csv):
     defaultlist = []
@@ -176,8 +153,16 @@ class Importer(object):
                 coded_name=row['coded_name'],
                 ).set(
                 expanded_name=row['expanded_name'],
-                copyright=row['copyright'],
+                copyright=row['copyright holder'],
                 source=row['image_source'],
+                contact_info=row['contact_information'],
+                primary_bds=row['primary_bds'],
+                date_record=row['date-record'],
+                last_name=row['last_name'],
+                permission_source=row['permission_source'],
+                permission_level=row['permission_level'],
+                permission_location=row['permission_doc_location'],
+                notes=row['notes'],
                 )
 
         copyright_holder.save()
@@ -253,65 +238,6 @@ class Importer(object):
 
         pile.save()
 
-    def _get_state_status(self, state_code, distribution,
-                          conservation_status_code=None, is_invasive=False,
-                          is_prohibited=False):
-        status = ['absent']
-
-        if state_code in distribution:
-            status = ['present']
-
-            if conservation_status_code == 'E':
-                status.append('endangered')
-            elif conservation_status_code == 'T':
-                status.append('threatened')
-            elif conservation_status_code in ['SC', 'SC*']:
-                status.append('special concern')
-            elif conservation_status_code == 'H':
-                status.append('historic')
-            elif conservation_status_code in ['C', 'WL', 'W', 'Ind']:
-                status.append('rare')
-
-            if is_invasive == True:
-                status.append('invasive')
-
-        # Extinct status ('X') applies to plants that are absent or present.
-        # Map these to 'extirpated.'
-        if conservation_status_code == 'X':
-            # If status is just 'present' or 'absent' so far, clear it so
-            # that 'extirpated' appears alone.
-            if status == ['present'] or status == ['absent']:
-                status = []
-            status.append('extirpated')
-
-        # Prohibited status applies even to plants that are absent.
-        if is_prohibited == True:
-            status.append('prohibited')
-
-        return status
-
-
-    def _get_all_states_status(self, taxon, taxon_data_row):
-        states = ('ct', 'ma', 'me', 'nh', 'ri', 'vt')
-        states_status = dict().fromkeys(states, '')
-
-        distribution = pipe_split(taxon_data_row['distribution'])
-        invasive_states = pipe_split(taxon_data_row[
-                'invasive_in_which_states'])
-        prohibited_states = pipe_split(taxon_data_row[
-                'prohibited_from_sale_states'])
-
-        for state in states:
-            status_field_name = 'conservation_status_%s' % state
-            conservation_status = taxon_data_row[status_field_name]
-            invasive = (state in invasive_states)
-            prohibited = (state in prohibited_states)
-            states_status[state] = self._get_state_status(state, distribution,
-                conservation_status_code=conservation_status,
-                is_invasive=invasive, is_prohibited=prohibited)
-
-        return states_status
-
 
     def _strip_taxonomic_authority(self, full_plant_name):
         """Strip the taxonomic authority out of a full plant name."""
@@ -359,6 +285,7 @@ class Importer(object):
                     break
         return ' '.join(name).encode('utf-8')
 
+
     def import_taxa(self, db, filename):
         """Load species list from a CSV file"""
         log.info('Loading taxa')
@@ -370,11 +297,11 @@ class Importer(object):
         family_table = db.table('core_family')
         genus_table = db.table('core_genus')
         taxon_table = db.table('core_taxon')
-        conservationstatus_table = db.table('core_conservationstatus')
         partnerspecies_table = db.table('core_partnerspecies')
         pile_species_table = db.table('core_pile_species')
         commonname_table = db.table('core_commonname')
         synonym_table = db.table('core_synonym')
+        invasivestatus_table = db.table('core_invasivestatus')
 
         pile_map = db.map('core_pile', 'slug', 'id')
 
@@ -477,17 +404,6 @@ class Importer(object):
                 variety_notes=variety_notes,
                 )
 
-            # Assign distribution and conservation status for all states.
-
-            state_statuses = self._get_all_states_status(taxon, row)
-            for state_code, status_list in state_statuses.items():
-                for label in status_list:
-                    conservationstatus_table.get(
-                        taxon_id=taxon_proxy_id,
-                        region=state_code,
-                        label=label,
-                        )
-
             # Assign all imported species to the Go Botany "partner" site.
 
             partnerspecies_table.get(
@@ -537,6 +453,34 @@ class Importer(object):
                         full_name=name,
                         )
 
+            # Add invasive statuses. Note that pipe_split returns a
+            # list of lowercase state codes, e.g. ['ct', 'vt']
+
+            invasive_state_codes = pipe_split(
+                row['invasive_in_which_states']
+                )
+            for state_code in invasive_state_codes:
+                invasivestatus_table.get(
+                    taxon_id=taxon_proxy_id,
+                    region=state_code,
+                    ).set(
+                    invasive_in_region=True
+                    )
+
+            # Add prohibited statuses.
+
+            prohibited_state_codes = pipe_split(
+                row['prohibited_from_sale_states']
+                )
+            for state_code in prohibited_state_codes:
+                invasivestatus_table.get(
+                    taxon_id=taxon_proxy_id,
+                    region=state_code,
+                    ).set(
+                    prohibited_from_sale=True
+                    )
+        
+
         # Write out the tables.
         family_table.save()
         family_map = db.map('core_family', 'name', 'id')
@@ -547,8 +491,6 @@ class Importer(object):
         taxon_table.replace('genus_id', genus_map)
         taxon_table.save()
         taxon_map = db.map('core_taxon', 'scientific_name', 'id')
-        conservationstatus_table.replace('taxon_id', taxon_map)
-        conservationstatus_table.save()
         partnerspecies_table.replace('species_id', taxon_map)
         partnerspecies_table.save()
         pile_species_table.replace('taxon_id', taxon_map)
@@ -557,6 +499,8 @@ class Importer(object):
         commonname_table.save(delete_old=True)
         synonym_table.replace('taxon_id', taxon_map)
         synonym_table.save(delete_old=True)
+        invasivestatus_table.replace('taxon_id', taxon_map)
+        invasivestatus_table.save(delete_old=True)
 
     def import_families(self, db, family_file):
         """Load botanic families from a CSV file"""
@@ -628,21 +572,88 @@ class Importer(object):
 
         genus_table.save()
 
-    def import_plant_name_suggestions(self, taxaf):
+    def import_plant_name_suggestions(self):
         log.info('Setting up plant name suggestions')
+
+        PlantNameSuggestion.objects.all().delete()
 
         db = bulkup.Database(connection)
         names = set()
 
         names.update(db.map('core_taxon', 'scientific_name'))
         names.update(db.map('core_commonname', 'common_name'))
-        names.update(db.map('core_synonym', 'scientific_name'))
+
+        synonyms = set()
+        for s in models.Synonym.objects.all():
+            synonyms.add('%s (formerly %s)' % (s.taxon.scientific_name,
+                                               s.scientific_name))
+        names.update(synonyms)
 
         # Populate records for model PlantNameSuggestion
         table = db.table('site_plantnamesuggestion')
         for name in names:
             table.get(name=name)
         table.save()
+
+
+    def import_conservation_statuses(self, statuses_file):
+        log.info('Importing conservation statuses')
+
+        statuses_count = 0
+        for row in open_csv(statuses_file):
+            state = row['state'].strip()
+            scientific_name = row['scientific_name'].strip()
+            var_subsp_hybrid = row['variety_subspecies_hybrid'].strip()
+            s_rank = row['srank'].strip()
+            endangerment_code = row['endangerment_code'].strip()
+
+            allow_public_posting = True
+            if 'allow_public_posting' in row.keys():
+                if row['allow_public_posting'].strip().upper() == 'NO':
+                    allow_public_posting = False
+
+            taxon = None
+            try:
+                taxon = models.Taxon.objects.get(
+                    scientific_name=scientific_name)
+            except ObjectDoesNotExist:
+                log.info('Taxon record does not exist: %s' % scientific_name)
+                log.info('Looking for synonym:')
+                try:
+                    synonym = models.Synonym.objects.get(
+                        scientific_name=scientific_name)
+                except ObjectDoesNotExist:
+                    log.info('Synonym not found')
+                    continue
+                taxon = synonym.taxon
+                print 'Found synonym: %s --> %s' % (
+                    synonym.scientific_name, taxon.scientific_name)
+
+            if taxon:
+                cs, created = models.ConservationStatus.objects.get_or_create(
+                    taxon=taxon, variety_subspecies_hybrid=var_subsp_hybrid,
+                    region=state, s_rank=s_rank,
+                    endangerment_code=endangerment_code,
+                    allow_public_posting=allow_public_posting)
+                if created:
+                    statuses_count += 1
+
+        log.info('Created %d conservation status records.' % statuses_count)
+
+
+    def import_litsources(self, citation_file):
+        log.info('Importing literary source citations')
+
+        new_citation_count = 0
+        for row in open_csv(citation_file):
+            citation_text = row['lit_source']
+            citation, created = models.SourceCitation.objects.get_or_create(
+                    citation_text=citation_text
+                    )
+            if created:
+                new_citation_count += 1
+
+        log.info('Imported {0} new source citation records.'.format(new_citation_count))
 
 
     def import_taxon_character_values(self, db, *filenames):
@@ -1277,9 +1288,9 @@ class Importer(object):
                 continue
 
             # Fetch or create a row representing this image type.
-
+            image_type_code = key[1]
             image_type_name = taxon_image_types[key]
-            table_imagetype.get(name=image_type_name)
+            table_imagetype.get(name=image_type_name, code=image_type_code)
 
             rank = species['rank']
             rank_key = (taxon_id, image_type_name)
@@ -1325,17 +1336,23 @@ class Importer(object):
         log.info('Emptying the old home page image list')
         models.HomePageImage.objects.all().delete()
 
+        # For now, load the same images for Go Botany, Concord,
+        # Montshire, and the test site ('partner').
         log.info('Loading home page images')
-        field = models.HomePageImage._meta.get_field('image')
-        directories, image_names = default_storage.listdir(field.upload_to)
-        image_paths = [ field.upload_to + '/' + name
-                        for name in image_names if name ]
-
-        for path in image_paths:
-            log.info('  Adding image: %s' % path)
-            models.HomePageImage.objects.get_or_create(image=path)
+        short_names = ['gobotany', 'concord', 'montshire', 'partner']
+        for partner_name in short_names:
+            partner_id = models.PartnerSite.objects.get(
+                short_name=partner_name).id
+            path = models.HomePageImage.root_path
+            directories, image_names = default_storage.listdir(path)
+            image_paths = [path + '/' + name for name in image_names if name]
+            for path in image_paths:
+                log.info('  Adding image: %s' % path)
+                models.HomePageImage.objects.get_or_create(image=path,
+                    partner_site_id=partner_id)
 
         log.info('Loaded %d home page images' % len(image_names))
+
 
     def _has_unexpected_delimiter(self, text, unexpected_delimiter):
         """Check for an unexpected delimiter to help guard against breaking
@@ -1542,7 +1559,8 @@ class Importer(object):
             tips = row['lookalike_tips'].replace(u'\u2013', '-')
 
             if tips.find(':') > 1:
-                parts = re.split('(\w+ \w+):', tips)   # Split on plant name
+                # Split on plant name at the left of the first colon.
+                parts = re.split('(\w+ \w+):', tips, maxsplit=1)
                 parts = parts[1:]   # Strip the first item, which is empty
             else:
                 # Handle entries that do not yet have explanatory text.
@@ -1560,6 +1578,94 @@ class Importer(object):
                     )
 
         lookalike_table.save()
+
+
+    def _parse_status(self, status):
+        """For a distribution data status string, return whether the plant
+        is present and whether it is native.
+        """
+        ABSENCE_INDICATORS = [
+                'absent',       # From adjusted New England data, covers
+                                # "absent"
+                'extirpated',   # Covers: "Species extirpated (historic)"
+                'extinct',      # Covers: "Species extinct"
+                'not present',  # Covers: "Species not present in state"
+                'eradicated',   # Covers: "Species eradicated"
+                'questionable', # Covers: "Questionable presence
+                                #          (cross-hatched)"
+                ]
+        NON_NATIVE_PRESENCE_INDICATORS = [
+            'present, non-native',   # From adjusted New England data
+            'exotic',    # Covers: "Species present in state and exotic"
+                         #     and "Species exotic and present"
+            'waif',      # Covers: "Species waif"
+            'noxious',   # Covers: "Species noxious"
+            'native, but adventive', # Covers: "Species native, but adventive
+                                     #          in state"
+            ]
+        NATIVE_PRESENCE_INDICATORS = [
+            'present, native',   # From adjusted New England data
+            'and rare',  # Covers: "Species present and rare"
+            'native',    # Covers: "Species present in state and native"
+            'species present', # Covers: "Species present in state and
+                               #          not rare"
+            ]
+        status = status.lower()
+        is_present = None
+        is_native = False
+        # Look through the absence indicators first because otherwise
+        # a "false-present" label could occur.
+        for indicator in ABSENCE_INDICATORS:
+            if indicator in status:
+                is_present = False
+                break
+        # If an absence indicator did not match, look through the
+        # presence indicators.
+        if is_present is None:
+            for indicator in NON_NATIVE_PRESENCE_INDICATORS:
+                if indicator in status:
+                    is_present = True
+                    is_native = False
+                    break
+            if is_present is None:
+                for indicator in NATIVE_PRESENCE_INDICATORS:
+                    if indicator in status:
+                        is_present = True
+                        is_native = True
+                        break
+        if is_present is None:
+            is_present = False
+        return is_present, is_native
+
+
+    def _apply_subspecies_status(self, csv_row, distribution,
+                                 csv_status_column_name):
+        distribution_status = csv_row[csv_status_column_name]
+        is_present, is_native = self._parse_status(distribution_status)
+        full_name = csv_row['scientific_name']
+        state = csv_row['state']
+        county = csv_row['county']
+
+        scientific_name = _extract_scientific_name(full_name)
+        if scientific_name == full_name:
+            return
+        # If the new scientific name indicates that this is a subspecies or
+        # variety record, we will add it under the species name, modifying 
+        # the current distribution data if the data from this record has
+        # higher precedence (precedence: non-native > native > absent)
+        distribution_row = distribution.get(
+            scientific_name=scientific_name,
+            state=state,
+            county=county,
+            )
+
+        current_nativity = distribution_row.__dict__.get('native') or None
+        if is_present == True:
+            distribution_row.set(present=True)
+            if current_nativity != False:
+                distribution_row.set(native=is_native)
+        else:
+            distribution_row.set(present=False, native=False)
 
 
     def import_distributions(self, distributionsf):
@@ -1581,12 +1687,15 @@ class Importer(object):
             break   # Now that the correct status column name is known
 
         for row in open_csv(distributionsf):
+            is_present, is_native = self._parse_status(
+                row[status_column_name])
             distribution.get(
                 scientific_name=row['scientific_name'],
                 state=row['state'],
                 county=row['county'],
                 ).set(
-                status=row[status_column_name],
+                present=is_present,
+                native=is_native,
                 )
 
             self._apply_subspecies_status(row, distribution,
@@ -1594,48 +1703,11 @@ class Importer(object):
 
         distribution.save()
 
-    def _apply_subspecies_status(self, csv_row, distribution,
-                                 csv_status_column_name):
-        distribution_status = csv_row[csv_status_column_name]
-        full_name = csv_row['scientific_name']
-        state = csv_row['state']
-        county = csv_row['county']
-
-        scientific_name = _extract_scientific_name(full_name)
-        if scientific_name == full_name:
-            return
-        # If the new scientific name indicates that this is a subspecies or variety
-        # record, we will add it under the species name, modifying the
-        # current distribution status if the status from this record has
-        # higher precedence
-        distribution_row = distribution.get(
-            scientific_name=scientific_name,
-            state=state,
-            county=county,
-            )
-
-        # Get the current status from the distribution table row. Here
-        # the field name is part of the model and does not vary, unlike
-        # the source CSV data column names.
-        current_status = distribution_row.__dict__.get('status') or ''
-
-        if status_precedence[distribution_status] > status_precedence[current_status]:
-            # Interesting information, but there's SO much output it's annoying normally.
-            #log.info(
-            #    'Species %s status overridden from subspecies %s', 
-            #    scientific_name,
-            #    full_name
-            #)
-            #log.info('New distribution status ["%s" -> "%s"]',
-            #        current_status,
-            #        distribution_status
-            #)
-            distribution_row.set(status=distribution_status)
 
     def import_videos(self, db, videofilename):
         """Load pile and pile group video URLs from a CSV file"""
         log.info('Reading CSV to import videos and assign to piles/pilegroups')
-
+        'native'
         # First clear any existing video associations.
         for pile_group in models.PileGroup.objects.all():
             if pile_group.video:
@@ -1732,21 +1804,19 @@ class Importer(object):
 
 
     def _create_help_page(self):
-        self._create_plain_page('site-help',
-                                'Help',
-                                'site/templates/gobotany/help.html')
+        self._create_plain_page('site-help', 'Help',
+            'site/templates/gobotany/_help_main_content.html')
 
 
     def _create_about_gobotany_page(self):
-        self._create_plain_page('site-about',
-                                'About Go Botany',
-                                'site/templates/gobotany/about.html')
+        self._create_plain_page('site-about', 'About Go Botany',
+            'site/templates/gobotany/_about_main_content.html')
 
 
     def _create_getting_started_page(self):
         plain_page = self._create_plain_page('site-getting-started',
             'Getting Started with the Simple Key',
-            'site/templates/gobotany/getting_started.html')
+            'site/templates/gobotany/_getting_started_main_content.html')
         video = models.Video.objects.get(title='Getting Started')
         if video:
             plain_page.videos.add(video)
@@ -1809,11 +1879,11 @@ class Importer(object):
 
     def _create_privacy_policy_page(self):
         self._create_plain_page('site-privacy', 'Privacy Policy',
-                                'site/templates/gobotany/privacy.html')
+            'site/templates/gobotany/_privacy_main_content.html')
 
     def _create_terms_of_use_page(self):
         self._create_plain_page('site-terms-of-use', 'Terms of Use',
-                                'site/templates/gobotany/terms.html')
+            'site/templates/gobotany/_terms_main_content.html')
 
 
     def import_plain_pages(self):
@@ -1891,6 +1961,8 @@ class Importer(object):
     def import_search_suggestions(self):
         """Set up the search-suggestions table"""
         log.info('Setting up search suggestions')
+
+        SearchSuggestion.objects.all().delete()
 
         db = bulkup.Database(connection)
         terms = set()
@@ -2056,6 +2128,7 @@ full_import_steps = (
     (Importer.import_genera, 'genera.csv'),
     (Importer.import_wetland_indicators, 'wetland_indicators.csv'),
     (Importer.import_taxa, 'taxa.csv'),
+    (Importer.import_conservation_statuses, 'conservation_status.csv'),
     (Importer.import_characters, 'characters.csv'),
     (Importer.import_character_values, 'character_values.csv'),
     (Importer.import_glossary, 'glossary.csv'),
@@ -2064,7 +2137,7 @@ full_import_steps = (
     (Importer.import_videos, 'videos.csv'),
     (Importer.import_constants, 'characters.csv'),
     (Importer.import_copyright_holders, 'copyright_holders.csv'),
-    (Importer.import_plant_name_suggestions, 'taxa.csv'),
+    (Importer.import_plant_name_suggestions,),
 
     (Importer.import_distributions,
      'New-England-tracheophyte-county-level-nativity.csv'),

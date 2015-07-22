@@ -9,17 +9,25 @@ define([
 ], function ($, MarkerMap) {
 
     // Constructor
-    function SightingsMap(map_div) {
-        MarkerMap.call(this, map_div);   // Call super-constructor
+    function SightingsMap(map_div, cookie_names) {
+        // Call the super-constructor.
+        MarkerMap.apply(this, arguments);
 
-        this.MAX_INFO_DESC_LENGTH = 80;
+        this.cookie_names = cookie_names;
+        this.MAX_INFO_DESC_LENGTH = 70;
 
         return this;
     };
 
     // Extend the base
-    SightingsMap.prototype = new MarkerMap;
-    SightingsMap.prototype.constructor = SightingsMap;
+
+    function subclass_of(base) {
+        _subclass_of.prototype = base.prototype;
+        return new _subclass_of();
+    }
+    function _subclass_of() {};
+
+    SightingsMap.prototype = subclass_of(MarkerMap);
 
     // Define methods
     
@@ -50,7 +58,6 @@ define([
         }
         if (sighting.photos !== undefined && sighting.photos.length > 0) {
             var photo_url = sighting.photos[0];
-            console.log('photo_url:', photo_url);
             html += ' <img src="' + photo_url + '">';
         }
         html += '<p>';
@@ -60,44 +67,118 @@ define([
             var description = sighting.description.substr(0,
                 this.MAX_INFO_DESC_LENGTH);
             if (sighting.description.length > this.MAX_INFO_DESC_LENGTH) {
-                description += '...';
+                description += '... ';
             }
             html += description;
         }
-        html += '</p>';
+        var more_link = ' <a href="/plantshare/sightings/' + sighting.id +
+            '/">more</a>'; 
         if (sighting.id !== undefined) {
-            html += '<p><a href="/ps/sightings/' + sighting.id +
-                    '/">more</a></p>';
+            if (sighting.description.length > 0) {
+                html += more_link;
+                html += '</p>';
+            }
+            else {
+                html += '<p>' + more_link + '</p>';
+            }
         }
         html += '</div>';
         return html;
     };
 
     SightingsMap.prototype.show_sightings_count = function (sightings_count) {
-        $('#sightings-status').css('margin-left', 'auto'); // for the mini map
+        // On the mini map, the status message must be placed in view.
+        $('#sightings-status').css('margin-left', 'auto');
 
+        // Show the status message with sightings count.
         $('#sightings-status').show();
+        $('#sightings-status').css('color', '#000');
         $('#sightings-status span').html(sightings_count);
     };
 
-    SightingsMap.prototype.show_plant = function (plant_name) {
+    SightingsMap.prototype.show_sightings = function (plant_name) {
         // Get sightings data from the server and show them on the map.
+        var url = '/plantshare/api/sightings/'
+
+        // If the plant_name is undefined or null, will leave off the
+        // plant parameter and show recent sightings. If the plant name
+        // is non-empty or empty, will include the plant parameter and
+        // show sightings for that query.
+        var show_plant = (plant_name !== undefined && plant_name !== null);
+        if (show_plant) {
+            url += '?plant=' + plant_name
+        }
         $.ajax({
-            url: '/ps/api/sightings/?plant=' + plant_name,   // TODO: URL base
+            url: url,
             context: this
         }).done(function (json) {
             this.clear_markers();
             var sightings_count = json.sightings.length;
-            this.show_sightings_count(sightings_count);
+            if (show_plant) {
+                this.show_sightings_count(sightings_count);
+            }
+
+            var coordinates = [];
+            var marker;
             for (var i = 0; i < sightings_count; i++) {
                 var sighting = json.sightings[i];
-                var title = this.get_sighting_title(plant_name, sighting,
-                                                    false);
-                var info_window_html = this.build_info_window_html(plant_name,
+                var name = sighting.identification;
+                var title = this.get_sighting_title(name, sighting, false);
+                var info_window_html = this.build_info_window_html(name,
                                                                    sighting);
-                this.add_marker(sighting.latitude, sighting.longitude,
-                                title, info_window_html);
+
+                // Determine whether to show the info window for this
+                // sighting: do so if it was stored as the last viewed.
+                var show_info = false;
+                var last_sighting_id = parseInt(
+                    $.cookie(this.cookie_names['last_viewed']));
+                if (last_sighting_id === sighting.id) {
+                    show_info = true;
+                }
+
+                // Record the coordinates in a list that will be used to
+                // set the viewport bounds.
+                coordinates.push(
+                    new Array(sighting.latitude, sighting.longitude));
+                
+                // Add a marker for this sighting.
+                marker = this.add_marker(sighting.latitude,
+                    sighting.longitude, title, info_window_html, sighting.id,
+                    show_info);
             }
+
+            // Set the viewport bounds to show all the markers.
+            this.fit_bounds_to_coordinates(coordinates);
+        });
+    };
+
+    SightingsMap.prototype.show_sighting = function (sighting_id,
+            cookie_names) {
+        // Show a single recent sighting on the map.
+        var url = '/plantshare/api/sightings/?id=' + sighting_id;
+        $.ajax({
+            url: url,
+            context: this
+        }).done(function (json) {
+            // Clear any markers, the plant name box, and the search
+            // results status message.
+            this.clear_markers();
+            $('#plant-name').val('');
+            var color = $('#sightings-status').css('background-color');
+            $('#sightings-status').css('color', color);
+
+            // Add a marker for the sighting and pan to show it.
+            var marker;
+            var sighting = json.sightings[0];
+            var name = sighting.identification;
+            var title = this.get_sighting_title(name, sighting, false);
+            var info_window_html = this.build_info_window_html(name,
+                                                               sighting);
+            var show_info = true;
+            marker = this.add_marker(sighting.latitude,
+                sighting.longitude, title, info_window_html, sighting.id,
+                show_info);
+            this.pan_to(sighting.latitude, sighting.longitude);
         });
     };
 

@@ -3,19 +3,30 @@ from django.conf.urls import include, patterns, url
 from django.contrib import admin
 from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 
+from gobotany.core.admin import DistributionAdmin
+
 handler404 = 'django.views.defaults.page_not_found'
 handler500 = 'django.views.defaults.server_error'
 
 admin.autodiscover()
 
-urlpatterns = patterns(
+urlpatterns = patterns('',)
+
+if settings.USE_DEBUG_TOOLBAR and settings.DEBUG:
+    import debug_toolbar
+    urlpatterns += patterns('',
+        url(r'^__debug__/', include(debug_toolbar.urls)),
+    )
+
+urlpatterns += patterns(
     '',
+    url(r'^admin/core/distribution/addset/', DistributionAdmin.add_set_view),
     url(r'^admin/', include(admin.site.urls)),
     url(r'^api/', include('gobotany.api.urls')),
     url(r'^dkey/', include('gobotany.dkey.urls')),
     url(r'^edit/', include('gobotany.editor.urls')),
     url(r'^plantoftheday/', include('gobotany.plantoftheday.urls')),
-    url(r'^ps/', include('gobotany.plantshare.urls')), # Release: plantshare/
+    url(r'^plantshare/', include('gobotany.plantshare.urls')),
     url(r'^tinymce/', include('tinymce.urls')),
     url(r'^', include('gobotany.search.urls')),
     url(r'^', include('gobotany.site.urls')),

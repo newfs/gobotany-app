@@ -1,0 +1,17 @@
+{% extends "gobotany/_page_free_sidebar.html" %}
+
+{% block title %}Change Email Address: PlantShare{% endblock %}
+
+{% block body_attributes %}id="change-email-address"
+    class="plantshare"{% endblock %}
+
+{% block main_content %}
+<h1>Change Email Address</h1>
+
+{% include "emailconfirmation/_change_email_form.html" %}
+
+{% endblock %}
+
+{% block sidebar_content %}
+    {% include "_plantshare_navigation.html" %}
+{% endblock %}

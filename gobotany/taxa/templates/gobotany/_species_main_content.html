@@ -39,59 +39,96 @@
             </a>
         {% endfor %}
     </div>
+    <p id="images-note">Copyright: various copyright holders. To reuse an
+    image, please click it to see who you will need to contact.</p>
 
     <div id="maps">
         <div class="section map nemap">
-            <h4>New England Distribution</h4>
+            <h2>New England Distribution</h2>
             {% include "gobotany/_map_attribution.html" %}
+            {% with map_title='New England distribution: '|add:scientific_name|add:'.' %}
             <!--[if !IE]>-->
             <object
-                data="/api/maps/{{taxon.genus|lower}}-{{epithet}}-ne-distribution-map.svg"
+                data="{% url 'ne-distribution-map' taxon.genus|lower epithet %}"
                 type="image/svg+xml"
-                title="distribution map for {{ scientific_name }}"
+                title="{{ map_title }}"
                 id="ne-dist-county-map"> <!--<![endif]-->
             <!--[if lt IE 9]>
             <object
-                src="/api/maps/{{taxon.genus|lower}}-{{epithet}}-ne-distribution-map.svg"
+                src="{% url 'ne-distribution-map' taxon.genus|lower epithet %}"
                 classid="image/svg+xml"
-                title="distribution map for {{ scientific_name }}"
+                title="{{ map_title }}"
                 id="ne-dist-county-map"> <![endif]-->
             <!--[if gte IE 9]>
             <object
-                data="/api/maps/{{taxon.genus|lower}}-{{epithet}}-ne-distribution-map.svg"
+                data="{% url 'ne-distribution-map' taxon.genus|lower epithet %}"
                 type="image/svg+xml"
-                title="distribution map for {{ scientific_name }}"
+                title="{{ map_title }}"
                 id="ne-dist-county-map"> <![endif]-->
             </object>
+            {% endwith %}
+
+            <div>
+                <a class="definitions-link" href="">about the labels on this map</a>
+            </div>
+
+            <div id="legend-definitions" class="hidden">
+                <div class="text-dialog-content">
+                <p class="nogloss"><b>Native:</b> indigenous.</p>
+                <p class="nogloss"><b>Non-native:</b> introduced
+                (intentionally or
+                unintentionally); has become naturalized.</p>
+                <p class="nogloss"><b>County documented:</b> documented
+                to exist in the county by
+                evidence (herbarium specimen, photograph). Also covers
+                those considered historical (not seen in 20 years).
+                <p class="nogloss"><b>State documented:</b> never been
+                documented from the
+                county, but known from the state. May be present. Or,
+                may be restricted to a small area or a habitat (alpine,
+                marsh, etc.), so unlikely found in some
+                counties.</p>
+                <p class="nogloss">Note: when native and non-native
+                populations both exist in a county, only native status
+                is shown on the map.</p>
+                </div>
+            </div>
+            
+            <p class="found-plant">Found this plant? Take a photo and
+            {% if prior_signup_detected %}<a href="{% url 'ps-new-sighting' %}">{% else %}<a href="{% url 'ps-main' %}">{% endif %}post
+            a sighting</a>.
+            </p>
         </div>
 
         <div class="section map namap">
-            <h4>North America Distribution</h4>
+            <h2>North America Distribution</h2>
             {% include "gobotany/_map_attribution.html" %}
+            {% with map_title='North America distribution: '|add:scientific_name|add:'.' %}
             <div>
                 <object
-                    data="/api/maps/{{taxon.genus|lower}}-{{epithet}}-na-distribution-map.svg"
+                    data="{% url 'na-distribution-map' taxon.genus|lower epithet %}"
                     type="image/svg+xml"
-                    title="distribution map for {{ scientific_name }}"
+                    title="{{ map_title }}"
                     id="na-dist-county-map"> <!--<![endif]-->
                 <!--[if lt IE 9]>
                 <object
-                    src="/api/maps/{{taxon.genus|lower}}-{{epithet}}-na-distribution-map.svg"
+                    src="{% url 'na-distribution-map' taxon.genus|lower epithet %}"
                     classid="image/svg+xml"
-                    title="distribution map for {{ scientific_name }}"
+                    title="{{ map_title }}"
                     id="na-dist-county-map"> <![endif]-->
                 <!--[if gte IE 9]>
                 <object
-                    data="/api/maps/{{taxon.genus|lower}}-{{epithet}}-na-distribution-map.svg"
+                    data="{% url 'na-distribution-map' taxon.genus|lower epithet %}"
                     type="image/svg+xml"
-                    title="distribution map for {{ scientific_name }}"
+                    title="{{ map_title }}"
                     id="na-dist-county-map"> <![endif]-->
                 </object>
             </div>
+            {% endwith %}
             <div class="trans"></div>
             <a class="enlarge" href="#">
                 <img src="/static/images/icons/zoom.png" alt="">
-                Enlarge</a>
+                enlarge</a>
         </div>
     </div>
 
@@ -156,8 +193,7 @@
                       pile.</p>
                 {% endif %}
             </div>
-            <a class="description-control" href="#" 
-                style="background-image: url(/static/images/icons/plus.png)">Show 
+            <a class="description-control" href="#">Show 
                 All Characteristics</a>
             <ul class="full-description">
                 {% for character_group in all_characteristics %}
@@ -201,34 +237,69 @@
 
     <div id="status">
         <h2>New England Distribution and Conservation Status</h2>
-        <p>Exact status definitions can vary from state to
-        state. For details, please check with your state.</p>
         <div id="ne-status">
-        {% with statuses=taxon.get_distribution_and_conservation_statuses %}
-            <div class="characteristics">
-            {% for state_name, values in statuses.items %}
-                <dl>
-                    <dt>{{ state_name }}</dt>
-                    <dd>
-                    {{ values|join:", " }}
-                    </dd>
-                </dl>
-            {% endfor %}
+        <h3>Distribution</h3>
+        {% with labels=taxon.get_state_distribution_labels %}
+            {% if labels %}
+                <div class="characteristics">
+                {% for state_name, label in labels.items %}
+                    <dl>
+                        <dt>{{ state_name }}</dt>
+                        <dd>{{ label }}</dd>
+                    </dl>
+                {% endfor %}
+                </div>
+            {% else %}
+                <p>No data</p>
+            {% endif %}
+        {% endwith %}
+        <h3>Conservation Status</h3>
+        {% with statuses=conservation_statuses %}
+        {% regroup statuses by variety_subspecies_hybrid as status_list %}
+        {% if status_list %}
+            <p>Exact status definitions can vary from state to
+            state. For details, please check with your state.</p>
+            {% for status in status_list %}
+                {% with plant_name=status.grouper %}
+                {% if plant_name %}
+                    <h4>{{ plant_name|italicize_plant|safe }}</h4>
+                {% endif %}
+                {% endwith %}
+                <div class="characteristics">
+                {% for item in status.list %}
+                    <dl>
+                        <dt>{{ item.state }}</dt>
+                        <dd>
+                        {% if item.s_rank %}
+                            {% s_rank_label item.s_rank %}
+                            (S-rank: {{ item.s_rank }}){% if item.endangerment_code %}, {% endif %}
+                        {% endif %}
+                        {% if item.endangerment_code %}
+                            {% endangerment_code_label item.endangerment_code %}
+                            (code: {{ item.endangerment_code }})
+                        {% endif %}
+                        </dd>
+                    </dl>
+                {% endfor %}
             </div>
+            {% endfor %}
+        {% else %}
+            <p>None</p>
+        {% endif %}
         {% endwith %}
         </div>
     </div>
 
     <div id="side">
         <div class="section">
-            <h4>Native to North America?</h4>
+            <h2>Native to North America?</h2>
             <p>{{ native_to_north_america }}</p>
         </div>
 
         {% with lookalikes=taxon.lookalikes.all %}
         {% if lookalikes|length > 0 %}
         <div class="section lookalikes">
-            <h4>Sometimes Confused With</h4>
+            <h2>Sometimes Confused With</h2>
             <dl>
             {% for lookalike in lookalikes %}
                 <dt>{% lookalike_item lookalike.lookalike_scientific_name %}{% if lookalike.lookalike_characteristic %}:{% endif %}</dt>
@@ -242,7 +313,7 @@
         {% with taxon.synonyms.all as synonyms %}
         {% if synonyms|length > 0 %}
         <div class="section">
-            <h4>Synonyms</h4>
+            <h2>Synonyms</h2>
             <ul>
             {% for synonym in synonyms %}
                 <li>{{ synonym.full_name|italicize_plant|safe }}</li>
@@ -253,28 +324,28 @@
         {% endwith %}
 
         <div class="section">
-            <h4>Family</h4>
+            <h2>Family</h2>
             <p><a href="{% url 'taxa-family' taxon.family.slug %}"
                 >{{ taxon.family }}</a></p>
         </div>
 
         <div class="section">
-            <h4>Genus</h4>
+            <h2>Genus</h2>
             <p><em><a href="{% url 'taxa-genus' taxon.genus.slug %}"
                 >{{ taxon.genus }}</a></em></p>
         </div>
 
         {% if taxon.variety_notes %}
         <div class="section">
-            <h4>Notes on Subspecies and Varieties in New England</h4>
+            <h2>Notes on Subspecies and Varieties in New England</h2>
             <p>{{ taxon.variety_notes|italicize_plant|safe }}</p>
         </div>
         {% endif %}
         
         <div class="section help">
-            <h4 class="left help">Need Help?</h4>
+            <h2 class="help">Need Help?</h2>
             <a href="{% url 'site-getting-started' %}"
-                class="get-help-btn left">Get Help</a>
+                class="orange-button caps">Get Help</a>
         </div>
     </div>
 

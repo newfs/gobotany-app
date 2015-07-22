@@ -71,10 +71,23 @@ class Command(NoArgsCommand):
                     self.stdout.write('Deleting image: {0}\n'.format(stale_image.image.url))
                     self.stdout.write('Deleting thumbnail: {0}\n'.format(stale_image.thumb.url))
                 if not dry_run:
-                    stale_image.image.storage.delete(stale_image.image.name)
-                    stale_image.thumb.storage.delete(stale_image.thumb.name)
-                    stale_image.deleted = True
-                    stale_image.save()
+                    try:
+                        stale_image.image.storage.delete(stale_image.image.name)
+                    except IOError as e:
+                        self.stdout.write('IOError while attempting to delete image: {0}'.format(
+                            stale_image.image.name))
+                    try:
+                        stale_image.thumb.storage.delete(stale_image.thumb.name)
+                    except IOError as e:
+                        self.stdout.write('IOError while attempting to delete thumb: {0}'.format(
+                            stale_image.thumb.name))
+
+                    try:
+                        stale_image.deleted = True
+                        stale_image.save()
+                    except:
+                        self.stdout.write('WARNING: Failed to flag ScreenedImage as deleted.')
+
 
         if verbosity >= '1':
             self.stdout.write('Cleanup complete.\n')

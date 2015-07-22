@@ -1,8 +1,10 @@
 from django import forms
 from django.core.urlresolvers import reverse_lazy
+from emailconfirmation.models import EmailAddress
 
-from models import (UserProfile, ScreenedImage, Location, Checklist, 
-        ChecklistEntry)
+from gobotany.plantshare.models import (Checklist, ChecklistEntry,
+    Location, ScreenedImage, SIGHTING_DEFAULT_VISIBILITY,
+    SIGHTING_VISIBILITY_CHOICES, UserProfile)
 
 def plant_name_suggestions_url():
     return reverse_lazy('site-plant-name-suggestions') + '?q=%s'
@@ -21,16 +23,16 @@ class LocationTextInput(forms.TextInput):
 
 
 class LocationField(forms.RegexField):
-    VALIDATION_MESSAGE = 'city, state OR postal code OR latitude, longitude'
+    VALIDATION_MESSAGE = ('street (optional), city, state OR '
+                          'latitude, longitude')
     VALIDATION_PATTERN = (
-        '(^([-\w\s]*\w)([, ]+)([-\w\s]*\w)$)|'
-        '(^([a-zA-Z0-9][0-9][a-zA-Z0-9] ?[0-9][a-zA-Z0-9][0-9]?)(-\d{4})?$)|'
+        '(^(([-.\w\d\s]*[.\w])([, ]+))?([-.\w\s]*\w)([, ]+)([-\w\s]*\w)$)|'
         '(^(-?(\d{1,3}.?\d{1,6}? ?[nNsS]?))([, ]+)'
         '(-?(\d{1,3}.?\d{1,6}? ?[wWeE]?))$)'
     )
     widget = LocationTextInput({'class': 'location',
-                              'placeholder': VALIDATION_MESSAGE,
-                              'pattern': VALIDATION_PATTERN})
+                                'placeholder': VALIDATION_MESSAGE,
+                                'pattern': VALIDATION_PATTERN})
     default_error_messages = {
         'invalid': 'Enter %s.' % VALIDATION_MESSAGE
     }
@@ -44,9 +46,9 @@ class LocationField(forms.RegexField):
             self.widget.attrs['required'] = 'required'
 
 
-class NewSightingForm(forms.Form):
+class SightingForm(forms.Form):
     def __init__(self, *args, **kwargs):
-        super(NewSightingForm, self).__init__(*args, **kwargs)
+        super(SightingForm, self).__init__(*args, **kwargs)
         # Set up a widget here instead of in its regular declaration in
         # order to work around an error regarding a 'reverse' URL.
         self.fields['identification'].widget=forms.TextInput({
@@ -65,6 +67,14 @@ class NewSightingForm(forms.Form):
         # __init__, an error occurs. Using reverse_lazy alone does not work.
         # http://stackoverflow.com/questions/7430502/
     )
+    created = forms.DateTimeField(
+        required=True,
+        widget=forms.DateInput(attrs={
+            'autocomplete': 'off',
+            'placeholder': 'mm/dd/yyyy',
+            'class': 'date-input',
+        }, format='%m/%d/%Y'),
+    )
     notes = forms.CharField(
         required=False,
         widget=forms.Textarea(),
@@ -73,8 +83,7 @@ class NewSightingForm(forms.Form):
     location_notes = forms.CharField(
         required=False,
         widget=forms.Textarea({
-            'placeholder': ('optional notes about plant location such as: '
-                           'end of road, near oak tree'),
+            'placeholder': ('such as: end of road, near oak tree'),
         })
     )
     latitude = forms.CharField(
@@ -85,14 +94,31 @@ class NewSightingForm(forms.Form):
         required=False,
         widget=forms.TextInput()
     )
+    visibility = forms.ChoiceField(choices=SIGHTING_VISIBILITY_CHOICES,
+                                   initial=SIGHTING_DEFAULT_VISIBILITY)
+    flagged = forms.BooleanField(
+        required=False,
+        initial=False
+    )
+    approved = forms.BooleanField(
+        required=False,
+        initial=False
+    )
 
 
-class UserProfileForm(forms.ModelForm): 
+class QuestionForm(forms.Form):
+    question = forms.CharField(
+        required=True,
+        widget=forms.Textarea()
+    )
+
+
+class UserProfileForm(forms.ModelForm):
     location = LocationField()
 
     class Meta:
         model = UserProfile
-        fields = ('sharing_visibility', 'display_name', 'saying', 
+        fields = ('details_visibility', 'display_name', 'saying',
             'location_visibility', 'location',)
 
     def __init__(self, *args, **kwargs):
@@ -103,8 +129,15 @@ class UserProfileForm(forms.ModelForm):
         if not 'location' in self.cleaned_data:
             return None
         user_text = self.cleaned_data['location']
-        location, created = Location.objects.get_or_create(user_input=user_text)
-
+        # Look for a Location record with the user input text.
+        locations = Location.objects.filter(user_input=user_text)
+        if locations.count() > 0:
+            # The first one is OK because any duplicates are equivalent.
+            location = locations[0]
+        else:
+            # Create a new location record.
+            location = Location(user_input=user_text)
+            location.save()
         return location
 
     def avatar(self):
@@ -116,10 +149,36 @@ class UserProfileForm(forms.ModelForm):
         return avatar_info
 
 
+class ChangeEmailForm(forms.ModelForm):
+    class Meta:
+        model = EmailAddress
+        fields = ('email',)
+
+    def __init__(self, data=None, user=None):
+        super(ChangeEmailForm, self).__init__(data=data)
+        self.user = user
+
+    email = forms.EmailField(label='New email address', required=True,
+        widget=forms.TextInput())
+
+    def clean_email(self):
+        email = self.cleaned_data['email']
+        if email == self.user.email:
+            raise forms.ValidationError(
+                u'This email address is already used by your account.')
+        else:
+            return email
+
+    def save(self):
+        email = self.cleaned_data['email']
+        return EmailAddress.objects.add_email(self.user, email)
+
+
 class ScreenedImageForm(forms.ModelForm):
     class Meta:
         model = ScreenedImage
-        fields = ('image', 'image_type')
+        fields = ('image', 'image_type') # TODO: need? ,'latitude', 'longitude')
+
 
 class ChecklistForm(forms.ModelForm):
     class Meta:
@@ -129,33 +188,43 @@ class ChecklistForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super(ChecklistForm, self).__init__(*args, **kwargs)
         self.fields['name'].widget = forms.TextInput(attrs={
-            'placeholder': 'Enter Checklist Name'
+            'placeholder': '',
+            'tabindex': '1',
             })
         self.fields['comments'].widget = forms.Textarea(attrs={
-            'placeholder': 'Comments about checklist...',
-            'rows': ''
+            'placeholder': '',
+            'rows': '',
+            'tabindex': '2',
             })
 
 class ChecklistEntryForm(forms.ModelForm):
     class Meta:
         model = ChecklistEntry
-        fields = ('plant_name', 'date_found', 'location', 'date_posted', 'note')
+        fields = ('plant_name', 'date_found', 'location', 'date_posted',
+                  'note', 'plant_photo')
 
     def __init__(self, *args, **kwargs):
         super(ChecklistEntryForm, self).__init__(*args, **kwargs)
-        self.fields['plant_name'].widget = forms.TextInput(attrs={
-            'placeholder': 'Enter Plant Name'
-            })
+        self.fields['plant_name'].widget=forms.TextInput({
+            'autocomplete': 'off',
+            'autofocus': 'autofocus',
+            'class': 'suggest',
+            'data-suggest-url': plant_name_suggestions_url(),
+            'placeholder': 'enter plant name',
+            'required': 'required',
+        })
         self.fields['date_found'].widget = forms.DateInput(attrs={
-            'placeholder': 'dd/mm/yy'
-            })
+            'placeholder': 'mm/dd/yyyy',
+            'class': 'date-input',
+            }, format='%m/%d/%Y')
         self.fields['location'].widget = forms.TextInput(attrs={
-            'placeholder': 'Enter Location'
+            'placeholder': 'enter location',
             })
         self.fields['date_posted'].widget = forms.DateInput(attrs={
-            'placeholder': 'dd/mm/yy'
-            })
+            'placeholder': 'mm/dd/yyyy',
+            'class': 'date-input',
+            }, format='%m/%d/%Y')
         self.fields['note'].widget = forms.Textarea(attrs={
-            'placeholder': 'Write your notes here'
+            'placeholder': '',
             })
-
+        self.fields['plant_photo'].widget = forms.HiddenInput()

@@ -38,6 +38,7 @@ define([
                         var previous = $input.data('previousValue');
                         if(previous) {
                             $input.val(previous);
+                            $input.trigger('blur'); // for LocationMap update
                         }
 
                         options.onFieldReset.call($input);

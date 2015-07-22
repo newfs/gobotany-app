@@ -40,7 +40,7 @@
     </rdf:RDF>
   </metadata>
   <sodipodi:namedview
-     inkscape:window-height="858"
+     inkscape:window-height="856"
      inkscape:window-width="1337"
      inkscape:pageshadow="2"
      inkscape:pageopacity="0.0"
@@ -51,9 +51,9 @@
      bordercolor="#666666"
      pagecolor="#ffffff"
      id="base"
-     inkscape:zoom="3.8873239"
-     inkscape:cx="191.43623"
-     inkscape:cy="226.79828"
+     inkscape:zoom="3.8760563"
+     inkscape:cx="499.99728"
+     inkscape:cy="49.298278"
      inkscape:window-x="8"
      inkscape:window-y="0"
      inkscape:current-layer="svg9559"
@@ -751,25 +751,6 @@
        x="486.08173"
        y="314.67477"
        style="font-size:9px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;line-height:125%;writing-mode:lr-tb;text-anchor:start;font-family:Verdana;-inkscape-font-specification:Verdana">label4</tspan></text>
-  <rect
-     y="326.51645"
-     x="471.78244"
-     height="11.111111"
-     width="11.111111"
-     id="box5"
-     style="fill:#ffffff;fill-opacity:1;stroke:#000000;stroke-width:0.8888889;stroke-opacity:1" />
-  <text
-     sodipodi:linespacing="125%"
-     id="label5"
-     y="335.04977"
-     x="486.23798"
-     style="font-size:9px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;line-height:125%;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;font-family:Verdana;-inkscape-font-specification:Verdana"
-     xml:space="preserve"><tspan
-       style="font-size:9px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;line-height:125%;writing-mode:lr-tb;text-anchor:start;font-family:Verdana;-inkscape-font-specification:Verdana"
-       y="335.04977"
-       x="486.23798"
-       id="tspan6394"
-       sodipodi:role="line">label5</tspan></text>
   <g
      inkscape:groupmode="layer"
      id="NS"

@@ -1,0 +1,1 @@
+{% load i18n %}{% blocktrans %}Go Botany: Your email address change{% endblocktrans %}

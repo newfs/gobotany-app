@@ -1,0 +1,85 @@
+{% extends "gobotany/_page_free_sidebar.html" %}
+{% load plantshare_tags %}
+
+{% block title %}Find People: PlantShare{% endblock %}
+
+{% block body_attributes %}id="find-people"
+    class="plantshare"{% endblock %}
+
+{% block js_require %}
+    require(['plantshare/find_people']);
+{% endblock %}
+
+{% block main_content %}
+    <h1>Find People</h1>
+
+    <form id="find-people-form" method="get"
+        action="{% url 'ps-find-people' %}">
+        <input type="text" name="n" value="{{ name_query }}" class="suggest"
+            placeholder="Enter person's name"
+            autocomplete="off" role="textbox" aria-autocomplete="list"
+            aria-haspopup="true"
+            data-suggest-url="{% url 'ps-ajax-people-suggestions' %}?q=%s"
+            data-align-menu-inside-input="true" data-submit-on-select="true">
+        <input type="submit" value="Go">
+    </form>
+
+    {% if people %}
+        <p>{{ people|length }}
+            match{{ people|length|pluralize:"es" }} found:</p>
+
+        <ul class="box">
+        {% for person in people %}
+            <li class="person">
+                {% if request.user.id == person.user.id or request.user.is_staff or person.details_visibility != 'PRIVATE' %}
+                    {# TODO: later, take into account 'GROUPS' visibility #}
+                    <img src="{{ person.public_avatar_image.thumb_url }}" alt="">
+                {% endif %}
+                <ul>
+                    <li class="name">
+                        {% if request.user.id == person.user.id or request.user.is_staff or person.details_visibility != 'PRIVATE' %}
+                            {# TODO: later, take into account 'GROUPS' visibility #}
+                            {{ person.user_display_name }}
+                        {% else %}
+                            {{ person.user.username }}
+                        {% endif %}
+                    </li>
+                    {% if request.user.id == person.user.id or request.user.is_staff or person.location_visibility != 'PRIVATE' %}
+                    {# TODO: later, take into account 'GROUPS' visibility #}
+                        {% if person.location %}
+                            <li>{{ person.location.user_input }}</li>
+                        {% endif %}
+                    {% endif %}
+                    {% if request.user.id == person.user.id or request.user.is_staff or person.details_visibility != 'PRIVATE' %}
+                        {# TODO: later, take into account 'GROUPS' visibility #}
+                        <li>
+                            <a href="{% url 'ps-find-people-profile' person.user.username %}"
+                                rel="shadowbox;width=700;height=300">View Profile »</a>
+                        </li>
+                    {% endif %}
+                </ul>
+                {% comment %}
+                <p><a href="#" class="orange-button caps disabled">Invite to
+                    Group</a></p>
+                {% endcomment %}
+            </li>
+        {% endfor %}
+        </ul>
+    {% else %}
+        {% if name_query %}
+            {% if name_query|length < min_query_length %}
+                <p>Please try a search of {{ min_query_length }} letters
+                or longer.</p>
+            {% else %}
+                <p>No matches found.</p>
+            {% endif %}
+        {% else %}
+            <p>Find your friends and colleagues who use PlantShare.</p>
+        {% endif %}
+    {% endif %}
+
+{% endblock %}
+
+{% block sidebar_content %}
+    {% include "_plantshare_navigation.html" %}
+{% endblock %}

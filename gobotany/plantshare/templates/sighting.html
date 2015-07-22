@@ -1,35 +1,61 @@
 {% extends "gobotany/_page_free_sidebar.html" %}
+{% load gobotany_tags %}
 {% load mapping_tags %}
+{% load plantshare_tags %}
 
 {% block title %}Sighting: {{ sighting.identification }} at
     {{ sighting.location|capfirst }}: PlantShare{% endblock %}
+
+{% block js_require %}
+    require([
+        'plantshare/sighting'
+    ]);
+{% endblock %}
 
 {% block body_attributes %}id="sighting"
     class="plantshare sighting"{% endblock %}
 
 {% block main_content %}
-<h1>Sighting: <i>{{ sighting.identification }}</i> at
-    {{ sighting.location|capfirst }}</h1>
 
-{% location_map location=sighting.location height_px="150" width_px="302" zoom="7" id="id_location_map" %}
+<div id="breadcrumb">
+    <ul>
+        <li class="label nogloss">You are here:</li>
+        <li class="nogloss"><a href="{% url 'ps-main' %}">PlantShare</a></li>
+        <li class="nogloss"><a href="{% url 'ps-sightings' %}">Recent Sightings</a></li>
+        <li class="nogloss">
+        <a href="{% url 'ps-sightings-by-year' sighting.year %}">{{ sighting.year }}</a>
+        </li>
+        <li class="this-page nogloss">Sighting: 
+        {{ sighting.identification|italicize_if_scientific|safe }}
+        at {{ sighting.location|capfirst }}
+        </li>
+    </ul>
+</div>
 
-<p>Posted {{ sighting.created }} by {{ sighting.user }}</p>
+<h1>Sighting: {{ sighting.identification|italicize_if_scientific|safe }}
+    at {{ sighting.location|capfirst }}</h1>
 
-{% if sighting.notes %}
-    <p>Description or comments: {{ sighting.notes }}</p>
-{% endif %}
+<p>by {% user_display_name sighting.user %} on {{ sighting.created }} </p>
+
+{% sightings_map latitude=sighting.location.latitude longitude=sighting.location.longitude center_title=sighting.location height="344px" width="710px" zoom=map_zoom id="sightings-map" %}
 
 {% if sighting.location_notes %}
-    <p>Location notes: {{ sighting.location_notes }}</p>
+    <p>Location notes: 
+    <span id="location-notes">{{ sighting.location_notes }}</span>
+    </p>
 {% endif %}
 
-<div class="sighting-gallery">
-    <h2>Sighting Photos</h2>
+{% if sighting.notes %}
+    <p>Comments: {{ sighting.notes }}</p>
+{% endif %}
+
+<div class="photos">
+    <h2>Photos</h2>
     <ul>
     {% for photo in sighting.photos.all %}
-        <li><img src="{{ photo.thumb.url }}" /></li>
+        <li><img src="{{ photo.image.url }}" /></li>
     {% empty %}
-        <li><p>There are currently no photos for this sighting.</p></li>
+        <li>There are no photos available yet for this sighting.</li>
     {% endfor %}
     </ul>
 </div>
@@ -39,4 +65,3 @@
 {% block sidebar_content %}
     {% include "_plantshare_navigation.html" %}
 {% endblock %}
-

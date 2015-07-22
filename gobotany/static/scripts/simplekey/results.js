@@ -42,32 +42,6 @@ results_page_init: function(args) {
         filtered_sorted_taxadata_ready,
         taxa_by_sciname_ready
     ).done(function() {
-        /* Set the initial view to Photos for a full-size page, or List for 
-           small screens. */
-        /* Disable for now the code that makes the list view the
-         * default on small screens. It is causing trouble with maintaining
-         * state upon pressing the Back button, because the hash does
-         * not seem to be initializing like it should, and does, when
-         * photos is the initial view. Perhaps this needs to be done
-         * *after* the species section is initialized and resolved, below. */
-        /*
-        if ($(window).width() > MAX_SMALLSCREEN_WIDTH) {
-            // "Photos" view is the initial view on full-size screens.
-            App3.set('show_grid', true);
-            App3.set('show_list', false);
-        }
-        else {
-            // "List" view is the usual initial view on small screens. (It can
-            // be overridden to be the "photos" view instead.)
-            var initial_smallscreen_view = DEFAULT_SMALLSCREEN_VIEW;
-            if ($('body').hasClass('mobile-photos')) {
-                initial_smallscreen_view = 'photos';
-            }
-            App3.set('show_grid', (initial_smallscreen_view === 'photos'));
-            App3.set('show_list', (initial_smallscreen_view === 'list'));
-        }
-        */
-
         /* Initialize the species results section. */
 
         species_section.init(pile_slug, taxa_ready, plant_divs_ready,
@@ -167,7 +141,7 @@ results_page_init: function(args) {
                     $('<label>').append(
                         $('<input>', {type: 'checkbox',
                                       value: character_group.id}),
-                        ' ' + character_group.name
+                        ' <span>' + character_group.name + '</span>'
                     )
                 )
             );
@@ -503,7 +477,7 @@ results_page_init: function(args) {
                 species_section.display_results();
             }
         });
-        App3.species_view_tabs.appendTo('#results-tabs');
+        App3.species_view_tabs.appendTo('#results-section .view-tabs');
     });
 
     /* All filters can be cleared with a single button click. */
@@ -747,17 +721,40 @@ results_page_init: function(args) {
             return;
         }
 
-        $('.get-choices').click(function() {
+        $('.get-choices').click(function () {
             dismiss_any_working_area();
+
+            // Set default tab before opening the dialog, so there is no
+            // flash of tabs switching when the dialog first appears.
+            $('.more-questions-dialog a.auto').addClass('current');
+            $('.more-questions-dialog a.pick').removeClass('current');
+            $('.more-questions-dialog #choices .auto').show();
+            $('.more-questions-dialog #choices .pick').hide();
 
             Shadowbox.open({
                 content: $('#modal').html(),
-                height: 550,
+                height: 660,
                 player: 'html',
                 options: {
                     fadeDuration: 0.1,
-                    onFinish: function() {
-                        // Re-check any check boxes that were set last time.
+                    onFinish: function () {
+                        // Set up tabs.
+                        $('.more-questions-dialog a.pick').click(function () {
+                            $('.more-questions-dialog #choices .auto').hide();
+                            $('.more-questions-dialog #choices .pick').show();
+                            $(this).toggleClass('current');
+                            $('.more-questions-dialog a.auto').toggleClass(
+                                'current');
+                        });
+                        $('.more-questions-dialog a.auto').click(function () {
+                            $('.more-questions-dialog #choices .pick').hide();
+                            $('.more-questions-dialog #choices .auto').show();
+                            $(this).toggleClass('current');
+                            $('.more-questions-dialog a.pick').toggleClass(
+                                'current');
+                        });
+
+                        // Set any Automatic check boxes that were set last time.
                         $container = $('#sb-container');
                         $inputs = $container.find('input');
                         $inputs.each(function(i, input) {
@@ -766,8 +763,67 @@ results_page_init: function(args) {
                             $(input).prop('checked', check);
                         });
                         _disable_exhausted_groups($inputs);
-                        $container.find('a.get-choices')
+                        $container.find('a.get-questions')
                             .addClass('get-choices-ready');  // for tests
+
+                        // List the questions for the Pick Your Own tab.
+                        $container.find('a.add-questions').addClass('disabled');
+                        filter_controller_is_built.done(function (filter_controller) {
+                            
+                            var not_already_displayed = function (character) {
+                                return ! _.has(filter_controller.filtermap,
+                                    character.slug);
+                            };
+
+                            var characters;
+                            resources.pile_set(pile_slug).done(function (data) {
+                                characters = data;
+
+                                // Compute coverage lists.
+                                for (var i = 0; i < characters.length; i++) {
+                                    var ch = characters[i];
+                                    var values = ch.values;
+                                    ch.taxon_ids_covered = _.intersection(values);
+                                }
+
+                                // Sort questions.
+                                var sorted_characters = _.chain(characters)
+                                    .filter(not_already_displayed)
+                                    .sortBy('ease')
+                                    .sortBy('group_name')
+                                    .value();
+                                
+                                // Display questions.
+                                var $questions = $('.pick .questions');
+                                $questions.empty();
+                                var group, group_str = null;
+                                _.each(sorted_characters, function (character) {
+                                    if (character.group_name !== group) {
+                                        group = character.group_name;
+                                        group_str = group.charAt(0).toUpperCase() +
+                                            group.substring(1) + ':';
+                                        $questions.append('<p class="category">' +
+                                            group_str + '</p>');
+                                    }
+                                    var question_str = character.name + '?';
+                                    $questions.append('<p><label><input ' +
+                                        'type="checkbox" name="char-' +
+                                        character.slug + '" value="' +
+                                        character.slug + '"> ' +
+                                        question_str + '</label></p>');
+                                });
+
+                                // Enable Add button when boxes are checked.
+                                $('.pick .questions input').on('click', function () {
+                                    var num_checked = $(
+                                        '.questions input:checked').length;
+                                    $('.pick .add-questions').toggleClass(
+                                        'disabled', (num_checked === 0));
+                                });
+
+                            });
+
+                        });
                     }
                 }
             });
@@ -795,7 +851,8 @@ results_page_init: function(args) {
         });
     };
 
-    $('#sb-container a.get-choices').live('click', function() {
+    // Get More Questions: button handler for Automatic tab
+    $('#sb-container a.get-questions').live('click', function () {
         checked_groups = [];  // reset array in enclosing scope
         $('#sb-container input').each(function(i, input) {
             if ($(input).prop('checked'))
@@ -811,6 +868,27 @@ results_page_init: function(args) {
             species_ids: App3.filter_controller.taxa,
             character_group_ids: checked_groups,
             exclude_characters: existing
+        }).done(receive_new_filters);
+
+        Shadowbox.close();
+    });
+
+
+    // Get More Questions: button handler for Pick Your Own tab
+    $('#sb-container a.add-questions').live('click', function () {
+        if ($(this).hasClass('disabled')) {
+            return;
+        }
+
+        var checked_questions = [];
+        $('.questions input').each(function () {
+            if ($(this).prop('checked'))
+                checked_questions.push($(this).val());
+        });
+
+        simplekey_resources.add_questions({
+            pile_slug: pile_slug,
+            include: checked_questions
         }).done(receive_new_filters);
 
         Shadowbox.close();

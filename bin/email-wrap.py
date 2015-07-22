@@ -42,14 +42,20 @@ if __name__ == '__main__':
         exit(1)
 
     if len(sys.argv) > 1: 
-        script_name = sys.argv[1]
+        script_name = sys.argv[1:] # grab the _entire_ command line
     else:
         script_name = "nothing"
+
+    if 'populate_distribution_names' in sys.argv:
+        # or the subject line becomes too long for gmail to display fully
+        script_name = sys.argv[-2:]
 
     current_time = time.strftime("%H:%M", time.gmtime())
 
     template = '[{server}] log output: {script} ran on {time} GMT'
     subject = template.format(server=app_name, script=script_name, time=current_time)
+
+    start_time = 'START TIME: ' + time.strftime("%H:%M", time.gmtime()) + '\n'
 
     p = subprocess.Popen(
         sys.argv[1:],
@@ -57,7 +63,10 @@ if __name__ == '__main__':
         stderr=subprocess.STDOUT,
         )
     (output, ignored) = p.communicate()
-
+    
+    end_time = 'END TIME: ' + time.strftime("%H:%M", time.gmtime()) + '\n'
+    output_log = start_time + end_time + output + start_time + end_time
+    
     fromaddr = 'no-reply@newenglandwild.org'
     toaddrs = mail_to.replace(',', ' ').split()
     message = '\r\n'.join((
@@ -65,7 +74,7 @@ if __name__ == '__main__':
             'From: {}'.format(fromaddr),
             'Subject: {}'.format(subject),
             '',
-            output.replace('\n', '\r\n')))
+            output_log.replace('\n', '\r\n')))
 
     server = smtplib.SMTP('smtp.sendgrid.net', 587, 'heroku.com')
     # server.set_debuglevel(1)

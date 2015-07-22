@@ -1,0 +1,35 @@
+.description {
+    margin: 3em 4em 3em 0;
+    line-height: 1.5em;
+}
+
+
+/* Pagination: Go to Page customization */
+
+#go-to-page-number {
+    margin-bottom: 5px;
+}
+
+
+/* List view links: allow wrapping long labels (see Question model) */
+
+#result_list th a {
+    word-break: break-all;
+}
+
+
+/* Distribution model change form: Save and Edit Next button */
+
+/* Hide the button on all other models' forms. */
+form:not(#distribution_form) input[name="_editnext"] {
+    display: none;
+}
+
+/* Distribution: add set of Distribution records form */
+
+body.dist-add-set-form .aligned label {
+    width: 10em;
+}
+body.dist-add-set-form input#id_scientific_name {
+    width: 40em;
+}

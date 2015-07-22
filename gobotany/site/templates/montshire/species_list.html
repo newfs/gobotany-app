@@ -1,0 +1,17 @@
+{% extends "montshire/_page_no_sidebar.html" %}
+{% load gobotany_tags %}
+{% load simplekey_extras %}
+
+{% block title %}Species List{% endblock %}
+
+{% block body_attributes %}
+    {% include "gobotany/_species_list_body_attributes.html" %}
+{% endblock %}
+
+{% block js_require %}
+    {% include "gobotany/_species_list_js_require.html" %}
+{% endblock %}
+
+{% block main_content %}
+    {% include "gobotany/_species_list_main_content.html" %}
+{% endblock %}

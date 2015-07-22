@@ -1,0 +1,99 @@
+{% extends "admin/base_site.html" %}
+{% load i18n admin_static %}
+
+{% block extrastyle %}{{ block.super }}
+    <link rel="stylesheet" type="text/css"
+        href="{% static "admin/css/forms.css" %}">
+        <link rel="stylesheet" type="text/css"
+        href="{% static "admin/admin_gb.css" %}">
+{% endblock %}
+
+{% block bodyclass %}dist-add-set-form{% endblock %}
+
+{% block breadcrumbs %}
+<div class="breadcrumbs">
+    <a href="/admin/">{% trans 'Home' %}</a>
+    &rsaquo; <a href="/admin/core/">{% trans 'Core' %}</a>
+    &rsaquo; 
+    <a href="/admin/core/distribution/">{% trans 'Distribution records' %}</a>
+    &rsaquo; {% trans 'Add set of Distribution records' %}
+</div>
+{% endblock %}
+
+{% block content_title %}
+    <h1>{{ title }}</h1>
+    {% if errors %}
+    <p class="errornote">
+    {% blocktrans count counter=errors|length %}Please correct the error below.{% plural %}Please correct the errors below.{% endblocktrans %}
+    </p>
+    {% endif %}
+    <p>Enter the plant name and set any desired defaults.</p>
+    <p>A set of distribution records will be created for the plant: one for
+    each state, province, and New England county.</p>
+    <p>If some records already exist for this plant, they will remain
+    unchanged. Any missing records will be added around them.</p>
+{% endblock %}
+
+{% block content %}
+<div id="content-main">
+<form action="./" method="post" id="add_set_form">{% csrf_token %}
+    <div>
+        <fieldset class="module aligned">
+            <div class="form-row {% if errors %}errors{% endif %}
+                field-scientific-name">
+                {% if errors %}
+                <ul class="errorlist">
+                    {% for error in errors %}
+                    <li>{{ error }}</li>
+                    {% endfor %}
+                </ul>
+                {% endif %}
+                <div>
+                    <label for="id_scientific_name"
+                        class="required">Scientific name:</label>
+                    <input class="vTextField" id="id_scientific_name"
+                        maxlength="100" name="scientific_name"
+                        type="text" value="{{ scientific_name }}">
+                </div>
+            </div>
+            <div class="form-row field-species-name">
+                <div>
+                    <label for="id_species_name"
+                        class="required">Species name:</label>
+                    <input class="vTextField" id="id_species_name"
+                        maxlength="60" name="species_name"
+                        type="text" value="{{ species_name }}">
+                </div>
+            </div>
+            <div class="form-row field-subspecific_epithet">
+                <div>
+                    <label for="id_subspecific_epithet"
+                        class="required">Subspecific epithet:</label>
+                    <input class="vTextField" id="id_subspecific_epithet"
+                        maxlength="60" name="subspecific_epithet"
+                        type="text" value="{{ subspecific_epithet }}">
+                </div>
+            </div>
+            <div class="form-row field-present">
+                <div>
+                    <input id="id_present" name="present" 
+                        type="checkbox"><label for="id_present" 
+                        class="vCheckboxLabel">Present</label>
+                </div>
+            </div>
+            <div class="form-row field-native">
+                <div>
+                    <input id="id_native" name="native"
+                        type="checkbox"><label for="id_native"
+                        class="vCheckboxLabel">Native</label>
+                </div>
+            </div>
+        </fieldset>
+        <div class="submit-row">
+            <input type="submit" value="{% trans 'Save' %}" class="default" 
+                name="_save" {{ onclick_attrib }}>
+        </div>
+    </div>
+</form>
+</div>
+{% endblock %}

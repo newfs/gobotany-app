@@ -2,14 +2,14 @@ from distutils.core import setup
 from setuptools import find_packages
 
 requirements = [
-    'django==1.5',
+    'django==1.5.2',
 
     'Pillow==2.4.0',
     'South==0.7.6',
     'cssselect',
-    'django-debug-toolbar',
+    'django-debug-toolbar==1.3.0',
     'django-haystack==1.2.7',
-    'django-imagekit==2.0.2',
+    'django-imagekit==3.0.2',
     'django-piston==0.2.2',
     'django-tinymce',
     'inflect',
@@ -32,9 +32,11 @@ requirements = [
 
     # Login and registration
 
+    'django-email-confirmation==0.2',
     'django-facebook-connect>=1.0.2',
-    'django-recaptcha==0.0.4',
-    'django-registration==0.8',
+    'django-recaptcha==0.0.6',
+    # Installed in a separate step pending Django dependency issues
+    'django-registration==0.9b1',
 
     # For storing images on S3.
 
@@ -47,11 +49,14 @@ requirements = [
     'gunicorn==0.17.2',
     'newrelic',
     's3cmd',
+    'django-sslify>=0.2',
     ]
 
 dependency_links = [
     'git+https://github.com/jrrickerson/django-facebook-connect'
     + '#egg=django-facebook-connect-1.0.2',
+    'https://bitbucket.org/alper/django-registration/get/tip.tar.gz'
+    + '#egg=django-registration-0.9b1'
     ]
 
 packages = find_packages()

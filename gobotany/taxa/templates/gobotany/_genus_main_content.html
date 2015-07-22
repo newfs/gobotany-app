@@ -1,4 +1,4 @@
-{% load simplekey_extras %}
+{% load taxa_tags %}
 
     <h1>Genus: <i>{{ genus.name }}</i></h1>
     {% if common_name %}
@@ -43,6 +43,6 @@
 
     <p class="visit-dkey">
       Visit this genus in the
-      <a href="{% url 'dkey_page' genus.name.lower %}"
-         >Dichotomous Key</a>
+      <a class="orange-button caps"
+          href="{% url 'dkey_page' genus.name.lower %}">Dichotomous Key</a>
     </p>

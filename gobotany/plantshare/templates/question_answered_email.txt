@@ -1,0 +1,16 @@
+Hello, {{ user_name }}. Your question has been answered on the Go Botany site:
+
+http{% if in_production %}s{% endif %}://{{ site.domain }}{% url 'ps-all-questions-by-year' year=year %}#q{{ question_id }}
+
+Thanks for asking!
+
+Sincerely,
+
+The Go Botany Team
+New England Wild Flower Society
+
+--
+
+Your question was:
+
+{{ question|safe }}

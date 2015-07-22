@@ -22,7 +22,6 @@ body.search-results {
             a {
                 font-family: $headings-font;
                 font-size: 15px;
-                text-decoration: underline;
             }
             p {
                 line-height: 140%;
@@ -41,9 +40,6 @@ body.search-results {
         li {
             display: inline;
             margin: 0 2px;
-        }
-        a {
-            text-decoration: underline;
         }
     }
 }

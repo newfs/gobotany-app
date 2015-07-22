@@ -19,6 +19,9 @@ SECRET_KEY = os.environ.get('GOBOTANY_DJANGO_SECRET_KEY', '')
 # New in Django 1.5: allowed hosts required for production-like deployments
 ALLOWED_HOSTS = ['.newenglandwild.org', # any subdomain of newenglandwild.org
                  'gobotany-dev.herokuapp.com',
+                 'gobotany-release23.herokuapp.com',
+                 'gobotany-release22.herokuapp.com',
+                 'gobotany-release21.herokuapp.com',
                 ]
 
 TEMPLATE_DIRS = (
@@ -65,6 +68,8 @@ USE_DEBUG_TOOLBAR = False
 # Django Debug Toolbar is turned off by default. Uncomment the
 # following line to turn it on.
 #USE_DEBUG_TOOLBAR = not IN_PRODUCTION and DEBUG_TOOLBAR_AVAILABLE
+
+DEBUG_TOOLBAR_PATCH_SETTINGS = False
 
 DEBUG = 'DEBUG' in os.environ or not IN_PRODUCTION
 
@@ -120,6 +125,7 @@ INSTALLED_APPS = [
     'django.contrib.humanize',
     'django.contrib.messages',
     'django.contrib.sessions',
+    'django.contrib.sites',
     'django.contrib.staticfiles',
 
     ] + (['debug_toolbar'] if USE_DEBUG_TOOLBAR else []) + [
@@ -128,16 +134,25 @@ INSTALLED_APPS = [
     'tinymce',
     'facebook_connect',
     'registration',
+    #'emailconfirmation', # Temporarily uncomment to create this app's
+                          # tables using syncdb. This will also allow
+                          # the app's tables to be visible in the Admin.
+                          # Otherwise, keep this app commented out in
+                          # order to avoid a NoMigrations error when
+                          # applying South migrations.
     'south',
     'captcha',
     ]
 MIDDLEWARE_CLASSES = (
+    ) + (('sslify.middleware.SSLifyMiddleware',)
+         if IN_PRODUCTION else ()) + (
+
+    'django.middleware.csrf.CsrfViewMiddleware',
     'django.middleware.gzip.GZipMiddleware',
 
     ) + (('debug_toolbar.middleware.DebugToolbarMiddleware',)
          if USE_DEBUG_TOOLBAR else ()) + (
 
-    'django.middleware.csrf.CsrfViewMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.locale.LocaleMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -156,9 +171,6 @@ TEMPLATE_CONTEXT_PROCESSORS = (
     'gobotany.core.context_processors.gobotany_specific_context',
 )
 
-DEBUG_TOOLBAR_CONFIG = {
-    'INTERCEPT_REDIRECTS': False,
-}
 APPEND_SLASH = False
 SMART_APPEND_SLASH = True
 ROOT_URLCONF = 'gobotany.urls'
@@ -173,20 +185,21 @@ HAYSTACK_SEARCH_ENGINE = 'solr'
 HAYSTACK_SOLR_URL = 'http://127.0.0.1:8983/solr'
 HAYSTACK_SEARCH_RESULTS_PER_PAGE = 10
 HAYSTACK_SOLR_TIMEOUT = 20  # Longer than default timeout; added for indexing
+HAYSTACK_INCLUDE_SPELLING = True
 
 # https://docs.djangoproject.com/en/dev/topics/i18n/timezones/#time-zones-faq
 TIME_ZONE = 'America/New_York'
 USE_TZ = True
 
 # For django-facebook-connect
-FACEBOOK_LOGIN_REDIRECT = '/ps'     # TODO: /ps/ --> /plantshare/ at release
-FACEBOOK_SCOPE = 'email' 
+FACEBOOK_LOGIN_REDIRECT = '/plantshare/'
+FACEBOOK_SCOPE = 'email'
 FACEBOOK_APP_ID = os.environ.get('FACEBOOK_APP_ID', '')
 FACEBOOK_APP_SECRET = os.environ.get('FACEBOOK_APP_SECRET', '')
 
 # For django-registration
 ACCOUNT_ACTIVATION_DAYS = 7
-LOGIN_URL = '/ps/accounts/login/'   # TODO: /ps/ --> /plantshare/ at release
+LOGIN_URL = '/plantshare/accounts/login/'
 # To test with this, start a local test email server as follows:
 # python -m smtpd -n -c DebuggingServer localhost:1025
 EMAIL_HOST = os.environ.get('EMAIL_HOST', '')
@@ -197,6 +210,9 @@ EMAIL_HOST_USER = os.environ.get('SENDGRID_USERNAME', '')
 EMAIL_HOST_PASSWORD = os.environ.get('SENDGRID_PASSWORD', '')
 if EMAIL_HOST_USER:
     USE_TLS = True
+
+# For emailconfirmation
+EMAIL_CONFIRMATION_DAYS = 3
 
 # For django-recaptcha
 RECAPTCHA_PUBLIC_KEY = os.environ.get('RECAPTCHA_PUBLIC_KEY', '')
@@ -211,16 +227,22 @@ TINYMCE_JS_URL = "tiny_mce/tiny_mce.js"
 # With no local static root, what should we do with the following setting?
 # TINYMCE_JS_ROOT = os.path.join(STATIC_ROOT, "tiny_mce")
 
-# For partner sites, the request hostname will indicate the site.
-MONTSHIRE_HOSTNAME_SUBSTRING = ':8001'  # Just look for a port number for now
-
-# Use memcached for caching if Heroku provides MEMCACHE_SERVERS, or if a
+# Use memcached for caching if Heroku provides MEMCACHIER_SERVERS, or if a
 # developer runs us locally with that environment variable set.
 
-if 'MEMCACHE_SERVERS' in os.environ:
-    CACHES = {'default': {
-        'BACKEND': 'django_pylibmc.memcached.PyLibMCCache'
-        }}
+if 'MEMCACHIER_SERVERS' in os.environ:
+    os.environ['MEMCACHE_SERVERS'] = os.environ.get('MEMCACHIER_SERVERS', '')
+    os.environ['MEMCACHE_USERNAME'] = os.environ.get('MEMCACHIER_USERNAME', '')
+    os.environ['MEMCACHE_PASSWORD'] = os.environ.get('MEMCACHIER_PASSWORD', '')
+
+    CACHES = {
+      'default': {
+        'BACKEND': 'django_pylibmc.memcached.PyLibMCCache',
+        'TIMEOUT': 500,
+        'BINARY': True,
+        'OPTIONS': { 'tcp_nodelay': True }
+      }
+    }
 
 # Normally we pull images in read-only mode from our NEWFS S3 bucket.
 # Environment variables can be set to provide real AWS keys for writing
@@ -251,6 +273,7 @@ else:
     INSTALLED_APPS.append('gunicorn')
 
 
+REGION_NAME = 'New England'
 STATE_NAMES = {
     'ct': u'Connecticut',
     'ma': u'Massachusetts',
@@ -269,3 +292,31 @@ CONTENT_IMAGE_LOCATIONS = {
     u'taxon': lambda i,f: 'taxon-images/%s/%s'%(i.content_object.family.name,
                                                 f),
 }
+
+SITES = {
+    'LOCAL': 1,
+    'DEV': 2,
+    'PROD': 3,
+}
+
+SITE_ID = SITES['LOCAL']
+if IN_PRODUCTION:
+	if DEV_FEATURES:
+		SITE_ID = SITES['DEV']
+	else:
+		SITE_ID = SITES['PROD']
+
+# Name of the Group to which PlantShare users belong once they have
+# agreed to the PlantShare Terms of Agreement.
+AGREED_TO_TERMS_GROUP = 'Agreed to PlantShare Terms'
+
+ADMINS = (('Go Botany Dev', 'gobotanydev@newenglandwild.org'), )
+
+# https://docs.djangoproject.com/en/1.5/ref/settings/#secure-proxy-ssl-header
+# Use SSL
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+
+if IN_PRODUCTION:
+    # https://docs.djangoproject.com/en/1.5/topics/security/#ssl-https
+    SESSION_COOKIE_SECURE = True
+    CSRF_COOKIE_SECURE = True

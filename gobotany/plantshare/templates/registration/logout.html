@@ -4,11 +4,17 @@
 
 {% block body_attributes %}id="logged-out" class="plantshare"{% endblock %}
 
+{% block js_require %}
+    require(['plantshare/registration_complete']);
+{% endblock %}
+
 {% block main_content %}
 <h1>Logged Out</h1>
 
-<p>You have successfully logged out of PlantShare. You may now close this
-browser window or <a href="{% url 'ps-main' %}">log in</a> again.</p>
+<p>You are logged out of PlantShare and may now close this
+browser window.</p>
+
+<p><a href="{% url 'ps-main' %}">Log in</a> again anytime!</p>
 {% endblock %}
 
 {% block sidebar_content %}

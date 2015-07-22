@@ -1,0 +1,36 @@
+{% extends "gobotany/_modal_base.html" %}
+{% load gobotany_tags %}
+{% load mapping_tags %}
+
+{# This page appears in a lightbox when viewing another user's profile. #}
+
+{% block body_attributes %}id="find-people-profile"
+    class="plantshare"{% endblock %}
+
+{% block js_require %}
+    require(['plantshare/find_people_profile']);
+{% endblock %}
+
+{% block body_content %}
+    <div>
+        <a class="close">Close</a>
+
+        {% if profile and details_visible %}
+            <img class="avatar" src="{{ profile.public_avatar_image.thumb_url }}">
+            <h2>{{ profile.user_display_name }}</h2>
+            {% if profile.location and location_visible %}
+                {% location_map location=profile.location height_px="115" width_px="169" zoom="6" id="id_location_map" %}
+                <p>{{ profile.location }}</p>
+            {% endif %}
+            {% if profile.saying %}
+                <p>{{ profile.saying }}</p>
+            {% endif %}
+            {% if profile.groups %}
+                <p>Groups: {{ profile.groups }}</p>
+            {% endif %}
+        {% else %}
+            <p class="not-found">Profile not found</p>
+        {% endif %}
+    </div>
+{% endblock %}
+

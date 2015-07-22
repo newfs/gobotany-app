@@ -17,7 +17,7 @@
             font-size: 24px;
             font-style: italic;
             margin-bottom: 0;
-            margin-left: 245px;
+            margin-left: 255px;
             span {
                 color: #807121;
                 font-size: 16px;
@@ -58,34 +58,13 @@
             width: 610px;
         }
     }
+    .img-gallery {
+        @include user-select(none);
+    }
     a {
-        &.get-more-info {
-            background: url(/static/images/layout/get-more-info.png)
-                0 0 no-repeat transparent;
-            height: 32px;
-            margin: 20px 0 0 0;
-            width: 163px;
-            @include offscreen;
-            &:hover {
-                background-position: 0 -32px;
-            }
-            &:active {
-                background-position: 0 -64px;
-            }
-        }
         &.go-to-species-page {
-            background: url(/static/images/layout/go-to-species-page.png)
-                0 0 no-repeat transparent;
-            height: 31px;
             margin: 20px 0 0 0;
-            width: 212px;
-            @include offscreen;
-            &:hover {
-                background-position: 0 -31px;
-            }
-            &:active {
-                background-position: 0 -62px;
-            }
+            width: 182px;
         }
     } /* end a */
 } /* end .modal-wrap */

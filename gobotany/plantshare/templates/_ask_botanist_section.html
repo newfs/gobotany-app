@@ -1,19 +1,42 @@
-<img src="" alt="">
+<div id="ask-section">
 
-<p><b>&#8220;Ace&#8221; Acer</b><br>
-Our Ace Botanist is here to help you identify a plant, suggest locations
-for seeing plants, and provide you with expert scientific guidance on all
-things in the New England plant kingdom. Registered users can ask questions,
-all visitors can see the answers.
+<img class="botanist" src="/static/images/icons/botanist.jpg" alt="Ace Acer">
+
+<p>
+Our ace botanists are here to help you identify <b>wild New England plants</b> and to answer questions about their ecology and conservation.  When posting a question, please provide the location, habitat (e.g. river, mountain, woodland), and photographs of the plant.</p>
+<p>Everyone can read the answers, but only logged-in users can ask
+questions.
 {% if not user.is_authenticated %}
 <a href="{% url 'ps-main' %}">Log in</a> to ask a question.
 {% endif %}
 </p>
 
 {% if user.is_authenticated %}
-<form method="post" action="{% url 'ps-questions' %}">
+<form id="question-form" method="post" action="{% url 'ps-questions' %}">
     {% csrf_token %}
-    <textarea name="question" placeholder="Ask your question here"></textarea>
-    <button class="submit">Submit</button>
+    <label for="question">Your Question (include location of plant)</label>
+    <textarea id="question" name="question" required
+        maxlength="{{ max_question_length }}"
+        placeholder="Up to {{ max_question_length }} characters"></textarea>
+
+    <div class="images">
+        <label for="upload-link">Images (photos of leaves, and fruit, or flower greatly help id)</label>
+        <div id="question-images">
+            <input type="hidden" name="__template__question_images"
+            class="template-image"></input>
+        </div>
+        <div class="thumb-gallery"></div>
+        <p class="upload">
+            <a id="upload-link" href="#" rel=".image-modal">+ Upload Image</a>
+        </p>
+    </div>
+
+    <button id="ask-button" class="submit disabled" disabled>Submit</button>
 </form>
 {% endif %}
+
+<div class="modal-container">
+  {% include "_image_upload_form.html" with image_form=upload_photo_form %}
+</div>
+
+</div>

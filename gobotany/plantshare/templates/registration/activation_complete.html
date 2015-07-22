@@ -7,9 +7,10 @@
 {% block main_content %}
 <h1>Activation Complete</h1>
 
-<p>Congratulations!</p>
-<p>Your PlantShare membership is now active. Feel free to <a href="{% url 'ps-main' %}">Log In</a> and 
-begin sharing!</p>
+<p>Your PlantShare account is now active. Welcome!</p>
+
+{% include "_login_box.html" %}
+
 {% endblock %}
 
 {% block sidebar_content %}

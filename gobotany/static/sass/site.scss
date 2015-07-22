@@ -27,7 +27,10 @@
 /* Site-wide styles */
 
 body {
-    background: #f0f0c0;
+    background-color: #f0f0c0;
+    background-image: url(/static/images/layout/little-plants.png);    
+    background-position: bottom 140px center;
+    background-repeat: no-repeat;
     color: $text-color;
     font-family: $body-font;
     font-size: $base-font-size;
@@ -43,9 +46,6 @@ a {
     &:visited {
         color: $visited-link-color;
     }
-    &:hover {
-        text-decoration: underline;
-    }
     &:active {
         color: $active-link-color;
     }
@@ -55,6 +55,23 @@ a {
             text-decoration: none;
         }
     }
+}
+#main p a, #main li > a, #main li > i a, #main dt a, #main td a, #main h2 a,
+#main form > a, #main form div > a, #main li li a, #sidebar form > a,
+.nemap a {
+    border-bottom: 1px solid $border-green;
+    &:hover {
+        border-color: $link-green;
+    }
+    &:active {
+        border-color: $active-link-color;
+    }
+    &:not([href]) {
+        border: 0;
+    }
+}
+#main td.scientific-name a {
+    border-bottom: 0;
 }
 
 *|*:-moz-any-link:active, *|*:-moz-any-link:focus {
@@ -89,7 +106,7 @@ h5, h6 {
 	font-size: $base-font-size;	
 }
 h6 {
-    font-weight: italic;
+    font-style: italic;
 }
 p {
     line-height: $text-line-height;
@@ -103,9 +120,6 @@ ul {
 }
 ul li {
     margin: 0 0 5px 0;
-}
-.hidden {
-    display: none;
 }
 .clearit {
     border: none !important;
@@ -216,16 +230,30 @@ body {
      * here" marker. Each of these must be set up individually where
      * needed. */
     &.help {
-        &#glossary #sidebar .glossary a::before,
-        &#fullkey-placeholder #sidebar .advanced-id-tools a::before,
-        &#dkey-placeholder #sidebar .advanced-id-tools a::before {
-            @include highlight-sidebar-nav-item;
+        &#glossary #sidebar .glossary,
+        &#fullkey-placeholder #sidebar .advanced-id-tools,
+        &#dkey-placeholder #sidebar .advanced-id-tools {
+            a::before {
+                @include highlight-sidebar-nav-item;
+            }
         }
     }
     &.plantshare {
-        &#sighting #sidebar .sightings a::before,
-        &#questions #sidebar .ask a::before {
-            @include highlight-sidebar-nav-item;
+        &#sightings #sidebar .sightings,
+        &#sighting #sidebar .sightings,
+        &#edit-sighting #sidebar .manage-sightings,
+        &#questions #sidebar .ask,
+        &#checklist #sidebar .checklists,
+        &#new-checklist #sidebar .checklists,
+        &#edit-checklist #sidebar .checklists,
+        &#change-password #sidebar .profile,
+        &#password-changed #sidebar .profile,
+        &#change-email-address #sidebar .profile,
+        &#change-email-sent-confirmation #sidebar .profile,
+        &#confirm-email #sidebar .profile {
+            a::before {
+                @include highlight-sidebar-nav-item;
+            }
         }
     }
 }
@@ -363,7 +391,7 @@ header {
         &.no-sidebar #main {
             background: none;
             float: none;
-            min-height: none;
+            min-height: 0;
             padding-left: 0;
             width: auto;
         }
@@ -411,18 +439,7 @@ header {
             margin-left: 0;
         }
         &.view-map-btn {
-            background: url(/static/images/layout/view-map-btn-orange.png) 0 0 no-repeat transparent;
-            display: block;
-            height: 32px;
             margin: 10px 0 20px;
-            text-indent: -9000px;
-            width: 113px;
-            &:hover {
-                background-position: 0 -32px;
-            }
-            &:active {
-                background-position: 0 -64px;
-            }
         }
     }
     nav a {
@@ -444,24 +461,14 @@ header {
         }
         li {
             line-height: 150%;
+            list-style-type: none;
             margin: 0 0 4px 0;
             padding: 0 15px 16px;
         }
     }
 }
 a.get-help-btn {
-    background: url(/static/images/layout/get-help-btn-orange.png) 0 0 no-repeat transparent;
-    display: block;
-    height: 32px;
     margin: 10px 0 20px;
-    text-indent: -9000px;
-    width: 104px;
-    &:hover {
-        background-position: 0 -32px;
-    }
-    &:active {
-        background-position: 0 -64px;
-    }
 }
 
 /* Footer */
@@ -540,15 +547,16 @@ footer {
         display: inline-block;
         list-style-type: none;
         margin-bottom: 8px;
-    }
-    .label {
-        color: $medium-brown;
-    }
-    a {
         &::after {
             color: $medium-brown;
             content: ' >';
         }
+        &:first-of-type::after, &:last-of-type::after {
+            content: none;
+        }
+    }
+    .label {
+        color: $medium-brown;
     }
 }
 
@@ -568,6 +576,7 @@ footer {
 	margin: 0 10px 0 0;	
 	position: relative;
 	width: 244px;
+    @include user-select(none);
     .img-container {
 	    height: 239px;
 	    overflow: hidden;
@@ -738,6 +747,41 @@ footer {
         @include single-box-shadow($tooltip-shadow-color, -1px, -1px, 1px);
         @include rotate($tooltip-arrow-rotation);
     }
+    &.dark {
+        $tooltip-dark-background-top-color: darken($tooltip-background-top-color, 60%);
+        $tooltip-dark-background-bottom-color: darken($tooltip-background-bottom-color, 60%);
+        $tooltip-dark-border-color: darken($tooltip-border-color, 60%);
+        border-color: $tooltip-dark-border-color;
+        @include background(linear-gradient(top center,
+            $tooltip-dark-background-top-color,
+            $tooltip-dark-background-bottom-color));
+        color: #fff;
+        .arrow {
+            background: $tooltip-dark-background-bottom-color;
+            border-color: $tooltip-dark-border-color;
+            border-bottom-color: $tooltip-dark-background-bottom-color;
+            border-right-color: $tooltip-dark-background-bottom-color;
+        }
+        &.photo {
+            font-family: $headings-font;
+            font-size: 11px;
+            position: fixed;   /* with lightbox, so prevent scrolling away */
+            p {
+                line-height: 120%;
+                margin: 6px 0;
+                &:first-of-type {
+                    margin-top: 0;
+                }
+                &:last-of-type {
+                    margin-bottom: 0;
+                }
+            }
+            a {
+                color: white;
+                text-decoration: underline;
+            }
+        }
+    }
 }
 
 /* Glossary tooltip */
@@ -891,61 +935,29 @@ body.teaching #main li {
     list-style-type: none;
 }
 
-/* "Advanced ID Tools" placeholder page (delete after tools release) */
-
-#advanced-id #main {
-    .dk-landing-section {
-	    float: left;
-	    font-family: $body-font;
-        height: 410px;
-        padding-left: 20px;
-        position: relative;
-	    width: 328px;
-        &:first-of-type {
-            border-right: 1px solid #b4d57f;
-            padding-left: 0;
-            padding-right: 10px;
-        }
-        h2 {
-            font-size: 18px;
-            line-height: 20px;
-        }
-        section {
-            margin: 10px 0 0;
-            p {
-                margin: 10px 0;
-            }
-            ul {
-                line-height: 16px;
-            	list-style-type: disc;
-	            margin: 10px 0;
-	            padding: 0 0 0 15px;
-                li {
-                    margin: 10px 0;
-                }
-            }
-        }
-        > a {
-            bottom: 10px;
-            display: block;
-            height: 41px;
-            margin: 0 0 0 43px;
-            position: absolute;
-            text-indent: -9999px;
-            width: 244px;
-            &:hover {
-            	background-position: 0 -41px;
-            }
-            &:active {
-                background-position: 0 -82px;
-            }
-        }
+/* List-style tables (Species List page, Manage Your Sightings page,
+ * etc.) */
+table.list {
+    background: #f1fcde;
+    border-collapse: collapse;
+    color: #000;
+    font-size: 12px;
+    margin: 18px 0;
+    tbody tr:hover {
+        background: #e3fabe;
     }
-    a.go-fullkey-btn {
-    	background: url(/static/images/layout/go-fullkey-btn.png) 0 0 no-repeat transparent;
+    th, td {
+        padding: 4px;
     }
-    a.go-dichkey-btn {
-    	background: url(/static/images/layout/go-dichkey-btn.png) 0 0 no-repeat transparent;
+    th, tr.filters {
+        background: #b4d57f;
+        font-weight: normal;
+    }
+    th {
+        td:first-child {
+            font-family: $headings-font;
+            font-size: 13px;
+        }
     }
 }
 
@@ -987,13 +999,13 @@ body.teaching #main li {
     }
     img {
         background-color: #fff;
-        clip: rect(0px,255px,78px,0px);
+        clip: rect(0px,255px,72px,0px);
         overflow: hidden;
         position: absolute;
-        top: 41px;
+        top: 24px;
         z-index: 1;
-        opacity: 0.5;
-        filter:alpha(opacity=50); /* For IE8 and earlier */
+        opacity: 0.3;
+        filter:alpha(opacity=30); /* For IE8 and earlier */
     }
 }
 .chromeFrameInstallDefaultStyle {

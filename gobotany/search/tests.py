@@ -434,7 +434,7 @@ class SearchTests(FunctionalCase):
             result_links, 'Ferns',
             'Clubmosses and relatives, plus quillworts'))
 
-    # Search on lookalike name.
+    # Search on lookalike name
 
     def test_lookalikes_are_in_search_indexes_for_many_pages(self):
         self.get('/search/?q=sometimes+confused+with')
@@ -516,7 +516,6 @@ class SearchTests(FunctionalCase):
         self.assertTrue(result_excerpts[0].text.find(
             '...the understories of cool woods.') > -1);
 
-
     # Test searching miscellaneous pages around the site (about, etc.)
 
     def test_search_results_contain_about_page(self):
@@ -570,6 +569,16 @@ class SearchTests(FunctionalCase):
         result_links = self._result_links()
         self.assertTrue(len(result_links) > 0)
         self.assertTrue(self._is_page_found(result_links, 'Teaching'))
+
+    # Search on terms containing various special characters.
+
+    def test_search_results_found_hyphenated_words(self):
+        self.get('/search/?q=meadow-rue')
+        self.assertTrue(len(self._result_links()) > 0)
+
+    def test_search_results_found_hyphenated_words_first_possessive(self):
+        self.get('/search/?q=wild+goat%27s-rue')
+        self.assertTrue(len(self._result_links()) > 0)
 
 
 class HaystackHighlighterTestCase(unittest.TestCase):
@@ -630,6 +639,29 @@ class HaystackHighlighterTestCase(unittest.TestCase):
                     'excerpt this text. \n--\nThis is text that could be '
                     'ignored.\n--\n Here is some more text to '
                     '<span class="highlighted">highlight</span>.')
+        self.assertEqual(expected, highlighter.highlight(text))
+
+    def test_highlight_multiple_words(self):
+        text = 'This is some text with words to highlight.'
+        query = 'words to highlight'
+        expected = ('...<span class="highlighted">words</span> '
+                    '<span class="highlighted">to</span> '
+                    '<span class="highlighted">highlight</span>.')
+        highlighter = self.new_highlighter(query)
+        self.assertEqual(expected, highlighter.highlight(text))
+
+    def test_highlight_word_possessive(self):
+        text = 'This is some text about Chamaelirium, or devil\'s bit.'
+        query = 'devil\'s'
+        expected = ('...<span class="highlighted">devil\'s</span> bit.')
+        highlighter = self.new_highlighter(query)
+        self.assertEqual(expected, highlighter.highlight(text))
+
+    def test_highlight_word_possessive_html_entity(self):
+        text = 'This is some text about Chamaelirium, or devil&#39;s bit.'
+        query = 'devil&#39;s'
+        expected = ('...<span class="highlighted">devil&#39;s</span> bit.')
+        highlighter = self.new_highlighter(query)
         self.assertEqual(expected, highlighter.highlight(text))
 
 
@@ -698,6 +730,29 @@ class ExtendedHighlighterTestCase(HaystackHighlighterTestCase):
                     'excerpt this text. \n--\nThis is text that could be '
                     'ignored.\n--\n Here is some more text to '
                     '<span class="highlighted">highlight</span>.')
+        self.assertEqual(expected, highlighter.highlight(text))
+
+    def test_highlight_multiple_words(self):
+        text = 'This is some text with words to highlight.'
+        query = 'words to highlight'
+        expected = ('...with <span class="highlighted">words</span> '
+                    '<span class="highlighted">to</span> '
+                    '<span class="highlighted">highlight</span>.')
+        highlighter = self.new_highlighter(query)
+        self.assertEqual(expected, highlighter.highlight(text))
+
+    def test_highlight_word_possessive(self):
+        text = 'This is some text about Chamaelirium, or devil\'s bit.'
+        query = 'devil\'s'
+        expected = ('...or <span class="highlighted">devil\'s</span> bit.')
+        highlighter = self.new_highlighter(query)
+        self.assertEqual(expected, highlighter.highlight(text))
+
+    def test_highlight_word_possessive_html_entity(self):
+        text = 'This is some text about Chamaelirium, or devil&#39;s bit.'
+        query = 'devil&#39;s'
+        expected = ('...or <span class="highlighted">devil&#39;s</span> bit.')
+        highlighter = self.new_highlighter(query)
         self.assertEqual(expected, highlighter.highlight(text))
 
     # Add new tests for options that the regular highlighter doesn't

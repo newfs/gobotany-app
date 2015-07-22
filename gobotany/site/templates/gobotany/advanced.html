@@ -13,7 +13,7 @@
                     <div>
                         <div class="dk-landing-section">
                             <h2>Full Advanced Interactive Key to All
-                                3,500 New England Taxa (Coming Soon)</h2>
+                                3,500 New England Taxa</h2>
                             <section>
                                 <ul>
                                     <li>This key covers all 3,500 species,
@@ -30,8 +30,8 @@
                                     get lots of information on each taxon.</li>
                                 </ul>
                             </section>
-                            <a href="{% url 'full-key-placeholder' %}"
-                                class="go-fullkey-btn">Go To Full Key</a>
+                            <a href="{% url 'level1' 'full' %}"
+                                class="orange-button caps large">Go To Full Key</a>
                         </div>
                         <div class="dk-landing-section">
                             <h2>Dichotomous Key to All 3,500 New England
@@ -58,7 +58,7 @@
                                 2011).</p>
                             </section>
                             <a href="{% url 'dkey' %}"
-                                class="go-dichkey-btn">Go To Dichotomous Key</a>
+                                class="orange-button caps large">Go To Dichotomous Key</a>
                         </div>
                     </div>
 {% endblock %}

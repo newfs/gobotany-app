@@ -6,6 +6,22 @@ from gobotany.mapping.map import (NAMESPACES, Path, Legend,
                                   NorthAmericanPlantDistributionMap,
                                   UnitedStatesPlantDistributionMap)
 
+def get_legend_labels(legend):
+    labels = []
+    for label_node in legend.svg_map.xpath('svg:text',
+            namespaces=NAMESPACES):
+        label_words = []
+        for label_line in label_node.xpath('svg:tspan',
+                namespaces=NAMESPACES):
+            label_words.append(label_line.text)
+        label = ''
+        label_words = [word.strip() for word in label_words]
+        label_words = [word for word in label_words if len(word) > 0]
+        label = ' '.join(label_words)
+        labels.append(label)
+
+    return labels
+
 class PathTestCase(TestCase):
     def setUp(self):
         dist_map = NewEnglandPlantDistributionMap()
@@ -40,7 +56,8 @@ class PathTestCase(TestCase):
 class LegendTestCase(TestCase):
     def setUp(self):
         self.dist_map = NewEnglandPlantDistributionMap()
-        self.legend = Legend(self.dist_map.svg_map, maximum_items=5)
+        self.legend = Legend(self.dist_map.svg_map, maximum_categories=2,
+            maximum_items=5)
 
     def test_set_item_label(self):
         LABEL = 'native'
@@ -50,10 +67,6 @@ class LegendTestCase(TestCase):
         label_text_node = label_node.find('{http://www.w3.org/2000/svg}tspan')
         self.assertEqual(LABEL, label_text_node.text)
 
-    def _get_labels(self):
-        return [label_node.text for label_node in self.legend.svg_map.xpath(
-            'svg:text/svg:tspan', namespaces=NAMESPACES)]
-
     def _get_paths(self):
         return [Path(box_node) for box_node in self.legend.svg_map.xpath(
             'svg:rect', namespaces=NAMESPACES)]
@@ -62,11 +75,11 @@ class LegendTestCase(TestCase):
         SLOT = 1
         FILL_COLOR = '#ff0'
         STROKE_COLOR = '#ccc'
-        LABEL = 'native'
+        LABEL = 'county documented'
         self.legend._set_item(SLOT, FILL_COLOR, STROKE_COLOR, LABEL)
 
-        labels = self._get_labels()
-        self.assertEqual('native', labels[0])
+        labels = get_legend_labels(self.legend)
+        self.assertEqual('county documented', labels[0])
 
         paths = self._get_paths()
         self.assertTrue(paths[0].get_style().find(
@@ -75,20 +88,18 @@ class LegendTestCase(TestCase):
             'stroke:%s' % STROKE_COLOR) > -1)
 
     def test_show_items(self):
-        legend_labels_found = ['native', 'absent']
+        legend_labels_found = ['county documented na']
         self.legend.show_items(legend_labels_found)
 
-        labels = self._get_labels()
-        self.assertEqual('native', labels[0])
-        self.assertEqual('absent', labels[1])
-        [self.assertEqual('', label) for label in labels[2:]]
+        labels = get_legend_labels(self.legend)
+        self.assertEqual('county documented', labels[0])
 
         paths = self._get_paths()
-        self.assertTrue(paths[0].get_style().find('fill:#78bf47') > -1)
+        self.assertTrue(paths[0].get_style().find('fill:#35880c') > -1)
         self.assertTrue(paths[1].get_style().find('fill:#fff') > -1)
         [self.assertTrue(path.get_style().find('fill:#fff') > -1)
          for path in paths[2:]]
-        [self.assertTrue(path.get_style().find('stroke:#000') > -1)
+        [self.assertTrue(path.get_style().find('stroke:#fff') > -1)
          for path in paths[0:2]]
         [self.assertTrue(path.get_style().find('stroke:#fff') > -1)
          for path in paths[2:]]
@@ -137,63 +148,135 @@ def create_distribution_records():
     # Currently, North America distribution data is at the state,
     # province, or territory level. These records will be present
     # alongside the New England records.
+    #
+    # format: county, state, present, native
     distribution_data = {
         'Dendrolycopodium dendroideum': [
-            ('Piscataquis', 'ME', 'Species present and not rare'),
-            ('Coos', 'NH', 'Species present and not rare'),
-            ('Worcester', 'MA', 'Species present and not rare'),
-            ('Kent', 'RI', 'Species present in state and native'),
-            ('Orange', 'VT', 'Species present and not rare'),
-            ('New London', 'CT', 'Species present in state and present'),
-            ('', 'NS', 'Species present in state and native'),
-            ('', 'NB', 'Species present in state and native'),
-            ('', 'QC', 'Species present in state and native'),
-            ('', 'ON', 'Species present in state and native'),
-            ('', 'MB', 'Species present in state and native'),
-            ('', 'SK', 'Species present in state and native'),
-            ('', 'AB', 'Species present in state and native'),
-            ('', 'BC', 'Species present in state and native'),
-            ('', 'ME', 'Species present in state and native'),
-            ('', 'NH', 'Species present in state and native'),
-            ('', 'MA', 'Species present in state and native'),
-            ('', 'RI', 'Species present in state and native'),
-            ('', 'VT', 'Species present in state and native'),
-            ('', 'CT', 'Species present in state and native'),
-            ('', 'NY', 'Species present in state and native'),
-            ('', 'nj', 'Species present in state and native'),
-            ('', 'PA', 'Species present in state and native'),
-            ('', 'NC', 'Species present and rare'),
+            ('Piscataquis', 'ME', True, True),
+            ('Coos', 'NH', True, True),
+            ('Worcester', 'MA', True, True),
+            ('Kent', 'RI', True, True),
+            ('Orange', 'VT', True, True),
+            ('New London', 'CT', True, True),
+            ('', 'NS', True, True),
+            ('', 'NB', True, True),
+            ('', 'QC', True, True),
+            ('', 'ON', True, True),
+            ('', 'MB', True, True),
+            ('', 'SK', True, True),
+            ('', 'AB', True, True),
+            ('', 'BC', True, True),
+            ('', 'ME', True, True),
+            ('', 'NH', True, True),
+            ('', 'MA', True, True),
+            ('', 'RI', True, True),
+            ('', 'VT', True, True),
+            ('', 'CT', True, True),
+            ('', 'NY', True, True),
+            ('', 'nj', True, True),
+            ('', 'PA', True, True),
+            ('', 'NC', True, True),
             ],
         'Vaccinium vitis-idaea ssp. minus': [
-            ('Pistcataquis', 'ME', 'Species present and not rare'),
-            ('Coos', 'NH', 'Species present and not rare'),
-            ('Worcester', 'MA', 'Species present and rare'),
-            ('Kent', 'RI', 'Species not present in state'),
-            ('Orange', 'VT', 'Species present in state and native'),
-            ('New London', 'CT', 'Species present in state and native'),
-            ('', 'NS', 'Species present in state and native'),
-            ('', 'NB', 'Species present in state and native'),
-            ('', 'QC', 'Species present in state and native'),
-            ('', 'ON', 'Species present in state and native'),
-            ('', 'MB', 'Species present in state and native'),
-            ('', 'SK', 'Species present in state and native'),
-            ('', 'AB', 'Species present in state and native'),
-            ('', 'BC', 'Species present in state and native'),
-            ('', 'ME', 'Species present in state and native'),
-            ('', 'NH', 'Species present in state and native'),
-            ('', 'MA', 'Species present and rare'),
-            ('', 'RI', 'Species not present in state'),
-            ('', 'VT', 'Species present and rare'),
-            ('', 'CT', 'Species extirpated (historic)'),
-            ('', 'NY', 'Species not present in state'),
-            ('', 'NJ', 'Species not present in state'),
-            ('', 'pa', 'Species not present in state')
-            ]
+            ('Pistcataquis', 'ME', True, True),
+            ('Coos', 'NH', True, True),
+            ('Worcester', 'MA', True, True),
+            ('Kent', 'RI', True, True),
+            ('Orange', 'VT', True, True),
+            ('New London', 'CT', True, True),
+            ('', 'NS', True, True),
+            ('', 'NB', True, True),
+            ('', 'QC', True, True),
+            ('', 'ON', True, True),
+            ('', 'MB', True, True),
+            ('', 'SK', True, True),
+            ('', 'AB', True, True),
+            ('', 'BC', True, True),
+            ('', 'ME', True, True),
+            ('', 'NH', True, True),
+            ('', 'MA', True, True),
+            ('', 'RI', True, True),
+            ('', 'VT', True, True),
+            ('', 'CT', False, False),
+            ('', 'NY', False, False),
+            ('', 'NJ', False, False),
+            ('', 'pa', False, False),
+            ],
+        'Sambucus nigra': [
+            ('', 'CT', True, False),
+            ('Fairfield', 'CT', False, False),
+            ('Hartford', 'CT', False, False),
+            ('Litchfield', 'CT', False, False),
+            ('Middlesex', 'CT', False, False),
+            ('New Haven', 'CT', False, False),
+            ('New London', 'CT', False, False),
+            ('Tolland', 'CT', False, False),
+            ('Windham', 'CT', False, False),
+            ],
+        'Sambucus nigra ssp. canadensis': [
+            ('', 'CT', True, True),
+            ('Fairfield', 'CT', True, True),
+            ('Hartford', 'CT', True, True),
+            ('Litchfield', 'CT', True, True),
+            ('Middlesex', 'CT', True, True),
+            ('New Haven', 'CT', True, True),
+            ('New London', 'CT', True, True),
+            ('Tolland', 'CT', True, True),
+            ('Windham', 'CT', True, True),
+            ],
+        'Sambucus nigra ssp. nigra': [
+            ('', 'CT', True, False),
+            ('Fairfield', 'CT', False, False),
+            ('Hartford', 'CT', False, False),
+            ('Litchfield', 'CT', False, False),
+            ('Middlesex', 'CT', False, False),
+            ('New Haven', 'CT', False, False),
+            ('New London', 'CT', False, False),
+            ('Tolland', 'CT', False, False),
+            ('Windham', 'CT', False, False),
+            ],
+        'Leptochloa fusca': [
+            ('', 'MA', True, False),
+            ('Middlesex', 'MA', True, False),
+            ],
+        'Leptochloa fusca ssp. fascicularis': [
+            ('', 'CT', True, False),
+            ('Fairfield', 'CT', True, True),
+            ('New Haven', 'CT', True, True),
+            ('New London', 'CT', True, True),
+            ('', 'MA', True, False),
+            ('Barnstable', 'MA', True, True),
+            ('Dukes', 'MA', True, True),
+            ('Franklin', 'MA', True, True),
+            ('Middlesex', 'MA', True, True),
+            ('Nantucket', 'MA', True, True),
+            ('Suffolk', 'MA', True, True),
+            ('Worcester', 'MA', True, True),
+            ('', 'ME', True, False),
+            ('', 'NH', True, False),
+            ('Rockingham', 'NH', True, True),
+            ('', 'RI', True, False),
+            ('Newport', 'RI', True, True),
+            ('Washington', 'RI', True, True),
+            ('', 'VT', True, False),
+            ('Chittenden', 'VT', True, True),
+            ],
+        'Leptochloa fusca ssp. uninervia': [
+            ('', 'MA', True, False),
+            ('Middlesex', 'MA', True, False),
+            ],
+        'Carex arcta': [
+            ('Piscataquis', 'ME', True, True),
+            ],
+        'Carex arctata': [
+            ('Barnstable', 'MA', True, True),
+            ],
         }
     for scientific_name, data_list in distribution_data.items():
         for entry in data_list:
             distribution = Distribution(scientific_name=scientific_name,
-                county=entry[0], state=entry[1], status=entry[2])
+                county=entry[0], state=entry[1], present=entry[2],
+                native=entry[3])
             distribution.save()
 
 
@@ -205,67 +288,17 @@ class PlantDistributionMapTestCase(TestCase):
     def test_map_init(self):
         self.assertTrue(self.distribution_map)
 
-    def test_get_label_for_status_native(self):
-        statuses = [
-            'Species present in state and native',
-            'Species present and not rare',
-            ]
-        for status in statuses:
-            self.assertEqual('native',
-                self.distribution_map._get_label_for_status(status))
+    def test_get_label_absent(self):
+        self.assertEqual('absent',
+            self.distribution_map._get_label(False, False))
 
-    def test_get_label_for_status_adventive(self):
-        statuses = [
-            'Species native, but adventive in state',
-            ]
-        for status in statuses:
-            self.assertEqual('non-native',
-                self.distribution_map._get_label_for_status(status))
+    def test_get_label_native(self):
+        self.assertEqual('native',
+            self.distribution_map._get_label(True, True))
 
-    def test_get_label_for_status_rare(self):
-        statuses = [
-            'Species present and rare',
-            ]
-        for status in statuses:
-            self.assertEqual('native',
-                self.distribution_map._get_label_for_status(status))
-
-    def test_get_label_for_status_introduced(self):
-        statuses = [
-            'Species present in state and exotic',
-            'Species exotic and present',
-            'Species waif',
-            ]
-        for status in statuses:
-            self.assertEqual('non-native',
-                self.distribution_map._get_label_for_status(status))
-
-    def test_get_label_for_status_invasive(self):
-        statuses = [
-            'Species noxious',
-            ]
-        for status in statuses:
-            self.assertEqual('non-native',
-                self.distribution_map._get_label_for_status(status))
-
-    def test_get_label_for_status_historic(self):
-        statuses = [
-            'Species extirpated (historic)',
-            'Species extinct',
-            ]
-        for status in statuses:
-            self.assertEqual('absent',
-                self.distribution_map._get_label_for_status(status))
-
-    def test_get_label_for_status_absent(self):
-        statuses = [
-            'Species not present in state',
-            'Species eradicated',
-            'Questionable Presence (cross-hatched)',
-            ]
-        for status in statuses:
-            self.assertEqual('absent',
-                self.distribution_map._get_label_for_status(status))
+    def test_get_label_non_native(self):
+        self.assertEqual('non-native',
+            self.distribution_map._get_label(True, False))
 
     def test_add_name_to_title(self):
         SCIENTIFIC_NAME = 'Tsuga canadensis'
@@ -320,13 +353,10 @@ class PlantDistributionMapTestCase(TestCase):
         SCIENTIFIC_NAME = 'Vaccinium vitis-idaea ssp. minus'
         self.distribution_map.set_plant(SCIENTIFIC_NAME)
         self.distribution_map.shade()
-        self._verify_shaded_counties(['native', 'absent'])
-        labels = [label_node.text for label_node in
-            self.distribution_map.legend.svg_map.xpath('svg:text/svg:tspan',
-            namespaces=NAMESPACES)]
-        self.assertEqual('native', labels[0])
-        self.assertEqual('absent', labels[1])
-        [self.assertEqual('', label) for label in labels[2:]]
+        self._verify_shaded_counties(['county documented', 'absent'])
+        labels = get_legend_labels(self.distribution_map.legend)
+        self.assertEqual('county documented', labels[0])
+        self.assertEqual('state documented', labels[1])
 
     def test_plant_with_distribution_data_has_plant_name_in_title(self):
         SCIENTIFIC_NAME = 'Dendrolycopodium dendroideum'
@@ -348,10 +378,8 @@ class PlantDistributionMapTestCase(TestCase):
             self.assertTrue(style.find('fill:#fff') > -1 or
                             style.find('fill:none') > -1)
         # Verify that the legend contains only a 'no data' label.
-        labels = [label_node.text for label_node in
-            self.distribution_map.legend.svg_map.xpath('svg:text/svg:tspan',
-            namespaces=NAMESPACES)]
-        self.assertEqual(['no data', '', '', '', ''], labels)
+        labels = get_legend_labels(self.distribution_map.legend)
+        self.assertEqual(['no data', '', '', '', '', ''], labels)
 
     def test_plant_with_no_distribution_data_has_no_plant_name_in_title(self):
         SCIENTIFIC_NAME = 'Foo bar'
@@ -366,13 +394,34 @@ class PlantDistributionMapTestCase(TestCase):
         SCIENTIFIC_NAME = 'Vaccinium vitis-idaea'
         self.distribution_map.set_plant(SCIENTIFIC_NAME)
         self.distribution_map.shade()
-        self._verify_shaded_counties(['present', 'absent'])
-        labels = [label_node.text for label_node in
-            self.distribution_map.legend.svg_map.xpath('svg:text/svg:tspan',
-            namespaces=NAMESPACES)]
-        self.assertEqual(['native', 'absent', '', '', ''], labels)
+        self._verify_shaded_counties(['county documented', 'absent'])
+        labels = get_legend_labels(self.distribution_map.legend)
+        self.assertEqual(['county documented', 'state documented', '', '',
+            'Native', ''], labels)
         self.assertEqual('%s: New England Distribution Map' % SCIENTIFIC_NAME,
                          self.distribution_map.get_title())
+
+    def test_legend_correct_with_conflicting_state_and_county_records(self):
+        # Ensure that if all of a plant's county-level records override
+        # its state-level record, that the map legend lists only those
+        # items that are visible on the final map.
+        SCIENTIFIC_NAME = 'Sambucus nigra'
+        self.distribution_map.set_plant(SCIENTIFIC_NAME)
+        self.distribution_map.shade()
+        labels = get_legend_labels(self.distribution_map.legend)
+        legend_shows_non_native = ('non-native' in labels)
+        self.assertFalse(legend_shows_non_native)
+
+    def test_species_and_infraspecific_taxa_shaded_together(self):
+        # Ensure that the distribution records for a species and any
+        # associated infraspecific taxa are shaded together on the map,
+        # with native overriding non-native.
+        SCIENTIFIC_NAME = 'Sambucus nigra'
+        self.distribution_map.set_plant(SCIENTIFIC_NAME)
+        self.distribution_map.shade()
+        labels = get_legend_labels(self.distribution_map.legend)
+        legend_shows_native = ('native, st.' or 'native, co.' in labels)
+        self.assertTrue(legend_shows_native)
 
 
 class NewEnglandPlantDistributionMapTestCase(TestCase):
@@ -391,6 +440,83 @@ class NewEnglandPlantDistributionMapTestCase(TestCase):
                    SCIENTIFIC_NAME))
         self.assertTrue(len(records) > 0)
 
+    def _get_shaded_paths(self, distribution_map):
+        path_nodes = distribution_map.svg_map.xpath(
+            'svg:path', namespaces=NAMESPACES)
+        paths = [Path(path_node) for path_node in path_nodes]
+        shaded_paths = []
+        for path in paths:
+            style = path.get_style()
+            if style.find('fill:#') > -1 and style.find('fill:#fff') == -1:
+                shaded_paths.append(path)
+        return shaded_paths
+
+    def _verify_number_expected_shaded_areas(self, expected_shaded_areas,
+            shaded_paths):
+        # Verify that the number of expected shaded areas is found, at a
+        # minimum, among the full list of shaded paths.
+        # There can be more shaded paths than expected shaded areas.
+        # Example: BC has two paths, one for the mainland and one for
+        # Vancouver Island.
+        #
+        # To debug a failing test, uncomment the following line and run
+        # the failing test alone:
+        #print 'shaded_paths: %d  expected_shaded_areas: %d' % (
+        #    len(shaded_paths), len(expected_shaded_areas))
+        self.assertTrue(len(shaded_paths) >= len(expected_shaded_areas))
+
+    def _verify_expected_shaded_areas(self, expected_shaded_areas,
+            shaded_paths):
+        # Check that each shaded area and its color is expected.
+        for path in shaded_paths:
+            path_id = path.path_node.get('id')
+            area_key = path_id[0:2]
+            self.assertTrue(area_key in expected_shaded_areas.keys())
+            label = expected_shaded_areas[area_key]
+            # To debug a failing test, uncomment the following line and
+            # run the failing test alone:
+            #print 'area_key: %s  label: %s' % (area_key, label)
+            fill_declaration = 'fill:%s' % Legend.COLORS[label]
+            self.assertTrue(path.get_style().find(fill_declaration) > -1)
+
+    def test_plants_with_similar_names_do_not_conflate_records_1of2(self):
+        # Bug fix from Issue #595: ensure that two plants whose names
+        # only differ at the very end do not mistakenly get combined.
+        # First plant:
+        SCIENTIFIC_NAME = 'Carex arcta'
+        EXPECTED_SHADED_AREAS = {
+            'ME': 'county documented na',   # From test data, expect only ME
+        }
+        self.distribution_map.set_plant(SCIENTIFIC_NAME)
+        records = self.distribution_map._get_distribution_records(
+            SCIENTIFIC_NAME)
+        self.assertTrue(len(records) == 1)
+        self.distribution_map.shade()
+        shaded_paths = self._get_shaded_paths(self.distribution_map)
+        self._verify_number_expected_shaded_areas(EXPECTED_SHADED_AREAS,
+            shaded_paths)
+        self._verify_expected_shaded_areas(EXPECTED_SHADED_AREAS,
+            shaded_paths)
+
+    def test_plants_with_similar_names_do_not_conflate_records_2of2(self):
+        # Bug fix from Issue #595: ensure that two plants whose names
+        # only differ at the very end do not mistakenly get combined.
+        # Second plant:
+        SCIENTIFIC_NAME = 'Carex arctata'
+        EXPECTED_SHADED_AREAS = {
+            'MA': 'county documented na',   # From test data, expect only MA
+        }
+        self.distribution_map.set_plant(SCIENTIFIC_NAME)
+        records = self.distribution_map._get_distribution_records(
+            SCIENTIFIC_NAME)
+        self.assertTrue(len(records) == 1)
+        self.distribution_map.shade()
+        shaded_paths = self._get_shaded_paths(self.distribution_map)
+        self._verify_number_expected_shaded_areas(EXPECTED_SHADED_AREAS,
+            shaded_paths)
+        self._verify_expected_shaded_areas(EXPECTED_SHADED_AREAS,
+            shaded_paths)
+
 
 class UnitedStatesPlantDistributionMapTestCase(TestCase):
     def setUp(self):
@@ -406,41 +532,8 @@ class NorthAmericanPlantDistributionMapTestCase(TestCase):
         self.distribution_map = NorthAmericanPlantDistributionMap()
         create_distribution_records()
 
-    def test_is_correct_map(self):
-        self.assertEqual('North American Distribution Map',
-                         self.distribution_map.get_title())
-
-    def test_distribution_areas_are_shaded_correctly(self):
-        SCIENTIFIC_NAME = 'Dendrolycopodium dendroideum'
-        COLORS = Legend.COLORS
-        # Currently, data for North America are only available at the
-        # state, province, and territory level.
-        EXPECTED_SHADED_AREAS = {
-            'CT': COLORS['native'],
-            'MA': COLORS['native'],
-            'ME': COLORS['native'],
-            'NH': COLORS['native'],
-            'NJ': COLORS['native'],
-            'NY': COLORS['native'],
-            'PA': COLORS['native'],
-            'NC': COLORS['native'],
-            'RI': COLORS['native'],
-            'VT': COLORS['native'],
-            'NS': COLORS['native'],
-            'NB': COLORS['native'],
-            'QC': COLORS['native'],
-            'ON': COLORS['native'],
-            'MB': COLORS['native'],
-            'SK': COLORS['native'],
-            'AB': COLORS['native'],
-            'BC': COLORS['native'],
-            }
-        self.distribution_map.set_plant(SCIENTIFIC_NAME)
-        records = (self.distribution_map._get_distribution_records(
-                   SCIENTIFIC_NAME))
-        self.assertTrue(len(records) > 0)
-        self.distribution_map.shade()
-        path_nodes = self.distribution_map.svg_map.xpath(
+    def _get_shaded_paths(self, distribution_map):
+        path_nodes = distribution_map.svg_map.xpath(
             'svg:g/svg:path', namespaces=NAMESPACES)
         paths = [Path(path_node) for path_node in path_nodes]
         shaded_paths = []
@@ -448,16 +541,95 @@ class NorthAmericanPlantDistributionMapTestCase(TestCase):
             style = path.get_style()
             if style.find('fill:#') > -1 and style.find('fill:#fff') == -1:
                 shaded_paths.append(path)
+        return shaded_paths
+
+    def _verify_number_expected_shaded_areas(self, expected_shaded_areas,
+            shaded_paths):
+        # Verify that the number of expected shaded areas is found, at a
+        # minimum, among the full list of shaded paths.
         # There can be more shaded paths than expected shaded areas.
         # Example: BC has two paths, one for the mainland and one for
         # Vancouver Island.
-        self.assertTrue(len(shaded_paths) >= len(EXPECTED_SHADED_AREAS))
+        #
+        # To debug a failing test, uncomment the following line and run
+        # the failing test alone:
+        #print 'shaded_paths: %d  expected_shaded_areas: %d' % (
+        #    len(shaded_paths), len(expected_shaded_areas))
+        self.assertTrue(len(shaded_paths) >= len(expected_shaded_areas))
+
+    def _verify_expected_shaded_areas(self, expected_shaded_areas,
+            shaded_paths):
         # Check that each shaded area and its color is expected.
         for path in shaded_paths:
             path_id = path.path_node.get('id')
             area_key = path_id[0:2]
-            self.assertTrue(area_key in EXPECTED_SHADED_AREAS.keys())
-            expected_color = EXPECTED_SHADED_AREAS[area_key]
-            fill_declaration = 'fill:%s' % expected_color
+            self.assertTrue(area_key in expected_shaded_areas.keys())
+            label = expected_shaded_areas[area_key]
+            # To debug a failing test, uncomment the following line and
+            # run the failing test alone:
+            #print 'area_key: %s  label: %s' % (area_key, label)
+            fill_declaration = 'fill:%s' % Legend.COLORS[label]
             self.assertTrue(path.get_style().find(fill_declaration) > -1)
 
+    def test_is_correct_map(self):
+        self.assertEqual('North American Distribution Map',
+                         self.distribution_map.get_title())
+
+    def test_distribution_areas_are_shaded_correctly(self):
+        SCIENTIFIC_NAME = 'Dendrolycopodium dendroideum'
+        # Currently, data for North America are only available at the
+        # state, province, and territory level.
+        EXPECTED_SHADED_AREAS = {
+            'CT': 'native',
+            'MA': 'native',
+            'ME': 'native',
+            'NH': 'native',
+            'NJ': 'native',
+            'NY': 'native',
+            'PA': 'native',
+            'NC': 'native',
+            'RI': 'native',
+            'VT': 'native',
+            'NS': 'native',
+            'NB': 'native',
+            'QC': 'native',
+            'ON': 'native',
+            'MB': 'native',
+            'SK': 'native',
+            'AB': 'native',
+            'BC': 'native',
+            }
+        self.distribution_map.set_plant(SCIENTIFIC_NAME)
+        records = (self.distribution_map._get_distribution_records(
+                   SCIENTIFIC_NAME))
+        self.assertTrue(len(records) > 0)
+        self.distribution_map.shade()
+        shaded_paths = self._get_shaded_paths(self.distribution_map)
+        self._verify_number_expected_shaded_areas(EXPECTED_SHADED_AREAS,
+            shaded_paths)
+        self._verify_expected_shaded_areas(EXPECTED_SHADED_AREAS,
+            shaded_paths)
+
+    def test_county_level_native_overrides_state_level_non_native(self):
+        # Ensure that if a plant is marked non-native at the state
+        # level, but native in one or more counties, that the state is
+        # then overridden to be shaded as native on the map.
+        SCIENTIFIC_NAME = 'Leptochloa fusca'
+        EXPECTED_SHADED_AREAS = {
+            'CT': 'native',
+            'MA': 'native',
+            'ME': 'non-native',
+            'NH': 'native',
+            'RI': 'native',
+            'VT': 'native',
+        }
+        self.distribution_map.set_plant(SCIENTIFIC_NAME)
+        records = (self.distribution_map._get_distribution_records(
+                   SCIENTIFIC_NAME))
+        self.assertTrue(len(records) > 0)
+        self.distribution_map.shade()
+        shaded_paths = self._get_shaded_paths(self.distribution_map)
+        self._verify_number_expected_shaded_areas(EXPECTED_SHADED_AREAS,
+            shaded_paths)
+        self._verify_expected_shaded_areas(EXPECTED_SHADED_AREAS,
+            shaded_paths)

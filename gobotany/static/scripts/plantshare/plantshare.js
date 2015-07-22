@@ -1,7 +1,9 @@
 define([
     'bridge/jquery',
-    'plantshare/sightings_locator_part'
-], function ($, SightingsLocatorPart) {
+    'plantshare/sightings_locator_part',
+    'plantshare/ask_the_botanist',
+    'util/activate_image_gallery'
+], function ($, SightingsLocatorPart, x1, x2) {
 
     $(window).load(function () {   // maps must be created at onload
 

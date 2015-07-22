@@ -1,17 +1,36 @@
 <div id="modal">
-	<div class="modal-wrap">
-		<div class="inner">
-            <h4 class="heading">What can you tell about your plant?</h4>
-            <p>Optional. Check boxes based on things you can actually see
-            in order to get the next best questions to answer. Or, just
-            press the button.</p>
-			<div id="choices">
-				<ul class="char-groups">
+	<div class="modal-wrap more-questions-dialog">
+        <div class="inner">
+            <p class="title">Get More Questions</p>
+            <div class="view-tabs">
+                <ul>
+                    <li><a class="auto current">Automatic</a></li>
+                    <li><a class="pick">Pick Your Own</a></li>
                 </ul>
-                <!-- The empty onclick makes $.live() work in Mobile Safari -->
-                <a class="get-choices" onclick="">Get More Questions</a>
-				<div class="clearit"></div>
-			</div>
-		</div>
+            </div>
+
+            <div id="choices">
+                <div class="auto">
+                    <p>Optional: What can you observe?</p>
+
+                    <ul class="char-groups">
+                    </ul>
+
+                    {# The empty onclick makes $.live() work in Mobile Safari #}
+                    <a class="get-questions orange-button caps" 
+                        onclick="">Get Questions</a>
+                </div>
+
+                <div class="pick">
+                    <div class="questions">
+                    </div>
+
+                    {# The empty onclick makes $.live() work in Mobile Safari #}
+                    <a class="add-questions orange-button caps disabled" 
+                        onclick="">Add Questions</a>
+                </div>
+
+            </div>
+        </div>
 	</div>
 </div>

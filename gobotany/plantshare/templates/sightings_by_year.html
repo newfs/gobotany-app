@@ -1,0 +1,66 @@
+{% extends "gobotany/_page_free_sidebar.html" %}
+{% load gobotany_tags %}
+{% load mapping_tags %}
+{% load plantshare_tags %}
+
+{% block title %}{{ year }} Sightings: PlantShare{% endblock %}
+
+{% block js_require %}
+    require([
+        'plantshare/sightings'
+    ]);
+{% endblock %}
+
+{% block body_attributes %}id="sightings" class="plantshare"{% endblock %}
+
+{% block main_content %}
+
+<p class="nav-links"><a href="{% url 'ps-sightings' %}">Recent</a> |
+{% for y in years %}
+    {% if y != year %}
+        <a href="{% url 'ps-sightings-by-year' y %}">{{ y }}</a>
+    {% else %}
+        {{ y }}
+    {% endif %}
+    {% if not forloop.last %} | {% endif %}
+{% endfor %}
+</p>
+
+<h1>{{ year }} Sightings</h1>
+
+{% regroup sightings by created as sightings_list_by_created_date %}
+<ul>
+{% for sightings in sightings_list_by_created_date %}
+    <li>{{ sightings.grouper }}
+    <ul>
+        {% for sighting in sightings.list %}
+            <li>
+                {% if sighting.photo %}
+                    <a class="photolink"
+                        href="{% url 'ps-sighting' sighting.id %}">
+                        <img src="" alt=""
+                        data-lazy-img-src="{{ sighting.photo.thumb_cropped.url }}">
+                    </a>
+                {% endif %}
+                <div class="title">
+                <a
+                href="{% url 'ps-sighting' sighting.id %}">{{ sighting.identification|italicize_if_scientific|safe }}
+                at {{ sighting.location|capfirst }}</a><br>by
+                {% if sighting.user_display_name %}
+                    {{ sighting.user_display_name }}
+                {% else %}
+                    {{ sighting.user }}
+                {% endif %}
+                </div>
+                </li>
+        {% endfor %}
+    </ul>
+    </li>
+{% endfor %}
+</ul>
+
+{% endblock %}
+
+{% block sidebar_content %}
+    {% include "_plantshare_navigation.html" %}
+{% endblock %}

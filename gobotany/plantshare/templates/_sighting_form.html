@@ -8,20 +8,20 @@
         <label for="id_identification">Identification of plant
             (required)</label>
         {{ form.identification }}
-
-        {{ form.notes.errors }}
-        <label for="id_notes">Description or comments</label>
-        {{ form.notes }}
+        <p class="restricted name hidden">
+            Restricted: only you and staff will see this sighting.
+        </p>
 
         <fieldset>
             <legend>Location</legend>
 
             {{ form.location.errors }}
-            <label for="id_location">Location (required)</label>
+            <label id="location_label" for="id_location">Location (required)</label>
             <div class="location">
                 {{ form.location }}
-                {% location_map location="Framingham, MA" height_px="150" width_px="302" zoom="7" id="id_location_map" %}
+                {% sightings_map latitude="42.342" longitude="-71.425" center_title="180 Hemenway Road, Framingham, MA" height="180px" width="302px" zoom="10" id="location-map" %}
             </div>
+            <input type="hidden" id="location_valid"></input>
 
             {{ form.location_notes.errors }}
             <label for="id_location_notes">Notes on location</label>
@@ -31,12 +31,56 @@
             {{ form.longitude.as_hidden }}
         </fieldset>
 
-        <p>Add images to sighting</p> 
-        <p><a id="upload-link" href="#" rel=".image-modal">+ Upload Image</a></p>
-        <div id="sighting-photos">
-            <input type="hidden" name="__template__sightings_photos" class="template-photo"></input>
-        </div>
-        <div class="thumb-gallery"><p>&nbsp;</p></div>
+        {{ form.created.errors }}
+        <label for="id_created">Date</label>
+        {{ form.created }}
 
-        <input type="submit" class="post-sighting-btn"
-            alt="Post a Sighting">{# add class 'inactive' for disabled look #}
+        {{ form.notes.errors }}
+        <label for="id_notes">Comments</label>
+        {{ form.notes }}
+
+        <div class="images">
+            <p>Images</p> 
+            <div id="sighting-photos">
+                <input type="hidden" name="__template__sightings_photos"
+                    class="template-photo"></input>
+            </div>
+            <div class="thumb-gallery">
+                {# For editing a sighting, show any existing images. #}
+                {% if sighting.private_photos %}
+                    {% for photo in sighting.private_photos.all %}
+                        <div class="thumb-frame">
+                            <a href="{{ photo.image.url }}"><img class="thumb"
+                                src="{{ photo.thumb.url }}"></a>
+                            <div class="delete-link">
+                                <a href="{{ photo.id }}"><img
+                                    src="/static/images/icons/close.png"
+                                    alt=""> Remove</a>
+                            </div>
+                        </div>
+                    {% endfor %}
+                {% endif %}
+            </div>
+            <p class="upload">
+                <a id="upload-link" href="#"
+                    rel=".image-modal">+ Upload Image</a>
+            </p>
+        </div>
+
+        <div class="visibility">
+            <p class="label">Visibility</p>
+            <p>{{ form.visibility }}</p>
+            <p class="restricted hidden">Restricted: only you and
+            staff will see this sighting.</p>
+        </div>
+
+        {{ form.flagged.as_hidden }}
+        {{ form.approved.as_hidden }}
+
+        {% if edit %}
+            <input type="submit" class="save-btn orange-button caps"
+                value="Save" alt="Save Changes">
+        {% else %}
+            <input type="submit" class="post-sighting-btn orange-button
+            caps disabled" disabled value="Post" alt="Post a Sighting">
+        {% endif %}

@@ -13,7 +13,7 @@ EXAMPLE=usr/apache-solr-3.6.2/example
 if [ ! -d $EXAMPLE ]
 then
     cd usr
-    curl -OL http://www.apache.org/dist/lucene/solr/3.6.2/apache-solr-3.6.2.tgz
+    curl -OL http://archive.apache.org/dist/lucene/solr/3.6.2/apache-solr-3.6.2.tgz
     tar xzf apache-solr-3.6.2.tgz
     patch -p0 < patch-solrconfig
     cd ..
@@ -23,8 +23,12 @@ echo 'Installing Solr XML schema'
 
 ./django build_solr_schema > $EXAMPLE/solr/conf/schema.xml
 
+cd usr
+patch -p0 < patch-solrschema
+cd ..
+
 echo 'Running Solr in the background'
 
 cd $EXAMPLE
 rm -f nohup.out
-nohup java -jar start.jar "$@" &
+nohup java -jar start.jar "$@" > output.log 2>&1 &

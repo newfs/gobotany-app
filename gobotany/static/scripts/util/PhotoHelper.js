@@ -3,15 +3,17 @@
  */
 define([
     'bridge/jquery',
-    'util/shadowbox_init'
-], function($, shadowbox_init) {
+    'util/mailto',
+    'util/shadowbox_init',
+    'util/tooltip'
+], function ($, mailto, shadowbox_init, tooltip) {
 
 var PhotoHelper = {
 
-    init: function() {
+    init: function () {
     },
 
-    prepare_to_enlarge: function() {
+    prepare_to_enlarge: function () {
         // Do a few things before enlarging the photo on the screen.
         // Intended to be called using the Shadowbox onOpen handler.
 
@@ -28,7 +30,27 @@ var PhotoHelper = {
         shadowbox_on_open();
     },
 
-    process_credit: function() {
+    anchor_email_addresses: function (content) {
+        // Add HTML anchors around apparent email addresses in content.
+        function anchor(match) {
+            return '<a class="email">' + match + '</a>';
+        }
+        return content.replace(/\b\S*\[at\]\S*\b/g, anchor);
+    },
+
+    link_urls: function (content) {
+        // Add HTML hyperlinks around apparent URLs in content.
+        function link(match) {
+            var url = match;
+            if (match.toString().indexOf('http://') !== 0) {
+                url = 'http://' + match;
+            }
+            return '<a href="' + url + '">' + match + '</a>';
+        }
+        return content.replace(/\b((http:\/\/)|(www))\S*\b/g, link);
+    },
+
+    process_credit: function () {
         // Format the title text for a better presentation atop the photo.
         // Intended to be called using the Shadowbox onFinish handler.
 
@@ -49,17 +71,22 @@ var PhotoHelper = {
         if (parts[2] && $.trim(parts[2]).length > 0) {
             copyright = parts[2];
         }
+
+        var contact_info = '';
+        if (parts[3]) {
+            contact_info = parts[3];
+        }
         
         var source = '';
-        if (parts[3]) {
-            source = parts[3];
+        if (parts[4]) {
+            source = parts[4];
         }
 
         var title_parts = image_title.split(':');
         var image_type = title_parts[0];
         var title = image_type;
         var name = '';
-        // Get the properly-italicized scientific name from the page heading,
+        // Get the properly italicized scientific name from the page heading,
         // if available, such as on the species page. Otherwise, just
         // italicize the entire plant name portion of the title for now. This
         // will generally be correct for the groups and subgroups pages'
@@ -76,16 +103,43 @@ var PhotoHelper = {
         }
 
         var html = '<div><h6>' + title + '</h6><span>' + copyright_holder +
-            ' ' + copyright + ' <a href="/terms-of-use/#ip" ' +
-            '">Terms of Use' + '</a></span>';
+            ' ' + copyright + ' <a class="contact">For Reuse: Contact</a>' +
+            '</span>';
         if (source !== '') {
-            html += '<br><span>' + parts[3] + '</span>';
+            html += '<br><span>' + source + '</span>';
         }
         html += '</div>';
         title_element.html(html);
 
         // Show the title element again.
         title_element.removeClass('hidden');
+
+        // Connect a tooltip for copyright holder contact information.
+        var tooltip_html = '<p>';
+        if (contact_info) {
+            // Surround any email addresses with anchors, which will be
+            // transformed into hyperlinks upon display.
+            var anchored_contact_info = PhotoHelper.anchor_email_addresses(
+                contact_info);
+            // Hyperlink any URLs.
+            var anchored_contact_info = PhotoHelper.link_urls(
+                anchored_contact_info);
+
+            tooltip_html += 'For reuse, contact: ' + anchored_contact_info +
+                            '</p><p>Also, ';
+        }
+        tooltip_html += 'Go Botany <a ' +
+            'href="/terms-of-use/#ip">Terms of Use</a> apply</p>';
+
+        var $contact_link = $('.contact', title_element);
+        $contact_link.tooltip({
+            content: tooltip_html,
+            css_class: 'gb-tooltip dark photo',
+            cursor_activation: 'click',
+            on_load: function () {
+                mailto.make_link('.gb-tooltip.dark.photo .email');
+            }
+        });
     }
 
 };

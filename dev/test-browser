@@ -22,5 +22,3 @@ fi
 
 set -x
 python -m unittest "gobotany.simplekey.testdir.test_fbasic${subset}"
-
-killall chromedriver   # clean up any leftover test processes

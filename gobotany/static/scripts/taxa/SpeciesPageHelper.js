@@ -84,7 +84,7 @@ var SpeciesPageHelper = {
         });
     },
 
-    wire_up_image_links: function() {
+    enable_image_links: function() {
         // Wire up each image link to a Shadowbox popup handler.
         var IMAGE_LINKS_CSS = '#species-images a';
         var that = this;
@@ -107,7 +107,31 @@ var SpeciesPageHelper = {
         });
     },
 
-    wire_up_us_map_link: function() {
+    enable_map_definitions_link: function () {
+        $('.definitions-link').click(function (event) {
+            event.preventDefault();
+            Shadowbox.open({
+                content: $('#legend-definitions').html(),
+                player: 'html',
+                height: 300,
+                width: 350,
+                options: {
+                    handleResize: 'drag',
+                    onFinish: function () {
+                        var MAX_SMALLSCREEN_WIDTH = 600;
+                        if ($(window).width() <= MAX_SMALLSCREEN_WIDTH) {
+                            // Adjust the position and size of the dialog
+                            // for decent fit smartphone screens.
+                            $('#sb-wrapper').css('top', '-40px');
+                            $('#sb-wrapper-inner').css('height', '340px');
+                        }
+                    }
+                }
+            });
+        });
+    },
+
+    enable_us_map_link: function() {
         // Because the map is in an <object> element, a transparent div
         // is needed to make it clickable. Make this div cover the link
         // that appears below the map, too, for one large clickable area.
@@ -118,10 +142,14 @@ var SpeciesPageHelper = {
             // Open the North America distribution map in a lightbox.
             var content_element =
                 $('.section.namap div').first();
+            var map_title = '<div><h6>' + 
+                $('.section.namap object').attr('title') +
+                '</h6></div>';
             Shadowbox.open({
                 content: content_element.html(),
                 player: 'html',
                 height: 582,
+                title: map_title,
                 width: 1000
             });
         }, this));
@@ -136,6 +164,9 @@ var SpeciesPageHelper = {
         // is shown in the breadcrumb trail.
         this.set_active_main_navigation();
 
+        // Enable the New England map legend definitions link.
+        this.enable_map_definitions_link();
+
         // Set the handlers for toggling the character sections.       
         this.toggle_characters_full_list();
 
@@ -145,10 +176,10 @@ var SpeciesPageHelper = {
         glossarizer.glossarize($(selectors));
 
         // Make image gallery able to show larger images.
-        this.wire_up_image_links();
+        this.enable_image_links();
 
-        // Wire up the enlarge link on the U.S. map.
-        this.wire_up_us_map_link();
+        // Enable the Enlarge link on the U.S. map.
+        this.enable_us_map_link();
     }
 };
 

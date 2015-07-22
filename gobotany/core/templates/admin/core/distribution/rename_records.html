@@ -1,0 +1,25 @@
+{% extends "admin/base_site.html" %}
+{% load simplekey_extras %}
+
+{% block content %}
+
+<div id="content">
+    <h1>Rename selected Distribution records</h1>
+
+    <p>Enter the new name for
+    {{ records.0.scientific_name|italicize_plant|safe }}.</p>
+
+    <form action="" method="post">
+
+        {% csrf_token %}
+
+        <p>{{ rename_records_form }}</p>
+
+        <input type="hidden" name="action" value="rename_records">
+
+        <p><input type="submit" name="rename" value="Rename"></p>
+
+    </form>
+</div>
+
+{% endblock %}

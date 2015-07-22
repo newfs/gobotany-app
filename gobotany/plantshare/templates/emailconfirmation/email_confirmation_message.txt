@@ -1,0 +1,18 @@
+{% load i18n %}{% blocktrans %}You were sent this message because you asked to change your email
+address for PlantShare on the Go Botany site.
+
+To confirm this address is correct, please go to:
+
+{{ activate_url }}
+
+Your username is: {{ user }}
+
+Thank you,
+
+Go Botany
+
+--
+
+If you think you received this message in error, please contact
+gobotany@newenglandwild.org.
+{% endblocktrans %}

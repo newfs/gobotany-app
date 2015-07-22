@@ -3,10 +3,13 @@
 from itertools import groupby
 from operator import itemgetter
 
+from django.conf import settings
+from django.core.urlresolvers import reverse
 from django.db.models import Q
 from django.shortcuts import get_object_or_404, render_to_response
 from django.template import RequestContext
 from django.views.decorators.vary import vary_on_headers
+from django.views.generic.base import RedirectView
 
 from gobotany.core import botany
 from gobotany.core.models import (
@@ -16,6 +19,7 @@ from gobotany.core.models import (
 from gobotany.core.partner import (which_partner, per_partner_template,
                                    render_to_response_per_partner)
 from gobotany.dkey import models as dkey_models
+from gobotany.plantshare.utils import prior_signup_detected
 
 def _images_with_copyright_holders(images):
     # Reduce a live query object to a list to only run it once.
@@ -41,7 +45,9 @@ def _images_with_copyright_holders(images):
             continue
         image.copyright_holder_name = copyright_holder.expanded_name
         image.copyright = copyright_holder.copyright
-        image.source = copyright_holder.source
+        image.contact_info = copyright_holder.contact_info
+        image.source = copyright_holder.source.replace(
+            'http://', '').replace('University', 'U.')
 
     return images
 
@@ -296,6 +302,17 @@ def species_view(request, genus_slug, epithet):
 
     native_to_north_america = _native_to_north_america_status(taxon)
 
+    statuses = taxon.conservation_statuses.values_list(
+        'variety_subspecies_hybrid', 'region', 's_rank', 'endangerment_code')
+    statuses_state_names = [
+        {'variety_subspecies_hybrid': variety_subspecies_hybrid,
+         'state': settings.STATE_NAMES[region.lower()],
+         's_rank': s_rank, 'endangerment_code': endangerment_code}
+        for (variety_subspecies_hybrid, region, s_rank, endangerment_code)
+        in statuses]
+    conservation_statuses = sorted(statuses_state_names,
+        key=lambda k: (k['variety_subspecies_hybrid'], k['state']))
+
     return render_to_response_per_partner('species.html', {
            'pilegroup': pilegroup,
            'pile': pile,
@@ -305,10 +322,6 @@ def species_view(request, genus_slug, epithet):
            'key': key,
            'species_in_simple_key': species_in_simple_key,
            'common_names': taxon.common_names.all(),  # view uses this 3 times
-           'conservation_status_rows': (
-                'endangered', 'threatened', 'special concern', 'historic',
-                'rare', 'extirpated', 'invasive', 'prohibited',
-                ),
            'dkey_hybrids': dkey_hybrids,
            'dkey_page': dkey_page,
            'images': images,
@@ -320,5 +333,30 @@ def species_view(request, genus_slug, epithet):
            'brief_characteristics': preview_characters,
            'all_characteristics': all_characteristics,
            'epithet': epithet,
-           'native_to_north_america': native_to_north_america
+           'native_to_north_america': native_to_north_america,
+           'conservation_statuses': conservation_statuses,
+           'prior_signup_detected': prior_signup_detected(request),
            }, request)
+
+
+# Redirect some URL variants with an uppercase family or genus name. (#495)
+
+class UppercaseFamilyRedirectView(RedirectView):
+    query_string = True
+
+    def get_redirect_url(self, family_slug):
+        return reverse('taxa-family', args=(family_slug.lower(),))
+
+
+class UppercaseGenusRedirectView(RedirectView):
+    query_string = True
+
+    def get_redirect_url(self, genus_slug):
+        return reverse('taxa-genus', args=(genus_slug.lower(),))
+
+
+class SpeciesUppercaseGenusRedirectView(RedirectView):
+    query_string = True
+
+    def get_redirect_url(self, genus_slug, epithet):
+        return reverse('taxa-species', args=(genus_slug.lower(), epithet,))

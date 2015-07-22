@@ -3,10 +3,10 @@
 define([
     'bridge/jquery', 
     'bridge/shadowbox'
-], function($, Shadowbox) {
+], function ($, Shadowbox) {
 
     // Animate and position the close button.
-    shadowbox_move_close_button = function() {
+    shadowbox_move_close_button = function () {
         var cb = document.getElementById('sb-nav-close');
         var tb = document.getElementById('sb-wrapper');
         if (tb) {
@@ -14,7 +14,7 @@ define([
         }
     };
 
-    shadowbox_on_open = function() {
+    shadowbox_on_open = function () {
         // Work around a bug when using lightboxes on iOS:
         // On iOS versions older than 5, lightboxes can appear off the
         // screen if the page is scrolled down, so scroll to the top.
@@ -27,12 +27,18 @@ define([
         shadowbox_move_close_button();
     };
 
-    $(document).ready(function() {
-        if ($(window).width() > 600) {
-            Shadowbox.init({
-                onOpen: shadowbox_on_open
-            });
-        }
+    shadowbox_on_close = function () {
+        // Hide any tooltips activated from the lightbox.
+        $('.gb-tooltip.dark').hide();
+    };
+
+    $(document).ready(function () {
+        Shadowbox.init({
+            onClose: shadowbox_on_close,
+            onOpen: shadowbox_on_open,
+            overlayOpacity: 0.8,
+            viewportPadding: 0
+        });
     });
 
     /* Return Shadowbox as a convenience, so users do not have to import

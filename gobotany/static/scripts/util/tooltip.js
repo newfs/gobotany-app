@@ -15,11 +15,13 @@ define([
             arrow_css_class: 'arrow',
             arrow_edge_margin: 10,
             css_class: 'gb-tooltip',
+            cursor_activation: 'hover',  // 'click' also supported
             fade_speed: 'fast',
             horizontal_adjust_px: 20,
             hover_delay: 400,
+            on_load: null,   // optional callback when tooltip is displayed
             small_screen_max_width: 600,
-            vertical_adjust_px: 24,
+            vertical_adjust_px: 26,
             width: null   // use width defined in CSS by default
         },
 
@@ -53,15 +55,27 @@ define([
             }
             // If the horizontal position would start off the screen to
             // the left, adjust it to start at the left edge.
-            if (left < scroll_left) {
-                left = scroll_left;
+            var left_px = left;
+            if (left_px < scroll_left) {
+                left_px = scroll_left;
             }
-    
-            // Set the tooltip position.
+
             var tooltip_height = $(tooltip_element).height();
+            var top_px = (top - tooltip_height -
+                this.options.vertical_adjust_px);
+
+            // If this tooltip is on a fixed-position background such as
+            // a modal dialog, ensure the tooltip is placed correctly
+            // regardless of the page scroll position.
+            if (tooltip_element.css('position') === 'fixed') {
+                var scroll_top = $(window).scrollTop();
+                top_px = top_px - scroll_top;
+            }
+            
+            // Set the tooltip position.
             tooltip_element.css({
-                'left': left,
-                'top': top - tooltip_height - this.options.vertical_adjust_px
+                'left': left_px,
+                'top': top_px
             });
 
             // Set the arrow position.
@@ -101,6 +115,11 @@ define([
             $('body').append(tooltip_element);
             this.position_tooltip(tooltip_element, left, top);
             $(tooltip_element).fadeIn(this.options.fade_speed);
+
+            // Call the optional "on load" callback function.
+            if (this.options.on_load) {
+                this.options.on_load.call();
+            }
         },
 
         hide_tooltip: function (fade) {
@@ -109,14 +128,16 @@ define([
                 do_fade = 'true';   // default for optional parameter
             }
 
-            var tooltip = '.' + this.options.css_class;
+            var css_selector = '.' +
+                this.options.css_class.split(' ').join('.');
+            var $tooltip = $(css_selector);
             if (do_fade) {
-                $(tooltip).fadeOut(this.options.fade_speed, function () {
-                    $(tooltip).remove();
+                $tooltip.fadeOut(this.options.fade_speed, function () {
+                    $tooltip.remove();
                 });
             }
             else {
-                $(tooltip).remove();
+                $tooltip.remove();
             }
         },
 
@@ -146,29 +167,66 @@ define([
                     });
                 }
                 else {
-                    // For point-and-click interfaces, activate on hover.
-                    $(element).bind({
-                        'mouseenter.Tooltip': function () {
-                            var offset = $(element).offset();
-                            // Delay the hover a bit to avoid accidental
-                            // activation when moving the cursor quickly by.
-                            this.timeout_id = window.setTimeout(
-                                function (element) {
-                                    self.show_tooltip(element, offset.left, 
-                                                      offset.top);
-                                },
-                                self.options.hover_delay, element);
-                        },
-                        'mouseleave.Tooltip': function () {
-                            // Clear any timeout set for delaying the hover.
-                            if (typeof this.timeout_id === 'number') {  
-                                window.clearTimeout(this.timeout_id);  
-                                delete this.timeout_id;  
+                    // For point-and-click interfaces, activate on hover
+                    // or optionally on click.
+                    if (self.options.cursor_activation === 'hover') {
+                        $(element).bind({
+                            'mouseenter.Tooltip': function () {
+                                var offset = $(element).offset();
+                                // Delay the hover a bit to avoid accidental
+                                // activation when moving the cursor quickly
+                                // by.
+                                this.timeout_id = window.setTimeout(
+                                    function (element) {
+                                        self.show_tooltip(element,
+                                                          offset.left, 
+                                                          offset.top);
+                                    },
+                                    self.options.hover_delay, element);
+                            },
+                            'mouseleave.Tooltip': function () {
+                                // Clear any timeout set for delaying the
+                                // hover.
+                                if (typeof this.timeout_id === 'number') {  
+                                    window.clearTimeout(this.timeout_id);  
+                                    delete this.timeout_id;  
+                                }
+                                
+                                self.hide_tooltip();
                             }
-                            
-                            self.hide_tooltip();
-                        }
-                    });
+                        });
+                    }
+                    else if (self.options.cursor_activation === 'click') {
+                        $(element).bind({
+                            'click.Tooltip': function (event) {
+                                var offset = $(element).offset();
+                                self.show_tooltip(element, offset.left,
+                                                  offset.top);
+                                // Stop events from propagating onward to the
+                                // document body. Otherwise the code that
+                                // dismisses the tooltip would always run, and
+                                // the tooltip would not show on click because
+                                // it would immediately be hidden.
+                                event.stopPropagation();
+                            }
+                        });
+                        $('body').bind({
+                            'click.Tooltip_dismiss': function (event) {
+                                var $target = $(event.target);
+                                var tooltip_selector = '.' +
+                                    self.options.css_class.split(
+                                        ' ').join('.');
+                                // Only hide if click was outside tooltip.
+                                if ($target.is(tooltip_selector) === false) {
+                                    self.hide_tooltip();
+                                }
+                            }
+                        });
+                    }
+                    else {
+                        console.error('Unknown cursor_activation option:',
+                                      self.options.cursor_activation);
+                    }
                 }
             });   // end loop through elements
 

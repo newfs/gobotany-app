@@ -1,4 +1,4 @@
-{% load simplekey_extras %}<?xml version="1.0" encoding="UTF-8"?>
+{% load taxa_tags %}<?xml version="1.0" encoding="UTF-8"?>
 {# Note: No space above between load and XML dec.: avoid FF parse error. #}
 <!DOCTYPE feed [
     <!ENTITY copy   "&#169;"> <!-- copyright sign, U+00A9 ISOnum -->

@@ -1,7 +1,10 @@
 /* Home */
 
 #home {
-    background: url(/static/images/layout/body-home.jpg) repeat-x left top #f3f3c3;
+    background-color: #f3f3c3;
+    background-image: url(/static/images/layout/body-home.jpg);
+    background-position: left 0px top;
+    background-repeat: repeat-x;
     #all {
         background: url(/static/images/layout/content-home-bg.jpg) center 72px no-repeat transparent;
     }
@@ -71,16 +74,8 @@
             text-shadow: 0px 1px 1px #fff;	
         }
         #cta {
-            height: 41px;
             margin: 21px 2px 0;
-            background: url(/static/images/layout/get-started-btn-orange.png) 0 0 no-repeat transparent;	
-            @include offscreen;
-            &:hover {
-                background-position: 0 -41px;	
-            }
-            &:active {
-                background-position: 0 -82px;		
-            }
+            width: 184px;
         }
     }
     #overlay {
@@ -105,7 +100,7 @@
             background: 0;	
             margin-right: 0;
             padding: 8px 0 0 0;
-            a.learn-more {
+            a.orange-button {
                 margin: 33px 0 0 0;
             }
         }
@@ -118,25 +113,13 @@
             color: #807121;
         }
         p {
-            margin: 0 inherit;
+            margin: 0;
         }
-        a.learn-more {
+        a.orange-button {
             margin: 13px 0 0 0;	
         }
     }
     a {
-        &.learn-more {
-            background: url(/static/images/layout/learn-more-btn.png) 0 0 no-repeat;
-            height: 32px;
-            width: 111px;
-            @include offscreen;
-            &:hover {
-                background-position: 0 -32px;	
-            }
-            &:active {
-                background-position: 0 -64px;	
-            }
-        }
         &.subscribe {
             background: url(/static/images/layout/subscribe.png) 0 0 no-repeat;
             cursor: pointer;
@@ -206,23 +189,11 @@
     }
     .donate {
         a {
-            background: url(/static/images/layout/donate-btn.png) 0 0 no-repeat transparent;
             cursor: pointer;
-            display: block;
             float: right;
-            height: 32px;
-            padding: 0;
             position: absolute;
             right: 0;
-            text-indent: -9000px;
-            top: -6px;
-            width: 104px;
-            &:hover {
-	            background-position: 0 -32px;
-            }
-            &:active {
-	            background-position: 0 -64px;
-            }
+            top: -4px;
         }
     }
     footer {
@@ -321,14 +292,7 @@
                 }
             }
             #cta {
-                background-position: 50% 0;
                 margin: 6px;
-                &:hover {
-                    background-position: 50% -41px;	
-                }
-                &:active {
-                    background-position: 50% -82px;		
-                }
             }
         }
         .three-col {
@@ -350,7 +314,7 @@
             p {
                 margin-top: 0;
             }
-            a.learn-more, &.last a.learn-more {
+            a.orange-button, &.last a.orange-button {
                 margin-top: 6px;
                 @include smallscreen-side-margins;
             }
@@ -384,7 +348,7 @@
                     overflow: inherit;
                 }
                 a {
-                    margin-top: 4px;
+                    margin-top: 6px;
                     position: inherit;
                     top: 0;
                 }
@@ -400,7 +364,7 @@
         .donate {
             a {
                 float: none;
-                margin: 6px 0;
+                margin: 6px 20px 0 0;
                 position: static;
             }
         }

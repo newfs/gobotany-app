@@ -66,30 +66,6 @@ body.skey {
             }
             .details a {
                 margin: 10px 0 14px;
-                &.plant-in-group {
-                    background: url(/static/images/layout/plant-in-group-btn-orange.png) no-repeat 0 0;	
-                    height: 31px;
-                    width: 212px;
-                    @include offscreen;
-                    &:hover {
-	                    background-position: 0 -31px;	
-                    }
-                    &:active {
-	                    background-position: 0 -62px;	
-                    }
-                }
-                &.plant-in-subgroup {
-                    background: url(/static/images/layout/plant-in-subgroup-btn-orange.png) no-repeat 0 0;	
-                    height: 32px;
-                    width: 233px;
-                    @include offscreen;
-                    &:hover {
-	                    background-position: 0 -32px;	
-                    }
-                    &:active {
-	                    background-position: 0 -64px;	
-                    }
-                }
             }
         }
         .not-my-plant {
@@ -167,7 +143,7 @@ body.skey {
             margin: 0 0 15px 0;
         }
         #results-display {
-            margin-bottom: 8px;
+            margin: 8px 0;
             label {
                 color: #000;
                 font-family: $headings-font;
@@ -375,7 +351,6 @@ body.skey {
                     color: #fff;
                     padding: 16px;
                     h5 {
-                        font-size: 14px;
                         line-height: 120%;
                         margin: 0;
                     }
@@ -390,42 +365,25 @@ body.skey {
                     margin: 0 0 20px;
                     text-align: center;
                     a {
+                        color: white;
                         cursor: pointer;
                         display: block;
-                        font-weight: bold;
-                        margin: 18px 0 10px;
-                        &.get-choices {
+                        margin: 18px auto 10px;
+                        width: 170px;
+                        &.get-questions {
                             margin: 0 auto 4px;
                         }
                     }
                 }
-                a.get-help-btn {
-                    background: url(/static/images/layout/get-help-btn-orange.png) 0 0 no-repeat transparent;
-                    height: 32px;
-                    margin: 10px 0 0 20px;
-                    width: 104px;
-                    @include offscreen;
-                    &:hover {
-	                    background-position: 0 -32px;
-                    }
-                    &:active {
-	                    background-position: 0 -64px;
-                    }
-                }
                 a.clear-all-btn {
-                    background: url(/static/images/layout/clear-all-btn.png) 0 0 no-repeat transparent;
-                    height: 32px;
-                    margin: 0 0 0 22px;
-                    width: 104px;
-                    @include offscreen;
-                    &:hover {
-	                    background-position: 0 -32px;
-                        cursor: pointer;
-                    }
-                    &:active {
-	                    background-position: 0 -64px;
-                        cursor: pointer;
-                    }
+                    color: white;
+                    margin: 0 0 0 20px;
+                    width: 80px;
+                }
+                a.get-help-btn {
+                    color: white;
+                    margin: 10px 0 0 18px;
+                    width: 80px;
                 }
             }
             h6 {
@@ -489,19 +447,11 @@ body.skey {
             width: 710px;
         }
 
-        a.get-choices {
-            background: url(/static/images/layout/get-choices-btn-orange.png) 0 0 no-repeat transparent;
-            display: block;
-            height: 32px;
-            margin: 10px 0 4px 10px;
-            text-indent: -9000px;
+        a.get-questions, a.add-questions {
+            color: white;
+            cursor: pointer;
+            margin: 2px 0 0 10px;
             width: 171px;
-            &:hover {
-                background-position: 0 -32px;
-            }
-            &:active {
-                background-position: 0 -64px;
-            }
         }
 
         #intro-overlay {   /* for introductory overlay */
@@ -519,8 +469,7 @@ body.skey {
                 box-shadow: 0px 5px 20px rgba(0, 0, 0, 1);
                 -moz-box-shadow: 0px 5px 20px rgba(0, 0, 0, 1);
                 -webkit-box-shadow: 0px 5px 20px rgba(0, 0, 0, 1);
-                border-radius: 0.25em;
-                -moz-border-radius: 0.25em;
+                @include border-radius(0.25em);
             }
             .number-of-species, .number-of-questions {
                 background-color: #508e31;
@@ -529,11 +478,11 @@ body.skey {
                 background-color: #dc9402;
                 border: 2px solid #dc9402;
                 cursor: pointer;
+                font-family: ScalaSans, $headings-font;
                 letter-spacing: 3px;
                 text-shadow: 1px 1px 2px #dc9402;
                 text-transform: uppercase;
-                border-radius: 2em;
-                -moz-border-radius: 2em;
+                @include border-radius(2em);
 
                 /* Gradient generated using the tool "Ultimate CSS Gradient Generator":
                  * www.colorzilla.com/gradient-editor
@@ -583,6 +532,7 @@ body.skey {
             }
         }
         h5.help {
+            clear: left;
             font-size: 14px;
             margin: 0 0 0 0;
             padding: 3px 0 0 0;
@@ -591,16 +541,16 @@ body.skey {
             }
         }
 
-        #results-tabs {
+        .view-tabs {
             border-bottom: 1px solid #c3d941;
             clear: left;
             height: 28px;
-            margin: 10px 0;
+            margin: 5px 0 0;
             a {
                 background: #d6e6c5;
                 background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#eaf2e2), color-stop(100%,#d6e6c5));
                 background: -moz-linear-gradient(center top, #eaf2e2, #d6e6c5);
-                border: 1px solid #c3d941;
+                border: 1px solid #c3d941 !important;
                 color: #354d1e;
                 cursor: pointer;
                 display: block;
@@ -609,9 +559,9 @@ body.skey {
                 font-size: 18px;
                 line-height: 18px;
                 margin: 0;
+                min-width: 100px;
                 padding: 5px 10px 4px;
                 text-align: center;
-                width: 100px;
                 -webkit-border-top-left-radius: 6px;
                 -webkit-border-top-right-radius: 6px;
                 -moz-border-radius-topleft: 6px;
@@ -631,17 +581,17 @@ body.skey {
                 &:first-child a {
                     margin-left: 10px;
                 }
-                a.current, a.current:hover {
-                    background: #fff;
-                    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#ffffff), color-stop(100%,#f0f0c0));
-                    background: -moz-linear-gradient(center top, #ffffff, #f0f0c0);
-                    border-bottom: 0;
-                    color: #1a2e11;
-                    cursor: default;
-                    padding: 5px 10px;
-                }
             }
-        } /* end #results-tabs */
+            a.current, a.current:hover {
+                background: #fff;
+                background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#ffffff), color-stop(100%,#f0f0c0)) !important;
+                background: -moz-linear-gradient(center top, #ffffff, #f0f0c0);
+                border-bottom: 0 !important;
+                color: #1a2e11;
+                cursor: default;
+                padding: 5px 10px;
+            }
+        } /* end .view-tabs */
         
         /* Ordinarily this message will have its centering done
          * by JavaScript. See gobotany.sk.results.notify() */
@@ -775,7 +725,7 @@ body.skey {
                 }
             }
             ul {
-                margin: 15px 0 0 0;
+                margin: 15px 0 0 0; 
                 li {
                     display: block;
                     float: left;
@@ -801,23 +751,8 @@ body.skey {
             } /* end ul */
 
             .apply-btn {
-                background: url(/static/images/layout/apply-selection.png) no-repeat 0 0 transparent;
-                display: inline-block;
-                height: 41px;
-                margin: 4px 0 0;
-                text-align: left;
-                text-indent: -9000px;
-                width: 244px;
-                &.disabled {
-                    background-position: 0 0;
-                    opacity: 0.2;
-                }
-                &:hover {
-                    background-position: 0 -41px;
-                }
-                &:active {
-                    background-position: 0 -82px;
-                }
+                color: white;
+                width: 180px;
             }
             .choose_length label {   /* Length input */
                 margin: 0 10px 0 0;
@@ -876,7 +811,6 @@ body.skey {
                 -khtml-user-select: none;
                 -webkit-user-select: none;
                 -ms-user-select: none;
-                user-select: none;
             }
 
             #slider {
@@ -960,6 +894,66 @@ body.skey {
     }
 }
 
+
+.modal-wrap.more-questions-dialog {
+    background-color: #f0f0c0;
+    .inner {
+        background-color: #f0f0c0;
+        padding-bottom: 10px;
+        p {
+            clear: left;
+            padding: 10px 0;
+        }
+    }
+    .title {
+        font-family: $headings-font;
+        padding: 0 !important;
+        text-align: center;
+    }
+    .view-tabs a {
+        font-size: 13px !important;
+    }
+    #choices {
+        padding-top: 0;
+        .pick {
+            display: none;
+        }
+    }
+    .char-groups input {
+        & + span {
+            margin-left: 4px;
+        }
+        &[disabled] + span {
+            color: #999;
+        }
+    }
+    .questions {
+        background-color: #fff;
+        border: 1px solid gray;
+        height: 200px;
+        margin: 10px 0;
+        padding: 4px;
+        overflow-y: scroll;
+        -webkit-overflow-scrolling: touch;
+        p {
+            padding: 5px 4px;
+        }
+        label {
+            display: block;
+            margin-left: 20px;
+        }
+        input[type="checkbox"] {
+            float: left;
+            margin-left: -20px;
+            margin-top: 3px;
+        }
+    }
+    .category {
+        font-weight: bold;
+    }
+}
+
+
 /* Experiment by Brandon */
 
 ul.get-more-questions-menu {
@@ -1034,16 +1028,16 @@ ul.get-more-questions-menu {
             #question-nav {
                 .section {
                     a.clear-all-btn, a.get-help-btn {
-                        margin: 0 100px;
+                        margin: 0 0 0 95px;
                     }
                 }
             }
             .species-count-heading {
                 left: -235px;
             }
-            #results-tabs {
+            .view-tabs {
                 li:first-child a {
-                    margin-left: 32px;
+                    margin-left: 32px;  /* for the Results tabs */
                 }
             }
         } /* end &.results.mobile-wide */
@@ -1063,17 +1057,20 @@ ul.get-more-questions-menu {
             #question-nav {
                 .section {
                     a.clear-all-btn, a.get-help-btn {
-                        margin: 0 180px;
+                        margin: 0 170px;
                     }
                 }
             }
             .species-count-heading {
                 left: -310px;
             }
-            #results-tabs {
+            .view-tabs {
                 li:first-child a {
-                    margin-left: 112px;
+                    margin-left: 112px;  /* for the Results tabs */
                 }
+            }
+            .more-questions-dialog .questions {
+                max-height: 160px;
             }
         } /* end &.results.mobile-wide */
     }
@@ -1129,6 +1126,25 @@ ul.get-more-questions-menu {
                 padding: 0;
                 width: auto;
             }
+            
+            #sb-title {
+                display: none;
+            }
+            #sb-nav-close {
+                right: -20px !important;
+                top: -22px !important;
+            }
+            .more-questions-dialog {
+                .view-tabs {
+                    a {
+                        padding: 5px 0 !important;
+                    }
+                    li:first-child a {
+                        margin-left: 10px !important;
+                    }
+                }
+            }
+
             #question-nav { /* TODO: resolve with #question-nav section below */
                 float: left;
                 margin: 0;
@@ -1141,7 +1157,6 @@ ul.get-more-questions-menu {
             .section + .section {
                 margin-bottom: 16px;
             }
-            #question-nav .section.family-genus h6,
             #question-nav .section button, #question-nav .section.clear h5,
             #question-nav .section.help h5 {
                 display: none;
@@ -1175,10 +1190,6 @@ ul.get-more-questions-menu {
                     }
                     p.get-more {
                         margin-bottom: 50px;
-                        span {
-                            display: none;
-                            margin: 0;
-                        }
                     }
                     a.clear-all-btn, a.get-help-btn {
                         margin: 6px 0 6px 16px;
@@ -1211,13 +1222,14 @@ ul.get-more-questions-menu {
                 float: none;
                 margin: 0 0 28px;
                 width: 100%;
-            }
-            #results-tabs {
-                height: 26px;
-                margin-bottom: 0;
-                li + li a.current, li + li a.current:hover {
-                    background: #fff;
+                .view-tabs {
+                    li + li a.current, li + li a.current:hover {
+                        background: #fff !important;
+                    }
                 }
+            }
+            .view-tabs {
+                height: 26px;
                 a {
                     font-size: 16px;
                     line-height: 16px;
@@ -1334,10 +1346,6 @@ ul.get-more-questions-menu {
                     vertical-align: -3px;
                 }
             }
-            a.get-choices {
-                background: url(/static/images/layout/more-choices-btn.png) no-repeat scroll 0 0 transparent;
-                height: 29px;
-            }
             .working-area {
                 height: 100%;
                 left: 0;
@@ -1347,7 +1355,7 @@ ul.get-more-questions-menu {
                 position: fixed;
                 top: 0 !important;
                 width: 95%;
-                > div {
+                .interior {
                     height: 100%;
                 }
                 img.arrow {
@@ -1432,15 +1440,15 @@ ul.get-more-questions-menu {
                         position: absolute;
                     }
                     label {
-                        /*border-left: 1px solid orange;*/
-                        /*border-right: 1px solid orange;*/
                         display: table;
                         font-family: Verdana, sans-serif; /* No Tahoma on iOS */
                         font-size: 11px;
                         height: 44px;
                         margin: 0;
-                        max-width: none;
-                        min-width: none;
+                        /*
+                        max-width: 0;
+                        min-width: 0;
+                        */
                         padding-left: 4px;
                         padding-right: 12px;
                         width: 96%;
@@ -1476,18 +1484,10 @@ ul.get-more-questions-menu {
             } /* end .working-area */
             
             .modal-wrap .inner { /* More Questions dialog */
-                h4.heading {
-                    font-size: 13px;
+                #choices {
+                    font-size: 12px;
                     padding-left: 10px;
                     padding-right: 10px;
-                    padding-top: 8px;
-                }
-                p {
-                    display: none;
-                }
-                #choices {
-                    font-size: 10px;
-                    padding-left: 10px;
                     li {
                         margin-bottom: 8px;
                     }
@@ -1557,9 +1557,6 @@ ul.get-more-questions-menu {
                     clear: left;
                     p.get-more {
                         margin-bottom: 35px;
-                    }
-                    a.get-choices {
-                        width: 139px;
                     }
                     &.family-genus .already-know {
                         margin-bottom: 25px;
@@ -1646,6 +1643,10 @@ ul.get-more-questions-menu {
             .working-area {
                 h4 {
                     padding-right: 50px;
+                }
+                .character-drawing img {
+                    margin-top: -24px;
+                    max-height: 60px;
                 }
                 .gloss {
                     border-bottom: 0;
@@ -1766,7 +1767,7 @@ ul.get-more-questions-menu {
             }
             &.mobile-gloss .working-area {
                 h4 {
-                    padding-right: 0;
+                    padding-right: 0;
                 }
                 .terms {
                     background: inherit;
@@ -1810,7 +1811,7 @@ ul.get-more-questions-menu {
             display: block;
             border-bottom: solid 1px #000;
             li {
-                list-item-type: none;
+                list-style-type: none;
                 display: none;
                 &.answered {
                     display: inline;

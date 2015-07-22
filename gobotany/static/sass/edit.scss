@@ -35,6 +35,10 @@ span.all-species-button, span.simple-key-button, .save-button, .length-save-butt
         background-color: $orange5 * 0.6 + $body_bg * 0.4;
     }
 
+    select {
+        width: 25em;
+    }
+
     div {
         white-space: nowrap;
 

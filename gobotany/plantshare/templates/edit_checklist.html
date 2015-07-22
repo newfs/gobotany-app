@@ -1,33 +1,73 @@
 {% extends "gobotany/_page_free_sidebar.html" %}
 {% load mapping_tags %}
 
-{% block title %}Checklists: Plantshare{% endblock %}
+{% block title %}Edit Plant Checklist: {{ checklist.name }}: PlantShare{% endblock %}
 
-{% block js_require %}
-    require(['util/suggester_init', 'plantshare/plantshare']);
+{% block more_meta_link %}
+<link rel="stylesheet" href="/static/css/smoothness/jquery-ui-1.9.2.custom.min.css">
 {% endblock %}
 
-{% block body_attributes %}id="checklists" class="plantshare checklists"{% endblock %}
+{% block js_require %}
+    require([
+        'util/suggester_init', 
+        'plantshare/edit_checklist'
+    ]);
+{% endblock %}
+
+{% block body_attributes %}id="edit-checklist" class="plantshare checklists"{% endblock %}
 
 {% block main_content %}
-<h1>Checklists</h1>
+<h1>Edit Plant Checklist: {{ checklist.name }}</h1>
 
 <div class="checklists-section">
+{% include "_image_upload_form.html" with image_form=entry_image_form %}
+    <div id="form-template">
+        <table>
+            <tbody>
+                {% with empty_form=entry_formset.empty_form %}
+                <tr>
+                    <td class="name">
+                        {{ empty_form.plant_name }}
+                    </td><!-- /.name -->
+                    <td class="image">
+                        {{ empty_form.plant_photo }}
+                        <a href="#" rel=".image-modal" 
+                            class="upload-image-thumb btn">Upload Image</a>
+                    </td><!-- /.image -->
+                    <td class="date-sighted">
+                        {{ empty_form.date_found }}
+                    </td><!-- /.date-sighted -->
+                    <td class="location">
+                        {{ empty_form.location }}
+                    </td><!-- /.location -->
+                    <td class="date-posted">
+                        {{ empty_form.date_posted }}
+                    </td><!-- /.date-posted -->
+                    <td class="note">
+                        <div class="note-field">{{ empty_form.note }}</div>
+                        <a href="#" class="note-link">Note</a>
+                        <a href="#" class="close-btn row-btn">Close</a>
+                    </td><!-- /.note -->
+                </tr>
+                {% endwith %}
+            </tbody>
+        </table>
+    </div>
     <form name="checklist-fillout" id="checklist-fillout" method="POST">
         {% csrf_token %}
         <header>
-            <h4>Edit Checklist</h4>
             {{ checklist_form.non_field_errors }}
+            <label>Checklist name (required)</label>
             {{ checklist_form.name }}
             {{ checklist_form.name.errors }}
+            <label>Comments</label>
             {{ checklist_form.comments }}
             {{ checklist_form.comments.errors }}
         </header>
-        <a class="import-sightings-link" href="javascript:alert('Coming soon!');">Import from Sightings &#43;</a>
         <table id="add-sightings-table">
             <thead>
                 <tr>
-                    <th class="name">Name <span>(Required)</span></th>
+                    <th class="name">Plant Name <span>(required)</span></th>
                     <th class="image">Image</th>
                     <th class="date-sighted">Date Sighted</th>
                     <th class="location">Location</th>
@@ -39,22 +79,34 @@
             <tfoot>
                 <tr>
                     <td colspan="7">
-                        <a href="#" class="add-new-row">Add New Row &#43;</a>
+                        <a href="#" class="add-new-row"
+                            tabindex="500">Add New Row &#43;</a>
                     </td>
                 </tr>
             </tfoot>
-            <tbody>
+            <tbody id="formset">
                 {{ entry_formset.management_form }}
                 {% for entry_form in entry_formset %}
                 {{ entry_form.non_field_errors }}
-                {{ entry_form.id }}
                 <tr>
                     <td class="name">
+                        <div class="form-data">
+                        {{ entry_form.id }}
+                        {{ entry_form.DELETE }}
+                        </div>
                         {{ entry_form.plant_name }}
                         {{ entry_form.plant_name.errors }}
                     </td><!-- /.name -->
                     <td class="image">
-                        <a href="javascript:alert('Coming soon!');" class="upload-image-thumb btn">Upload Image</a>
+                        {{ entry_form.plant_photo }}
+                        {% if entry_form.instance.plant_photo %}
+                        <a href="#" rel=".image-modal" 
+                            class="upload-image-thumb btn"><img class="checklist-thumb" 
+                            src="{{ entry_form.instance.plant_photo.thumb.url }}" /></a>
+                        {% else %}
+                        <a href="#" rel=".image-modal" 
+                            class="upload-image-thumb btn">Upload Image</a>
+                        {% endif %}
                     </td><!-- /.image -->
                     <td class="date-sighted">
                         {{ entry_form.date_found }}
@@ -69,16 +121,19 @@
                         {{ entry_form.date_posted.errors }}
                     </td><!-- /.date-posted -->
                     <td class="note">
-                        <a href="javascript:alert('Coming soon!');" rel="shadowbox;width=550;height=240">Add<br>Note</a>
-                        <a href="javascript:alert('Coming soon!');" rel="shadowbox;height=200;width=550;" class="close-btn row-btn">Close</a>
+                        <div class="note-field">{{ entry_form.note }}</div>
+                        <a href="#" class="note-link">Note</a>
+                        <a href="#" class="close-btn row-btn">Close</a>
                     </td><!-- /.note -->
                 </tr>
                 {% endfor %}
             </tbody>
         </table><!-- /#add-sightings-table -->
         <div class="form-actions">
-            <input type="submit" class="ps-button" id="save-btn" value="Save" />
-            <a href="{% url 'ps-checklists' %}" class="cancel-link">Cancel</a>
+            <input type="submit" class="ps-button orange-button caps"
+            id="save-btn" value="Save" tabindex="510">
+            <a href="{% url 'ps-checklists' %}" class="cancel-link"
+                tabindex="520">Cancel</a>
         </div><!-- /.form-actions -->
     </form><!-- /#checklist-fillout -->
 </div><!-- /.ps-section -->

@@ -52,7 +52,9 @@ urlpatterns = patterns(
     # Get More Questions feature works for them
     url(r'^piles/(?:non-)?alternate-remaining-non-monocots/characters/$',
         RedirectView.as_view(
-            url='/api/piles/remaining-non-monocots/characters/')),
+            url='/api/piles/remaining-non-monocots/characters/',
+            query_string=True
+            )),
     url(r'^piles/(?:non-)?alternate-remaining-non-monocots/questions/$',
         RedirectView.as_view(
             url='/api/piles/remaining-non-monocots/questions/',
@@ -90,9 +92,6 @@ urlpatterns = patterns(
     url(r'^maps/(?P<genus>[^/-]+)-(?P<epithet>[^/]+)'
          '-na-distribution-map(\.svg|/)?$',
         views.north_american_distribution_map, name='na-distribution-map'),
-    url(r'^maps/(?P<genus>[^/-]+)-(?P<epithet>[^/]+)'
-         '-us-distribution-map(\.svg|/)?$',
-        views.united_states_distribution_map, name='us-distribution-map'),
 
     url(r'^$', 'nonexistent', name='api-base'),  # helps compute the base URL
     )
@@ -122,5 +121,12 @@ urlpatterns += patterns(
     url(r'^vectors/character/([\w()-]+)/$', both(views.vectors_character)),
     url(r'^vectors/key/([\w-]+)/$', both(views.vectors_key)),
     url(r'^vectors/pile/([\w-]+)/$', both(views.vectors_pile)),
+
+    # Another redirect for the split Remaining Non-Monocots piles, for
+    # the feature Get More Questions > Pick Your Own
+    url(r'^vectors/pile-set/(?:non-)?alternate-remaining-non-monocots/$',
+        RedirectView.as_view(
+            url='/api/vectors/pile-set/remaining-non-monocots/')),
+
     url(r'^vectors/pile-set/([\w-]+)/$', both(views.pile_vector_set)),
     )

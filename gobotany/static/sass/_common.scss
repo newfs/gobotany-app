@@ -3,6 +3,51 @@
 @import "compass/css3/border-radius";
 @import "compass/css3/box-shadow";
 @import "compass/css3/images";   /* for gradient, etc. */
+@import "compass/css3/user-interface";
+
+/* Web fonts: style-linked groups */
+
+@font-face {
+    font-family: ScalaSans;
+    src: url(//newfs.s3.amazonaws.com/fonts/ScalaSansWeb.woff) format("woff");
+}
+@font-face {
+    font-family: ScalaSans;
+    font-weight: bold;
+    src: url(//newfs.s3.amazonaws.com/fonts/ScalaSansWeb-Bold.woff) format("woff");
+}
+@font-face {
+    font-family: ScalaSans;
+    font-style: italic;
+    src: url(//newfs.s3.amazonaws.com/fonts/ScalaSansWeb-Ita.woff) format("woff");
+}
+@font-face {
+    font-family: ScalaSans;
+    font-style: italic;
+    font-weight: bold;
+    src: url(//newfs.s3.amazonaws.com/fonts/ScalaSansWeb-BoldIta.woff) format("woff");
+}
+
+@font-face {
+    font-family: ScalaSansSmallCaps;
+    src: url(//newfs.s3.amazonaws.com/fonts/ScalaSansScWeb.woff) format("woff");
+}
+@font-face {
+    font-family: ScalaSansSmallCaps;
+    font-weight: bold;
+    src: url(//newfs.s3.amazonaws.com/fonts/ScalaSansScWeb-Bold.woff) format("woff");
+}
+@font-face {
+    font-family: ScalaSansSmallCaps;
+    font-style: italic;
+    src: url(//newfs.s3.amazonaws.com/fonts/ScalaSansScWeb-Ita.woff) format("woff");
+}
+@font-face {
+    font-family: ScalaSansSmallCaps;
+    font-style: italic;
+    font-weight: bold;
+    src: url(//newfs.s3.amazonaws.com/fonts/ScalaSansScWeb-BoldIta.woff) format("woff");
+}
 
 $headings-font: "Trebuchet MS", Helvetica, Arial, "Lucida Sans Unicode", sans-serif;
 $body-font: Verdana, Geneva, "Lucida Sans Unicode", sans-serif;
@@ -75,30 +120,57 @@ $orange_gradient: linear-gradient(
 $bright_orange_gradient: linear-gradient(
     top, $orange2 0%, $orange5 32%, $orange5 50%, $orange3 100%);
 
+$dull_orange_gradient: linear-gradient(
+    top, $orange1 0%, $orange4 60%, $orange1 100%);
+
 $disabled_orange_gradient: linear-gradient(
     top, mix($body_bg, $orange2, 75%) 0%, mix($body_bg, $orange5, 75%) 32%,
     mix($body_bg, $orange5, 75%) 50%, mix($body_bg, $orange3, 75%) 100%);
 
 .orange-button {
-    min-width: 10em;
-    @include border-radius(1em);
-    @include single-box-shadow(darken($inactive_bg, 30), 0px, 1px, 4px);
-    border: 1px solid $orange1;
-    @include background($orange_gradient);
-    padding: 0.3em 0.5em;
+    background-color: $orange1;   /* for IE without gradient support */
+    border: 1px solid $orange1 !important;
     color: white;
+    cursor: pointer;
+    display: inline-block;
+    font-family: ScalaSans, $headings-font;
+    font-size: 12px;
+    letter-spacing: 1px;
+    line-height: 18px;
+    min-width: 80px;
+    padding: 4px 12px;
     text-align: center;
     text-decoration: none;
-    font-family: $headings-font;
-    font-weight: bold;
-    line-height: 1.5em;
-    letter-spacing: (1em / 12);
+    @include border-radius(14px);
+    @include single-box-shadow(darken($inactive_bg, 30), 0px, 1px, 4px);
+    @include background($orange_gradient);
     &:hover {
+        background-color: $orange2;  /* for IE without gradient support */
         @include background($bright_orange_gradient);
     }
+    &:active {
+        background-color: $orange1;
+        @include background($dull_orange_gradient);
+    }
+    &:hover, &:visited, &:active {
+        color: white;
+    }
+    &.caps {
+        text-transform: uppercase;
+    }
     &.disabled {
-        border-color: mix($body_bg, $orange2, 75%);
+        background-color: mix($body_bg, $orange2, 50%); /* for IE without
+                                                           gradient support */
+        border-color: mix($body_bg, $orange2, 50%) !important;
+        cursor: default !important;
         @include background($disabled_orange_gradient);
+    }
+    &.large {
+        font-size: 16px;
+        letter-spacing: 1.5px;
+        min-width: 150px;
+        padding: 9px 30px;
+        @include border-radius(20px);
     }
 }
 
@@ -161,11 +233,84 @@ $disabled_orange_gradient: linear-gradient(
             font-size: 10px;
         }
         a {
+            border-bottom: 1px solid #ccc;
             color: #fff;
-            text-decoration: underline;
+            &:hover {
+                text-decoration: none;
+            }
+            &.contact {
+                cursor: pointer;
+                display: inline-block; /* prevent link from wrapping, which
+                                          makes tooltip position incorrect */
+                text-decoration: none;
+            }
         }
     }
     #sb-nav-close {
         top: 56px !important;
+    }
+}
+
+@mixin dialog-close-button {
+    background: transparent url(/static/images/icons/close.png) no-repeat;
+    cursor: pointer;
+    display: block;
+    height: 16px;
+    position: absolute;
+    right: 15px;
+    text-indent: -9999px;
+    top: 15px;
+    width: 16px;
+}
+
+.hidden {
+    display: none !important;
+}
+
+/* image popups (used in D. Key, and in D. Key section of species page) */
+
+#main {
+    div.shadow {                    /* shadow that hides the whole page */
+        display: none;
+        position: fixed;
+        z-index: 1000;
+        top: 0;
+        left: 0;
+        height: 100%;
+        width: 100%;
+        background-color: rgba(0,0,0, 0.45);
+        text-align: center;
+    }
+    div.popup {                     /* for displaying quick lists of taxa */
+        display: inline-block;
+        margin: 5% auto;
+        max-height: 90%;
+        overflow-y: auto;
+        overflow-x: hidden;         /* otherwise scrolling can leak to page */
+        border: 0.5em solid $list_popup_border;
+        @include border-radius(1em);
+        background-color: lighten($body_bg, 5);
+        padding: 1em 2em;
+        text-align: left;
+        font-size: $base-font-size;
+        line-height: 1.25em;
+        h2 {                        /* "See list of 14 species in 1b" */
+            border-bottom: 1px solid $text_green;
+            padding-bottom: 0.5em;
+            color: $text_green;
+            font-family: $headings-font;
+            font-weight: normal;
+
+            /* For tall lists a scrollbar appears, and tends to make the last word
+               of the title wrap unattractively. */
+            white-space: nowrap;
+        }
+        a {
+            @include hover-link;
+            color: #000;
+            &:hover {
+                color: $text_dark_green;
+            }
+        }
     }
 }

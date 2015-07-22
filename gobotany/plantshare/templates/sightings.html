@@ -1,29 +1,63 @@
 {% extends "gobotany/_page_free_sidebar.html" %}
+{% load gobotany_tags %}
 {% load mapping_tags %}
+{% load plantshare_tags %}
 
-{% block title %}Sightings: PlantShare{% endblock %}
+{% block title %}Recent Sightings: PlantShare{% endblock %}
+
+{% block js_require %}
+    require([
+        'plantshare/sightings'
+    ]);
+{% endblock %}
 
 {% block body_attributes %}id="sightings" class="plantshare"{% endblock %}
 
 {% block main_content %}
+
+<p class="nav-links">Recent |
+{% for year in years %}
+<a href="{% url 'ps-sightings-by-year' year %}">{{ year }}</a>
+    {% if not forloop.last %} | {% endif %}
+{% endfor %}
+</p>
+
 <h1>Recent Sightings</h1>
 
-{% regroup sightings by created as created_date_list %}
-
-<ul>
-{% for sightings in created_date_list %}
-    <li>{{ sightings.grouper }}
+{% regroup sightings by year as sightings_list_by_year %}
+{% for year in sightings_list_by_year %}
+    <h2>{{ year.grouper }}</h2>
+    {% regroup year.list by created as sightings_list_by_created_date %}
     <ul>
-        {% for sighting in sightings.list %}
-            <li><a
-                href="{% url 'ps-sighting' sighting.id %}"><i>{{ sighting.identification }}</i>
-                at {{ sighting.location|capfirst }}</a>
-                by {{ sighting.user }}</li>
-        {% endfor %}
+    {% for sightings in sightings_list_by_created_date %}
+        <li>{{ sightings.grouper }}
+        <ul>
+            {% for sighting in sightings.list %}
+                <li>
+                    {% if sighting.photo %}
+                        <a class="photolink"
+                            href="{% url 'ps-sighting' sighting.id %}">
+                            <img src="" alt=""
+                            data-lazy-img-src="{{ sighting.photo.thumb_cropped.url }}">
+                        </a>
+                    {% endif %}
+                    <div class="title">
+                    <a
+                    href="{% url 'ps-sighting' sighting.id %}">{{ sighting.identification|italicize_if_scientific|safe }}
+                    at {{ sighting.location|capfirst }}</a><br>by
+                    {% if sighting.user_display_name %}
+                        {{ sighting.user_display_name }}
+                    {% else %}
+                        {{ sighting.user }}
+                    {% endif %}
+                    </div>
+                    </li>
+            {% endfor %}
+        </ul>
+        </li>
+    {% endfor %}
     </ul>
-    </li>
 {% endfor %}
-</ul>
 
 {% endblock %}
 

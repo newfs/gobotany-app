@@ -138,7 +138,7 @@ Our selenium-powered browser tests are intended to cover things that
 cannot be tested without a browser and JavaScript.  To run them:
 
     dev/test-browser                           # to run all tests
-    dev/test-browser.sh FilterFunctionalTests  # select which tests
+    dev/test-browser FilterFunctionalTests     # select which tests
 
 Detailed notes about testing under selenium can be found in:
 
@@ -165,3 +165,26 @@ Admin full interface, which allows examining details including ranking
 scores, may also be helpful:
 
     http://localhost:8983/solr/admin/form.jsp
+
+
+Using the production JS locally
+-------------------------------
+
+When developing locally, the default is to use the individual
+non-minified JS files, as they require no separate build step before
+testing.
+
+After working on these JS files, you build the combined and minified
+production JS file to be used on the site.
+
+It is a good idea to test with this file to make sure the changes work
+as expected. Sometimes things load a bit differently when using this
+file, and it can happen that things worked with the individual JS
+files fail with the production JS file.
+
+To temporarily use the production JS file, edit the file:
+gobotany/app/gobotany/site/templates/gobotany/_js.html
+
+Change the if statement there to evaluate to False, such as with
+'if 1 == 0'. Ensure Django reloads (if not, restart Django), then
+reload the page.

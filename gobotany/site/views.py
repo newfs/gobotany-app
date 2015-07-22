@@ -6,6 +6,7 @@ import string
 
 from datetime import date
 
+from django.conf import settings
 from django.core.exceptions import ObjectDoesNotExist
 from django.db.models import Q
 from django.core.urlresolvers import reverse
@@ -16,15 +17,17 @@ from django.views.decorators.vary import vary_on_headers
 
 from gobotany.core import botany
 from gobotany.core.models import (
-    CommonName, ConservationStatus, ContentImage, CopyrightHolder,
+    CommonName, ContentImage, CopyrightHolder, Distribution,
     Family, Genus, GlossaryTerm, HomePageImage, PartnerSite, PartnerSpecies,
     Pile, Taxon, Video,
     )
-from gobotany.core.partner import (which_partner, per_partner_template,
+from gobotany.core.partner import (which_partner, partner_short_name,
+                                   per_partner_template,
                                    render_to_response_per_partner)
 from gobotany.plantoftheday.models import PlantOfTheDay
 from gobotany.simplekey.groups_order import ordered_pilegroups, ordered_piles
 from gobotany.site.models import PlantNameSuggestion, SearchSuggestion
+from gobotany.site.utils import query_regex
 
 # Home page
 
@@ -32,10 +35,12 @@ from gobotany.site.models import PlantNameSuggestion, SearchSuggestion
 def home_view(request):
     """View for the home page of the Go Botany site."""
 
-    home_page_images = HomePageImage.objects.all()
+    partner = which_partner(request)
+
+    # Get home page images for the partner
+    home_page_images = HomePageImage.objects.filter(partner_site=partner)
 
     # Get or generate today's Plant of the Day, if appropriate.
-    partner = which_partner(request)
     plant_of_the_day = PlantOfTheDay.get_by_date.for_day(
         date.today(), partner.short_name)
     plant_of_the_day_taxon = None
@@ -76,6 +81,11 @@ def help_view(request):
 @vary_on_headers('Host')
 def help_dkey_view(request):
     return render_to_response_per_partner('help_dkey.html', {
+           }, request)
+
+@vary_on_headers('Host')
+def system_requirements_view(request):
+    return render_to_response_per_partner('system_requirements.html', {
            }, request)
 
 @vary_on_headers('Host')
@@ -182,12 +192,30 @@ def terms_of_use_view(request):
 
 # API calls for input suggestions (search, plant names, etc.)
 
+def clean_input_string(input_string):
+    """Remove any special characters from a search-suggestion input string
+    that could cause an error.
+    """
+    ALLOWED_CHARACTERS = 'abcdefghijklmnopqrstuvwxyz01234567890 !%&-+\'",.'
+    input_characters = []
+    for character in input_string.lower():
+        if character in ALLOWED_CHARACTERS:
+            input_characters.append(character)
+    return ''.join(input_characters)
+
 def search_suggestions_view(request):
     """Return some search suggestions for search."""
     MAX_RESULTS = 10
     query = request.GET.get('q', '').lower()
+    query = clean_input_string(query)
+
     suggestions = []
     if query != '':
+        regex = query_regex(query)
+
+        # Make a variation for checking at the start of the string.
+        regex_at_start = '^%s' % regex
+
         # First look for suggestions that match at the start of the
         # query string.
 
@@ -197,7 +225,7 @@ def search_suggestions_view(request):
         # records be lowercased before import to ensure that they
         # can be reached.
         suggestions = list(SearchSuggestion.objects.filter(
-            term__startswith=query).exclude(term=query).
+            term__iregex=regex_at_start).exclude(term=query).
             order_by('term').values_list('term', flat=True)
             [:MAX_RESULTS * 2])   # Fetch extra to handle case-sensitive dups
         # Remove any duplicates due to case-sensitivity and pare down to
@@ -211,7 +239,7 @@ def search_suggestions_view(request):
         remaining_slots = MAX_RESULTS - len(suggestions)
         if remaining_slots > 0:
             more_suggestions = list(SearchSuggestion.objects.filter(
-                term__contains=query).exclude(term__startswith=query).
+                term__iregex=regex).exclude(term__iregex=regex_at_start).
                 order_by('term').values_list('term', flat=True)
                 [:MAX_RESULTS * 2])
             more_suggestions = list(sorted(set([suggestion.lower()
@@ -227,16 +255,19 @@ def plant_name_suggestions_view(request):
     """Return some suggestions for plant name input."""
     MAX_RESULTS = 10
     query = request.GET.get('q', '').lower()
+    query = clean_input_string(query)
 
     suggestions = []
     if query != '':
+        regex = query_regex(query)
+
+        # Make a variation for checking at the start of the string.
+        regex_at_start = '^%s' % regex
+
         # First look for suggestions that match at the start of the
         # query string.
-
-        # This query is case-insensitive to return names as they appear
-        # in the database regardless of the case of the query string.
         suggestions = list(PlantNameSuggestion.objects.filter(
-            name__istartswith=query).exclude(name=query).
+            name__iregex=regex_at_start).exclude(name=query).
             order_by('name').values_list('name', flat=True)[:MAX_RESULTS])
 
         # If fewer than the maximum number of suggestions were found,
@@ -245,7 +276,7 @@ def plant_name_suggestions_view(request):
         remaining_slots = MAX_RESULTS - len(suggestions)
         if remaining_slots > 0:
             more_suggestions = list(PlantNameSuggestion.objects.filter(
-                name__icontains=query).exclude(name__istartswith=query).
+                name__iregex=regex).exclude(name__iregex=regex_at_start).
                 order_by('name').values_list('name', flat=True)[:MAX_RESULTS])
             more_suggestions = list(more_suggestions)[:remaining_slots]
             suggestions.extend(more_suggestions)
@@ -276,11 +307,11 @@ def placeholder_view(request, template):
 
 def sitemap_view(request):
     URL_FORMAT = '%s://%s%s'
-    PROTOCOL = 'http'   # TODO: change when moving to https
+    PROTOCOL = 'https'
     host = request.get_host()
 
-    partner_short_name = which_partner(request)
-    partner_site = PartnerSite.objects.get(short_name=partner_short_name)
+    partner_name = partner_short_name(request)
+    partner_site = PartnerSite.objects.get(short_name=partner_name)
     partner_species = PartnerSpecies.objects.filter(
         partner=partner_site).values_list('species__scientific_name',
                                           'species__family__name',
@@ -388,12 +419,19 @@ def species_list_view(request):
         if taxon_id in plantmap:
             plantmap[taxon_id]['common_names'].append(common_name)
 
-    q = ConservationStatus.objects.filter(label='present').values_list(
-        'taxon_id', 'region',
-        )
-    for taxon_id, region in q:
-        if taxon_id in plantmap:
-            plantmap[taxon_id]['states'].add(region)
+    # Populate states from Distribution data.
+    taxon_ids = plantmap.keys()
+    t = Taxon.objects.filter(id__in=taxon_ids).values_list(
+        'id', 'scientific_name')
+    sci_names = list(set([name for id, name in t]))
+    states = [state.upper() for state in settings.STATE_NAMES.keys()]
+    d = Distribution.objects.filter(present=True).filter(
+        county__exact='').filter(state__in=states).filter(
+        species_name__in=sci_names).values_list('species_name', 'state')
+    ids_by_name = {name: id for id, name in t}
+    for scientific_name, state in d:
+        taxon_id = ids_by_name[scientific_name]
+        plantmap[taxon_id]['states'].add(state)
 
     q = Pile.species.through.objects.values_list(
         'taxon_id', 'pile__friendly_title', 'pile__pilegroup__friendly_title',

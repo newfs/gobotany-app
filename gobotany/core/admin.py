@@ -1,13 +1,27 @@
 # -*- encoding: utf-8 -*-
 
 from django import forms
-from django.contrib import admin
+from django.conf import settings
+from django.contrib import admin, messages
+from django.core.urlresolvers import reverse
 from django.db import models as dbmodels
-from django.template import Context, Template
+from django.http import HttpResponseRedirect
+from django.shortcuts import render_to_response
+from django.template import Context, RequestContext, Template
+from django.template.defaultfilters import slugify
 from django.utils.safestring import mark_safe
+from django.utils.translation import ugettext_lazy as _
+
 from gobotany.core import models
+from gobotany.core.distribution_places import DISTRIBUTION_PLACES
 
 # View classes
+
+def admin_url_from_model(model_obj):
+    url = reverse('admin:{0}_{1}_change'.format(
+            model_obj._meta.app_label, model_obj._meta.module_name
+        ), args=(model_obj.id,))
+    return url
 
 class _Base(admin.ModelAdmin):
 
@@ -30,12 +44,11 @@ class _Base(admin.ModelAdmin):
         return fieldsets
 
     class Media:
-        css = {'all': ('/static/admin_styles.css',)}
+        css = {
+            'all': ('/static/admin/admin_gb.css',)
+        }
+        js = ('/static/admin/admin_gb.js',)
 
-
-class TaxonConservationStatusInline(admin.TabularInline):
-    model = models.ConservationStatus
-    extra = 1
 
 class TaxonSynonymInline(admin.TabularInline):
     model = models.Synonym
@@ -45,9 +58,33 @@ class TaxonCommonNameInline(admin.TabularInline):
     model = models.CommonName
     extra = 1
 
+class LookalikeAdminForm(forms.ModelForm):
+    class Meta:
+        model = models.Lookalike
+        widgets = {
+            'lookalike_characteristic': forms.Textarea(attrs={
+                'cols': 80,
+                'rows': 10,
+                'maxlength': model._meta.get_field(
+                    'lookalike_characteristic').max_length,
+            })
+        }
+
 class TaxonLookalikeInline(admin.TabularInline):
+    form = LookalikeAdminForm
     model = models.Lookalike
     extra = 1
+
+class TaxonAdminForm(forms.ModelForm):
+    class Meta:
+        model = models.Taxon
+        widgets = {
+            'factoid': forms.Textarea(attrs={
+                    'cols': 80,
+                    'rows': 10,
+                    'maxlength': model._meta.get_field('factoid').max_length,
+            })
+        }
 
 class TaxonAdmin(_Base):
     """
@@ -72,8 +109,8 @@ class TaxonAdmin(_Base):
     </p>
 
     """
+    form = TaxonAdminForm
     inlines = [
-        TaxonConservationStatusInline,
         TaxonSynonymInline,
         TaxonCommonNameInline,
         TaxonLookalikeInline,
@@ -406,15 +443,333 @@ class PartnerSiteAdmin(_Base):
     readonly_fields = (species_summary,)
 
 
+class PartnerSpeciesAdmin(_Base):
+    """
+
+    <p>
+    Each "partner site" may have it's own list of species made available
+    from the total set of species.  Use this form to assign a particular
+    species to a partner site, choose whether the species will appear in
+    that partner site's Simple Key, and edit the custom page heading and 
+    "blurb" text which will appear on the species page for that partner
+    site.
+    </p>
+    """
+    search_fields = ('partner__short_name', 'species__scientific_name')
+    list_display = ('partner', 'species')
+    list_display_links = ('partner', 'species')
+    list_filter = ('partner',)
+
+
+class ContentImageAdmin(_Base):
+    """
+
+    <p>
+    Content Images are stored on S3 Storage, which is scanned every
+    night to check for new images. Creator names are cross-referenced
+    with the Copyright Holder information pulled from the source spreadsheet.
+    Content images are separately managed from user-uploaded, ScreenImages.
+    </p>
+    <p>
+    NOTE: Uploaded images will be named based on the other fields entered,
+    in the following format:<br />
+    taxon-images/Family/Genus-species-image_type-photographer.jpg<br />
+    Optional letters will be added to the name ensure uniqueness.
+    </p>
+    """
+    search_fields = ('image', 'alt', 'creator')
+    list_display = ('alt', 'image', 'creator')
+    list_display_links = ('alt', 'image', 'creator')
+    fields = ('alt', 'rank', 'image_type', 'content_type',
+        'object_id', 'creator', 'copyright', 'image')
+    readonly_fields = ('copyright',)
+
+    def copyright(self, obj):
+        copyright_obj = models.CopyrightHolder.objects.get(coded_name=obj.creator)
+        url = admin_url_from_model(copyright_obj)
+        markup = u'<a href={0}>{1}</a>'.format(
+            url,
+            'Copyright Info for {0}'.format(obj.creator)
+        )
+        return mark_safe(markup)
+
+class CopyrightHolderAdmin(_Base):
+    search_fields = ('coded_name', 'expanded_name', 'copyright')
+    list_display = ('coded_name', 'expanded_name', 'copyright', 'date_record', 'image_count')
+    list_display_links = ('coded_name', 'expanded_name', 'copyright', 'date_record')
+
+    def image_count(self, obj):
+        return models.ContentImage.objects.filter(creator=obj.coded_name).count()
+
+
+class ConservationStatusForm(forms.ModelForm):
+    class Meta:
+        model = models.ConservationStatus
+
+    def clean(self):
+        s_rank = self.cleaned_data.get('s_rank')
+        endangerment_code = self.cleaned_data.get('endangerment_code')
+
+        if s_rank == '' and endangerment_code == '':
+            raise forms.ValidationError(
+                'Both S Rank and Endangement Code cannot be blank.')
+
+        return self.cleaned_data
+
+
+class ConservationStatusAdmin(_Base):
+    form = ConservationStatusForm
+    list_display = ('taxon', 'variety_subspecies_hybrid', 'region', 's_rank',
+        'endangerment_code', 'allow_public_posting')
+    list_filter = ('region', 's_rank', 'endangerment_code',
+        'allow_public_posting')
+    search_fields = ['taxon__scientific_name', 'variety_subspecies_hybrid',]
+
+
+class InvasiveStatusAdmin(_Base):
+    search_fields = ['taxon__scientific_name']
+    list_display = ('taxon', 'region', 'invasive_in_region',
+        'prohibited_from_sale')
+    list_editable = ('invasive_in_region', 'prohibited_from_sale')
+    list_filter = ('region', 'invasive_in_region', 'prohibited_from_sale')
+
+
+class DistributionRegionFilter(admin.SimpleListFilter):
+    title = _('region')   # appears in the filter sidebar: 'By {title}'
+    parameter_name = 'region'  # for the URL query string
+
+    def lookups(self, request, model_admin):
+        """Returns a list of tuples: the first element is the coded value
+        that will appear in the URL query, and the second element is the
+        name for the option that will appear in the filter sidebar.
+        """
+        return (
+            # Example: ('new-england', _('New England')),
+            (slugify(settings.REGION_NAME), _(settings.REGION_NAME)),
+        )
+
+    def queryset(self, request, queryset):
+        """Returns the filtered queryset based on the query string value."""
+        states_in_region = [k.upper()
+                            for k, v in settings.STATE_NAMES.iteritems()]
+        if self.value() == slugify(settings.REGION_NAME): # e.g. 'New England'
+            return queryset.filter(state__in=states_in_region)
+
+
+class RankFilter(admin.SimpleListFilter):
+    title = _('rank')
+    parameter_name = 'rank'
+
+    def lookups(self, request, model_admin):
+        return (
+                ('species', 'species'),
+                ('subspecies', 'subspecies'),
+                ('variety', 'variety'),
+                ('form', 'form'),
+        )
+
+    def queryset(self, request, queryset):
+        if self.value() == 'species':
+            qs = queryset.exclude(
+                scientific_name__contains='var.').exclude(
+                scientific_name__contains='sp.')  # handle subsp. and ssp.
+        elif self.value() == 'subspecies':
+            qs = queryset.filter(scientific_name__contains='sp.')
+        elif self.value() == 'variety':
+            qs = queryset.filter(scientific_name__contains='var.')
+        elif self.value() == 'form':
+            qs = queryset.filter(scientific_name__contains='f.')
+        else:
+            qs = queryset
+        return qs
+
+
+class DistributionAdmin(_Base):
+    list_display = ('scientific_name', 'species_name', 'subspecific_epithet',
+        'state', 'county', 'present', 'native')
+    list_editable = ('present', 'native',)
+    list_filter = (DistributionRegionFilter, RankFilter, 'native', 'present',
+        'state', 'county')
+    list_max_show_all = 700   # to allow showing all for a species including
+                              # subspecies and varieties
+    list_per_page = 150
+    search_fields = ('scientific_name',)
+    actions = ['rename_records']
+
+    # Override the change view to handle the Save and Edit Next button.
+    def add_view(self, request, extra_context=None):
+        result = super(DistributionAdmin, self).add_view(request,
+            extra_context=extra_context)
+
+        # Although it would be preferable to hide the button for this
+        # view, for now just make it do something reasonable: the
+        # same thing as the Save and Add Another button.
+        if request.POST.has_key('_editnext'):
+            result['Location'] = '/admin/core/distribution/add/'
+
+        return result
+
+    # Override the change view to handle the Save and Edit Next button.
+    def change_view(self, request, object_id, extra_context=None):
+        result = super(DistributionAdmin, self).change_view(request,
+            object_id, extra_context=extra_context)
+
+        if request.POST.has_key('_editnext'):
+            if request.GET.has_key('ids'):
+                ids = request.GET['ids'].split(',');
+
+                try:
+                    # All the ids on the user's last list page are
+                    # passed on the URL. Find the current object id,
+                    # and the next in the sequence will be the id
+                    # of the next record on the page.
+                    current_id_index = ids.index(object_id);
+                    next_object_id = ids[current_id_index + 1];
+
+                    # Go to the next record, passing again the list of
+                    # all ids as a request parameter.
+                    request_path_parts = request.path.split('/')
+                    request_path_parts[4] = str(next_object_id)
+                    new_path = '/'.join(request_path_parts)
+                    new_path += '?ids=' + request.GET['ids']
+                    result['Location'] = new_path
+                except IndexError:
+                    # If there is no next record to edit, tell the user.
+                    message = ''.join([
+                        'Changed the last record on your page. ',
+                        'To edit more records in sequence, first search, ',
+                        'filter, sort, and go to a desired page.'])
+                    messages.info(request, message)
+
+        return result
+
+    # Allow creating a set of Distribution records for a new plant, one
+    # for each state, province and New England county, all at once. In
+    # the UI, this is a custom object-actions button at the top right
+    # of the list view, labeled "Add set of Distribution records."
+    @staticmethod
+    def add_set_view(request):
+        errors = []
+        scientific_name = ''
+        species_name = ''
+
+        if request.POST.has_key('scientific_name'):
+            scientific_name = request.POST['scientific_name']
+            if not scientific_name:
+                errors.append('This field is required.')
+
+        if request.POST.has_key('species_name'):
+            species_name = request.POST['species_name']
+            if not species_name:
+                errors.append('This field is required.')
+
+        if request.method == 'GET' or errors:
+            # Return the form page.
+            return render_to_response(
+                    'admin/core/distribution/add_set_form.html', {
+                        'title': 'Add set of Distribution records',
+                        'errors': errors,
+                        'scientific_name': scientific_name,
+                    }, context_instance=RequestContext(request))
+        elif request.method == 'POST':
+            subspecific_epithet = request.POST.get('subspecific_epithet', '')
+            # Get any defaults.
+            present = request.POST.get('present', False)
+            native = request.POST.get('native', False)
+            # Create the set of distribution records.
+            records_created = 0
+            for place in DISTRIBUTION_PLACES:
+                state, county = (place)
+                results = models.Distribution.objects.filter(
+                    scientific_name=scientific_name, state=state,
+                    county=county)
+                # If no record exists yet for this plant in this place,
+                # create one, setting any requested defaults.
+                if not results.exists():
+                    models.Distribution.objects.create(
+                        scientific_name=scientific_name,
+                        species_name=species_name,
+                        subspecific_epithet=subspecific_epithet, state=state,
+                        county=county, present=present, native=native)
+                    records_created += 1
+            # Return to the list page with a message to display.
+            message = ('Added %d Distribution records for %s.' %
+                (records_created, scientific_name))
+            messages.info(request, message)
+            return HttpResponseRedirect('/admin/core/distribution/')
+
+    class RenameRecordsForm(forms.Form):
+        _selected_action = forms.CharField(widget=forms.MultipleHiddenInput)
+        new_scientific_name = forms.CharField(
+            widget=forms.TextInput(attrs={
+                'size': '100',
+                'style': 'display:block'
+            }),
+            label='Scientific name',
+            max_length=100)
+
+    def rename_records(self, request, queryset):
+        form = None
+
+        if 'rename' in request.POST:
+            form = self.RenameRecordsForm(request.POST)
+
+            if form.is_valid():
+                number_of_records = queryset.count()
+                new_scientific_name = form.cleaned_data['new_scientific_name']
+
+                queryset.update(scientific_name=new_scientific_name)
+
+                message = ('Successfully renamed %d records to %s.' % (
+                    number_of_records, new_scientific_name))
+                self.message_user(request, message)
+                return HttpResponseRedirect(request.get_full_path())
+
+        if not form:
+            form = self.RenameRecordsForm(
+                initial={'_selected_action': request.POST.getlist(
+                    admin.ACTION_CHECKBOX_NAME)}
+                )
+
+        return render_to_response(
+            'admin/core/distribution/rename_records.html', {
+                'records': queryset,
+                'rename_records_form': form,
+            }, context_instance=RequestContext(request))
+    rename_records.short_description = 'Rename selected Distribution records'
+
+
+
+
+class LookalikeAdmin(_Base):
+    form = LookalikeAdminForm
+    list_display = ('taxon', 'lookalike_scientific_name',
+        'lookalike_characteristic')
+
+class HomePageImageAdmin(_Base):
+    list_display = ('image', 'partner_site',)
+    list_filter = ('partner_site',)
+
+class DefaultFilterAdmin(_Base):
+    list_display = ('character', 'pile', 'order',)
+    list_filter = ('pile',)
+
+class PlantPreviewCharacterAdmin(_Base):
+    list_display = ('character', 'pile', 'order',)
+    list_filter = ('pile',)
+
 # Registrations
 
 admin.site.register(models.Parameter)
-admin.site.register(models.ContentImage)
-admin.site.register(models.HomePageImage)
 admin.site.register(models.ImageType)
 admin.site.register(models.CharacterGroup)
-admin.site.register(models.Taxon, TaxonAdmin)
+admin.site.register(models.SourceCitation)
 
+admin.site.register(models.HomePageImage, HomePageImageAdmin)
+admin.site.register(models.Lookalike, LookalikeAdmin)
+admin.site.register(models.CopyrightHolder, CopyrightHolderAdmin)
+admin.site.register(models.Taxon, TaxonAdmin)
+admin.site.register(models.ContentImage, ContentImageAdmin)
 admin.site.register(models.GlossaryTerm, GlossaryTermAdmin)
 admin.site.register(models.Character, CharacterAdmin)
 admin.site.register(models.Pile, PileAdmin)
@@ -422,3 +777,10 @@ admin.site.register(models.PileGroup, PileGroupAdmin)
 admin.site.register(models.Family, FamilyAdmin)
 admin.site.register(models.Genus, GenusAdmin)
 admin.site.register(models.PartnerSite, PartnerSiteAdmin)
+admin.site.register(models.PartnerSpecies, PartnerSpeciesAdmin)
+admin.site.register(models.ConservationStatus, ConservationStatusAdmin)
+admin.site.register(models.InvasiveStatus, InvasiveStatusAdmin)
+admin.site.register(models.Distribution, DistributionAdmin)
+admin.site.register(models.DefaultFilter, DefaultFilterAdmin)
+admin.site.register(models.PlantPreviewCharacter, PlantPreviewCharacterAdmin)
+

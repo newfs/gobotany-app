@@ -1,11 +1,15 @@
+import string
 from collections import defaultdict, OrderedDict as odict
+from datetime import datetime
 
 from django.conf import settings
 from django.db import models
+from django.db.models import Q
 from django.contrib.auth.models import User
 from django.contrib.contenttypes.models import ContentType
 from django.contrib.contenttypes import generic
 from django.core.exceptions import ObjectDoesNotExist
+from django.core.validators import MaxValueValidator
 from django.forms import ValidationError
 from django.template.defaultfilters import slugify
 
@@ -364,6 +368,9 @@ class ImageType(models.Model):
     """
     name = models.CharField(max_length=100,
                             verbose_name=u'image type', unique=True)
+    # Normally only 2 characters long, but save some space just in case
+    code = models.CharField(max_length=4,
+                            verbose_name=u'type code')
 
     objects = NameManager()
 
@@ -374,8 +381,59 @@ class ImageType(models.Model):
         return (self.name,)
 
 
+# Converts a numeric index (e.g. 233) to a alpha index (e.g. aac)
+# See http://stackoverflow.com/questions/2063425/python-elegant-inverse-function-of-intstring-base
+# and linked thread.
+def _to_image_suffix(num):
+    digits = string.lowercase
+    base = len(digits)
+    if num == 0:
+        return ''
+    
+    result = []
+    current = num - 1
+    while current:
+        result.append(digits[(current % base)])
+        current = (current // base)
+    else:
+        if not result:
+            result = ['a']
+    
+    result.reverse()
+    return ''.join(result)
+
+def _content_image_filename(instance, filename):
+    """ Rename uploaded images based on other instance model information,
+    so the file naming scheme remains consistent when uploaded via the admin.
+    """
+    sections = []
+    # ContentType is assumed to be Taxon for all current ContentImages, because
+    # they currently all ARE associated with Taxon.  If this changes in the
+    # future this naming convention will need to be dropped or rethought.
+    taxon = Taxon.objects.get(pk=instance.object_id)
+    sections.extend(taxon.scientific_name.lower().split())
+    sections.append(instance.image_type.code)
+    sections.append(instance.creator)
+    # Find any matching images to get our subscript
+    base_name = '-'.join(sections)
+    image_query = ContentImage.objects.filter(image__contains=base_name)
+    if instance.pk:
+        image_query = image_query.exclude(pk=instance.pk)
+    matching_images = image_query.count()
+    image_index = ''
+    if matching_images > 0:
+        # Handle some seriously long image lists
+        image_index = _to_image_suffix(matching_images)
+        sections.append(image_index)
+
+    ext = filename[filename.rfind('.'):]
+    new_filename = '{0}{1}'.format('-'.join(sections), ext)
+
+    return new_filename
+
 def _content_image_path(instance, filename):
     ctype = instance.content_type
+    filename = _content_image_filename(instance, filename)
     dirname = 'content_images'
     if ctype is not None:
         dirname = settings.CONTENT_IMAGE_LOCATIONS.get(ctype.model,
@@ -398,7 +456,8 @@ class ContentImage(models.Model):
     """
     image = models.ImageField('content image',
                               max_length=300,  # long filenames
-                              upload_to=_content_image_path)
+                              upload_to=_content_image_path,
+                              help_text='Image will be renamed and moved based on other field information.')
     alt = models.CharField(max_length=300,
                            verbose_name=u'title (alt text)')
     rank = models.PositiveSmallIntegerField(
@@ -452,15 +511,29 @@ class ContentImage(models.Model):
         return name
 
 
+def _partner_subdirectory_path(instance, filename):
+    path_segments = []
+    if instance.root_path:
+        path_segments.append(instance.root_path)
+    if instance.partner_site:
+        path_segments.append(instance.partner_site.short_name)
+    path_segments.append(filename)
+
+    return '/'.join(path_segments)
+
+
 class HomePageImage(models.Model):
     """An image that appears on the home page, cycled among others."""
-    image = models.ImageField(upload_to='home-page-images')
+    root_path = 'home-page-images'
+    partner_site = models.ForeignKey('PartnerSite', related_name='home_page_images')
+    image = models.ImageField(upload_to=_partner_subdirectory_path)
 
     class Meta:
-        ordering = ['image']  # users prefix filenames with "01_", "02_", etc
+        # users prefix filenames with "01_", "02_", etc.
+        ordering = ['partner_site', 'image']
 
     def __unicode__(self):
-        return '%d: %s' % (self.order, self.image.name)
+        return self.image.name
 
 
 class Family(models.Model):
@@ -545,7 +618,7 @@ class CommonName(models.Model):
 class Lookalike(models.Model):
     """Species that can be mistaken for others."""
     lookalike_scientific_name = models.CharField(max_length=100)
-    lookalike_characteristic = models.CharField(max_length=900)
+    lookalike_characteristic = models.CharField(max_length=1000, blank=True)
     taxon = models.ForeignKey('Taxon', related_name='lookalikes')
 
     def __unicode__(self):
@@ -568,12 +641,13 @@ class WetlandIndicator(models.Model):
 
 
 class TaxonManager(models.Manager):
-    """Allow import by natural keys for partner sites"""
     def get_by_natural_key(self, scientific_name):
         return self.get(scientific_name=scientific_name)
 
+
 class Taxon(models.Model):
-    """Despite its general name, this currently represents a single species."""
+    """Despite its general name this currently represents a single species."""
+    objects = TaxonManager()
 
     scientific_name = models.CharField(max_length=100, unique=True)
     piles = models.ManyToManyField(
@@ -592,7 +666,9 @@ class Taxon(models.Model):
     north_american_introduced = models.NullBooleanField()
     description = models.CharField(max_length=500, blank=True)
     variety_notes = models.CharField(max_length=1000, blank=True)
-    # TODO: import descriptions!
+
+    def natural_key(self):
+        return (self.scientific_name,)
 
     objects = TaxonManager()
 
@@ -625,23 +701,36 @@ class Taxon(models.Model):
         names.append(self.scientific_name)
         return names
 
-    def get_conservation_statuses(self):
-        mapping = defaultdict(list)
-        for row in self.conservation_statuses.all():
-            mapping[settings.STATE_NAMES[row.region]].append(row.label)
-        return odict(sorted(mapping.iteritems()))
-
-    def get_distribution_and_conservation_statuses(self):
-        # Order the conservation statuses such that a special value, the
-        # distribution (present/absent), always comes first.
-        mapping = defaultdict(list)
-        for row in self.conservation_statuses.all():
-            key = settings.STATE_NAMES[row.region]
-            if row.label in ['present', 'absent']:
-                mapping[key].insert(0, row.label)
-            else:
-                mapping[key].append(row.label)
-        return odict(sorted(mapping.iteritems()))
+    def get_state_distribution_labels(self):
+        """For each state covered on the site, return a label indicating
+        the presence or absence of the species, and, where applicable,
+        any invasive status.
+        """
+        states = [key.upper() for key in settings.STATE_NAMES.keys()]
+        distributions = Distribution.objects.all_records_for_plant(
+            self.scientific_name).filter(state__in=states).values_list(
+            'state', 'present')
+        invasive_statuses = InvasiveStatus.objects.filter(
+            taxon=self).values_list('region', 'invasive_in_region',
+            'prohibited_from_sale')
+        invasive_dict = {state: (invasive, prohibited)
+            for state, invasive, prohibited in invasive_statuses}
+        mapping = {settings.STATE_NAMES[state.lower()]: 'absent'
+                   for state in states}
+        for state, present in distributions:
+            if present == True:
+                state = state.lower()
+                key = settings.STATE_NAMES[state]
+                label = 'present'
+                if state in invasive_dict.keys():
+                    invasive, prohibited = invasive_dict[state]
+                    if invasive:
+                        label += ', invasive'
+                    if prohibited:
+                        label += ', prohibited'
+                mapping[key] = label
+        labels = odict(sorted(mapping.iteritems()))
+        return labels
 
     def get_default_image(self):
         try:
@@ -671,19 +760,47 @@ class Taxon(models.Model):
         return (self.scientific_name,)
 
 
+class SourceCitation(models.Model):
+    """A reference citation for a particular piece of literature.
+
+    These citations are used to track the literature that was consulted to
+    learn that a character value is indeed characteristic of a particular
+    species.
+
+    """
+    citation_text = models.CharField(max_length=300)
+    author = models.CharField(max_length=100, blank=True,
+            verbose_name=u'Author or Editor')
+    publication_year = models.PositiveSmallIntegerField(null=True, blank=True,
+            verbose_name=u'Publication Year', validators=[
+                MaxValueValidator(datetime.now().year),
+            ])
+    article_title = models.CharField(max_length=100, blank=True,
+            verbose_name=u'Article Title')
+    publication_title = models.CharField(max_length=100, blank=True,
+            verbose_name=u'Periodical or Book Title')
+    publisher_name = models.CharField(max_length=100, blank=True,
+            verbose_name=u'Publisher Name')
+    publisher_location = models.CharField(max_length=100, blank=True,
+            verbose_name=u'Publisher Location')
+
+    class Meta:
+        ordering = ['citation_text']
+
+    def __unicode__(self):
+        return u'{0}'.format(self.citation_text)
+
+
 class TaxonCharacterValue(models.Model):
     """Binary relation specifying the character values of a particular Taxon.
-
-    The extra field `lit_source` is used to remember what literature was
-    consulted to learn that a character value is indeed characteristic
-    of a particular species.
 
     """
     taxon = models.ForeignKey(Taxon)
     character_value = models.ForeignKey(CharacterValue,
                                         related_name='taxon_character_values')
-    lit_source = models.CharField(max_length=250,
-                                  null=True, blank=True)
+    literary_source = models.ForeignKey(SourceCitation,
+                                        related_name='taxon_character_values',
+                                        null=True)
 
     class Meta:
         unique_together = ('taxon', 'character_value')
@@ -717,33 +834,58 @@ class Edit(models.Model):
 
 
 class ConservationStatus(models.Model):
-    """Zero or more conservation status values per species+region."""
-
-    CONSERVATION_LABELS = (
-        ('absent', 'Absent'),
-        ('endangered', 'Endangered'),
-        ('extirpated', 'Extirpated'),
-        ('historic', 'Historic'),
-        ('invasive', 'Invasive'),
-        ('present', 'Present'),
-        ('prohibited', 'Prohibited'),
-        ('rare', 'Rare'),
-        ('special concern', 'Special concern'),
-        ('threatened', 'Threatened'),
-        )
-
-    STATE_NAMES = sorted(settings.STATE_NAMES.items(), key=lambda x: x[1])
+    STATE_NAMES = sorted([(abbrev.upper(), name)
+                         for abbrev, name in settings.STATE_NAMES.items()],
+                         key=lambda x: x[1])
 
     taxon = models.ForeignKey(Taxon, related_name='conservation_statuses')
+    variety_subspecies_hybrid = models.CharField(max_length=80, blank=True)
     region = models.CharField(choices=STATE_NAMES, max_length=80)
-    label = models.CharField(choices=CONSERVATION_LABELS, max_length=80)
+    s_rank = models.CharField(max_length=10, blank=True)
+    endangerment_code = models.CharField(max_length=10, blank=True)
+    allow_public_posting = models.BooleanField(default=True)
 
     class Meta:
-        ordering = ('region', 'label')
-        unique_together = ('taxon', 'region', 'label')
+        ordering = ('taxon', 'variety_subspecies_hybrid', 'region')
+        verbose_name = 'conservation status'
+        verbose_name_plural = 'conservation statuses'
 
     def __unicode__(self):
-        return u'%s: %s' % (self.region, self.label)
+        return u'%s %s in %s: %s %s' % (self.taxon.scientific_name,
+            self.variety_subspecies_hybrid, self.region, self.s_rank,
+            self.endangerment_code)
+
+    def region_name(self):
+        """Return the human-readable name for a region."""
+        return settings.STATE_NAMES[self.region.lower()]
+
+
+class InvasiveStatus(models.Model):
+    """A list of states that have designated a plant as being invasive or
+    prohibited from being sold. Note that we store the lowercase state codes.
+
+    """
+
+    STATE_NAMES = sorted(settings.STATE_NAMES.items())
+
+    taxon = models.ForeignKey(Taxon, related_name='invasive_statuses')
+    region = models.CharField(choices=STATE_NAMES, max_length=80)
+    invasive_in_region = models.NullBooleanField(default=None)
+    prohibited_from_sale = models.NullBooleanField(default=None)
+
+    class Meta:
+        ordering = ('taxon', 'region')
+        verbose_name = 'invasive status'
+        verbose_name_plural = 'invasive statuses'
+
+    def __unicode__(self):
+        return u'%s in %s: %s %s' % (self.taxon.scientific_name,
+            self.region, self.invasive_in_region,
+            self.prohibited_from_sale)
+
+    def region_name(self):
+        """Return the human-readable name for a region."""
+        return settings.STATE_NAMES[self.region.lower()]
 
 
 class DefaultFilter(models.Model):
@@ -834,17 +976,58 @@ class PlantPreviewCharacter(models.Model):
                               self.character.friendly_name)
 
 
+class DistributionManager(models.Manager):
+    def all_records_for_plant(self, scientific_name):
+        """Look up the plant and get its distribution records.
+
+        Get two sets of records together:
+        1. All the records for the exact scientific name
+        2. Any additional records that start with the scientific name
+           followed by a space
+
+        This is done to safely pick up any additional records with
+        subspecific epithets (ssp., var., etc.). These are included on the
+        map because the maps are made for the species pages, which feature
+        both the species information and any subspecific information.
+        """
+        return self.filter(
+            Q(scientific_name=scientific_name) |
+            Q(scientific_name__startswith=scientific_name + ' ')
+        )
+
+
 class Distribution(models.Model):
-    """County-level distribution data for plants."""
+    """County- or state-level distribution data for plants."""
     scientific_name = models.CharField(max_length=100, db_index=True)
-    state = models.CharField(max_length=2)
-    county = models.CharField(max_length=50)
-    status = models.CharField(max_length=100)
+
+    species_name = models.CharField(max_length=60, db_index=True, default='')
+    subspecific_epithet = models.CharField(max_length=60, db_index=True,
+        default='')
+
+    state = models.CharField(max_length=2, db_index=True)
+    county = models.CharField(max_length=50, blank=True)
+    present = models.BooleanField(default=False)
+    native = models.BooleanField(default=False)
+
+    class Meta:
+        ordering = ('scientific_name', 'state', 'county')
+        verbose_name = 'Distribution record'
 
     def __unicode__(self):
         county = ' (%s County)' % self.county if len(self.county) > 0 else ''
+        status = ''
+        if self.present:
+            status = 'present, '
+            if self.native:
+                status += 'native'
+            else:
+                status += 'non-native'
+        else:
+            status = 'absent'
         return '%s: %s%s: %s' % (self.scientific_name, self.state,
-                                 county, self.status)
+                                 county, status)
+
+    objects = DistributionManager()
 
 
 class CopyrightHolder(models.Model):
@@ -853,11 +1036,23 @@ class CopyrightHolder(models.Model):
     expanded_name = models.CharField(max_length=100)
     copyright = models.CharField(max_length=300)
     source = models.CharField(max_length=300)
+    contact_info = models.CharField(max_length=300)
+
+    # Additional fields, imported as text.  These may need to change later.
+    primary_bds = models.CharField(max_length=300)
+    date_record = models.CharField(max_length=300)
+    last_name = models.CharField(max_length=300)
+    permission_source = models.CharField(max_length=300)
+    permission_level = models.CharField(max_length=300)
+    permission_location = models.CharField(max_length=300)
+    notes = models.CharField(max_length=1000)
 
     def __unicode__(self):
         unicode_string = u'%s: %s. Copyright: %s.' % (self.coded_name,
                                                       self.expanded_name,
                                                       self.copyright)
+        if self.contact_info:
+            unicode_string += u' Contact Info: %s' % self.contact_info
         if self.source:
             unicode_string += u' Source: %s' % self.source
         return unicode_string

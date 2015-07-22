@@ -1,0 +1,48 @@
+{% extends "gobotany/_page_full_sidebar.html" %}
+
+{% block title %}System Requirements: Help{% endblock %}
+
+{% block js_require %}
+    {% include "gobotany/_help_js_require.html" %}
+{% endblock %}
+
+{% block body_attributes %}id="system-requirements" class="help"{% endblock %}
+
+{% block main_content %}
+    <h1>System Requirements</h1>
+
+    <p>Go Botany runs on a wide range of computers, from desktops and laptops
+    to tablets and smartphones.</p>
+
+    <div>
+        <h2>Desktops, Laptops</h2>
+
+        <p>Supported are the current and previous major versions of the
+        following browsers: Chrome, Internet Explorer, Safari, Firefox,
+        and Opera.</p>
+
+        <p>Some earlier versions of the browsers listed should also work.
+        Internet Explorer should work from version 9.</p>
+    </div>
+
+    <div>
+        <h2>Tablets, Smartphones</h2>
+
+        <p>Supported are the standard browsers on the current and previous
+        major versions of iOS and Android.</p>
+
+        <p>Devices that run these include:
+        iPad, iPhone, iPod touch, Samsung Galaxy, Nexus, and others.</p>
+    </div>
+
+    <h2>Feedback</h2>
+
+    <p>If you experience trouble using a system that appears to be
+    supported, please <a href="{% url 'site-contact' %}">write</a> and tell
+    us about it. State the device make and model, operating
+    system version, and browser.</p>
+{% endblock %}
+
+{% block sidebar_content %}
+    {% include "gobotany/_help_navigation.html" %}
+{% endblock %}

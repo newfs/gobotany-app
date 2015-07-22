@@ -1,16 +1,34 @@
 {% extends "gobotany/_page_free_sidebar.html" %}
+{% load gobotany_tags %}
 {% load mapping_tags %}
 
 {% block title %}Sightings Locator: PlantShare{% endblock %}
 
 {% block js_require %}
-    require(['util/suggester_init', 'plantshare/sightings_locator']);
+    require([
+        'util/suggester_init',
+        'plantshare/sightings_locator'
+    ]);
 {% endblock %}
 
 {% block body_attributes %}id="locator" class="plantshare"{% endblock %}
 
 {% block main_content %}
 <h1>Sightings Locator</h1>
+
+<p>Latest Sightings</p>
+<div id="species-images">
+    {% for sighting in recent_sightings %}
+        <a href="{% url 'ps-sighting' sighting.id %}"
+            {% if forloop.counter == 1 %}id="startimage"{% endif %}
+            title="{{ sighting.identification }} at {{ sighting.location|capfirst }}"
+            data-is-scientific-name="{{ sighting.identification|is_scientific_name }}">
+            <img src="{{ sighting.photos.all.0.thumb_cropped.url }}"
+                alt="Sighting photo: {{ sighting.identification }}">
+        </a>
+    {% endfor %}
+
+</div>
 
 <form id="sightings-locator">
     <h3>Show recent plant sightings for</h3>
@@ -28,7 +46,7 @@
 
     <p id="sightings-status"><span>0</span> sightings found</p>
 
-    {% sightings_map latitude=map.latitude longitude=map.longitude center_title=map.center_title height="524px" width="710px" zoom="6" id="sightings-map" %}
+    {% sightings_map latitude=map.latitude longitude=map.longitude center_title=map.center_title height="524px" width="710px" zoom=map.zoom id="sightings-map" %}
 </form>
 
 {% endblock %}

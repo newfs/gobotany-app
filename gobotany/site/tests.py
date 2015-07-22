@@ -48,7 +48,9 @@ def _setup_sample_data():
                 ('Acorus americanus', 'several-veined sweetflag'),
                 ('Acorus calamus', 'single-veined sweetflag'),
                 ('Actaea pachypoda', 'white baneberry'),
-                ('Actaea rubra', ''),
+                ('Actaea rubra', 'red baneberry'),
+                ('Sabatia kennedyana', 'Plymouth rose-gentian'),
+                ('Calystegia spithamaea', 'upright false bindweed'),
             ]
     for name in names:
         s = site_models.PlantNameSuggestion(name=name[0])
@@ -171,7 +173,7 @@ class NavigationTests(FunctionalCase):
         self.assertEqual(self.css1('h1').text, 'Woody plants')
 
     def test_main_heading_plantshare(self):
-        self.get('/ps/')
+        self.get('/plantshare/')
         self.assertEqual(self.css1('h1').text, 'PlantShare')
 
     def test_main_heading_full_key(self):
@@ -500,23 +502,23 @@ class PlantNameSuggestionsTests(TestCase):
     def half_max_names(self):
         return int(math.floor(self.MAX_NAMES / 2))
 
-    def test_get_returns_ok(self):
+
         response = self.client.get('/plant-name-suggestions/')
         self.assertEqual(200, response.status_code)
 
-    def test_get_returns_json(self):
+    def test_returns_json(self):
         response = self.client.get('/plant-name-suggestions/')
         self.assertEqual('application/json; charset=utf-8',
                          response['Content-Type'])
 
-    def test_get_returns_names_in_expected_format(self):
+    def test_returns_names_in_expected_format(self):
         response = self.client.get('/plant-name-suggestions/?q=a')
         names = json.loads(response.content)
         for name in names:
             self.assertTrue(re.match(r'^[A-Za-z \-]*( \([A-Za-z \-]*\))?$',
                             name), 'Name "%s" not in expected format' % name)
 
-    def test_get_returns_names_matching_at_beginning_of_string(self):
+    def test_returns_names_matching_at_beginning_of_string(self):
         EXPECTED_NAMES = [
             u'Amelanchier arborea',
             u'Amelanchier bartramiana',
@@ -533,6 +535,32 @@ class PlantNameSuggestionsTests(TestCase):
         names = json.loads(response.content)
         self.assertEqual(names, EXPECTED_NAMES)
 
+    def test_returns_results_with_interior_transposition(self):
+        expected_names = ['Plymouth rose-gentian']
+        response = self.client.get('/plant-name-suggestions/?q=pylmouth%20r')
+        names = json.loads(response.content)
+        self.assertEqual(names, expected_names)
+
+    def test_returns_results_with_interior_transposition_second_word(self):
+        expected_names = ['Plymouth rose-gentian']
+        response = self.client.get(
+            '/plant-name-suggestions/?q=plymouth%20rsoe')
+        names = json.loads(response.content)
+        self.assertEqual(names, expected_names)
+
+    def test_returns_results_with_extra_character(self):
+        expected_names = ['Plymouth rose-gentian']
+        response = self.client.get('/plant-name-suggestions/?q=plymoutth%20r')
+        names = json.loads(response.content)
+        self.assertEqual(names, expected_names)
+
+    def test_returns_results_with_missing_duplicate_character(self):
+        expected_names = ['Sabatia kennedyana']
+        response = self.client.get(
+            '/plant-name-suggestions/?q=sabatia%20kened')
+        names = json.loads(response.content)
+        self.assertEqual(names, expected_names)
+
 
 class RobotsTests(TestCase):
 
@@ -541,15 +569,15 @@ class RobotsTests(TestCase):
         self.assertEqual(200, response.status_code)
 
 
-class SitemapTests(TestCase):
+class SitemapTests(FunctionalCase):
 
     def test_sitemap_returns_ok(self):
-        response = self.client.get('/sitemap.txt')
-        self.assertEqual(200, response.status_code)
+        self.get('/sitemap.txt')
+        self.assertEqual(200, self.response.status_code)
 
 
-class SpeciesListTests(TestCase):
+class SpeciesListTests(FunctionalCase):
 
     def test_species_list_returns_ok(self):
-        response = self.client.get('/list/')
-        self.assertEqual(200, response.status_code)
+        self.get('/list/')
+        self.assertEqual(200, self.response.status_code)

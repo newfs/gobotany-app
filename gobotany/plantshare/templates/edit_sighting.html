@@ -1,0 +1,37 @@
+{% extends "gobotany/_page_free_sidebar.html" %}
+{% load plantshare_tags %}
+
+{% block title %}Edit Sighting: PlantShare{% endblock %}
+
+{% block more_meta_link %}
+<link rel="stylesheet"
+    href="/static/css/smoothness/jquery-ui-1.9.2.custom.min.css">
+{% endblock %}
+
+{% block js_require %}
+    require([
+        'util/location_field_init',
+        'plantshare/new_sighting',
+    ]);
+{% endblock %}
+
+{% block body_attributes %}id="edit-sighting"
+    class="plantshare sighting"{% endblock %}
+
+{% block main_content %}
+<h1>Edit Sighting: <i>{{ sighting.identification }}</i> at
+    {{ sighting.location|capfirst }}</h1>
+
+<div class="modal-container">
+    {% include "_image_upload_form.html" with image_form=upload_photo_form %}
+</div>
+
+<form method="post" action="{% url 'ps-sighting' sighting.id %}">
+    {% include "_sighting_form.html" with edit=True %}
+</form>
+
+{% endblock %}
+
+{% block sidebar_content %}
+    {% include "_plantshare_navigation.html" %}
+{% endblock %}

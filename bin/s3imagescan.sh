@@ -6,7 +6,14 @@ set -e
 # and save the list to a compressed text file also stored in S3.
 
 source $(dirname "$0")/s3-init.sh
-TEMP=$(mktemp)
+
+if [ "$(uname -s)" == "Darwin" ];
+then
+	TEMP=$(mktemp -t xxx)
+else
+	TEMP=$(mktemp)
+fi
+
 s3cmd ls -r s3://newfs/taxon-images/ | gzip -c9 > $TEMP
 s3cmd put $TEMP s3://newfs/ls-taxon-images.gz
 rm $TEMP

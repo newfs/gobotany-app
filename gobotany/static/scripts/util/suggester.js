@@ -37,29 +37,59 @@ define([
 
         /* Settings that can be set with HTML5 data- attributes: */
 
-        /* Required: URL of the service that supplies search suggestions.
+        /* data-suggest-url
+         *
+         * Required: URL of the service that supplies search suggestions.
          * Include a placeholder (%s) for the query value.
          * Example: data-suggest-url="/plant-name-suggestions/?q=%s"
          */
         this.suggestions_url = this.$input_box.attr('data-suggest-url');
 
-        /* Set this to "true" if the form should automatically submit on
+        /* data-submit-on-select
+         *
+         * When set to "true", the form automatically submits upon
          * selecting a suggestion, such as for a search feature. */
-        this.submit_on_select = this.$input_box.attr('data-submit-on-select');
+        this.submit_on_select = false;
+        if (this.$input_box.is('[data-submit-on-select]')) {
+            this.submit_on_select = 
+                (this.$input_box.attr('data-submit-on-select') === 'true');
+        }
 
-        /* Set this to "true" to align the left edge of the menu with the
-         * padded inside left of the input box. This is for handling an
-         * input box that is styled to have curved corners outside its
+        /* data-align-menu-inside-input
+         *
+         * When set to "true", the left edge of the menu is aligned with
+         * the padded inside left of the input box. This is for handling
+         * an input box that is styled to have curved corners outside its
          * rectangular input area. */
-        this.align_menu_inside_input =
-            this.$input_box.attr('data-align-menu-inside-input');
+        this.align_menu_inside_input = false;
+        if (this.$input_box.is('[data-align-menu-inside-input]')) {
+            this.align_menu_inside_input =
+                (this.$input_box.attr('data-align-menu-inside-input') ===
+                 'true');
+        }
+
+        /* data-truncate-on-select
+         * 
+         * When set to "true", anything in parentheses at the end of a
+         * suggestion is truncated upon selection so it appears in the
+         * input box without the paranthetical segment. */
+         this.truncate_on_select = true;   // enabled by default
+         if (this.$input_box.is('[data-truncate-on-select]')) {
+             this.truncate_on_select =
+                 (this.$input_box.attr('data-truncate-on-select') ===
+                  'true');
+         }
     };
 
     Suggester.prototype.setup = function () {
         this.$form = this.$input_box.parents('form').first();
 
-        // Add an element for the suggestions menu.
-        this.$input_box.after('<div><ul></ul></div>');
+        // Add an element for the suggestions menu, if it doesn't already
+        // have one.
+        if (0 === this.$input_box.next('div.suggester-menu').size()) {
+            this.$input_box.after(
+                '<div class="suggester-menu"><ul></ul></div>');
+        }
 
         this.$menu = this.$input_box.next();
         this.$menu.hide();
@@ -71,7 +101,7 @@ define([
 
         // Set the width of the menu to match that of the box.
         var menu_width = this.$input_box.outerWidth(true) - 2;
-        if (this.align_menu_inside_input === "true") {
+        if (this.align_menu_inside_input === true) {
             // If the option to align the menu to the left edge of the
             // padded input box is set, then make the menu narrower too.
             menu_width -= parseInt(this.$input_box.css('padding-right'));
@@ -81,21 +111,26 @@ define([
         // Position the menu under the box, and adjust the position when
         // the browser window is resized.
         this.set_menu_position();
-        $(window).resize($.proxy(this.set_menu_position, this));
+        $(window).off('resize.suggester').on('resize.suggester',
+                $.proxy(this.set_menu_position, this));
 
         // Set up keyboard event handlers.
-        this.$input_box.keyup($.proxy(this.handle_keys_up, this));
-        this.$input_box.keydown($.proxy(this.handle_keys_down, this));
+        this.$input_box.off('keyup.suggester').on('keyup.suggester',
+                $.proxy(this.handle_keys_up, this));
+        this.$input_box.off('keydown.suggester').on('keydown.suggester',
+                $.proxy(this.handle_keys_down, this));
 
         // Hide the menu upon clicking outside the input box.
-        $(document).click($.proxy(
+        $(document).off('click.suggester').on('click.suggester', $.proxy(
             function () {
                 this.$menu.hide();
             }, this)
         );
-        this.$menu.click(function (event) {
-            event.stopPropagation();
-        });
+        this.$menu.off('click.suggester').on('click.suggester',
+            function (event) {
+                event.stopPropagation();
+            }
+        );
 
         // If there is a an empty required field in the form, a validation
         // error shows immediately upon pressing the Enter key (unlike
@@ -103,10 +138,17 @@ define([
         // from updating with the user's selected menu item. In order
         // to overcome this, update the box with the currently selected
         // value as soon as focus leaves the input box.
-        this.$input_box.blur($.proxy(this.enter_current_item, this));
+        this.$input_box.off('blur.suggester').on('blur.suggester', $.proxy(
+            function () {
+                if (this.$input_box.val() !== '') {
+                    this.enter_current_item();
+                }
+            }, this)
+        );
 
         // Hide the menu on focus, such as when tabbing to the field.
-        this.$input_box.focus($.proxy(this.hide_menu, this));
+        this.$input_box.off('focus.suggester').on('focus.suggester',
+                $.proxy(this.hide_menu, this));
     };
 
     Suggester.prototype.hide_menu = function () {
@@ -117,7 +159,7 @@ define([
         // Position the menu under the box.
         var $input_box_position = this.$input_box.position();
         var input_box_left_padding = 0;
-        if (this.align_menu_inside_input === "true") {
+        if (this.align_menu_inside_input === true) {
             // If the option to align the menu to the inside of a padded
             // input box is set, adjust the left edge position.
             input_box_left_padding +=
@@ -167,12 +209,18 @@ define([
                 // form does not submit automatically by default. It
                 // matches how HTML5 datalists behave.
                 if (this.$menu.is(':visible')) {
-                    // For "search"-type boxes that should submit the form
-                    // right away upon selecting a menu item, do not prevent
-                    // submitting the form right away upon pressing Enter.
-                    if (this.submit_on_select === 'false') {
+                    // If the box is not a "search"-type box that should
+                    // submit the form right away upon selecting a menu item,
+                    // prevent submitting the form upon pressing Enter.
+                    if (this.submit_on_select !== true) {
                         e.preventDefault();
                         e.stopPropagation();
+
+                        // Move focus along to the next field, if any.
+                        var $this_field = $(e.target);
+                        var $next_field = $this_field.nextAll(
+                            'input, select, textarea').first();
+                        $next_field.focus();
                     }
                 }
                 this.enter_current_item();
@@ -321,7 +369,7 @@ define([
         // If the option to submit the form upon item selection is set,
         // submit the form. This is to support things like single search
         // boxes that should submit right away.
-        if (this.submit_on_select === "true") {
+        if (this.submit_on_select === true) {
             this.$form.submit();
         }
     };
@@ -333,6 +381,15 @@ define([
         if (selected_index > -1) {
             var selected_value =
                 this.$menu.find('li').eq(selected_index).text();
+            if (this.truncate_on_select === true) {
+                // Truncate a parenthetical segment at the end of the
+                // suggestion value.
+                if (selected_value.indexOf('(') > -1) {
+                    selected_value = selected_value.substring(
+                        0, selected_value.lastIndexOf('('));
+                    selected_value = selected_value.replace(/\s+$/g, '');
+                }
+            }
             this.fill_box(selected_value);
         }
     };

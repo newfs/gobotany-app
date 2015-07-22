@@ -82,20 +82,9 @@ $image-box-shadow-color: rgba(0, 0, 0, 0.6);
             }
         }
         &.onward-btn {
-            cursor: pointer;
-            display: block;
             float: right;
-            width: 280px;
-            height: 32px;
+            width: 240px;
             margin: 10px 0;
-            background: url(/static/images/layout/onward-btn-orange.png) 0 0 no-repeat transparent;
-            text-indent: -9000px;
-            &:hover {
-                background-position: 0 -32px;
-            }
-            &:active {
-                background-position: 0 -64px;
-            }
         }
     }
     $video-height: 147px;
@@ -124,7 +113,7 @@ $image-box-shadow-color: rgba(0, 0, 0, 0.6);
     #plant-map-list {
 	    margin: 10px 0;
         + h2 {
-            padding-top: 36px;
+            padding-top: 48px;
         }
     }
     #group-section {
@@ -224,11 +213,6 @@ $image-box-shadow-color: rgba(0, 0, 0, 0.6);
 	        overflow: hidden;
 	        width: 160px;
         }
-        .more-info {
-	        background: url(/static/images/icons/more-info.png) left 4px no-repeat transparent;	
-	        margin: 5px 0 0 0;
-	        padding: 0 0 0 19px;
-        }
     }
     p.video {
     	background: url(/static/images/icons/icon3.png) left 4px no-repeat transparent;
@@ -239,20 +223,6 @@ $image-box-shadow-color: rgba(0, 0, 0, 0.6);
 	    background: url(/static/images/icons/icon1.png) left 4px no-repeat transparent;
 	    margin: 2px 0 0;
 	    padding: 3px 0 0 22px;
-    }
-    .choose-btn {
-        background: url(/static/images/layout/choose-btn.png) 0 0 no-repeat transparent;
-        display: block;
-        height: 32px;
-        margin: 10px 0 5px;
-        text-indent: -9000px;
-        width: 104px;
-        &:hover {
-	        background-position: 0 -32px;
-        }
-        &:active {
-	        background-position: 0 -64px;
-        }
     }
 }
 
@@ -305,6 +275,7 @@ $image-box-shadow-color: rgba(0, 0, 0, 0.6);
                 border-top: 0;
             }
             a {
+                border-bottom: 0;
                 float: left;
                 margin-left: -34px;
             }
@@ -317,6 +288,75 @@ $image-box-shadow-color: rgba(0, 0, 0, 0.6);
             padding-left: 4px;
             padding-top: 1px;
         }
+    }
+}
+
+/* "Advanced ID Tools" page */
+
+#advanced-id #main {
+    .dk-landing-section {
+	    float: left;
+	    font-family: $body-font;
+        height: 410px;
+        padding-left: 20px;
+        position: relative;
+	    width: 328px;
+        &:first-of-type {
+            border-right: 1px solid #b4d57f;
+            padding-left: 0;
+            padding-right: 10px;
+        }
+        h2 {
+            font-size: 18px;
+            line-height: 20px;
+        }
+        section {
+            margin: 10px 0 0;
+            p {
+                margin: 10px 0;
+            }
+            ul {
+                line-height: 16px;
+            	list-style-type: disc;
+	            margin: 10px 0;
+	            padding: 0 0 0 15px;
+                li {
+                    margin: 10px 0;
+                }
+            }
+        }
+        > a {
+            bottom: 10px;
+            margin: 0 0 0 20px;
+            position: absolute;
+            width: 224px;
+        }
+    }
+}
+
+/* System Requirements */
+
+#system-requirements #main {
+    p + div {
+        background-image: url(/static/images/layout/screen-desktop-laptop.svg);
+        background-position: top 9px left;
+        background-repeat: no-repeat;
+        background-size: 173px 121px;
+    }
+    div + div {
+        background-image: url(/static/images/layout/screen-tablet.svg), url(/static/images/layout/screen-smartphone.svg);
+        background-position: top 9px left 20px, top 9px left 122px;
+        background-repeat: no-repeat, no-repeat;
+        background-size: 74px 98px, 30px 57px;
+    }
+    p + div, div + div {
+        padding-left: 200px;
+    }
+    div + div, div + h2 {
+        clear: left;
+    }
+    div + h2 {
+        padding-top: 10px;
     }
 }
 
@@ -377,22 +417,7 @@ $image-box-shadow-color: rgba(0, 0, 0, 0.6);
             padding-bottom: 12px;
         }
         table {
-            background: #f1fcde;
-            border-collapse: collapse;
-            color: #000;
-            font-size: 11px;
-            margin: 18px 0;
             width: 100%;
-            tbody tr:hover {
-                background: #e3fabe;
-            }
-            th, td {
-                padding: 4px;
-            }
-            th, tr.filters {
-                background: #b4d57f;
-                font-weight: normal;
-            }
             th {
                 text-align: center;
                 vertical-align: bottom;
@@ -400,16 +425,16 @@ $image-box-shadow-color: rgba(0, 0, 0, 0.6);
                     width: 16%;
                 }
                 &.common {
-                    width: 15%;
+                    width: 13%;
                 }
                 &.family {
-                    width: 14%;
+                    width: 13%;
                 }
                 &.dist {
-                    width: 10%;
+                    width: 12%;
                 }
                 &.native {
-                    width: 12%;
+                    width: 9%;
                 }
                 &.wetland {
                     width: 5%;
@@ -418,12 +443,8 @@ $image-box-shadow-color: rgba(0, 0, 0, 0.6);
                     width: 12%;
                 }
                 &.subgroup {
-                    width: 16%;
+                    width: 20%;
                 }                
-            }
-            td:first-child {
-                font-family: $headings-font;
-                font-size: 13px;
             }
         }
     }
@@ -454,6 +475,9 @@ $image-box-shadow-color: rgba(0, 0, 0, 0.6);
             }
             li {
                 line-height: 20px;
+                li {
+                    margin-left: 26px;
+                }
             }
         }
     }
@@ -474,6 +498,17 @@ $image-box-shadow-color: rgba(0, 0, 0, 0.6);
     }
     #advanced-map #group-section {
         height: 600px;
+    }
+    #system-requirements #main {
+        p + div, div + div {
+            padding-left: 0;
+        }
+        p + div {
+            padding-top: 135px;
+        }
+        div + div {
+            padding-top: 115px;
+        }
     }
     #glossary #alphabet {
         height: 99px;
