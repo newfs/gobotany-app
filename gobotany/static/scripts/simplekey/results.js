@@ -202,6 +202,7 @@ results_page_init: function(args) {
             /* Hide or show the filter questions area on small screens. */
             $('#question-nav .instructions').bind('click', function() {
                 $(this).parent().toggleClass('closed');
+                $('.icon-plus,.icon-minus', this).toggleClass('icon-plus').toggleClass('icon-minus');
             });
         }
     });
@@ -294,6 +295,8 @@ results_page_init: function(args) {
             glossarize_mobile: glossarize_mobile,
             terms_section: '.working-area .terms'
         });
+
+        $('div.working-area').closest('li').addClass('active');
     };
 
     var dismiss_any_working_area = function() {
@@ -381,13 +384,10 @@ results_page_init: function(args) {
 
             if ($target.hasClass('active')) {
                 // Question and working area open, so close.
-                $target.removeClass('active');
                 dismiss_any_working_area();
             }
             else {
                 // Question and working area closed, so open.
-                $target.addClass('active');
-
                 var y = $target.offset().top - 15;
                 var async = resources.character_vector(this.filter.slug);
                 $.when(pile_taxa_ready, async).done(function(pile_taxa,
