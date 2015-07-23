@@ -19,9 +19,6 @@ SECRET_KEY = os.environ.get('GOBOTANY_DJANGO_SECRET_KEY', '')
 # New in Django 1.5: allowed hosts required for production-like deployments
 ALLOWED_HOSTS = ['.newenglandwild.org', # any subdomain of newenglandwild.org
                  'gobotany-dev.herokuapp.com',
-                 'gobotany-release23.herokuapp.com',
-                 'gobotany-release22.herokuapp.com',
-                 'gobotany-release21.herokuapp.com',
                 ]
 
 TEMPLATE_DIRS = (
