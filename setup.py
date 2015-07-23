@@ -11,7 +11,7 @@ requirements = [
     'django-haystack==1.2.7',
     'django-imagekit==3.0.2',
     'django-piston==0.2.2.1',
-    'django-tinymce',
+    'django-tinymce==1.5.3',
     'inflect',
     'lxml',
     'psycopg2>=2.3',
