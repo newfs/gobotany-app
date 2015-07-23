@@ -9,7 +9,7 @@ requirements = [
     'django-debug-toolbar==1.3.2',
     'django-haystack==2.4.0',
     'django-imagekit==3.2.6',
-    'django-tinymce',
+    'django-tinymce==1.5.3',
     'inflect',
     'lxml',
     'psycopg2>=2.4.5',
