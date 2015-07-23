@@ -67,7 +67,8 @@ def _edit_pile_length_character(request, pile, character, taxa):
         v = tcv.character_value
         taxon_values[tcv.taxon_id] = v
         minmaxes[tcv.taxon_id] = [v.value_min, v.value_max]
-        lit_sources[tcv.taxon_id] = tcv.lit_source or ''
+        lit_sources[tcv.taxon_id] = (tcv.literary_source and
+                                     tcv.literary_source.citation_text or '')
 
     # Process a POST.
 
@@ -223,7 +224,9 @@ def edit_pile_taxon(request, pile_slug, taxon_slug):
     value_map1 = {tcv.character_value_id: tcv for tcv in tcvlist}
     value_map2 = {tcv.character_value.character_id: tcv.character_value
                   for tcv in tcvlist}
-    lit_source_map = {tcv.character_value.character_id: tcv.lit_source or ''
+    lit_source_map = {tcv.character_value.character_id: (
+                      tcv.literary_source and tcv.literary_source.citation_text
+                      or '')
                       for tcv in tcvlist}
 
     def annotated_characters(characters):
@@ -306,11 +309,15 @@ def _save_length(request, character, taxon, minmax, lit_source=None):
     tcvs = list(models.TaxonCharacterValue.objects
                 .filter(character_value__character=character, taxon=taxon)
                 .select_related('character_value'))
+    source = None
 
     if tcvs:
         tcv = tcvs[0]
         if lit_source is not None:
-            tcv.lit_source = lit_source
+            source, created = models.SourceCitation.objects.get_or_create(
+                citation_text=lit_source
+            )
+            tcv.literary_source = source
             tcv.save()
         value = tcv.character_value
         old_values = [value.value_min, value.value_max]
@@ -340,7 +347,7 @@ def _save_length(request, character, taxon, minmax, lit_source=None):
     value.save()
 
     models.TaxonCharacterValue(character_value=value, taxon=taxon,
-                               lit_source=lit_source).save()
+                               literary_source=source).save()
     return old_values
 
 
@@ -351,12 +358,16 @@ def _save_textual(request, character, taxon, vector, lit_source=''):
     tcvs = list(models.TaxonCharacterValue.objects.filter(
         character_value__in=values, taxon=taxon))
     tcvmap = {tcv.character_value_id: tcv for tcv in tcvs}
+    source = None
 
     # Modify any empty lit sources if a default lit source is provided
     if lit_source:
+        source, created = models.SourceCitation.objects.get_or_create(
+            citation_text=lit_source
+        )
         for tcv in tcvs:
-            if not tcv.lit_source:
-                tcv.lit_source = lit_source
+            if not tcv.literary_source:
+                tcv.literary_source = source
                 tcv.save()
 
     old_values = []
@@ -371,7 +382,7 @@ def _save_textual(request, character, taxon, vector, lit_source=''):
         if needs_it and not has_it:
             models.TaxonCharacterValue(
                 taxon=taxon, character_value=value,
-                lit_source=lit_source).save()
+                literary_source=source).save()
         elif not needs_it and has_it:
             tcvmap[value.id].delete()
 
