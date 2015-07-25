@@ -1,3 +1,5 @@
+from django.conf import settings
+
 from gobotany.core.models import Family, Genus, GlossaryTerm, Taxon
 from gobotany.dkey.models import Page
 from gobotany.plantshare.models import Question, Sighting
@@ -337,5 +339,6 @@ site.register(SubgroupResultsPage, SubgroupResultsPageIndex)
 
 site.register(Page, DichotomousKeyPageIndex)
 
-site.register(Sighting, SightingPageIndex)
-site.register(Question, QuestionIndex)
+if 'gobotany.plantshare' in settings.INSTALLED_APPS:
+    site.register(Sighting, SightingPageIndex)
+    site.register(Question, QuestionIndex)

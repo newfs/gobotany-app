@@ -37,6 +37,50 @@ def _simple_taxon(taxon):
     res['factoid'] = taxon.factoid
     return res
 
+
+def _compare_character_values(a, b):
+    choice_a = a.lower()
+    choice_b = b.lower()
+
+    # If both values are recognized as textual numbers
+    # or months, compare them naturally.
+    months = ['january', 'february', 'march', 'april', 'may',
+        'june', 'july', 'august', 'september', 'october', 'november',
+        'december']
+    numbers = ['one', 'two', 'three', 'four', 'five', 'six',
+        'seven', 'eight', 'nine']
+    choice_a_1stword = choice_a.split(' ')[0]
+    choice_b_1stword = choice_b.split(' ')[0]
+    if choice_a_1stword in months and choice_b_1stword in months:
+        return months.index(choice_a_1stword) - months.index(choice_b_1stword)
+    if choice_a_1stword in numbers and choice_b_1stword in numbers:
+        return numbers.index(choice_a_1stword) - numbers.index(choice_b_1stword)
+
+    # If both are a number or begin with one, sort numerically.
+    try:
+        int_choice_a = int(choice_a)
+        int_choice_b = int(choice_b)
+    except:
+        pass
+    else:
+        return int_choice_a - int_choice_b
+
+    # Otherwise, sort alphabetically.
+
+    # Exception: always make Doesn't Apply (NA) last.
+    if choice_a == 'na':
+        return 1
+    if choice_b == 'na':
+        return -1
+
+    if choice_a < choice_b:
+        return -1
+    if choice_a > choice_b:
+        return 1
+
+    return 0  # default value (no sort)
+
+
 def _taxon_with_chars(taxon):
     res = _simple_taxon(taxon)
     piles = taxon.piles.all()
@@ -56,6 +100,7 @@ def _taxon_with_chars(taxon):
                 new_list = [res[name]]
                 res[name] = new_list
             res[name].append(cv.friendliest_text())
+            res[name].sort(cmp=_compare_character_values)
     return res
 
 

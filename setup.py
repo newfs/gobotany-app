@@ -10,8 +10,9 @@ requirements = [
     'django-debug-toolbar==1.3.0',
     'django-haystack==1.2.7',
     'django-imagekit==3.0.2',
-    'django-piston==0.2.2',
-    'django-tinymce',
+    'django-piston==0.2.2.1',
+    'django-tinymce==1.5.3',
+    'inflect',
     'lxml',
     'psycopg2>=2.3',
     'python-memcached',
@@ -32,10 +33,10 @@ requirements = [
     # Login and registration
 
     'django-email-confirmation==0.2',
-    'django-facebook-connect>=1.0.2',
+    'django-facebook-connect>=1.0.1',
     'django-recaptcha==0.0.6',
     # Installed in a separate step pending Django dependency issues
-    'django-registration==0.9b1',
+    'django-registration==1.0',
 
     # For storing images on S3.
 
