@@ -228,7 +228,7 @@ TINYMCE_JS_URL = "tiny_mce/tiny_mce.js"
 # developer runs us locally with that environment variable set.
 
 if 'MEMCACHIER_SERVERS' in os.environ:
-    os.environ['MEMCACHE_SERVERS'] = os.environ.get('MEMCACHIER_SERVERS', '')
+    os.environ['MEMCACHE_SERVERS'] = os.environ.get('MEMCACHIER_SERVERS', '').replace(',', ';')
     os.environ['MEMCACHE_USERNAME'] = os.environ.get('MEMCACHIER_USERNAME', '')
     os.environ['MEMCACHE_PASSWORD'] = os.environ.get('MEMCACHIER_PASSWORD', '')
 
