@@ -1357,8 +1357,11 @@ class PlantPreviewCharactersFunctionalTests(FunctionalTestCase):
     def test_composites_species_pages_have_characters(self):
         self._species_pages_have_characters('composites')
 
-    def test_remaining_non_monocots_species_pages_have_characters(self):
-        self._species_pages_have_characters('remaining-non-monocots')
+    def test_alternate_remaining_non_monocots_species_pages_have_characters(self):
+        self._species_pages_have_characters('alternate-remaining-non-monocots')
+
+    def test_non_alternate_remaining_non_monocots_species_pages_have_characters(self):
+        self._species_pages_have_characters('non-alternate-remaining-non-monocots')
 
     # Verify there are no duplicate characters in the initially-visible
     # "brief" Characteristics section on the species page.
