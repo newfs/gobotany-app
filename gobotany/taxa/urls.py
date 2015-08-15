@@ -1,11 +1,9 @@
-from django.conf.urls import patterns, url
+from django.conf.urls import url
 from django.views.generic import RedirectView
 
 from gobotany.taxa import views
 
-urlpatterns = patterns(
-    '',
-
+urlpatterns = [
     url('^family/(?P<family_slug>[a-z]+)/$',
         views.family_view, name='taxa-family'),
     url('^genus/(?P<genus_slug>[a-z]+)/$',
@@ -15,26 +13,30 @@ urlpatterns = patterns(
 
     # Support "hackable" URL
     url('^species/(?P<genus_slug>[a-z]+)/$',
-        RedirectView.as_view(url='/genus/%(genus_slug)s/')),
+        RedirectView.as_view(url='/genus/%(genus_slug)s/',
+            permanent=True)),
 
     # Redirections for old URLs
 
-    (r'^families/(?P<family_slug>[a-z]+)/$',
-        RedirectView.as_view(url='/family/%(family_slug)s/')),
+    url(r'^families/(?P<family_slug>[a-z]+)/$',
+        RedirectView.as_view(url='/family/%(family_slug)s/',
+            permanent=True)),
 
-    (r'^genera/(?P<genus_slug>[a-z]+)/$',
-        RedirectView.as_view(url='/genus/%(genus_slug)s/')),
+    url(r'^genera/(?P<genus_slug>[a-z]+)/$',
+        RedirectView.as_view(url='/genus/%(genus_slug)s/',
+            permanent=True)),
 
-    (r'^(?P<pilegroup_slug>[-a-z]+)/(?P<pile_slug>[-a-z]+)/'
+    url(r'^(?P<pilegroup_slug>[-a-z]+)/(?P<pile_slug>[-a-z]+)/'
      r'(?P<genus_slug>[a-z]+)/(?P<epithet>[-a-z]+)/$', RedirectView.as_view(
-         url='/species/%(genus_slug)s/%(epithet)s/?pile=%(pile_slug)s')),
+         url='/species/%(genus_slug)s/%(epithet)s/?pile=%(pile_slug)s',
+         permanent=True)),
 
-    (r'^family/(?P<family_slug>[a-zA-Z]+)/$',
+    url(r'^family/(?P<family_slug>[a-zA-Z]+)/$',
         views.UppercaseFamilyRedirectView.as_view()),
 
-    (r'^genus/(?P<genus_slug>[a-zA-Z]+)/$',
+    url(r'^genus/(?P<genus_slug>[a-zA-Z]+)/$',
         views.UppercaseGenusRedirectView.as_view()),
 
-    (r'^species/(?P<genus_slug>[a-zA-Z]+)/(?P<epithet>[-a-z]+)/$',
+    url(r'^species/(?P<genus_slug>[a-zA-Z]+)/(?P<epithet>[-a-z]+)/$',
         views.SpeciesUppercaseGenusRedirectView.as_view()),
-    )
+]

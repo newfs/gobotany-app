@@ -129,6 +129,10 @@ To run our Python tests you can either:
     dev/test-python             # to run all tests
     dev/test-python api site    # to hand-pick Django apps to test
 
+Note: if you get failures with the Python tests, try running the tests
+again for just the app where failures occured. There is a known problem
+where some tests can fail when running tests for multiple apps at once.
+
 To run our JavaScript tests, run:
 
     dev/test-js                 # to run all tests
@@ -139,6 +143,10 @@ cannot be tested without a browser and JavaScript.  To run them:
 
     dev/test-browser                           # to run all tests
     dev/test-browser FilterFunctionalTests     # select which tests
+
+Note: if you get failures with the browser tests, try running the test
+that failed individually. Sometimes a failure or two occurs when running
+the entire suite, but the tests pass when run individually.
 
 Detailed notes about testing under selenium can be found in:
 

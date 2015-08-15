@@ -1,4 +1,5 @@
 import csv
+import json
 import math
 
 from datetime import datetime, timedelta
@@ -17,11 +18,10 @@ from django.http import Http404, HttpResponse, HttpResponseRedirect
 from django.shortcuts import (get_object_or_404, redirect, render,
     render_to_response)
 from django.template import RequestContext
-from django.utils import simplejson
 from django.utils.timezone import utc
 
-from emailconfirmation import views as emailconfirmation_views
-from emailconfirmation.models import EmailConfirmation
+import emailconfirmation_views
+from emailconfirmation_models import EmailConfirmation
 
 from gobotany.plantshare.forms import (ChangeEmailForm, ChecklistEntryForm,
     ChecklistForm, QuestionForm, ScreenedImageForm, SightingForm,
@@ -351,7 +351,7 @@ def sightings_view(request):
                     break
 
         years = [dt.year for dt in
-                 Sighting.objects.dates('created', 'year', order='DESC')]
+            Sighting.objects.datetimes('created', 'year', order='DESC')]
 
         return render_to_response('sightings.html', {
                     'sightings': sightings,
@@ -388,7 +388,7 @@ def sightings_by_year_view(request, year):
             })
 
     years = [str(dt.year) for dt in
-             Sighting.objects.dates('created', 'year', order='DESC')]
+        Sighting.objects.datetimes('created', 'year', order='DESC')]
 
     if year in years:
         return render_to_response('sightings_by_year.html', {
@@ -699,7 +699,7 @@ def all_questions_by_year_view(request, year=None):
     """View for a list of all Questions and Answers for a year."""
 
     years = [str(dt.year) for dt in
-        Question.objects.dates('asked', 'year', order='DESC')]
+        Question.objects.datetimes('asked', 'year', order='DESC')]
     # If this view was not called with a year, use the latest year.
     if not year:
         year = years[0]
@@ -1137,10 +1137,10 @@ def screen_images(request):
 def ajax_profile_edit(request):
     """ Ajax form submission of profile form """
     if not request.user.is_authenticated():
-        return HttpResponse(simplejson.dumps({
+        return HttpResponse(json.dumps({
             'error': True,
             'info': 'User is not authenticated.'
-        }), mimetype='application/json')
+        }), content_type='application/json')
 
     if request.method == 'POST':
         profile, created = UserProfile.objects.get_or_create(
@@ -1153,23 +1153,23 @@ def ajax_profile_edit(request):
             profile.save()
             profile_form.save_m2m()
         else:
-            return HttpResponse(simplejson.dumps({
+            return HttpResponse(json.dumps({
                 'error': True,
                 'info': 'Form Validation error:\n{0}'.format(
                     profile_form.errors.as_text())
-            }), mimetype='application/json')
+            }), content_type='application/json')
 
-    return HttpResponse(simplejson.dumps({'success': True}),
-                                         mimetype='application/json')
+    return HttpResponse(json.dumps({'success': True}),
+                                         content_type='application/json')
 
 
 def ajax_image_upload(request):
     """ Ajax form submission of image upload form """
     if not request.user.is_authenticated():
-        return HttpResponse(simplejson.dumps({
+        return HttpResponse(json.dumps({
             'error': True,
             'info': 'Authentication error'
-        }), mimetype='application/json')
+        }), content_type='application/json')
 
     response = {
         'success': True
@@ -1223,26 +1223,26 @@ def ajax_image_upload(request):
                 'longitude': longitude
             })
 
-    return HttpResponse(simplejson.dumps(response),
-                        mimetype='application/json')
+    return HttpResponse(json.dumps(response),
+                        content_type='application/json')
 
 
 def ajax_image_reject(request, image_id):
     """ Reject an image that was previously uploaded. """
     if not request.user.is_authenticated():
-        return HttpResponse(simplejson.dumps({
+        return HttpResponse(json.dumps({
             'error': True,
             'info': 'Authentication error'
-        }), mimetype='application/json')
+        }), content_type='application/json')
 
     image = ScreenedImage.objects.get(pk=image_id)
 
     # Only staff or the user who originally uploaded the image may reject it.
     if not (request.user.is_staff or request.user == image.uploaded_by):
-        return HttpResponse(simplejson.dumps({
+        return HttpResponse(json.dumps({
             'error': True,
             'info': 'Authentication error'
-        }), mimetype='application/json')
+        }), content_type='application/json')
 
     image.is_approved = False
     image.screened = datetime.utcnow().replace(tzinfo=utc)
@@ -1254,7 +1254,7 @@ def ajax_image_reject(request, image_id):
         'success': True
     }
 
-    return HttpResponse(simplejson.dumps(response), mimetype='application/json')
+    return HttpResponse(json.dumps(response), content_type='application/json')
 
 
 def ajax_sightings(request):
@@ -1285,19 +1285,26 @@ def ajax_sightings(request):
 
             # If the location coordinates are not valid numbers,
             # set them to None, which converts to null in the JSON.
-            latitude = sighting.location.latitude
-            if math.isnan(latitude):
-                latitude = None
-            longitude = sighting.location.longitude
-            if math.isnan(longitude):
-                longitude = None
+            latitude = None
+            longitude = None
+            location_user_input = None
+            if sighting.location and sighting.location.latitude and \
+                sighting.location.longitude:
+
+                latitude = sighting.location.latitude
+                if math.isnan(latitude):
+                    latitude = None
+                longitude = sighting.location.longitude
+                if math.isnan(longitude):
+                    longitude = None
+                location_user_input = sighting.location.user_input
 
             sightings_json.append({
                 'id': sighting.id,
                 'identification': sighting.identification,
                 'created': unicode(sighting.created.strftime(
                                    SIGHTING_SHORT_DATE_YEAR_FORMAT)),
-                'location': sighting.location.user_input,
+                'location': location_user_input,
                 'latitude': latitude,
                 'longitude': longitude,
                 'user': sighting.user.username, # TODO: fast way of getting
@@ -1309,12 +1316,12 @@ def ajax_sightings(request):
             if len(sightings_json) == MAX_TO_RETURN:
                 break
 
-    json = {
+    output = {
         'sightings': sightings_json
     }
 
-    return HttpResponse(simplejson.dumps(json),
-                        mimetype='application/json; charset=utf-8')
+    return HttpResponse(json.dumps(output),
+                        content_type='application/json; charset=utf-8')
 
 
 @login_required
@@ -1381,8 +1388,8 @@ def ajax_people_suggestions(request):
             else:
                 ordered_suggestions.append(suggestion)
 
-    return HttpResponse(simplejson.dumps(ordered_suggestions),
-                        mimetype='application/json; charset=utf-8')
+    return HttpResponse(json.dumps(ordered_suggestions),
+                        content_type='application/json; charset=utf-8')
 
 
 @login_required
@@ -1403,5 +1410,5 @@ def ajax_restrictions(request):
     location = request.GET.get('location')
     if plant_name:
         restrictions_info = restrictions(plant_name, location)
-    return HttpResponse(simplejson.dumps(restrictions_info),
-                        mimetype='application/json; charset=utf-8')
+    return HttpResponse(json.dumps(restrictions_info),
+                        content_type='application/json; charset=utf-8')

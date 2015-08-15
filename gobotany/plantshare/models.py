@@ -17,8 +17,6 @@ from django.dispatch import receiver
 from django.template.loader import render_to_string
 from django.utils import timezone
 
-from emailconfirmation.models import (EmailAddressManager, EmailConfirmation,
-    EmailConfirmationManager)
 from emailconfirmation.signals import email_confirmed
 from facebook_connect.models import FacebookUser
 from imagekit import ImageSpec, register
@@ -29,6 +27,8 @@ from PIL import Image
 from PIL.ExifTags import TAGS
 from storages.backends.s3boto import S3BotoStorage
 
+from gobotany.plantshare.emailconfirmation_models import (
+    EmailAddressManager, EmailConfirmation, EmailConfirmationManager)
 from gobotany.plantshare.utils import restrictions
 
 VISIBILITY_CHOICES = (
@@ -270,14 +270,10 @@ def create_user_profile(sender, **kwargs):
             # the FacebookUser signal handle it instead
             return
 
-        print 'New standard user creation [Username: {0}]'.format(
-            user.username)
         profile = UserProfile(user=user)
         profile.save()
-        print 'Created new UserProfile'
         user_pod = Pod(name=user.username)
         user_pod.save()
-        print 'Created default Pod'
         membership = PodMembership(member=profile, pod=user_pod,
             is_owner=True, is_self_pod=True)
         membership.save()
@@ -291,14 +287,10 @@ def create_fbuser_profile(sender, **kwargs):
     # and his personal Pod.
     if created:
         user = fbuser.contrib_user
-        print 'New Facebook user creation [Username: {0}]'.format(
-            user.username)
         profile = UserProfile(user=user)
         profile.save()
-        print 'Created new UserProfile'
         user_pod = Pod(name=user.username)
         user_pod.save()
-        print 'Created default Pod'
         membership = PodMembership(member=profile, pod=user_pod,
             is_owner=True, is_self_pod=True)
         membership.save()
@@ -320,7 +312,7 @@ class Sighting(models.Model):
     location = models.ForeignKey(Location, null=True)
     location_notes = models.TextField(blank=True)
 
-    photos = models.ManyToManyField('ScreenedImage', null=True, blank=True)
+    photos = models.ManyToManyField('ScreenedImage', blank=True)
 
     visibility = models.CharField(blank=False, max_length=7,
         choices=SIGHTING_VISIBILITY_CHOICES,
@@ -535,7 +527,7 @@ class QuestionManager(models.Manager):
 
 class Question(models.Model):
     question = models.CharField(max_length=500, blank=False)
-    images = models.ManyToManyField('ScreenedImage', null=True, blank=True)
+    images = models.ManyToManyField('ScreenedImage', blank=True)
     answer = models.CharField(max_length=3000, blank=True)
     asked = models.DateTimeField(blank=False, auto_now_add=True)
     asked_by = models.ForeignKey(User, blank=False,

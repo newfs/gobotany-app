@@ -69,6 +69,7 @@ class LookalikeAdminForm(forms.ModelForm):
                     'lookalike_characteristic').max_length,
             })
         }
+        exclude = {}
 
 class TaxonLookalikeInline(admin.TabularInline):
     form = LookalikeAdminForm
@@ -85,6 +86,7 @@ class TaxonAdminForm(forms.ModelForm):
                     'maxlength': model._meta.get_field('factoid').max_length,
             })
         }
+        exclude = {}
 
 class TaxonAdmin(_Base):
     """
@@ -189,9 +191,9 @@ class CharacterValuesInline(admin.TabularInline):
         dbmodels.TextField: {'widget': forms.Textarea(attrs={'rows':4})},
         }
 
-    def queryset(self, request):
+    def get_queryset(self, request):
         """Only show character values for text-type characters."""
-        qs = super(CharacterValuesInline, self).queryset(request)
+        qs = super(CharacterValuesInline, self).get_queryset(request)
         qs = qs.filter(character__value_type=u'TEXT')
         return qs
 
@@ -505,6 +507,7 @@ class CopyrightHolderAdmin(_Base):
 class ConservationStatusForm(forms.ModelForm):
     class Meta:
         model = models.ConservationStatus
+        exclude = {}
 
     def clean(self):
         s_rank = self.cleaned_data.get('s_rank')

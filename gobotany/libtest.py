@@ -1,10 +1,8 @@
 """Library of helpers for our tests."""
 
 from django.conf import settings
-from django.db import transaction
 from django.test.testcases import (
-    DEFAULT_DB_ALIAS, TestCase, connections,
-    disable_transaction_methods, restore_transaction_methods,
+    DEFAULT_DB_ALIAS, TestCase, connections
     )
 from django.test.client import Client
 from lxml import etree
@@ -60,32 +58,6 @@ class FunctionalCase(TestCase):
 
         connections.databases['default'] = cls._default_config
         connections._connections.default = cls._default_connection
-
-    def _fixture_setup(self):
-        """Run inside a transaction, but without wiping the database."""
-
-        if getattr(self, 'multi_db', False):
-            databases = connections
-        else:
-            databases = [DEFAULT_DB_ALIAS]
-
-        for db in databases:
-            transaction.enter_transaction_management(using=db)
-            transaction.managed(True, using=db)
-        disable_transaction_methods()
-
-    def _fixture_teardown(self):
-        """Copied from the django.test.testcases versions of this method."""
-
-        if getattr(self, 'multi_db', False):
-            databases = connections
-        else:
-            databases = [DEFAULT_DB_ALIAS]
-
-        restore_transaction_methods()
-        for db in databases:
-            transaction.rollback(using=db)
-            transaction.leave_transaction_management(using=db)
 
     # Helpers to make writing tests more fun.  Note that these are
     # designed for basic symmetry with out Selenium-powered tests, so

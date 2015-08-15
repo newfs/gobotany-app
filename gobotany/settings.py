@@ -21,9 +21,26 @@ ALLOWED_HOSTS = ['.newenglandwild.org', # any subdomain of newenglandwild.org
                  'gobotany-dev.herokuapp.com',
                 ]
 
-TEMPLATE_DIRS = (
-    os.path.join(PROJECT_ROOT, 'templates')
-)
+TEMPLATES = [
+    {
+        'BACKEND': 'django.template.backends.django.DjangoTemplates',
+        'DIRS': [
+            os.path.join(PROJECT_ROOT, 'templates'),
+        ],
+        'APP_DIRS': True,
+        'OPTIONS': {
+            'context_processors': [
+                'django.contrib.auth.context_processors.auth',
+                'django.contrib.messages.context_processors.messages',
+                'django.core.context_processors.i18n',
+                'django.core.context_processors.request',
+                'django.core.context_processors.media',
+                'django.core.context_processors.static',
+                'gobotany.core.context_processors.gobotany_specific_context',
+            ],
+        },
+    },
+]
 
 # We define these database specifications as constants, so that we can
 # retrieve whichever one we need from our test suites.
@@ -114,7 +131,6 @@ INSTALLED_APPS = [
     'gobotany.simplekey',
     'gobotany.site',
     'gobotany.taxa',
-    'piston',
 
     'django.contrib.admin',
     'django.contrib.auth',
@@ -137,7 +153,8 @@ INSTALLED_APPS = [
                           # Otherwise, keep this app commented out in
                           # order to avoid a NoMigrations error when
                           # applying South migrations.
-    'south',
+                          # Update: also keep commented out for the Django 1.7
+                          # upgrade when running: dev/django makemigrations
     'captcha',
     ]
 MIDDLEWARE_CLASSES = (
@@ -156,37 +173,42 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'gobotany.middleware.SmartAppendSlashMiddleware',
-    'gobotany.middleware.ChromeFrameMiddleware',
-)
-TEMPLATE_CONTEXT_PROCESSORS = (
-    'django.contrib.auth.context_processors.auth',
-    'django.contrib.messages.context_processors.messages',
-    'django.core.context_processors.i18n',
-    'django.core.context_processors.request',
-    'django.core.context_processors.media',
-    'django.core.context_processors.static',
-    'gobotany.core.context_processors.gobotany_specific_context',
 )
 
 APPEND_SLASH = False
 SMART_APPEND_SLASH = True
 ROOT_URLCONF = 'gobotany.urls'
 INTERNAL_IPS = ('127.0.0.1',)
+STATIC_ROOT = ''
 STATIC_URL = '/static/'
 STATICFILES_DIRS = [('', os.path.join(THIS_DIRECTORY, 'static'))]
 MEDIA_ROOT = os.path.join(THIS_DIRECTORY, 'media')
 MEDIA_URL = '/media/'
 SESSION_COOKIE_AGE = 2 * 24 * 60 * 60  # two days
-HAYSTACK_SITECONF = 'gobotany.search.haystack_conf'
-HAYSTACK_SEARCH_ENGINE = 'solr'
-HAYSTACK_SOLR_URL = 'http://127.0.0.1:8983/solr'
-HAYSTACK_SEARCH_RESULTS_PER_PAGE = 10
-HAYSTACK_SOLR_TIMEOUT = 20  # Longer than default timeout; added for indexing
-HAYSTACK_INCLUDE_SPELLING = True
+
+SOUTH_MIGRATION_MODULES = {
+    'registration': 'registration.south_migrations',
+}
 
 # https://docs.djangoproject.com/en/dev/topics/i18n/timezones/#time-zones-faq
 TIME_ZONE = 'America/New_York'
 USE_TZ = True
+
+# For django-haystack
+HAYSTACK_CONNECTIONS = {
+    'default': {
+        'ENGINE': 'haystack.backends.solr_backend.SolrEngine',
+        'URL': 'http://127.0.0.1:8983/solr',
+        'TIMEOUT': 20,  # Longer than default timeout; added for indexing
+        'INCLUDE_SPELLING': True,
+        'BATCH_SIZE': 100,
+    },
+}
+HAYSTACK_SEARCH_RESULTS_PER_PAGE = 10
+HAYSTACK_SIGNAL_PROCESSOR = 'haystack.signals.RealtimeSignalProcessor'
+# For when we are running on Heroku:
+if 'WEBSOLR_URL' in os.environ:
+    HAYSTACK_CONNECTIONS['default']['URL'] = os.environ['WEBSOLR_URL']
 
 # For django-facebook-connect
 FACEBOOK_LOGIN_REDIRECT = '/plantshare/'
@@ -216,19 +238,13 @@ RECAPTCHA_PUBLIC_KEY = os.environ.get('RECAPTCHA_PUBLIC_KEY', '')
 RECAPTCHA_PRIVATE_KEY = os.environ.get('RECAPTCHA_PRIVATE_KEY', '')
 RECAPTCHA_USE_SSL = True
 
-# For when we are running on Heroku:
-if 'WEBSOLR_URL' in os.environ:
-    HAYSTACK_SOLR_URL = os.environ['WEBSOLR_URL']
-
 TINYMCE_JS_URL = "tiny_mce/tiny_mce.js"
-# With no local static root, what should we do with the following setting?
-# TINYMCE_JS_ROOT = os.path.join(STATIC_ROOT, "tiny_mce")
 
 # Use memcached for caching if Heroku provides MEMCACHIER_SERVERS, or if a
 # developer runs us locally with that environment variable set.
 
 if 'MEMCACHIER_SERVERS' in os.environ:
-    os.environ['MEMCACHE_SERVERS'] = os.environ.get('MEMCACHIER_SERVERS', '')
+    os.environ['MEMCACHE_SERVERS'] = os.environ.get('MEMCACHIER_SERVERS', '').replace(',', ';')
     os.environ['MEMCACHE_USERNAME'] = os.environ.get('MEMCACHIER_USERNAME', '')
     os.environ['MEMCACHE_PASSWORD'] = os.environ.get('MEMCACHIER_PASSWORD', '')
 

@@ -1,6 +1,6 @@
 from django import forms
 from django.core.urlresolvers import reverse_lazy
-from emailconfirmation.models import EmailAddress
+from emailconfirmation_models import EmailAddress
 
 from gobotany.plantshare.models import (Checklist, ChecklistEntry,
     Location, ScreenedImage, SIGHTING_DEFAULT_VISIBILITY,

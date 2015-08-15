@@ -1,11 +1,10 @@
 from django.conf import settings
-from django.conf.urls import patterns, url
+from django.conf.urls import url
 from django.contrib import admin
 from django.views.decorators.cache import cache_control, cache_page
 from django.views.generic import RedirectView
 
-from gobotany.api import handlers, views
-from piston.resource import Resource
+from gobotany.api import views
 
 admin.autodiscover()
 
@@ -25,27 +24,20 @@ def allow_cross_site_access(f):
         return httpresponse
     return add_cross_site_header
 
-urlpatterns = patterns(
-    '',
-
+urlpatterns = [
     url(r'^taxa/(?P<scientific_name>[^/]+)/$', allow_cross_site_access(
-            Resource(handler=handlers.TaxonQueryHandler)), name='api-taxa'),
-    url(r'^taxa/$',
-        Resource(handler=handlers.TaxonQueryHandler), name='api-taxa-list'),
+        views.taxa), name='api-taxa'),
+    url(r'^taxa/$', views.taxa, name='api-taxa-list'),
 
-    url(r'^taxa-count/$',
-        Resource(handler=handlers.TaxonCountHandler), name='api-taxa-count'),
+    url(r'^taxa-count/$', views.taxa_count, name='api-taxa-count'),
 
-    url(r'^taxon-image/$',
-        Resource(handler=handlers.TaxonImageHandler), name='api-taxon-image'),
+    url(r'^taxon-image/$', views.taxon_image, name='api-taxon-image'),
 
-    url(r'^characters/$',
-        Resource(handler=handlers.CharactersHandler)),
-    url(r'^characters/(?P<character_short_name>[^/]+)/$',
-        Resource(handler=handlers.CharacterHandler)),
+    url(r'^characters/$', views.characters, name='api-characters'),
+    url(r'^characters/(?P<character_short_name>[^/]+)/$', views.character,
+        name='api-character'),
 
-    url(r'^piles/$',
-        Resource(handler=handlers.PileListingHandler), name='api-pile-list'),
+    url(r'^piles/$', views.pile_listing, name='api-pile-list'),
 
 
     # Redirects for the split Remaining Non-Monocots piles, so that the
@@ -53,16 +45,20 @@ urlpatterns = patterns(
     url(r'^piles/(?:non-)?alternate-remaining-non-monocots/characters/$',
         RedirectView.as_view(
             url='/api/piles/remaining-non-monocots/characters/',
-            query_string=True
-            )),
+            query_string=True,
+            permanent=True,
+        )),
     url(r'^piles/(?:non-)?alternate-remaining-non-monocots/questions/$',
         RedirectView.as_view(
             url='/api/piles/remaining-non-monocots/questions/',
-            query_string=True
-            )),
+            query_string=True,
+            permanent=True,
+        )),
     url(r'^piles/(?:non-)?alternate-remaining-non-monocots/$',
         RedirectView.as_view(
-            url='/api/piles/remaining-non-monocots/')),
+            url='/api/piles/remaining-non-monocots/',
+            permanent=True,
+        )),
 
 
     url(r'^piles/(?P<pile_slug>[^/]+)/characters/$',
@@ -72,18 +68,14 @@ urlpatterns = patterns(
     url(r'^piles/(?P<pile_slug>[^/]+)/questions/$',
         'gobotany.api.views.questions', name='api-questions'),
 
-    url(r'^piles/(?P<slug>[^/]+)/?$',
-        Resource(handler=handlers.PileHandler), name='api-pile'),
+    url(r'^piles/(?P<slug>[^/]+)/?$', views.pile, name='api-pile'),
 
     url(r'^piles/(?P<pile_slug>[^/]+)/(?P<character_short_name>[^/]+)/$',
-        Resource(handler=handlers.CharacterValuesHandler),
-        name='api-character-values'),
+        views.character_values, name='api-character-values'),
 
-    url(r'^pilegroups/$',
-        Resource(handler=handlers.PileGroupListingHandler),
-        name='api-pilegroup-list'),
-    url(r'^pilegroups/(?P<slug>[^/]+)/$',
-        Resource(handler=handlers.PileGroupHandler), name='api-pilegroup'),
+    url(r'^pilegroups/$', views.pile_group_listing, name='api-pilegroup-list'),
+    url(r'^pilegroups/(?P<slug>[^/]+)/$', views.pile_group,
+        name='api-pilegroup'),
 
     # Plant distribution maps
     url(r'^maps/(?P<genus>[^/-]+)-(?P<epithet>[^/]+)'
@@ -93,8 +85,9 @@ urlpatterns = patterns(
          '-na-distribution-map(\.svg|/)?$',
         views.north_american_distribution_map, name='na-distribution-map'),
 
-    url(r'^$', 'nonexistent', name='api-base'),  # helps compute the base URL
-    )
+    url(r'^$', 'gobotany.api.views.nonexistent',
+        name='api-base'),   # helps compute the base URL
+]
 
 # We only use caching if memcached itself is configured; otherwise, we
 # assume that the developer does not really intend caching to take
@@ -110,8 +103,7 @@ else:
     memcache = lambda view: view
     both = lambda view: view
 
-urlpatterns += patterns(
-    'gobotany.api.views',
+urlpatterns.extend([
     url(r'^glossaryblob/$', both(views.glossary_blob)),
     url(r'^hierarchy/$', both(views.hierarchy)),
     url(r'^dkey-images/([-\w\d]+)/$', both(views.dkey_images)),
@@ -126,7 +118,9 @@ urlpatterns += patterns(
     # the feature Get More Questions > Pick Your Own
     url(r'^vectors/pile-set/(?:non-)?alternate-remaining-non-monocots/$',
         RedirectView.as_view(
-            url='/api/vectors/pile-set/remaining-non-monocots/')),
+            url='/api/vectors/pile-set/remaining-non-monocots/',
+            permanent=True,
+        )),
 
     url(r'^vectors/pile-set/([\w-]+)/$', both(views.pile_vector_set)),
-    )
+])

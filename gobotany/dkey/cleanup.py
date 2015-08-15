@@ -17,7 +17,7 @@ debug = False
 re_paragraph_number = re.compile(ur'^<p><b>(\d+)\.')
 re_hybrid_subtitle = re.compile(ur'<p><b>(\d+)×(\d+)\.[\s\u202f]*')
 
-@transaction.commit_on_success
+@transaction.atomic
 def main():
 
     # First create a mapping that, given a genus and paragraph number,

@@ -1,4 +1,5 @@
 import hashlib
+import inflect
 import json
 from collections import defaultdict
 from operator import itemgetter
@@ -8,6 +9,7 @@ from django.conf import settings
 from django.contrib.contenttypes.models import ContentType
 from django.core.urlresolvers import reverse
 from django.db import connection
+from django.forms.models import model_to_dict
 from django.http import HttpResponse, Http404
 from django.shortcuts import get_object_or_404
 from django.views.decorators.cache import cache_page
@@ -15,7 +17,7 @@ from django.views.decorators.http import etag
 from django.views.decorators.vary import vary_on_headers
 
 import gobotany.dkey.models as dkey_models
-from gobotany.core import igdt
+from gobotany.core import botany, igdt, models
 from gobotany.core.models import (
     Character, ContentImage,
     GlossaryTerm, PartnerSpecies, Pile,
@@ -28,11 +30,14 @@ from gobotany.mapping.map import (NewEnglandPlantDistributionMap,
                                   UnitedStatesPlantDistributionMap)
 
 
+inflector = inflect.engine()
+
+
 def jsonify(value, headers=None, indent=1):
     """Convert the value into a JSON HTTP response."""
     response = HttpResponse(
         json.dumps(value, indent=indent if settings.DEBUG else None),
-        mimetype='application/json; charset=utf-8',
+        content_type='application/json; charset=utf-8',
         )
     if headers:
         for k, v in headers.items():  # set headers
@@ -55,7 +60,38 @@ def _taxon_image(image):
         }
     return json
 
-def _simple_taxon(taxon, pile_slug):
+def _simple_taxon(taxon, pile_slug=None, include_default_image=False,
+    include_factoid=False):
+
+    genus_name, epithet = taxon.scientific_name.lower().split(None, 1)
+    url = reverse('taxa-species', args=(genus_name, epithet))
+    if pile_slug:
+        url += '?' + urlencode({'pile': pile_slug})
+    common_name = ''
+    common_names = taxon.common_names.all()
+    if common_names:
+        common_name = common_names[0].common_name
+    json = {
+        'id': taxon.id,
+        'scientific_name': taxon.scientific_name,
+        'common_name': common_name,
+        'genus': taxon.scientific_name.split()[0],  # faster than .genus.name
+        'family': taxon.family.name,
+        'taxonomic_authority': taxon.taxonomic_authority,
+        'url': url,
+        'images': [_taxon_image(i) for i in botany.species_images(taxon)],
+    }
+    if include_default_image:
+        json['default_image'] = _taxon_image(taxon.get_default_image())
+    if include_factoid:
+        json['factoid'] = taxon.factoid
+    return json
+
+def _species_simple_taxon(taxon, pile_slug):
+    """Optimized version of the _simple_taxon helper function, for use with
+    the species/ URL, which does custom querying and passes a modified taxon
+    object.
+    """
     genus_name, epithet = taxon.scientific_name.lower().split(None, 1)
     url = reverse('taxa-species', args=(genus_name, epithet))
     url += '?' + urlencode({'pile': pile_slug})
@@ -69,7 +105,288 @@ def _simple_taxon(taxon, pile_slug):
         'url': url,
         }
 
+def _taxon_with_chars(taxon):
+    res = _simple_taxon(taxon)
+    piles = taxon.piles.all()
+    res['piles'] = [pile.name for pile in piles]
+    res['pile_slugs'] = [pile.slug for pile in piles]
+    for cv in taxon.character_values.all():
+        name = cv.character.short_name
+        # Any character might have multiple values. For any that do,
+        # return a list instead of a single value.
+        if not res.has_key(name):
+            # Add a single value the first time this name comes up.
+            res[name] = cv.friendliest_text()
+        else:
+            # This name exists. Its value is either already a list,
+            # or needs to be converted into one before adding the value.
+            if not type(res[name]) == type(list()):
+                new_list = [res[name]]
+                res[name] = new_list
+            res[name].append(cv.friendliest_text())
+    return res
+
+
+# Include some helper code originally from django-piston.
+
+class rc_factory(object):
+    """
+    Status codes.
+    """
+    CODES = dict(ALL_OK = ('OK', 200),
+                 CREATED = ('Created', 201),
+                 DELETED = ('', 204), # 204 says "Don't send a body!"
+                 BAD_REQUEST = ('Bad Request', 400),
+                 FORBIDDEN = ('Forbidden', 401),
+                 NOT_FOUND = ('Not Found', 404),
+                 DUPLICATE_ENTRY = ('Conflict/Duplicate', 409),
+                 NOT_HERE = ('Gone', 410),
+                 NOT_IMPLEMENTED = ('Not Implemented', 501),
+                 THROTTLED = ('Throttled', 503))
+
+    def __getattr__(self, attr):
+        """
+        Returns a fresh `HttpResponse` when getting
+        an "attribute". This is backwards compatible
+        with 0.2, which is important.
+        """
+        try:
+            (r, c) = self.CODES.get(attr)
+        except TypeError:
+            raise AttributeError(attr)
+
+        return HttpResponse(r, content_type='text/plain', status=c)
+
+rc = rc_factory()
+
+
 # API views.
+
+def taxa(request, scientific_name=None):
+    getdict = dict(request.GET.items())  # call items() to avoid lists
+    kwargs = {}
+    for k, v in getdict.items():
+        kwargs[str(k)] = v
+    try:
+        species = botany.query_species(**kwargs)
+    except models.Character.DoesNotExist:
+        return rc.NOT_FOUND
+
+    if not scientific_name:
+        # Only return character values for single item lookup, keep the
+        # result list simple
+        listing = [_simple_taxon(s) for s in species.all()]
+
+        return jsonify({'items': listing,
+                'label': 'scientific_name',
+                'identifier': 'scientific_name'})
+    elif species.exists():
+        try:
+            taxon = species.filter(scientific_name=scientific_name)[0]
+        except IndexError:
+            # A taxon wasn't returned from the database.
+            return rc.NOT_FOUND
+
+        # Return full taxon with characters for single item query
+        return jsonify(_taxon_with_chars(taxon))
+    return jsonify({})
+
+def taxa_count(request):
+    kwargs = {}
+    for k, v in request.GET.items():
+        kwargs[str(k)] = v
+    try:
+        species = botany.query_species(**kwargs)
+    except models.Character.DoesNotExist:
+        return rc.NOT_FOUND
+
+    matched = species.count()
+    return jsonify({'matched': matched,
+        'excluded': models.Taxon.objects.count() - matched})
+
+def taxon_image(request):
+    kwargs = {}
+    items = request.GET.items()
+    if items:
+        for k, v in items:
+            kwargs[str(k)] = v
+        try:
+            images = botany.species_images(**kwargs)
+        except models.Taxon.DoesNotExist:
+            return rc.NOT_FOUND
+    else:
+        return rc.BAD_REQUEST
+
+    return jsonify([_taxon_image(image) for image in images])
+
+def characters(request):
+    """List characters and character values across all piles."""
+    group_map = {}
+    for character_group in models.CharacterGroup.objects.all():
+        group_map[character_group.id] = {
+            'name': character_group.name,
+            'characters': [],
+        }
+    for character in models.Character.objects.all():
+        group_map[character.character_group_id]['characters'].append({
+            'short_name': character.short_name,
+            'name': character.name,
+        })
+    return jsonify(sorted(group_map.values(), key=itemgetter('name')))
+
+def character(request, character_short_name):
+    """Retrieve all character values for a character regardless of pile."""
+    r = {'type': '', 'list': []}
+    for cv in models.CharacterValue.objects.filter(
+        character__short_name=character_short_name):
+        if cv.value_str:
+            r['type'] = 'str'
+            r['list'].append(cv.value_str)
+        elif cv.value_min is not None and cv.value_max is not None:
+            r['type'] = 'length'
+            r['list'].append([cv.value_min, cv.value_max])
+    return jsonify(r)
+
+def _character_groups(pile=None):
+    groups = models.CharacterGroup.objects.filter(
+        character__pile=pile).distinct()
+    return [dict(name=group.name,
+                 id=group.id) for group in groups]
+
+def _default_filters(pile=None):
+    filters = []
+    default_filters = list(
+        models.DefaultFilter.objects.filter(pile=pile)
+        .select_related('character')
+        )
+    for default_filter in default_filters:
+        filter = _jsonify_character(default_filter.character, pile.slug)
+        filter['key'] = default_filter.key
+        filter['order'] = default_filter.order
+        filters.append(filter)
+    return filters
+
+def _plant_preview_characters(pile=None):
+    characters_list = []
+    plant_preview_characters = list(
+        models.PlantPreviewCharacter.objects.filter(pile=pile)
+        .select_related('character', 'partner_site')
+        )
+    for preview_character in plant_preview_characters:
+        character = {}
+        character['character_short_name'] = \
+            preview_character.character.short_name
+        character['friendly_name'] = \
+            preview_character.character.friendly_name
+        character['order'] = preview_character.order
+        partner_site = None
+        if preview_character.partner_site:
+            partner_site = preview_character.partner_site.short_name
+        character['partner_site'] = partner_site
+        character['unit'] = preview_character.character.unit
+        character['value_type'] = preview_character.character.value_type
+        characters_list.append(character)
+    return characters_list
+
+def _default_image(pile_or_pilegroup=None):
+    if pile_or_pilegroup is not None:
+        return _taxon_image(pile_or_pilegroup.get_default_image()) or ''
+
+def _pilegroup_dict(pilegroup):
+    pilegroup_dict = model_to_dict(pilegroup)
+
+    pilegroup_dict['resource_uri'] = reverse('api-pilegroup',
+        args=(pilegroup.slug,))
+    pilegroup_dict['default_image'] = _default_image(pilegroup)
+
+    # Delete some items not needed here yet.
+    del pilegroup_dict['friendly_title']
+    del pilegroup_dict['id']
+    del pilegroup_dict['sample_species_images']
+    del pilegroup_dict['slug']
+    del pilegroup_dict['video']
+
+    return pilegroup_dict
+
+def pile_group_listing(request):
+    lst = []
+    for pilegroup in models.PileGroup.objects.all():
+        pilegroup_dict = _pilegroup_dict(pilegroup)
+        lst.append(pilegroup_dict)
+    return jsonify({'items': lst})
+
+def pile_group(request, slug):
+    try:
+        pilegroup = models.PileGroup.objects.get(slug=slug)
+    except models.PileGroup.DoesNotExist:
+        return rc.NOT_FOUND
+    pilegroup_dict = _pilegroup_dict(pilegroup)
+    return jsonify(pilegroup_dict)
+
+def _pile_dict(pile):
+    pile_dict = model_to_dict(pile)
+
+    pile_dict['resource_uri'] = reverse('api-pile', args=(pile.slug,))
+    pile_dict['character_groups'] = _character_groups(pile)
+    pile_dict['default_filters'] = _default_filters(pile)
+    pile_dict['plant_preview_characters'] = _plant_preview_characters(
+        pile)
+    pile_dict['default_image'] = _default_image(pile)
+
+    # Delete some items not needed here yet.
+    del pile_dict['friendly_title']
+    del pile_dict['id']
+    del pile_dict['pilegroup']
+    del pile_dict['sample_species_images']
+    del pile_dict['slug']
+    del pile_dict['species']
+    del pile_dict['video']
+
+    return pile_dict
+
+def pile_listing(request):
+    lst = []
+    for pile in models.Pile.objects.all():
+        pile_dict = _pile_dict(pile)
+        lst.append(pile_dict)
+    return jsonify({'items': lst})
+
+def pile(request, slug):
+    try:
+        pile = models.Pile.objects.get(slug=slug)
+    except models.Pile.DoesNotExist:
+        return rc.NOT_FOUND
+    pile_dict = _pile_dict(pile)
+    return jsonify(pile_dict)
+
+def _character_values(request, pile_slug, character_short_name):
+    character = models.Character.objects.get(
+        short_name=character_short_name)
+
+    for cv in models.CharacterValue.objects.filter(
+        character=character):
+
+        image_url = ''
+        thumbnail_url = ''
+        if cv.image:
+            image_url = cv.image.url
+            thumbnail_url = cv.image.thumbnail.absolute_url
+
+        yield {'value': cv.value,
+               'friendly_text': cv.friendly_text,
+               'image_url': image_url,
+               'thumbnail_url': thumbnail_url}
+
+def character_values(request, pile_slug, character_short_name):
+    try:
+        return jsonify([x for x in _character_values(request, pile_slug,
+            character_short_name)])
+    except (models.Pile.DoesNotExist, models.Character.DoesNotExist):
+        return rc.NOT_FOUND
+
+def nonexistent(request):
+    """Dummy view for an URL that is only used to output a base API URL."""
+    return rc.NOT_FOUND
 
 def glossary_blob(request):
     """Return a dictionary of glossary terms and definitions.
@@ -93,7 +410,12 @@ def glossary_blob(request):
     """
     glossaryterms = list(GlossaryTerm.objects.filter(highlight=True)
                          .extra(where=['CHAR_LENGTH(term) > 2']))
-    definitions = { gt.term: gt.lay_definition for gt in glossaryterms }
+
+    definitions = {}
+    for gt in glossaryterms:
+        gt.plural = inflector.plural(gt.term)
+        definitions[gt.term.lower()] = gt.lay_definition
+        definitions[gt.plural.lower()] = gt.lay_definition
 
     # Calling gt.image.url is very slow, because this is Django, so we
     # only do it once; this will work fine as long as we do not start
@@ -103,16 +425,19 @@ def glossary_blob(request):
 
     for gt in glossaryterms:
         gt.image_path = gt.__dict__['image']
-        if gt.image_path is not None and prefix is None:
+        if gt.image_path and prefix is None:
             try:
                 url = gt.image.url
                 prefix = url[:-len(gt.image_path)]
             except ValueError:  # Image not found in storage.
                 pass
 
-    images = { gt.term: prefix + gt.image_path for gt in glossaryterms
-               if (gt.image_path is not None and gt.image_path != '' and
-                   prefix is not None) }
+    images = {}
+    for gt in glossaryterms:
+        if not gt.image_path or prefix is None:
+            continue
+        images[gt.term.lower()] = prefix + gt.image_path
+        images[gt.plural.lower()] = prefix + gt.image_path
 
     return jsonify({'definitions': definitions, 'images': images})
 
@@ -459,7 +784,7 @@ def species(request, pile_slug):
     # closed the connection.
     # Somehow the cached response has a much shorter Content-Length than the
     # original response.
-    #
+    # Tried re-enabling after upgrade to Django 1.6, but got same error.
     #if pile_slug in _species_cache:
     #    return _species_cache[pile_slug]
 
@@ -510,7 +835,7 @@ def species(request, pile_slug):
     result = []
     while species_list:
         species = species_list.pop()  # pop() to free memory as we go
-        d = _simple_taxon(species, pile_slug)
+        d = _species_simple_taxon(species, pile_slug)
         d['images'] = images = []
         image_list = image_dict.pop(species.id, ())
         for image in image_list:
@@ -695,7 +1020,7 @@ def _distribution_map(request, distribution_map, genus, epithet):
         genus, epithet = 'mahonia', 'aquifolium'
 
     shaded_map = _shade_map(distribution_map, genus, epithet)
-    return HttpResponse(shaded_map.tostring(), mimetype='image/svg+xml')
+    return HttpResponse(shaded_map.tostring(), content_type='image/svg+xml')
 
 def new_england_distribution_map(request, genus, epithet):
     """Return a vector map of New England showing county-level

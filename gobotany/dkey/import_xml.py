@@ -632,4 +632,4 @@ if __name__ == '__main__':
                         nargs='?', default='110330_fone_test_05.xml')
     args = parser.parse_args()
 
-    transaction.commit_on_success(do_parse)(args.filename)
+    transaction.atomic(do_parse)(args.filename)

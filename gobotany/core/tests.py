@@ -151,8 +151,8 @@ class ModelTests(SampleData):
         leaf = models.ImageType(name='leaf')
         leaf.save()
 
-        taxon = models.ContentType.objects.get(name='taxon')
-        pile = models.ContentType.objects.get(name='pile')
+        taxon = models.ContentType.objects.get(model='taxon')
+        pile = models.ContentType.objects.get(model='pile')
 
         ci = models.ContentImage(alt='alttext', rank=3, image_type=leaf,
                                  content_type=taxon, object_id=self.cat.id)
@@ -225,7 +225,7 @@ class ModelTests(SampleData):
         raises(ValidationError, CV(value_min=200, value_max=3).clean)
 
     def test_ContentImage_clean(self):
-        taxon = models.ContentType.objects.get(name='taxon')
+        taxon = models.ContentType.objects.get(model='taxon')
 
         CI = models.ContentImage
         kw = dict(image_type=self.stem, content_type=taxon, object_id='1')
@@ -241,7 +241,7 @@ class ModelTests(SampleData):
     # Test some other miscellaneous methods.
 
     def test_Pile_get_default_image(self):
-        pile = models.ContentType.objects.get(name='pile')
+        pile = models.ContentType.objects.get(model='pile')
 
         CI = models.ContentImage
         kw = dict(content_type=pile, object_id=self.pets.id)
@@ -263,7 +263,7 @@ class ModelTests(SampleData):
         self.assertEqual(self.pets.get_default_image(), ci4)
 
     def test_Taxon_get_default_image(self):
-        taxon = models.ContentType.objects.get(name='taxon')
+        taxon = models.ContentType.objects.get(model='taxon')
 
         CI = models.ContentImage
         kw = dict(content_type=taxon, object_id=self.cat.id)
@@ -337,7 +337,7 @@ class APITests(SampleData):
         self.try_query([], length=6)
 
     def test_species_images(self):
-        taxon = models.ContentType.objects.get(name='taxon')
+        taxon = models.ContentType.objects.get(model='taxon')
         CI = models.ContentImage
         species_images = botany.species_images
 

@@ -19,13 +19,14 @@ import re
 import time
 import unittest
 from contextlib import contextmanager
+from django.test.testcases import TestCase
 from selenium import webdriver
 from selenium.common.exceptions import (
     NoSuchElementException, StaleElementReferenceException
     )
 from selenium.webdriver.common.keys import Keys
 
-class FunctionalTestCase(unittest.TestCase):
+class FunctionalTestCase(TestCase):
 
     @classmethod
     def setUpClass(cls):
@@ -298,7 +299,7 @@ class FilterFunctionalTests(FunctionalTestCase):
         # Does the page load and show 18 species?
 
         prevent_intro_overlay = '#_view=photos'
-        self.get('/ferns/lycophytes/' + prevent_intro_overlay)
+        self.get('/simple/ferns/lycophytes/' + prevent_intro_overlay)
         self.wait_on_species(18)
 
         # Do the family and genus dropdowns start by displaying all options?
@@ -354,7 +355,7 @@ class FilterFunctionalTests(FunctionalTestCase):
         # Are different images shown upon selecting "Show photos of" choices?
 
         prevent_intro_overlay = '#_view=photos'
-        self.get('/ferns/lycophytes/' + prevent_intro_overlay)
+        self.get('/simple/ferns/lycophytes/' + prevent_intro_overlay)
         self.wait_on_species(18)
         e = self.css1('.plant-list div a div.plant-img-container img')
         assert '-ha-' in e.get_attribute('src')
@@ -366,7 +367,7 @@ class FilterFunctionalTests(FunctionalTestCase):
 
         # Verify that "plant form" is the default menu item for lycophytes.
 
-        self.get('/ferns/lycophytes/')
+        self.get('/simple/ferns/lycophytes/')
         self.wait_on_species(18)
         self.css1('#intro-overlay .continue').click()
         e = self.css1('.plant-list div a div.plant-img-container img')
@@ -386,7 +387,7 @@ class FilterFunctionalTests(FunctionalTestCase):
 
         OMITTED_ITEMS = ['flowers and fruits', 'inflorescences', 'leaves',
                          'stems']
-        self.get('/ferns/lycophytes/')
+        self.get('/simple/ferns/lycophytes/')
         self.wait_on_species(18)
         self.css1('#intro-overlay .continue').click()
         for i in range(4):
@@ -403,7 +404,7 @@ class FilterFunctionalTests(FunctionalTestCase):
             self.assertTrue(menu_item.text not in OMITTED_ITEMS)
 
     def test_missing_image_has_placeholder_text(self):
-        self.get('/aquatic-plants/non-thalloid-aquatic/')
+        self.get('/simple/aquatic-plants/non-thalloid-aquatic/')
         self.wait_on_species(52)
         self.css1('#intro-overlay .continue').click()
         self.css1(
@@ -444,7 +445,7 @@ class FilterFunctionalTests(FunctionalTestCase):
         FILTER_LINK_CSS = '#plant_height_rn'
 
         self.get(
-            '/non-monocots/remaining-non-monocots/#_filters=family,genus,plant_height_rn'
+            '/simple/non-monocots/remaining-non-monocots/#_filters=family,genus,plant_height_rn'
             )
         self.wait_on_species(501, seconds=11)   # Big subgroup, wait longer
 
@@ -552,7 +553,7 @@ class FilterFunctionalTests(FunctionalTestCase):
 
     def test_length_filter_display_on_page_load(self):
         self.get('/')  # to start fresh and prevent partial reload
-        self.get('/non-monocots/remaining-non-monocots/'
+        self.get('/simple/non-monocots/remaining-non-monocots/'
                  '#_filters=family,genus,plant_height_rn'
                  '&plant_height_rn=5000')
         unknowns = 18
@@ -570,7 +571,7 @@ class FilterFunctionalTests(FunctionalTestCase):
         self.assertEqual(sidebar_value_span.text, '5000 mm')
 
     def test_plant_preview_popup_appears(self):
-        d = self.get('/ferns/lycophytes')
+        d = self.get('/simple/ferns/lycophytes')
         self.wait_on_species(18)
         self.css1('#intro-overlay .continue').click()
         plant_links = self.css('.plant-list .plant a')
@@ -589,7 +590,7 @@ class FilterFunctionalTests(FunctionalTestCase):
         # same one that is showing on the page. (If the photo is missing
         # on the page, it doesn't matter which one the popup shows first.)
 
-        d = self.get('/ferns/lycophytes')
+        d = self.get('/simple/ferns/lycophytes')
         self.wait_on_species(18)
         self.css1('#intro-overlay .continue').click()
         plant_links = self.css('.plant-list .plant a')
@@ -1141,7 +1142,8 @@ class PlantPreviewCharactersFunctionalTests(FunctionalTestCase):
         'lycophytes': 'ferns',
         'equisetaceae': 'ferns',
         'composites': 'non-monocots',
-        'remaining-non-monocots': 'non-monocots'
+        'alternate-remaining-non-monocots': 'non-monocots',
+        'non-alternate-remaining-non-monocots': 'non-monocots',
         }
     SPECIES = {
         'woody-angiosperms': ['Acer negundo', 'Ilex glabra'],
@@ -1158,9 +1160,12 @@ class PlantPreviewCharactersFunctionalTests(FunctionalTestCase):
         'lycophytes': ['Dendrolycopodium dendroideum', 'Isoetes echinospora'],
         'equisetaceae': ['Equisetum arvense', 'Equisetum palustre'],
         'composites': ['Achillea millefolium', 'Packera obovata'],
-        'remaining-non-monocots': ['Abutilon theophrasti', 'Nelumbo lutea'],
-        # Why does 'Acorus americanus', once in non-orchid-monocots but now
-        # in remaining-non-monocots, only have 2 attributes?
+        'alternate-remaining-non-monocots': ['Abutilon theophrasti',
+            'Nelumbo lutea'],
+        'non-alternate-remaining-non-monocots': ['Agalinis maritima',
+            'Galium palustre'],
+        # Why does 'Acorus americanus', in alternate-remaining-non-monocots,
+        # only have 2 attributes?
         }
 
     # Plant subgroups pages tests: the "plant preview" popups should
@@ -1276,8 +1281,11 @@ class PlantPreviewCharactersFunctionalTests(FunctionalTestCase):
     def test_composites_preview_popups_have_characters(self):
         self._preview_popups_have_characters('composites')
 
-    def test_remaining_non_monocots_preview_popups_have_characters(self):
-        self._preview_popups_have_characters('remaining-non-monocots')
+    def test_alternate_remaining_non_monocots_preview_popups_have_characters(self):
+        self._preview_popups_have_characters('alternate-remaining-non-monocots')
+
+    def test_non_alternate_remaining_non_monocots_preview_popups_have_characters(self):
+        self._preview_popups_have_characters('non-alternate-remaining-non-monocots')
 
     # Plant preview popups: Verify some expected characters and values.
     def test_plant_preview_popups_have_expected_values(self):
@@ -1349,8 +1357,11 @@ class PlantPreviewCharactersFunctionalTests(FunctionalTestCase):
     def test_composites_species_pages_have_characters(self):
         self._species_pages_have_characters('composites')
 
-    def test_remaining_non_monocots_species_pages_have_characters(self):
-        self._species_pages_have_characters('remaining-non-monocots')
+    def test_alternate_remaining_non_monocots_species_pages_have_characters(self):
+        self._species_pages_have_characters('alternate-remaining-non-monocots')
+
+    def test_non_alternate_remaining_non_monocots_species_pages_have_characters(self):
+        self._species_pages_have_characters('non-alternate-remaining-non-monocots')
 
     # Verify there are no duplicate characters in the initially-visible
     # "brief" Characteristics section on the species page.

@@ -1,6 +1,7 @@
 import requests
 import unittest
 from django.conf import settings
+from django.test.testcases import TestCase
 from haystack.utils import Highlighter
 from highlight import ExtendedHighlighter
 
@@ -15,7 +16,7 @@ class SearchTests(FunctionalCase):
     def setUpClass(cls):
         super(SearchTests, cls).setUpClass()
         try:
-            requests.get(settings.HAYSTACK_SOLR_URL)
+            requests.get(settings.HAYSTACK_CONNECTIONS['default']['URL'])
         except requests.RequestException:
             cls.solr_available = False
         else:
@@ -581,7 +582,7 @@ class SearchTests(FunctionalCase):
         self.assertTrue(len(self._result_links()) > 0)
 
 
-class HaystackHighlighterTestCase(unittest.TestCase):
+class HaystackHighlighterTestCase(TestCase):
 
     # Here are a few tests to document and build upon the behavior of
     # the highlighter that comes with Haystack.

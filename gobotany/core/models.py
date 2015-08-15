@@ -6,8 +6,8 @@ from django.conf import settings
 from django.db import models
 from django.db.models import Q
 from django.contrib.auth.models import User
+from django.contrib.contenttypes.fields import GenericForeignKey, GenericRelation
 from django.contrib.contenttypes.models import ContentType
-from django.contrib.contenttypes import generic
 from django.core.exceptions import ObjectDoesNotExist
 from django.core.validators import MaxValueValidator
 from django.forms import ValidationError
@@ -23,6 +23,19 @@ def add_suffix_to_base_directory(image, suffix):
     """Instead of 'http://h/a/b/c' return 'http://h/a-suffix/b/c'."""
     name = image.name.replace('/', '-' + suffix + '/', 1)
     return image.storage.url(name)
+
+
+class NameManager(models.Manager):
+    """Allow import by natural keys for partner sites"""
+    def get_by_natural_key(self, name):
+        return self.get(name=name)
+
+
+class ShortNameManager(models.Manager):
+    """Allow import by natural keys for partner sites"""
+    def get_by_natural_key(self, short_name):
+        return self.get(short_name=short_name)
+
 
 class Parameter(models.Model):
     """An admin-configurable value."""
@@ -52,11 +65,16 @@ class CharacterGroup(models.Model):
     """
     name = models.CharField(max_length=100, unique=True)
 
+    objects = NameManager()
+
     class Meta:
         ordering = ['name']
 
     def __unicode__(self):
         return u'%s id=%s' % (self.name, self.id)
+
+    def natural_key(self):
+        return (self.name,)
 
 
 class GlossaryTerm(models.Model):
@@ -142,6 +160,8 @@ class Character(models.Model):
                               blank=True,
                               null=True)  # the famous "DLD"
 
+    objects = ShortNameManager()
+
     class Meta:
         ordering = ['short_name']
 
@@ -150,6 +170,9 @@ class Character(models.Model):
             return u'%s (%s)' % (self.name, self.short_name[-2:])
         else:
             return u'%s' % (self.name)
+
+    def natural_key(self):
+        return (self.short_name,)
 
 
 class CharacterValue(models.Model):
@@ -253,7 +276,7 @@ class PileInfo(models.Model):
     slug = models.SlugField(max_length=100, unique=True)
     friendly_name = models.CharField(max_length=100, blank=True)
     friendly_title = models.CharField(max_length=100, blank=True)
-    images = generic.GenericRelation('ContentImage')
+    images = GenericRelation('ContentImage')
     video = models.ForeignKey('Video', null=True)
     key_characteristics = tinymce_models.HTMLField(blank=True)
     notable_exceptions = tinymce_models.HTMLField(blank=True)
@@ -311,6 +334,10 @@ class PileGroup(PileInfo):
         'ContentImage', related_name='sample_for_pilegroups',
         through='PileGroupImage')
 
+    objects = NameManager()
+
+    def natural_key(self):
+        return (self.name,)
 
 class PileGroupImage(models.Model):
     """Intermediary model used to govern the many-to-many relationship
@@ -345,8 +372,13 @@ class ImageType(models.Model):
     code = models.CharField(max_length=4,
                             verbose_name=u'type code')
 
+    objects = NameManager()
+
     def __unicode__(self):
         return self.name
+
+    def natural_key(self):
+        return (self.name,)
 
 
 # Converts a numeric index (e.g. 233) to a alpha index (e.g. aac)
@@ -436,7 +468,7 @@ class ContentImage(models.Model):
                                    verbose_name='image type')
     content_type = models.ForeignKey(ContentType)
     object_id = models.PositiveIntegerField()
-    content_object = generic.GenericForeignKey('content_type', 'object_id')
+    content_object = GenericForeignKey('content_type', 'object_id')
 
     def thumb_small(self):
         return add_suffix_to_base_directory(self.image, '160x149')
@@ -511,7 +543,9 @@ class Family(models.Model):
     description = models.TextField(verbose_name=u'description',
                                    blank=True)
     # We use 'example image' and 'example drawing' for the image types here
-    images = generic.GenericRelation(ContentImage)
+    images = GenericRelation(ContentImage)
+
+    objects = NameManager()
 
     class Meta:
         verbose_name = 'family'
@@ -525,6 +559,10 @@ class Family(models.Model):
     def slug(self):
         return self.name.lower()
 
+    def natural_key(self):
+        return (self.name,)
+
+
 class Genus(models.Model):
     """A biological genus."""
     name = models.CharField(max_length=100, unique=True)
@@ -532,7 +570,9 @@ class Genus(models.Model):
     description = models.TextField(verbose_name=u'description', blank=True)
     family = models.ForeignKey(Family, related_name='genera')
     # We use 'example image' and 'example drawing' for the image types here
-    images = generic.GenericRelation(ContentImage)
+    images = GenericRelation(ContentImage)
+
+    objects = NameManager()
 
     class Meta:
         verbose_name = 'genus'
@@ -545,6 +585,10 @@ class Genus(models.Model):
     @property
     def slug(self):
         return self.name.lower()
+
+    def natural_key(self):
+        return (self.name,)
+
 
 class Synonym(models.Model):
     """Other (generally previous) scientific names for species."""
@@ -597,9 +641,9 @@ class WetlandIndicator(models.Model):
 
 
 class TaxonManager(models.Manager):
+    """Allow import by natural keys for partner sites"""
     def get_by_natural_key(self, scientific_name):
         return self.get(scientific_name=scientific_name)
-
 
 class Taxon(models.Model):
     """Despite its general name this currently represents a single species."""
@@ -614,7 +658,7 @@ class Taxon(models.Model):
         CharacterValue,
         through='TaxonCharacterValue')
     taxonomic_authority = models.CharField(max_length=100)
-    images = generic.GenericRelation(ContentImage)
+    images = GenericRelation(ContentImage)
     factoid = models.CharField(max_length=1000, blank=True)
     wetland_indicator_code = models.CharField(max_length=15, blank=True,
                                               null=True)
@@ -625,6 +669,8 @@ class Taxon(models.Model):
 
     def natural_key(self):
         return (self.scientific_name,)
+
+    objects = TaxonManager()
 
     class Meta:
         verbose_name = 'taxon'
@@ -708,6 +754,9 @@ class Taxon(models.Model):
         for site in self.partners():
             users.extend(site.users.all())
         return users
+
+    def natural_key(self):
+        return (self.scientific_name,)
 
 
 class SourceCitation(models.Model):
@@ -874,6 +923,8 @@ class PartnerSite(models.Model):
     species = models.ManyToManyField(Taxon, through='PartnerSpecies')
     users = models.ManyToManyField(User)
 
+    objects = ShortNameManager()
+
     class Meta:
         ordering = ['short_name']
 
@@ -883,6 +934,9 @@ class PartnerSite(models.Model):
     def has_species(self, scientific_name):
         species = self.species.filter(scientific_name=scientific_name)
         return True if species else False
+
+    def natural_key(self):
+        return (self.short_name,)
 
 class PartnerSpecies(models.Model):
     """A binary relation putting taxa in `TaxonGroup` collections."""

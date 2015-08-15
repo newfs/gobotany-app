@@ -1,11 +1,10 @@
+from haystack import indexes
+
 from gobotany.core.models import Family, Genus, GlossaryTerm, Taxon
-from gobotany.dkey.models import Page
+from gobotany.dkey.models import Page as DichotomousKeyPage
 from gobotany.plantshare.models import Question, Sighting
 from gobotany.search.models import (GroupsListPage, PlainPage,
     SubgroupsListPage, SubgroupResultsPage)
-
-from haystack import indexes
-from haystack import site
 
 
 class CharacterCharField(indexes.CharField):
@@ -41,23 +40,13 @@ class CharacterCharField(indexes.CharField):
 class BaseIndex(indexes.SearchIndex):
     """A document that already knows its URL, so searches render faster."""
 
+    text = indexes.CharField(document=True)
     url = indexes.CharField(use_template=True,
                             template_name='search_result_url.txt')
     textSpell = indexes.CharField()
 
-    def read_queryset(self):
-        """Bypass `index_queryset()` when we just need to read a model.
-
-        The `SearchIndex` method `read_queryset()` is simply a fallback
-        to the `index_queryset()` method.  But since we tend to festoon
-        our index query-sets with all sorts of pre-loading that makes
-        indexing faster, we need to prevent `read_queryset()` from
-        falling back so that its reads remain simple.
-
-        """
-        # Copied from base class index_queryset():
-
-        return self.model._default_manager.all()
+    def index_queryset(self, using=None):
+        return self.get_model()._default_manager.all()
 
     def prepare(self, obj):
         """Prepare data for index.
@@ -72,22 +61,22 @@ class BaseIndex(indexes.SearchIndex):
         return prepared_data
 
 
-class BaseRealTimeIndex(indexes.RealTimeSearchIndex):
+class BaseRealTimeIndex(indexes.SearchIndex):
     """ A document that already knows its URL, so searches render faster.
-    This is like BaseIndex, but for a RealTimeSearchIndex instead of a
-    regular SearchIndex.
+    This is like BaseIndex, but for RealTimeSearchProcessor (specified in
+    settings; takes over for RealTimeSearchIndex, removed in Haystack 2).
     """
+    text = indexes.CharField(document=True)
     url = indexes.CharField(use_template=True,
                             template_name='search_result_url.txt')
 
-    def read_queryset(self):
-        """Bypass `index_queryset()` when we just need to read a model."""
-        return self.model._default_manager.all()
+    def index_queryset(self, using=None):
+        return self.get_model()._default_manager.all()
 
 
 # Taxa, Simple-/Full-Key, and Help-section pages
 
-class TaxonIndex(BaseIndex):
+class TaxonIndex(BaseIndex, indexes.Indexable):
     # Index
 
     name = indexes.CharField(model_attr='scientific_name')
@@ -100,9 +89,14 @@ class TaxonIndex(BaseIndex):
     title = indexes.CharField(use_template=True,
         template_name='species_title_searchindex.txt')
 
+    # Required
+
+    def get_model(self):
+        return Taxon
+
     # Customization
 
-    def index_queryset(self):
+    def index_queryset(self, using=None):
         return (super(TaxonIndex, self).index_queryset()
                 .select_related('family')
                 .prefetch_related(
@@ -120,7 +114,7 @@ class TaxonIndex(BaseIndex):
         return data
 
 
-class FamilyIndex(BaseIndex):
+class FamilyIndex(BaseIndex, indexes.Indexable):
     # Index
 
     name = indexes.CharField(model_attr='name')
@@ -133,14 +127,19 @@ class FamilyIndex(BaseIndex):
     title = indexes.CharField(use_template=True,
         template_name='family_title_searchindex.txt')
 
+    # Required
+
+    def get_model(self):
+        return Family
+
     # Customization
 
-    def index_queryset(self):
+    def index_queryset(self, using=None):
         return (super(FamilyIndex, self).index_queryset()
                 .prefetch_related('genera'))
 
 
-class GenusIndex(BaseIndex):
+class GenusIndex(BaseIndex, indexes.Indexable):
     # Index
 
     name = indexes.CharField(model_attr='name')
@@ -153,15 +152,20 @@ class GenusIndex(BaseIndex):
     title = indexes.CharField(use_template=True,
         template_name='genus_title_searchindex.txt')
 
+    # Required
+
+    def get_model(self):
+        return Genus
+
     # Customization
 
-    def index_queryset(self):
+    def index_queryset(self, using=None):
         return (super(GenusIndex, self).index_queryset()
                 .select_related('family')
                 .prefetch_related('taxa'))
 
 
-class PlainPageIndex(BaseIndex):
+class PlainPageIndex(BaseIndex, indexes.Indexable):
     # Index
 
     text = indexes.CharField(
@@ -172,8 +176,13 @@ class PlainPageIndex(BaseIndex):
 
     title = indexes.CharField(model_attr='title')
 
+    # Required
 
-class GlossaryTermIndex(BaseIndex):
+    def get_model(self):
+        return PlainPage
+
+
+class GlossaryTermIndex(BaseIndex, indexes.Indexable):
     # Index
 
     name = indexes.CharField(model_attr='term')
@@ -186,8 +195,13 @@ class GlossaryTermIndex(BaseIndex):
     title = indexes.CharField(use_template=True,
         template_name='glossary_term_title_searchindex.txt')
 
+    # Required
 
-class GroupsListPageIndex(BaseIndex):
+    def get_model(self):
+        return GlossaryTerm
+
+
+class GroupsListPageIndex(BaseIndex, indexes.Indexable):
     # Index
 
     text = indexes.CharField(
@@ -197,6 +211,11 @@ class GroupsListPageIndex(BaseIndex):
     # Display
 
     title = indexes.CharField(model_attr='title')
+
+    # Required
+
+    def get_model(self):
+        return GroupsListPage
 
     # Customization
 
@@ -208,7 +227,7 @@ class GroupsListPageIndex(BaseIndex):
         return data
 
 
-class SubgroupsListPageIndex(BaseIndex):
+class SubgroupsListPageIndex(BaseIndex, indexes.Indexable):
     # Index
 
     text = indexes.CharField(
@@ -219,9 +238,14 @@ class SubgroupsListPageIndex(BaseIndex):
 
     title = indexes.CharField(model_attr='title')
 
+    # Required
+
+    def get_model(self):
+        return SubgroupsListPage
+
     # Customization
 
-    def index_queryset(self):
+    def index_queryset(self, using=None):
         return (super(SubgroupsListPageIndex, self).index_queryset()
                 .select_related('group'))
 
@@ -233,7 +257,7 @@ class SubgroupsListPageIndex(BaseIndex):
         return data
 
 
-class SubgroupResultsPageIndex(BaseIndex):
+class SubgroupResultsPageIndex(BaseIndex, indexes.Indexable):
     # Index
 
     text = indexes.CharField(
@@ -244,9 +268,14 @@ class SubgroupResultsPageIndex(BaseIndex):
 
     title = indexes.CharField(model_attr='title')
 
+    # Required
+
+    def get_model(self):
+        return SubgroupResultsPage
+
     # Customization
 
-    def index_queryset(self):
+    def index_queryset(self, using=None):
         return (super(SubgroupResultsPageIndex, self).index_queryset()
                 .select_related('subgroup__pilegroup')
                 .prefetch_related('subgroup__species__common_names'))
@@ -254,7 +283,7 @@ class SubgroupResultsPageIndex(BaseIndex):
 
 # Dichotomous Key pages
 
-class DichotomousKeyPageIndex(BaseIndex):
+class DichotomousKeyPageIndex(BaseIndex, indexes.Indexable):
     # Index
 
     text = indexes.CharField(
@@ -266,9 +295,14 @@ class DichotomousKeyPageIndex(BaseIndex):
     title = indexes.CharField(use_template=True,
         template_name='dkey_page_title_searchindex.txt')
 
+    # Required
+
+    def get_model(self):
+        return DichotomousKeyPage
+
     # Customization
 
-    def index_queryset(self):
+    def index_queryset(self, using=None):
         return (super(DichotomousKeyPageIndex, self).index_queryset()
                 .exclude(rank='species')
                 .prefetch_related('breadcrumb_cache', 'leads'))
@@ -283,7 +317,7 @@ class DichotomousKeyPageIndex(BaseIndex):
 
 # PlantShare pages
 
-class SightingPageIndex(BaseRealTimeIndex):
+class SightingPageIndex(BaseRealTimeIndex, indexes.Indexable):
     # Index
 
     text = indexes.CharField(
@@ -295,16 +329,21 @@ class SightingPageIndex(BaseRealTimeIndex):
     title = indexes.CharField(use_template=True,
         template_name='sighting_page_title_searchindex.txt')
 
+    # Required
+
+    def get_model(self):
+        return Sighting
+
     # Customization
 
-    def index_queryset(self):
+    def index_queryset(self, using=None):
         # Index only publicly shared (and non-rare) plant sightings.
         # (Do not try to show private sightings for the logged-in user here,
         # as it would complicate indexing.)
         return Sighting.objects.public()
 
 
-class QuestionIndex(BaseRealTimeIndex):
+class QuestionIndex(BaseRealTimeIndex, indexes.Indexable):
     # Index
 
     text = indexes.CharField(
@@ -316,26 +355,13 @@ class QuestionIndex(BaseRealTimeIndex):
     title = indexes.CharField(use_template=True,
         template_name='question_title_searchindex.txt')
 
+    # Required
+
+    def get_model(self):
+        return Question
+
     # Customization
 
-    def index_queryset(self):
+    def index_queryset(self, using=None):
         # Index only published questions, i.e., those with approved answers.
-        return Question.objects.answered()
-
-
-# Register indexes for all desired page/model types.
-
-site.register(Taxon, TaxonIndex)
-site.register(Family, FamilyIndex)
-site.register(Genus, GenusIndex)
-site.register(GlossaryTerm, GlossaryTermIndex)
-
-site.register(PlainPage, PlainPageIndex)
-site.register(GroupsListPage, GroupsListPageIndex)
-site.register(SubgroupsListPage, SubgroupsListPageIndex)
-site.register(SubgroupResultsPage, SubgroupResultsPageIndex)
-
-site.register(Page, DichotomousKeyPageIndex)
-
-site.register(Sighting, SightingPageIndex)
-site.register(Question, QuestionIndex)
+        return self.get_model().objects.answered()
