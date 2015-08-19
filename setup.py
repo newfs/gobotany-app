@@ -31,7 +31,7 @@ requirements = [
     # Login and registration
 
     'django-email-confirmation==0.2',
-    'django-facebook-connect>=1.0.2',
+    'django-facebook-connect>=1.0.3',
     'django-recaptcha==1.0.4',
     'django-registration-redux==1.2',
 
@@ -50,8 +50,10 @@ requirements = [
     ]
 
 dependency_links = [
-    'git+https://github.com/noamsu/django-facebook-connect'
-    + '#egg=django-facebook-connect-1.0.2',
+    # Use our temporary fork for the version bump to 1.0.3 for now.
+    #'git+https://github.com/noamsu/django-facebook-connect'
+    'git+https://github.com/newfs/django-facebook-connect'
+    + '#egg=django-facebook-connect-1.0.3',
     ]
 
 packages = find_packages()
