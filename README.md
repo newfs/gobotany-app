@@ -161,7 +161,7 @@ To check for test coverage using coverage.py, run:
     $ export DJANGO_SETTINGS_MODULE=gobotany.settings
     $ coverage run --source=gobotany dev/venv/bin/django-admin test
     $ coverage html
-    $open htmlcov/index.html
+    $ open htmlcov/index.html
 
 If you don't specify the --source, you'll have stats for the entire
 site-packages directory, the dev directory, etc.
