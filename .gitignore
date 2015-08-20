@@ -10,7 +10,8 @@
 /dev/requirejs/build/
 /dev/usr/apache-solr-*
 /dev/venv/
-.coverage
+/.coverage
+/htmlcov/
 
 # SASS
 /gobotany/static/sass/.sass-cache/
