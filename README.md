@@ -1,6 +1,10 @@
 Go Botany
 =========
 
+[Go Botany](https://gobotany.newenglandwild.org/) is a web site that
+encourages informal, self-directed education in botany for science
+students and beginning and amateur botanists.
+
 Running Go Botany on your workstation
 -------------------------------------
 
