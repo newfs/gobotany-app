@@ -153,6 +153,29 @@ Detailed notes about testing under selenium can be found in:
     gobotany-app/gobotany/simplekey/testdir/README-SELENIUM.txt
 
 
+Checking test coverage
+----------------------
+
+To check for test coverage using coverage.py, run:
+
+    $ export DJANGO_SETTINGS_MODULE=gobotany.settings
+    $ coverage run --source=gobotany dev/venv/bin/django-admin test
+    $ coverage html
+    $open htmlcov/index.html
+
+If you don't specify the --source, you'll have stats for the entire
+site-packages directory, the dev directory, etc.
+
+The first pass generates a .coverage text file with coverage statistics.
+
+The second command creates nicely formatted, highlighted, and linked HTML
+reports.
+
+To see the same data on the command line, use:
+
+    $ coverage report
+
+
 Testing and adjusting the search feature
 ----------------------------------------
 
