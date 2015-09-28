@@ -402,7 +402,7 @@ def edit_lit_sources(request, dotted_datetime):
         tcvs = models.TaxonCharacterValue.objects.filter(
             taxon=taxon, character_value__character=character,
             ).select_related(
-            'taxon character_value character_value__character'
+                'taxon', 'character_value', 'character_value__character'
             )
         tcvlist.extend(tcvs)
 
