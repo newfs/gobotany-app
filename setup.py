@@ -35,7 +35,7 @@ requirements = [
     'django-facebook-connect>=1.0.2',
     'django-recaptcha==0.0.6',
     # Installed in a separate step pending Django dependency issues
-    'django-registration==0.9',
+    'django-registration==0.8',
 
     # For storing images on S3.
 
