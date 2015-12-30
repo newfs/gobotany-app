@@ -5,7 +5,7 @@
             <div id="banner">
                 {% block images %}
                     {% for image in home_page_images %}
-                        <img src="{{ image.image.url }}" alt="">
+                        <img src="{{ image.image.url|secure_url }}" alt="">
                     {% endfor %}
                 {% endblock %}
                 {% block images_overlay %}
@@ -63,7 +63,7 @@
                 {% if plant_of_the_day %}
                     <a href="/species/{{ plant_of_the_day.genus_name|lower }}/{{ plant_of_the_day.epithet }}/"
                         title="Learn more about {{ plant_of_the_day.scientific_name }}">
-                      <img src="{{ plant_of_the_day_image.image_medium }}"
+                      <img src="{{ plant_of_the_day_image.image_medium|secure_url }}"
                            alt="{{ plant_of_the_day.scientific_name }}">
                     </a>
                     <div class="details">
