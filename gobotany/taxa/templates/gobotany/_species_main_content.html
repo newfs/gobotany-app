@@ -31,10 +31,10 @@
 
     <div id="species-images">
         {% for i in images %}
-            <a href="{{ i.image_medium }}"
+            <a href="{{ i.image_medium|secure_url }}"
                 {% if forloop.counter == 1 %}id="startimage"{% endif %}
                 title="{% photo_credit i scientific_name %}">
-                <img src="{{ i.thumb_large }}"
+                <img src="{{ i.thumb_large|secure_url }}"
                     alt="{% photo_credit i scientific_name %}">
             </a>
         {% endfor %}
