@@ -2,6 +2,7 @@
 {% load gobotany_tags %}
 {% load mapping_tags %}
 {% load plantshare_tags %}
+{% load simplekey_extras %}
 
 {% block title %}Sighting: {{ sighting.identification }} at
     {{ sighting.location|capfirst }}: PlantShare{% endblock %}
@@ -53,7 +54,7 @@
     <h2>Photos</h2>
     <ul>
     {% for photo in sighting.photos.all %}
-        <li><img src="{{ photo.image.url }}" /></li>
+        <li><img src="{{ photo.image.url|secure_url }}" /></li>
     {% empty %}
         <li>There are no photos available yet for this sighting.</li>
     {% endfor %}

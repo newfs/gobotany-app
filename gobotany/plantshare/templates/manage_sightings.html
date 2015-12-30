@@ -2,6 +2,7 @@
 {% load gobotany_tags %}
 {% load humanize %}
 {% load plantshare_tags %}
+{% load simplekey_extras %}
 
 {% block title %}Manage Your Sightings: PlantShare{% endblock %}
 
@@ -48,7 +49,7 @@
                     <td>
                         {% if sighting.photo %}
                             <a href="{% url 'ps-sighting' sighting.id %}">
-                                <img src="{{ sighting.photo.thumb_cropped.url }}" alt="">
+                                <img src="{{ sighting.photo.thumb_cropped.url|secure_url }}" alt="">
                             </a>
                         {% endif %}
                     </td>

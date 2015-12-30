@@ -1,6 +1,7 @@
 {% extends "gobotany/_modal_base.html" %}
 {% load gobotany_tags %}
 {% load mapping_tags %}
+{% load simplekey_extras %}
 
 {# This page appears in a lightbox when viewing another user's profile. #}
 
@@ -16,7 +17,7 @@
         <a class="close">Close</a>
 
         {% if profile and details_visible %}
-            <img class="avatar" src="{{ profile.public_avatar_image.thumb_url }}">
+            <img class="avatar" src="{{ profile.public_avatar_image.thumb_url|secure_url }}">
             <h2>{{ profile.user_display_name }}</h2>
             {% if profile.location and location_visible %}
                 {% location_map location=profile.location height_px="115" width_px="169" zoom="6" id="id_location_map" %}

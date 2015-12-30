@@ -45,5 +45,9 @@ def query_regex(plant_name, anchor_at_start=False, anchor_at_end=False):
 
 
 def secure_url(url):
-    """Take a URL string and make it start with HTTPS."""
-    return 'https://' + url.split('//')[1]
+    """Take an absolute URL and make it start with HTTPS."""
+    if url.startswith('http://') or url.startswith('//'):
+        parts = url.split('//')
+        if len(parts) > 1:
+            url = 'https://%s' % parts[1]
+    return url

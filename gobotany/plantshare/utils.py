@@ -26,7 +26,7 @@ def get_covered_state(location):
             # coordinates.
             latitude = lat_long.group(1)
             longitude = lat_long.group(2)
-            url = ('http://data.fcc.gov/api/block/find?format=json&'
+            url = ('https://data.fcc.gov/api/block/find?format=json&'
                    'latitude=%s&longitude=%s&showall=true') % (latitude,
                                                                longitude)
             try:

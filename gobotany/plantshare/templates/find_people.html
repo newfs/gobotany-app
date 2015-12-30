@@ -1,5 +1,6 @@
 {% extends "gobotany/_page_free_sidebar.html" %}
 {% load plantshare_tags %}
+{% load simplekey_extras %}
 
 {% block title %}Find People: PlantShare{% endblock %}
 
@@ -33,7 +34,7 @@
             <li class="person">
                 {% if request.user.id == person.user.id or request.user.is_staff or person.details_visibility != 'PRIVATE' %}
                     {# TODO: later, take into account 'GROUPS' visibility #}
-                    <img src="{{ person.public_avatar_image.thumb_url }}" alt="">
+                    <img src="{{ person.public_avatar_image.thumb_url|secure_url }}" alt="">
                 {% endif %}
                 <ul>
                     <li class="name">

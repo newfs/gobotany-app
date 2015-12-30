@@ -80,7 +80,7 @@ def expand_group_title(title):
 
 @register.filter
 def figure_url(figure):
-    return 'http://{}.s3.amazonaws.com/dkey-figures/figure-{}.png'.format(
+    return 'https://{}.s3.amazonaws.com/dkey-figures/figure-{}.png'.format(
         getattr(settings, 'AWS_STORAGE_BUCKET_NAME', 'newfs'),
         figure.number)
 

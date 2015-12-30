@@ -2,6 +2,7 @@
 {% load gobotany_tags %}
 {% load mapping_tags %}
 {% load plantshare_tags %}
+{% load simplekey_extras %}
 
 {% block title %}Recent Sightings: PlantShare{% endblock %}
 
@@ -38,7 +39,7 @@
                         <a class="photolink"
                             href="{% url 'ps-sighting' sighting.id %}">
                             <img src="" alt=""
-                            data-lazy-img-src="{{ sighting.photo.thumb_cropped.url }}">
+                            data-lazy-img-src="{{ sighting.photo.thumb_cropped.url|secure_url }}">
                         </a>
                     {% endif %}
                     <div class="title">

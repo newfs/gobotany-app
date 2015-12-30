@@ -1,4 +1,5 @@
 {% load taxa_tags %}
+{% load simplekey_extras %}
 
     <h1>Family: {{ family.name }}</h1>
     {% if common_name %}
@@ -17,10 +18,10 @@
             <div class="img-gallery">
                 <div class="plant">
                     <div class="frame"></div>
-                    <a href="{{ drawing.image_medium }}"
+                    <a href="{{ drawing.image_medium|secure_url }}"
                         title="{% photo_credit drawing drawing.content_object.scientific_name %}">
                         <img class="map"
-                            src="{{ drawing.thumb_large }}"
+                            src="{{ drawing.thumb_large|secure_url }}"
                             alt="{% photo_credit drawing drawing.content_object.scientific_name %}">
                     </a>
                 </div>

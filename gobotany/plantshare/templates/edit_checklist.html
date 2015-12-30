@@ -1,5 +1,6 @@
 {% extends "gobotany/_page_free_sidebar.html" %}
 {% load mapping_tags %}
+{% load simplekey_extras %}
 
 {% block title %}Edit Plant Checklist: {{ checklist.name }}: PlantShare{% endblock %}
 
@@ -102,7 +103,7 @@
                         {% if entry_form.instance.plant_photo %}
                         <a href="#" rel=".image-modal" 
                             class="upload-image-thumb btn"><img class="checklist-thumb" 
-                            src="{{ entry_form.instance.plant_photo.thumb.url }}" /></a>
+                            src="{{ entry_form.instance.plant_photo.thumb.url|secure_url }}" /></a>
                         {% else %}
                         <a href="#" rel=".image-modal" 
                             class="upload-image-thumb btn">Upload Image</a>

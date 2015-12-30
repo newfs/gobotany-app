@@ -1,6 +1,7 @@
 {% extends "gobotany/_page_free_sidebar.html" %}
 {% load gobotany_tags %}
 {% load mapping_tags %}
+{% load simplekey_extras %}
 
 {% block title %}Sightings Locator: PlantShare{% endblock %}
 
@@ -23,7 +24,7 @@
             {% if forloop.counter == 1 %}id="startimage"{% endif %}
             title="{{ sighting.identification }} at {{ sighting.location|capfirst }}"
             data-is-scientific-name="{{ sighting.identification|is_scientific_name }}">
-            <img src="{{ sighting.photos.all.0.thumb_cropped.url }}"
+            <img src="{{ sighting.photos.all.0.thumb_cropped.url|secure_url }}"
                 alt="Sighting photo: {{ sighting.identification }}">
         </a>
     {% endfor %}

@@ -2,6 +2,7 @@
 {% load gobotany_tags %}
 {% load mapping_tags %}
 {% load plantshare_tags %}
+{% load simplekey_extras %}
 
 {% block title %}PlantShare{% endblock %}
 
@@ -40,7 +41,7 @@
                     <a href="{% url 'ps-sighting' sighting.id %}"
                         title="{{ sighting.identification }}"
                         data-is-scientific-name="{{ sighting.identification|is_scientific_name }}">
-                        <img src="{{ sighting.photos.all.0.thumb_cropped.url }}"
+                        <img src="{{ sighting.photos.all.0.thumb_cropped.url|secure_url }}"
                         alt="Sighting photo: {{ sighting.identification }}">
                     </a>
                 {% endfor %}
@@ -62,7 +63,7 @@
             {% if profile.location %}
                 {% location_map location=profile.location height_px="100" width_px="110" zoom="5" id="id_location_map" %}
             {% endif %}
-            <img class="avatar" src="{{ avatar.thumb_url }}" alt="">
+            <img class="avatar" src="{{ avatar.thumb_url|secure_url }}" alt="">
             <h3>{% user_display_name user %}</h3>
             {% if profile.location %}
                 <p>{{ profile.location }}</p>

@@ -1,5 +1,6 @@
 {% extends "gobotany/_page_free_sidebar.html" %}
 {% load mapping_tags %}
+{% load simplekey_extras %}
 
 {% block title %}Your Profile: PlantShare{% endblock %}
 
@@ -29,7 +30,7 @@
         <div class="info box">
             <div class="avatar">
                 <img id="avatar-image" 
-                src="{{ profile_form.avatar.thumb_url }}"
+                src="{{ profile_form.avatar.thumb_url|secure_url }}"
                 alt="">
                 <p><a id="upload-link" href="#" 
                     rel=".image-modal">Upload Photo</a></p>

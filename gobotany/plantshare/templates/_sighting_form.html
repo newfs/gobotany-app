@@ -1,4 +1,5 @@
 {% load mapping_tags %}
+{% load simplekey_extras %}
 
         {% csrf_token %}
 
@@ -50,8 +51,8 @@
                 {% if sighting.private_photos %}
                     {% for photo in sighting.private_photos.all %}
                         <div class="thumb-frame">
-                            <a href="{{ photo.image.url }}"><img class="thumb"
-                                src="{{ photo.thumb.url }}"></a>
+                            <a href="{{ photo.image.url|secure_url }}"><img class="thumb"
+                                src="{{ photo.thumb.url|secure_url }}"></a>
                             <div class="delete-link">
                                 <a href="{{ photo.id }}"><img
                                     src="/static/images/icons/close.png"
