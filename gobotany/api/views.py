@@ -51,7 +51,7 @@ def _taxon_image(image):
     if image is None:
         return
     json = {
-        'url': image.image.url,
+        'url': secure_url(image.image.url),
         'type': image.image_type_name if hasattr(image, 'image_type_name')
                 else image.image_type.name,
         'rank': image.rank,
@@ -370,8 +370,8 @@ def _character_values(request, pile_slug, character_short_name):
         image_url = ''
         thumbnail_url = ''
         if cv.image:
-            image_url = cv.image.url
-            thumbnail_url = cv.image.thumbnail.absolute_url
+            image_url = secure_url(cv.image.url)
+            thumbnail_url = secure_url(cv.image.thumbnail.absolute_url)
 
         yield {'value': cv.value,
                'friendly_text': cv.friendly_text,
@@ -504,7 +504,8 @@ def _jsonify_character(character, pile_slug):
         'character_group': character.character_group.name,
         'question': character.question,
         'hint': character.hint,
-        'image_url': (character.image.url if character.image else ''),
+        'image_url':
+            (secure_url(character.image.url) if character.image else ''),
         'pile_slug': pile_slug,
         }
 
@@ -694,7 +695,8 @@ def dkey_images(request, slug):
             if image is not None:
                 image_list.append({
                     'image_type': image_type,
-                    'image_url': image_map.get((taxon.id, image_type)),
+                    'image_url':
+                        secure_url(image_map.get((taxon.id, image_type))),
                     })
 
         image_lists.append({
