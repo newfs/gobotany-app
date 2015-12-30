@@ -1,3 +1,5 @@
+{% load simplekey_extras %}
+
 <div>
     <h1>Advanced Map to Groups</h1>
     <h2>For a shortcut through the plant groups, you can start here.</h1>
@@ -12,7 +14,7 @@
                     <div class="img-container">
                         {% for i in group.sample_species_images.all %}
                             {% if forloop.first %}
-                                <img src="{{ i.thumb_small }}"
+                                <img src="{{ i.thumb_small|secure_url }}"
                                     alt="{{ i.alt }}">
                             {% endif %}
                         {% endfor %}
@@ -46,7 +48,7 @@
                                 <div class="img-container">
                                     {% for i in subgroup.sample_species_images.all %}
                                         {% if forloop.first %}
-                                            <img src="{{ i.thumb_small }}"
+                                            <img src="{{ i.thumb_small|secure_url }}"
                                                 alt="{{ i.alt }}">
                                         {% endif %}
                                     {% endfor %}
