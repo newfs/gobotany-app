@@ -269,7 +269,7 @@ else:
     AWS_SECRET_ACCESS_KEY = os.environ.get('AWS_SECRET_ACCESS_KEY', 'readonly')
     AWS_STORAGE_BUCKET_NAME = os.environ.get('AWS_STORAGE_BUCKET_NAME', 'newfs')
     AWS_QUERYSTRING_AUTH = False
-    AWS_S3_SECURE_URLS = False
+    AWS_S3_SECURE_URLS = True
 
 IS_AWS_AUTHENTICATED = 'test' not in sys.argv and (
     AWS_ACCESS_KEY_ID != 'readonly' and
