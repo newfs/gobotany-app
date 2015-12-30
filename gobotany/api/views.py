@@ -429,6 +429,7 @@ def glossary_blob(request):
             try:
                 url = gt.image.url
                 prefix = url[:-len(gt.image_path)]
+                prefix = 'https://' + prefix.split('//')[1]
             except ValueError:  # Image not found in storage.
                 pass
 
