@@ -198,3 +198,10 @@ def repeat(value, arg):
 
     """
     return ' '.join([ value ] * arg)
+
+
+@register.filter
+@stringfilter
+def secure_url(value):
+    """Take a URL string and make it start with HTTPS."""
+    return 'https://' + value.split('//')[1]
