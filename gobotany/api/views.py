@@ -28,6 +28,7 @@ from gobotany.core.questions import get_questions
 from gobotany.mapping.map import (NewEnglandPlantDistributionMap,
                                   NorthAmericanPlantDistributionMap,
                                   UnitedStatesPlantDistributionMap)
+from gobotany.site.utils import secure_url
 
 
 inflector = inflect.engine()
@@ -429,7 +430,7 @@ def glossary_blob(request):
             try:
                 url = gt.image.url
                 prefix = url[:-len(gt.image_path)]
-                prefix = 'https://' + prefix.split('//')[1]
+                prefix = secure_url(prefix)
             except ValueError:  # Image not found in storage.
                 pass
 
@@ -869,7 +870,7 @@ def vectors_character(request, name):
         'min': v.value_min and v.value_min * mm,
         'max': v.value_max and v.value_max * mm,
         #
-        'image_url': v.image.url if v.image else '',
+        'image_url': secure_url(v.image.url) if v.image else '',
         } for v in values ])
 
 @cache_page(0)

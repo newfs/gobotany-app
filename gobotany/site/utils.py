@@ -42,3 +42,8 @@ def query_regex(plant_name, anchor_at_start=False, anchor_at_end=False):
         query_regex = '%s$' % query_regex
 
     return query_regex
+
+
+def secure_url(url):
+    """Take a URL string and make it start with HTTPS."""
+    return 'https://' + url.split('//')[1]

@@ -3,6 +3,8 @@ import re
 from django import template
 from django.template.defaultfilters import stringfilter
 
+from gobotany.site.utils import secure_url as utils_secure_url
+
 register = template.Library()
 
 # "Collect" tag courtesy of http://djangosnippets.org/snippets/2196/
@@ -204,4 +206,4 @@ def repeat(value, arg):
 @stringfilter
 def secure_url(value):
     """Take a URL string and make it start with HTTPS."""
-    return 'https://' + value.split('//')[1]
+    return utils_secure_url(value)
