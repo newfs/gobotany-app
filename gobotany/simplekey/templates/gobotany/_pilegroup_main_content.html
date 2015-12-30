@@ -1,3 +1,4 @@
+{% load simplekey_extras %}
 {% load taxa_tags %}
 
     <div id="breadcrumb">
@@ -26,10 +27,10 @@
                         {% for content_image in pile_images %}
                             {% with content_image as i %}
                                 {% with i.creator as photographer %}
-                                <a href="{{ i.image_medium }}"
+                                <a href="{{ i.image_medium|secure_url }}"
                                     rel="shadowbox[{{ pile.slug }}]"
                                     title="{% photo_credit i i.scientific_name %}">
-                                    <img src="{{ i.thumb_large }}"
+                                    <img src="{{ i.thumb_large|secure_url }}"
                                         alt="{% photo_credit i i.scientific_name %}">
                                 </a>
                                 {% endwith %}
