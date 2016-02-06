@@ -6,8 +6,6 @@ urlpatterns = [
     # PlantShare main page
     url(r'^$', views.plantshare_view, name='ps-main'),
 
-    # Facebook login
-    url(r'^facebook_connect/', include('facebook_connect.urls')),
     # Normal registration login
     url(r'^accounts/', include('gobotany.plantshare.backends.default.urls')),
 

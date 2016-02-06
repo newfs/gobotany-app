@@ -145,7 +145,6 @@ INSTALLED_APPS = [
 
     'haystack',
     'tinymce',
-    'facebook_connect',
     'registration',
     #'emailconfirmation', # Temporarily uncomment to create this app's
                           # tables using syncdb. This will also allow

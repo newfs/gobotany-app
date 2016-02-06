@@ -18,7 +18,6 @@ from django.template.loader import render_to_string
 from django.utils import timezone
 
 from emailconfirmation.signals import email_confirmed
-from facebook_connect.models import FacebookUser
 from imagekit import ImageSpec, register
 from imagekit.models import ImageSpecField, ProcessedImageField
 from imagekit.utils import get_field_info
@@ -264,29 +263,6 @@ def create_user_profile(sender, **kwargs):
     # Only when a user is first created, we should create his UserProfile
     # and his personal Pod.
     if created:
-        if not user.username:
-            # If the user is created without a username,
-            # it's being created as a facebook user, so we'll let
-            # the FacebookUser signal handle it instead
-            return
-
-        profile = UserProfile(user=user)
-        profile.save()
-        user_pod = Pod(name=user.username)
-        user_pod.save()
-        membership = PodMembership(member=profile, pod=user_pod,
-            is_owner=True, is_self_pod=True)
-        membership.save()
-
-@receiver(post_save, sender=FacebookUser,
-          dispatch_uid='create_profile_for_user')
-def create_fbuser_profile(sender, **kwargs):
-    fbuser = kwargs['instance']
-    created = kwargs['created']
-    # Only when a user is first created, we should create his UserProfile
-    # and his personal Pod.
-    if created:
-        user = fbuser.contrib_user
         profile = UserProfile(user=user)
         profile.save()
         user_pod = Pod(name=user.username)
