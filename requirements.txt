@@ -11,12 +11,3 @@
 # needs in order to compile.
 
 pylibmc==1.2.3
-
-# By default, pip versions > 1.5 won't install externally hosted files
-# or those without a checksum to guarantee validity. Without these options
-# the Heroku build process will fail with a "Could not find a version that
-# satisfies the requirement" error message.
-
---allow-external django-facebook-connect
---allow-unverified django-facebook-connect
--e git+git://github.com/newfs/django-facebook-connect#egg=django-facebook-connect-1.0.3
