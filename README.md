@@ -191,7 +191,7 @@ feature including desired ranking.
 Ranking relies mostly on Haystack document boost, as seen in several
 places in our `search_indexes.py`. For more fine-grained control where
 boost is not enough, some hidden repeated keywords are added to search
-indexes such as in the `search_text_species.txt` template.
+indexes such as in the `species_text_search_index.txt` template.
 
 To adjust ranking: cycle through running the functional tests, adjusting
 the boosts in `search_indexes.py`, and, if necessary, adjusting the
