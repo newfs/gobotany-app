@@ -8,24 +8,19 @@ set -e
 DEV=$(dirname "${BASH_SOURCE[0]}")
 cd $DEV
 
-EXAMPLE=usr/apache-solr-3.6.2/example
+EXAMPLE=usr/solr-4.7.2/example
 
 if [ ! -d $EXAMPLE ]
 then
     cd usr
-    curl -OL http://archive.apache.org/dist/lucene/solr/3.6.2/apache-solr-3.6.2.tgz
-    tar xzf apache-solr-3.6.2.tgz
-    patch -p0 < patch-solrconfig
+    curl -OL http://archive.apache.org/dist/lucene/solr/4.7.2/solr-4.7.2.tgz
+    tar xzf solr-4.7.2.tgz
     cd ..
 fi
 
 echo 'Installing Solr XML schema'
 
-./django build_solr_schema > $EXAMPLE/solr/conf/schema.xml
-
-cd usr
-patch -p0 < patch-solrschema
-cd ..
+./django build_solr_schema > $EXAMPLE/solr/collection1/conf/schema.xml
 
 echo 'Running Solr in the background'
 
