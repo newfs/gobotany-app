@@ -5,6 +5,7 @@
 *.DS_Store
 
 # Dev tools
+/dev/distribute-*
 /dev/node/
 /dev/nohup.out
 /dev/requirejs/build/
