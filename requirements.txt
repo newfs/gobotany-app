@@ -17,8 +17,13 @@ pylibmc==1.2.3
 
 --allow-external django-facebook-connect
 --allow-unverified django-facebook-connect
--e git+git://github.com/newfs/django-facebook-connect#egg=django-facebook-connect-1.0.3
+-e git+https://github.com/jrrickerson/django-facebook-connect#egg=django-facebook-connect-1.0.2
 
+--allow-external django-facebook-connect
+--allow-unverified django-facebook-connect
+-e git+https://bitbucket.org/alper/django-registration/get/tip.tar.gz#egg=django-registration-0.9b1
+    
 # --allow-external django-piston
 # --allow-unverified django-piston
 # https://bitbucket.org/jespern/django-piston/downloads/django-piston-0.2.2.zip
+
