@@ -21,8 +21,8 @@ pylibmc==1.2.3
 
 --allow-external django-facebook-connect
 --allow-unverified django-facebook-connect
--e git+https://bitbucket.org/alper/django-registration/get/tip.tar.gz#egg=django-registration-0.9b1
-    
+-e git+https://bitbucket.org/alper/django-registration/commits/branch/default
+
 # --allow-external django-piston
 # --allow-unverified django-piston
 # https://bitbucket.org/jespern/django-piston/downloads/django-piston-0.2.2.zip
