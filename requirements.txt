@@ -21,7 +21,7 @@ pylibmc==1.2.3
 
 --allow-external django-facebook-connect
 --allow-unverified django-facebook-connect
--e hg+https://bitbucket.org/alper/django-registration/commits/branch/default
+-e hg+https://bitbucket.org/alper/django-registration/#egg=django-registration
 
 # --allow-external django-piston
 # --allow-unverified django-piston
