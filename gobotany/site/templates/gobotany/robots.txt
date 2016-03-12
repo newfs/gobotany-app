@@ -1,1 +1,6 @@
+{% if request.META_HTTP_HOST == 'gobotany.newenglandwild.org' %}
 Sitemap: https://{{ request.META.HTTP_HOST }}{% url 'sitemap' %}
+{% else %}
+User-agent: *
+Disallow: /
+{% endif %}
