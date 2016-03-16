@@ -43,7 +43,7 @@ class BaseIndex(indexes.SearchIndex):
     text = indexes.CharField(document=True)
     url = indexes.CharField(use_template=True,
                             template_name='search_result_url.txt')
-    textSpell = indexes.CharField()
+    textSpell = indexes.FacetCharField()
 
     def index_queryset(self, using=None):
         return self.get_model()._default_manager.all()
