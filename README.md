@@ -125,6 +125,27 @@ Botany site's search field:
     heroku run django-admin.py rebuild_index --noinput
 
 
+Deploying to the Development server
+---------------------------
+
+Log in to Heroku. Ensure you have a git remote set for the gobotany-dev
+Heroku application. Run the following to deploy the master branch:
+
+    git push heroku master
+
+Your should rarely need to push out Haystack/Solr schema changes. But, if
+you have a new schema.xml file (say, after a Solr upgrade or a customization),
+you will need to manually copy and paste the contents of that file into the
+Heroku Websolr add-on for gobotany-dev. When you do this, you must remove
+the two instances of 'lang\' appearing in 'lang\stopwords_en.txt' within the
+file. This is because Websolr uses a customized directory structure that
+differs from the Solr default.
+
+To reindex the Solr index, use the following command:
+
+    heroku run python gobotany/manage.py rebuild_index
+
+
 Running the automated tests
 ---------------------------
 
