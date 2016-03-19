@@ -2,38 +2,12 @@ import json
 import os
 import shutil
 
+from django.contrib.contenttypes.models import ContentType
+from django.core.files import File
 from django.test import TestCase
 from django.test.client import Client
 
-from django.contrib.contenttypes.models import ContentType
-
-from django.core.files import File
-
 from gobotany.core import models
-
-# Suggested approach for testing RESTful API:
-#
-# Create a separate TestCase for each URI; the TestCase contains several
-# test methods for testing that URI.
-#
-# For each URI, what to test?
-#
-# - Normal and non-normal status code(s) for requests made with each of the
-#   supported HTTP methods.
-# - Unsupported HTTP methods return 405 Method Not Supported.
-# - Representations accepted from the client for each of the supported
-#   methods, including query string parameters for GET or HEAD methods.
-# - Representations served to the client for each of the supported
-#   methods.
-# - Content type (MIME type) of the response for each of the supported
-#   methods.
-# - Error conditions ("what might go wrong?").
-# - Header values accepted from the client for each of the supported
-#   methods.
-# - Header values served to the client for each of the supported methods.
-# - Canonical URIs vs. representation-specific URIs (and Content-Location
-#   header), if applicable; e.g., /items/item1 (canonical) vs.
-#   /items/item1.html.en, /items/item1.html.es (representation-specific)
 
 def _testdata_dir():
     """Return the path to a test data directory relative to this directory."""
