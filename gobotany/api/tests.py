@@ -154,9 +154,10 @@ def _remove_content_images_dir():
 
 
 class TaxaListTestCase(TestCase):
-    def setUp(self):
+    @classmethod
+    def setUpTestData(cls):
         _setup_sample_data()
-        self.client = Client()
+        cls.client = Client()
 
     def test_get_returns_ok(self):
         response = self.client.get('/api/taxa/')
@@ -188,9 +189,10 @@ class TaxaListTestCase(TestCase):
 
 
 class TaxaTestCase(TestCase):
-    def setUp(self):
+    @classmethod
+    def setUpTestData(cls):
         _setup_sample_data()
-        self.client = Client()
+        cls.client = Client()
 
     def test_get_returns_ok(self):
         response = self.client.get('/api/taxa/Fooium%20barula/')
@@ -248,9 +250,10 @@ class TaxaTestCase(TestCase):
 
 
 class TaxaCountTestCase(TestCase):
-    def setUp(self):
+    @classmethod
+    def setUpTestData(cls):
         _setup_sample_data()
-        self.client = Client()
+        cls.client = Client()
 
     def test_get_returns_ok(self):
         response = self.client.get('/api/taxa-count/')
@@ -271,9 +274,10 @@ class TaxaCountTestCase(TestCase):
 
 
 class TaxonImageTestCase(TestCase):
-    def setUp(self):
+    @classmethod
+    def setUpTestData(cls):
         _setup_sample_data(load_images=True)
-        self.client = Client()
+        cls.client = Client()
 
     def tearDown(self):
         _remove_content_images_dir()
@@ -314,9 +318,10 @@ class TaxonImageTestCase(TestCase):
 
 
 class PileGroupListTestCase(TestCase):
-    def setUp(self):
+    @classmethod
+    def setUpTestData(cls):
         _setup_sample_data()
-        self.client = Client()
+        cls.client = Client()
 
     def test_get_returns_ok(self):
         response = self.client.get('/api/pilegroups/')
@@ -329,9 +334,10 @@ class PileGroupListTestCase(TestCase):
 
 
 class PileGroupTestCase(TestCase):
-    def setUp(self):
+    @classmethod
+    def setUpTestData(cls):
         _setup_sample_data()
-        self.client = Client()
+        cls.client = Client()
 
     def test_get_returns_ok(self):
         response = self.client.get('/api/pilegroups/pilegroup1/')
@@ -348,9 +354,10 @@ class PileGroupTestCase(TestCase):
 
 
 class PileListTestCase(TestCase):
-    def setUp(self):
+    @classmethod
+    def setUpTestData(cls):
         _setup_sample_data()
-        self.client = Client()
+        cls.client = Client()
 
     def test_get_returns_ok(self):
         response = self.client.get('/api/piles/')
@@ -363,9 +370,10 @@ class PileListTestCase(TestCase):
 
 
 class PileTestCase(TestCase):
-    def setUp(self):
+    @classmethod
+    def setUpTestData(cls):
         _setup_sample_data()
-        self.client = Client()
+        cls.client = Client()
 
     def test_get_returns_ok(self):
         response = self.client.get('/api/piles/pile1/')
@@ -382,9 +390,10 @@ class PileTestCase(TestCase):
 
 
 class CharacterListTestCase(TestCase):
-    def setUp(self):
+    @classmethod
+    def setUpTestData(cls):
         _setup_sample_data()
-        self.client = Client()
+        cls.client = Client()
 
     def test_get_returns_ok(self):
         response = self.client.get('/api/piles/pile1/characters/')
@@ -425,9 +434,10 @@ class CharacterListTestCase(TestCase):
 
 
 class CharacterValuesTestCase(TestCase):
-    def setUp(self):
+    @classmethod
+    def setUpTestData(cls):
         _setup_sample_data()
-        self.client = Client()
+        cls.client = Client()
 
     def test_get_returns_ok(self):
         response = self.client.get('/api/piles/pile1/c1/')
@@ -444,9 +454,10 @@ class CharacterValuesTestCase(TestCase):
 
 
 class FamiliesTestCase(TestCase):
-    def setUp(self):
+    @classmethod
+    def setUpTestData(cls):
         _setup_sample_data()
-        self.client = Client()
+        cls.client = Client()
 
     def test_get_lowercase_returns_ok(self):
         response = self.client.get('/api/families/fooaceae/')
@@ -467,9 +478,10 @@ class FamiliesTestCase(TestCase):
 
 
 class GeneraTestCase(TestCase):
-    def setUp(self):
+    @classmethod
+    def setUpTestData(cls):
         _setup_sample_data()
-        self.client = Client()
+        cls.client = Client()
 
     def test_get_lowercase_returns_ok(self):
         response = self.client.get('/api/genera/fooium/')
