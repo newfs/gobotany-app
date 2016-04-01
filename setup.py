@@ -35,7 +35,7 @@ requirements = [
     'django-facebook-connect>=1.0.2',
     'django-recaptcha==0.0.6',
     # Installed in a separate step pending Django dependency issues
-    'django-registration==0.8',
+    'django-registration==1.0',
 
     # For storing images on S3.
 
@@ -54,8 +54,8 @@ requirements = [
 dependency_links = [
     'git+https://github.com/jrrickerson/django-facebook-connect'
     + '#egg=django-facebook-connect-1.0.2',
-    'https://bitbucket.org/alper/django-registration/get/tip.tar.gz'
-    + '#egg=django-registration-0.9b1'
+    'git+https://github.com/ubernostrum/django-registration'
+    + '#egg=django-registration-1.0'
     ]
 
 packages = find_packages()
