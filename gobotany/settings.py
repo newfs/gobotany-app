@@ -113,7 +113,7 @@ INSTALLED_APPS = [
     'gobotany.plantoftheday',
     'gobotany.plantpreview',
     'gobotany.plantshare',
-    'gobotany.search',
+    #'gobotany.search',
     'gobotany.simplekey',
     'gobotany.site',
     'gobotany.taxa',
