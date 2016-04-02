@@ -113,7 +113,7 @@ INSTALLED_APPS = [
     'gobotany.plantoftheday',
     'gobotany.plantpreview',
     'gobotany.plantshare',
-    #'gobotany.search',
+    'gobotany.search',
     'gobotany.simplekey',
     'gobotany.site',
     'gobotany.taxa',
@@ -130,7 +130,6 @@ INSTALLED_APPS = [
 
     ] + (['debug_toolbar'] if USE_DEBUG_TOOLBAR else []) + [
 
-    #'haystack',
     'tinymce',
     'facebook_connect',
     'registration',
@@ -180,12 +179,6 @@ STATICFILES_DIRS = [('', os.path.join(THIS_DIRECTORY, 'static'))]
 MEDIA_ROOT = os.path.join(THIS_DIRECTORY, 'media')
 MEDIA_URL = '/media/'
 SESSION_COOKIE_AGE = 2 * 24 * 60 * 60  # two days
-#HAYSTACK_SITECONF = 'gobotany.search.haystack_conf'
-#HAYSTACK_SEARCH_ENGINE = 'solr'
-#HAYSTACK_SOLR_URL = 'http://127.0.0.1:8983/solr'
-#HAYSTACK_SEARCH_RESULTS_PER_PAGE = 10
-#HAYSTACK_SOLR_TIMEOUT = 20  # Longer than default timeout; added for indexing
-#HAYSTACK_INCLUDE_SPELLING = True
 
 # https://docs.djangoproject.com/en/dev/topics/i18n/timezones/#time-zones-faq
 TIME_ZONE = 'America/New_York'
