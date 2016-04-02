@@ -32,7 +32,7 @@ requirements = [
     # Login and registration
 
     'django-email-confirmation==0.2',
-    'django-facebook-connect>=1.0.2',
+    'django-facebook-connect==1.0.1',
     'django-recaptcha==0.0.6',
     # Installed in a separate step pending Django dependency issues
     'django-registration==1.0',
@@ -52,8 +52,6 @@ requirements = [
     ]
 
 dependency_links = [
-    'git+https://github.com/jrrickerson/django-facebook-connect'
-    + '#egg=django-facebook-connect-1.0.2',
     'git+https://github.com/ubernostrum/django-registration'
     + '#egg=django-registration-1.0'
     ]
