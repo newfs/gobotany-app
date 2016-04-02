@@ -52,8 +52,6 @@ requirements = [
     ]
 
 dependency_links = [
-    'git+https://github.com/ubernostrum/django-registration'
-    + '#egg=django-registration-1.0'
     ]
 
 packages = find_packages()
