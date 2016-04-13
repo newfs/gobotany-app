@@ -999,9 +999,10 @@ class Distribution(models.Model):
     """County- or state-level distribution data for plants."""
     scientific_name = models.CharField(max_length=100, db_index=True)
 
-    species_name = models.CharField(max_length=60, db_index=True, default='')
+    species_name = models.CharField(max_length=60, db_index=True, default='',
+        blank=True)
     subspecific_epithet = models.CharField(max_length=60, db_index=True,
-        default='')
+        default='', blank=True)
 
     state = models.CharField(max_length=2, db_index=True)
     county = models.CharField(max_length=50, blank=True)
