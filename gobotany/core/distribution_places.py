@@ -79,7 +79,7 @@ DISTRIBUTION_PLACES = [
     ('NE', ''),
     ('NH', ''),
     ('NH', 'Belknap'),
-    ('NH', 'Caroll'),
+    ('NH', 'Carroll'),
     ('NH', 'Cheshire'),
     ('NH', 'Coos'),
     ('NH', 'Grafton'),
