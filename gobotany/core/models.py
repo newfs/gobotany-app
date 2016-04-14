@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 import string
 from collections import defaultdict, OrderedDict as odict
 from datetime import datetime
@@ -1026,6 +1028,25 @@ class Distribution(models.Model):
             status = 'absent'
         return '%s: %s%s: %s' % (self.scientific_name, self.state,
                                  county, status)
+
+    def save(self, *args, **kwargs):
+        # Ensure the species name and specific epithet fields stay in sync
+        # with the "master" scientific name field.
+        parts = self.scientific_name.split(' ')
+
+        if 'X' in parts or 'x' or '×' in parts:
+            # Handle one form of a hybrid name: one that has an X (x) or a
+            # multiplication sign, with a space after it.
+            species_name = ' '.join(parts[0:3])
+            # Hybrids will not have a subspecific epithet.
+            subspecific_epithet = ''
+        else:
+            species_name = ' '.join(parts[0:2])
+            subspecific_epithet = ' '.join(parts[2:])
+
+        self.species_name = species_name
+        self.subspecific_epithet = subspecific_epithet
+        super(Distribution, self).save(*args, **kwargs)
 
     objects = DistributionManager()
 
