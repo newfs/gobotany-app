@@ -2,7 +2,7 @@ from distutils.core import setup
 from setuptools import find_packages
 
 requirements = [
-    'django==1.8.3',
+    'django==1.8.12',
 
     'Pillow==2.4.0',
     'cssselect',
