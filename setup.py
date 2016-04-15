@@ -37,8 +37,8 @@ requirements = [
 
     # For storing images on S3.
 
-    'boto==2.2.2',
-    'django-storages==1.1.4',
+    'boto==2.39.0',
+    'django-storages==1.4.1',
     'requests',
 
     # Heroku and deployment
