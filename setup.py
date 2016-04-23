@@ -33,7 +33,7 @@ requirements = [
 
     'django-email-confirmation==0.2',
     'django-recaptcha==1.0.4',
-    'django-registration-redux==1.2',
+    'django-registration==2.0.4',
 
     # For storing images on S3.
 
