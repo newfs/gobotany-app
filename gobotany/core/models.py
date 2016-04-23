@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 import string
-from collections import defaultdict, OrderedDict as odict
+from collections import defaultdict, OrderedDict
 from datetime import datetime
 
 from django.conf import settings
@@ -136,21 +136,21 @@ class Character(models.Model):
     ease_of_observability = models.PositiveSmallIntegerField(null=True,
         blank=True, choices=zip(range(1, 6), range(1, 6)))
 
-    VALUE_CHOICES = {
+    VALUE_CHOICES = OrderedDict({
         u'TEXT': u'Textual', # string
         u'LENGTH': u'Length', # length
         u'RATIO': u'Ratio', # float
-        }
-    UNIT_CHOICES = {
+        })
+    UNIT_CHOICES = OrderedDict({
         u'mm': u'Millimeters',
         u'cm': u'Centimeters',
         u'm': u'Meters',
-        }
-    UNIT_MM = {
+        })
+    UNIT_MM = OrderedDict({
         u'mm': 1.0,
         u'cm': 10.0,
         u'm': 1000.0,
-        }
+        })
     value_type = models.CharField(
         max_length=10, choices=VALUE_CHOICES.items())
     unit = models.CharField(
@@ -730,7 +730,7 @@ class Taxon(models.Model):
                     if prohibited:
                         label += ', prohibited'
                 mapping[key] = label
-        labels = odict(sorted(mapping.iteritems()))
+        labels = OrderedDict(sorted(mapping.iteritems()))
         return labels
 
     def get_default_image(self):
