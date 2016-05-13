@@ -102,7 +102,8 @@ DEBUG_TOOLBAR_PANELS = [
     'debug_toolbar.panels.redirects.RedirectsPanel',
 ]
 
-DEBUG = 'DEBUG' in os.environ or not IN_PRODUCTION
+DEBUG = (('DEBUG' in os.environ and os.environ['DEBUG'] == 'True')
+    or not IN_PRODUCTION)
 
 # This setting is for showing features that are still being developed.
 # Normally it will be True in local dev environments, and False in
