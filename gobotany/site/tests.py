@@ -495,9 +495,10 @@ class HelpTests(FunctionalCase):
 class PlantNameSuggestionsTests(TestCase):
     MAX_NAMES = 20
 
-    def setUp(self):
+    @classmethod
+    def setUpTestData(cls):
         _setup_sample_data()
-        self.client = Client()
+        cls.client = Client()
 
     def half_max_names(self):
         return int(math.floor(self.MAX_NAMES / 2))
