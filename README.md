@@ -110,14 +110,16 @@ created.  To set up the database, run these commands:
     heroku run bin/import-images.sh
     heroku run bin/import-dkey.sh
 
-Prepare Solr by first generating your Solr schema:
+Prepare Solr:
 
-    heroku run django-admin.py build_solr_schema > schema.xml
-
-Once this file exists, you can visit the Heroku web site, navigate to
+Visit the Heroku web site, navigate to
 your app's configuration, select the addon "Websolr", choose the section
 "Advanced Configuration", and paste in the contents of ``schema.xml``
-that you just created.  Once the schema is installed (give it a few
+found in the repo's ``dev/websolr_schema`` directory. This file differs a
+bit from the one that runs for local development (in the repo's
+``/usr/solr-4.7.2/example/collection1/conf/`` directory; compare to see).
+
+Once the schema is installed (give it a few
 minutes to make sure the change has the chance to propagate to WebSolr's
 servers), you can build the Solr index and thereby activate the Go
 Botany site's search field:
@@ -137,7 +139,7 @@ Your should rarely need to push out Haystack/Solr schema changes. But, if
 you have a new schema.xml file (say, after a Solr upgrade or a customization),
 you will need to manually copy and paste the contents of that file into the
 Heroku Websolr add-on for gobotany-dev. When you do this, you must remove
-the two instances of 'lang\' appearing in 'lang\stopwords_en.txt' within the
+the two instances of ``lang/`` appearing in ``lang/stopwords_en.txt`` within the
 file. This is because Websolr uses a customized directory structure that
 differs from the Solr default.
 
