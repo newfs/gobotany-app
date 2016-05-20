@@ -20,6 +20,7 @@ SECRET_KEY = os.environ.get('GOBOTANY_DJANGO_SECRET_KEY', '')
 ALLOWED_HOSTS = ['.newenglandwild.org', # any subdomain of newenglandwild.org
     'gobotany-dev.herokuapp.com',
     'gobotany-staging.herokuapp.com',
+    'gobotany-prod.herokuapp.com',
 ]
 
 TEMPLATES = [
