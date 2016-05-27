@@ -355,8 +355,7 @@ def rename_image_by_type(instance, filename):
     md5 = hashlib.md5()
     f = instance.image
     if f.multiple_chunks():
-        for chunk in f.chunks():
-            md5.update(chunk)
+        (md5.update(chunk) for chunk in f.chunks())
     else:
         md5.update(f.read())
 
