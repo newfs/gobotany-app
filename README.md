@@ -118,6 +118,8 @@ your app's configuration, select the addon "Websolr", choose the section
 found in the repo's ``dev/websolr_schema`` directory. This file differs a
 bit from the one that runs for local development (in the repo's
 ``/usr/solr-4.7.2/example/collection1/conf/`` directory; compare to see).
+The main reason it differs is because Websolr uses a customized directory
+structure that differs from the Solr default.
 
 Once the schema is installed (give it a few
 minutes to make sure the change has the chance to propagate to WebSolr's
@@ -138,10 +140,7 @@ Heroku application. Run the following to deploy the master branch:
 Your should rarely need to push out Haystack/Solr schema changes. But, if
 you have a new schema.xml file (say, after a Solr upgrade or a customization),
 you will need to manually copy and paste the contents of that file into the
-Heroku Websolr add-on for gobotany-dev. When you do this, you must remove
-the two instances of ``lang/`` appearing in ``lang/stopwords_en.txt`` within the
-file. This is because Websolr uses a customized directory structure that
-differs from the Solr default.
+Heroku Websolr add-on.
 
 To reindex the Solr index, use the following command:
 
