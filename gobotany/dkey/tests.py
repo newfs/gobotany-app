@@ -1,9 +1,12 @@
 """Tests of whether our basic site layout is present."""
 
+import unittest
+
 from django.test.client import Client
 
 from gobotany.libtest import FunctionalCase
 
+@unittest.skip('Skipping tests that run against the real database')
 class HomeTests(FunctionalCase):
 
     def test_home_page(self):

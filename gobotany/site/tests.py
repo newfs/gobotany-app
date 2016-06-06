@@ -59,6 +59,7 @@ def _setup_sample_data():
         s.save()
 
 
+@unittest.skip('Skipping tests that run against the real database')
 class HomeTests(FunctionalCase):
 
     def test_home_page(self):
@@ -78,6 +79,7 @@ class HomeTests(FunctionalCase):
         self.assertIn(current_year, copyright.text)
 
 
+@unittest.skip('Skipping tests that run against the real database')
 class NavigationTests(FunctionalCase):
 
     def _get_anchor(self, on_page='', anchor_label='', within=''):
@@ -293,6 +295,7 @@ class NavigationTests(FunctionalCase):
         self.assertFalse(a.get('href'))
 
 
+@unittest.skip('Skipping tests that run against the real database')
 class GlossaryTests(FunctionalCase):
 
     def test_getting_started_has_link_to_glossary(self):
@@ -335,6 +338,7 @@ class GlossaryTests(FunctionalCase):
         self.assertTrue(e.get('href').endswith('/glossary/g/'))
 
 
+@unittest.skip('Skipping tests that run against the real database')
 class TeachingTests(FunctionalCase):
     TEACHING_URL_PATH = '/teaching/'
 
@@ -368,6 +372,7 @@ class TeachingTests(FunctionalCase):
         self.assertTrue('Teaching Tools' in self._h2_headings())
 
 
+@unittest.skip('Skipping tests that run against the real database')
 class HelpTests(FunctionalCase):
 
     PATHS = {
@@ -570,6 +575,7 @@ class RobotsTests(TestCase):
         self.assertEqual(200, response.status_code)
 
 
+@unittest.skip('Skipping tests that run against the real database')
 class SitemapTests(FunctionalCase):
 
     def test_sitemap_returns_ok(self):
@@ -577,6 +583,7 @@ class SitemapTests(FunctionalCase):
         self.assertEqual(200, self.response.status_code)
 
 
+@unittest.skip('Skipping tests that run against the real database')
 class SpeciesListTests(FunctionalCase):
 
     def test_species_list_returns_ok(self):

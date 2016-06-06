@@ -2,12 +2,15 @@
 """Tests for the taxa (family, genus, and species) pages."""
 
 import re
+import unittest
 
 from django.template import Context, Template
 from django.test import TestCase
 
 from gobotany.libtest import FunctionalCase
 
+
+@unittest.skip('Skipping tests that run against the real database')
 class FamilyTests(FunctionalCase):
 
     def test_family_page(self):
@@ -29,6 +32,7 @@ class FamilyTests(FunctionalCase):
         self.assertTrue(len(genera))
 
 
+@unittest.skip('Skipping tests that run against the real database')
 class GenusTests(FunctionalCase):
 
     def test_genus_page(self):
@@ -56,6 +60,7 @@ class GenusTests(FunctionalCase):
         self.assertTrue(len(species))
 
 
+@unittest.skip('Skipping tests that run against the real database')
 class SpeciesPageTests(FunctionalCase):
 
     def crumb(self, n):
@@ -129,6 +134,7 @@ class SpeciesPageTests(FunctionalCase):
         self._photos_have_expected_caption_format(species_page_url)
 
 
+@unittest.skip('Skipping tests that run against the real database')
 class LookalikesTests(FunctionalCase):
 
     def test_species_pages_have_lookalikes(self):

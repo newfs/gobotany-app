@@ -16,6 +16,7 @@ from gobotany.core.models import (ConservationStatus, CommonName, Family,
     Genus, Synonym, Taxon)
 from gobotany.plantshare.models import Location
 
+@unittest.skip('Skipping tests that run against the real database')
 class PlantShareTests(FunctionalCase):
 
     PLANTSHARE_BASE = '/plantshare'

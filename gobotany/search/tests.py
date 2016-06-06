@@ -8,6 +8,7 @@ from highlight import ExtendedHighlighter
 from gobotany.libtest import FunctionalCase
 
 
+@unittest.skip('Skipping tests that run against the real database')
 class SearchTests(FunctionalCase):
 
     solr_available = None

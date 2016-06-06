@@ -2,6 +2,8 @@ import itertools
 import random
 import sys
 
+import unittest
+
 from datetime import date, timedelta
 from StringIO import StringIO
 
@@ -357,6 +359,7 @@ class PlantOfTheDayManagerTestCase(TestCase):
         self.assertEqual(None, excluded_plant.last_seen)
 
 
+@unittest.skip('Skipping tests that run against the real database')
 class FunctionalTests(FunctionalCase):
 
     def test_home_page_has_plant_of_the_day(self):
