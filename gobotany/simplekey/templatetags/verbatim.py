@@ -12,8 +12,9 @@ to output the contents with no changes.
 """
 
 from django.template import base as template
+from django.template import library
 
-register = template.Library()
+register = library.Library()
 
 
 class VerbatimNode(template.Node):
