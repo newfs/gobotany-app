@@ -149,8 +149,7 @@ class NavigationFunctionalTests(FunctionalTestCase):
         self.get(page_path)
         li = self.css1(css_selector)
         image = li.value_of_css_property('background-image')
-        valid = re.compile(r'^url\(.*active-nav.*png\)$')
-        return True if valid.match(str(image)) else False
+        return image.find('images/layout/active-nav-') > -1
 
     def test_header_home_item_highlighted(self):
         self.assertTrue(self._is_nav_item_highlighted('/', 'header li.home'))
@@ -643,6 +642,8 @@ class SearchSuggestionsFunctionalTests(FunctionalTestCase):
             # returns 'dogwood' as a suggestion.
             search_input.send_keys(query[:-1])
 
+        time.sleep(1.0)
+
         menu = None
         try:
             # Wait for the menu. In the case of no suggestions at all,
@@ -686,15 +687,10 @@ class SearchSuggestionsFunctionalTests(FunctionalTestCase):
 
         return suggestion_exists
 
-    def _suggestions_found(self, test_suggestions, omit_last_char=False):
+    def _suggestions_found(self, test_suggestions):
         suggestions_found = []
         for test_suggestion in test_suggestions:
             self.get('/')
-            if omit_last_char:
-                # Leave off the last character to ensure the suggestion
-                # word alone remains one of the results, and does not
-                # get pushed out due to multi-word results.
-                test_suggestion = test_suggestion[:-1]
             if self._suggestion_exists(test_suggestion):
                 suggestions_found.append(test_suggestion)
         return sorted(suggestions_found)
@@ -709,7 +705,7 @@ class SearchSuggestionsFunctionalTests(FunctionalTestCase):
     # TODO when data available: Test for plant family common name
 
     def test_genus_scientific_name_suggestions_exist(self):
-        SUGGESTIONS = ['acer', 'viburnum']
+        SUGGESTIONS = ['quercus', 'viburnum']
         self.assertEqual(self._suggestions_found(SUGGESTIONS),
                          sorted(SUGGESTIONS))
 
@@ -846,11 +842,7 @@ class SearchSuggestionsFunctionalTests(FunctionalTestCase):
                          sorted(SUGGESTIONS))
 
     def test_simple_key_true_ferns_suggestions_exist(self):
-        SUGGESTIONS = [
-            'true ferns', 'ferns', 'moonworts',] #'adder\'s-tongues']
-            # TODO: Enable "adder's-tongues" above upon a future possible
-            # bug fix: changing the CSV data so the quote character is a
-            # plain straight quote. 
+        SUGGESTIONS = ['true ferns', 'ferns', 'moonworts', "adder's-tongues"]
         self.assertEqual(self._suggestions_found(SUGGESTIONS),
                          sorted(SUGGESTIONS))
 
