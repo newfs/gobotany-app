@@ -4,7 +4,7 @@ NOTE: This can be tweaked in the future if we want to change the workflow
 a little.
 """
 
-from django.conf.urls import patterns, url, include
+from django.conf.urls import url, include
 from django.contrib.auth.views import (password_change, password_reset,
     password_reset_complete, password_reset_confirm, password_reset_done)
 from django.views.generic.base import TemplateView
@@ -17,7 +17,7 @@ from gobotany.plantshare.views import (change_email,
     change_email_confirmation_sent)
 from .forms import RegistrationFormWithCaptcha
 
-urlpatterns = patterns('',
+urlpatterns = [
     url(r'^activate/complete/$',
         TemplateView.as_view(
             template_name='registration/activation_complete.html'),
@@ -70,5 +70,5 @@ urlpatterns = patterns('',
     url(r'^email/confirm/(\w+)/$', confirm_email,
         name='ps-confirm-email'),
 
-    (r'', include('registration.auth_urls')),
-    )
+    url(r'', include('registration.auth_urls')),
+]

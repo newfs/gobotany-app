@@ -1,11 +1,9 @@
-from django.conf.urls import patterns, url
+from django.conf.urls import url
 from django.views.generic.base import RedirectView
 
 from gobotany.site import views
 
-urlpatterns = patterns(
-    '',
-
+urlpatterns = [
     # Home page
     url(r'^$', views.home_view, name='site-home'),
 
@@ -78,5 +76,5 @@ urlpatterns = patterns(
     #url('^checkup/$', views.checkup_view, name='checkup'),
 
     # Temporary, for testing
-    url('^maps-test/$', views.maps_test_view, name='site-maps-test'),
-    )
+    #url('^maps-test/$', views.maps_test_view, name='site-maps-test'),
+]
