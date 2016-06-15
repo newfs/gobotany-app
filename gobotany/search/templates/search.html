@@ -128,17 +128,21 @@
                         {% endif %}
 
                         {# Set a maximum number of pages to display. #}
-                        {% for page_num in paginator.page_range|slice:':20' %}
-                            {% if page_num == page.number %}
-                                <li>{{ page_num }}</li>
-                            {% else %}
-                            <li><a href="?q={{ query }}&amp;page={{ page_num }}">{{ page_num }}</a></li>
+                        {% with 20 as max_pages %}
+                        {% for page_num in paginator.page_range %}
+                            {% if page_num <= max_pages %}
+                                {% if page_num == page.number %}
+                                    <li>{{ page_num }}</li>
+                                {% else %}
+                                <li><a href="?q={{ query }}&amp;page={{ page_num }}">{{ page_num }}</a></li>
+                                {% endif %}
                             {% endif %}
                         {% endfor %}
                         {# Display ellipsis if omitting some pages. #}
-                        {% if paginator.page_range|length > 20 %}
+                        {% if paginator.page_range|length > max_pages %}
                             <li>...</li>
                         {% endif %}
+                        {% endwith %}
 
                         {% if page.has_next %}
                             <li><a href="?q={{ query }}&amp;page={{ page.next_page_number }}">Next</a></li>

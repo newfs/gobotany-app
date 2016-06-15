@@ -1435,3 +1435,14 @@ class ResultsPageStateFunctionalTests(FunctionalTestCase):
         x2 = '//select/option[@selected="selected" and @value="Selaginella"]'
         self.wait_on(10, page.find_element_by_xpath, x1)
         self.wait_on(10, page.find_element_by_xpath, x2)
+
+
+class SearchFunctionalTests(FunctionalTestCase):
+
+    def test_maximum_paging_links(self):
+        MAX_PAGES = 20
+        expected_num_items = MAX_PAGES + 2   # add for ellipsis, Next link
+        url = ('/search/?q=simple+key')
+        page = self.get(url)
+        paging_list_items = self.css('.search-navigation ul li')
+        self.assertEqual(len(paging_list_items), expected_num_items)
