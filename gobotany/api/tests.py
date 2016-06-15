@@ -1,4 +1,5 @@
 import json
+import logging
 import os
 import shutil
 
@@ -151,6 +152,18 @@ def _remove_content_images_dir():
     if (os.path.isdir(content_images_path) and
         content_images_path.find('gobotany-deploy') > -1):
         shutil.rmtree(content_images_path)
+
+# These two functions can be called from a test class's setUp and tearDown
+# functions, respectively, to suppress Request Not Found warnings from calling
+# known nonexistent URLs in tests.
+def _setLoggingLevelError(self):
+    # Change logging level to suppress Request Not Found warnings.
+    self.logger = logging.getLogger('django.request')
+    self.previous_level = self.logger.getEffectiveLevel()
+    self.logger.setLevel(logging.ERROR)
+def _restoreLoggingLevel(self):
+    # Restore the previous logging level.
+    self.logger.setLevel(self.previous_level)
 
 
 class TaxaListTestCase(TestCase):
@@ -375,6 +388,12 @@ class PileTestCase(TestCase):
         _setup_sample_data()
         cls.client = Client()
 
+    def setUp(self):
+        _setLoggingLevelError(self)
+
+    def tearDown(self):
+        _restoreLoggingLevel(self)
+
     def test_get_returns_ok(self):
         response = self.client.get('/api/piles/pile1/')
         self.assertEqual(200, response.status_code)
@@ -394,6 +413,12 @@ class CharacterListTestCase(TestCase):
     def setUpTestData(cls):
         _setup_sample_data()
         cls.client = Client()
+
+    def setUp(self):
+        _setLoggingLevelError(self)
+
+    def tearDown(self):
+        _restoreLoggingLevel(self)
 
     def test_get_returns_ok(self):
         response = self.client.get('/api/piles/pile1/characters/')
@@ -459,6 +484,12 @@ class FamiliesTestCase(TestCase):
         _setup_sample_data()
         cls.client = Client()
 
+    def setUp(self):
+        _setLoggingLevelError(self)
+
+    def tearDown(self):
+        _restoreLoggingLevel(self)
+
     def test_get_lowercase_returns_ok(self):
         response = self.client.get('/api/families/fooaceae/')
         self.assertEqual(200, response.status_code)
@@ -482,6 +513,12 @@ class GeneraTestCase(TestCase):
     def setUpTestData(cls):
         _setup_sample_data()
         cls.client = Client()
+
+    def setUp(self):
+        _setLoggingLevelError(self)
+
+    def tearDown(self):
+        _restoreLoggingLevel(self)
 
     def test_get_lowercase_returns_ok(self):
         response = self.client.get('/api/genera/fooium/')
