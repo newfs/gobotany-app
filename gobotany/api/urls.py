@@ -61,12 +61,11 @@ urlpatterns = [
         )),
 
 
-    url(r'^piles/(?P<pile_slug>[^/]+)/characters/$',
-        'gobotany.api.views.piles_characters',
+    url(r'^piles/(?P<pile_slug>[^/]+)/characters/$', views.piles_characters,
         name='api-character-list'),
 
-    url(r'^piles/(?P<pile_slug>[^/]+)/questions/$',
-        'gobotany.api.views.questions', name='api-questions'),
+    url(r'^piles/(?P<pile_slug>[^/]+)/questions/$', views.questions,
+        name='api-questions'),
 
     url(r'^piles/(?P<slug>[^/]+)/?$', views.pile, name='api-pile'),
 
@@ -85,8 +84,7 @@ urlpatterns = [
          '-na-distribution-map(\.svg|/)?$',
         views.north_american_distribution_map, name='na-distribution-map'),
 
-    url(r'^$', 'gobotany.api.views.nonexistent',
-        name='api-base'),   # helps compute the base URL
+    url(r'^$', views.nonexistent, name='api-base'),   # helps compute base URL
 ]
 
 # We only use caching if memcached itself is configured; otherwise, we
