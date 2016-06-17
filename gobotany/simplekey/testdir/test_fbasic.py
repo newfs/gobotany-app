@@ -633,16 +633,16 @@ class SearchSuggestionsFunctionalTests(FunctionalTestCase):
         search_input.click()
         search_input.clear()
 
-        if compare_exact:
-            search_input.send_keys(query)
-        else:
+        keys_to_send = query
+        if not compare_exact:
             # Enter all but the last letter of the query string because we
             # exclude exact matches from the suggestions list. For example,
             # by excluding the last letter, we can check that typing 'dogwoo'
             # returns 'dogwood' as a suggestion.
-            search_input.send_keys(query[:-1])
+            keys_to_send = query[:-1]
+        search_input.send_keys(keys_to_send)
 
-        time.sleep(1.0)
+        time.sleep(2.0)
 
         menu = None
         try:
