@@ -2,6 +2,7 @@ from django.conf import settings
 from django.conf.urls import include, url
 from django.contrib import admin
 from django.contrib.staticfiles.urls import staticfiles_urlpatterns
+from django.views import static
 
 from gobotany.core.admin import DistributionAdmin
 
@@ -36,7 +37,7 @@ urlpatterns.extend([
 # Serve uploaded media files as static files in development
 if settings.DEBUG:
     urlpatterns.extend([
-        url(r'^media/(?P<path>.*)$', 'django.views.static.serve', {
+        url(r'^media/(?P<path>.*)$', static.serve, {
             'document_root': settings.MEDIA_ROOT,
         }),
     ])
