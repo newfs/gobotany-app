@@ -26,8 +26,8 @@ requirements = [
 
     # Memcached on Heroku
 
-    'django-pylibmc-sasl==0.2.4',
-    'pylibmc==1.2.3',
+    'django-pylibmc==0.6.1',
+    'pylibmc==1.5.1',
 
     # Login and registration
 
