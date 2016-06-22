@@ -54,7 +54,9 @@ urlpatterns = [
         name='ps-forgot-password'),
     url(r'^password/reset/done/$', password_reset_done,
         {'template_name': 'registration/reset_password_email_sent.html'},
-        name='ps-reset-password-email-sent'),
+        name='password_reset_done'),
+        # Use the name used in auth.views password_reset() here to avoid a
+        # NoMatch error (see http://stackoverflow.com/questions/20307473).
     url(r'^password/reset/confirm/(?P<uidb36>[0-9A-Za-z]+)-(?P<token>.+)/$',
         password_reset_confirm,
         {'template_name': 'registration/choose_new_password.html'},
