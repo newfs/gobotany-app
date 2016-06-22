@@ -1446,3 +1446,16 @@ class SearchFunctionalTests(FunctionalTestCase):
         page = self.get(url)
         paging_list_items = self.css('.search-navigation ul li')
         self.assertEqual(len(paging_list_items), expected_num_items)
+
+
+class PlantShareFunctionalTests(FunctionalTestCase):
+
+    def test_main_plantshare_page_appears(self):
+        page = self.get('/plantshare/')
+        heading = self.css1('h1').text
+        self.assertEqual('PlantShare', heading)
+
+    def test_forgot_password_page_appears(self):
+        page = self.get('/plantshare/accounts/password/reset/')
+        heading = self.css1('h1').text
+        self.assertEqual('Forgot Password', heading)
