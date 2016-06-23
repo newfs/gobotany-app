@@ -41,29 +41,28 @@ urlpatterns = [
         template_name='registration/registration_closed.html'),
         name='registration_disallowed'),
 
+    # Use names from django.auth.urls.py to avoid a NoMatch error as seen with
+    # password_reset_done (http://stackoverflow.com/questions/20307473).
     url(r'^password/change/$', password_change,
         {'template_name': 'registration/change_password.html'},
-        name='ps-change-password'),
+        name='password_change'),
     url(r'^password/change/done/$',
         TemplateView.as_view(
         template_name='registration/change_password_done.html'),
-        name='ps-change-password-done'),
-
+        name='password_change_done'),
     url(r'^password/reset/$', password_reset,
         {'template_name': 'registration/forgot_password.html'},
-        name='ps-forgot-password'),
+        name='password_reset'),
     url(r'^password/reset/done/$', password_reset_done,
         {'template_name': 'registration/reset_password_email_sent.html'},
         name='password_reset_done'),
-        # Use the name used in auth.views password_reset() here to avoid a
-        # NoMatch error (see http://stackoverflow.com/questions/20307473).
     url(r'^password/reset/confirm/(?P<uidb36>[0-9A-Za-z]+)-(?P<token>.+)/$',
         password_reset_confirm,
         {'template_name': 'registration/choose_new_password.html'},
-        name='ps-reset-password-confirm'),
+        name='password_reset_confirm'),
     url(r'^password/reset/complete/$', password_reset_complete,
         {'template_name': 'registration/change_password_done.html'},
-        name='ps-reset-password-complete'),
+        name='password_reset_complete'),
 
     url(r'^email/change/$', change_email,
         name='ps-change-email'),
