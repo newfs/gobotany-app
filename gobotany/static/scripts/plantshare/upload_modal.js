@@ -112,7 +112,7 @@ define([
                     // Enable the Upload button.
                     $modal.find('#upload-image-submit').removeClass(
                         'disabled');
-                }, 500);
+                }, 1000);
             }
 
             // Read the file that the user picked.
