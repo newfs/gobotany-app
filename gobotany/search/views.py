@@ -42,7 +42,8 @@ class GoBotanySearchView(SearchView):
         # searching for, so that a search for "Acer" or "acer" returns
         # the Genus Acer first and foremost.
 
-        words = re.findall(r'\w+', self.request.GET['q'])
+        query = self.request.GET.get('q', '')
+        words = re.findall(r'\w+', query)
         name = ' '.join(words).lower()
         queryset = queryset.filter_or(name__exact=name)
 

@@ -1442,10 +1442,19 @@ class SearchFunctionalTests(FunctionalTestCase):
     def test_maximum_paging_links(self):
         MAX_PAGES = 20
         expected_num_items = MAX_PAGES + 2   # add for ellipsis, Next link
-        url = ('/search/?q=simple+key')
-        page = self.get(url)
+        page = self.get('/search/?q=simple+key')
         paging_list_items = self.css('.search-navigation ul li')
         self.assertEqual(len(paging_list_items), expected_num_items)
+
+    def test_empty_search_returns_no_results_page(self):
+        page = self.get('/search/?q=')
+        heading = self.css1('h1').text
+        self.assertEqual('No results for', heading)
+
+    def test_missing_query_string_returns_no_results_page(self):
+        page = self.get('/search/')
+        heading = self.css1('h1').text
+        self.assertEqual('No results for', heading)
 
 
 class PlantShareFunctionalTests(FunctionalTestCase):
