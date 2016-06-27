@@ -6,7 +6,7 @@ requirements = [
 
     'Pillow==2.4.0',
     'cssselect',
-    'django-debug-toolbar==1.3.2',
+    'django-debug-toolbar==1.4',
     'django-haystack==2.5.dev1',
     'django-haystack-panel==0.2.1',
     'django-imagekit==3.3',
