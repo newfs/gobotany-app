@@ -94,3 +94,6 @@ class IllustrativeSpecies(models.Model):
     group_number = models.IntegerField()
     family_name = models.TextField(db_index=True)
     species_name = models.TextField()
+
+    class Meta:
+        verbose_name_plural = 'Illustrative species'
