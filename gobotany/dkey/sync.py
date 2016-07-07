@@ -1,10 +1,12 @@
 """Bring database models up to date."""
 
-from operator import attrgetter
+import os
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'gobotany.settings')
 
-from gobotany import settings
-from django.core import management
-management.setup_environ(settings)
+import django
+django.setup()
+
+from operator import attrgetter
 
 from django.db import connection, transaction
 from gobotany.dkey import models
@@ -72,6 +74,7 @@ def sync():
             tc = leadin.taxa_cache
             leadin.taxa_cache = '{}:{}'.format(tc[0], ','.join(sorted(tc[1])))
             leadin.save()  # save the new `taxa_cache` strings
+
 
 if __name__ == '__main__':
     sync()
