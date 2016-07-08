@@ -33,3 +33,12 @@ body.dist-add-set-form .aligned label {
 body.dist-add-set-form input#id_scientific_name {
     width: 40em;
 }
+
+
+/* D. Key Leads model:
+    Wrap read-only cache field, an unbroken sequence with no spaces */
+
+.field-taxa_cache p {
+    word-wrap: break-word;
+    width: 600px;
+}

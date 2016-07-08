@@ -39,6 +39,11 @@ class LeadAdmin(admin.ModelAdmin):
     readonly_fields = ('taxa_cache',)
     search_fields = ('page__title', 'letter', 'text')
 
+    class Media:
+        css = {
+            'all': ('/static/admin/admin_gb.css',)
+        }
+
 
 class PageAdmin(admin.ModelAdmin):
     formfield_overrides = {
