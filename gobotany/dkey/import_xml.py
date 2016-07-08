@@ -1,12 +1,14 @@
 # -*- coding: utf-8 -*-
 
+import os
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'gobotany.settings')
+
+import django
+django.setup()
+
 import logging
 import re
 from lxml import etree
-
-from gobotany import settings
-from django.core import management
-management.setup_environ(settings)
 
 from django.db import connection, transaction
 from gobotany.dkey import models

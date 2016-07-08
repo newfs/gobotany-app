@@ -5,9 +5,11 @@ Mainly, we discover paragraph headings like "2x3." and supplement them
 with the actual names of species 2 and species 3 within that genus.
 
 """
-from gobotany import settings
-from django.core import management
-management.setup_environ(settings)
+import os
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'gobotany.settings')
+
+import django
+django.setup()
 
 import re
 from django.db import transaction
