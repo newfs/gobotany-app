@@ -37,7 +37,7 @@ class LeadAdmin(admin.ModelAdmin):
     list_display = ('page', 'letter', 'text')
     ordering = ('page__title',)
     readonly_fields = ('taxa_cache',)
-    search_fields = ('page__title',)
+    search_fields = ('page__title', 'letter', 'text')
 
 
 class PageAdmin(admin.ModelAdmin):
