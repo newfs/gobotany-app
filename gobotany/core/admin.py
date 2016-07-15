@@ -12,6 +12,7 @@ from django.template.defaultfilters import slugify
 from django.utils.safestring import mark_safe
 from django.utils.translation import ugettext_lazy as _
 
+from gobotany.admin import GoBotanyModelAdmin
 from gobotany.core import models
 from gobotany.core.distribution_places import DISTRIBUTION_PLACES
 
@@ -23,7 +24,7 @@ def admin_url_from_model(model_obj):
         ), args=(model_obj.id,))
     return url
 
-class _Base(admin.ModelAdmin):
+class _Base(GoBotanyModelAdmin):
 
     def get_fieldsets(self, request, obj=None):
         fieldsets = super(_Base, self).get_fieldsets(request, obj)
@@ -42,12 +43,6 @@ class _Base(admin.ModelAdmin):
                 }))
 
         return fieldsets
-
-    class Media:
-        css = {
-            'all': ('/static/admin/admin_gb.css',)
-        }
-        js = ('/static/admin/admin_gb.js',)
 
 
 class TaxonSynonymInline(admin.TabularInline):

@@ -1,5 +1,6 @@
 from django.contrib import admin
 
+from gobotany.admin import GoBotanyModelAdmin
 from gobotany.plantoftheday.models import PlantOfTheDay
 
 def exclude(modeladmin, request, queryset):
@@ -10,7 +11,7 @@ def include(modeladmin, request, queryset):
     queryset.update(include=True)
 include.short_description = 'Include selected plants of the day'
 
-class PlantOfTheDayAdmin(admin.ModelAdmin):
+class PlantOfTheDayAdmin(GoBotanyModelAdmin):
     actions = [exclude, include]
     fields = ['scientific_name', 'partner_short_name', 'include', 'last_seen',
               'created', 'last_updated']

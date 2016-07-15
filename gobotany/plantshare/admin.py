@@ -3,15 +3,8 @@ from django.contrib import admin
 from django.core import urlresolvers
 from django.utils.safestring import mark_safe
 
+from gobotany.admin import GoBotanyModelAdmin
 from gobotany.plantshare import models
-
-
-class _Base(admin.ModelAdmin):
-    class Media:
-        css = {
-            'all': ('/static/admin/admin_gb.css',)
-        }
-        js = ('/static/admin/admin_gb.js',)
 
 
 class QuestionAdminForm(forms.ModelForm):
@@ -26,7 +19,7 @@ class QuestionAdminForm(forms.ModelForm):
         exclude = {}
 
 
-class QuestionAdmin(_Base):
+class QuestionAdmin(GoBotanyModelAdmin):
     date_hierarchy = 'asked'
     fields = ('question', 'image_links', 'asked_by', 'answer', 'approved')
     form = QuestionAdminForm
@@ -53,11 +46,11 @@ class QuestionAdmin(_Base):
     image_links.allow_tags = True
 
 
-class LocationAdmin(_Base):
+class LocationAdmin(GoBotanyModelAdmin):
     pass
 
 
-class SightingAdmin(_Base):
+class SightingAdmin(GoBotanyModelAdmin):
     fields = ('user', 'created', 'identification', 'notes', 'location_link',
         'location_notes', 'photographs', 'visibility', 'flagged',
         'approved', 'email')
@@ -104,7 +97,7 @@ class SightingAdmin(_Base):
     photographs.short_description = 'Photos'
     photographs.allow_tags = True
 
-class ScreenedImageAdmin(_Base):
+class ScreenedImageAdmin(GoBotanyModelAdmin):
     list_display = ('image_type', 'uploaded', 'uploaded_by',
         'email', 'screened', 'screened_by', 'is_approved', 'admin_thumb')
     list_filter = ('is_approved',)

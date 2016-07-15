@@ -1,11 +1,12 @@
+from django.contrib import admin
 from django.db import models
 from django.forms import TextInput, Textarea
 
-from gobotany.admin import admin
+from gobotany.admin import GoBotanyModelAdmin
 from gobotany.dkey.models import Figure, Hybrid, IllustrativeSpecies, Lead, Page
 
 
-class FigureAdmin(admin.ModelAdmin):
+class FigureAdmin(GoBotanyModelAdmin):
     formfield_overrides = {
         models.TextField: {'widget': Textarea(attrs={'rows': 4, 'cols': 80}) },
     }
@@ -13,7 +14,7 @@ class FigureAdmin(admin.ModelAdmin):
     search_fields = ('number', 'caption')
 
 
-class HybridAdmin(admin.ModelAdmin):
+class HybridAdmin(GoBotanyModelAdmin):
     formfield_overrides = {
         models.TextField: {'widget': Textarea(attrs={'rows': 4, 'cols': 80}) },
     }
@@ -21,7 +22,7 @@ class HybridAdmin(admin.ModelAdmin):
     search_fields = ('scientific_name1', 'scientific_name2', 'text')
 
 
-class IllustrativeSpeciesAdmin(admin.ModelAdmin):
+class IllustrativeSpeciesAdmin(GoBotanyModelAdmin):
     formfield_overrides = {
         models.TextField: {'widget': Textarea(attrs={'rows': 4, 'cols': 80}) },
     }
@@ -30,7 +31,7 @@ class IllustrativeSpeciesAdmin(admin.ModelAdmin):
     search_fields = ('group_number', 'family_name', 'species_name')
 
 
-class LeadAdmin(admin.ModelAdmin):
+class LeadAdmin(GoBotanyModelAdmin):
     formfield_overrides = {
         models.TextField: {'widget': Textarea(attrs={'rows': 4, 'cols': 80}) },
     }
@@ -40,7 +41,7 @@ class LeadAdmin(admin.ModelAdmin):
     search_fields = ('page__title', 'letter', 'text')
 
 
-class PageAdmin(admin.ModelAdmin):
+class PageAdmin(GoBotanyModelAdmin):
     formfield_overrides = {
         models.TextField: {'widget': Textarea(attrs={'rows': 4, 'cols': 80}) },
     }
