@@ -1,7 +1,7 @@
-from django.contrib import admin
 from django.db import models
 from django.forms import TextInput, Textarea
 
+from gobotany.admin import admin
 from gobotany.dkey.models import Figure, Hybrid, IllustrativeSpecies, Lead, Page
 
 
@@ -38,11 +38,6 @@ class LeadAdmin(admin.ModelAdmin):
     ordering = ('page__title',)
     readonly_fields = ('taxa_cache',)
     search_fields = ('page__title', 'letter', 'text')
-
-    class Media:
-        css = {
-            'all': ('/static/admin/admin_gb.css',)
-        }
 
 
 class PageAdmin(admin.ModelAdmin):

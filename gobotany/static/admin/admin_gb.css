@@ -1,3 +1,6 @@
+textarea {
+    font-family: monospace;   /* for easier editing */
+}
 .description {
     margin: 3em 4em 3em 0;
     line-height: 1.5em;
