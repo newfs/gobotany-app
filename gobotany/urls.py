@@ -11,6 +11,9 @@ handler500 = 'django.views.defaults.server_error'
 
 admin.autodiscover()
 
+admin.site.site_title = 'Go Botany administration'
+admin.site.site_header = 'Go Botany administration'
+
 urlpatterns = []
 
 if settings.USE_DEBUG_TOOLBAR and settings.DEBUG:
