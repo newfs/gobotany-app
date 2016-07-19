@@ -1,12 +1,10 @@
-Go Botany
-=========
+# Go Botany
 
 [Go Botany](https://gobotany.newenglandwild.org/) is a web site that
 encourages informal, self-directed education in botany for science
 students and beginning and amateur botanists.
 
-Running Go Botany on your workstation
--------------------------------------
+## Running Go Botany on your workstation
 
 First, check out the repository and run `dev/setup` to install the
 application and its dependencies in a Python virtual environment (that
@@ -68,8 +66,7 @@ Our various tests can be run with three commands:
     dev/test-python
 
 
-Installing Go Botany on Heroku
-------------------------------
+## Installing Go Botany on Heroku
 
 Start by checking out this "gobotany-app" repository on your machine:
 
@@ -129,8 +126,7 @@ Botany site's search field:
     heroku run django-admin.py rebuild_index --noinput
 
 
-Deploying to the Development server
----------------------------
+## Deploying to the Development server
 
 Log in to Heroku. Ensure you have a git remote set for the gobotany-dev
 Heroku application. Run the following to deploy the master branch:
@@ -147,8 +143,7 @@ To reindex the Solr index, use the following command:
     heroku run python gobotany/manage.py rebuild_index
 
 
-Running the automated tests
----------------------------
+## Running the automated tests
 
 To run our Python tests you can either:
 
@@ -179,8 +174,7 @@ Detailed notes about testing under selenium can be found in:
     gobotany-app/gobotany/simplekey/testdir/README-SELENIUM.txt
 
 
-Checking test coverage
-----------------------
+## Checking test coverage
 
 To check for test coverage using coverage.py, run:
 
@@ -202,8 +196,7 @@ To see the same data on the command line, use:
     $ coverage report
 
 
-Testing and adjusting the search feature
-----------------------------------------
+## Testing and adjusting the search feature
 
 The Go Botany search feature uses Haystack and Solr.
 
@@ -224,8 +217,7 @@ scores, may also be helpful:
     http://localhost:8983/solr/admin/form.jsp
 
 
-Using the production JS locally
--------------------------------
+## Using the production JS locally
 
 When developing locally, the default is to use the individual
 non-minified JS files, as they require no separate build step before
@@ -245,3 +237,35 @@ gobotany/app/gobotany/site/templates/gobotany/_js.html
 Change the if statement there to evaluate to False, such as with
 'if 1 == 0'. Ensure Django reloads (if not, restart Django), then
 reload the page.
+
+
+## Updating the Dichotomous Key
+
+To make changes to the Dichotomous Key in order to keep it up to date,
+edit the records in the Admin. Then a site administrator should run
+the `sync` script, which will complete the update.
+
+Here are various pieces of the Dichotomous Key and how to update them:
+
+### Text at bottom of species pages
+
+Each species page on the site has a section labeled *Information from
+Dichotomous Key of Flora Novae Angliae.*
+
+To update this section, go to the Dichotomous Key pages screen in the
+Admin and find the desired plant by species name. Then edit the record,
+updating the HTML in the field named `Text`.
+
+### Running the sync script
+
+After each batch of changes to the key, a site administrator should run
+the `sync` script. This rebuilds the contents of some cache fields for
+the key. It takes just a few minutes to run.
+
+The command on Heroku:
+
+    heroku run python gobotany/dkey/sync.py --app {app-name}
+
+The command for local development:
+
+    python gobotany/dkey/sync.py
