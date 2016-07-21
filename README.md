@@ -269,19 +269,19 @@ renaming a plant, here are the things to change in the Dichotomous Key
 records. The following items each pertain to a section in the Home >
 Dichotomous Key section of the Admin:
 
-    1. **Dichotomous Key Pages:** use the search box to search on the
-    genus. You should get a list of all the species records plus a genus
-    page record. Edit the species page record. If necessary, edit the
-    genus page record.
-    2. **Figures:** use the search box to search on the genus. If there
-    are any relevant records for the plant, edit as necessary.
-    3. **Hybrids:** use the search box to search on the genus. If there
-    are any relevant records for the plant, edit as necessary.
-    4. **Illustrative Species:** use the search box to see whether the
-    plant being changed is present in these records. If so, edit as
-    necessary.
-    5. **Leads:** use the search box to see whether the plant being
-    changed is present in these records. If so, edit as necessary.
+1. **Dichotomous Key Pages:** use the search box to search on the
+genus. You should get a list of all the species records plus a genus
+page record. Edit the species page record. If necessary, edit the
+genus page record.
+2. **Figures:** use the search box to search on the genus. If there
+are any relevant records for the plant, edit as necessary.
+3. **Hybrids:** use the search box to search on the genus. If there
+are any relevant records for the plant, edit as necessary.
+4. **Illustrative Species:** use the search box to see whether the
+plant being changed is present in these records. If so, edit as
+necessary.
+5. **Leads:** use the search box to see whether the plant being
+changed is present in these records. If so, edit as necessary.
 
 ### Running the sync script
 
