@@ -283,6 +283,21 @@ necessary.
 5. **Leads:** use the search box to see whether the plant being
 changed is present in these records. If so, edit as necessary.
 
+### Lists of families, genera, species
+
+Throughout the key, there are lists of families, genera, and species.
+These are also presented as a set of thumbnail images at the bottom
+of the pages. The contents of these lists are constructed from the
+current data set by the views code of the application. The lists are
+not directly editable in the Admin. However, one should be able to
+update them indirectly by changing or adding the appropriate records
+in the Admin for the Dichotomous Key.
+
+In order for these lists to be correct and up to date on the site, the
+sync script must be run, which updates the breadcrumb and taxa
+caches. The taxa caches in particular are used to help populate the
+lists for the pages.
+
 ### Running the sync script
 
 After each batch of changes to the key, a site administrator should run
