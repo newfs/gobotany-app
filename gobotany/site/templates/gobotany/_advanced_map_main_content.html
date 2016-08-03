@@ -20,7 +20,7 @@
                         {% endfor %}
                     </div>
                     <p class="list">
-                        <a href="/list/#group={{ group.friendly_title }}{% if group.friendly_title|lower = 'woody plants' %} not non{% endif %}"
+                        <a href="/list/#group={{ group.friendly_title }}{% if group.friendly_title|lower == 'woody plants' %} not non{% endif %}"
                             >Species list</a>
                     </p>
                     {% if group.video.youtube_id %}

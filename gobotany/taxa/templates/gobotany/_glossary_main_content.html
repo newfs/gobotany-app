@@ -1,7 +1,7 @@
     <h1>Glossary: {{ this_letter|upper }}</h1>
     <ul id="alphabet">
         {% for letter in letters %}
-            {% if letter = this_letter %}
+            {% if letter == this_letter %}
                 <li class="current"><a>{{ letter|upper }}</a></li>
             {% else %}
                 {% if letter in letters_in_glossary %}
