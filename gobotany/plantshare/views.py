@@ -15,8 +15,7 @@ from django.db.models import Q
 from django.forms import widgets
 from django.forms.models import modelformset_factory
 from django.http import Http404, HttpResponse, HttpResponseRedirect
-from django.shortcuts import (get_object_or_404, redirect, render,
-    render_to_response)
+from django.shortcuts import get_object_or_404, redirect, render
 from django.template import RequestContext
 from django.utils.timezone import utc
 
@@ -89,7 +88,7 @@ def _sighting_form_page(request, form, edit=False, sighting=None):
                'form': form,
                'upload_photo_form': upload_photo_form,
                'sighting': sighting,
-           }, context_instance=RequestContext(request))
+           })
 
 
 def _create_checklistentry_formset(extra=0, **kwargs):
@@ -101,8 +100,7 @@ def _create_checklistentry_formset(extra=0, **kwargs):
 
 @login_required
 def terms_of_agreement_view(request):
-    return render_to_response('terms_of_agreement.html', {
-        }, context_instance=RequestContext(request))
+    return render(request, 'terms_of_agreement.html', {})
 
 
 @login_required
@@ -199,7 +197,7 @@ def plantshare_view(request):
             user=profile.user).count()
         checklists_count = profile.checklists.count()
 
-    return render_to_response('plantshare.html', {
+    return render(request, 'plantshare.html', {
                 'prior_signup_detected': prior_signup_detected(request),
                 'avatar': avatar_info,
                 'map': SIGHTINGS_MAP_DEFAULTS,
@@ -211,7 +209,7 @@ def plantshare_view(request):
                 'recent_sightings': recent_sightings,
                 'sightings_count': sightings_count,
                 'checklists_count': checklists_count,
-           }, context_instance=RequestContext(request))
+           })
 
 
 def _may_show_sighting(sighting, user):
@@ -353,10 +351,10 @@ def sightings_view(request):
         years = [dt.year for dt in
             Sighting.objects.datetimes('created', 'year', order='DESC')]
 
-        return render_to_response('sightings.html', {
+        return render(request, 'sightings.html', {
                     'sightings': sightings,
                     'years': years,
-               }, context_instance=RequestContext(request))
+               })
     else:
         # For an unsupported HTTP method, return Method Not Allowed.
         return HttpResponse(status=405)
@@ -391,11 +389,11 @@ def sightings_by_year_view(request, year):
         Sighting.objects.datetimes('created', 'year', order='DESC')]
 
     if year in years:
-        return render_to_response('sightings_by_year.html', {
+        return render(request, 'sightings_by_year.html', {
                     'year': year,
                     'sightings': sightings,
                     'years': years,
-               }, context_instance=RequestContext(request))
+               })
     else:
         raise Http404
 
@@ -409,10 +407,10 @@ def sightings_locator_view(request):
         except UserProfile.DoesNotExist:
             pass
     recent_sightings = _get_recent_sightings(request, profile)
-    return render_to_response('sightings_locator.html', {
+    return render(request, 'sightings_locator.html', {
                 'map': SIGHTINGS_MAP_DEFAULTS,
                 'recent_sightings': recent_sightings,
-           }, context_instance=RequestContext(request))
+           })
 
 
 @terms_agreed_on_login
@@ -467,10 +465,10 @@ def sighting_view(request, sighting_id):
             'year': s.created.year,
             'photos': photos
         }
-        return render_to_response('sighting.html', {
+        return render(request, 'sighting.html', {
                     'sighting': sighting,
                     'map_zoom': SIGHTING_MAP_ZOOM,
-               }, context_instance=RequestContext(request))
+               })
     elif request.method == 'POST':   # Update an edited sighting.
         if not request.user.is_authenticated():
             return HttpResponse(status=401)
@@ -546,8 +544,7 @@ def new_sighting_view(request):
 @terms_agreed_on_login
 def new_sighting_done_view(request):
     """View for a confirmation page upon posting a new sighting."""
-    return render_to_response('new_sighting_done.html', {
-           }, context_instance=RequestContext(request))
+    return render(request, 'new_sighting_done.html', {})
 
 
 @login_required
@@ -572,9 +569,9 @@ def manage_sightings_view(request):
             'created': sighting.created.strftime(SIGHTING_DATE_YEAR_FORMAT),
             'visibility': visibility,
         })
-    return render_to_response('manage_sightings.html', {
+    return render(request, 'manage_sightings.html', {
             'sightings': sightings,
-        }, context_instance=RequestContext(request))
+        })
 
 
 @login_required
@@ -609,8 +606,7 @@ def edit_sighting_view(request, sighting_id):
 @terms_agreed_on_login
 def edit_sighting_done_view(request):
     """View for a confirmation page upon editing a sighting."""
-    return render_to_response('edit_sighting_done.html', {
-           }, context_instance=RequestContext(request))
+    return render(request, 'edit_sighting_done.html', {})
 
 
 @login_required
@@ -631,9 +627,9 @@ def delete_sighting_view(request, sighting_id):
             'user': s.user,
             'created': s.created.strftime(SIGHTING_DATE_FORMAT),
         }
-        return render_to_response('_delete_sighting.html', {
+        return render(request, '_delete_sighting.html', {
                 'sighting': sighting
-            }, context_instance=RequestContext(request))
+            })
     else:
         # For an unsupported HTTP method, return Method Not Allowed.
         return HttpResponse(status=405)
@@ -686,12 +682,12 @@ def questions_view(request):
         return HttpResponse(status=405)
 
     if return_ask_the_botanist_page == True:
-        return render_to_response('ask.html', {
+        return render(request, 'ask.html', {
                     'questions': questions,
                     'max_question_length': max_question_length,
                     'question_form': question_form,
                     'upload_photo_form': upload_photo_form
-            }, context_instance=RequestContext(request))
+            })
 
 
 @terms_agreed_on_login
@@ -723,11 +719,11 @@ def all_questions_by_year_view(request, year=None):
         asked__year=year).order_by('-answered')
 
     if questions:
-        return render_to_response('all_questions.html', {
+        return render(request, 'all_questions.html', {
                 'questions': questions,
                 'year': year,
                 'years': years
-            }, context_instance=RequestContext(request))
+            })
     else:
         raise Http404
 
@@ -736,8 +732,7 @@ def all_questions_by_year_view(request, year=None):
 @terms_agreed_on_login
 def new_question_done_view(request):
     """View for a confirmation page upon asking a new question."""
-    return render_to_response('new_question_done.html', {
-           }, context_instance=RequestContext(request))
+    return render(request, 'new_question_done.html', {})
 
 
 @login_required
@@ -747,9 +742,9 @@ def checklist_index_view(request):
     profile = request.user.userprofile
     all_checklists = profile.checklists
 
-    return render_to_response('checklists.html', {
+    return render(request, 'checklists.html', {
                 'checklists': all_checklists,
-           }, context_instance=RequestContext(request))
+           })
 
 
 @login_required
@@ -780,11 +775,11 @@ def new_checklist_view(request):
         entry_formset = ChecklistEntryFormSet(
             queryset=ChecklistEntry.objects.none())
 
-    return render_to_response('new_checklist.html', {
+    return render(request, 'new_checklist.html', {
             'checklist_form': checklist_form,
             'entry_formset': entry_formset,
             'entry_image_form': entry_image_form,
-           }, context_instance=RequestContext(request))
+           })
 
 
 @login_required
@@ -813,9 +808,9 @@ def delete_checklist_view(request, checklist_id):
             'id': c.id,
             'name': c.name,
         }
-        return render_to_response('_delete_checklist.html', {
+        return render(request, '_delete_checklist.html', {
                 'checklist': checklist
-            }, context_instance=RequestContext(request))
+            })
     else:
         # For an unsupported HTTP method, return Method Not Allowed.
         return HttpResponse(status=405)
@@ -870,12 +865,12 @@ def edit_checklist_view(request, checklist_id):
         entry_formset = ChecklistEntryFormSet(
             queryset=ChecklistEntry.objects.filter(checklist=checklist))
 
-    return render_to_response('edit_checklist.html', {
+    return render(request, 'edit_checklist.html', {
             'checklist': checklist,
             'checklist_form': checklist_form,
             'entry_formset': entry_formset,
             'entry_image_form': entry_image_form,
-           }, context_instance=RequestContext(request))
+           })
 
 
 @login_required
@@ -887,9 +882,9 @@ def checklist_view(request, checklist_id):
     checklist = get_object_or_404(Checklist, pk=checklist_id)
 
     if request.method == 'GET':
-        return render_to_response('checklist_detail.html', {
+        return render(request, 'checklist_detail.html', {
                 'checklist': checklist
-            }, context_instance=RequestContext(request))
+            })
     elif request.method == 'DELETE':
         if not request.user.is_authenticated():
             return HttpResponse(status=401)   # 401 Unauthorized
@@ -952,11 +947,11 @@ def find_people_view(request):
             if is_match:
                 people.append(candidate)
 
-    return render_to_response('find_people.html', {
+    return render(request, 'find_people.html', {
             'min_query_length': MIN_QUERY_LENGTH,
             'name_query': query,
             'people': people,
-        }, context_instance=RequestContext(request))
+        })
 
 
 @login_required
@@ -989,12 +984,12 @@ def find_people_profile_view(request, username):
         elif profile.location_visibility == 'USERS':
             location_visible = True
 
-    return render_to_response('_find_people_profile.html', {
+    return render(request, '_find_people_profile.html', {
             'profile': profile,
             'username': username,
             'details_visible': details_visible,
             'location_visible': location_visible,
-        }, context_instance=RequestContext(request))
+        })
 
 
 @login_required
@@ -1034,8 +1029,7 @@ def your_profile_view(request):
         'form': change_password_form,   # named as another view used expects
         'change_email_form': change_email_form,
     }
-    return render_to_response('your_profile.html', context,
-            context_instance=RequestContext(request))
+    return render(request, 'your_profile.html', context)
 
 
 @login_required
@@ -1062,15 +1056,14 @@ def change_email(request):
         'change_email_form': change_email_form,
     }
 
-    return render_to_response('emailconfirmation/change_email_address.html',
-        context, context_instance=RequestContext(request))
+    return render(request, 'emailconfirmation/change_email_address.html',
+        context)
 
 
 @login_required
 def change_email_confirmation_sent(request):
-    return render_to_response(
-        'emailconfirmation/change_email_confirmation_sent.html',
-        {}, context_instance=RequestContext(request))
+    return render(request,
+        'emailconfirmation/change_email_confirmation_sent.html', {})
 
 
 # Patch the emailconfirmation view 'confirm_email' to make it require
@@ -1079,9 +1072,9 @@ def change_email_confirmation_sent(request):
 def confirm_email(request, confirmation_key):
     confirmation_key = confirmation_key.lower()
     email_address = EmailConfirmation.objects.confirm_email(confirmation_key)
-    return render_to_response('emailconfirmation/confirm_email.html', {
+    return render(request, 'emailconfirmation/confirm_email.html', {
         'email_address': email_address,
-    }, context_instance=RequestContext(request))
+    })
 
 emailconfirmation_views.confirm_email = confirm_email
 
@@ -1129,8 +1122,7 @@ def screen_images(request):
     context = {
         'screening_formset': formset,
     }
-    return render_to_response('staff/screen_images.html', context,
-            context_instance=RequestContext(request))
+    return render(request, 'staff/screen_images.html', context)
 
 
 # AJAX API
