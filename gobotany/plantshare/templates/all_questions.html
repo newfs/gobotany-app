@@ -16,7 +16,7 @@
 {% block main_content %}
 <p class="nav-links">
 {% for y in years %}
-    {% if y = year %}
+    {% if y == year %}
         {{ y }}
     {% else %}
         <a href="{% url 'ps-all-questions-by-year' y %}">{{ y }}</a>
