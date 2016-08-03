@@ -11,7 +11,7 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.db.models import Q
 from django.core.urlresolvers import reverse
 from django.http import HttpResponse
-from django.shortcuts import render_to_response, redirect
+from django.shortcuts import redirect, render
 from django.template import RequestContext
 from django.views.decorators.vary import vary_on_headers
 
@@ -299,8 +299,7 @@ def maps_test_view(request):
 # was time to replace them (e.g. delete this view and any placeholder not yet
 # replaced will become an error).
 def placeholder_view(request, template):
-    return render_to_response(template, {
-            }, context_instance=RequestContext(request))
+    return render(request, template, {})
 
 
 # Sitemap.txt and robots.txt views
@@ -335,16 +334,13 @@ def sitemap_view(request):
                                host,
                                reverse('taxa-genus', args=([genus_name])))
                  for genus_name in genera])
-    return render_to_response('gobotany/sitemap.txt', {
+    return render(request, 'gobotany/sitemap.txt', {
             'urls': urls,
-            },
-            context_instance=RequestContext(request),
-            content_type='text/plain; charset=utf-8')
+        },
+        content_type='text/plain; charset=utf-8')
 
 def robots_view(request):
-    return render_to_response('gobotany/robots.txt', {},
-                              context_instance=RequestContext(request),
-                              content_type='text/plain')
+    return render(request, 'gobotany/robots.txt', {}, content_type='text/plain')
 
 
 @vary_on_headers('Host')
