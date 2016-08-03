@@ -2,7 +2,7 @@
 
     <header class="{% block header_css_class %}{% endblock %}">
         <div class="container">
-            {% if page = "home" %}
+            {% if page == "home" %}
                 <h1>{% block home_page_main_heading %}Go Botany: Discover
                     thousands of New England plants{% endblock %}</h1>
                 {% block home_page_partner_site_name_tagline %}{% endblock %}
