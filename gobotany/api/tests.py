@@ -49,7 +49,7 @@ def _setup_sample_data(load_images=False):
     if load_images:
         image_type, c = models.ImageType.objects.get_or_create(name='taxon')
         content_type, c = ContentType.objects.get_or_create(
-            model='', app_label='core', defaults={'name': 'core'})
+            model='', app_label='core')
         # Create one image.
         im1 = models.ContentImage(alt='im1 alt', rank=1,
             creator='photographer A', image_type=image_type,
