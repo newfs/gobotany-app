@@ -1,10 +1,10 @@
 # -*- coding: utf-8 -*-
 
-from django.core.urlresolvers import reverse
 from django.http import Http404
 from django.shortcuts import get_object_or_404, redirect, render
 #from django.views.decorators.cache import cache_control, cache_page
 from django.views.decorators.vary import vary_on_headers
+from django.urls import reverse
 
 from gobotany.core.models import ContentImage, Pile, PileGroup
 from gobotany.core.partner import partner_short_name, render_per_partner
@@ -25,11 +25,11 @@ def add_query_string(request, url):
 
 def get_simple_url(key, pilegroup, pile=None):
     if pile is None:
-        return reverse('gobotany.simplekey.views.level2',
+        return reverse('level2',
                        kwargs={'key': key,
                                'pilegroup_slug': pilegroup.slug})
     else:
-        return reverse('gobotany.simplekey.views.level3',
+        return reverse('level3',
                        kwargs={'key': key,
                                'pilegroup_slug': pilegroup.slug,
                                'pile_slug': pile.slug})
