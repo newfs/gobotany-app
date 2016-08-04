@@ -36,11 +36,11 @@
                 <p>{{ pilegroup.friendly_name|capfirst }}</p>
                 <p class="key-char">
                     <span class="section-title">Key Characteristics</span>
-                    {{ pilegroup.key_characteristics|removetags:"div"|safe|capfirst }}
+                    {{ pilegroup.key_characteristics_text|safe|capfirst }}
                 </p>
                 <p class="exceptions">
                     <span class="section-title">Exceptions</span>
-                    {{ pilegroup.notable_exceptions|removetags:"div"|safe|capfirst }}
+                    {{ pilegroup.notable_exceptions_text|safe|capfirst }}
                 </p>
                 {% if pilegroup.video %}
                 <p class="vid">

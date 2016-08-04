@@ -4,6 +4,8 @@ import string
 from collections import defaultdict, OrderedDict
 from datetime import datetime
 
+import bleach
+
 from django.conf import settings
 from django.db import models
 from django.db.models import Q
@@ -289,6 +291,12 @@ class PileInfo(models.Model):
 
     def __unicode__(self):
         return u'%s id=%s' % (self.name, self.id)
+
+    def key_characteristics_text(self):
+        return bleach.clean(self.key_characteristics, strip=True)
+
+    def notable_exceptions_text(self):
+        return bleach.clean(self.notable_exceptions, strip=True)
 
     def get_default_image(self):
         try:

@@ -5,6 +5,7 @@ requirements = [
     'django==1.10',
 
     'Pillow==2.4.0',
+    'bleach==1.4.3',
     'cssselect',
     'django-debug-toolbar==1.4',
     'django-haystack==2.5.dev1',

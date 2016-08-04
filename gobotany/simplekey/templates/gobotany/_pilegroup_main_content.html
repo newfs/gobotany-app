@@ -49,11 +49,11 @@
 
                 <p class="key-char">
                     <span class="section-title">Key Characteristics</span>
-                    {{ pile.key_characteristics|removetags:"div ul li"|safe }}
+                    {{ pile.key_characteristics_text|safe|capfirst }}
                 </p>
                 <p class="exceptions">
                     <span class="section-title">Exceptions</span>
-                    {{ pile.notable_exceptions|removetags:"div ul li"|safe }}
+                    {{ pile.notable_exceptions_text|safe|capfirst }}
                 </p>
                 {% if pile.video %}
                 <p class="vid">
