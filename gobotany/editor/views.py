@@ -8,7 +8,7 @@ import tablib
 from datetime import datetime
 from django.contrib.auth.decorators import permission_required
 from django.http import Http404, HttpResponse
-from django.shortcuts import get_object_or_404, redirect, render_to_response
+from django.shortcuts import get_object_or_404, redirect, render
 from django.template import RequestContext
 from django.utils import timezone
 from shoehorn.engine import DifferenceEngine
@@ -24,18 +24,18 @@ def e404(request):
 
 @permission_required('core.botanist')
 def piles_view(request):
-    return render_to_response('gobotany/edit_piles.html', {
+    return render(request, 'gobotany/edit_piles.html', {
         'piles' : models.Pile.objects.all(),
-        }, context_instance=RequestContext(request))
+        })
 
 
 @permission_required('core.botanist')
 def pile_characters(request, pile_slug):
-    return render_to_response('gobotany/pile_characters.html', {
+    return render(request, 'gobotany/pile_characters.html', {
         'common_characters': models.Character.objects.filter(
             short_name__in=models.COMMON_CHARACTERS),
         'pile' : get_object_or_404(models.Pile, slug=pile_slug),
-        }, context_instance=RequestContext(request))
+        })
 
 
 @permission_required('core.botanist')
@@ -102,13 +102,13 @@ def _edit_pile_length_character(request, pile, character, taxa):
     coverage_percent_simple = (len(simple_ids.intersection(valued_ids))
                      * 100.0 / len(simple_ids.intersection(taxon_ids)))
 
-    return render_to_response('gobotany/edit_pile_length.html', {
+    return render(request, 'gobotany/edit_pile_length.html', {
         'character': character,
         'coverage_percent_full': coverage_percent_full,
         'coverage_percent_simple': coverage_percent_simple,
         'grid': grid(),
         'pile': pile,
-        }, context_instance=RequestContext(request))
+        })
 
 
 def _edit_pile_string_character(request, pile, character, taxa):
@@ -166,7 +166,7 @@ def _edit_pile_string_character(request, pile, character, taxa):
     coverage_percent_simple = (len(simple_ids.intersection(taxa_with_values))
                      * 100.0 / len(simple_ids.intersection(taxa_ids)))
 
-    return render_to_response('gobotany/edit_pile_character.html', {
+    return render(request, 'gobotany/edit_pile_character.html', {
         'there_are_any_friendly_texts': any(v.friendly_text for v in values),
         'character': character,
         'coverage_percent_full': coverage_percent_full,
@@ -175,14 +175,14 @@ def _edit_pile_string_character(request, pile, character, taxa):
         'pile': pile,
         'values': values,
         'values_json': json.dumps([value.value_str for value in values]),
-        }, context_instance=RequestContext(request))
+        })
 
 
 @permission_required('core.botanist')
 def pile_taxa(request, pile_slug):
-    return render_to_response('gobotany/pile_taxa.html', {
+    return render(request, 'gobotany/pile_taxa.html', {
         'pile' : get_object_or_404(models.Pile, slug=pile_slug),
-        }, context_instance=RequestContext(request))
+        })
 
 
 @permission_required('core.botanist')
@@ -237,12 +237,12 @@ def edit_pile_taxon(request, pile_slug, taxon_slug):
                 yield character
         return generator
 
-    return render_to_response('gobotany/edit_pile_taxon.html', {
+    return render(request, 'gobotany/edit_pile_taxon.html', {
         'common_characters': annotated_characters(common_characters),
         'pile': pile,
         'pile_characters': annotated_characters(pile_characters),
         'taxon': taxon,
-        }, context_instance=RequestContext(request))
+        })
 
 
 def _save(request, new_values, character=None, taxon=None):
@@ -408,11 +408,11 @@ def edit_lit_sources(request, dotted_datetime):
 
     citation_list = models.SourceCitation.objects.all()
 
-    return render_to_response('gobotany/edit_lit_sources.html', {
+    return render(request, 'gobotany/edit_lit_sources.html', {
         'return_to': return_to,
         'tcvlist': tcvlist,
         'citation_list': citation_list
-        }, context_instance=RequestContext(request))
+        })
 
 
 @permission_required('botanist')
@@ -422,12 +422,12 @@ def partner_plants(request, idnum):
                   .filter(partner=partner)
                   .select_related('species')
                   .order_by('species__scientific_name'))
-    return render_to_response('gobotany/view_partner_plants.html', {
+    return render(request, 'gobotany/view_partner_plants.html', {
         'download_url': '/edit/partner{}-plants.csv'.format(partner.id),
         'upload_url': 'upload/',
         'partner': partner,
         'plants': plants,
-        }, context_instance=RequestContext(request))
+        })
 
 
 
@@ -524,12 +524,12 @@ def partner_plants_upload(request, idnum):
             printout.append(u'Please select a file for upload and try again.')
 
     # Step 1: an admin visits the page.
-    return render_to_response('gobotany/upload_partner_plants.html', {
+    return render(request, 'gobotany/upload_partner_plants.html', {
         'changes': changes,
         'partner': partner,
         'printout': '\n'.join(printout),
         'return_url': return_url,
-        }, context_instance=RequestContext(request))
+        })
 
 
 @permission_required('botanist')

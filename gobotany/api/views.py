@@ -559,8 +559,7 @@ def questions(request, pile_slug):
         questions_list.append(_jsonify_character(character, pile_slug))
     output = jsonify(questions_list)
     # Alternate: return HTML for browser testing with Django Debug Toolbar
-    #output = render_to_response('questions_test.html',
-    #                            {'questions': questions})
+    #output = render(request, 'questions_test.html', {'questions': questions})
     return output
 
 # The images that should be displayed on a particular dkey page.

@@ -22,8 +22,7 @@ from gobotany.core.models import (
     Pile, Taxon, Video,
     )
 from gobotany.core.partner import (which_partner, partner_short_name,
-                                   per_partner_template,
-                                   render_to_response_per_partner)
+                                   per_partner_template, render_per_partner)
 from gobotany.plantoftheday.models import PlantOfTheDay
 from gobotany.simplekey.groups_order import ordered_pilegroups, ordered_piles
 from gobotany.site.models import PlantNameSuggestion, SearchSuggestion
@@ -58,7 +57,7 @@ def home_view(request):
         plant_of_the_day_image = botany.species_images(
             plant_of_the_day_taxon)[0]
 
-    return render_to_response_per_partner('home.html', {
+    return render_per_partner('home.html', {
             'home_page_images': home_page_images,
             'plant_of_the_day': plant_of_the_day_taxon,
             'plant_of_the_day_image': plant_of_the_day_image,
@@ -68,29 +67,29 @@ def home_view(request):
 
 @vary_on_headers('Host')
 def teaching_view(request):
-    return render_to_response_per_partner('teaching.html', {
+    return render_per_partner('teaching.html', {
             }, request)
 
 # Help section
 
 @vary_on_headers('Host')
 def help_view(request):
-    return render_to_response_per_partner('help.html', {
+    return render_per_partner('help.html', {
            }, request)
 
 @vary_on_headers('Host')
 def help_dkey_view(request):
-    return render_to_response_per_partner('help_dkey.html', {
+    return render_per_partner('help_dkey.html', {
            }, request)
 
 @vary_on_headers('Host')
 def system_requirements_view(request):
-    return render_to_response_per_partner('system_requirements.html', {
+    return render_per_partner('system_requirements.html', {
            }, request)
 
 @vary_on_headers('Host')
 def about_view(request):
-    return render_to_response_per_partner('about.html', {
+    return render_per_partner('about.html', {
            }, request)
 
 @vary_on_headers('Host')
@@ -100,7 +99,7 @@ def getting_started_view(request):
     if getting_started_video:
         youtube_id = getting_started_video.youtube_id
 
-    return render_to_response_per_partner('getting_started.html', {
+    return render_per_partner('getting_started.html', {
             'getting_started_youtube_id': youtube_id,
             }, request)
 
@@ -109,7 +108,7 @@ def advanced_map_view(request):
     pilegroups = [(pilegroup, ordered_piles(pilegroup))
                   for pilegroup in ordered_pilegroups()]
 
-    return render_to_response_per_partner('advanced_map.html', {
+    return render_per_partner('advanced_map.html', {
             'pilegroups': pilegroups
             }, request)
 
@@ -127,7 +126,7 @@ def glossary_view(request, letter):
         Q(term__startswith=letter) | Q(term__startswith=letter.upper()),
         term__gte='A')
 
-    return render_to_response_per_partner('glossary.html', {
+    return render_per_partner('glossary.html', {
             'this_letter': letter,
             'letters': string.ascii_lowercase,
             'letters_in_glossary': letters_in_glossary,
@@ -167,26 +166,26 @@ def video_view(request):
         for pile in ordered_piles(pilegroup):
             videos.append(_get_video_dict(pile.friendly_title, pile.video))
 
-    return render_to_response_per_partner('video.html', {
+    return render_per_partner('video.html', {
            'videos': videos,
            }, request)
 
 @vary_on_headers('Host')
 def contributors_view(request):
-    return render_to_response_per_partner('contributors.html', {
+    return render_per_partner('contributors.html', {
        }, request)
 
 def contact_view(request):
-    return render_to_response_per_partner('contact.html', {}, request)
+    return render_per_partner('contact.html', {}, request)
 
 @vary_on_headers('Host')
 def privacy_view(request):
-    return render_to_response_per_partner('privacy.html', {}, request)
+    return render_per_partner('privacy.html', {}, request)
 
 @vary_on_headers('Host')
 def terms_of_use_view(request):
     site_url = request.build_absolute_uri(reverse('site-home'))
-    return render_to_response_per_partner('terms.html', {
+    return render_per_partner('terms.html', {
             'site_url': site_url,
             }, request)
 
@@ -289,7 +288,7 @@ def plant_name_suggestions_view(request):
 
 @vary_on_headers('Host')
 def maps_test_view(request):
-    return render_to_response_per_partner('maps_test.html', {
+    return render_per_partner('maps_test.html', {
            }, request)
 
 
@@ -369,7 +368,7 @@ def checkup_view(request):
             #                                             image_url)
     images_copyright = total_images - len(images_without_copyright)
 
-    return render_to_response_per_partner('checkup.html', {
+    return render_per_partner('checkup.html', {
             'images_copyright': images_copyright,
             'total_images': total_images,
         }, request)
@@ -445,6 +444,6 @@ def species_list_view(request):
     for plantdict in plants_list:
         plantdict['states'] = ' '.join(sorted(plantdict['states'])).upper()
 
-    return render_to_response_per_partner('species_list.html', {
+    return render_per_partner('species_list.html', {
         'plants': plants_list,
         }, request)

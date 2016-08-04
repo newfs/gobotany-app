@@ -2,13 +2,12 @@
 
 from django.core.urlresolvers import reverse
 from django.http import Http404
-from django.shortcuts import get_object_or_404, render_to_response, redirect
+from django.shortcuts import get_object_or_404, redirect, render
 #from django.views.decorators.cache import cache_control, cache_page
 from django.views.decorators.vary import vary_on_headers
 
 from gobotany.core.models import ContentImage, Pile, PileGroup
-from gobotany.core.partner import (partner_short_name,
-                                   render_to_response_per_partner)
+from gobotany.core.partner import partner_short_name, render_per_partner
 from gobotany.search.models import (GroupsListPage,
                                     SubgroupResultsPage,
                                     SubgroupsListPage)
@@ -43,7 +42,7 @@ def level3_test_links(request):
     for pilegroup in ordered_pilegroups():
         for pile in ordered_piles(pilegroup):
             piles.append((pile, get_simple_url('simple', pilegroup, pile)))
-    return render_to_response('level3_test_links.html', {
+    return render(request, 'level3_test_links.html', {
             'piles': piles
         })
 
@@ -63,7 +62,7 @@ def level1(request, key):
             .select_related('image_type'))
         pilegroups.append((pilegroup, images, get_simple_url(key, pilegroup)))
 
-    return render_to_response_per_partner('simple.html', {
+    return render_per_partner('simple.html', {
                 'partner_site': short_name,
                 'groups_list_page': groups_list_page,
                 'key': key,
@@ -86,7 +85,7 @@ def level2(request, key, pilegroup_slug):
             .select_related('image_type'))
         piles.append((pile, images, get_simple_url(key, pilegroup, pile)))
 
-    return render_to_response_per_partner('pilegroup.html', {
+    return render_per_partner('pilegroup.html', {
                 'partner_site': short_name,
                 'subgroups_list_page': subgroups_list_page,
                 'key': key,
@@ -103,7 +102,7 @@ def level3(request, key, pilegroup_slug, pile_slug):
     short_name = partner_short_name(request)
     subgroup_results_page = SubgroupResultsPage.objects.get(subgroup=pile)
 
-    return render_to_response_per_partner('results.html', {
+    return render_per_partner('results.html', {
                 'dev_flag': 1 if request.GET.has_key('dev') else 0,
                 'key': key,
                 'partner_site': short_name,

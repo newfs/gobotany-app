@@ -6,7 +6,7 @@ from operator import itemgetter
 from django.conf import settings
 from django.core.urlresolvers import reverse
 from django.db.models import Q
-from django.shortcuts import get_object_or_404, render_to_response
+from django.shortcuts import get_object_or_404, render
 from django.template import RequestContext
 from django.views.decorators.vary import vary_on_headers
 from django.views.generic.base import RedirectView
@@ -17,7 +17,7 @@ from gobotany.core.models import (
     PlantPreviewCharacter, Taxon
     )
 from gobotany.core.partner import (which_partner, per_partner_template,
-                                   render_to_response_per_partner)
+                                   render_per_partner)
 from gobotany.dkey import models as dkey_models
 from gobotany.plantshare.utils import prior_signup_detected
 
@@ -81,7 +81,7 @@ def family_view(request, family_slug):
     pile = family.taxa.all()[0].piles.all()[0]
     pilegroup = pile.pilegroup
 
-    return render_to_response_per_partner('family.html', {
+    return render_per_partner('family.html', {
            'family': family,
            'common_name': common_name,
            'family_drawings': family_drawings,
@@ -118,7 +118,7 @@ def genus_view(request, genus_slug):
     pile = genus.taxa.all()[0].piles.all()[0]
     pilegroup = pile.pilegroup
 
-    return render_to_response_per_partner('genus.html', {
+    return render_per_partner('genus.html', {
            'genus': genus,
            'common_name': common_name,
            'genus_drawings': genus_drawings,
@@ -313,7 +313,7 @@ def species_view(request, genus_slug, epithet):
     conservation_statuses = sorted(statuses_state_names,
         key=lambda k: (k['variety_subspecies_hybrid'], k['state']))
 
-    return render_to_response_per_partner('species.html', {
+    return render_per_partner('species.html', {
            'pilegroup': pilegroup,
            'pile': pile,
            'scientific_name': scientific_name,

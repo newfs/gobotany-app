@@ -6,7 +6,7 @@ from django.contrib import admin, messages
 from django.core.urlresolvers import reverse
 from django.db import models as dbmodels
 from django.http import HttpResponseRedirect
-from django.shortcuts import render_to_response
+from django.shortcuts import render
 from django.template import Context, RequestContext, Template
 from django.template.defaultfilters import slugify
 from django.utils.safestring import mark_safe
@@ -663,12 +663,12 @@ class DistributionAdmin(_Base):
 
         if request.method == 'GET' or errors:
             # Return the form page.
-            return render_to_response(
+            return render_to_response(request,
                     'admin/core/distribution/add_set_form.html', {
                         'title': 'Add set of Distribution records',
                         'errors': errors,
                         'scientific_name': scientific_name,
-                    }, context_instance=RequestContext(request))
+                    })
         elif request.method == 'POST':
             subspecific_epithet = request.POST.get('subspecific_epithet', '')
             # Get any defaults.
@@ -729,11 +729,11 @@ class DistributionAdmin(_Base):
                     admin.ACTION_CHECKBOX_NAME)}
                 )
 
-        return render_to_response(
+        return render_to_response(request,
             'admin/core/distribution/rename_records.html', {
                 'records': queryset,
                 'rename_records_form': form,
-            }, context_instance=RequestContext(request))
+            })
     rename_records.short_description = 'Rename selected Distribution records'
 
 

@@ -1,5 +1,5 @@
 from django.http import Http404
-from django.shortcuts import get_object_or_404, render_to_response
+from django.shortcuts import get_object_or_404, render
 from django.template import RequestContext
 from gobotany.core.partner import partner_short_name
 from gobotany.dkey import models
@@ -92,15 +92,13 @@ def page(request, slug=u'key-to-the-families'):
     if page.rank == 'species':
         raise Http404
     proxy = _Proxy(page)
-    return render_to_response('dkey/page.html', {
+    return render(request, 'dkey/page.html', {
             'partner_site': partner_short_name(request),
             'groups': get_groups,
-
             'leads': (lambda: proxy.leads),
             'lead_hierarchy': (lambda: proxy.lead_hierarchy),
             'page': (lambda: proxy.page),
             'rank_beneath': (lambda: proxy.rank_beneath),
             'taxa_beneath': (lambda: proxy.taxa_beneath),
-
             'next_page': (lambda: proxy.next() or proxy.page),
-            }, context_instance=RequestContext(request))
+            })

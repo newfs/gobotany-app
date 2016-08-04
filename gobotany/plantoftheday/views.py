@@ -5,8 +5,7 @@ from django.core.urlresolvers import reverse
 
 from gobotany.core import botany
 from gobotany.core.models import Taxon
-from gobotany.core.partner import (which_partner,
-                                   render_to_response_per_partner)
+from gobotany.core.partner import which_partner, render_per_partner
 from gobotany.plantoftheday.models import PlantOfTheDay
 
 
@@ -82,6 +81,6 @@ def atom_view(request):
     plants_of_the_day = _get_plants_of_the_day(MAX_NUMBER_PLANTS,
                                                partner_short_name)
 
-    return render_to_response_per_partner('atom.xml', {
+    return render_per_partner('atom.xml', {
             'plants_of_the_day': plants_of_the_day
         }, request, content_type='application/atom+xml')
