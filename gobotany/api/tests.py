@@ -172,6 +172,12 @@ class TaxaListTestCase(TestCase):
         _setup_sample_data()
         cls.client = Client()
 
+    def setUp(self):
+        _setLoggingLevelError(self)
+
+    def tearDown(self):
+        _restoreLoggingLevel(self)
+
     def test_get_returns_ok(self):
         response = self.client.get('/api/taxa/')
         self.assertEqual(200, response.status_code)
@@ -206,6 +212,12 @@ class TaxaTestCase(TestCase):
     def setUpTestData(cls):
         _setup_sample_data()
         cls.client = Client()
+
+    def setUp(self):
+        _setLoggingLevelError(self)
+
+    def tearDown(self):
+        _restoreLoggingLevel(self)
 
     def test_get_returns_ok(self):
         response = self.client.get('/api/taxa/Fooium%20barula/')
@@ -268,6 +280,12 @@ class TaxaCountTestCase(TestCase):
         _setup_sample_data()
         cls.client = Client()
 
+    def setUp(self):
+        _setLoggingLevelError(self)
+
+    def tearDown(self):
+        _restoreLoggingLevel(self)
+
     def test_get_returns_ok(self):
         response = self.client.get('/api/taxa-count/')
         self.assertEqual(200, response.status_code)
@@ -292,7 +310,11 @@ class TaxonImageTestCase(TestCase):
         _setup_sample_data(load_images=True)
         cls.client = Client()
 
+    def setUp(self):
+        _setLoggingLevelError(self)
+
     def tearDown(self):
+        _restoreLoggingLevel(self)
         _remove_content_images_dir()
 
     def test_get_returns_ok(self):
@@ -351,6 +373,12 @@ class PileGroupTestCase(TestCase):
     def setUpTestData(cls):
         _setup_sample_data()
         cls.client = Client()
+
+    def setUp(self):
+        _setLoggingLevelError(self)
+
+    def tearDown(self):
+        _restoreLoggingLevel(self)
 
     def test_get_returns_ok(self):
         response = self.client.get('/api/pilegroups/pilegroup1/')
@@ -463,6 +491,12 @@ class CharacterValuesTestCase(TestCase):
     def setUpTestData(cls):
         _setup_sample_data()
         cls.client = Client()
+
+    def setUp(self):
+        _setLoggingLevelError(self)
+
+    def tearDown(self):
+        _restoreLoggingLevel(self)
 
     def test_get_returns_ok(self):
         response = self.client.get('/api/piles/pile1/c1/')
