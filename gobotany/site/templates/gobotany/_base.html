@@ -11,6 +11,12 @@
         <link rel="canonical" href="https://gobotany.newenglandwild.org{{ request.path }}">
 
         <link rel="shortcut icon" href="/static/images/branding/favicon.png">
+>
+        {# Unless this is the main Production site, ask not to be indexed. #}
+        {% if 'gobotany.newenglandwild.org' not in request.META.HTTP_HOST %}
+            <!-- Host is not gobotany.newenglandwild.org, so ask not to be indexed -->
+            {% include "gobotany/_meta_robots_noindex.html" %}
+        {% endif %}
 
         {# This block is for any additional meta or link elements. #}
         {% block more_meta_link %}{% endblock %}
