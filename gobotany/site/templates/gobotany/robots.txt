@@ -1,6 +1,1 @@
-{% if request.META_HTTP_HOST == 'gobotany.newenglandwild.org' %}
-Sitemap: https://{{ request.META.HTTP_HOST }}{% url 'sitemap' %}
-{% else %}
-User-agent: *
-Disallow: /
-{% endif %}
+Sitemap: http{% if request.is_secure %}s{% endif %}://{{ request.META.HTTP_HOST }}{% url 'sitemap' %}
