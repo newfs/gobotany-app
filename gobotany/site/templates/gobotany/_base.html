@@ -11,7 +11,7 @@
         <link rel="canonical" href="https://gobotany.newenglandwild.org{{ request.path }}">
 
         <link rel="shortcut icon" href="/static/images/branding/favicon.png">
->
+
         {# Unless this is the main Production site, ask not to be indexed. #}
         {% if 'gobotany.newenglandwild.org' not in request.META.HTTP_HOST %}
             <!-- Host is not gobotany.newenglandwild.org, so ask not to be indexed -->
@@ -36,13 +36,6 @@
         {# This block is for adding any JS that *has* to come first, #}
         {# such as SVGWeb. #}
         {% block js_top %}{% endblock %}
-
-        {# This HTML5 fix for old IE will only apply if the user views #}
-        {# the site in IE without the required Chrome Frame plug-in.   #}
-        <!--[if lt IE 9]>
-        <script
-            src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
-        <![endif]-->
 
         {% include "gobotany/_script_constants.html" %}
 
@@ -74,8 +67,6 @@
     </head>
 
     <body {% block body_attributes %}{% endblock %}>
-
-        {% include "gobotany/_chrome_frame.html" %}
 
         <div id="all">
             {% block header %}
