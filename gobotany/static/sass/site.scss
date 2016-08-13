@@ -10,7 +10,6 @@
  * A final partial, site-media-queries, is imported last in this file. */
 
 /* Imports for browser baseline, tools */
-@import "_normalize";
 @import "compass/css3/border-radius";
 @import "compass/css3/box-shadow";
 @import "compass/css3/images";   /* for gradient, etc. */
@@ -34,6 +33,7 @@ body {
     color: $text-color;
     font-family: $body-font;
     font-size: $base-font-size;
+    margin: 0;
 }
 
 html, button, input, select, textarea {
