@@ -670,7 +670,7 @@ footer {
         width: 160px;
         height: 149px;
         overflow: hidden;
-        @include single-box-shadow(rgba(0, 0, 0, 0.6), 0px, 0px, 4px);
+        @include single-box-shadow(0px, 0px, 4px, 0, rgba(0, 0, 0, 0.6));
         img {
             height: 149px;  /* so lazy_images knows when <img> is on screen */
         }
@@ -731,7 +731,7 @@ footer {
     z-index: 1000;
     @include background(linear-gradient(top center,
         $tooltip-background-top-color, $tooltip-background-bottom-color));
-    @include single-box-shadow($tooltip-shadow-color, 0px, 1px, 4px);
+    @include single-box-shadow(0px, 1px, 4px, 0, $tooltip-shadow-color);
     @include border-radius(2px);
     .arrow {
         background: $tooltip-background-bottom-color;
@@ -744,7 +744,7 @@ footer {
         left: 10px;
         position: absolute;
         width: 11px;
-        @include single-box-shadow($tooltip-shadow-color, -1px, -1px, 1px);
+        @include single-box-shadow(-1px, -1px, 1px, 0, $tooltip-shadow-color);
         @include rotate($tooltip-arrow-rotation);
     }
     &.dark {
@@ -797,7 +797,7 @@ footer {
         bottom: 110%;
         padding: 4px;
         position: absolute;
-        @include single-box-shadow($tooltip-shadow-color, 1px, 1px, 2px);
+        @include single-box-shadow(1px, 1px, 2px, 0, $tooltip-shadow-color);
         @include border-radius(2px);
     }
 }
@@ -900,7 +900,7 @@ input.suggest {
         border: 1px solid #999;
         position: absolute;
         z-index: 150;
-        @include single-box-shadow(darken($inactive_bg, 30), 0px, 1px, 2px);
+        @include single-box-shadow(0px, 1px, 2px, 0, darken($inactive_bg, 30));
         li {
             clear: both;
             font-weight: bold;

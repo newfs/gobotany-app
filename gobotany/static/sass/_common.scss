@@ -143,7 +143,7 @@ $disabled_orange_gradient: linear-gradient(
     text-align: center;
     text-decoration: none;
     @include border-radius(14px);
-    @include single-box-shadow(darken($inactive_bg, 30), 0px, 1px, 4px);
+    @include single-box-shadow(0px, 1px, 4px, 0, darken($inactive_bg, 30));
     @include background($orange_gradient);
     &:hover {
         background-color: $orange2;  /* for IE without gradient support */

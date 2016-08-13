@@ -57,7 +57,7 @@
             position: absolute;
             top: 0;
             width: 960px;
-            @include single-box-shadow(rgba(0, 0, 0, 0.6), 0px, 0px, 4px);
+            @include single-box-shadow(0px, 0px, 4px, 0, rgba(0, 0, 0, 0.6));
         }
         img:first-child {
             display: block;
@@ -141,7 +141,7 @@
         height: 140px;
         margin: 15px 0;
         padding: 10px;
-        @include single-box-shadow(rgba(0, 0, 0, 0.3), 0px, 0px, 4px);
+        @include single-box-shadow(0px, 0px, 4px, 0, rgba(0, 0, 0, 0.3));
         > a {
             display: block;
             float: left;
@@ -181,7 +181,7 @@
         background: #f1ebae;
         margin: 15px 0;
         padding: 0;
-        @include single-box-shadow(rgba(0, 0, 0, 0.3), 0px, 0px, 4px);
+        @include single-box-shadow(0px, 0px, 4px, 0, rgba(0, 0, 0, 0.3));
         p {
             margin: 14px;
             position: relative;

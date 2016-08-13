@@ -935,7 +935,7 @@ body.plantshare {
             margin: 4px 0 10px;
             padding: 8px;
             width: 571px;
-            @include single-box-shadow(#ddd, 2px, 3px, 5px, 0px);
+            @include single-box-shadow(2px, 3px, 5px, 0px, #ddd);
         }
         .submit {
             @extend .orange-button;

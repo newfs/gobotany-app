@@ -957,7 +957,7 @@ body.skey {
 /* Experiment by Brandon */
 
 ul.get-more-questions-menu {
-    @include single-box-shadow(rgba(0,0,0,0.6), 0px, 1px, 4px);
+    @include single-box-shadow(0px, 1px, 4px, 0, rgba(0, 0, 0, 0.6));
 
     z-index: 200;
     position: absolute;
@@ -1523,7 +1523,7 @@ ul.get-more-questions-menu {
                 }
                 > .instructions {
                     @include background($orange_gradient); 
-                    @include single-box-shadow(darken($inactive_bg, 30), 0px, 1px, 4px);
+                    @include single-box-shadow(0px, 1px, 4px, 0, darken($inactive_bg, 30));
                     border-radius: 0;
                     cursor: pointer;
                     position: relative;
@@ -1666,7 +1666,7 @@ ul.get-more-questions-menu {
                     text-align: right;
                     top: 0;
                     width: 50%;
-                    @include single-box-shadow(darken($inactive_bg, 30), 0px, 1px, 4px);
+                    @include single-box-shadow(0px, 1px, 4px, 0, darken($inactive_bg, 30));
                     &.closed {
                         background: none;
                         border: 0;
