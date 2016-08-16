@@ -680,6 +680,7 @@ body.plantshare {
         /* Smooth Div Scroll image area */
         #species-images {
             border: 5px solid rgba(255, 255, 255, 0.8);
+            box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.6);
             height: 150px;
             margin: 0 0 20px 0;
             overflow: hidden;
@@ -687,7 +688,6 @@ body.plantshare {
             top: 0;
             width: 700px;
             z-index: 100;
-            @include box-shadow (0px 0px 4px rgba(0, 0, 0, 0.6));
             .scrollableArea a {
                 border-right: 5px solid #fff;
                 float: left;
@@ -931,11 +931,11 @@ body.plantshare {
         }
         textarea {
             border: 1px solid #aaa;
+            box-shadow: 2px, 3px, 5px, 0px, #ddd;
             height: 75px;
             margin: 4px 0 10px;
             padding: 8px;
             width: 571px;
-            @include single-box-shadow(2px, 3px, 5px, 0px, #ddd);
         }
         .submit {
             @extend .orange-button;
@@ -1205,8 +1205,6 @@ body.plantshare {
             textarea {
                 border: 1px solid #ABABAB;
                 box-shadow: inset 1px 1px 5px #ccc;
-                -moz-box-shadow: inset 1px 1px 5px #ccc;
-                -webkit-box-shadow: inset 1px 1px 5px #ccc;
                 font-size: inherit;
                 height: 80px;
                 line-height: inherit;
@@ -1337,8 +1335,6 @@ body.plantshare {
             input, textarea {
                 border: 1px solid #ababab;
                 box-shadow: inset 1px 1px 2px #ccc;
-                -moz-box-shadow: inset 1px 1px 2px #ccc;
-                -webkit-box-shadow: inset 1px 1px 2px #ccc;
                 display: block;
                 font-size: inherit;
                 line-height: 1em;

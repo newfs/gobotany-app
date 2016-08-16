@@ -223,12 +223,10 @@ body.skey {
             } /* end .plant */
 
             .plant-img-container {
+                box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.6);
                 height: 149px;
                 overflow: hidden;
                 width: 160px;
-                box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.6);
-                -moz-box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.6);
-                -webkit-box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.6);
                 img {
                     height: 149px;  /* so lazy_images knows when <img> is on screen */
                 }
@@ -463,13 +461,11 @@ body.skey {
             div {
                 background-color: #f0f0c0;
                 border-radius: 0.25em;
+                box-shadow: 0px 5px 20px rgba(0, 0, 0, 1);
                 color: #fff;
                 margin-bottom: 10%;
                 padding: 0.6em 0.8em;
                 position: relative;
-                box-shadow: 0px 5px 20px rgba(0, 0, 0, 1);
-                -moz-box-shadow: 0px 5px 20px rgba(0, 0, 0, 1);
-                -webkit-box-shadow: 0px 5px 20px rgba(0, 0, 0, 1);
             }
             .number-of-species, .number-of-questions {
                 background-color: #508e31;
@@ -606,6 +602,7 @@ body.skey {
         .working-area {
             background: #fff;
             border: 1px solid #c3d941;
+            box-shadow: 1px 1px 5px 0 black;
             display: none;
             line-height: 100%;
             margin-left: 214px;
@@ -613,10 +610,6 @@ body.skey {
             position: absolute;
             width: 730px;
             z-index: 200;
-            -moz-box-shadow: black 1px 1px 5px 0;
-            -webkit-box-shadow: black 1px 1px 5px 0;
-            -o-box-shadow: black 1px 1px 5px 0;
-            box-shadow: black 1px 1px 5px 0;
             img.arrow {
                 display: block;
                 left: -15px;
@@ -815,14 +808,12 @@ body.skey {
                 padding: 20px 0 0 0;
                 position: relative;
                 .bar {
+                    box-sizing: border-box;
                     cursor: pointer;
                     padding: 0 4px;
                     position: absolute;
                     top: 47px;
                     width: 100%;
-                    -moz-box-sizing: border-box;
-                    -webkit-box-sizing: border-box;
-                    box-sizing: border-box;
                     @include unselectable;
                     div {
                         background: -webkit-gradient(linear, left top, left bottom,
@@ -844,6 +835,7 @@ body.skey {
                         $slider-background-top-color, $slider-background-bottom-color);
                     border: 1px solid $slider-background-bottom-color;
                     border-radius: $slider-thumb-radius;
+                    box-shadow: $slider-thumb-shadow-lengths $slider-thumb-shadow-color;
                     cursor: pointer;
                     height: 30px;
                     left: 3px;
@@ -851,10 +843,6 @@ body.skey {
                     text-align: center;
                     top: 35px;
                     width: 30px;
-                    -moz-box-shadow: $slider-thumb-shadow-lengths $slider-thumb-shadow-color;
-                    -webkit-box-shadow: $slider-thumb-shadow-lengths $slider-thumb-shadow-color;
-                    -o-box-shadow: $slider-thumb-shadow-lengths $slider-thumb-shadow-color;
-                    box-shadow: $slider-thumb-shadow-lengths $slider-thumb-shadow-color;
                 }
                 .label {
                     font-size: 16px;
@@ -943,7 +931,7 @@ body.skey {
 /* Experiment by Brandon */
 
 ul.get-more-questions-menu {
-    @include single-box-shadow(0px, 1px, 4px, 0, rgba(0, 0, 0, 0.6));
+    box-shadow: 0px, 1px, 4px, 0, rgba(0, 0, 0, 0.6);
 
     z-index: 200;
     position: absolute;
@@ -1509,8 +1497,8 @@ ul.get-more-questions-menu {
                 }
                 > .instructions {
                     @include background($orange_gradient); 
-                    @include single-box-shadow(0px, 1px, 4px, 0, darken($inactive_bg, 30));
                     border-radius: 0;
+                    box-shadow: 0px, 1px, 4px, 0, darken($inactive_bg, 30);
                     cursor: pointer;
                     position: relative;
                     h5::after {
@@ -1645,6 +1633,7 @@ ul.get-more-questions-menu {
                 .terms {
                     background: $light-green;
                     border: 1px solid #666;
+                    box-shadow: 0px, 1px, 4px, 0, darken($inactive_bg, 30);
                     display: block;
                     padding: 6px 12px;
                     position: absolute;
@@ -1652,11 +1641,10 @@ ul.get-more-questions-menu {
                     text-align: right;
                     top: 0;
                     width: 50%;
-                    @include single-box-shadow(0px, 1px, 4px, 0, darken($inactive_bg, 30));
                     &.closed {
                         background: none;
                         border: 0;
-                        @include single-box-shadow(none);
+                        box-shadow: none;
                         h5 {
                             padding: 5px 6px 8px;
                             &::after {
@@ -1728,15 +1716,12 @@ ul.get-more-questions-menu {
             .working-area {
                 background: #fff;
                 border: 0;
+                box-shadow: none;
                 height: auto;
                 padding: 8px 0 0;
                 position: static;
                 top: auto !important;
                 width: 99%;
-                -moz-box-shadow: none;
-                -webkit-box-shadow: none;
-                -o-box-shadow: none;
-                box-shadow: none;
                 .close {
                     display: none;
                 }

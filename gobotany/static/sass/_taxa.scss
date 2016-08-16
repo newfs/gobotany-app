@@ -309,6 +309,7 @@ body.taxa {
         /* Smooth Div Scroll image area */
         #species-images {
             border: 5px solid rgba(255, 255, 255, 0.8);
+            box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.6);
             height: 239px;
             margin: 0 0 8px 0;
             overflow: hidden;
@@ -316,7 +317,6 @@ body.taxa {
             top: 0;
             width: 700px;
             z-index: 100;
-            @include box-shadow (0px 0px 4px rgba(0, 0, 0, 0.6));
             .scrollableArea a {
                 border-right: 5px solid #fff;
                 float: left;
@@ -463,8 +463,8 @@ $mini-table-font-size: 10px;
             }
             #species-images {
                 border: 0;
+                box-shadow: none;
                 height: 120px;
-                @include box-shadow(none);
                 .scrollableArea a {
                     border-right: 20px solid $body_bg;
                     img {

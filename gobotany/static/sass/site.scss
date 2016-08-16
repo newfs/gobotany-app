@@ -10,7 +10,6 @@
  * A final partial, site-media-queries, is imported last in this file. */
 
 /* Imports for browser baseline, tools */
-@import "compass/css3/box-shadow";
 @import "compass/css3/images";   /* for gradient, etc. */
 @import "compass/css3/transform";
 @import "compass/typography/links/hover-link";
@@ -579,14 +578,12 @@ footer {
     }
     .frame {
 	    border: 5px solid rgba(255, 255, 255, 0.8);
+        box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.6);
         height: 229px;
         position: absolute;
 	    top: 0;
         width: 229px;
 	    z-index: 100;
-        box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.6);
-	    -moz-box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.6);
-	    -webkit-box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.6);
     }
     .images {
         clear: both;
@@ -661,10 +658,10 @@ footer {
         content: ' ';
     }
     .plant-img-container {
-        width: 160px;
+        box-shadow: 0px, 0px, 4px, 0, rgba(0, 0, 0, 0.6);
         height: 149px;
         overflow: hidden;
-        @include single-box-shadow(0px, 0px, 4px, 0, rgba(0, 0, 0, 0.6));
+        width: 160px;
         img {
             height: 149px;  /* so lazy_images knows when <img> is on screen */
         }
@@ -719,6 +716,7 @@ footer {
 .gb-tooltip {
     border: 1px solid $tooltip-border-color;
     border-radius: 2px;
+    box-shadow: 0px, 1px, 4px, 0, $tooltip-shadow-color;
     display: none;   /* initially invisible, fades in */
     padding: 8px;
     position: absolute;
@@ -726,10 +724,10 @@ footer {
     z-index: 1000;
     @include background(linear-gradient(top center,
         $tooltip-background-top-color, $tooltip-background-bottom-color));
-    @include single-box-shadow(0px, 1px, 4px, 0, $tooltip-shadow-color);
     .arrow {
         background: $tooltip-background-bottom-color;
         border: 1px solid $tooltip-border-color;
+        box-shadow: -1px, -1px, 1px, 0, $tooltip-shadow-color;
         /* rotated borders, same color as bottom of tooltip */
         border-bottom-color: $tooltip-background-bottom-color;
         border-right-color: $tooltip-background-bottom-color;
@@ -738,7 +736,6 @@ footer {
         left: 10px;
         position: absolute;
         width: 11px;
-        @include single-box-shadow(-1px, -1px, 1px, 0, $tooltip-shadow-color);
         @include rotate($tooltip-arrow-rotation);
     }
     &.dark {
@@ -790,9 +787,9 @@ footer {
         border: 1px solid $tooltip-border-color;
         border-radius: 2px;
         bottom: 110%;
+        box-shadow: 1px, 1px, 2px, 0, $tooltip-shadow-color;
         padding: 4px;
         position: absolute;
-        @include single-box-shadow(1px, 1px, 2px, 0, $tooltip-shadow-color);
     }
 }
 
@@ -892,9 +889,9 @@ input.suggest {
     & + div {
         background: #fff;
         border: 1px solid #999;
+        box-shadow: 0px, 1px, 2px, 0, darken($inactive_bg, 30);
         position: absolute;
         z-index: 150;
-        @include single-box-shadow(0px, 1px, 2px, 0, darken($inactive_bg, 30));
         li {
             clear: both;
             font-weight: bold;

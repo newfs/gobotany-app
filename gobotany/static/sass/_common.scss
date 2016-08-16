@@ -1,6 +1,5 @@
 /* Go Botany common definitions */
 
-@import "compass/css3/box-shadow";
 @import "compass/css3/images";   /* for gradient, etc. */
 @import "compass/css3/user-interface";
 @import "compass/typography/links/hover-link";
@@ -131,6 +130,7 @@ $disabled_orange_gradient: linear-gradient(
     background-color: $orange1;   /* for IE without gradient support */
     border: 1px solid $orange1 !important;
     border-radius: 14px;
+    box-shadow: 0px, 1px, 4px, 0, darken($inactive_bg, 30);
     color: white;
     cursor: pointer;
     display: inline-block;
@@ -142,7 +142,6 @@ $disabled_orange_gradient: linear-gradient(
     padding: 4px 12px;
     text-align: center;
     text-decoration: none;
-    @include single-box-shadow(0px, 1px, 4px, 0, darken($inactive_bg, 30));
     @include background($orange_gradient);
     &:hover {
         background-color: $orange2;  /* for IE without gradient support */

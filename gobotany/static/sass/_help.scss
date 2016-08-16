@@ -75,9 +75,9 @@ $image-box-shadow-color: rgba(0, 0, 0, 0.6);
                 vertical-align: middle;
                 &.screenshot-thumb {
                     border: 5px solid #fff;
+                    box-shadow: 0px, 1px, 4px, 0, rgba(0, 0, 0, 0.3);
                     display: block;	
                     margin: 0;
-                    @include single-box-shadow(0px, 1px, 4px, 0, rgba(0, 0, 0, 0.3));
                 }
             }
         }
@@ -171,11 +171,11 @@ $image-box-shadow-color: rgba(0, 0, 0, 0.6);
             z-index: 100;
         }
         .img-container {
+            box-shadow: 0, 0, 4px, 0, $image-box-shadow-color;
             height: 101px;
             margin-bottom: 6px;
             overflow: hidden;
             width: 110px;
-            @include single-box-shadow(0, 0, 4px, 0, $image-box-shadow-color);
         }
     }
     .plant-subgroup {
