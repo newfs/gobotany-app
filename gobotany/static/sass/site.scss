@@ -74,11 +74,6 @@ a {
     border-bottom: 0;
 }
 
-*|*:-moz-any-link:active, *|*:-moz-any-link:focus {
-    border: 0;
-    outline: 0;
-}
-
 h1, h2, h3, h4, h5, h6 {
     font-family: $headings-font;
     font-weight: normal;
