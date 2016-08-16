@@ -10,7 +10,6 @@
  * A final partial, site-media-queries, is imported last in this file. */
 
 /* Imports for browser baseline, tools */
-@import "compass/css3/border-radius";
 @import "compass/css3/box-shadow";
 @import "compass/css3/images";   /* for gradient, etc. */
 @import "compass/css3/transform";
@@ -134,13 +133,13 @@ ul li {
 }
 p.new {
     background: $green-yellow;
+    border-radius: 0.25em;
     color: #000;
     display: inline-block;
     font-size: 12px;
     font-weight: normal;
     margin: 0;
     padding: 0 0.25em;
-    @include border-radius(0.25em);
 }
 p.meta {
     font-size: 10px;
@@ -719,6 +718,7 @@ footer {
 /* Tooltips for working area images and highlighted glossary terms */
 .gb-tooltip {
     border: 1px solid $tooltip-border-color;
+    border-radius: 2px;
     display: none;   /* initially invisible, fades in */
     padding: 8px;
     position: absolute;
@@ -727,7 +727,6 @@ footer {
     @include background(linear-gradient(top center,
         $tooltip-background-top-color, $tooltip-background-bottom-color));
     @include single-box-shadow(0px, 1px, 4px, 0, $tooltip-shadow-color);
-    @include border-radius(2px);
     .arrow {
         background: $tooltip-background-bottom-color;
         border: 1px solid $tooltip-border-color;
@@ -789,11 +788,11 @@ footer {
     img {
         background: $tooltip-background-top-color;
         border: 1px solid $tooltip-border-color;
+        border-radius: 2px;
         bottom: 110%;
         padding: 4px;
         position: absolute;
         @include single-box-shadow(1px, 1px, 2px, 0, $tooltip-shadow-color);
-        @include border-radius(2px);
     }
 }
 

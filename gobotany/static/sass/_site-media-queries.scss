@@ -171,6 +171,7 @@ $search-suggest-menu-top: 83px;
             > a {
                 background: $nav-button-color url(/static/images/icons/menu-icon.png) 7px 5px no-repeat;
                 border: 1px solid $nav-button-color;
+                border-radius: 5px;
                 display: inline-block;
                 font-size: 30px;
                 height: 24px;
@@ -178,7 +179,6 @@ $search-suggest-menu-top: 83px;
                 margin: 3px 0 0 4px;
                 padding: 0 2px 0 7px;
                 position: relative;
-                @include border-radius(5px);
             }
             #search {
                 margin-top: 6px;

@@ -462,6 +462,7 @@ body.skey {
             z-index: 1000;
             div {
                 background-color: #f0f0c0;
+                border-radius: 0.25em;
                 color: #fff;
                 margin-bottom: 10%;
                 padding: 0.6em 0.8em;
@@ -469,20 +470,19 @@ body.skey {
                 box-shadow: 0px 5px 20px rgba(0, 0, 0, 1);
                 -moz-box-shadow: 0px 5px 20px rgba(0, 0, 0, 1);
                 -webkit-box-shadow: 0px 5px 20px rgba(0, 0, 0, 1);
-                @include border-radius(0.25em);
             }
             .number-of-species, .number-of-questions {
                 background-color: #508e31;
             }
             .continue {
                 background-color: #dc9402;
+                border-radius: 2em;
                 border: 2px solid #dc9402;
                 cursor: pointer;
                 font-family: ScalaSans, $headings-font;
                 letter-spacing: 3px;
                 text-shadow: 1px 1px 2px #dc9402;
                 text-transform: uppercase;
-                @include border-radius(2em);
 
                 /* Gradient generated using the tool "Ultimate CSS Gradient Generator":
                  * www.colorzilla.com/gradient-editor
@@ -551,6 +551,8 @@ body.skey {
                 background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#eaf2e2), color-stop(100%,#d6e6c5));
                 background: -moz-linear-gradient(center top, #eaf2e2, #d6e6c5);
                 border: 1px solid #c3d941 !important;
+                border-top-left-radius: 6px;
+                border-top-right-radius: 6px;
                 color: #354d1e;
                 cursor: pointer;
                 display: block;
@@ -562,12 +564,6 @@ body.skey {
                 min-width: 100px;
                 padding: 5px 10px 4px;
                 text-align: center;
-                -webkit-border-top-left-radius: 6px;
-                -webkit-border-top-right-radius: 6px;
-                -moz-border-radius-topleft: 6px;
-                -moz-border-radius-topright: 6px;
-                border-top-left-radius: 6px;
-                border-top-right-radius: 6px;
                 &:hover {
                     background: #e1f2cd;
                     background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#f0f8e7), color-stop(100%,#e1f2cd));
@@ -835,13 +831,8 @@ body.skey {
                         background: -moz-linear-gradient(center top,
                             $slider-background-top-color, $slider-background-bottom-color);
                         border: 1px solid $slider-background-top-color;
-                        height: 8px;
-                        -moz-border-radius: $slider-bar-radius;
-                        -webkit-border-radius: $slider-bar-radius;
-                        -o-border-radius: $slider-bar-radius;
-                        -ms-border-radius: $slider-bar-radius;
-                        -khtml-border-radius: $slider-bar-radius;
                         border-radius: $slider-bar-radius;
+                        height: 8px;
                         @include unselectable;
                     }
                 }
@@ -852,6 +843,7 @@ body.skey {
                     background: -moz-linear-gradient(center top,
                         $slider-background-top-color, $slider-background-bottom-color);
                     border: 1px solid $slider-background-bottom-color;
+                    border-radius: $slider-thumb-radius;
                     cursor: pointer;
                     height: 30px;
                     left: 3px;
@@ -859,12 +851,6 @@ body.skey {
                     text-align: center;
                     top: 35px;
                     width: 30px;
-                    -moz-border-radius: $slider-thumb-radius;
-                    -webkit-border-radius: $slider-thumb-radius;
-                    -o-border-radius: $slider-thumb-radius;
-                    -ms-border-radius: $slider-thumb-radius;
-                    -khtml-border-radius: $slider-thumb-radius;
-                    border-radius: $slider-thumb-radius;
                     -moz-box-shadow: $slider-thumb-shadow-lengths $slider-thumb-shadow-color;
                     -webkit-box-shadow: $slider-thumb-shadow-lengths $slider-thumb-shadow-color;
                     -o-box-shadow: $slider-thumb-shadow-lengths $slider-thumb-shadow-color;

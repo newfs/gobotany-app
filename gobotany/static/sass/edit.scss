@@ -153,11 +153,11 @@ span.all-species-button, span.simple-key-button, .save-button, .length-save-butt
 }
 
 .value-tips div {
+    border-radius: 1em;
     display: none;
     position: absolute;
     padding: 0.5em;
     background-color: $highlight;
     border: 2px solid $orange1;
-    @include border-radius(1em);
     @include single-box-shadow(0px, 1px, 4px, 0, darken($body_bg, 30));
 }
