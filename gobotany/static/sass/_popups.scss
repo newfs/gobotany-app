@@ -1,68 +1,68 @@
 .modal-wrap {
     border: 5px solid rgba(255, 255, 255, 0.5);
     border-radius: 5px;
-    .inner {
-        background: #fff;
-        padding: 0 0 20px 0;
-        h4.heading, h3.heading {
-            margin: 0;
-            padding: 13px 0 0 20px;
-        }
-        h4.heading {
-            font-size: 18px;
-        }
-        h3.heading {
-            font-size: 24px;
-            font-style: italic;
-            margin-bottom: 0;
-            margin-left: 255px;
-            span {
-                color: #807121;
-                font-size: 16px;
-                font-style: normal;
-            }
-        }
-        p {
-            font-size: 12px;
-            margin: 0;
-            padding: 4px 20px 0;
-        }
+}
+.modal-wrap .inner {
+    background: #fff;
+    padding: 0 0 20px 0;
+    h4.heading, h3.heading {
+        margin: 0;
+        padding: 13px 0 0 20px;
     }
-    #choices {
-	padding: 10px 20px 0 20px;
-        ul {
-            list-style-type: none;
-        }
-        li {
-            margin: 0 0 14px;
-        }
+    h4.heading {
+        font-size: 18px;
     }
-    #plant-details {
-        padding: 10px 10px 0;
-    }
-    .list-item {
-        border-top: none;
-        margin: 0 0 0 0;
-        padding: 0 0 0 0;
-        h4 {
+    h3.heading {
+        font-size: 24px;
+        font-style: italic;
+        margin-bottom: 0;
+        margin-left: 255px;
+        span {
             color: #807121;
-        }
-        p {
-            padding: 0 0 7px 0;
-        }
-        .details {
-            float: left;
-            margin: 0 0 0 10px;
-            width: 610px;
+            font-size: 16px;
+            font-style: normal;
         }
     }
-    .img-gallery {
-        @include user-select(none);
+    p {
+        font-size: 12px;
+        margin: 0;
+        padding: 4px 20px 0;
     }
-    a {
-        &.go-to-species-page {
-            margin: 20px 0 0 0;
-            width: 182px;
-        }
-    } /* end a */
-} /* end .modal-wrap */
+}
+.modal-wrap #choices {
+    padding: 10px 20px 0 20px;
+    ul {
+        list-style-type: none;
+    }
+    li {
+        margin: 0 0 14px;
+    }
+}
+.modal-wrap #plant-details {
+    padding: 10px 10px 0;
+}
+.modal-wrap .list-item {
+    border-top: none;
+    margin: 0 0 0 0;
+    padding: 0 0 0 0;
+    h4 {
+        color: #807121;
+    }
+    p {
+        padding: 0 0 7px 0;
+    }
+    .details {
+        float: left;
+        margin: 0 0 0 10px;
+        width: 610px;
+    }
+}
+.modal-wrap .img-gallery {
+    @include user-select(none);
+}
+.modal-wrap a {
+    &.go-to-species-page {
+        margin: 20px 0 0 0;
+        width: 182px;
+    }
+}
