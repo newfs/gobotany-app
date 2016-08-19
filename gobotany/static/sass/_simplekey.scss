@@ -931,7 +931,7 @@ body.skey {
 /* Experiment by Brandon */
 
 ul.get-more-questions-menu {
-    box-shadow: 0px, 1px, 4px, 0, rgba(0, 0, 0, 0.6);
+    box-shadow: 0px 1px 4px 0 rgba(0, 0, 0, 0.6);
 
     z-index: 200;
     position: absolute;
@@ -1498,7 +1498,7 @@ ul.get-more-questions-menu {
                 > .instructions {
                     @include background($orange_gradient); 
                     border-radius: 0;
-                    box-shadow: 0px, 1px, 4px, 0, darken($inactive_bg, 30);
+                    box-shadow: 0px 1px 4px 0 $shadow_color;
                     cursor: pointer;
                     position: relative;
                     h5::after {
@@ -1633,7 +1633,7 @@ ul.get-more-questions-menu {
                 .terms {
                     background: $light-green;
                     border: 1px solid #666;
-                    box-shadow: 0px, 1px, 4px, 0, darken($inactive_bg, 30);
+                    box-shadow: 0px 1px 4px 0 $shadow_color;
                     display: block;
                     padding: 6px 12px;
                     position: absolute;

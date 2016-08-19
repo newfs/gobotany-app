@@ -41,19 +41,20 @@ html, button, input, select, textarea {
 a {
     color: $link-green;
     text-decoration: none;
-    &:visited {
-        color: $visited-link-color;
-    }
-    &:active {
-        color: $active-link-color;
-    }
-    &:not([href]) {
-        color: $text-color;
-        &:hover {
-            text-decoration: none;
-        }
+}
+a:visited {
+    color: $visited-link-color;
+}
+a:active {
+    color: $active-link-color;
+}
+a:not([href]) {
+    color: $text-color;
+    &:hover {
+        text-decoration: none;
     }
 }
+
 #main p a, #main li > a, #main li > i a, #main dt a, #main td a, #main h2 a,
 #main form > a, #main form div > a, #main li li a, #sidebar form > a,
 .nemap a {
@@ -159,94 +160,91 @@ p.meta {
 /* Navigation highlighting */
 
 /* Global navigation (header) */
-body {
-    &#home {
-        header nav li.home {
-            @include highlight-global-nav-home;
-        }
+body#home {
+    header nav li.home {
+        @include highlight-global-nav-home;
     }
-    &.simple {
-        header nav li.simple {
-            @include highlight-global-nav;
-        }
+}
+body.simple {
+    header nav li.simple {
+        @include highlight-global-nav;
     }
-    &.plantshare {
-        header nav li.plantshare {
-            @include highlight-global-nav;
-        }
+}
+body.plantshare {
+    header nav li.plantshare {
+        @include highlight-global-nav;
     }
-    &.full {
-        header nav li.full {
-            @include highlight-global-nav;
-        }
+}
+body.full {
+    header nav li.full {
+        @include highlight-global-nav;
     }
-    &.dkey {
-        header nav li.dkey {
-            @include highlight-global-nav;
-        }
+}
+body.dkey {
+    header nav li.dkey {
+        @include highlight-global-nav;
     }
-    &.teaching {
-        header nav li.teaching {
-            @include highlight-global-nav;
-        }
+}
+body.teaching {
+    header nav li.teaching {
+        @include highlight-global-nav;
     }
-    &.help {
-        header nav li.help {
-            @include highlight-global-nav;
-        }
+}
+body.help {
+    header nav li.help {
+        @include highlight-global-nav;
     }
 }
 
 /* Section navigation (sidebar, only in some sections) */
-body {
-    &.help, &.plantshare {
-        #sidebar nav {
-            li {
-                padding-left: 28px;
-            }
-            li:first-child {
-                padding-left: 15px;
-            }
-            /* Place "you are here" marker next to a non-linked item. This is
-             * the top level of each sub-section. */
-            li a:not([href])::before {
-                @include highlight-sidebar-nav-item;
-            }
-            /* Show future nav. items that do not have a URL yet in gray. */
-            li > span {
-                color: #ccc;
-                padding-left: 10px;
-            }
+body.help, body.plantshare {
+    #sidebar nav {
+        li {
+            padding-left: 28px;
+        }
+        li:first-child {
+            padding-left: 15px;
+        }
+        /* Place "you are here" marker next to a non-linked item. This is
+         * the top level of each sub-section. */
+        li a:not([href])::before {
+            @include highlight-sidebar-nav-item;
+        }
+        /* Show future nav. items that do not have a URL yet in gray. */
+        li > span {
+            color: #ccc;
+            padding-left: 10px;
         }
     }
-    /* Handle pages beneath subsections so they will have a "you are
-     * here" marker. Each of these must be set up individually where
-     * needed. */
-    &.help {
-        &#glossary #sidebar .glossary,
-        &#fullkey-placeholder #sidebar .advanced-id-tools,
-        &#dkey-placeholder #sidebar .advanced-id-tools {
-            a::before {
-                @include highlight-sidebar-nav-item;
-            }
+}
+
+/* Handle pages beneath subsections so they will have a "you are
+ * here" marker. Each of these must be set up individually where
+ * needed. */
+body.help {
+    &#glossary #sidebar .glossary,
+    &#fullkey-placeholder #sidebar .advanced-id-tools,
+    &#dkey-placeholder #sidebar .advanced-id-tools {
+        a::before {
+            @include highlight-sidebar-nav-item;
         }
     }
-    &.plantshare {
-        &#sightings #sidebar .sightings,
-        &#sighting #sidebar .sightings,
-        &#edit-sighting #sidebar .manage-sightings,
-        &#questions #sidebar .ask,
-        &#checklist #sidebar .checklists,
-        &#new-checklist #sidebar .checklists,
-        &#edit-checklist #sidebar .checklists,
-        &#change-password #sidebar .profile,
-        &#password-changed #sidebar .profile,
-        &#change-email-address #sidebar .profile,
-        &#change-email-sent-confirmation #sidebar .profile,
-        &#confirm-email #sidebar .profile {
-            a::before {
-                @include highlight-sidebar-nav-item;
-            }
+}
+body.plantshare {
+    &#sightings #sidebar .sightings,
+    &#sighting #sidebar .sightings,
+    &#edit-sighting #sidebar .manage-sightings,
+    &#questions #sidebar .ask,
+    &#checklist #sidebar .checklists,
+    &#new-checklist #sidebar .checklists,
+    &#edit-checklist #sidebar .checklists,
+    &#change-password #sidebar .profile,
+    &#password-changed #sidebar .profile,
+    &#change-email-address #sidebar .profile,
+    &#change-email-sent-confirmation #sidebar .profile,
+    &#confirm-email #sidebar .profile {
+        a::before {
+            @include highlight-sidebar-nav-item;
         }
     }
 }
@@ -259,98 +257,98 @@ header {
     p {
         margin: 0;
     }
-    .go-botany {
-        float: left;
-        margin: 0 0 0 -15px;
-        padding: 14px 0 0 0;
+}
+header .go-botany {
+    float: left;
+    margin: 0 0 0 -15px;
+    padding: 14px 0 0 0;
+    width: 443px;
+    a {
+        background: url(/static/images/layout/logo-app.png) no-repeat transparent;
+        height: 65px;
         width: 443px;
-        a {
-            background: url(/static/images/layout/logo-app.png) no-repeat transparent;
-            height: 65px;
-            width: 443px;
-            @include offscreen;
-        }
+        @include offscreen;
     }
-    .newfs {
-        float: right;
-        a {
-            background: url(/static/images/layout/newfs-logo-app.png) no-repeat transparent;
-            height: 66px;
-            width: 116px;
-            @include offscreen;
-        }
+}
+header .newfs {
+    float: right;
+    a {
+        background: url(/static/images/layout/newfs-logo-app.png) no-repeat transparent;
+        height: 66px;
+        width: 116px;
+        @include offscreen;
     }
-    nav {
-        background: url(/static/images/layout/nav-app-green.png) no-repeat;
-        background-position: 0px 79px;
-        font-family: $headings-font;
-        height: 120px;
-        padding: 0 0 0 48px;
-        a {
+}
+header nav {
+    background: url(/static/images/layout/nav-app-green.png) no-repeat;
+    background-position: 0px 79px;
+    font-family: $headings-font;
+    height: 120px;
+    padding: 0 0 0 48px;
+    a {
+        color: #fff;
+        display: block;
+        height: 35px;
+        padding: 5px 8px 0;
+        &:visited, &:not([href]) {
             color: #fff;
-            display: block;
-            height: 35px;
-            padding: 5px 8px 0;
-            &:visited, &:not([href]) {
-                color: #fff;
-            }
         }
-        > a {
-            display: none;  /* Omit the 'sections' link by default */
+    }
+    > a {
+        display: none;  /* Omit the 'sections' link by default */
+    }
+    ul {
+        clear: both;
+    }
+    li {
+        display: block;
+        float: left;
+        font-size: $nav-font-size;
+        line-height: normal;
+        margin: 0 12px 0 0;
+        padding: 0;
+        a:hover {
+            text-decoration: none;
         }
-        ul {
-            clear: both;
+    }
+}
+header #search {
+    background: #fff url(/static/images/layout/search-left.png) left center no-repeat;
+    float: right;
+    height: 20px;
+    margin: 4px 4px 0 0;
+    padding: 0 0 0 11px;
+    form {
+        display: block;
+        margin: 0;
+        padding: 0;
+        width: 262px;
+    }
+    input {
+        background: #fff;
+        border: 0;
+        float: left;
+        font-family: $headings-font;
+        font-size: $nav-font-size;
+        height: 20px;
+        margin: 0;
+        padding: 0;
+        width: 219px;
+        &:focus {
+            outline: none;
         }
-        li {
-            display: block;
-            float: left;
-            font-size: $nav-font-size;
-            line-height: normal;
-            margin: 0 12px 0 0;
-            padding: 0;
-            a:hover {
-                text-decoration: none;
-            }
-        }
-        #search {
-            background: #fff url(/static/images/layout/search-left.png) left center no-repeat;
-            float: right;
-            height: 20px;
-            margin: 4px 4px 0 0;
-            padding: 0 0 0 11px;
-            form {
-                display: block;
-                margin: 0;
-                padding: 0;
-                width: 262px;
-            }
-            input {
-                background: #fff;
-                border: 0;
-                float: left;
-                font-family: $headings-font;
-                font-size: $nav-font-size;
-                height: 20px;
-                margin: 0;
-                padding: 0;
-                width: 219px;
-                &:focus {
-                    outline: none;
-                }
-            }                
-            button {
-                background: $link-green url(/static/images/layout/search-btn.png) 0 0 no-repeat;
-                border: none;
-                cursor: pointer;
-                float: right;
-                height: 20px;
-                margin: 0;
-                outline: none;
-                padding: 0;
-                width: 42px;
-                @include offscreen;
-            }
-        }
+    }                
+    button {
+        background: $link-green url(/static/images/layout/search-btn.png) 0 0 no-repeat;
+        border: none;
+        cursor: pointer;
+        float: right;
+        height: 20px;
+        margin: 0;
+        outline: none;
+        padding: 0;
+        width: 42px;
+        @include offscreen;
     }
 }
 
@@ -359,35 +357,35 @@ header {
 .content {
     padding: 8px 0 0;
     @include container-div;
-    #main {
-        background: url(/static/images/layout/sidebar-bg.png) repeat-y;
-        float: right;
-        min-height: 545px;
-        padding-bottom: 24px;
-        padding-left: 250px;
-        width: 710px;
-        .smallscreen-anchor-nav {
-            display: none;
+}
+.content #main {
+    background: url(/static/images/layout/sidebar-bg.png) repeat-y;
+    float: right;
+    min-height: 545px;
+    padding-bottom: 24px;
+    padding-left: 250px;
+    width: 710px;
+    .smallscreen-anchor-nav {
+        display: none;
+    }
+}
+.content .container {
+    &.free-sidebar {
+        #main {
+            background: none;
+        }
+        #sidebar {
+            border-top: 0;
+            height: auto;
+            padding: 0;
         }
     }
-    .container {
-        &.free-sidebar {
-            #main {
-                background: none;
-            }
-            #sidebar {
-                border-top: 0;
-                height: auto;
-                padding: 0;
-            }
-        }
-        &.no-sidebar #main {
-            background: none;
-            float: none;
-            min-height: 0;
-            padding-left: 0;
-            width: auto;
-        }
+    &.no-sidebar #main {
+        background: none;
+        float: none;
+        min-height: 0;
+        padding-left: 0;
+        width: auto;
     }
 }
 
@@ -401,63 +399,63 @@ header {
     margin-right: -230px;
     padding: $sidebar-box-vertical-padding 0 0;
     width: 230px;
-    .section {
-        padding: 0 17px 16px;
-        h4 {
-            margin: 0 0 5px 0;
-        }
-        h4 + p {
-            margin-top: 0;
-        }
-        &.separate {
-            border-top: 1px solid #e2dfcb;
-            padding-top: $sidebar-box-vertical-padding;
-        }
-        &.plant-map {
-            background: url(/static/images/layout/plant-map.png) 95% 1% no-repeat;
-            padding: 0 25px 16px 16px;
-        }
-        .left {
-            float: left;
-        }
-        p {
-            margin: 0;
-        }
+}
+#sidebar .section {
+    padding: 0 17px 16px;
+    h4 {
+        margin: 0 0 5px 0;
     }
-    a {
-        &:hover {
-            text-decoration: none;
-        }
-        &.video {
-            margin-left: 0;
-        }
-        &.view-map-btn {
-            margin: 10px 0 20px;
-        }
+    h4 + p {
+        margin-top: 0;
     }
-    nav a {
-        display: inline-block;
-        margin-left: 10px;
+    &.separate {
+        border-top: 1px solid #e2dfcb;
+        padding-top: $sidebar-box-vertical-padding;
     }
-    .box {
-        background: #fff;
-        border: 1px solid $border-green;
-        margin-bottom: $sidebar-box-vertical-padding;
-        padding: $sidebar-box-vertical-padding 0 0;
+    &.plant-map {
+        background: url(/static/images/layout/plant-map.png) 95% 1% no-repeat;
+        padding: 0 25px 16px 16px;
     }
-    nav {
-        font-family: $headings-font;
-        font-size: 14px;
-        h3 {
-            margin-bottom: 16px;
-            padding-left: 26px;
-        }
-        li {
-            line-height: 150%;
-            list-style-type: none;
-            margin: 0 0 4px 0;
-            padding: 0 15px 16px;
-        }
+    .left {
+        float: left;
+    }
+    p {
+        margin: 0;
+    }
+}
+#sidebar a {
+    &:hover {
+        text-decoration: none;
+    }
+    &.video {
+        margin-left: 0;
+    }
+    &.view-map-btn {
+        margin: 10px 0 20px;
+    }
+}
+#sidebar nav a {
+    display: inline-block;
+    margin-left: 10px;
+}
+#sidebar .box {
+    background: #fff;
+    border: 1px solid $border-green;
+    margin-bottom: $sidebar-box-vertical-padding;
+    padding: $sidebar-box-vertical-padding 0 0;
+}
+#sidebar nav {
+    font-family: $headings-font;
+    font-size: 14px;
+    h3 {
+        margin-bottom: 16px;
+        padding-left: 26px;
+    }
+    li {
+        line-height: 150%;
+        list-style-type: none;
+        margin: 0 0 4px 0;
+        padding: 0 15px 16px;
     }
 }
 a.get-help-btn {
@@ -473,62 +471,62 @@ footer {
     position: relative;
     width: 100%;
     @include container-div;
-    > img {
-        left: 50%;
-        margin-left: -543px;
-        position: absolute;
-        top: -47px;
-        z-index: -1;
-    }
-    .publisher, .navigation {
-        float: left;
-        margin: 0 20px 0 0;
-        padding: 18px 0;
-        width: 305px;
-    }
-    .navigation {
-        padding-left: 10px;
-    }
-    h6 {
-        font-family: $body-font;
-        font-size: 11px;
-    }
-    p {
-        font-size: 9px;
-        margin: 0 0 10px 0;
-    }
-    ul {
-        font-size: 9px;
-        list-style-type: none;
-        margin-bottom: 12px;
-    }
-    li {
-        display: inline;
-        line-height: 14px;
-        &::after {
-            content: " |";
-        }
-        &:last-child::after {
-            content: none;
-        }
-    }
-    a {
-        &:hover {
-            text-decoration: none;
-        }
-        &[href]:hover {
-            text-decoration: underline;
-        }
-    }
-    .nsf-logo {
-        float: left;
-        margin: 0 10px 0 7px;
-    }
-    .support {
-        margin-right: 0;
-        padding: 18px 0;
-    }    
 }
+footer > img {
+    left: 50%;
+    margin-left: -543px;
+    position: absolute;
+    top: -47px;
+    z-index: -1;
+}
+footer .publisher, footer .navigation {
+    float: left;
+    margin: 0 20px 0 0;
+    padding: 18px 0;
+    width: 305px;
+}
+footer .navigation {
+    padding-left: 10px;
+}
+footer h6 {
+    font-family: $body-font;
+    font-size: 11px;
+}
+footer p {
+    font-size: 9px;
+    margin: 0 0 10px 0;
+}
+footer ul {
+    font-size: 9px;
+    list-style-type: none;
+    margin-bottom: 12px;
+}
+footer li {
+    display: inline;
+    line-height: 14px;
+    &::after {
+        content: " |";
+    }
+    &:last-child::after {
+        content: none;
+    }
+}
+footer a {
+    &:hover {
+        text-decoration: none;
+    }
+    &[href]:hover {
+        text-decoration: underline;
+    }
+}
+footer .nsf-logo {
+    float: left;
+    margin: 0 10px 0 7px;
+}
+footer .support {
+    margin-right: 0;
+    padding: 18px 0;
+}    
 
 /* Breadcrumb trails */
 #breadcrumb {
@@ -536,21 +534,21 @@ footer {
     font-family: $headings-font;
     font-size: 14px;
     margin: 0 0 6px;
-    li {
-        display: inline-block;
-        list-style-type: none;
-        margin-bottom: 8px;
-        &::after {
-            color: $medium-brown;
-            content: ' >';
-        }
-        &:first-of-type::after, &:last-of-type::after {
-            content: none;
-        }
-    }
-    .label {
+}
+#breadcrumb li {
+    display: inline-block;
+    list-style-type: none;
+    margin-bottom: 8px;
+    &::after {
         color: $medium-brown;
+        content: ' >';
     }
+    &:first-of-type::after, &:last-of-type::after {
+        content: none;
+    }
+}
+#breadcrumb .label {
+    color: $medium-brown;
 }
 
 /* Wait spinners */
@@ -570,52 +568,51 @@ footer {
 	position: relative;
 	width: 244px;
     @include user-select(none);
-    .img-container {
-	    height: 239px;
-	    overflow: hidden;
-	    position: relative;
-	    width: 239px;
+}
+.img-gallery .img-container {
+    height: 239px;
+    overflow: hidden;
+    position: relative;
+    width: 239px;
+}
+.img-gallery .frame {
+    border: 5px solid rgba(255, 255, 255, 0.8);
+    box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.6);
+    height: 229px;
+    position: absolute;
+    top: 0;
+    width: 229px;
+    z-index: 100;
+}
+.img-gallery .images {
+    clear: both;
+    margin: 0;
+    padding: 0;	
+    position: absolute;
+    width: 12000px;
+    > * {
+        display: block;  /* For example, might be <a> instead of <img>. */
+        float: left;     /* This is what makes scrolling actually work. */
     }
-    .frame {
-	    border: 5px solid rgba(255, 255, 255, 0.8);
-        box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.6);
-        height: 229px;
-        position: absolute;
-	    top: 0;
-        width: 229px;
-	    z-index: 100;
-    }
-    .images {
-        clear: both;
-        margin: 0;
-        padding: 0;	
-        position: absolute;
-        width: 12000px;
-        > * {
-            display: block;  /* For example, might be <a> instead of <img>. */
-            float: left;     /* This is what makes scrolling actually work. */
+}
+.img-gallery .controls {
+    margin: 8px 0 12px 0;
+    text-align: center;	
+    a {
+        cursor: pointer;
+        display: inline-block;
+        height: 32px;
+        text-indent: -9000px;	
+        width: 32px;
+        &.next {
+            background: url(/static/images/icons/next-larger.png) 0 0 no-repeat transparent;	
         }
-    }
-    .controls {
-	    margin: 8px 0 12px 0;
-	    text-align: center;	
-        a {
-            cursor: pointer;
-            display: inline-block;
-            height: 32px;
-            text-indent: -9000px;	
-            width: 32px;
-            &.next {
-	            background: url(/static/images/icons/next-larger.png) 0 0 no-repeat transparent;	
-            }
-            &.prev {
-	            background: url(/static/images/icons/prev-larger.png) 0 0 no-repeat transparent;	
-            }
-            &.disabled {
-                cursor: default;
-                opacity: 0.4;
-                filter:Alpha(opacity=40) /* For IE8 and earlier */
-            }
+        &.prev {
+            background: url(/static/images/icons/prev-larger.png) 0 0 no-repeat transparent;	
+        }
+        &.disabled {
+            cursor: default;
+            opacity: 0.4;
         }
     }
 }
@@ -625,80 +622,80 @@ footer {
    the relevant part of styles.scss and included here, instead of in the
    _dkey.scss file, because image grids are a site-wide pattern. */
 
-.plant-grid {
-    .plant {
-        display: inline-block;
-        vertical-align: top;
-        position: relative;
-        border: 1px solid #c3d941;
-        width: 160px; /* prevent long names from ruining layout */
-        height: 210px;
-        background: #fff;
-        padding: 8px 6px;
-        text-align: center;
+.plant-grid .plant {
+    display: inline-block;
+    vertical-align: top;
+    position: relative;
+    border: 1px solid #c3d941;
+    width: 160px; /* prevent long names from ruining layout */
+    height: 210px;
+    background: #fff;
+    padding: 8px 6px;
+    text-align: center;
 
-        &.omit {
-            display: none;
-        }
+    &.omit {
+        display: none;
     }
-    a {
+}
+.plant-grid a {
+    display: block;
+    color: #1a2e11;
+    &:hover {
+        color: #508e31;
+    }
+}
+.plant-grid .plant:before {
+    position: absolute;
+    top: 8px;
+    left: 6px;
+    z-index: 100;
+    width: 150px;
+    height: 139px;
+    top: 8px;
+    border: 5px solid rgba(255, 255, 255, 0.8);
+    content: ' ';
+}
+.plant-grid .plant-img-container {
+    box-shadow: 0px 0px 4px 0 rgba(0, 0, 0, 0.6);
+    height: 149px;
+    overflow: hidden;
+    width: 160px;
+    img {
+        height: 149px;  /* so lazy_images knows when <img> is on screen */
+    }
+}
+.plant-grid p {
+    margin: 7px 0 0 0;
+    font-family: $narrower-body-font;
+    /* Tahoma or Trebuchet because it's narrower than Verdana:
+       less wrapping and fewer names on 4 lines */
+    line-height: 14px;
+}
+.plant-grid i {
+    display: block;
+    padding-bottom: 4px;
+    font-family: $body-font;
+    /* Verdana, wider than Trebuchet: easier to read in italics */
+    font-style: italic;
+}
+.plant-grid .missing-image {
+    position: relative;
+    @include background(linear-gradient(left top, #eaf2e2, #d6e6c5));
+    width: 160px;
+    height: 149px;
+    color: #354d1e;
+    &:after {
         display: block;
-        color: #1a2e11;
-        &:hover { color: #508e31; }
-    }
-    .plant:before {
         position: absolute;
-        top: 8px;
-        left: 6px;
-        z-index: 100;
-        width: 150px;
-        height: 139px;
-        top: 8px;
-        border: 5px solid rgba(255, 255, 255, 0.8);
-        content: ' ';
-    }
-    .plant-img-container {
-        box-shadow: 0px, 0px, 4px, 0, rgba(0, 0, 0, 0.6);
-        height: 149px;
-        overflow: hidden;
-        width: 160px;
-        img {
-            height: 149px;  /* so lazy_images knows when <img> is on screen */
-        }
-    }
-    p {
-        margin: 7px 0 0 0;
-        font-family: $narrower-body-font;
-        /* Tahoma or Trebuchet because it's narrower than Verdana:
-           less wrapping and fewer names on 4 lines */
-        line-height: 14px;
-    }
-    i {
-        display: block;
-        padding-bottom: 4px;
-        font-family: $body-font;
-        /* Verdana, wider than Trebuchet: easier to read in italics */
-        font-style: italic;
-    }
-    .missing-image {
-        position: relative;
-        @include background(linear-gradient(left top, #eaf2e2, #d6e6c5));
-        width: 160px;
-        height: 149px;
-        color: #354d1e;
-        &:after {
-            display: block;
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            margin: -20px 0 0 -50px;
-            width: 100px;
-            height: 40px;
-            font-size: 12px;
-            line-height: 130%;
-            text-align: center;
-            content: 'Image not available yet';
-        }
+        top: 50%;
+        left: 50%;
+        margin: -20px 0 0 -50px;
+        width: 100px;
+        height: 40px;
+        font-size: 12px;
+        line-height: 130%;
+        text-align: center;
+        content: 'Image not available yet';
     }
 }
 
@@ -716,7 +713,7 @@ footer {
 .gb-tooltip {
     border: 1px solid $tooltip-border-color;
     border-radius: 2px;
-    box-shadow: 0px, 1px, 4px, 0, $tooltip-shadow-color;
+    box-shadow: 0px 1px 4px 0 $tooltip-shadow-color;
     display: none;   /* initially invisible, fades in */
     padding: 8px;
     position: absolute;
@@ -724,54 +721,54 @@ footer {
     z-index: 1000;
     @include background(linear-gradient(top center,
         $tooltip-background-top-color, $tooltip-background-bottom-color));
+}
+.gb-tooltip .arrow {
+    background: $tooltip-background-bottom-color;
+    border: 1px solid $tooltip-border-color;
+    box-shadow: -1px -1px 1px 0 $tooltip-shadow-color;
+    /* rotated borders, same color as bottom of tooltip */
+    border-bottom-color: $tooltip-background-bottom-color;
+    border-right-color: $tooltip-background-bottom-color;
+    bottom: -7px;
+    height: 11px;
+    left: 10px;
+    position: absolute;
+    width: 11px;
+    @include rotate($tooltip-arrow-rotation);
+}
+.gb-tooltip.dark {
+    $tooltip-dark-background-top-color: darken($tooltip-background-top-color, 60%);
+    $tooltip-dark-background-bottom-color: darken($tooltip-background-bottom-color, 60%);
+    $tooltip-dark-border-color: darken($tooltip-border-color, 60%);
+    border-color: $tooltip-dark-border-color;
+    @include background(linear-gradient(top center,
+        $tooltip-dark-background-top-color,
+        $tooltip-dark-background-bottom-color));
+    color: #fff;
     .arrow {
-        background: $tooltip-background-bottom-color;
-        border: 1px solid $tooltip-border-color;
-        box-shadow: -1px, -1px, 1px, 0, $tooltip-shadow-color;
-        /* rotated borders, same color as bottom of tooltip */
-        border-bottom-color: $tooltip-background-bottom-color;
-        border-right-color: $tooltip-background-bottom-color;
-        bottom: -7px;
-        height: 11px;
-        left: 10px;
-        position: absolute;
-        width: 11px;
-        @include rotate($tooltip-arrow-rotation);
-    }
-    &.dark {
-        $tooltip-dark-background-top-color: darken($tooltip-background-top-color, 60%);
-        $tooltip-dark-background-bottom-color: darken($tooltip-background-bottom-color, 60%);
-        $tooltip-dark-border-color: darken($tooltip-border-color, 60%);
+        background: $tooltip-dark-background-bottom-color;
         border-color: $tooltip-dark-border-color;
-        @include background(linear-gradient(top center,
-            $tooltip-dark-background-top-color,
-            $tooltip-dark-background-bottom-color));
-        color: #fff;
-        .arrow {
-            background: $tooltip-dark-background-bottom-color;
-            border-color: $tooltip-dark-border-color;
-            border-bottom-color: $tooltip-dark-background-bottom-color;
-            border-right-color: $tooltip-dark-background-bottom-color;
+        border-bottom-color: $tooltip-dark-background-bottom-color;
+        border-right-color: $tooltip-dark-background-bottom-color;
+    }
+}
+.gb-tooltip.dark.photo {
+    font-family: $headings-font;
+    font-size: 11px;
+    position: fixed;   /* with lightbox, so prevent scrolling away */
+    p {
+        line-height: 120%;
+        margin: 6px 0;
+        &:first-of-type {
+            margin-top: 0;
         }
-        &.photo {
-            font-family: $headings-font;
-            font-size: 11px;
-            position: fixed;   /* with lightbox, so prevent scrolling away */
-            p {
-                line-height: 120%;
-                margin: 6px 0;
-                &:first-of-type {
-                    margin-top: 0;
-                }
-                &:last-of-type {
-                    margin-bottom: 0;
-                }
-            }
-            a {
-                color: white;
-                text-decoration: underline;
-            }
+        &:last-of-type {
+            margin-bottom: 0;
         }
+    }
+    a {
+        color: white;
+        text-decoration: underline;
     }
 }
 
@@ -787,7 +784,7 @@ footer {
         border: 1px solid $tooltip-border-color;
         border-radius: 2px;
         bottom: 110%;
-        box-shadow: 1px, 1px, 2px, 0, $tooltip-shadow-color;
+        box-shadow: 1px 1px 2px 0 $tooltip-shadow-color;
         padding: 4px;
         position: absolute;
     }
@@ -810,55 +807,55 @@ footer {
 /* Character/value styles for plant preview popups, species pages, etc. */
 .characteristics {
     margin-bottom: 16px;
-    dl {
-        border: 1px transparent; /* border forces new row in WebKit when
-                                  * char name, but not value, wraps */
-        margin: 6px 0 0;
+}
+.characteristics dl {
+    border: 1px transparent; /* border forces new row in WebKit when
+                              * char name, but not value, wraps */
+    margin: 6px 0 0;
+    padding: 0;
+}
+.characteristics dt {
+    clear: left;
+    float: left;
+    font-weight: bold;
+    line-height: 18px;
+    text-align: right;
+    width: 250px;
+}
+.characteristics dd {
+    line-height: 18px;
+    margin-left: 260px;
+}
+.characteristics dd ul {
+    list-style-type: disc;
+    margin: 0;
+    padding: 0 0 0 1.3em;
+    text-indent: -0.2em;
+    &.compact {
+        margin: 0;
         padding: 0;
-    }
-    dt {
-        clear: left;
-        float: left;
-        font-weight: bold;
-        line-height: 18px;
-        text-align: right;
-        width: 250px;
-    }
-    dd {
-        line-height: 18px;
-        margin-left: 260px;
-        ul {
-            list-style-type: disc;
-            margin: 0;
-            padding: 0 0 0 1.3em;
-            text-indent: -0.2em;
-            &.compact {
-                margin: 0;
-                padding: 0;
-                text-indent: 0;
-                li {
-                    display: inline;
-                    &:after {
-                        content: ', ';
-                    }
-                    &:last-child:after {
-                        content: none;
-                    }
-                }
+        text-indent: 0;
+        li {
+            display: inline;
+            &:after {
+                content: ', ';
+            }
+            &:last-child:after {
+                content: none;
             }
         }
-        li {
-            margin: 0;
-            padding: 0 0 0.1em;
-        }
     }
-    &.full {
-        dt {
-            width: 270px;
-        }
-        dd {
-            margin-left: 280px;
-        }
+}
+.characteristics dd li {
+    margin: 0;
+    padding: 0 0 0.1em;
+}
+.characteristics.full {
+    dt {
+        width: 270px;
+    }
+    dd {
+        margin-left: 280px;
     }
 }
 
@@ -870,41 +867,39 @@ footer {
     font-size: 14px;
     line-height: 14px;
     list-style-type: none;
-    li {
-        &:before {
-            content: "× ";
-            font-size: 22px;
-            font-weight: bold;
-            margin: 0 0 0 -$error-icon-offset; 
-            padding: 0;
-            vertical-align: text-top;
-        }
+}
+.errorlist li {
+    &:before {
+        content: "× ";
+        font-size: 22px;
+        font-weight: bold;
+        margin: 0 0 0 -$error-icon-offset; 
+        padding: 0;
+        vertical-align: text-top;
     }
 }
 
 
 /* Text input with suggestions */
 
-input.suggest {
-    & + div {
-        background: #fff;
-        border: 1px solid #999;
-        box-shadow: 0px, 1px, 2px, 0, darken($inactive_bg, 30);
-        position: absolute;
-        z-index: 150;
-        li {
-            clear: both;
-            font-weight: bold;
-            list-style-type: none;
-            margin: 0;
-            padding: 3px;
-            &.selected {
-                background-color: $pale-lime-green;
-            }
-            span {
-                font-weight: normal;
-            }
-        }
+input.suggest + div {
+    background: #fff;
+    border: 1px solid #999;
+    box-shadow: 0px 1px 2px 0 $shadow_color;
+    position: absolute;
+    z-index: 150;
+}
+input.suggest + div li {
+    clear: both;
+    font-weight: bold;
+    list-style-type: none;
+    margin: 0;
+    padding: 3px;
+    &.selected {
+        background-color: $pale-lime-green;
+    }
+    span {
+        font-weight: normal;
     }
 }
 /* Adjustments for site search box */
@@ -934,22 +929,20 @@ table.list {
     color: #000;
     font-size: 12px;
     margin: 18px 0;
-    tbody tr:hover {
-        background: #e3fabe;
-    }
-    th, td {
-        padding: 4px;
-    }
-    th, tr.filters {
-        background: #b4d57f;
-        font-weight: normal;
-    }
-    th {
-        td:first-child {
-            font-family: $headings-font;
-            font-size: 13px;
-        }
-    }
+}
+table.list tbody tr:hover {
+    background: #e3fabe;
+}
+table.list th, table.list td {
+    padding: 4px;
+}
+table.list th, table.list tr.filters {
+    background: #b4d57f;
+    font-weight: normal;
+}
+table.list th td:first-child {
+    font-family: $headings-font;
+    font-size: 13px;
 }
 
 

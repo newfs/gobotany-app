@@ -54,7 +54,7 @@
     margin: 10px 0 0;
     position: absolute;
     > img {
-        box-shadow: 0px, 0px, 4px, 0, rgba(0, 0, 0, 0.6);
+        box-shadow: 0px 0px 4px 0 rgba(0, 0, 0, 0.6);
         display: none;
         height: 345px;
         left: 0;
@@ -140,7 +140,7 @@ a {
 #home #potd {   /* Plant of the Day */
     background: #c7e2a1;
     border: 3px solid #fff;
-    box-shadow: 0px, 0px, 4px, 0, rgba(0, 0, 0, 0.3);
+    box-shadow: 0px 0px 4px 0 rgba(0, 0, 0, 0.3);
     clear: left;
     height: 140px;
     margin: 15px 0;
@@ -181,7 +181,7 @@ a {
 #home .donate, #home .intro {
     background: #f1ebae;
     border: 3px solid #fff;
-    box-shadow: 0px, 0px, 4px, 0, rgba(0, 0, 0, 0.3);
+    box-shadow: 0px 0px 4px 0 rgba(0, 0, 0, 0.3);
     clear: left;
     margin: 15px 0;
     padding: 0;

@@ -102,6 +102,7 @@ $text_gray: #606060;
 $text_green: #519136;
 $text_dark_green: #35661C;
 $inactive_bg: #d9dbb1;
+$shadow_color: darken($inactive_bg, 30);
 $active_border: #7abe58;
 $active_bg: #b4d57f;
 
@@ -127,10 +128,9 @@ $disabled_orange_gradient: linear-gradient(
     mix($body_bg, $orange5, 75%) 50%, mix($body_bg, $orange3, 75%) 100%);
 
 .orange-button {
-    background-color: $orange1;   /* for IE without gradient support */
     border: 1px solid $orange1 !important;
     border-radius: 14px;
-    box-shadow: 0px, 1px, 4px, 0, darken($inactive_bg, 30);
+    box-shadow: 0px 1px 4px 0 $shadow_color;
     color: white;
     cursor: pointer;
     display: inline-block;
@@ -144,7 +144,6 @@ $disabled_orange_gradient: linear-gradient(
     text-decoration: none;
     @include background($orange_gradient);
     &:hover {
-        background-color: $orange2;  /* for IE without gradient support */
         @include background($bright_orange_gradient);
     }
     &:active {
@@ -158,8 +157,6 @@ $disabled_orange_gradient: linear-gradient(
         text-transform: uppercase;
     }
     &.disabled {
-        background-color: mix($body_bg, $orange2, 50%); /* for IE without
-                                                           gradient support */
         border-color: mix($body_bg, $orange2, 50%) !important;
         cursor: default !important;
         @include background($disabled_orange_gradient);
@@ -231,18 +228,18 @@ $disabled_orange_gradient: linear-gradient(
             font-family: $headings-font;
             font-size: 10px;
         }
-        a {
-            border-bottom: 1px solid #ccc;
-            color: #fff;
-            &:hover {
-                text-decoration: none;
-            }
-            &.contact {
-                cursor: pointer;
-                display: inline-block; /* prevent link from wrapping, which
-                                          makes tooltip position incorrect */
-                text-decoration: none;
-            }
+    }
+    #sb-title-inner a {
+        border-bottom: 1px solid #ccc;
+        color: #fff;
+        &:hover {
+            text-decoration: none;
+        }
+        &.contact {
+            cursor: pointer;
+            display: inline-block; /* prevent link from wrapping, which
+                                      makes tooltip position incorrect */
+            text-decoration: none;
         }
     }
     #sb-nav-close {
@@ -268,48 +265,46 @@ $disabled_orange_gradient: linear-gradient(
 
 /* image popups (used in D. Key, and in D. Key section of species page) */
 
-#main {
-    div.shadow {                    /* shadow that hides the whole page */
-        display: none;
-        position: fixed;
-        z-index: 1000;
-        top: 0;
-        left: 0;
-        height: 100%;
-        width: 100%;
-        background-color: rgba(0,0,0, 0.45);
-        text-align: center;
-    }
-    div.popup {                     /* for displaying quick lists of taxa */
-        border-radius: 1em;
-        display: inline-block;
-        margin: 5% auto;
-        max-height: 90%;
-        overflow-y: auto;
-        overflow-x: hidden;         /* otherwise scrolling can leak to page */
-        border: 0.5em solid $list_popup_border;
-        background-color: lighten($body_bg, 5);
-        padding: 1em 2em;
-        text-align: left;
-        font-size: $base-font-size;
-        line-height: 1.25em;
-        h2 {                        /* "See list of 14 species in 1b" */
-            border-bottom: 1px solid $text_green;
-            padding-bottom: 0.5em;
-            color: $text_green;
-            font-family: $headings-font;
-            font-weight: normal;
+div.shadow {                    /* shadow that hides the whole page */
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    background-color: rgba(0,0,0, 0.45);
+    text-align: center;
+}
+div.popup {                     /* for displaying quick lists of taxa */
+    border-radius: 1em;
+    display: inline-block;
+    margin: 5% auto;
+    max-height: 90%;
+    overflow-y: auto;
+    overflow-x: hidden;         /* otherwise scrolling can leak to page */
+    border: 0.5em solid $list_popup_border;
+    background-color: lighten($body_bg, 5);
+    padding: 1em 2em;
+    text-align: left;
+    font-size: $base-font-size;
+    line-height: 1.25em;
+}
+div.popup h2 {                        /* "See list of 14 species in 1b" */
+    border-bottom: 1px solid $text_green;
+    padding-bottom: 0.5em;
+    color: $text_green;
+    font-family: $headings-font;
+    font-weight: normal;
 
-            /* For tall lists a scrollbar appears, and tends to make the last word
-               of the title wrap unattractively. */
-            white-space: nowrap;
-        }
-        a {
-            @include hover-link;
-            color: #000;
-            &:hover {
-                color: $text_dark_green;
-            }
-        }
+    /* For tall lists a scrollbar appears, and tends to make the last word
+       of the title wrap unattractively. */
+    white-space: nowrap;
+}
+div.popup a {
+    @include hover-link;
+    color: #000;
+    &:hover {
+        color: $text_dark_green;
     }
 }

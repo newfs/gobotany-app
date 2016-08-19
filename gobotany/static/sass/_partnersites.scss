@@ -14,10 +14,10 @@
             left: 178px;
             position: absolute;
             top: 60px;
-            i {
-                color: #fff;
-                font-size: 16px;
-            }
+        }
+        .site-name i {
+            color: #fff;
+            font-size: 16px;
         }
         nav li.home a {
             padding: 5px 8px 0;  /* consistent padding in 'separated' area */
@@ -41,13 +41,13 @@ header.partner-site {
         position: relative;
         top: 45px;
         width: 650px;
-        b {
-            margin-right: 10px;
-        }
-        a {
-            padding-left: 10px;
-            text-decoration: none;
-        }
+    }
+    .site-name b {
+        margin-right: 10px;
+    }
+    .site-name a {
+        padding-left: 10px;
+        text-decoration: none;
     }
     nav li a {
         padding: 5px 32px 0;  /* fewer sections, more horizontal padding */
@@ -100,26 +100,26 @@ header.partner-site {
             position: absolute;
             top: 42px;
             width: 150px;
-            b {
-                margin-right: 0;
-            }
-            i {
-                display: none;
-            }
+        }
+        .site-name b {
+            margin-right: 0;
+        }
+        .site-name i {
+            display: none;
         }
         .go-botany a {
             background-position: left -9px;
         }
-        /* Show full-size sections button for now (search is omitted) */
-        nav > a {
-            width: 80px;
-            span {
-                display: inline;
-                font-size: 14px;
-                line-height: 160%;
-                padding-left: 23px;
-                position: absolute;
-            }
+    }
+    /* Show full-size sections button for now (search is omitted) */
+    header.partner-site nav > a {
+        width: 80px;
+        span {
+            display: inline;
+            font-size: 14px;
+            line-height: 160%;
+            padding-left: 23px;
+            position: absolute;
         }
     }
 }
