@@ -47,24 +47,11 @@
             <h2>New England Distribution</h2>
             {% include "gobotany/_map_attribution.html" %}
             {% with map_title='New England distribution: '|add:scientific_name|add:'.' %}
-            <!--[if !IE]>-->
             <object
                 data="{% url 'ne-distribution-map' taxon.genus|lower epithet %}"
                 type="image/svg+xml"
                 title="{{ map_title }}"
-                id="ne-dist-county-map"> <!--<![endif]-->
-            <!--[if lt IE 9]>
-            <object
-                src="{% url 'ne-distribution-map' taxon.genus|lower epithet %}"
-                classid="image/svg+xml"
-                title="{{ map_title }}"
-                id="ne-dist-county-map"> <![endif]-->
-            <!--[if gte IE 9]>
-            <object
-                data="{% url 'ne-distribution-map' taxon.genus|lower epithet %}"
-                type="image/svg+xml"
-                title="{{ map_title }}"
-                id="ne-dist-county-map"> <![endif]-->
+                id="ne-dist-county-map">
             </object>
             {% endwith %}
 
@@ -109,19 +96,7 @@
                     data="{% url 'na-distribution-map' taxon.genus|lower epithet %}"
                     type="image/svg+xml"
                     title="{{ map_title }}"
-                    id="na-dist-county-map"> <!--<![endif]-->
-                <!--[if lt IE 9]>
-                <object
-                    src="{% url 'na-distribution-map' taxon.genus|lower epithet %}"
-                    classid="image/svg+xml"
-                    title="{{ map_title }}"
-                    id="na-dist-county-map"> <![endif]-->
-                <!--[if gte IE 9]>
-                <object
-                    data="{% url 'na-distribution-map' taxon.genus|lower epithet %}"
-                    type="image/svg+xml"
-                    title="{{ map_title }}"
-                    id="na-dist-county-map"> <![endif]-->
+                    id="na-dist-county-map">
                 </object>
             </div>
             {% endwith %}
