@@ -26,30 +26,30 @@ $search-suggest-menu-top: 83px;
     }
     body {
         padding-top: 110px;
-        header nav > a {
-            width: 19px;
-            span {
-                display: none;
-            }
+    }
+    header nav > a {
+        width: 19px;
+        span {
+            display: none;
         }
-        #nav {
-            left: 40px;
-            width: 310px;
+    }
+    #nav {
+        left: 40px;
+        width: 310px;
+    }
+    .content {
+        #main {
+            width: 304px;
         }
-        .content {
-            #main {
-                width: 304px;
-            }
-            #sidebar {
-                float: none;
-                width: $smallscreen-portrait-box-width;
-            }
+        #sidebar {
+            float: none;
+            width: $smallscreen-portrait-box-width;
         }
-        footer .navigation .prime-items li {
-            margin-right: 10px;
-            &:last-of-type {
-                margin-right: 0;
-            }
+    }
+    footer .navigation .prime-items li {
+        margin-right: 10px;
+        &:last-of-type {
+            margin-right: 0;
         }
     }
 }
@@ -73,13 +73,11 @@ $search-suggest-menu-top: 83px;
             position: absolute;
         }
     }
-    .content {
-        #main {
-            width: 464px;
-        }
-        #sidebar {
-            width: $smallscreen-landscape-box-width;
-        }
+    .content #main {
+        width: 464px;
+    }
+    .content #sidebar {
+        width: $smallscreen-landscape-box-width;
     }
 }
 /* These styles are common to both smartphone widths */
@@ -87,43 +85,43 @@ $search-suggest-menu-top: 83px;
     body {
         margin: 0 auto;
         padding: 0;
-        &#home {
-            header nav #search-suggest .menu {
-                top: $search-suggest-menu-top;
-            }
-            footer .navigation ul.sections li.home a {
-                @include nav-current-section;
-            }
+    }
+    body#home {
+        header nav #search-suggest .menu {
+            top: $search-suggest-menu-top;
         }
-        &.simple {
-            footer .navigation ul.sections li.simple a {
-                @include nav-current-section;
-            }
+        footer .navigation ul.sections li.home a {
+            @include nav-current-section;
         }
-        &.plantshare {
-            footer .navigation ul.sections li.plantshare a {
-                @include nav-current-section;
-            }
+    }
+    body.simple {
+        footer .navigation ul.sections li.simple a {
+            @include nav-current-section;
         }
-        &.full {
-            footer .navigation ul.sections li.full a {
-                @include nav-current-section;
-            }
+    }
+    body.plantshare {
+        footer .navigation ul.sections li.plantshare a {
+            @include nav-current-section;
         }
-        &.dkey {
-            footer .navigation ul.sections li.dkey a {
-                @include nav-current-section;
-            }
+    }
+    body.full {
+        footer .navigation ul.sections li.full a {
+            @include nav-current-section;
         }
-        &.teaching {
-            footer .navigation ul.sections li.teaching a {
-                @include nav-current-section;
-            }
+    }
+    body.dkey {
+        footer .navigation ul.sections li.dkey a {
+            @include nav-current-section;
         }
-        &.help {
-            footer .navigation ul.sections li.help a {
-                @include nav-current-section;
-            }
+    }
+    body.teaching {
+        footer .navigation ul.sections li.teaching a {
+            @include nav-current-section;
+        }
+    }
+    body.help {
+        footer .navigation ul.sections li.help a {
+            @include nav-current-section;
         }
     }
     #breadcrumb {
@@ -142,13 +140,13 @@ $search-suggest-menu-top: 83px;
             display: inline-block;
             padding: 6px 0;
             -webkit-tap-highlight-color: rgba(0,0,0,0);
-            &:hover {
-                text-decoration: none;
-            }
-            &:active {
-                background: $link-green;
-                color: #fff;
-            }
+        }
+        a:hover {
+            text-decoration: none;
+        }
+        a:active {
+            background: $link-green;
+            color: #fff;
         }
     }
     h1 {
@@ -163,56 +161,59 @@ $search-suggest-menu-top: 83px;
     }
     header {
         height: 90px;
-        nav {
-            background: $navbar-color;
-            clear: left;
-            height: 32px;
-            padding: 0;
-            > a {
-                background: $nav-button-color url(/static/images/icons/menu-icon.png) 7px 5px no-repeat;
-                border: 1px solid $nav-button-color;
-                border-radius: 5px;
-                display: inline-block;
-                font-size: 30px;
-                height: 24px;
-                line-height: 68%;
-                margin: 3px 0 0 4px;
-                padding: 0 2px 0 7px;
-                position: relative;
-            }
-            #search {
-                margin-top: 6px;
-                padding-left: 10px;
-            }
-            > ul {
-                display: none;  /* will use bottom navigation instead of top */
-            }
-            #search-suggest .menu {
-                top: $search-suggest-menu-top;
-            }
+    }
+    header nav {
+        background: $navbar-color;
+        clear: left;
+        height: 32px;
+        padding: 0;
+        > a {
+            background: $nav-button-color url(/static/images/icons/menu-icon.png) 7px 5px no-repeat;
+            border: 1px solid $nav-button-color;
+            border-radius: 5px;
+            display: inline-block;
+            font-size: 30px;
+            height: 24px;
+            line-height: 68%;
+            margin: 3px 0 0 4px;
+            padding: 0 2px 0 7px;
+            position: relative;
         }
-        p.go-botany {
-            margin: 0;
-            padding: 0;
-            width: auto;
-            a {
-                height: 56px;
-                width: 170px;
-            }
+        #search {
+            margin-top: 6px;
+            padding-left: 10px;
         }
-        p.newfs a {
-            background-size: 100px 55px;
-            float: right;
-            height: 55px;
-            width: 101px;
+        > ul {
+            display: none;  /* will use bottom navigation instead of top */
         }
-        .container {
-            padding: 0;
+        #search-suggest .menu {
+            top: $search-suggest-menu-top;
         }
     }
+    header p.go-botany {
+        margin: 0;
+        padding: 0;
+        width: auto;
+        a {
+            height: 56px;
+            width: 170px;
+        }
+    }
+    header p.newfs a {
+        background-size: 100px 55px;
+        float: right;
+        height: 55px;
+        width: 101px;
+    }
+    header .container {
+        padding: 0;
+    }
+
     footer {
         height: auto;
         margin: 14px 0 0;
+    }
+    footer {
         > img {
             display: none;
         }
@@ -232,119 +233,119 @@ $search-suggest-menu-top: 83px;
         a {
             font-size: 11px;
         }
-        .publisher, .navigation {
-            float: none;
-            margin: 0;
-            padding: 0;
+    }
+    footer .publisher, footer .navigation {
+        float: none;
+        margin: 0;
+        padding: 0;
+    }
+    footer .publisher {
+        margin: 14px 0 0;
+        padding: 12px $smallscreen-margin 10px;
+    }
+    footer .navigation {
+        h6:first-child {
+            padding: $smallscreen-margin 0 $smallscreen-margin 14px;
         }
-        .publisher {
-            margin: 14px 0 0;
-            padding: 12px $smallscreen-margin 10px;
-        }
-        .navigation {
-            h6:first-child {
-                padding: $smallscreen-margin 0 $smallscreen-margin 14px;
+        > ul.sections {
+            li {
+                display: block;
+                margin: 0 0 1px 0;
             }
-            > ul.sections {
-                li {
-                    display: block;
-                    margin: 0 0 1px 0;
-                    &:after {
-                        content: none;
-                    }
-                    a {
-                        background: $link-green;
-                        color: #fff;
-                        display: block;
-                        font-family: $headings-font;
-                        font-size: 14px;
-                        padding: 14px 14px;
-                        position: relative;
-                        text-decoration: none;
-                        &[href] {
-                            color: #fff;
-                            &::after {
-                                border-color: #ccc;
-                                border-style: solid;
-                                border-width: 3px 3px 0 0;
-                                content: " \a0";
-                                display: inline-block;
-                                height: 6px;
-                                position: absolute;
-                                right: 14px;
-                                top: 16px;
-                                vertical-align: middle;
-                                width: 6px;
-                                @include rotate(45deg);
-                            }
-                        }
-                    }
+            li:after {
+                content: none;
+            }
+            li:after a {
+                background: $link-green;
+                color: #fff;
+                display: block;
+                font-family: $headings-font;
+                font-size: 14px;
+                padding: 14px 14px;
+                position: relative;
+                text-decoration: none;
+                &[href] {
+                    color: #fff;
                 }
-                + h6 {   /* "Legal:" label */
-                    display: none;
+                &[href]::after {
+                    border-color: #ccc;
+                    border-style: solid;
+                    border-width: 3px 3px 0 0;
+                    content: " \a0";
+                    display: inline-block;
+                    height: 6px;
+                    position: absolute;
+                    right: 14px;
+                    top: 16px;
+                    vertical-align: middle;
+                    width: 6px;
+                    @include rotate(45deg);
                 }
             }
-            > h6:nth-of-type(2) {
-                margin: 14px 14px 4px 71px;
-                &:after {
-                    content: ":";
-                }
-            }
-            > h6:nth-of-type(2), > ul.prime-items {
-                display: inline-block;
-                margin-left: 72px;
-                margin-top: 12px;
-            }
-            .prime-items {
-                li {
-                    margin-right: 32px;
-                }
-                li:after {
-                    content: none;
-                }
+            + h6 {   /* "Legal:" label */
+                display: none;
             }
         }
-        .support {
-            height: 63px;
-            margin: 14px 0 0;
-            padding: 0;
-            img {
-                padding-bottom: 6px;
+        > h6:nth-of-type(2) {
+            margin: 14px 14px 4px 71px;
+            &:after {
+                content: ":";
             }
+        }
+        > h6:nth-of-type(2), > ul.prime-items {
+            display: inline-block;
+            margin-left: 72px;
+            margin-top: 12px;
+        }
+        .prime-items {
+            li {
+                margin-right: 32px;
+            }
+            li:after {
+                content: none;
+            }
+        }
+    }
+    footer .support {
+        height: 63px;
+        margin: 14px 0 0;
+        padding: 0;
+        img {
+            padding-bottom: 6px;
         }
     }
     .content {
         padding: 0;
-        .container {
-            padding: 0;
+    }
+    .content .container {
+        padding: 0;
+    }
+    .content #main {
+        background: none;
+        float: none;
+        min-height: inherit;
+        padding-bottom: 14px;
+        padding-left: 0;
+        @include smallscreen-side-margins;
+        .smallscreen-anchor-nav {
+            display: block;
+            padding: 8px 0 16px;
         }
-        #main {
-            background: none;
-            float: none;
-            min-height: inherit;
-            padding-bottom: 14px;
-            padding-left: 0;
-            @include smallscreen-side-margins;
-            .smallscreen-anchor-nav {
-                display: block;
-                padding: 8px 0 16px;
-                a {
-                    font-family: $headings-font;
-                    font-size: 14px;
-                    padding: 8px 0;
-                    text-decoration: underline;
-                }
-            }
+        .smallscreen-anchor-nav a {
+            font-family: $headings-font;
+            font-size: 14px;
+            padding: 8px 0;
+            text-decoration: underline;
         }
-        #sidebar {
-            background: #fff;
-            border: 1px solid $border-green;
-            clear: left;
-            height: auto;
-            @include smallscreen-side-margins;
-            .section {
-                padding-bottom: $sidebar-box-vertical-padding;
-            }
+    }
+    .content #sidebar {
+        background: #fff;
+        border: 1px solid $border-green;
+        clear: left;
+        height: auto;
+        @include smallscreen-side-margins;
+        .section {
+            padding-bottom: $sidebar-box-vertical-padding;
         }
     }
     .gb-tooltip {
@@ -356,35 +357,12 @@ $search-suggest-menu-top: 83px;
          * on small screens in iOS. */
         height: 120%;
     }
-
-    /* Advanced ID placeholder page: delete after tools release */
-    #advanced-id #main {
-        .dk-landing-section {
-            height: auto;
-            margin-top: 14px;
-            padding: 0;
-            width: auto;
-            > a {
-                margin-left: 16px;
-                position: static;
-            }
-            &:first-of-type {
-                border-right: 0;
-                height: auto;
-                margin-right: 0;
-                margin-top: 0;
-                width: auto;
-            }
-        }
-        a.go-dichkey-btn {
-            margin-bottom: 14px;
-        }
-    }
 }
 /* These styles apply to smartphones and tablets */
 @media only screen and (max-width: 1024px) {
-    /* Currently there are no global styles here in this category, but
-     * there are some elsewhere for various parts of the site. */
+    table {
+        border-collapse: collapse;
+    }
 }
 
 /* End global media queries styles */
