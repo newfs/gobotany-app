@@ -1811,13 +1811,13 @@ header.partner-site nav li a { padding: 5px 32px 0; /* fewer sections, more hori
 /* Portrait-orientation styles */
 @media only screen and (max-width: 400px) { body, header .container, .content .container, footer .container { width: 320px; }
   body { padding-top: 110px; }
-  body header nav > a { width: 19px; }
-  body header nav > a span { display: none; }
-  body #nav { left: 40px; width: 310px; }
-  body .content #main { width: 304px; }
-  body .content #sidebar { float: none; width: 302px; }
-  body footer .navigation .prime-items li { margin-right: 10px; }
-  body footer .navigation .prime-items li:last-of-type { margin-right: 0; } }
+  header nav > a { width: 19px; }
+  header nav > a span { display: none; }
+  #nav { left: 40px; width: 310px; }
+  .content #main { width: 304px; }
+  .content #sidebar { float: none; width: 302px; }
+  footer .navigation .prime-items li { margin-right: 10px; }
+  footer .navigation .prime-items li:last-of-type { margin-right: 0; } }
 /* Landscape-orientation styles */
 @media only screen and (min-width: 401px) and (max-width: 600px) { html { -webkit-text-size-adjust: none; }
   body { padding-top: 75px; }
@@ -1874,9 +1874,9 @@ header.partner-site nav li a { padding: 5px 32px 0; /* fewer sections, more hori
   footer .navigation h6:first-child { padding: 8px 0 8px 14px; }
   footer .navigation > ul.sections li { display: block; margin: 0 0 1px 0; }
   footer .navigation > ul.sections li:after { content: none; }
-  footer .navigation > ul.sections li a { background: #317b0c; color: #fff; display: block; font-family: "Trebuchet MS", Helvetica, Arial, "Lucida Sans Unicode", sans-serif; font-size: 14px; padding: 14px 14px; position: relative; text-decoration: none; }
-  footer .navigation > ul.sections li a[href] { color: #fff; }
-  footer .navigation > ul.sections li a[href]::after { border-color: #ccc; border-style: solid; border-width: 3px 3px 0 0; content: " \a0"; display: inline-block; height: 6px; position: absolute; right: 14px; top: 16px; vertical-align: middle; width: 6px; -moz-transform: rotate(45deg); -ms-transform: rotate(45deg); -webkit-transform: rotate(45deg); transform: rotate(45deg); }
+  footer .navigation > ul.sections li:after a { background: #317b0c; color: #fff; display: block; font-family: "Trebuchet MS", Helvetica, Arial, "Lucida Sans Unicode", sans-serif; font-size: 14px; padding: 14px 14px; position: relative; text-decoration: none; }
+  footer .navigation > ul.sections li:after a[href] { color: #fff; }
+  footer .navigation > ul.sections li:after a[href]::after { border-color: #ccc; border-style: solid; border-width: 3px 3px 0 0; content: " \a0"; display: inline-block; height: 6px; position: absolute; right: 14px; top: 16px; vertical-align: middle; width: 6px; -moz-transform: rotate(45deg); -ms-transform: rotate(45deg); -webkit-transform: rotate(45deg); transform: rotate(45deg); }
   footer .navigation > ul.sections + h6 { /* "Legal:" label */ display: none; }
   footer .navigation > h6:nth-of-type(2) { margin: 14px 14px 4px 71px; }
   footer .navigation > h6:nth-of-type(2):after { content: ":"; }
@@ -1893,13 +1893,8 @@ header.partner-site nav li a { padding: 5px 32px 0; /* fewer sections, more hori
   .content #sidebar { background: #fff; border: 1px solid #c3d941; clear: left; height: auto; margin-left: 8px; margin-right: 8px; }
   .content #sidebar .section { padding-bottom: 16px; }
   .gb-tooltip { width: 200px; }
-  #sb-overlay { /* Fix: make the Shadowbox overlay cover the entire background on small screens in iOS. */ height: 120%; }
-  /* Advanced ID placeholder page: delete after tools release */
-  #advanced-id #main .dk-landing-section { height: auto; margin-top: 14px; padding: 0; width: auto; }
-  #advanced-id #main .dk-landing-section > a { margin-left: 16px; position: static; }
-  #advanced-id #main .dk-landing-section:first-of-type { border-right: 0; height: auto; margin-right: 0; margin-top: 0; width: auto; }
-  #advanced-id #main a.go-dichkey-btn { margin-bottom: 14px; } }
+  #sb-overlay { /* Fix: make the Shadowbox overlay cover the entire background on small screens in iOS. */ height: 120%; } }
 /* These styles apply to smartphones and tablets */
-@media only screen and (max-width: 1024px) { /* Currently there are no global styles here in this category, but there are some elsewhere for various parts of the site. */ }
+@media only screen and (max-width: 1024px) { table { border-collapse: collapse; } }
 /* End global media queries styles */
 /* Please do not add new regular styles after the media queries, or they may not get overridden properly. Instead, add them before the media queries. */
