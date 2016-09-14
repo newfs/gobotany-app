@@ -255,7 +255,7 @@ $search-suggest-menu-top: 83px;
             li:after {
                 content: none;
             }
-            li:after a {
+            li a {
                 background: $link-green;
                 color: #fff;
                 display: block;
@@ -264,23 +264,23 @@ $search-suggest-menu-top: 83px;
                 padding: 14px 14px;
                 position: relative;
                 text-decoration: none;
-                &[href] {
-                    color: #fff;
-                }
-                &[href]::after {
-                    border-color: #ccc;
-                    border-style: solid;
-                    border-width: 3px 3px 0 0;
-                    content: " \a0";
-                    display: inline-block;
-                    height: 6px;
-                    position: absolute;
-                    right: 14px;
-                    top: 16px;
-                    vertical-align: middle;
-                    width: 6px;
-                    @include rotate(45deg);
-                }
+            }
+            li a[href] {
+                color: #fff;
+            }
+            li a[href]::after {
+                border-color: #ccc;
+                border-style: solid;
+                border-width: 3px 3px 0 0;
+                content: " \a0";
+                display: inline-block;
+                height: 6px;
+                position: absolute;
+                right: 14px;
+                top: 16px;
+                vertical-align: middle;
+                width: 6px;
+                @include rotate(45deg);
             }
             + h6 {   /* "Legal:" label */
                 display: none;

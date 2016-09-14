@@ -25,1492 +25,1489 @@ $avatar-image-width: 169px;
     }
 }
 
-body.plantshare {
-
-    .recaptchatable {
-        a {
-            color: $link-green;
-        }
-        #recaptcha_response_field {
-            font-family: $headings-font;
-            font-size: $nav-font-size;
-        }
+body.plantshare .recaptchatable {
+    a {
+        color: $link-green;
     }
-
-    .nav-links {
+    #recaptcha_response_field {
         font-family: $headings-font;
-        font-size: 14px;
-        margin: 0 0 16px;
+        font-size: $nav-font-size;
     }
+}
 
-    .content {
-        li {
-            list-style-type: none;
-        }
-        form {
-            p {
-                margin: 0;
-            }
-            label {
-                clear: left;
-                display: block;
-                margin-bottom: 4px;
-                text-transform: uppercase;
-                width: $form-field-width;
-            }
-            input {
-                margin-bottom: 10px;
-                &[type=text], &[type=password] {
-                    height: 16px;
-                    @include form-field-base;
-                }
-            }
-            textarea {
-                height: 82px;
-                @include form-field-base;
-            }
-            input[type=text], textarea {
-                font-family: $body-font;
-            }
-        }
+body.plantshare .nav-links {
+    font-family: $headings-font;
+    font-size: 14px;
+    margin: 0 0 16px;
+}
+
+body.plantshare .content {
+    li {
+        list-style-type: none;
     }
-    .box {
-        background-color: #fff;
-        border: 1px solid $border-green;
-        padding: 4px $section-padding;
-        table {
-            margin: $section-padding 0 12px;
-            width: 100%;
-            tr:nth-child(odd) {
-                background-color: $light-green;
-            }
-            th, td {
-                padding: 6px 8px;
-            }
-            th {
-                font-weight: normal;
-                text-align: left;
-                width: 33%;
-            }
+    form {
+        p {
+            margin: 0;
         }
-    }
-    form.login {
-        padding: 0 $section-padding $section-padding;
-        max-width: 250px;
-        min-width: 194px;
         label {
-            font-size: 10px;
+            clear: left;
+            display: block;
+            margin-bottom: 4px;
+            text-transform: uppercase;
+            width: $form-field-width;
         }
         input {
-            border-color: $link-green;
-            max-width: 246px;
-            &.button {
-                margin-top: 2px;
-                width: 99px;
+            margin-bottom: 10px;
+            &[type=text], &[type=password] {
+                height: 16px;
+                @include form-field-base;
             }
         }
-        a {
-            float: right;
-            font-family: $headings-font;
-            font-size: 11px;
-            margin-top: 9px;
-            padding-right: 1px;
+        textarea {
+            height: 82px;
+            @include form-field-base;
+        }
+        input[type=text], textarea {
+            font-family: $body-font;
         }
     }
-    .sign-up-call {
-        clear: left;
-        padding: 12px 18px;
-        width: $plantshare-main-column-width;
-        ul {
-            line-height: 18px;
-            margin: 10px 0 0 24px;
+}
+body.plantshare.box {
+    background-color: #fff;
+    border: 1px solid $border-green;
+    padding: 4px $section-padding;
+    table {
+        margin: $section-padding 0 12px;
+        width: 100%;
+        tr:nth-child(odd) {
+            background-color: $light-green;
         }
+        th, td {
+            padding: 6px 8px;
+        }
+        th {
+            font-weight: normal;
+            text-align: left;
+            width: 33%;
+        }
+    }
+}
+body.plantshare form.login {
+    padding: 0 $section-padding $section-padding;
+    max-width: 250px;
+    min-width: 194px;
+    label {
+        font-size: 10px;
+    }
+    input {
+        border-color: $link-green;
+        max-width: 246px;
+        &.button {
+            margin-top: 2px;
+            width: 99px;
+        }
+    }
+    a {
+        float: right;
+        font-family: $headings-font;
+        font-size: 11px;
+        margin-top: 9px;
+        padding-right: 1px;
+    }
+}
+body.plantshare .sign-up-call {
+    clear: left;
+    padding: 12px 18px;
+    width: $plantshare-main-column-width;
+    ul {
+        line-height: 18px;
+        margin: 10px 0 0 24px;
+    }
+    li {
+        list-style-type: disc;
+    }
+    a {
+        margin: 12px auto;
+        width: 204px;
+    }
+}
+
+body.plantshare .notification {
+    width: $plantshare-main-column-width;
+    ul {
+        line-height: 18px;
+        list-style-position: inside;
+        margin: 10px 0 0 24px;
+    }
+}
+body.plantshare .ps-button {
+    margin: 10px 0;
+}
+body.plantshare .save-btn {
+    width: 99px !important;
+}
+body.plantshare a.close-btn {
+    background: transparent url(/static/images/icons/close.png) no-repeat;
+    display: block;
+    height: 16px;
+    width: 16px;
+    text-indent: -9999px;
+}
+
+body.plantshare #main .profile {
+    clear: left;
+    width: 471px;
+    h2 {
+        margin-bottom: 14px;
+        width: 200px;
+    }
+    a.edit {
+        display: block;
+        float: right;
+    }
+    h3 {
+        font-size: 18px;
+        margin: 0;
+    }
+    div {
+        clear: left;
+        height: 102px;
+    }
+    .avatar {
+        background: $light-green;
+        display: block;
+        float: left;
+        height: 102px;
+        margin-right: $section-padding;
+        width: 112px;
+    }
+    table {
+        clear: left;
+    }
+    .map {
+        float: right;
+        margin-left: $section-padding;
+    }
+    p {
+        margin: 2px 0;
+    }
+}
+
+body.plantshare#activation-expired {
+    .content ul.causes {
+        padding: 0 0 0 18px;
         li {
             list-style-type: disc;
+            margin: 0 0 2px 0;
         }
-        a {
-            margin: 12px auto;
+    }
+}
+
+body.plantshare#terms-of-agreement {
+    #main form {
+        input[type="checkbox"] {
+            clear: both;
+            float: left;
+            margin: 3px 14px 0 0;
+            width: auto;
+        }
+        fieldset {
+            background: #fff;
+            border: 0;
+        }
+        label {
+            float: right;
+            line-height: 150%;
+            margin: -16px 0 24px 32px;
+            text-transform: none;
+            width: auto;
+            &:last-of-type {
+                margin-bottom: 0;
+            }
+        }
+        div {
+            margin: 14px 0;
+            padding: 24px 36px 24px 18px;
+        }
+        .agree-btn {
+            margin-right: 14px;
+            width: 153px;
+        }
+    }
+}
+
+body.plantshare#plantshare {   /* styles for the PlantShare main page */
+    h1 {
+        float: left;
+    }
+    h2 {
+        line-height: 100%;
+    }
+    #find-people-form {
+        float: right;
+        margin: 0 0 6px;
+        width: 184px;
+        h2 {
+            font-size: 18px;
+            margin-top: 0;
+        }
+        input[type='text'] {
+            width: 130px;
+        }
+    }
+    #recent-sightings-gallery {
+        clear: both;
+        float: right;
+        margin: 0;
+        width: 184px;
+        @include user-select(none);
+        h2 {
+            font-size: 18px;
+            margin-top: 0;
+            @include user-select(text);
+        }
+    }
+    .img-gallery {
+        width: auto;
+        .frame {
+            cursor: pointer;
+            height: 139px;
+            width: 173px;
+        }
+        .img-container {
+            height: 149px;
+            width: 183px;
+        }
+        .plant-name {
+            font-size: 10px;
+            margin: 4px 0 0;
+            text-align: center;
+            @include user-select(text);
+            &.scientific {
+                font-style: italic;
+            }
+        }
+        .controls {
+            margin: 0;
+            a {
+                cursor: pointer;
+            }
+        }
+    }
+    #ask {
+        margin-top: 20px;
+    }
+}
+
+body.plantshare#find-people {
+    #main {
+        .box {
+            padding: 10px;
+        }
+        .person {
+            height: 74px;
+            margin: 0;
+            padding: 20px 0 0 0;
+            &:nth-child(odd) {
+                background-color: $light-green;
+            }
+            img {
+                background: $light-green;
+                float: left;
+                height: 60px;
+                margin: 0 18px;
+                width: 66px;
+            }
+            ul {
+                float: left;
+                line-height: 140%;
+                width: 400px;
+            }
+            li {
+                margin: 0 0 3px;
+            }
+            .name {
+                font-family: $headings-font;
+                font-size: 24px;
+                margin: 2px 0 10px;
+            }
+            ul:first-child {   /* when avatar is omitted */
+                margin-left: 98px;
+            }
+            p {
+                float: right;
+                margin: 12px 0 0;
+                padding-right: 10px;
+                a {
+                    border-bottom: 0;
+                }
+            }
+            .invite-group-btn {
+                width: 143px;
+            }
+        }
+    }
+    @include hide-default-shadowbox-close;
+}
+
+body.plantshare #find-people-form {
+    margin: 14px 0 0;
+    input {
+        &[type='text'] {
+            background: transparent url(../images/layout/plantshare-btns.png) no-repeat -1px -334px;
+            border: 0 none;
+            display: block;
+            float: left;
+            font-size: $mini-input-font-size;
+            height: 22px;
+            padding: 0 2px 0 12px;
+            width: 309px;
+        }
+        &[type='submit'] {
+            background: transparent url(../images/layout/plantshare-btns.png) no-repeat -380px -4px;
+            border: 0 none;
+            display: block;
+            float: left;
+            height: 22px;
+            padding: 0;
+            text-indent: -9999px;
+            width: 40px;
+        }
+        &:focus {
+           outline: 0 none;
+        }
+    }
+    & + p {
+        clear: left;
+        padding-top: 14px;
+    }
+}
+
+body.plantshare#find-people-profile {
+    background: none;
+    div {
+        background: #fff;
+        border: 5px solid #acac90;
+        height: $avatar-image-height + ($profile-box-padding * 2);
+        padding: 0 $profile-box-padding 0 0;
+        p {
+            margin-top: 0;
+        }
+    }
+    .close {
+        @include dialog-close-button;
+    }
+    .avatar {
+        background: $light-green;
+        float: left;
+        height: $avatar-image-height;
+        margin: $profile-box-padding;
+        width: $avatar-image-width;
+    }
+    .map {
+        float: right;
+        height: 113px;
+        width: $avatar-image-width;
+    }
+    .not-found {
+        padding: 70px 0;
+        text-align: center;
+    }
+}
+
+body.plantshare#sign-up #main {
+    form input {
+        width: 350px;
+        &.button {
+            margin-top: 12px;
             width: 204px;
         }
     }
-    .notification {
-        width: $plantshare-main-column-width;
-        ul {
-            line-height: 18px;
-            list-style-position: inside;
-            margin: 10px 0 0 24px;
-        }
+}
+body.plantshare#log-in {
+    h1 + p {
+        font-family: $headings-font;
+        font-size: 14px;
+        margin: 0;
+        padding: $section-padding 0;
     }
-    .ps-button {
-        margin: 10px 0;
+    ul.errorlist {
+        padding: $section-padding 0;
     }
-    .save-btn {
-        width: 99px !important;
-    }
-    a.close-btn {
-        background: transparent url(/static/images/icons/close.png) no-repeat;
-        display: block;
-        height: 16px;
-        width: 16px;
-        text-indent: -9999px;
-    }
-
-    #main .profile {
-        clear: left;
-        width: 471px;
-        h2 {
-            margin-bottom: 14px;
-            width: 200px;
-        }
-        a.edit {
-            display: block;
-            float: right;
-        }
-        h3 {
-            font-size: 18px;
-            margin: 0;
-        }
-        div {
-            clear: left;
-            height: 102px;
-        }
-        .avatar {
-            background: $light-green;
-            display: block;
-            float: left;
-            height: 102px;
-            margin-right: $section-padding;
-            width: 112px;
-        }
-        table {
-            clear: left;
-        }
-        .map {
-            float: right;
-            margin-left: $section-padding;
-        }
-        p {
-            margin: 2px 0;
-        }
-    }
-    
-    &#activation-expired {
-        .content ul.causes {
-            padding: 0 0 0 18px;
-            li {
-                list-style-type: disc;
-                margin: 0 0 2px 0;
-            }
-        }
-    }
-
-    &#terms-of-agreement {
-        #main form {
-            input[type="checkbox"] {
-                clear: both;
-                float: left;
-                margin: 3px 14px 0 0;
-                width: auto;
-            }
-            fieldset {
-                background: #fff;
-                border: 0;
-            }
-            label {
-                float: right;
-                line-height: 150%;
-                margin: -16px 0 24px 32px;
-                text-transform: none;
-                width: auto;
-                &:last-of-type {
-                    margin-bottom: 0;
-                }
-            }
-            div {
-                margin: 14px 0;
-                padding: 24px 36px 24px 18px;
-            }
-            .agree-btn {
-                margin-right: 14px;
-                width: 153px;
-            }
-        }
-    }
-
-    &#plantshare {   /* styles for the PlantShare main page */
-        h1 {
-            float: left;
-        }
-        h2 {
-            line-height: 100%;
-        }
-        #find-people-form {
-            float: right;
-            margin: 0 0 6px;
-            width: 184px;
-            h2 {
-                font-size: 18px;
-                margin-top: 0;
-            }
-            input[type='text'] {
-                width: 130px;
-            }
-        }
-        #recent-sightings-gallery {
-            clear: both;
-            float: right;
-            margin: 0;
-            width: 184px;
-            @include user-select(none);
-            h2 {
-                font-size: 18px;
-                margin-top: 0;
-                @include user-select(text);
-            }
-        }
-        .img-gallery {
-            width: auto;
-            .frame {
-                cursor: pointer;
-                height: 139px;
-                width: 173px;
-            }
-            .img-container {
-                height: 149px;
-                width: 183px;
-            }
-            .plant-name {
-                font-size: 10px;
-                margin: 4px 0 0;
-                text-align: center;
-                @include user-select(text);
-                &.scientific {
-                    font-style: italic;
-                }
-            }
-            .controls {
-                margin: 0;
-                a {
-                    cursor: pointer;
-                }
-            }
-        }
-        #ask {
-            margin-top: 20px;
-        }
-    }
-
-    &#find-people {
-        #main {
-            .box {
-                padding: 10px;
-            }
-            .person {
-                height: 74px;
-                margin: 0;
-                padding: 20px 0 0 0;
-                &:nth-child(odd) {
-                    background-color: $light-green;
-                }
-                img {
-                    background: $light-green;
-                    float: left;
-                    height: 60px;
-                    margin: 0 18px;
-                    width: 66px;
-                }
-                ul {
-                    float: left;
-                    line-height: 140%;
-                    width: 400px;
-                }
-                li {
-                    margin: 0 0 3px;
-                }
-                .name {
-                    font-family: $headings-font;
-                    font-size: 24px;
-                    margin: 2px 0 10px;
-                }
-                ul:first-child {   /* when avatar is omitted */
-                    margin-left: 98px;
-                }
-                p {
-                    float: right;
-                    margin: 12px 0 0;
-                    padding-right: 10px;
-                    a {
-                        border-bottom: 0;
-                    }
-                }
-                .invite-group-btn {
-                    width: 143px;
-                }
-            }
-        }
-        @include hide-default-shadowbox-close;
-    }
-
-    #find-people-form {
-        margin: 14px 0 0;
-        input {
-            &[type='text'] {
-                background: transparent url(../images/layout/plantshare-btns.png) no-repeat -1px -334px;
-                border: 0 none;
-                display: block;
-                float: left;
-                font-size: $mini-input-font-size;
-                height: 22px;
-                padding: 0 2px 0 12px;
-                width: 309px;
-            }
-            &[type='submit'] {
-                background: transparent url(../images/layout/plantshare-btns.png) no-repeat -380px -4px;
-                border: 0 none;
-                display: block;
-                float: left;
-                height: 22px;
-                padding: 0;
-                text-indent: -9999px;
-                width: 40px;
-            }
-            &:focus {
-               outline: 0 none;
-            }
-        }
-        & + p {
-            clear: left;
-            padding-top: 14px;
-        }
-    }
-
-    &#find-people-profile {
-        background: none;
-        div {
-            background: #fff;
-            border: 5px solid #acac90;
-            height: $avatar-image-height + ($profile-box-padding * 2);
-            padding: 0 $profile-box-padding 0 0;
-            p {
-                margin-top: 0;
-            }
-        }
-        .close {
-            @include dialog-close-button;
-        }
-        .avatar {
-            background: $light-green;
-            float: left;
-            height: $avatar-image-height;
-            margin: $profile-box-padding;
-            width: $avatar-image-width;
-        }
-        .map {
-            float: right;
-            height: 113px;
-            width: $avatar-image-width;
-        }
-        .not-found {
-            padding: 70px 0;
-            text-align: center;
-        }
-    }
-
-    &#sign-up #main {
-        form input {
-            width: 350px;
-            &.button {
-                margin-top: 12px;
-                width: 204px;
-            }
-        }
-    }
-    &#log-in {
-        h1 + p {
-            font-family: $headings-font;
-            font-size: 14px;
-            margin: 0;
-            padding: $section-padding 0;
-        }
-        ul.errorlist {
-            padding: $section-padding 0;
-        }
-        form.login {
-            padding-left: 0;
-            label {
-                font-size: 12px;
-            }
-            input {
-                border-color: $border-green;
-            }
-        }
-    }
-
-    #sightings-locator {
-        h3 {
-            display: inline-block;
-            float: left;
-            font-size: 14px;
-            line-height: 22px;
-            margin: 0 7px 5px 0;
-        }
-        input {
-            border: 0 none;
-            float: left;
-            height: 22px;
-            margin: 0 0 5px 0;
-            padding: 0 2px 0 12px;
-            &[type='text'] {
-                background: transparent url(/static/images/layout/plantshare-btns.png) no-repeat -0px -334px;
-                font-size: $mini-input-font-size;
-                width: 160px;
-            }
-            &[type='submit'] {
-                background: transparent url(/static/images/layout/plantshare-btns.png) no-repeat -483px -334px;
-                font-size: 0;
-                text-indent: -9999px;
-                width: 30px;
-            }
-            &:focus {
-                outline: 0 none;
-            }
-            & + div {
-                font-size: $mini-input-font-size;
-            }
-        }
-        .map {
-            clear: left;
-            margin-top: 36px;
-        }
-        &.mini {
-            clear: both;
-            margin-top: 20px;
-            .box {
-                font-size: $mini-input-font-size;
-                height: 297px;
-                padding: 0 0 0 10px;
-                form {
-                    float: left;
-                    padding: 0;
-                    width: 205px;
-                    h3 {
-                        padding-top: 5px;
-                    }
-                    h4 {
-                        clear: left;
-                        font-family: $body-font;
-                        font-size: 12px;
-                        font-weight: bold;
-                        line-height: 14px;
-                        margin: 6px 0;
-                        padding-top: 8px;
-                    }
-                    p {
-                        line-height: 14px;
-                        margin: 0;
-                        padding: 0;
-                        &#sightings-status {
-                            margin-left: -1000px; /* hide until JS shows it */
-                            padding: 65px 0 0;
-                        }
-                        &.full-link {
-                            margin-top: 10px;
-                        }
-                    }
-                }
-                .map {
-                    clear: none;
-                    border-bottom: 0;
-                    border-right: 0;
-                    border-top: 0;
-                    float: right;
-                    margin-top: 0;
-                }
-            }
-        } /* end .mini */
-    } /* end #sightings-locator */
-
-    &#new-sighting {
-        h1 + div {
-            background: #fff;
-            border: 1px solid $border-green;
-            margin-bottom: $section-padding;
-            padding: 5px $section-padding;
-            width: 654px;
-        }
-    }
-    &#new-sighting, &#edit-sighting {
-        #id_identification, .restricted {
-            display: inline-block;
-        }
-        .images {
-            margin-top: 10px;
-        }
-        .restricted {
-            margin-left: 14px;
-        }
-        .restricted-dialog {
-            background: #fff;
-            color: #000;
-            padding: 20px;
-            height: auto;
-            width: auto;
-            p {
-                margin: 0 0 14px;
-            }
-            .ok {
-                margin: 20px 0 0;
-                text-align: center;
-                a {
-                    color: #fff;
-                    cursor: pointer;
-                    display: inline-block;
-                    width: 80px;
-                }
-            }
-        }
-        fieldset {
-            margin-bottom: 10px;
-        }
-        .error {
-            color: #f00;
-        }
-        #id_location_notes {
-            height: 113px;
-        }
-        #id_created {
-            width: 100px;
-        }
-        #id_notes {
-            height: 62px;
-            margin-bottom: 10px;
-        }
-        .visibility {
-            clear: left;
-            margin-bottom: 50px;
-            p {
-                display: inline-block;
-            }
-            .label {
-                display: block;
-            }
-            select {
-                margin: 4px 0 0;
-            }
-        }
-    }
-
-    &#manage-sightings {
-        .content table {
-            width: 100%;
-            th {
-                &.identification {
-                    width: 25%;
-                }
-                &.location {
-                    width: 30%;
-                }
-                &.posted {
-                    width: 20%;
-                }
-                &.visibility {
-                    width: 15%;
-                }
-                &.action {
-                    width: 7%;
-                }
-            }
-            td.action {
-                text-align: center;
-            }
-            td:first-of-type a {
-                border-bottom: 0;
-            }
-            img {
-                max-width: 90px;
-            }
-        }
-        @include hide-default-shadowbox-close;
-    }
-
-    &#delete-sighting, &#delete-checklist {
-        background: none;
-        div {
-            background: #fff;
-            border: 5px solid #acac90;
-            height: 100%;
-            padding: 0 18px;
-            text-align: center;
-        }
-        .close {
-            @include dialog-close-button;
-        }
-        h2 {
-            font-size: 18px;
-            text-align: left;
-        }
-        table {
-            margin: 18px 0;
-            width: 100%;
-        }
-        thead {
-            display: none;
-        }
-        .cancel-btn {
-            color: white;
-            margin: 0 10px 0 0;
-            width: 123px;
-        }
-    }
-
-    &#locator #main {
-        h1 + p {
-            margin-bottom: 4px;
-        }
-        h3 {
-            font-family: $body-font;
+    form.login {
+        padding-left: 0;
+        label {
             font-size: 12px;
-            line-height: 24px;
         }
-        #sightings-status {
-            display: none;  /* initially hide, until updating value via JS */
-            float: right;
-            line-height: 24px;
+        input {
+            border-color: $border-green;
         }
-        /* Smooth Div Scroll image area */
-        #species-images {
-            border: 5px solid rgba(255, 255, 255, 0.8);
-            box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.6);
-            height: 150px;
-            margin: 0 0 20px 0;
-            overflow: hidden;
-            position: relative;
-            top: 0;
-            width: 700px;
-            z-index: 100;
-            .scrollableArea a {
-                border-right: 5px solid #fff;
-                float: left;
+    }
+}
+
+body.plantshare #sightings-locator {
+    h3 {
+        display: inline-block;
+        float: left;
+        font-size: 14px;
+        line-height: 22px;
+        margin: 0 7px 5px 0;
+    }
+    input {
+        border: 0 none;
+        float: left;
+        height: 22px;
+        margin: 0 0 5px 0;
+        padding: 0 2px 0 12px;
+        &[type='text'] {
+            background: transparent url(/static/images/layout/plantshare-btns.png) no-repeat -0px -334px;
+            font-size: $mini-input-font-size;
+            width: 160px;
+        }
+        &[type='submit'] {
+            background: transparent url(/static/images/layout/plantshare-btns.png) no-repeat -483px -334px;
+            font-size: 0;
+            text-indent: -9999px;
+            width: 30px;
+        }
+        &:focus {
+            outline: 0 none;
+        }
+        & + div {
+            font-size: $mini-input-font-size;
+        }
+    }
+    .map {
+        clear: left;
+        margin-top: 36px;
+    }
+}
+body.plantshare #sightings-locator.mini {
+    clear: both;
+    margin-top: 20px;
+    .box {
+        font-size: $mini-input-font-size;
+        height: 297px;
+        padding: 0 0 0 10px;
+        form {
+            float: left;
+            padding: 0;
+            width: 205px;
+            h3 {
+                padding-top: 5px;
+            }
+            h4 {
+                clear: left;
+                font-family: $body-font;
+                font-size: 12px;
+                font-weight: bold;
+                line-height: 14px;
+                margin: 6px 0;
+                padding-top: 8px;
+            }
+            p {
+                line-height: 14px;
                 margin: 0;
                 padding: 0;
+                &#sightings-status {
+                    margin-left: -1000px; /* hide until JS shows it */
+                    padding: 65px 0 0;
+                }
+                &.full-link {
+                    margin-top: 10px;
+                }
+            }
+        }
+        .map {
+            clear: none;
+            border-bottom: 0;
+            border-right: 0;
+            border-top: 0;
+            float: right;
+            margin-top: 0;
+        }
+    }
+} /* end .mini */
+
+body.plantshare#new-sighting {
+    h1 + div {
+        background: #fff;
+        border: 1px solid $border-green;
+        margin-bottom: $section-padding;
+        padding: 5px $section-padding;
+        width: 654px;
+    }
+}
+body.plantshare#new-sighting, body.plantshare#edit-sighting {
+    #id_identification, .restricted {
+        display: inline-block;
+    }
+    .images {
+        margin-top: 10px;
+    }
+    .restricted {
+        margin-left: 14px;
+    }
+    .restricted-dialog {
+        background: #fff;
+        color: #000;
+        padding: 20px;
+        height: auto;
+        width: auto;
+        p {
+            margin: 0 0 14px;
+        }
+        .ok {
+            margin: 20px 0 0;
+            text-align: center;
+            a {
+                color: #fff;
+                cursor: pointer;
+                display: inline-block;
+                width: 80px;
             }
         }
     }
+    fieldset {
+        margin-bottom: 10px;
+    }
+    .error {
+        color: #f00;
+    }
+    #id_location_notes {
+        height: 113px;
+    }
+    #id_created {
+        width: 100px;
+    }
+    #id_notes {
+        height: 62px;
+        margin-bottom: 10px;
+    }
+    .visibility {
+        clear: left;
+        margin-bottom: 50px;
+        p {
+            display: inline-block;
+        }
+        .label {
+            display: block;
+        }
+        select {
+            margin: 4px 0 0;
+        }
+    }
+}
 
-    .modal-container {
+body.plantshare#manage-sightings {
+    .content table {
+        width: 100%;
+        th {
+            &.identification {
+                width: 25%;
+            }
+            &.location {
+                width: 30%;
+            }
+            &.posted {
+                width: 20%;
+            }
+            &.visibility {
+                width: 15%;
+            }
+            &.action {
+                width: 7%;
+            }
+        }
+        td.action {
+            text-align: center;
+        }
+        td:first-of-type a {
+            border-bottom: 0;
+        }
+        img {
+            max-width: 90px;
+        }
+    }
+    @include hide-default-shadowbox-close;
+}
+
+body.plantshare#delete-sighting, body.plantshare#delete-checklist {
+    background: none;
+    div {
+        background: #fff;
+        border: 5px solid #acac90;
+        height: 100%;
+        padding: 0 18px;
+        text-align: center;
+    }
+    .close {
+        @include dialog-close-button;
+    }
+    h2 {
+        font-size: 18px;
+        text-align: left;
+    }
+    table {
+        margin: 18px 0;
+        width: 100%;
+    }
+    thead {
+        display: none;
+    }
+    .cancel-btn {
+        color: white;
+        margin: 0 10px 0 0;
+        width: 123px;
+    }
+}
+
+body.plantshare#locator #main {
+    h1 + p {
+        margin-bottom: 4px;
+    }
+    h3 {
+        font-family: $body-font;
+        font-size: 12px;
+        line-height: 24px;
+    }
+    #sightings-status {
+        display: none;  /* initially hide, until updating value via JS */
+        float: right;
+        line-height: 24px;
+    }
+    /* Smooth Div Scroll image area */
+    #species-images {
+        border: 5px solid rgba(255, 255, 255, 0.8);
+        box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.6);
+        height: 150px;
+        margin: 0 0 20px 0;
+        overflow: hidden;
         position: relative;
+        top: 0;
+        width: 700px;
+        z-index: 100;
+        .scrollableArea a {
+            border-right: 5px solid #fff;
+            float: left;
+            margin: 0;
+            padding: 0;
+        }
+    }
+}
+
+body.plantshare .modal-container {
+    position: relative;
+}
+
+body.plantshare .image-modal {
+    background-color: white;
+    border: 5px solid #acac90;
+    display: none;
+    height: 160px;
+    left: 0px;
+    padding: 15px;
+    position: absolute;
+    top: 250px;
+    width: 360px;
+    z-index: 10;
+    img {
+        float: left;
+        margin: 0 5px 10px 0;
+        max-height: 84px;
+        max-width: 84px;
+    }
+    a.button {
+        @extend .orange-button;
+        color: white;
+        cursor: pointer;
+        display: inline-block;
+        margin: 10px 6px 0 0;
+        width: 100px;
     }
 
-    .image-modal {
-        background-color: white;
-        border: 5px solid #acac90;
-        display: none;
-        height: 160px;
-        left: 0px;
-        padding: 15px;
-        position: absolute;
-        top: 250px;
-        width: 360px;
-        z-index: 10;
+    div.modal-footer {
+        color: #888;
+        display: block;
+        float: left;
+        position: relative;
+        width: 100%;
+        div.file-path {
+            border: 1px solid #888;
+            color: #888;
+            margin: 2px 0 auto;
+            padding: 2px;
+        }
+    }
+    a.close {
+        @include dialog-close-button;
+    }
+    h4 {
+        float: right;
+        font-size: 18px;
+        margin: 0 0 5px;
+        width: 270px;
+    }
+    form {
+        float: right;
+        width: 270px;
+    }
+    input {
+        border: 0 none !important;
+        box-shadow: inset 0 0 0 white !important;
+    }
+    input#id_image {
+        clear: both;
+        display: block;
+        margin: 0 0 10px;
+    }
+    div.screening-notify p {
+        color: #888;
+        font-size: 10px;
+        margin: 5px 0;
+    }
+}
+
+body.plantshare .thumb-gallery {
+    display: inline-block;
+    float: left;
+    padding: 4px 0 20px 0;
+}
+body.plantshare .thumb-frame {
+    display: inline-block;
+    margin: 0 14px 0 0;
+    vertical-align: bottom;
+    .thumb {
+        vertical-align: bottom;
+    }
+    .wait {
+        margin-bottom: 40px;
+    }
+    .delete-link {
+        display: table;
+        margin: 0 auto;
+        padding-top: 8px;
         img {
             float: left;
-            margin: 0 5px 10px 0;
-            max-height: 84px;
-            max-width: 84px;
+            padding-right: 4px;
+            vertical-align: top;
         }
-        a.button {
-            @extend .orange-button;
-            color: white;
-            cursor: pointer;
-            display: inline-block;
-            margin: 10px 6px 0 0;
-            width: 100px;
-        }
+    }
+}
+body.plantshare .upload {
+    display: inline-block;
+    float: left;
+    padding-bottom: 20px;
+}
 
-        div.modal-footer {
-            color: #888;
-            display: block;
-            float: left;
-            position: relative;
-            width: 100%;
-            div.file-path {
-                border: 1px solid #888;
-                color: #888;
-                margin: 2px 0 auto;
-                padding: 2px;
-            }
-        }
-        a.close {
-            @include dialog-close-button;    
-        }
-        h4 {
-            float: right;
+
+body.plantshare#sightings {
+    h2 {
+        clear: both;
+        font-size: 22px;
+    }
+    #main > ul {
+        margin-top: 14px;
+        > li {
+            clear: both;
+            font-family: $headings-font;
             font-size: 18px;
-            margin: 0 0 5px;
-            width: 270px;
-        }
-        form {
-            float: right;
-            width: 270px;
-        }
-        input {
-            border: 0 none !important;
-            box-shadow: inset 0 0 0 white !important;
-        }
-        input#id_image {
-            clear: both;
-            display: block;
-            margin: 0 0 10px;
-        }
-        div.screening-notify p {
-            color: #888;
-            font-size: 10px;
-            margin: 5px 0;
-        }
-    }
-
-    .thumb-gallery {
-        display: inline-block;
-        float: left;
-        padding: 4px 0 20px 0;
-    }
-    .thumb-frame {
-        display: inline-block;
-        margin: 0 14px 0 0;
-        vertical-align: bottom;
-        .thumb {
-            vertical-align: bottom;
-        }
-        .wait {
-            margin-bottom: 40px;
-        }
-        .delete-link {
-            display: table;
-            margin: 0 auto;
-            padding-top: 8px;
-            img {
-                float: left;
-                padding-right: 4px;
-                vertical-align: top;
-            }
-        }
-    }
-    .upload {
-        display: inline-block;
-        float: left;
-        padding-bottom: 20px;
-    }
-
-
-    &#sightings {
-        h2 {
-            clear: both;
-            font-size: 22px;
-        }
-        #main > ul {
-            margin-top: 14px;
-            > li {
-                clear: both;
-                font-family: $headings-font;
-                font-size: 18px;
-                margin-bottom: 14px;
-                margin-top: 22px;
-                ul {
-                    li {
-                        clear: both;
-                        font-size: 14px;
-                        margin: 22px 0;
-                    }
-                }
-            }
-            img {
-                height: 149px;
-                width: 183px;
-            }
-            .photolink {
-                border-bottom: 0;
-                box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.6);
-                display: inline-block;
-                float: left;
-                height: 149px;
-                margin: 0 16px 22px 0;
-                overflow: hidden;
-                position: relative;
-                vertical-align: middle;
-                width: 183px;
-
-                &:before {
-                    border: 5px solid rgba(255, 255, 255, 0.8);
-                    content: ' ';
-                    height: 139px;
-                    position: absolute;
-                    width: 173px;
-                    z-index: 100;
-                }
-            }
-            .title {
-                line-height: 150%;
-                margin-left: 200px;
-            }
-            .photolink + .title {
-                margin-left: 12px;
-            }
-            .title a {
-                font-size: 16px;
-            }
-        }
-    }
-
-    &.sighting {
-        .map {
-            float: right;
-            margin: 0 0 12px 12px;
-        }
-        .photos {
-            h2 {
-                margin: 0;
-            }
+            margin-bottom: 14px;
+            margin-top: 22px;
             ul {
                 li {
-                    height: auto;
-                    list-style: none;
-                    margin: 0;
-                    padding: 10px 0;
-                }
-                img {
-                    max-height: 710px;
-                    max-width: 710px;
+                    clear: both;
+                    font-size: 14px;
+                    margin: 22px 0;
                 }
             }
         }
-        form {
-            label {
-                text-transform: none;
+        img {
+            height: 149px;
+            width: 183px;
+        }
+        .photolink {
+            border-bottom: 0;
+            box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.6);
+            display: inline-block;
+            float: left;
+            height: 149px;
+            margin: 0 16px 22px 0;
+            overflow: hidden;
+            position: relative;
+            vertical-align: middle;
+            width: 183px;
+
+            &:before {
+                border: 5px solid rgba(255, 255, 255, 0.8);
+                content: ' ';
+                height: 139px;
+                position: absolute;
+                width: 173px;
+                z-index: 100;
             }
-            fieldset {
-                border: 0;
-                margin: 0 0 $section-padding;
-                padding: 0;
-                width: $form-field-width + 334px;
-                legend {
-                    @include offscreen;
-                }
-            }
-            .post-sighting-btn {
-                width: 157px;
-            }                
+        }
+        .title {
+            line-height: 150%;
+            margin-left: 200px;
+        }
+        .photolink + .title {
+            margin-left: 12px;
+        }
+        .title a {
+            font-size: 16px;
         }
     }
+}
 
-    &.ask {
-        #sb-title-inner {
-            font-size: 11px;   /* title atop lightboxed question images */
-        }
+body.plantshare.sighting {
+    .map {
+        float: right;
+        margin: 0 0 12px 12px;
     }
-
-    &#ask #main,         /* Ask the Botanist section on both pages */
-    &#plantshare #ask {
-        #ask-section {
-            margin-bottom: 18px;
-            min-height: 100px;
-            .botanist {
-                background: #ddd;
-                float: left;
-                height: 97px;
-                margin: 4px 18px 0 0;
-                width: 103px;
+    .photos {
+        h2 {
+            margin: 0;
+        }
+        ul {
+            li {
+                height: auto;
+                list-style: none;
+                margin: 0;
+                padding: 10px 0;
+            }
+            img {
+                max-height: 710px;
+                max-width: 710px;
             }
         }
-        #question-form {
-            clear: left;
-            padding-left: 121px;
-        }
+    }
+    form {
         label {
             text-transform: none;
-            width: auto;
         }
-        textarea {
-            border: 1px solid #aaa;
-            box-shadow: 2px 3px 5px 0px #ddd;
-            height: 75px;
-            margin: 4px 0 10px;
-            padding: 8px;
-            width: 571px;
-        }
-        .submit {
-            @extend .orange-button;
-            clear: both;
-            display: block;
-            margin: 42px 0 8px;
-            text-transform: uppercase;
-        }
-        h2, h3 {
-            clear: both;
-        }
-        .more {
-            text-align: right;
-        }
-    }
-
-    &#questions #main {   /* Questions and Answers page */
-        #category-nav {
-            p {
-                float: left;
-                margin: 0;
-            }
-            ul {
-                margin-left: 80px;
-            }
-            li {
-                display: inline;
-                margin-right: 8px;
-                white-space: nowrap;
-            }
-        }
-    }
-
-    .questions {   /* styles common to Ask the Botanist, questions pages */
-        li {
-            background-color: #f9faea;
-            border: 1px solid $border-green;
-            margin: 5px 0 10px;
-            overflow: auto;
-            padding: 10px 12px;
-        }
-        img {
-            float: right;
-            margin: 5px 0 5px 12px;
-        }
-        dl {
-            margin: 0;
+        fieldset {
+            border: 0;
+            margin: 0 0 $section-padding;
             padding: 0;
-        }
-        dt {
-            clear: left;
-            font-weight: bold;
-            margin-top: 10px;
-            &:first-child {
-                margin-top: 0;
+            width: $form-field-width + 334px;
+            legend {
+                @include offscreen;
             }
         }
-        dd {
-            margin: 0;
-        }
-        span {
-            display: block;
+        .post-sighting-btn {
+            width: 157px;
         }
     }
+}
 
-    &#profile {   /* Profile page */
-        .username {
-            float: right;
+body.plantshare.ask {
+    #sb-title-inner {
+        font-size: 11px;   /* title atop lightboxed question images */
+    }
+}
+
+body.plantshare#ask #main,         /* Ask the Botanist section on both pages */
+body.plantshare#plantshare #ask {
+    #ask-section {
+        margin-bottom: 18px;
+        min-height: 100px;
+        .botanist {
+            background: #ddd;
+            float: left;
+            height: 97px;
+            margin: 4px 18px 0 0;
+            width: 103px;
         }
-        form + h2 {
-            margin: 30px 0 18px;
+    }
+    #question-form {
+        clear: left;
+        padding-left: 121px;
+    }
+    label {
+        text-transform: none;
+        width: auto;
+    }
+    textarea {
+        border: 1px solid #aaa;
+        box-shadow: 2px 3px 5px 0px #ddd;
+        height: 75px;
+        margin: 4px 0 10px;
+        padding: 8px;
+        width: 571px;
+    }
+    .submit {
+        @extend .orange-button;
+        clear: both;
+        display: block;
+        margin: 42px 0 8px;
+        text-transform: uppercase;
+    }
+    h2, h3 {
+        clear: both;
+    }
+    .more {
+        text-align: right;
+    }
+}
+
+body.plantshare#questions #main {   /* Questions and Answers page */
+    #category-nav {
+        p {
+            float: left;
+            margin: 0;
         }
-        h3 {
-            margin-bottom: 14px;
+        ul {
+            margin-left: 80px;
         }
-        div.section-container {
-            position: relative;
+        li {
+            display: inline;
+            margin-right: 8px;
+            white-space: nowrap;
         }
-        .info-section, .location-section {
-            min-height: 140px;
-            position: relative;
-            select {
-                margin-bottom: 10px;
+    }
+}
+
+body.plantshare .questions {   /* styles common to Ask the Botanist, questions pages */
+    li {
+        background-color: #f9faea;
+        border: 1px solid $border-green;
+        margin: 5px 0 10px;
+        overflow: auto;
+        padding: 10px 12px;
+    }
+    img {
+        float: right;
+        margin: 5px 0 5px 12px;
+    }
+    dl {
+        margin: 0;
+        padding: 0;
+    }
+    dt {
+        clear: left;
+        font-weight: bold;
+        margin-top: 10px;
+        &:first-child {
+            margin-top: 0;
+        }
+    }
+    dd {
+        margin: 0;
+    }
+    span {
+        display: block;
+    }
+}
+
+body.plantshare#profile {   /* Profile page */
+    .username {
+        float: right;
+    }
+    form + h2 {
+        margin: 30px 0 18px;
+    }
+    h3 {
+        margin-bottom: 14px;
+    }
+    div.section-container {
+        position: relative;
+    }
+    .info-section, .location-section {
+        min-height: 140px;
+        position: relative;
+        select {
+            margin-bottom: 10px;
+        }
+        .field-controls {
+            padding: 5px 0 0;
+            input {
+                float: left;
+                margin-bottom: 0;
             }
-            .field-controls {
-                padding: 5px 0 0;
-                input {
-                    float: left;
-                    margin-bottom: 0;
-                }
-                input, a {
-                    display: inline-block;
-                    margin-right: 20px;
-                    vertical-align: middle;
-                }
-                &::after {
-                    content: " ";
-                    clear: both;
-                    display: block;
-                }
+            input, a {
+                display: inline-block;
+                margin-right: 20px;
+                vertical-align: middle;
             }
-            .field-reset {
-                margin-top: 7px;
-            }
-            .info.box {
-                min-height: 158px;
-                padding: 0 0 5px 0;
-                .avatar {
-                    float: left;
-                    margin-right: 15px;
-                    padding: 0;
-                    width: 170px;
-                    img {
-                        background: $light-green;
-                        border: 0;
-                        height: $avatar-image-height;
-                        width: $avatar-image-width;
-                    }
-                    p {
-                        text-align: center;
-                        margin: 0;
-                    }
-                    &.uploading {
-                        background-image: url(/static/images/icons/preloaders-dot-net-lg.gif);
-                        background-color: white;
-                        background-position: center;
-                        background-repeat: no-repeat;
-                    }
-                }
-                #id_location_map {
-                    border-bottom: 0;
-                    border-left: 0;
-                    border-top: 0;
-                    float: left;
-                    margin: 0 15px 0 0;
-                    padding: 0;
-                }
-                table {
-                    margin: 10px 0 0 0;
-                    padding: 0;
-                    width: 493px;
-                    td {
-                        padding: 7px 10px;
-                    }
-                    td.first {
-                        font-weight: bold;
-                        padding: 7px;
-                        text-align: right;
-                        vertical-align: baseline;
-                        width: 97px;
-                    }
-                    p {
-                        line-height: normal;
-                        margin: 0;
-                        padding: 0;
-                    }
-                    .display {
-                        .group-list, .coords-list {
-                            float: left;
-                        }
-                        .edit-link {
-                            float: right;
-                        }
-                        ul {
-                            list-style: none;
-                        }
-                    }
-                    .edit {
-                        display: none;
-                    }
-                }
+            &::after {
+                content: " ";
+                clear: both;
+                display: block;
             }
         }
-        .info-section {
-            margin: 0 0 20px;
-            .info.box {
-                min-height: 172px;
-                padding: 10px 15px;
-                table {
+        .field-reset {
+            margin-top: 7px;
+        }
+        .info.box {
+            min-height: 158px;
+            padding: 0 0 5px 0;
+            .avatar {
+                float: left;
+                margin-right: 15px;
+                padding: 0;
+                width: 170px;
+                img {
+                    background: $light-green;
+                    border: 0;
+                    height: $avatar-image-height;
+                    width: $avatar-image-width;
+                }
+                p {
+                    text-align: center;
                     margin: 0;
                 }
+                &.uploading {
+                    background-image: url(/static/images/icons/preloaders-dot-net-lg.gif);
+                    background-color: white;
+                    background-position: center;
+                    background-repeat: no-repeat;
+                }
+            }
+            #id_location_map {
+                border-bottom: 0;
+                border-left: 0;
+                border-top: 0;
+                float: left;
+                margin: 0 15px 0 0;
+                padding: 0;
+            }
+            table {
+                margin: 10px 0 0 0;
+                padding: 0;
+                width: 493px;
+            }
+            table td {
+                padding: 7px 10px;
+            }
+            table td.first {
+                font-weight: bold;
+                padding: 7px;
+                text-align: right;
+                vertical-align: baseline;
+                width: 97px;
+            }
+            table p {
+                line-height: normal;
+                margin: 0;
+                padding: 0;
+            }
+            table .display {
+                .group-list, .coords-list {
+                    float: left;
+                }
+                .edit-link {
+                    float: right;
+                }
+                ul {
+                    list-style: none;
+                }
+            }
+            .edit {
+                display: none;
             }
         }
-        .email-address {
-            margin-top: 32px;
+    }
+    .info-section {
+        margin: 0 0 20px;
+    }
+    .info-section .info.box {
+        min-height: 172px;
+        padding: 10px 15px;
+        table {
+            margin: 0;
         }
     }
+    .email-address {
+        margin-top: 32px;
+    }
+}
 
-    /* For: forms Your Profile page and also the separate form/error pages */
-    .change-password, .change-email {
-        input[type='submit'] {
-            margin: 8px 28px 0 0;
+/* For: forms Your Profile page and also the separate form/error pages */
+body.plantshare .change-password, body.plantshare .change-email {
+    input[type='submit'] {
+        margin: 8px 28px 0 0;
+        width: auto;
+    }
+    input[type='password'], input[type='text'] {
+        margin-bottom: 10px;
+        width: 250px !important;
+    }
+}
+body.plantshare .change-password a {
+    font-family: $headings-font;
+    font-size: 11px;
+}
+body.plantshare .change-email .verified-address {
+    background: url(/static/images/layout/check.png) no-repeat;
+    background-position: center left;
+    background-size: 18px 19px;
+    margin: 28px 0;
+    padding-left: 26px;
+}
+
+body.plantshare#forgot-password {
+    #main form input {
+        &[type='text'] {
+            width: 250px;
+        }
+        &[type='submit'] {
+            margin-top: 8px;
+        }
+    }
+}
+
+body.plantshare #login.box {
+    background-color: $login-box-background-color;
+    border-color: $link-green;
+    clear: left;
+    max-width: $plantshare-main-column-width;
+    padding: 0;
+    h4 {
+        font-size: 20px;
+        padding: $section-padding $section-padding 10px;
+    }
+    div {
+        border-top: 1px solid $link-green;
+        padding: $section-padding;
+        a {
+            margin-left: 0;
+        }
+    }
+    input[type='text'], input[type='password'] {
+        width: 95%;
+    }
+}
+
+body.plantshare#checklists {
+    @include hide-default-shadowbox-close;
+}
+
+body.plantshare.checklists {
+    .notification.box li {
+        list-style-type: disc;
+    }
+    div.notes-modal {
+        background-color: #fff;
+        overflow: hidden; 
+        margin: 0;
+        padding: 15px 20px 0;
+        max-height: 240px;
+    }
+    div.notes-modal {
+        section {
+            padding: 10px 0 0;
+        }
+
+        textarea {
+            border: 1px solid #ABABAB;
+            box-shadow: inset 1px 1px 5px #ccc;
+            font-size: inherit;
+            height: 80px;
+            line-height: inherit;
+            max-width: 90%;
+            padding: 7px 5px 5px;
+            width: 100%
+        }
+
+        div.form-actions {
+            padding: 10px 0;
+
+            a.clear-btn {
+                margin: 0 0 0 10px;
+            }
+        }
+    }
+    div.ps-section {
+        margin: 0;
+        padding: 0;
+    }
+}
+body.plantshare.checklists {
+    div#form-template {
+        display: none;
+    }
+}
+body.plantshare.checklists table.checklists-list {
+    background: #fff;
+    border: 1px solid #C3D941;
+    margin: 20px 0;
+    width: 100%;
+
+    thead, tbody {
+        width: 100%;
+    }
+
+    td { overflow: hidden; }
+
+    .first {
+        white-space: nowrap;
+        width: 0px;   /* hidden */
+        input[type="checkbox"] {
+            display: none;
+            margin-left: 5px;
+            margin-top: 10px;
             width: auto;
         }
-        input[type='password'], input[type='text'] {
-            margin-bottom: 10px;
-            width: 250px !important;
+    }
+    .checklistview-name {
+        width: 498px;
+    }
+    .owner {
+        white-space: nowrap;
+        width: 120px;
+    }
+    .last {
+        text-align: right;
+        white-space: nowrap;
+        width: 180px;
+        a {
+            margin-right: 10px;
+        }
+
+    }
+    .name {
+        width: 156px;
+    }
+    .image {
+        width: 80px;
+        img.checklist-thumb {
+            max-width: 40px;
+            max-height: 40px;
         }
     }
-    .change-password a {
-        font-family: $headings-font;
-        font-size: 11px;
+    .date-sighted, .date-posted {
+        width: 110px;
     }
-    .change-email .verified-address {
-        background: url(/static/images/layout/check.png) no-repeat;
-        background-position: center left;
-        background-size: 18px 19px;
-        margin: 28px 0;
-        padding-left: 26px;
+    .location {
+        width: 130px;
     }
-
-    &#forgot-password {
-        #main form {
-            input {
-                &[type='text'] {
-                    width: 250px;
-                }
-                &[type='submit'] {
-                    margin-top: 8px;
-                }
-            }
-        }
-    }
-
-    #login.box {
-        background-color: $login-box-background-color;
-        border-color: $link-green;
-        clear: left;
-        max-width: $plantshare-main-column-width;
-        padding: 0;
-        h4 {
-            font-size: 20px;
-            padding: $section-padding $section-padding 10px;
-        }
-        div {
-            border-top: 1px solid $link-green;
-            padding: $section-padding;
-            a {
-                margin-left: 0;
-            }
-        }
-        input[type='text'], input[type='password'] {
-            width: 95%;
-        }
-    }
-
-    &#checklists {
-        @include hide-default-shadowbox-close;
-    }
-
-    &.checklists {
-        .notification.box li {
-            list-style-type: disc;
-        }
-        div.notes-modal {
-            background-color: #fff;
-            overflow: hidden; 
-            margin: 0;
-            padding: 15px 20px 0;
-            max-height: 240px;
-        }
-        div.notes-modal {
-            section {
-                padding: 10px 0 0;
-            }
-
-            textarea {
-                border: 1px solid #ABABAB;
-                box-shadow: inset 1px 1px 5px #ccc;
-                font-size: inherit;
-                height: 80px;
-                line-height: inherit;
-                max-width: 90%;
-                padding: 7px 5px 5px;
-                width: 100%
-            }
-
-            div.form-actions {
-                padding: 10px 0;
-
-                a.clear-btn {
-                    margin: 0 0 0 10px;
-                }
-            }
-        }
-        div.ps-section {
-            margin: 0;
-            padding: 0;
-        }
-
-        div#form-template {
+    .note {
+        width: 60px;
+        padding-right: 7px;
+        .note-field {
             display: none;
         }
-        table.checklists-list {
-            background: #fff;
-            border: 1px solid #C3D941;
-            margin: 20px 0;
-            width: 100%;
-
-            thead, tbody {
-                width: 100%;
-            }
-
-            td { overflow: hidden; }
-
-            .first {
-                white-space: nowrap;
-                width: 0px;   /* hidden */
-                input[type="checkbox"] {
-                    display: none;
-                    margin-left: 5px;
-                    margin-top: 10px;
-                    width: auto;
-                }
-            }
-            .checklistview-name {
-                width: 498px;
-            }
-            .owner {
-                white-space: nowrap;
-                width: 120px;
-            }
-            .last {
-                text-align: right;
-                white-space: nowrap;
-                width: 180px;
-                a {
-                    margin-right: 10px;
-                }
-
-            }
-            .name {
-                width: 156px; 
-            }
-            .image {
-                width: 80px; 
-                img.checklist-thumb {
-                    max-width: 40px;
-                    max-height: 40px;
-                }
-            }
-            .date-sighted, .date-posted {
-                width: 110px; 
-            }
-            .location {
-                width: 130px; 
-            }
-            .note {
-                width: 60px;
-                padding-right: 7px;
-                .note-field {
-                    display: none;
-                }
-                a {
-                    margin: 0;
-                }
-                a.row-btn {
-                    border-bottom: 0 !important;
-                    float: right;
-                    margin: 0 0 0 8px;
-                    text-indent: -9999px;
-                }
-                div.note-text {
-                    display: none;
-                }
-            }
-
-            thead {
-                display: block;
-                tr th {
-                    padding: 7px 5px;
-                    text-align: left;
-                    text-transform: uppercase;
-                }
-            }
-
-            tbody {
-                display: block;
-
-                tr:nth-child(odd) {
-                    background-color: $light-green;
-                }
-
-                tr td {
-                    padding: 7px 5px;
-                }
-            }
+        a {
+            margin: 0;
         }
-        .checklists-section {
-            background-color: #fff;
-            border: 1px solid #c3d941;
-            margin: 20px 0;
-            min-height: 140px;
-            padding: 10px 15px 20px;
-            position: relative;
-
-            input, textarea {
-                border: 1px solid #ababab;
-                box-shadow: inset 1px 1px 2px #ccc;
-                display: block;
-                font-size: inherit;
-                line-height: 1em;
-                padding: 7px 5px 5px;
-            }
-
-            h4 {
-                margin: 0 0 15px;
-                font-size: 18px;
-            }
-
-            header {
-                margin: 0 0 10px;
-                height: auto !important;
-
-                label {
-                    text-transform: none;
-                }
-
-                input, textarea {
-                    margin: 5px 0 10px;
-                    width: 95%;
-                    height: auto;
-                }
-            }
-
-            .import-sightings-link {
-                background-color: #e0f0d1;
-                display: block;
-                font-weight: bold;
-                margin: 0 0 25px;
-                padding: 5px 10px;
-            }
-
-            table#add-sightings-table {
-                width: 678px;
-
-                div.form-data {
-                    display: none;
-                }
-
-                th, td {
-                    padding: 15px 10px 5px 0;
-                }
-
-                td input {
-                    padding: 7px 5px 5px;
-                    margin: 0;
-                }
-
-                .name input {
-                    width: 160px;
-                }
-                .image {
-                    font-size: 0.9em;
-                    img.checklist-thumb {
-                        max-width: 40px;
-                        max-height: 40px;
-                    }
-                }
-                .date-sighted input {
-                    width: 70px;
-                }
-                .location input {
-                    width: 150px;
-                }
-                .date-posted input {
-                    width: 70px;
-                }
-                .note {
-                    padding-right: 0;
-                    width: 60px;
-                    .note-field {
-                        display: none;
-                    }
-                    a {
-                        display: inline-block;
-                    }
-                    a.row-btn {
-                        border-bottom: 0;
-                        float: right;
-                        margin: 5px 0 0 8px;
-                    }
-                }
-
-                thead { 
-                    border-bottom: 1px solid #ccc;
-                    font-weight: normal;
-                    width: 678px; 
-
-                    th {
-                        text-transform: uppercase;
-
-                        span {
-                            text-transform: none;
-                        }
-                    }
-                }
-                tfoot {
-                    border-bottom: 1px solid #ccc;
-
-                    td {
-                        font-size: .9em;
-                        padding-bottom: 10px;
-                        padding-top: 10px;
-                    }
-                }
-            }
-            .form-actions {
-                padding: 15px 0 0;
-
-                a {
-                    margin: 7px 20px 0 0;
-                    display: block;
-                    float: left;
-                    vertical-align: middle;
-                }
-                #save-btn {
-                    margin: 0 20px 0 0;
-                    float: left;
-                    vertical-align: middle;
-                }
-
-                &::after {
-                    display: block;
-                    content: " ";
-                    clear: both;
-                }
-            }
+        a.row-btn {
+            border-bottom: 0 !important;
+            float: right;
+            margin: 0 0 0 8px;
+            text-indent: -9999px;
+        }
+        div.note-text {
+            display: none;
         }
     }
 
-    &#screen-images {
-        table.unscreened {
-            margin: 20px 0;
-            padding: 0;
-            table-layout: fixed;
+    thead {
+        display: block;
+        tr th {
+            padding: 7px 5px;
+            text-align: left;
+            text-transform: uppercase;
+        }
+    }
+
+    tbody {
+        display: block;
+
+        tr:nth-child(odd) {
+            background-color: $light-green;
+        }
+
+        tr td {
+            padding: 7px 5px;
+        }
+    }
+}
+body.plantshare.checklists .checklists-section {
+    background-color: #fff;
+    border: 1px solid #c3d941;
+    margin: 20px 0;
+    min-height: 140px;
+    padding: 10px 15px 20px;
+    position: relative;
+
+    input, textarea {
+        border: 1px solid #ababab;
+        box-shadow: inset 1px 1px 2px #ccc;
+        display: block;
+        font-size: inherit;
+        line-height: 1em;
+        padding: 7px 5px 5px;
+    }
+
+    h4 {
+        margin: 0 0 15px;
+        font-size: 18px;
+    }
+
+    header {
+        margin: 0 0 10px;
+        height: auto !important;
+
+        label {
+            text-transform: none;
+        }
+
+        input, textarea {
+            margin: 5px 0 10px;
+            width: 95%;
+            height: auto;
+        }
+    }
+
+    .import-sightings-link {
+        background-color: #e0f0d1;
+        display: block;
+        font-weight: bold;
+        margin: 0 0 25px;
+        padding: 5px 10px;
+    }
+
+    table#add-sightings-table {
+        width: 678px;
+
+        div.form-data {
+            display: none;
+        }
+
+        th, td {
+            padding: 15px 10px 5px 0;
+        }
+
+        td input {
+            padding: 7px 5px 5px;
+            margin: 0;
+        }
+
+        .name input {
+            width: 160px;
+        }
+        .image {
+            font-size: 0.9em;
+            img.checklist-thumb {
+                max-width: 40px;
+                max-height: 40px;
+            }
+        }
+        .date-sighted input {
+            width: 70px;
+        }
+        .location input {
+            width: 150px;
+        }
+        .date-posted input {
+            width: 70px;
+        }
+        .note {
+            padding-right: 0;
+            width: 60px;
+            .note-field {
+                display: none;
+            }
+            a {
+                display: inline-block;
+            }
+            a.row-btn {
+                border-bottom: 0;
+                float: right;
+                margin: 5px 0 0 8px;
+            }
+        }
+
+        thead { 
+            border-bottom: 1px solid #ccc;
+            font-weight: normal;
+            width: 678px; 
+
+            th {
+                text-transform: uppercase;
+
+                span {
+                    text-transform: none;
+                }
+            }
+        }
+        tfoot {
+            border-bottom: 1px solid #ccc;
+
+            td {
+                font-size: .9em;
+                padding-bottom: 10px;
+                padding-top: 10px;
+            }
+        }
+    }
+    .form-actions {
+        padding: 15px 0 0;
+
+        a {
+            margin: 7px 20px 0 0;
+            display: block;
+            float: left;
+            vertical-align: middle;
+        }
+        #save-btn {
+            margin: 0 20px 0 0;
+            float: left;
+            vertical-align: middle;
+        }
+
+        &::after {
+            display: block;
+            content: " ";
+            clear: both;
+        }
+    }
+}
+
+body.plantshare#screen-images {
+    table.unscreened {
+        margin: 20px 0;
+        padding: 0;
+        table-layout: fixed;
+        overflow: hidden;
+        width: 100%;
+        text-align: center;
+
+        tr.header {
+            height: 20px;
+            th {
+                padding-bottom: 10px;
+            }
+        }
+        tr {
+            height: 128px;
+            vertical-align: top;
+        }
+
+        th.approval, td.approval {
+            width: 150px;
             overflow: hidden;
-            width: 100%;
-            text-align: center;
 
-            tr.header {
-                height: 20px;
-                th {
-                    padding-bottom: 10px;
-                }
-            }
-            tr {
-                height: 128px;
-                vertical-align: top;
+            input {
+                width: 20px;
             }
 
-            th.approval, td.approval {
-                width: 150px;
-                overflow: hidden;
-
-                input {
-                    width: 20px;
-                }
-
-                li {
-                    float: left;
-                    label {
-                        width: 60px;
-                  }
-                }
+            li {
+                float: left;
+                label {
+                    width: 60px;
+              }
             }
-            th.thumb, td.thumb {
-                width: 138px;
-            }
-
+        }
+        th.thumb, td.thumb {
+            width: 138px;
         }
 
-        div.form-control {
-            margin: 0 30px;
-        }
+    }
+
+    div.form-control {
+        margin: 0 30px;
     }
 }
 
@@ -1686,17 +1683,17 @@ body.plantshare {
             #find-people-form input[type='text'] {
                 width: 249px;
             }
-            #main {
-                .box {
+        }
+        &#find-people #main {
+            .box {
+                width: auto;
+            }
+            .person {
+                ul {
                     width: auto;
                 }
-                .person {
-                    ul {
-                        width: auto;
-                    }
-                    .name {
-                        font-size: 16px;
-                    }
+                .name {
+                    font-size: 16px;
                 }
             }
         }
@@ -1765,11 +1762,9 @@ body.plantshare {
                 width: 90% !important;
             }
         }
-        &#profile {
-            .info-section, .location-section {
-                .info.box table {
-                    width: 100%;
-                }
+        &#profile .info-section, &#profile .location-section {
+            .info.box table {
+                width: 100%;
             }
         }
         &.checklists #checklist-fillout #id_name {
@@ -1795,63 +1790,60 @@ body.plantshare {
     }
     #checklist {
         background: white;
+    }
+    #checklist div#main {
+        width: 100%;
+        padding: 0;
 
-        div#main {
+        h1 {
+            color: black;
+            font-weight: bold;
+        }
+
+        div.ps-section {
             width: 100%;
-            padding: 0;
+            color: black;
+        }
+        div.ps-section table#checklist-detail {
+            width: 100%;
+            border: 1px solid black;
+            border-collapse: collapse;
+            background-color: white;
 
-            h1 {
-                color: black;
-                font-weight: bold;
+            .name { width: 25%; }
+            .image {
+                width: 40px;
+                text-align: center;
             }
+            .date-sighted { width: 10%; }
+            .location { width: 10%; }
+            .date-posted { width: 10%; }
+            .note { width: 35%; }
 
-            div.ps-section {
+            td, th {
+                border: 1px solid black;
+                padding: 5px;
+            }
+            tr {
+                background-color: white;
+            }
+            thead {
                 width: 100%;
-                color: black;
+                display: table-header-group;
+                border-bottom: 2px solid black;
+            }
+            tbody {
+                width: 100%;
+                display: table-row-group;
+                border-bottom: 2px solid black;
 
-                table#checklist-detail {
-                    width: 100%;
-                    border: 1px solid black;
-                    border-collapse: collapse;
-                    background-color: white;
-
-                    .name { width: 25%; }
-                    .image { 
-                        width: 40px; 
-                        text-align: center;
-                    }
-                    .date-sighted { width: 10%; }
-                    .location { width: 10%; }
-                    .date-posted { width: 10%; }
-                    .note { width: 35%; }
-
-                    td, th {
-                        border: 1px solid black;
-                        padding: 5px;
-                    }
-                    tr {
-                        background-color: white;
-                    }
-                    thead {
-                        width: 100%;
-                        display: table-header-group;
-                        border-bottom: 2px solid black;
-                    }
-                    tbody {
-                        width: 100%;
-                        display: table-row-group;
-                        border-bottom: 2px solid black;
-
-                        tr {
-                            height: 80px;
-                        }
-                    }
-
-                    td.note a { display: none; }
-                    td.note div.note-text { display: block; }
+                tr {
+                    height: 80px;
                 }
             }
 
+            td.note a { display: none; }
+            td.note div.note-text { display: block; }
         }
     }
 }

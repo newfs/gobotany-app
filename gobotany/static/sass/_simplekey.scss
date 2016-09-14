@@ -1,90 +1,89 @@
 /* Simple and Full Keys (simplekey Django app) */
 
-body.skey {
-
+body.skey.groups-subgroups {
     /* Styles for groups and subgroups (Levels 1 and 2) pages */
 
-    &.groups-subgroups {
-        .img-gallery .frame {
-            cursor: pointer;
-        }
+    .img-gallery .frame {
+        cursor: pointer;
+    }
 
-        @include shadowbox-photo-titles-credits;
+    @include shadowbox-photo-titles-credits;
 
-        p {
-            &.question, &.tip {
-                font-family: $headings-font;
-                font-size: 24px;
-                margin: 12px 0 0;
-                padding: 0;
-            }
-            &.tip {
-                font-size: 18px;
-                margin: 8px 0 0;
-                padding: 0;
-            }
-        }
-
-        .list-item {
-            border-top: 1px solid rgba(128, 113, 33, 0.1);
-            clear: left;
-            margin: 20px 0 0 0;
-            padding: 20px 0 0 0;
-            .details {
-                float: left;
-                width: 425px;
-            }
-            h2 {
-                line-height: 110%;
-                margin: 0 0 5px 0;	
-                + p {
-                    color: #807121;
-                    display: block;
-                    font-family: $headings-font;
-                    font-size: 12px;
-                    font-style: italic;
-                    margin: 7px 0 1px;
-                    padding-left: 0;
-                }
-            }
-            p {
-                margin: 0;
-	            padding: 0 0 7px 25px;
-                &.key-char {
-                    background: url(/static/images/icons/icon1.png) 0 2px no-repeat;
-                }
-                &.exceptions {
-                	background: url(/static/images/icons/icon2.png) 0 2px no-repeat;
-                }
-                &.vid {
-                	background: url(/static/images/icons/icon3.png) 0 2px no-repeat;
-                }
-            }
-            .section-title {
-        	    display: block;
-	            text-transform: uppercase;
-            }
-            .details a {
-                margin: 10px 0 14px;
-            }
-        }
-        .not-my-plant {
-            clear: left;
-            float: right;
+    p {
+        &.question, &.tip {
             font-family: $headings-font;
-            padding: 20px 0 0;
-            text-align: center;
-            p {
-                margin: 0;
-                padding: 0;
-                + p {
-                    font-family: $body-font;
-                }
+            font-size: 24px;
+            margin: 12px 0 0;
+            padding: 0;
+        }
+        &.tip {
+            font-size: 18px;
+            margin: 8px 0 0;
+            padding: 0;
+        }
+    }
+
+    .list-item {
+        border-top: 1px solid rgba(128, 113, 33, 0.1);
+        clear: left;
+        margin: 20px 0 0 0;
+        padding: 20px 0 0 0;
+        .details {
+            float: left;
+            width: 425px;
+        }
+        h2 {
+            line-height: 110%;
+            margin: 0 0 5px 0;	
+            + p {
+                color: #807121;
+                display: block;
+                font-family: $headings-font;
+                font-size: 12px;
+                font-style: italic;
+                margin: 7px 0 1px;
+                padding-left: 0;
             }
         }
-    } /* end &.groups-subgroups */
+        p {
+            margin: 0;
+            padding: 0 0 7px 25px;
+            &.key-char {
+                background: url(/static/images/icons/icon1.png) 0 2px no-repeat;
+            }
+            &.exceptions {
+                background: url(/static/images/icons/icon2.png) 0 2px no-repeat;
+            }
+            &.vid {
+                background: url(/static/images/icons/icon3.png) 0 2px no-repeat;
+            }
+        }
+        .section-title {
+            display: block;
+            text-transform: uppercase;
+        }
+        .details a {
+            margin: 10px 0 14px;
+        }
+    }
+    .not-my-plant {
+        clear: left;
+        float: right;
+        font-family: $headings-font;
+        padding: 20px 0 0;
+        text-align: center;
+    }
+    .not-my-plant p {
+        margin: 0;
+        padding: 0;
+        + p {
+            font-family: $body-font;
+        }
+    }
+} /* end &.groups-subgroups */
 
 
+body.skey {
     /* Styles for results (Level 3) page */
 
     @mixin results-select {
@@ -252,27 +251,27 @@ body.skey {
                     padding: 10px 0;
                     vertical-align: middle;
                 }
-                .genus {
-                    color: #1a2e11;
-                    font-size: 18px;
-                    font-weight: normal;
-                    line-height: 200%;
-                    padding: 3px 0 0 0;
-                    vertical-align: top;
+            }
+            table .genus {
+                color: #1a2e11;
+                font-size: 18px;
+                font-weight: normal;
+                line-height: 200%;
+                padding: 3px 0 0 0;
+                vertical-align: top;
+            }
+            table .scientific-name {
+                font-size: 15px;
+                font-style: italic;
+                font-weight: normal;
+                line-height: 155%;
+                padding: 10px 0 8px 0;
+                img {
+                    margin: 0 8px 0 0;
+                    padding-bottom: 2px;
+                    vertical-align: middle;
                 }
-                .scientific-name {
-                    font-size: 15px;
-                    font-style: italic;
-                    font-weight: normal;
-                    line-height: 155%;
-                    padding: 10px 0 8px 0;
-                    img {
-                        margin: 0 8px 0 0;
-                        padding-bottom: 2px;
-                        vertical-align: middle;
-                    }
-                }
-            } /* end table */
+            }
         } /* end .plant-list */
 
         .missing-image {
@@ -967,12 +966,11 @@ ul.get-more-questions-menu {
         left: 100%;
         display: none;
         border: 1px solid black;
-
-        li {
-            color: darken($inactive_bg, 5);
-            &[data-character] {
-                color: black;
-            }
+    }
+    ul li {
+        color: darken($inactive_bg, 5);
+        &[data-character] {
+            color: black;
         }
     }
 }
@@ -1275,21 +1273,21 @@ ul.get-more-questions-menu {
                     .common-name {
                         padding-right: 20px;
                         position: relative;
-                        &::after {
-                            border-color: #000;
-                            border-style: solid;
-                            border-width: 2px 2px 0 0;
-                            color: #000;
-                            content: " \a0";
-                            display: inline-block;
-                            height: 7px;
-                            position: absolute;
-                            right: 10px;
-                            top: 17px;
-                            vertical-align: middle;
-                            width: 7px;
-                            @include rotate(45deg);
-                        }
+                    }
+                    .common-name::after {
+                        border-color: #000;
+                        border-style: solid;
+                        border-width: 2px 2px 0 0;
+                        color: #000;
+                        content: " \a0";
+                        display: inline-block;
+                        height: 7px;
+                        position: absolute;
+                        right: 10px;
+                        top: 17px;
+                        vertical-align: middle;
+                        width: 7px;
+                        @include rotate(45deg);
                     }
                 }
             }
@@ -1462,9 +1460,9 @@ ul.get-more-questions-menu {
                     font-size: 12px;
                     padding-left: 10px;
                     padding-right: 10px;
-                    li {
-                        margin-bottom: 8px;
-                    }
+                }
+                #choices li {
+                    margin-bottom: 8px;
                 }
             }
         } /* end &.results */
@@ -1488,11 +1486,11 @@ ul.get-more-questions-menu {
                     }
                     > .instructions {
                         border-radius: 18px;
-                        h5::after {
-                            right: 12px;
-                            top: 10px;
-                            @include rotate(135deg);
-                        }
+                    }
+                    > .instructions h5::after {
+                        right: 12px;
+                        top: 10px;
+                        @include rotate(135deg);
                     }
                 }
                 > .instructions {
@@ -1501,21 +1499,21 @@ ul.get-more-questions-menu {
                     box-shadow: 0px 1px 4px 0 $shadow_color;
                     cursor: pointer;
                     position: relative;
-                    h5::after {
-                        border-color: #fff;
-                        border-style: solid;
-                        border-width: 3px 3px 0 0;
-                        color: #fff;
-                        content: " \a0";
-                        display: inline-block;
-                        height: 9px;
-                        position: absolute;
-                        right: 12px;
-                        top: 15px;
-                        vertical-align: middle;
-                        width: 9px;
-                        @include rotate(-45deg);
-                    }
+                }
+                > .instructions h5::after {
+                    border-color: #fff;
+                    border-style: solid;
+                    border-width: 3px 3px 0 0;
+                    color: #fff;
+                    content: " \a0";
+                    display: inline-block;
+                    height: 9px;
+                    position: absolute;
+                    right: 12px;
+                    top: 15px;
+                    vertical-align: middle;
+                    width: 9px;
+                    @include rotate(-45deg);
                 }
                 .choices, .actions {
                     position: static;
@@ -1593,15 +1591,15 @@ ul.get-more-questions-menu {
                     line-height: 14px;
                     margin-top: 18px;
                 }
-                .measurement {
-                    margin: 18px 0;
-                    input[type='text'] {
-                        margin-right: 10px;    
-                        width: 60px;
-                    }
-                    label {
-                        padding-right: 10px;
-                    }
+            }
+            working-area .measurement {
+                margin: 18px 0;
+                input[type='text'] {
+                    margin-right: 10px;    
+                    width: 60px;
+                }
+                label {
+                    padding-right: 10px;
                 }
             }
             .species-count-heading {
@@ -1797,40 +1795,38 @@ ul.get-more-questions-menu {
         }
 
         &.mobile-quickapply {  /* Variant that applies immediately */
-          .actions {
-            display: none;
-          }
-          .working-area {
-            .choice {
-              label {
-                width: 70%;
-                &:after {
-                  content: "Apply";
-                  position: absolute;
-                  right: 0;
-                  border: solid 1px #ccc;
-                  margin: 8px 5px 2px 0;
-                  padding: 5px 1em;
-                  line-height: 14px;
-                }
-              }
-              &.checked {
-                background: none;
-                label:after {
-                  background: url(/static/images/layout/check.png) no-repeat;
-                  background-size: auto 20px;
-                  background-position: 5px center;
-                  content: "Applied";
-                  padding-left: 30px;
-                }
-              }
-              &.disabled {
-                label:after {
-                  content: none;
-                }
-              }
+            .actions {
+                display: none;
             }
-          }
+            .working-area .choice {
+                label {
+                    width: 70%;
+                    &:after {
+                        content: "Apply";
+                        position: absolute;
+                        right: 0;
+                        border: solid 1px #ccc;
+                        margin: 8px 5px 2px 0;
+                        padding: 5px 1em;
+                        line-height: 14px;
+                    }
+                }
+                &.checked {
+                    background: none;
+                    label:after {
+                        background: url(/static/images/layout/check.png) no-repeat;
+                        background-size: auto 20px;
+                        background-position: 5px center;
+                        content: "Applied";
+                        padding-left: 30px;
+                    }
+                }
+                &.disabled {
+                    label:after {
+                        content: none;
+                    }
+                }
+            }
         }
 
 
@@ -1839,26 +1835,20 @@ ul.get-more-questions-menu {
 
 /* Tablet-only styles */
 @media only screen and (min-width: 601px) and (max-width: 1024px) {
-    body.skey {
-        &.results {
-            #question-nav {
-                .option-list > li.active:hover {
-                    background: #dce890;
-                }
+    body.skey.results {
+        #question-nav {
+            .option-list > li.active:hover {
+                background: #dce890;
             }
         }
     }
 }
 /* These styles apply to smartphones and tablets */
 @media only screen and (max-width: 1024px) {
-    body.skey {
-        &.results {
-            #question-nav {
-                .option-list {
-                    > li:hover, > li.active, > li.answered.active {
-                        background: #fff;
-                    }
-                }
+    body.skey.results {
+        #question-nav .option-list {
+            > li:hover, > li.active, > li.answered.active {
+                background: #fff;
             }
         }
     }

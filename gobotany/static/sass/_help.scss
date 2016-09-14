@@ -21,9 +21,9 @@ $image-box-shadow-color: rgba(0, 0, 0, 0.6);
     img {
         float: right;
         margin: 5px 0 20px 20px;
-        .bookcover {
-            margin-right: 89px;
-        }
+    }
+    img.bookcover {
+        margin-right: 89px;
     }
 }
 
@@ -61,31 +61,29 @@ $image-box-shadow-color: rgba(0, 0, 0, 0.6);
         margin: 0 0 11px 0;
         background-image: url(/static/images/icons/6.png);	
     }
-    a {
-        &.screenshot {
-            float: right;	
-            margin: 0 0 0 15px;
-            color: #1a2e11;
-            text-align: center;
-            &:hover {
-                text-decoration: none;	
-            }
-            img {
-                margin: 10px 0;
-                vertical-align: middle;
-                &.screenshot-thumb {
-                    border: 5px solid #fff;
-                    box-shadow: 0px 1px 4px 0 rgba(0, 0, 0, 0.3);
-                    display: block;	
-                    margin: 0;
-                }
-            }
+    a.screenshot {
+        float: right;	
+        margin: 0 0 0 15px;
+        color: #1a2e11;
+        text-align: center;
+        &:hover {
+            text-decoration: none;	
         }
-        &.onward-btn {
-            float: right;
-            width: 240px;
+        img {
             margin: 10px 0;
+            vertical-align: middle;
+            &.screenshot-thumb {
+                border: 5px solid #fff;
+                box-shadow: 0px 1px 4px 0 rgba(0, 0, 0, 0.3);
+                display: block;	
+                margin: 0;
+            }
         }
+    }
+    a.onward-btn {
+        float: right;
+        width: 240px;
+        margin: 10px 0;
     }
     $video-height: 147px;
     $video-width: 196px;
@@ -93,13 +91,13 @@ $image-box-shadow-color: rgba(0, 0, 0, 0.6);
         height: $video-height;
         margin-bottom: 4px;
         width: $video-width;
-        img {
-            height: $video-height;
-            width: $video-width;
-        }
-        a {
-            cursor: pointer;
-        }
+    }
+    .video-topic img {
+        height: $video-height;
+        width: $video-width;
+    }
+    .video-topic a {
+        cursor: pointer;
     }
 }
 
@@ -241,17 +239,17 @@ $image-box-shadow-color: rgba(0, 0, 0, 0.6);
             font-size: 18px;
             margin: 0;
             padding: 0 7px;
-            &:first-child {
-                border-left: 0;
-            }
-            &.inactive {
-                color: #ccc;
-            }
-            .current a {
-                color: #000;
-                &:hover {
-                    text-decoration: none;
-                }
+        }
+        li:first-child {
+            border-left: 0;
+        }
+        li.inactive {
+            color: #ccc;
+        }
+        li .current a {
+            color: #000;
+            &:hover {
+                text-decoration: none;
             }
         }
     }
@@ -362,36 +360,34 @@ $image-box-shadow-color: rgba(0, 0, 0, 0.6);
 
 /* Video Help Topics */
 
-#video {
-    .video-topic {
-        float: left;
-        height: 176px;
-        margin: 10px 16px 10px 0;
-        position: relative;
+#video .video-topic {
+    float: left;
+    height: 176px;
+    margin: 10px 16px 10px 0;
+    position: relative;
+    width: 220px;
+    img {
+        height: 137px;
         width: 220px;
-        img {
-            height: 137px;
-            width: 220px;
-        }
-        > p {
-            font-family: $headings-font;
-            font-size: 16px;
-            line-height: 105%;
-            margin-top: 4px;
-        }
-        .missing-image {
-            border: 1px solid $link-green;
-            height: 135px;
-            width: 218px;
-            p {
-                left: auto;
-                margin: 55px 0;
-                position: absolute;
-                text-align: center;
-                top: auto;
-                white-space: nowrap;
-                width: 100%;
-            }
+    }
+    > p {
+        font-family: $headings-font;
+        font-size: 16px;
+        line-height: 105%;
+        margin-top: 4px;
+    }
+    .missing-image {
+        border: 1px solid $link-green;
+        height: 135px;
+        width: 218px;
+        p {
+            left: auto;
+            margin: 55px 0;
+            position: absolute;
+            text-align: center;
+            top: auto;
+            white-space: nowrap;
+            width: 100%;
         }
     }
 }
@@ -410,42 +406,40 @@ $image-box-shadow-color: rgba(0, 0, 0, 0.6);
 
 /* Species List */
 
-#list {
-    .content {
-        padding-bottom: 18px;
-        h1 {
-            padding-bottom: 12px;
+#list .content {
+    padding-bottom: 18px;
+    h1 {
+        padding-bottom: 12px;
+    }
+    table {
+        width: 100%;
+        th {
+            text-align: center;
+            vertical-align: bottom;
         }
-        table {
-            width: 100%;
-            th {
-                text-align: center;
-                vertical-align: bottom;
-                &.name {
-                    width: 16%;
-                }
-                &.common {
-                    width: 13%;
-                }
-                &.family {
-                    width: 13%;
-                }
-                &.dist {
-                    width: 12%;
-                }
-                &.native {
-                    width: 9%;
-                }
-                &.wetland {
-                    width: 5%;
-                }
-                &.group {
-                    width: 12%;
-                }
-                &.subgroup {
-                    width: 20%;
-                }                
-            }
+        th.name {
+            width: 16%;
+        }
+        th.common {
+            width: 13%;
+        }
+        th.family {
+            width: 13%;
+        }
+        th.dist {
+            width: 12%;
+        }
+        th.native {
+            width: 9%;
+        }
+        th.wetland {
+            width: 5%;
+        }
+        th.group {
+            width: 12%;
+        }
+        th.subgroup {
+            width: 20%;            
         }
     }
 }
@@ -465,20 +459,20 @@ $image-box-shadow-color: rgba(0, 0, 0, 0.6);
         font-size: 24px;
         list-style-type: upper-roman;
         margin-top: 0;
-        ul {
-            list-style-type: disc;
+    }
+    ol.terms ul {
+        list-style-type: disc;
+    }
+    ol.terms li {
+        p, li {
+            font-family: $body-font;
+            font-size: 12px;
         }
         li {
-            p, li {
-                font-family: $body-font;
-                font-size: 12px;
-            }
-            li {
-                line-height: 20px;
-                li {
-                    margin-left: 26px;
-                }
-            }
+            line-height: 20px;
+        }
+        li li {
+            margin-left: 26px;
         }
     }
 }
