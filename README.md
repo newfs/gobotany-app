@@ -129,7 +129,16 @@ Botany site's search field:
 ## Deploying to the Development server
 
 Log in to Heroku. Ensure you have a git remote set for the gobotany-dev
-Heroku application. Run the following to deploy the master branch:
+Heroku application.
+
+Run the following to deploy the develop branch, which is the usual while
+in the process of developing for a release:
+
+    git push heroku develop:master
+
+Run the following to deploy the master branch, which you may want to do
+upon wrapping up a release (after merging the develop branch in), or to test
+patch made to master:
 
     git push heroku master
 
