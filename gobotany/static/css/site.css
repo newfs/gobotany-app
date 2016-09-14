@@ -701,8 +701,7 @@ body#species #images-note { font-size: 11px; font-style: italic; margin-bottom: 
 /* These styles apply to smartphones and tablets */
 /* End media queries styles for taxa pages */
 /* Simple and Full Keys (simplekey Django app) */
-body.skey { /* Styles for groups and subgroups (Levels 1 and 2) pages */ /* end &.groups-subgroups */ /* Styles for results (Level 3) page */ /* end &.results */ }
-body.skey.groups-subgroups { /* Override Shadowbox styles to allow multiple title lines for showing a photo title, photographer credit, and copyright. */ }
+body.skey.groups-subgroups { /* Styles for groups and subgroups (Levels 1 and 2) pages */ /* Override Shadowbox styles to allow multiple title lines for showing a photo title, photographer credit, and copyright. */ }
 body.skey.groups-subgroups .img-gallery .frame { cursor: pointer; }
 body.skey.groups-subgroups #sb-title, body.skey.groups-subgroups #sb-title-inner { height: 76px; line-height: 70%; position: relative; }
 body.skey.groups-subgroups #sb-title-inner div { bottom: 6px; position: absolute; }
@@ -727,6 +726,9 @@ body.skey.groups-subgroups .list-item .details a { margin: 10px 0 14px; }
 body.skey.groups-subgroups .not-my-plant { clear: left; float: right; font-family: "Trebuchet MS", Helvetica, Arial, "Lucida Sans Unicode", sans-serif; padding: 20px 0 0; text-align: center; }
 body.skey.groups-subgroups .not-my-plant p { margin: 0; padding: 0; }
 body.skey.groups-subgroups .not-my-plant p + p { font-family: Verdana, Geneva, "Lucida Sans Unicode", sans-serif; }
+
+/* end &.groups-subgroups */
+body.skey { /* Styles for results (Level 3) page */ /* end &.results */ }
 body.skey.results { /* end .already-know */ /* end .plant-list */ /* end #question-nav */ /* end #intro-overlay */ /* end .view-tabs */ /* Ordinarily this message will have its centering done by JavaScript. See gobotany.sk.results.notify() */ /* Working Area styles */ /* end .working-area */ }
 body.skey.results #main { background-image: none; padding-left: 0; width: auto; }
 body.skey.results #page-head { margin-left: 250px; }
@@ -741,7 +743,7 @@ body.skey.results #results-display label { color: #000; font-family: "Trebuchet 
 body.skey.results #results-display select { font-size: 15px; background: #ebf6df; border: 1px solid #9cc86b; font-family: "Trebuchet MS", Helvetica, Arial, "Lucida Sans Unicode", sans-serif; padding: 0; -webkit-appearance: menulist; }
 body.skey.results #results-display img.icon { margin: 0 3px 0 0; vertical-align: -1px; }
 body.skey.results #modal { display: none; }
-body.skey.results .plant-list { position: relative; width: 99%; /* end .plant */ /* List view styles */ /* end table */ }
+body.skey.results .plant-list { position: relative; width: 99%; /* end .plant */ /* List view styles */ }
 body.skey.results .plant-list .plant { background: #fff; border: 1px solid #c3d941; display: none; height: 210px; left: 0px; padding: 8px 6px; position: absolute; text-align: center; top: 0px; width: 160px; /* prevent long names from blowing out layout; allow wrap */ }
 body.skey.results .plant-list .plant.in-results { display: block; }
 body.skey.results .plant-list .plant.genus_join_left { border-left: none; }
@@ -1020,9 +1022,9 @@ min-width: 0;
   body.skey.results.mobile-wide #question-nav .option-list .clear-filter { display: none; }
   body.skey.results.mobile-wide .working-area .close { float: left; padding-right: 12px; }
   body.skey.results.mobile-wide .working-area .values.numeric { font-size: 12px; line-height: 14px; margin-top: 18px; }
-  body.skey.results.mobile-wide .working-area .measurement { margin: 18px 0; }
-  body.skey.results.mobile-wide .working-area .measurement input[type='text'] { margin-right: 10px; width: 60px; }
-  body.skey.results.mobile-wide .working-area .measurement label { padding-right: 10px; }
+  body.skey.results.mobile-wide working-area .measurement { margin: 18px 0; }
+  body.skey.results.mobile-wide working-area .measurement input[type='text'] { margin-right: 10px; width: 60px; }
+  body.skey.results.mobile-wide working-area .measurement label { padding-right: 10px; }
   body.skey.results.mobile-wide .species-count-heading { position: relative; text-align: center; top: -2px; width: 80%; }
   body.skey.results.mobile-gloss { /* Styles for mobile variants where working- area glossary terms are shown in a list */ }
   body.skey.results.mobile-gloss .working-area h4 { padding-right: 50px; }
@@ -1076,10 +1078,11 @@ min-width: 0;
 @media only screen and (max-width: 1024px) { body.skey.results #question-nav .option-list > li:hover, body.skey.results #question-nav .option-list > li.active, body.skey.results #question-nav .option-list > li.answered.active { background: #fff; } }
 /* End media queries styles for Simple and Full Keys */
 /* PlantShare */
-body.plantshare { /* end #sightings-locator */ /* For: forms Your Profile page and also the separate form/error pages */ }
 body.plantshare .recaptchatable a { color: #317b0c; }
 body.plantshare .recaptchatable #recaptcha_response_field { font-family: "Trebuchet MS", Helvetica, Arial, "Lucida Sans Unicode", sans-serif; font-size: 14px; }
+
 body.plantshare .nav-links { font-family: "Trebuchet MS", Helvetica, Arial, "Lucida Sans Unicode", sans-serif; font-size: 14px; margin: 0 0 16px; }
+
 body.plantshare .content li { list-style-type: none; }
 body.plantshare .content form p { margin: 0; }
 body.plantshare .content form label { clear: left; display: block; margin-bottom: 4px; text-transform: uppercase; width: 353px; }
@@ -1087,25 +1090,33 @@ body.plantshare .content form input { margin-bottom: 10px; }
 body.plantshare .content form input[type=text], body.plantshare .content form input[type=password] { height: 16px; border: 1px solid #c3d941; padding: 5px; width: 353px; }
 body.plantshare .content form textarea { height: 82px; border: 1px solid #c3d941; padding: 5px; width: 353px; }
 body.plantshare .content form input[type=text], body.plantshare .content form textarea { font-family: Verdana, Geneva, "Lucida Sans Unicode", sans-serif; }
-body.plantshare .box { background-color: #fff; border: 1px solid #c3d941; padding: 4px 16px; }
-body.plantshare .box table { margin: 16px 0 12px; width: 100%; }
-body.plantshare .box table tr:nth-child(odd) { background-color: #e1f0d1; }
-body.plantshare .box table th, body.plantshare .box table td { padding: 6px 8px; }
-body.plantshare .box table th { font-weight: normal; text-align: left; width: 33%; }
+
+body.plantshare.box { background-color: #fff; border: 1px solid #c3d941; padding: 4px 16px; }
+body.plantshare.box table { margin: 16px 0 12px; width: 100%; }
+body.plantshare.box table tr:nth-child(odd) { background-color: #e1f0d1; }
+body.plantshare.box table th, body.plantshare.box table td { padding: 6px 8px; }
+body.plantshare.box table th { font-weight: normal; text-align: left; width: 33%; }
+
 body.plantshare form.login { padding: 0 16px 16px; max-width: 250px; min-width: 194px; }
 body.plantshare form.login label { font-size: 10px; }
 body.plantshare form.login input { border-color: #317b0c; max-width: 246px; }
 body.plantshare form.login input.button { margin-top: 2px; width: 99px; }
 body.plantshare form.login a { float: right; font-family: "Trebuchet MS", Helvetica, Arial, "Lucida Sans Unicode", sans-serif; font-size: 11px; margin-top: 9px; padding-right: 1px; }
+
 body.plantshare .sign-up-call { clear: left; padding: 12px 18px; width: 475px; }
 body.plantshare .sign-up-call ul { line-height: 18px; margin: 10px 0 0 24px; }
 body.plantshare .sign-up-call li { list-style-type: disc; }
 body.plantshare .sign-up-call a { margin: 12px auto; width: 204px; }
+
 body.plantshare .notification { width: 475px; }
 body.plantshare .notification ul { line-height: 18px; list-style-position: inside; margin: 10px 0 0 24px; }
+
 body.plantshare .ps-button { margin: 10px 0; }
+
 body.plantshare .save-btn { width: 99px !important; }
+
 body.plantshare a.close-btn { background: transparent url(/static/images/icons/close.png) no-repeat; display: block; height: 16px; width: 16px; text-indent: -9999px; }
+
 body.plantshare #main .profile { clear: left; width: 471px; }
 body.plantshare #main .profile h2 { margin-bottom: 14px; width: 200px; }
 body.plantshare #main .profile a.edit { display: block; float: right; }
@@ -1115,14 +1126,17 @@ body.plantshare #main .profile .avatar { background: #e1f0d1; display: block; fl
 body.plantshare #main .profile table { clear: left; }
 body.plantshare #main .profile .map { float: right; margin-left: 16px; }
 body.plantshare #main .profile p { margin: 2px 0; }
+
 body.plantshare#activation-expired .content ul.causes { padding: 0 0 0 18px; }
 body.plantshare#activation-expired .content ul.causes li { list-style-type: disc; margin: 0 0 2px 0; }
+
 body.plantshare#terms-of-agreement #main form input[type="checkbox"] { clear: both; float: left; margin: 3px 14px 0 0; width: auto; }
 body.plantshare#terms-of-agreement #main form fieldset { background: #fff; border: 0; }
 body.plantshare#terms-of-agreement #main form label { float: right; line-height: 150%; margin: -16px 0 24px 32px; text-transform: none; width: auto; }
 body.plantshare#terms-of-agreement #main form label:last-of-type { margin-bottom: 0; }
 body.plantshare#terms-of-agreement #main form div { margin: 14px 0; padding: 24px 36px 24px 18px; }
 body.plantshare#terms-of-agreement #main form .agree-btn { margin-right: 14px; width: 153px; }
+
 body.plantshare#plantshare { /* styles for the PlantShare main page */ }
 body.plantshare#plantshare h1 { float: left; }
 body.plantshare#plantshare h2 { line-height: 100%; }
@@ -1139,6 +1153,7 @@ body.plantshare#plantshare .img-gallery .plant-name.scientific { font-style: ita
 body.plantshare#plantshare .img-gallery .controls { margin: 0; }
 body.plantshare#plantshare .img-gallery .controls a { cursor: pointer; }
 body.plantshare#plantshare #ask { margin-top: 20px; }
+
 body.plantshare#find-people { /* Hide the usual default Shadowbox close button. This is used for some dialogs that have their own interior close button, such as is seen on various PlantShare dialogs. */ }
 body.plantshare#find-people #main .box { padding: 10px; }
 body.plantshare#find-people #main .person { height: 74px; margin: 0; padding: 20px 0 0 0; }
@@ -1152,11 +1167,13 @@ body.plantshare#find-people #main .person p { float: right; margin: 12px 0 0; pa
 body.plantshare#find-people #main .person p a { border-bottom: 0; }
 body.plantshare#find-people #main .person .invite-group-btn { width: 143px; }
 body.plantshare#find-people #sb-nav-close { display: none; }
+
 body.plantshare #find-people-form { margin: 14px 0 0; }
 body.plantshare #find-people-form input[type='text'] { background: transparent url(../images/layout/plantshare-btns.png) no-repeat -1px -334px; border: 0 none; display: block; float: left; font-size: 11px; height: 22px; padding: 0 2px 0 12px; width: 309px; }
 body.plantshare #find-people-form input[type='submit'] { background: transparent url(../images/layout/plantshare-btns.png) no-repeat -380px -4px; border: 0 none; display: block; float: left; height: 22px; padding: 0; text-indent: -9999px; width: 40px; }
 body.plantshare #find-people-form input:focus { outline: 0 none; }
 body.plantshare #find-people-form + p { clear: left; padding-top: 14px; }
+
 body.plantshare#find-people-profile { background: none; }
 body.plantshare#find-people-profile div { background: #fff; border: 5px solid #acac90; height: 185px; padding: 0 16px 0 0; }
 body.plantshare#find-people-profile div p { margin-top: 0; }
@@ -1164,14 +1181,16 @@ body.plantshare#find-people-profile .close { background: transparent url(/static
 body.plantshare#find-people-profile .avatar { background: #e1f0d1; float: left; height: 153px; margin: 16px; width: 169px; }
 body.plantshare#find-people-profile .map { float: right; height: 113px; width: 169px; }
 body.plantshare#find-people-profile .not-found { padding: 70px 0; text-align: center; }
+
 body.plantshare#sign-up #main form input { width: 350px; }
 body.plantshare#sign-up #main form input.button { margin-top: 12px; width: 204px; }
+
 body.plantshare#log-in h1 + p { font-family: "Trebuchet MS", Helvetica, Arial, "Lucida Sans Unicode", sans-serif; font-size: 14px; margin: 0; padding: 16px 0; }
 body.plantshare#log-in ul.errorlist { padding: 16px 0; }
 body.plantshare#log-in form.login { padding-left: 0; }
 body.plantshare#log-in form.login label { font-size: 12px; }
 body.plantshare#log-in form.login input { border-color: #c3d941; }
-body.plantshare #sightings-locator { /* end .mini */ }
+
 body.plantshare #sightings-locator h3 { display: inline-block; float: left; font-size: 14px; line-height: 22px; margin: 0 7px 5px 0; }
 body.plantshare #sightings-locator input { border: 0 none; float: left; height: 22px; margin: 0 0 5px 0; padding: 0 2px 0 12px; }
 body.plantshare #sightings-locator input[type='text'] { background: transparent url(/static/images/layout/plantshare-btns.png) no-repeat 0px -334px; font-size: 11px; width: 160px; }
@@ -1179,6 +1198,7 @@ body.plantshare #sightings-locator input[type='submit'] { background: transparen
 body.plantshare #sightings-locator input:focus { outline: 0 none; }
 body.plantshare #sightings-locator input + div { font-size: 11px; }
 body.plantshare #sightings-locator .map { clear: left; margin-top: 36px; }
+
 body.plantshare #sightings-locator.mini { clear: both; margin-top: 20px; }
 body.plantshare #sightings-locator.mini .box { font-size: 11px; height: 297px; padding: 0 0 0 10px; }
 body.plantshare #sightings-locator.mini .box form { float: left; padding: 0; width: 205px; }
@@ -1188,7 +1208,10 @@ body.plantshare #sightings-locator.mini .box form p { line-height: 14px; margin:
 body.plantshare #sightings-locator.mini .box form p#sightings-status { margin-left: -1000px; /* hide until JS shows it */ padding: 65px 0 0; }
 body.plantshare #sightings-locator.mini .box form p.full-link { margin-top: 10px; }
 body.plantshare #sightings-locator.mini .box .map { clear: none; border-bottom: 0; border-right: 0; border-top: 0; float: right; margin-top: 0; }
+
+/* end .mini */
 body.plantshare#new-sighting h1 + div { background: #fff; border: 1px solid #c3d941; margin-bottom: 16px; padding: 5px 16px; width: 654px; }
+
 body.plantshare#new-sighting #id_identification, body.plantshare#new-sighting .restricted, body.plantshare#edit-sighting #id_identification, body.plantshare#edit-sighting .restricted { display: inline-block; }
 body.plantshare#new-sighting .images, body.plantshare#edit-sighting .images { margin-top: 10px; }
 body.plantshare#new-sighting .restricted, body.plantshare#edit-sighting .restricted { margin-left: 14px; }
@@ -1205,6 +1228,7 @@ body.plantshare#new-sighting .visibility, body.plantshare#edit-sighting .visibil
 body.plantshare#new-sighting .visibility p, body.plantshare#edit-sighting .visibility p { display: inline-block; }
 body.plantshare#new-sighting .visibility .label, body.plantshare#edit-sighting .visibility .label { display: block; }
 body.plantshare#new-sighting .visibility select, body.plantshare#edit-sighting .visibility select { margin: 4px 0 0; }
+
 body.plantshare#manage-sightings { /* Hide the usual default Shadowbox close button. This is used for some dialogs that have their own interior close button, such as is seen on various PlantShare dialogs. */ }
 body.plantshare#manage-sightings .content table { width: 100%; }
 body.plantshare#manage-sightings .content table th.identification { width: 25%; }
@@ -1216,6 +1240,7 @@ body.plantshare#manage-sightings .content table td.action { text-align: center; 
 body.plantshare#manage-sightings .content table td:first-of-type a { border-bottom: 0; }
 body.plantshare#manage-sightings .content table img { max-width: 90px; }
 body.plantshare#manage-sightings #sb-nav-close { display: none; }
+
 body.plantshare#delete-sighting, body.plantshare#delete-checklist { background: none; }
 body.plantshare#delete-sighting div, body.plantshare#delete-checklist div { background: #fff; border: 5px solid #acac90; height: 100%; padding: 0 18px; text-align: center; }
 body.plantshare#delete-sighting .close, body.plantshare#delete-checklist .close { background: transparent url(/static/images/icons/close.png) no-repeat; cursor: pointer; display: block; height: 16px; position: absolute; right: 15px; text-indent: -9999px; top: 15px; width: 16px; }
@@ -1223,13 +1248,16 @@ body.plantshare#delete-sighting h2, body.plantshare#delete-checklist h2 { font-s
 body.plantshare#delete-sighting table, body.plantshare#delete-checklist table { margin: 18px 0; width: 100%; }
 body.plantshare#delete-sighting thead, body.plantshare#delete-checklist thead { display: none; }
 body.plantshare#delete-sighting .cancel-btn, body.plantshare#delete-checklist .cancel-btn { color: white; margin: 0 10px 0 0; width: 123px; }
+
 body.plantshare#locator #main { /* Smooth Div Scroll image area */ }
 body.plantshare#locator #main h1 + p { margin-bottom: 4px; }
 body.plantshare#locator #main h3 { font-family: Verdana, Geneva, "Lucida Sans Unicode", sans-serif; font-size: 12px; line-height: 24px; }
 body.plantshare#locator #main #sightings-status { display: none; /* initially hide, until updating value via JS */ float: right; line-height: 24px; }
 body.plantshare#locator #main #species-images { border: 5px solid rgba(255, 255, 255, 0.8); box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.6); height: 150px; margin: 0 0 20px 0; overflow: hidden; position: relative; top: 0; width: 700px; z-index: 100; }
 body.plantshare#locator #main #species-images .scrollableArea a { border-right: 5px solid #fff; float: left; margin: 0; padding: 0; }
+
 body.plantshare .modal-container { position: relative; }
+
 body.plantshare .image-modal { background-color: white; border: 5px solid #acac90; display: none; height: 160px; left: 0px; padding: 15px; position: absolute; top: 250px; width: 360px; z-index: 10; }
 body.plantshare .image-modal img { float: left; margin: 0 5px 10px 0; max-height: 84px; max-width: 84px; }
 body.plantshare .image-modal a.button { color: white; cursor: pointer; display: inline-block; margin: 10px 6px 0 0; width: 100px; }
@@ -1241,13 +1269,17 @@ body.plantshare .image-modal form { float: right; width: 270px; }
 body.plantshare .image-modal input { border: 0 none !important; box-shadow: inset 0 0 0 white !important; }
 body.plantshare .image-modal input#id_image { clear: both; display: block; margin: 0 0 10px; }
 body.plantshare .image-modal div.screening-notify p { color: #888; font-size: 10px; margin: 5px 0; }
+
 body.plantshare .thumb-gallery { display: inline-block; float: left; padding: 4px 0 20px 0; }
+
 body.plantshare .thumb-frame { display: inline-block; margin: 0 14px 0 0; vertical-align: bottom; }
 body.plantshare .thumb-frame .thumb { vertical-align: bottom; }
 body.plantshare .thumb-frame .wait { margin-bottom: 40px; }
 body.plantshare .thumb-frame .delete-link { display: table; margin: 0 auto; padding-top: 8px; }
 body.plantshare .thumb-frame .delete-link img { float: left; padding-right: 4px; vertical-align: top; }
+
 body.plantshare .upload { display: inline-block; float: left; padding-bottom: 20px; }
+
 body.plantshare#sightings h2 { clear: both; font-size: 22px; }
 body.plantshare#sightings #main > ul { margin-top: 14px; }
 body.plantshare#sightings #main > ul > li { clear: both; font-family: "Trebuchet MS", Helvetica, Arial, "Lucida Sans Unicode", sans-serif; font-size: 18px; margin-bottom: 14px; margin-top: 22px; }
@@ -1258,6 +1290,7 @@ body.plantshare#sightings #main > ul .photolink:before { border: 5px solid rgba(
 body.plantshare#sightings #main > ul .title { line-height: 150%; margin-left: 200px; }
 body.plantshare#sightings #main > ul .photolink + .title { margin-left: 12px; }
 body.plantshare#sightings #main > ul .title a { font-size: 16px; }
+
 body.plantshare.sighting .map { float: right; margin: 0 0 12px 12px; }
 body.plantshare.sighting .photos h2 { margin: 0; }
 body.plantshare.sighting .photos ul li { height: auto; list-style: none; margin: 0; padding: 10px 0; }
@@ -1266,7 +1299,9 @@ body.plantshare.sighting form label { text-transform: none; }
 body.plantshare.sighting form fieldset { border: 0; margin: 0 0 16px; padding: 0; width: 687px; }
 body.plantshare.sighting form fieldset legend { display: block; text-indent: -9000px; }
 body.plantshare.sighting form .post-sighting-btn { width: 157px; }
+
 body.plantshare.ask #sb-title-inner { font-size: 11px; /* title atop lightboxed question images */ }
+
 body.plantshare#ask #main #ask-section, body.plantshare#plantshare #ask #ask-section { margin-bottom: 18px; min-height: 100px; }
 body.plantshare#ask #main #ask-section .botanist, body.plantshare#plantshare #ask #ask-section .botanist { background: #ddd; float: left; height: 97px; margin: 4px 18px 0 0; width: 103px; }
 body.plantshare#ask #main #question-form, body.plantshare#plantshare #ask #question-form { clear: left; padding-left: 121px; }
@@ -1275,10 +1310,12 @@ body.plantshare#ask #main textarea, body.plantshare#plantshare #ask textarea { b
 body.plantshare#ask #main .submit, body.plantshare#plantshare #ask .submit { clear: both; display: block; margin: 42px 0 8px; text-transform: uppercase; }
 body.plantshare#ask #main h2, body.plantshare#ask #main h3, body.plantshare#plantshare #ask h2, body.plantshare#plantshare #ask h3 { clear: both; }
 body.plantshare#ask #main .more, body.plantshare#plantshare #ask .more { text-align: right; }
+
 body.plantshare#questions #main { /* Questions and Answers page */ }
 body.plantshare#questions #main #category-nav p { float: left; margin: 0; }
 body.plantshare#questions #main #category-nav ul { margin-left: 80px; }
 body.plantshare#questions #main #category-nav li { display: inline; margin-right: 8px; white-space: nowrap; }
+
 body.plantshare .questions { /* styles common to Ask the Botanist, questions pages */ }
 body.plantshare .questions li { background-color: #f9faea; border: 1px solid #c3d941; margin: 5px 0 10px; overflow: auto; padding: 10px 12px; }
 body.plantshare .questions img { float: right; margin: 5px 0 5px 12px; }
@@ -1287,6 +1324,7 @@ body.plantshare .questions dt { clear: left; font-weight: bold; margin-top: 10px
 body.plantshare .questions dt:first-child { margin-top: 0; }
 body.plantshare .questions dd { margin: 0; }
 body.plantshare .questions span { display: block; }
+
 body.plantshare#profile { /* Profile page */ }
 body.plantshare#profile .username { float: right; }
 body.plantshare#profile form + h2 { margin: 30px 0 18px; }
@@ -1312,24 +1350,32 @@ body.plantshare#profile .info-section .info.box table p, body.plantshare#profile
 body.plantshare#profile .info-section .info.box table .display .group-list, body.plantshare#profile .info-section .info.box table .display .coords-list, body.plantshare#profile .location-section .info.box table .display .group-list, body.plantshare#profile .location-section .info.box table .display .coords-list { float: left; }
 body.plantshare#profile .info-section .info.box table .display .edit-link, body.plantshare#profile .location-section .info.box table .display .edit-link { float: right; }
 body.plantshare#profile .info-section .info.box table .display ul, body.plantshare#profile .location-section .info.box table .display ul { list-style: none; }
-body.plantshare#profile .info-section .info.box table .edit, body.plantshare#profile .location-section .info.box table .edit { display: none; }
+body.plantshare#profile .info-section .info.box .edit, body.plantshare#profile .location-section .info.box .edit { display: none; }
 body.plantshare#profile .info-section { margin: 0 0 20px; }
 body.plantshare#profile .info-section .info.box { min-height: 172px; padding: 10px 15px; }
 body.plantshare#profile .info-section .info.box table { margin: 0; }
 body.plantshare#profile .email-address { margin-top: 32px; }
+
+/* For: forms Your Profile page and also the separate form/error pages */
 body.plantshare .change-password input[type='submit'], body.plantshare .change-email input[type='submit'] { margin: 8px 28px 0 0; width: auto; }
 body.plantshare .change-password input[type='password'], body.plantshare .change-password input[type='text'], body.plantshare .change-email input[type='password'], body.plantshare .change-email input[type='text'] { margin-bottom: 10px; width: 250px !important; }
+
 body.plantshare .change-password a { font-family: "Trebuchet MS", Helvetica, Arial, "Lucida Sans Unicode", sans-serif; font-size: 11px; }
+
 body.plantshare .change-email .verified-address { background: url(/static/images/layout/check.png) no-repeat; background-position: center left; background-size: 18px 19px; margin: 28px 0; padding-left: 26px; }
+
 body.plantshare#forgot-password #main form input[type='text'] { width: 250px; }
 body.plantshare#forgot-password #main form input[type='submit'] { margin-top: 8px; }
+
 body.plantshare #login.box { background-color: #d3eaad; border-color: #317b0c; clear: left; max-width: 475px; padding: 0; }
 body.plantshare #login.box h4 { font-size: 20px; padding: 16px 16px 10px; }
 body.plantshare #login.box div { border-top: 1px solid #317b0c; padding: 16px; }
 body.plantshare #login.box div a { margin-left: 0; }
 body.plantshare #login.box input[type='text'], body.plantshare #login.box input[type='password'] { width: 95%; }
+
 body.plantshare#checklists { /* Hide the usual default Shadowbox close button. This is used for some dialogs that have their own interior close button, such as is seen on various PlantShare dialogs. */ }
 body.plantshare#checklists #sb-nav-close { display: none; }
+
 body.plantshare.checklists .notification.box li { list-style-type: disc; }
 body.plantshare.checklists div.notes-modal { background-color: #fff; overflow: hidden; margin: 0; padding: 15px 20px 0; max-height: 240px; }
 body.plantshare.checklists div.notes-modal section { padding: 10px 0 0; }
@@ -1337,7 +1383,9 @@ body.plantshare.checklists div.notes-modal textarea { border: 1px solid #ABABAB;
 body.plantshare.checklists div.notes-modal div.form-actions { padding: 10px 0; }
 body.plantshare.checklists div.notes-modal div.form-actions a.clear-btn { margin: 0 0 0 10px; }
 body.plantshare.checklists div.ps-section { margin: 0; padding: 0; }
+
 body.plantshare.checklists div#form-template { display: none; }
+
 body.plantshare.checklists table.checklists-list { background: #fff; border: 1px solid #C3D941; margin: 20px 0; width: 100%; }
 body.plantshare.checklists table.checklists-list thead, body.plantshare.checklists table.checklists-list tbody { width: 100%; }
 body.plantshare.checklists table.checklists-list td { overflow: hidden; }
@@ -1362,6 +1410,7 @@ body.plantshare.checklists table.checklists-list thead tr th { padding: 7px 5px;
 body.plantshare.checklists table.checklists-list tbody { display: block; }
 body.plantshare.checklists table.checklists-list tbody tr:nth-child(odd) { background-color: #e1f0d1; }
 body.plantshare.checklists table.checklists-list tbody tr td { padding: 7px 5px; }
+
 body.plantshare.checklists .checklists-section { background-color: #fff; border: 1px solid #c3d941; margin: 20px 0; min-height: 140px; padding: 10px 15px 20px; position: relative; }
 body.plantshare.checklists .checklists-section input, body.plantshare.checklists .checklists-section textarea { border: 1px solid #ababab; box-shadow: inset 1px 1px 2px #ccc; display: block; font-size: inherit; line-height: 1em; padding: 7px 5px 5px; }
 body.plantshare.checklists .checklists-section h4 { margin: 0 0 15px; font-size: 18px; }
@@ -1392,6 +1441,7 @@ body.plantshare.checklists .checklists-section .form-actions { padding: 15px 0 0
 body.plantshare.checklists .checklists-section .form-actions a { margin: 7px 20px 0 0; display: block; float: left; vertical-align: middle; }
 body.plantshare.checklists .checklists-section .form-actions #save-btn { margin: 0 20px 0 0; float: left; vertical-align: middle; }
 body.plantshare.checklists .checklists-section .form-actions::after { display: block; content: " "; clear: both; }
+
 body.plantshare#screen-images table.unscreened { margin: 20px 0; padding: 0; table-layout: fixed; overflow: hidden; width: 100%; text-align: center; }
 body.plantshare#screen-images table.unscreened tr.header { height: 20px; }
 body.plantshare#screen-images table.unscreened tr.header th { padding-bottom: 10px; }
@@ -1604,7 +1654,7 @@ body.search-results h1 + p { margin-top: 12px; }
 /* styles for individual pages */
 /* About */
 #about #main img { float: right; margin: 5px 0 20px 20px; }
-#about #main img .bookcover { margin-right: 89px; }
+#about #main img.bookcover { margin-right: 89px; }
 
 /* Getting Started */
 #getting-started h2 { margin-top: 0; padding-top: 0; }
@@ -1874,9 +1924,9 @@ header.partner-site nav li a { padding: 5px 32px 0; /* fewer sections, more hori
   footer .navigation h6:first-child { padding: 8px 0 8px 14px; }
   footer .navigation > ul.sections li { display: block; margin: 0 0 1px 0; }
   footer .navigation > ul.sections li:after { content: none; }
-  footer .navigation > ul.sections li:after a { background: #317b0c; color: #fff; display: block; font-family: "Trebuchet MS", Helvetica, Arial, "Lucida Sans Unicode", sans-serif; font-size: 14px; padding: 14px 14px; position: relative; text-decoration: none; }
-  footer .navigation > ul.sections li:after a[href] { color: #fff; }
-  footer .navigation > ul.sections li:after a[href]::after { border-color: #ccc; border-style: solid; border-width: 3px 3px 0 0; content: " \a0"; display: inline-block; height: 6px; position: absolute; right: 14px; top: 16px; vertical-align: middle; width: 6px; -moz-transform: rotate(45deg); -ms-transform: rotate(45deg); -webkit-transform: rotate(45deg); transform: rotate(45deg); }
+  footer .navigation > ul.sections li a { background: #317b0c; color: #fff; display: block; font-family: "Trebuchet MS", Helvetica, Arial, "Lucida Sans Unicode", sans-serif; font-size: 14px; padding: 14px 14px; position: relative; text-decoration: none; }
+  footer .navigation > ul.sections li a[href] { color: #fff; }
+  footer .navigation > ul.sections li a[href]::after { border-color: #ccc; border-style: solid; border-width: 3px 3px 0 0; content: " \a0"; display: inline-block; height: 6px; position: absolute; right: 14px; top: 16px; vertical-align: middle; width: 6px; -moz-transform: rotate(45deg); -ms-transform: rotate(45deg); -webkit-transform: rotate(45deg); transform: rotate(45deg); }
   footer .navigation > ul.sections + h6 { /* "Legal:" label */ display: none; }
   footer .navigation > h6:nth-of-type(2) { margin: 14px 14px 4px 71px; }
   footer .navigation > h6:nth-of-type(2):after { content: ":"; }
