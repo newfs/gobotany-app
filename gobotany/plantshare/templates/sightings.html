@@ -38,8 +38,10 @@
                     {% if sighting.photo %}
                         <a class="photolink"
                             href="{% url 'ps-sighting' sighting.id %}">
+                            {% if sighting.photo %}
                             <img src="" alt=""
                             data-lazy-img-src="{{ sighting.photo.thumb_cropped.url|secure_url }}">
+                            {% endif %}
                         </a>
                     {% endif %}
                     <div class="title">
