@@ -124,6 +124,8 @@ body { background-color: #f0f0c0; background-image: url(/static/images/layout/li
 
 html, button, input, select, textarea { font-family: Verdana, Geneva, "Lucida Sans Unicode", sans-serif; }
 
+button, input, select, textarea { font-size: 100%; margin: 0; }
+
 a { color: #317b0c; text-decoration: none; }
 
 a:visited { color: #666e0b; }
@@ -1091,11 +1093,11 @@ body.plantshare .content form input[type=text], body.plantshare .content form in
 body.plantshare .content form textarea { height: 82px; border: 1px solid #c3d941; padding: 5px; width: 353px; }
 body.plantshare .content form input[type=text], body.plantshare .content form textarea { font-family: Verdana, Geneva, "Lucida Sans Unicode", sans-serif; }
 
-body.plantshare.box { background-color: #fff; border: 1px solid #c3d941; padding: 4px 16px; }
-body.plantshare.box table { margin: 16px 0 12px; width: 100%; }
-body.plantshare.box table tr:nth-child(odd) { background-color: #e1f0d1; }
-body.plantshare.box table th, body.plantshare.box table td { padding: 6px 8px; }
-body.plantshare.box table th { font-weight: normal; text-align: left; width: 33%; }
+body.plantshare .box { background-color: #fff; border: 1px solid #c3d941; padding: 4px 16px; }
+body.plantshare .box table { margin: 16px 0 12px; width: 100%; }
+body.plantshare .box table tr:nth-child(odd) { background-color: #e1f0d1; }
+body.plantshare .box table th, body.plantshare .box table td { padding: 6px 8px; }
+body.plantshare .box table th { font-weight: normal; text-align: left; width: 33%; }
 
 body.plantshare form.login { padding: 0 16px 16px; max-width: 250px; min-width: 194px; }
 body.plantshare form.login label { font-size: 10px; }
