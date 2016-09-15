@@ -37,6 +37,10 @@ body {
 html, button, input, select, textarea {
     font-family: $body-font;
 }
+button, input, select, textarea {
+    font-size: 100%;
+    margin: 0;
+}
 
 a {
     color: $link-green;
