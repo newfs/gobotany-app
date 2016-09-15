@@ -39,7 +39,7 @@
                         <a class="photolink"
                             href="{% url 'ps-sighting' sighting.id %}">
                             <img src="" alt=""
-                            data-lazy-img-src="{{ sighting.photo.thumb_cropped_prop.url|secure_url }}">
+                            data-lazy-img-src="{{ sighting.photo.thumb_cropped.url|secure_url }}">
                         </a>
                     {% endif %}
                     <div class="title">

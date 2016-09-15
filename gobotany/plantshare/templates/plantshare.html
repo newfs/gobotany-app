@@ -42,7 +42,7 @@
                         title="{{ sighting.identification }}"
                         data-is-scientific-name="{{ sighting.identification|is_scientific_name }}">
                         {% if sighting.photos %}
-                            <img src="{{ sighting.photos.all.0.thumb_cropped_prop.url|secure_url }}"
+                            <img src="{{ sighting.photos.all.0.thumb_cropped.url|secure_url }}"
                             alt="Sighting photo: {{ sighting.identification }}">
                         {% endif %}
                     </a>

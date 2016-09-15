@@ -49,7 +49,7 @@
                     <td>
                         {% if sighting.photo %}
                             <a href="{% url 'ps-sighting' sighting.id %}">
-                                <img src="{{ sighting.photo.thumb_cropped_prop.url|secure_url }}" alt="">
+                                <img src="{{ sighting.photo.thumb_cropped.url|secure_url }}" alt="">
                             </a>
                         {% endif %}
                     </td>

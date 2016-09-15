@@ -467,16 +467,6 @@ class ScreenedImage(models.Model):
                 options={'quality': 60},
                 processors=[SmartResize(183, 149, upscale=True)])
 
-    # Use a property to supress IOError in case the image is not there.
-    # This was seen particularly in the Dev environment. For details,
-    # see: https://github.com/matthewwithanm/django-imagekit/issues/236
-    def _thumb_cropped(self):
-        try:
-            return self.thumb_cropped
-        except:
-            return None
-    thumb_cropped_prop = property(_thumb_cropped)
-
     uploaded = models.DateTimeField(blank=False, auto_now_add=True)
     uploaded_by = models.ForeignKey(User, null=False,
                                     related_name='images_uploaded')
