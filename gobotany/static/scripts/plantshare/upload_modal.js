@@ -137,6 +137,10 @@ define([
 
         // Close button
         $modal.find('.close').click(function () {
+            // Clear any image that the form may currently contain.
+            $modal.find('#upload-image-form')[0].reset();
+            $modal.find('#hidden_image').attr('src', EMPTY_IMAGE_URL);
+
             $lastTrigger.overlay().close();
             return false;
         });
