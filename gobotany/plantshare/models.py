@@ -351,6 +351,8 @@ else:
     upload_storage = Storage()
 
 def rename_image_by_type(instance, filename):
+    print 'rename_image_by_type: filename: %s' % filename
+
     # Create a checksum so we have a unique name
     md5 = hashlib.md5()
     f = instance.image
@@ -361,8 +363,12 @@ def rename_image_by_type(instance, filename):
 
     new_name = '{0}_{1}.jpg'.format(instance.uploaded_by.username.lower(),
             md5.hexdigest())
+    print 'new_name: %s' % new_name
 
-    return os.path.join(instance.image_type.lower(), new_name)
+    joined_name = os.path.join(instance.image_type.lower(), new_name)
+    print 'joined_name: %s' % joined_name
+
+    return joined_name
 
 
 class ExifGpsExtractor(object):
