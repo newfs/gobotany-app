@@ -164,6 +164,7 @@ INSTALLED_APPS = [
 
     'haystack',
     'haystack_panel',
+    'imagekit',
     'tinymce',
     'registration',
     #'emailconfirmation', # Temporarily uncomment to create this app's
