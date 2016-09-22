@@ -171,7 +171,6 @@ body.plantshare #main .profile {
     }
     div {
         clear: left;
-        height: 102px;
     }
     .avatar {
         background: $light-green;
@@ -183,6 +182,7 @@ body.plantshare #main .profile {
     }
     table {
         clear: left;
+        margin-top: 64px;
     }
     .map {
         float: right;
@@ -1519,6 +1519,9 @@ body.plantshare#screen-images {
         .box, .profile {
             width: $smallscreen-portrait-box-width;
         }
+        #main .profile table {
+            margin-top: 0;
+        }
         &#locator #main {
             #species-images {
                 width: 304px;
@@ -1568,6 +1571,9 @@ body.plantshare#screen-images {
                 padding-left: $section-padding;
                 padding-right: $section-padding;
             }
+        }
+        #main .profile {
+            width: inherit;
         }
         > table {
             margin-left: $section-padding;
