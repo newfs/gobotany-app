@@ -64,8 +64,8 @@ $search-suggest-menu-top: 83px;
     body, header .container, .content .container, footer .container {
         width: $smallscreen-landscape-width;
     }
-    header nav > a {
-        width: 80px;
+    header nav > a {   /* small-screen nav. button */
+        width: 62px;
         span {
             font-size: 14px;
             line-height: 160%;
