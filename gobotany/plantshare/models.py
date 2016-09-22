@@ -337,6 +337,7 @@ class Sighting(models.Model):
 
 
 # Storage location for uploaded images depends on environment.
+
 if settings.DEBUG:
     # Local, debug upload
     upload_storage = FileSystemStorage(
@@ -350,25 +351,20 @@ else:
     # Direct upload to S3
     upload_storage = Storage()
 
+
 def rename_image_by_type(instance, filename):
-    print 'rename_image_by_type: filename: %s' % filename
+    user_name = instance.uploaded_by.username.lower()
+    image_type = instance.image_type.lower()
 
-    # Create a checksum so we have a unique name
+    # Create and update a hash object for getting a unique name.
     md5 = hashlib.md5()
-    f = instance.image
-    if f.multiple_chunks():
-        (md5.update(chunk) for chunk in f.chunks())
-    else:
-        md5.update(f.read())
+    md5.update(filename)
+    md5.update(user_name)
+    md5.update(image_type)
+    md5.update(str(datetime.datetime.now()))
 
-    new_name = '{0}_{1}.jpg'.format(instance.uploaded_by.username.lower(),
-            md5.hexdigest())
-    print 'new_name: %s' % new_name
-
-    joined_name = os.path.join(instance.image_type.lower(), new_name)
-    print 'joined_name: %s' % joined_name
-
-    return joined_name
+    new_name = '{0}_{1}.jpg'.format(user_name, md5.hexdigest())
+    return os.path.join(image_type, new_name)
 
 
 class ExifGpsExtractor(object):
