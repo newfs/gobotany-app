@@ -1863,8 +1863,11 @@ header.partner-site nav li a { padding: 5px 32px 0; /* fewer sections, more hori
 /* Portrait-orientation styles */
 @media only screen and (max-width: 400px) { body, header .container, .content .container, footer .container { width: 320px; }
   body { padding-top: 110px; }
-  header nav > a { width: 19px; }
-  header nav > a span { display: none; }
+  header nav > a { width: 20px; }
+  header #search form { width: 242px; }
+  header nav #search input { width: 192px; }
+  #search-suggest + div { width: 232px !important; }
+  #search-suggest + div li { width: 226px; }
   #nav { left: 40px; width: 310px; }
   .content #main { width: 304px; }
   .content #sidebar { float: none; width: 302px; }
@@ -1874,8 +1877,8 @@ header.partner-site nav li a { padding: 5px 32px 0; /* fewer sections, more hori
 @media only screen and (min-width: 401px) and (max-width: 600px) { html { -webkit-text-size-adjust: none; }
   body { padding-top: 75px; }
   body, header .container, .content .container, footer .container { width: 480px; }
-  header nav > a { width: 80px; }
-  header nav > a span { font-size: 14px; line-height: 160%; padding-left: 23px; position: absolute; }
+  header nav > a { /* small-screen nav. button */ width: 20px; }
+  header nav > a span { position: absolute; }
   .content #main { width: 464px; }
   .content #sidebar { width: 462px; } }
 /* These styles are common to both smartphone widths */
@@ -1906,7 +1909,7 @@ header.partner-site nav li a { padding: 5px 32px 0; /* fewer sections, more hori
   h3 { font-size: 14px; }
   header { height: 90px; }
   header nav { background: #508e31; clear: left; height: 32px; padding: 0; }
-  header nav > a { background: #437829 url(/static/images/icons/menu-icon.png) 7px 5px no-repeat; border: 1px solid #437829; border-radius: 5px; display: inline-block; font-size: 30px; height: 24px; line-height: 68%; margin: 3px 0 0 4px; padding: 0 2px 0 7px; position: relative; }
+  header nav > a { background: #437829; border: 1px solid #437829; border-radius: 5px; display: inline-block; font-size: 14px; height: 24px; line-height: 22px; margin: 3px 0 0 4px; padding: 0 20px 0 6px; position: relative; }
   header nav #search { margin-top: 6px; padding-left: 10px; }
   header nav > ul { display: none; /* will use bottom navigation instead of top */ }
   header nav #search-suggest .menu { top: 83px; }
