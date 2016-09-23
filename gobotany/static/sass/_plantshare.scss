@@ -525,6 +525,7 @@ body.plantshare #sightings-locator.mini {
             border-top: 0;
             float: right;
             margin-top: 0;
+            padding: 0;
         }
     }
 } /* end .mini */
@@ -1524,7 +1525,7 @@ body.plantshare#screen-images {
         }
         &#locator #main {
             #species-images {
-                width: 304px;
+                width: 294px;
             }
         }
         &#new-sighting {
@@ -1708,7 +1709,7 @@ body.plantshare#screen-images {
                 float: left;
                 margin-bottom: 12px;
                 margin-top: 14px;
-                width: 85% !important;
+                width: 97% !important;
             }
             #ask, #main {
                 #question-form {
