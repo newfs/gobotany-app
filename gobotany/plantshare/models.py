@@ -338,10 +338,6 @@ class Sighting(models.Model):
 
 # Storage location for uploaded images depends on environment.
 
-print 'settings.DEBUG:', settings.DEBUG
-print 'settings.IN_PRODUCTION:', settings.IN_PRODUCTION
-print 'settings.IS_AWS_AUTHENTICATED:', settings.IS_AWS_AUTHENTICATED
-
 if not settings.IN_PRODUCTION:
     # Local development environment upload
     upload_storage = FileSystemStorage(
