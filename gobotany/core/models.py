@@ -719,6 +719,16 @@ class Taxon(models.Model):
         distributions = Distribution.objects.all_records_for_plant(
             self.scientific_name).filter(state__in=states).values_list(
             'state', 'present')
+
+        # If no distribution records were found, try looking up the synonyms.
+        if len(distributions) == 0:
+            for synonym in self.synonyms.all():
+                distributions = Distribution.objects.all_records_for_plant(
+                    synonym.scientific_name).filter(
+                    state__in=states).values_list('state', 'present')
+                if len(distributions) > 0:
+                    break
+
         invasive_statuses = InvasiveStatus.objects.filter(
             taxon=self).values_list('region', 'invasive_in_region',
             'prohibited_from_sale')
