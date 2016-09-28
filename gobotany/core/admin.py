@@ -710,6 +710,22 @@ class DistributionAdmin(_Base):
             }),
             label='Scientific name',
             max_length=100)
+        new_species_name = forms.CharField(
+            widget=forms.TextInput(attrs={
+                'size': '60',
+                'style': 'display:block'
+            }),
+            label='Species name',
+            max_length=60,
+            required=False)
+        new_subspecific_epithet = forms.CharField(
+            widget=forms.TextInput(attrs={
+                'size': '60',
+                'style': 'display:block'
+            }),
+            label='Subspecific epithet',
+            max_length=60,
+            required=False)
 
     def rename_records(self, request, queryset):
         form = None
@@ -720,11 +736,17 @@ class DistributionAdmin(_Base):
             if form.is_valid():
                 number_of_records = queryset.count()
                 new_scientific_name = form.cleaned_data['new_scientific_name']
+                new_species_name = form.cleaned_data['new_species_name']
+                new_subspecific_epithet = form.cleaned_data[
+                    'new_subspecific_epithet']
 
-                queryset.update(scientific_name=new_scientific_name)
+                queryset.update(scientific_name=new_scientific_name,
+                    species_name=new_species_name,
+                    subspecific_epithet=new_subspecific_epithet)
 
-                message = ('Successfully renamed %d records to %s.' % (
-                    number_of_records, new_scientific_name))
+                message = ('Successfully renamed %d records to %s (%s, %s).' \
+                    % (number_of_records, new_scientific_name,
+                    new_species_name, new_subspecific_epithet))
                 self.message_user(request, message)
                 return HttpResponseRedirect(request.get_full_path())
 
