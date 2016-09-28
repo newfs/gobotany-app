@@ -663,7 +663,7 @@ class DistributionAdmin(_Base):
 
         if request.method == 'GET' or errors:
             # Return the form page.
-            return render_to_response(request,
+            return render(request,
                     'admin/core/distribution/add_set_form.html', {
                         'title': 'Add set of Distribution records',
                         'errors': errors,
@@ -729,7 +729,7 @@ class DistributionAdmin(_Base):
                     admin.ACTION_CHECKBOX_NAME)}
                 )
 
-        return render_to_response(request,
+        return render(request,
             'admin/core/distribution/rename_records.html', {
                 'records': queryset,
                 'rename_records_form': form,
