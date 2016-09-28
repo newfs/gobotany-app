@@ -582,6 +582,11 @@ class RankFilter(admin.SimpleListFilter):
         return qs
 
 
+CHECKBOX_MAPPING = {
+    'on': True,
+    'off': False,
+}
+
 class DistributionAdmin(_Base):
     list_display = ('scientific_name', 'species_name', 'subspecific_epithet',
         'state', 'county', 'present', 'native')
@@ -672,8 +677,8 @@ class DistributionAdmin(_Base):
         elif request.method == 'POST':
             subspecific_epithet = request.POST.get('subspecific_epithet', '')
             # Get any defaults.
-            present = request.POST.get('present', False)
-            native = request.POST.get('native', False)
+            present = CHECKBOX_MAPPING.get(request.POST.get('present', False))
+            native = CHECKBOX_MAPPING.get(request.POST.get('native', False))
             # Create the set of distribution records.
             records_created = 0
             for place in DISTRIBUTION_PLACES:
