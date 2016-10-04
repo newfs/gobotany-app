@@ -126,24 +126,25 @@
                         {% if page.has_previous %}
                             <li><a href="?q={{ query }}&amp;page={{ page.previous_page_number }}">Previous</a></li>
                         {% endif %}
-
-                        {# Set a maximum number of pages to display. #}
-                        {% with 20 as max_pages %}
                         {% for page_num in paginator.page_range %}
-                            {% if page_num <= max_pages %}
-                                {% if page_num == page.number %}
-                                    <li>{{ page_num }}</li>
-                                {% else %}
-                                <li><a href="?q={{ query }}&amp;page={{ page_num }}">{{ page_num }}</a></li>
+                            {% if page.number < 7 %}
+                                {% if page_num <= 10 %}
+                                    {% if page_num == page.number %}
+                                        <li>{{ page_num }}</li>
+                                    {% else %}
+                                    <li><a href="?q={{ query }}&amp;page={{ page_num }}">{{ page_num }}</a></li>
+                                    {% endif %}
+                                {% endif %}
+                            {% else %}
+                                {% if page_num >= page.number|add:'-5' and page_num < page.number|add:'4' %}
+                                    {% if page_num == page.number %}
+                                        <li>{{ page_num }}</li>
+                                    {% else %}
+                                    <li><a href="?q={{ query }}&amp;page={{ page_num }}">{{ page_num }}</a></li>
+                                    {% endif %}
                                 {% endif %}
                             {% endif %}
                         {% endfor %}
-                        {# Display ellipsis if omitting some pages. #}
-                        {% if paginator.page_range|length > max_pages %}
-                            <li>...</li>
-                        {% endif %}
-                        {% endwith %}
-
                         {% if page.has_next %}
                             <li><a href="?q={{ query }}&amp;page={{ page.next_page_number }}">Next</a></li>
                         {% endif %}
