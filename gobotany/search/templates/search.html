@@ -124,7 +124,8 @@
                     <div class="search-navigation">
                         <ul>
                         {% if page.has_previous %}
-                            <li><a href="?q={{ query }}&amp;page={{ page.previous_page_number }}">Previous</a></li>
+                            <li><a href="?q={{ query }}&amp;page={{ page.previous_page_number }}">&#x2190;
+                            Previous</a></li>
                         {% endif %}
                         {% for page_num in paginator.page_range %}
                             {% if page.number < 7 %}
@@ -146,7 +147,8 @@
                             {% endif %}
                         {% endfor %}
                         {% if page.has_next %}
-                            <li><a href="?q={{ query }}&amp;page={{ page.next_page_number }}">Next</a></li>
+                            <li><a href="?q={{ query }}&amp;page={{ page.next_page_number }}">Next
+                            &#x2192;</a></li>
                         {% endif %}
                         </ul>
                     </div>
