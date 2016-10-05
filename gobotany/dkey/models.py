@@ -51,8 +51,9 @@ class Lead(models.Model):
     parent = models.ForeignKey('Lead', related_name='children', null=True)
     letter = models.TextField()
     text = models.TextField()
-    goto_page = models.ForeignKey('Page', related_name='leadins', null=True)
-    goto_num = models.IntegerField(null=True)
+    goto_page = models.ForeignKey('Page', related_name='leadins', null=True,
+        blank=True)
+    goto_num = models.IntegerField(null=True, blank=True)
     taxa_cache = models.TextField(blank=True)
 
     def __unicode__(self):
