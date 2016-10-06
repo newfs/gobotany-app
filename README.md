@@ -149,7 +149,9 @@ Heroku Websolr add-on.
 
 To reindex the Solr index, use the following command:
 
-    heroku run python gobotany/manage.py rebuild_index
+    heroku run python gobotany/manage.py rebuild_index --app {app-name}
+
+(locally, use: dev/django rebuild_index)
 
 
 ## Running the automated tests
