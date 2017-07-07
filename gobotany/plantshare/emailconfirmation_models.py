@@ -51,6 +51,9 @@ class EmailAddressManager(models.Manager):
         return [address.user for address in EmailAddress.objects.filter(
             verified=True, email=email)]
 
+    class Meta:
+        app_label = 'emailconfirmation'
+
 
 class EmailAddress(models.Model):
     
@@ -78,6 +81,7 @@ class EmailAddress(models.Model):
         return u"%s (%s)" % (self.email, self.user)
     
     class Meta:
+        app_label = 'emailconfirmation'
         verbose_name = _("email address")
         verbose_name_plural = _("email addresses")
         unique_together = (
@@ -106,8 +110,7 @@ class EmailConfirmationManager(models.Manager):
         current_site = Site.objects.get_current()
         # check for the url with the dotted view path
         try:
-            path = reverse("emailconfirmation.views.confirm_email",
-                args=[confirmation_key])
+            path = reverse('ps-confirm-email', args=[confirmation_key])
         except NoReverseMatch:
             # or get path with named urlconf instead
             path = reverse(
@@ -147,6 +150,9 @@ class EmailConfirmationManager(models.Manager):
             if confirmation.key_expired():
                 confirmation.delete()
 
+    class Meta:
+        app_label = 'emailconfirmation'
+
 
 class EmailConfirmation(models.Model):
     
@@ -166,5 +172,6 @@ class EmailConfirmation(models.Model):
         return u"confirmation for %s" % self.email_address
     
     class Meta:
+        app_label = 'emailconfirmation'
         verbose_name = _("email confirmation")
         verbose_name_plural = _("email confirmations")
