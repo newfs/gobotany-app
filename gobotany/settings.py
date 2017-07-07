@@ -21,6 +21,9 @@ ALLOWED_HOSTS = ['.newenglandwild.org', # any subdomain of newenglandwild.org
     'gobotany-dev.herokuapp.com',
     'gobotany-staging.herokuapp.com',
     'gobotany-prod.herokuapp.com',
+    'localhost',
+    '127.0.0.1',
+    '0.0.0.0'
 ]
 
 TEMPLATES = [
