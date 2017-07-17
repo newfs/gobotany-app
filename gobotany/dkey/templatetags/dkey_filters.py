@@ -99,14 +99,14 @@ re_figure_link = re.compile(ur'\[Figs?\. ([\d, ]+)(, [RL])?\s*\]')
 def render_floating_figure(match):
     number = int(match.group(1))
     figure = models.Figure.objects.get(number=number)
-    return get_template('dkey/figure.html').render(Context({'figure': figure}))
+    return get_template('dkey/figure.html').render({'figure': figure})
 
 @register.filter
 def render_figure_link(match):
     numbers = [ int(number) for number in match.group(1).split(',') ]
     figures = list(models.Figure.objects.filter(number__in=numbers))
-    context = Context({'figures': figures, 'suffix': match.group(2) or ''})
-    return get_template('dkey/figure_link.html').render(context)
+    dictionary = {'figures': figures, 'suffix': match.group(2) or ''}
+    return get_template('dkey/figure_link.html').render(dictionary)
 
 @register.filter
 def render_floating_figures(text):

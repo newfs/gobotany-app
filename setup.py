@@ -2,7 +2,7 @@ from distutils.core import setup
 from setuptools import find_packages
 
 requirements = [
-    'django==1.10.7',
+    'django==1.11.3',
 
     'Pillow==3.3.1',
     'bleach==1.4.3',
@@ -11,7 +11,7 @@ requirements = [
     'django-haystack==2.5.dev1',
     'django-haystack-panel==0.2.1',
     'django-imagekit==3.3',
-    'django-tinymce==2.3.0',
+    'django-tinymce==2.6.0',
     'inflect',
     'lxml==3.5.0',
     'psycopg2==2.6.2',
