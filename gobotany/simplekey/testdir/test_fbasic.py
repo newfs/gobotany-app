@@ -1440,8 +1440,8 @@ class ResultsPageStateFunctionalTests(FunctionalTestCase):
 class SearchFunctionalTests(FunctionalTestCase):
 
     def test_maximum_paging_links(self):
-        MAX_PAGES = 20
-        expected_num_items = MAX_PAGES + 2   # add for ellipsis, Next link
+        MAX_PAGES = 10
+        expected_num_items = MAX_PAGES + 1   # add for Next link
         page = self.get('/search/?q=simple+key')
         paging_list_items = self.css('.search-navigation ul li')
         self.assertEqual(len(paging_list_items), expected_num_items)
