@@ -174,7 +174,8 @@ Our selenium-powered browser tests are intended to cover things that
 cannot be tested without a browser and JavaScript.  To run them:
 
     dev/test-browser                           # to run all tests
-    dev/test-browser FilterFunctionalTests     # select which tests
+    dev/test-browser FilterFunctionalTests     # all tests in a test class
+    dev/test-browser FilterFunctionalTests.test_length_filter   # single test
 
 Note: if you get failures with the browser tests, try running the test
 that failed individually. Sometimes a failure or two occurs when running
