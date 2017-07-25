@@ -261,6 +261,9 @@ RECAPTCHA_PUBLIC_KEY = os.environ.get('RECAPTCHA_PUBLIC_KEY', '')
 RECAPTCHA_PRIVATE_KEY = os.environ.get('RECAPTCHA_PRIVATE_KEY', '')
 RECAPTCHA_USE_SSL = True
 
+# For static Google Maps (dynamic ones use a different key, in google_maps.js)
+GMAPS_STATIC_KEY = os.environ.get('GOBOTANY_GMAPS_KEY_STATIC', '')
+
 TINYMCE_JS_URL = "tiny_mce/tiny_mce.js"
 
 # Use memcached for caching if Heroku provides MEMCACHIER_SERVERS, or if a
