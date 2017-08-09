@@ -48,7 +48,14 @@
                 <li><a href="/edit/dkey/group-10/">Group 10</a></li>
             </ul>
         </nav>
-        <h2>{{ page.title }} <span>[<a 
+        <h2>
+            {% if page.rank == 'genus' %}
+                <i>{{ page.title }}</i>
+            {% else %}
+                {{ page.title }}
+            {% endif %}
+        
+            <span>[<a 
             href="/admin/dkey/page/{{ page.id }}/change/">change</a>]</span></h2>
         <ul class="leads">
         {% for lead in lead_hierarchy %}
