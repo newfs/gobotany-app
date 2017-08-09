@@ -35,11 +35,11 @@ class LeadAdmin(GoBotanyModelAdmin):
     formfield_overrides = {
         models.TextField: {'widget': Textarea(attrs={'rows': 4, 'cols': 80}) },
     }
-    list_display = ('page', 'id', 'parent', 'letter', 'text', 'goto_page',
+    list_display = ('page', 'id', 'letter', 'parent', 'text', 'goto_page',
         'goto_num', 'taxa_cache',)
     ordering = ('page__title',)
     readonly_fields = ('taxa_cache',)
-    search_fields = ('page__title', 'id', 'parent__letter', 'letter', 'text',
+    search_fields = ('page__title', 'id', 'letter', 'parent__letter', 'text',
         'goto_page__title', 'goto_num', 'taxa_cache',)
 
 
