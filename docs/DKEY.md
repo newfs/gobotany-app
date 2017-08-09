@@ -6,7 +6,29 @@ To make changes to the Dichotomous Key in order to keep it up to date,
 edit the records in the Admin. Then a site administrator should run
 the `sync` script, which will complete the update.
 
-Here are various pieces of the Dichotomous Key and how to update them:
+Below are various pieces of the Dichotomous Key and how to update them.
+
+### Compact View Tool
+
+The [Compact View](/edit/dkey/) tool is a companion to the CMS screens.
+
+It enables you to browse a compact, expanded view of the key. It aims to
+make it easier to see what is where and to provide quick shortcuts to the
+CMS edit screens. Navigate using the links at top, and the links to groups,
+families, and genera in the trees.
+
+Each page in the Compact View corresponds to a page in the key. Its title
+appears at the top of the page, with a `change` link next to it in case
+you need to edit that page record.
+
+Each lead has its composite identifier (page id:lead number/letter, which
+looks like this: 16:8b) linked to the CMS change screen for that record.
+If there's a group, family, or genus link next to it, that link goes to
+another page in the Compact View.
+
+If you hover your cursor over a lead’s identifier in the Compact View for
+a couple of seconds, the text for that couplet question will appear as a
+tooltip.
 
 ### Text at bottom of species pages
 

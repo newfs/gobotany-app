@@ -15,6 +15,10 @@ from shoehorn.engine import DifferenceEngine
 
 from gobotany.core import models
 from gobotany.core.partner import which_partner
+
+from gobotany.dkey import models as dkey_models
+from gobotany.dkey.views import _Proxy, get_groups
+
 from . import wranglers
 
 
@@ -547,3 +551,30 @@ def partner_plants_csv(request, idnum):
         'attachment; filename="partner{}-plants.csv"'.format(partner.id)
         )
     return response
+
+
+@permission_required('core.botanist')
+def dkey(request, slug=u'key-to-the-families'):
+    if slug != slug.lower():
+        raise Http404
+    title = dkey_models.slug_to_title(slug)
+    if title.startswith('Section '):
+        title = title.title()
+    page = get_object_or_404(dkey_models.Page, title=title)
+    if page.rank == 'species':
+        raise Http404
+    proxy = _Proxy(page)
+    return render(request, 'gobotany/edit_dkey.html', {
+            'groups': get_groups,
+            'leads': (lambda: proxy.leads),
+            'lead_hierarchy': (lambda: proxy.lead_hierarchy),
+            'page': (lambda: proxy.page),
+            'rank_beneath': (lambda: proxy.rank_beneath),
+            'taxa_beneath': (lambda: proxy.taxa_beneath),
+            'next_page': (lambda: proxy.next() or proxy.page),
+        })
+
+@permission_required('core.botanist')
+def dkey_species(request, genus, specific_epithet):
+    return redirect('/species/%s/%s/?key=dichotomous' % (genus,
+        specific_epithet))

@@ -1,0 +1,88 @@
+{% load dkey_filters %}
+
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Dichotomous Key</title>
+        <meta charset="utf-8">
+        <style>
+            nav ul {
+                list-style-type: none;
+                margin: 0;
+                padding: 0;
+            }
+            nav li {
+                display: inline;
+                margin: 0 1rem 0 0;
+            }
+            .leads {
+                font-family: Verdana, sans-serif;
+                font-size: x-small;
+            }
+            h1 {
+                display: none;
+            }
+            h2 span {
+                font-family: Verdana, sans-serif;
+                font-weight: normal;
+                font-size: x-small;
+            }
+        </style>
+    </head>
+    <body>
+        <h1>Dichotomous Key</h1>
+        <nav>
+            <ul>
+                <li><b>Dichotomous Key</b></li>
+                <li><a href="/edit/dkey/key-to-the-families/">Key to the
+                    Families</a> (top)</li>
+                <li><a href="/edit/dkey/group-1/">Group 1</a></li>
+                <li><a href="/edit/dkey/group-2/">Group 2</a></li>
+                <li><a href="/edit/dkey/group-3/">Group 3</a></li>
+                <li><a href="/edit/dkey/group-4/">Group 4</a></li>
+                <li><a href="/edit/dkey/group-5/">Group 5</a></li>
+                <li><a href="/edit/dkey/group-6/">Group 6</a></li>
+                <li><a href="/edit/dkey/group-7/">Group 7</a></li>
+                <li><a href="/edit/dkey/group-8/">Group 8</a></li>
+                <li><a href="/edit/dkey/group-9/">Group 9</a></li>
+                <li><a href="/edit/dkey/group-10/">Group 10</a></li>
+            </ul>
+        </nav>
+        <h2>{{ page.title }} <span>[<a 
+            href="/admin/dkey/page/{{ page.id }}/change/">change</a>]</span></h2>
+        <ul class="leads">
+        {% for lead in lead_hierarchy %}
+            {# each "lead" item here is a piece: can be a tag, a lead record, etc. #}
+            {% if lead.0 %}
+                {% with literal_string=lead %}
+                    {{ literal_string|safe }}
+                {% endwith %}
+            {% else %}
+                {% with p=lead.goto_page %}
+                
+                <span title="{{ lead.text }}">
+                    <a href="/admin/dkey/lead/{{ lead.id }}/change/">{{ lead|safe }}</a>
+                </span>
+
+                <a href="/edit{{ p.title|dkey_url }}">
+                    {% if p.rank == 'group' %}
+                        {{ p.title }}{% elif p.rank == 'subkey' %}
+                        VISIT KEY{% elif p.rank == 'family' %}
+                        {{ p.title }}{% elif p.rank == 'subgroup' and page.rank == 'family' %}
+                        {{ p.title|abbreviate_title }}{% elif p.rank == 'genus' %}
+                        <i>{{ p.title }}</i>{% elif p.rank == 'subgroup' and page.rank == 'genus' %}
+                        <i>{{ p.title|abbreviate_title }}</i>{% elif p.rank == 'species' %}
+                        <i>{{ p.title }}</i>{% elif p.rank == 'section' %}
+                        {{ p.title }}{% endif %}</a>
+                {% if lead.rank_beneath and lead.taxa_beneath|length > 1 %}
+                    ({{ lead.taxa_beneath|length }}
+                        {{ lead.rank_beneath|taxon_plural }}
+                        {% if lead.letter %} in {{ lead.letter }}{% endif %})
+                {% endif %}
+
+                {% endwith %}
+            {% endif %}
+        {% endfor %}
+        </ul>
+    </body>
+</html>
