@@ -30,6 +30,120 @@ If you hover your cursor over a lead’s identifier in the Compact View for
 a couple of seconds, the text for that couplet question will appear as a
 tooltip.
 
+### Adding new leads
+
+In adding a new lead to the key, you essentially need to split an existing
+lead in two. This is because, with the key being a dichotomous key, all
+choices are arranged in couplets. Each couplet consists of two mutually
+exclusive choices for the user, and each of these choices is really a lead.
+So, you're really adding a pair of leads.
+
+1. Find the Page
+
+Start by finding the page that you will need to add a new lead on. This
+can be the top page (“Key to the Families”), a group page (ex.: ”Group 3”),
+a family page, or a genus page. Each of those can have a structure of
+leads.
+
+Browse around the [Compact View](/edit/dkey/) tool to get the page where
+you will need to add your new lead. You can click the `change` link at top
+to see the database record for this page, although you will likely not need
+to change it.
+
+For example, choose the Group 4 page.
+
+2. Find the Parent Lead
+
+The next step is to find the parent lead that you want your new leads to
+appear beneath. Jot down the ID of this parent as seen in the Compact
+View tool.
+
+For example, on the Group 4 page, choose 179:2a (which has 7 families)
+as your Parent Lead.
+
+3. Note the existing Child Leads
+
+The next step is to jot down the IDs of the existing child leads. This is the
+couplet of two choices underneath your Parent Lead.
+
+So, for example, under Group 4's 179:2a, the two child leads are 180:3a.74
+(which points to the Staphyleaceae page) and 181:3b (which has 6 families).
+
+[3.5: decide on "letters" for the child leads; shouldn't these usually be
+numbered just beneath the parent numbers? ex., parent is 2a, children will
+be 3a and 3b?]
+
+4. Create two records for your new Leads
+
+In the CMS, go create the two new records for your new leads, and write
+down the IDs of them.
+
+Set the Page to the one you noted earlier.
+
+Set the Parent field to the Parent Lead ID you jotted down. You can type in
+order to make the browser find the value in the long list more quickly.
+
+Set the Letter field to whatever you decided earlier, one for each record.
+
+Set the text to whatever the description in the user interface should be.
+
+If appropriate, set the Goto Page field to a destination Page record. This
+will only be set if your lead goes to another page, rather than is just a
+lead for narrowing down results on the same page.
+
+The field Goto Num can be left blank for now, as can Taxa Cache.
+
+(after I do this, I get the error Lead object has no attribute childlist)
+
+5. Get the two new IDs of the two lead records you just created. You can
+do a search on the field above the table in the CMS to narrow down the
+results.
+
+For my example, after creating two new leads with "letters" 3a and 3b,
+with 179:2a as the parent, I ended up with new records of ID 8745 and
+8746, respectively.
+
+5. Change the old child leads to point to one of the new leads as its
+parent ID.
+
+So, in this case, I'll choose my new 3a as the lead which will connect
+the old child leads (180:3a.74 and 181:3b).
+
+Combine the ID for this lead with its "letter" and you get the full ID of
+this lead. So, 8745.3a.
+
+Go to the old child leads (search on the ID number in the CMS's search
+field), and set the Parent to this, 8745.3a.
+
+For now, check your Parent ID in the Compact View: you should see your
+new leads, with the old child leads now connected under one of them.
+
+The second new child lead will have to go either to another page, or to
+other leads; that's for the next step.
+
+Also, note that if you are connecting a sub-structure of old child leads
+under your new one, that you may need to go through and re-number the
+Letter field for all the leads beneath your new one. So, if you inserted
+a new 3a lead, you will likely want to re-number everything below it to
+follow in numerical order, i.e., 4a, 4b, 5a, 5b, 6a, 6b, etc.
+
+6. For the second new lead, make it go somewhere.
+
+Your second new lead, 8746.3b, is hanging out there with nowhere to go.
+Go back to the CMS and search on 8746 to find that record. Edit it, and
+you can choose a Page record for it to point to (e.g., a family page or
+a genus page).
+
+If you would rather instead add more leads beneath this one, you can go
+create two new Leads records (see step 4), and set their Parent to this
+lead.
+
+Again, go test in the Compact View to see the results of your changes.
+
+Then you can, of course, go try out your changes in the actual D. Key
+as well.
+
+
 ### Text at bottom of species pages
 
 Each species page on the site has a section labeled *Information from
