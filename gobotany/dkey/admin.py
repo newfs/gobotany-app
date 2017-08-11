@@ -31,15 +31,20 @@ class IllustrativeSpeciesAdmin(GoBotanyModelAdmin):
     search_fields = ('group_number', 'family_name', 'species_name')
 
 
+"""Make a longer column heading name for ID so the number doesn't wrap."""
+def lead_id_name(obj):
+    return obj.id
+lead_id_name.short_description = 'Lead ID'
+
 class LeadAdmin(GoBotanyModelAdmin):
     formfield_overrides = {
         models.TextField: {'widget': Textarea(attrs={'rows': 4, 'cols': 80}) },
     }
-    list_display = ('page', 'id', 'letter', 'parent', 'text', 'goto_page',
+    list_display = (lead_id_name, 'letter', 'text', 'parent', 'page', 'goto_page',
         'goto_num', 'taxa_cache',)
     ordering = ('page__title',)
     readonly_fields = ('taxa_cache',)
-    search_fields = ('page__title', 'id', 'letter', 'parent__letter', 'text',
+    search_fields = ('id', 'letter', 'text', 'parent__letter', 'page__title',
         'goto_page__title', 'goto_num', 'taxa_cache',)
 
 
