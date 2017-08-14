@@ -5,7 +5,23 @@
     <head>
         <title>Dichotomous Key: Compact View</title>
         <meta charset="utf-8">
+        <link rel="stylesheet" href="/static/admin/css/fonts.css">
         <style>
+            body {
+                background-color: #fff;
+                font-family: Roboto, "Lucida Grande", "DejaVu Sans", "Bitstream Vera Sans", Verdana, sans-serif;
+                color: #333;
+                margin: 0;
+                padding: 0;
+            }
+            a:link {
+                color: #447e9b;
+            }
+            nav {
+                background-color: #417690;
+                color: #ddd;
+                padding: 1rem;
+            }
             nav ul {
                 list-style-type: none;
                 margin: 0;
@@ -13,7 +29,34 @@
             }
             nav li {
                 display: inline;
-                margin: 0 1rem 0 0;
+                font-size: 85%;
+                margin: 0 0.8rem 0 0;
+            }
+            nav .title {
+                font-size: x-large;
+                font-weight: 300;
+            }
+            nav a {
+                white-space: nowrap;
+            }
+            nav a:link {
+                color: #fff;
+                text-decoration: none;
+            }
+            nav a:hover {
+                text-decoration: underline;
+            }
+            nav a:visited {
+                color: #f5dd5d;
+            }
+            nav p {
+                float: right;
+                font-size: 85%;
+                margin: 11px 0 0;
+                padding: 0 0 0 1rem;
+            }
+            main {
+                padding: 0 1rem;
             }
             .leads {
                 font-family: Verdana, sans-serif;
@@ -22,20 +65,27 @@
             h1 {
                 display: none;
             }
+            h2 {
+                font-weight: 300;
+            }
             h2 span {
                 font-family: Verdana, sans-serif;
                 font-weight: normal;
                 font-size: x-small;
+            }
+            ul {
+                padding: 0 0 0 2rem;
             }
         </style>
     </head>
     <body>
         <h1>Dichotomous Key: Compact View</h1>
         <nav>
+            <p><a href="/admin/dkey/">D. Key administration</a></p>
             <ul>
-                <li><b>D. Key Compact View</b></li>
-                <li><a href="/edit/dkey/key-to-the-families/">Key to the
-                    Families</a> (top)</li>
+                <li class="title" title="Key to the Families (top)"><a
+                    href="/edit/dkey/key-to-the-families/">D. Key
+                    Compact View</a></li>
                 <li><a href="/edit/dkey/group-1/">Group 1</a></li>
                 <li><a href="/edit/dkey/group-2/">Group 2</a></li>
                 <li><a href="/edit/dkey/group-3/">Group 3</a></li>
@@ -48,6 +98,7 @@
                 <li><a href="/edit/dkey/group-10/">Group 10</a></li>
             </ul>
         </nav>
+        <main>
         <h2>
             {% if page.rank == 'genus' %}
                 <i>{{ page.title }}</i>
@@ -91,5 +142,6 @@
             {% endif %}
         {% endfor %}
         </ul>
+        </main>
     </body>
 </html>
