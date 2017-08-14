@@ -21,6 +21,12 @@ textarea {
 }
 
 
+/* D. Key custom navigation item */
+.dkey-custom {
+    float: right;
+}
+
+
 /* Distribution model change form: Save and Edit Next button */
 
 /* Hide the button on all other models' forms. */
