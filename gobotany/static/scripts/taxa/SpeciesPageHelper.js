@@ -6,14 +6,14 @@ define([
     'bridge/shadowbox',
     'util/PhotoHelper',
     'util/glossarizer'
-], function($, Shadowbox, PhotoHelper, glossarizer) {
+], function ($, Shadowbox, PhotoHelper, glossarizer) {
 var SpeciesPageHelper = {
 
-    init: function() {
+    init: function () {
         this.photo_helper = PhotoHelper();
     },
 
-    position_footer: function() {
+    position_footer: function () {
         // On desktop or tablet screens, ensure that the footer appears
         // beneath the content of the page.
         //
@@ -37,7 +37,7 @@ var SpeciesPageHelper = {
         }
     },
 
-    set_active_main_navigation: function() {
+    set_active_main_navigation: function () {
         // Set the active main navigation based on the breadcrumb links.
         var key = 'dkey';
         var breadcrumb_text = $('#breadcrumb').text();
@@ -50,14 +50,14 @@ var SpeciesPageHelper = {
         $('body').addClass(key);
     },
 
-    toggle_character_group: function() {
+    toggle_character_group: function () {
         // Set handlers for toggling a character group.
-        $('ul.full-description li h5').toggle(function() {
+        $('ul.full-description li h5').toggle(function () {
             var $heading = $(this);
             $heading.siblings('div').show();
             $heading.addClass('expanded');
             return false;
-        }, function() {
+        }, function () {
             var $heading = $(this);
             $heading.siblings('div').hide();
             $heading.removeClass('expanded');
@@ -65,17 +65,17 @@ var SpeciesPageHelper = {
         });
     },
 
-    toggle_characters_full_list: function() {
+    toggle_characters_full_list: function () {
         // Set handlers for toggling the full characteristics list.
         var that = this;
-        $('a.description-control').toggle(function() {
+        $('a.description-control').toggle(function () {
             $('ul.full-description').show();
             $(this).text('Hide ' + 
                 $(this).text().substr($(this).text().indexOf(' ')));
             $(this).addClass('expanded');
             that.toggle_character_group();
             return false;
-        }, function() {
+        }, function () {
             $('ul.full-description').hide();
             $(this).text('Show ' + 
                 $(this).text().substr($(this).text().indexOf(' ')));
@@ -131,13 +131,13 @@ var SpeciesPageHelper = {
         });
     },
 
-    enable_us_map_link: function() {
+    enable_us_map_link: function () {
         // Because the map is in an <object> element, a transparent div
         // is needed to make it clickable. Make this div cover the link
         // that appears below the map, too, for one large clickable area.
         var transparent_div =
             $('.section.namap div.trans').first();
-        transparent_div.click($.proxy(function(event) {
+        transparent_div.click($.proxy(function (event) {
             event.preventDefault();
             // Open the North America distribution map in a lightbox.
             var content_element =
@@ -155,7 +155,7 @@ var SpeciesPageHelper = {
         }, this));
     },
 
-    setup: function() {
+    setup: function () {
         // For desktop or tablet screens, ensure that the footer appears
         // beneath the content of the page.
         this.position_footer();
