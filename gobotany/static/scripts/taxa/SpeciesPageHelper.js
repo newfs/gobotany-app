@@ -84,12 +84,12 @@ var SpeciesPageHelper = {
         });
     },
 
-    enable_image_links: function() {
+    enable_image_links: function () {
         // Wire up each image link to a Shadowbox popup handler.
         var IMAGE_LINKS_CSS = '#species-images a';
         var that = this;
-        $(IMAGE_LINKS_CSS).each(function(i, link) {
-            $(link).click($.proxy(function(event) {
+        $(IMAGE_LINKS_CSS).each(function (i, link) {
+            $(link).on('click touchstart', $.proxy(function (event) {
                 // Prevent the regular link (href) from taking over.
                 event.preventDefault();
 
