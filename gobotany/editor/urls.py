@@ -15,7 +15,5 @@ urlpatterns = [
     url(r'^partner(\d+)-plants.csv$', views.partner_plants_csv),
     url(r'^dkey/$', views.dkey),
     url(r'^dkey/(?P<slug>[^/]*)/$', views.dkey),
-    url(r'^species/(?P<genus>[^/]*)/(?P<specific_epithet>[^/]*)/$',
-        views.dkey_species),
     url(r'^.*', views.e404),  # prevent fall-through to wildcard rewrite URL
 ]

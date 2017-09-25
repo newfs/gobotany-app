@@ -17,16 +17,18 @@ screens. Navigate using the links at top, and the links to groups, families,
 and genera in the trees.
 
 Each page in the Compact View corresponds to a page in the key. The page
-title appears at the top, with a `change` link next to it in case you need
-to edit the record for that page.
+title appears at the top, with a `change` link next to it for editing the
+record for that page.
 
-Each lead has its composite identifier (page id:lead-number-and-letter,
-which looks like this: 16:8b). This identifier is linked to the CMS change
-screen for that record. If there is a link for a group, family, or genus
-next to it, that link goes to another page in the Compact View.
+Each lead has its number and letter, followed by its composite identifier
+(page id:lead-number-and-letter, which looks like this: 16:8b), a
+`change` link, and the number of families (or genera, or species).
 
-If you hover your cursor over a lead’s identifier in the Compact View for a
-few seconds, the text for that couplet question will appear as a tooltip.
+If the lead goes to a group, family, or genus, a link is displayed that goes
+to the corresponding page in the Compact View.
+
+If you hover your cursor over a lead’s number-and-letter or identifier, the
+text for that couplet question will appear as a tooltip.
 
 ### Adding new leads
 
@@ -97,7 +99,7 @@ lead for narrowing down results on the same page.
 
 The field Goto Num can be left blank for now, as can Taxa Cache.
 
-(TODO: investigate: after I do this, I get the error Lead object has no
+(TODO: investigate: after doing this, got an error: Lead object has no
 attribute childlist)
 
 #### 5. Get the two new IDs of the two lead records you just created. You

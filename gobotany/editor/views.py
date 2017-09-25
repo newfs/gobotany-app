@@ -573,8 +573,3 @@ def dkey(request, slug=u'key-to-the-families'):
             'taxa_beneath': (lambda: proxy.taxa_beneath),
             'next_page': (lambda: proxy.next() or proxy.page),
         })
-
-@permission_required('core.botanist')
-def dkey_species(request, genus, specific_epithet):
-    return redirect('/species/%s/%s/?key=dichotomous' % (genus,
-        specific_epithet))

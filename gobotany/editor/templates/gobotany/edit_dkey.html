@@ -117,12 +117,29 @@
                 {% endwith %}
             {% else %}
                 {% with p=lead.goto_page %}
-                
                 <span title="{{ lead.text }}">
-                    <a href="/admin/dkey/lead/{{ lead.id }}/change/">{{ lead|safe }}</a>
+                    {% if lead.letter %}
+                        {{ lead.letter }}. ({{ lead|safe }})
+                    {% else %}
+                         {{ lead|safe }}
+                    {% endif %}
                 </span>
 
-                <a href="/edit{{ p.title|dkey_url }}">
+                [<a href="/admin/dkey/lead/{{ lead.id }}/change/">change</a>]
+
+                {% if lead.rank_beneath and lead.taxa_beneath|length > 1 %}
+                    {{ lead.taxa_beneath|length }}
+                        {{ lead.rank_beneath|taxon_plural }}
+                {% endif %}
+
+                {% if p.title %}
+                →
+                <a {% if p.rank == 'species' %}
+                        href="{{ p.title|dkey_url }}"
+                    {% else %}
+                        href="/edit{{ p.title|dkey_url }}"
+                    {% endif %}
+                    >
                     {% if p.rank == 'group' %}
                         {{ p.title }}{% elif p.rank == 'subkey' %}
                         VISIT KEY{% elif p.rank == 'family' %}
@@ -132,10 +149,6 @@
                         <i>{{ p.title|abbreviate_title }}</i>{% elif p.rank == 'species' %}
                         <i>{{ p.title }}</i>{% elif p.rank == 'section' %}
                         {{ p.title }}{% endif %}</a>
-                {% if lead.rank_beneath and lead.taxa_beneath|length > 1 %}
-                    ({{ lead.taxa_beneath|length }}
-                        {{ lead.rank_beneath|taxon_plural }}
-                        {% if lead.letter %} in {{ lead.letter }}{% endif %})
                 {% endif %}
 
                 {% endwith %}
