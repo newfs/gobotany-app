@@ -99,15 +99,21 @@
             </ul>
         </nav>
         <main>
+
+        {% with title=page|display_title|expand_group_title %}
         <h2>
-            {% if page.rank == 'genus' %}
-                <i>{{ page.title }}</i>
+            {% if title == 'Key to the Families' %}
+                Dichotomous Key to Families
+            {% elif page.rank == 'genus' %}
+                <i>{{ title }}</i>
             {% else %}
-                {{ page.title }}
+                {{ title }}
             {% endif %}
-        
+
             <span>[<a 
             href="/admin/dkey/page/{{ page.id }}/change/">change</a>]</span></h2>
+        {% endwith %}
+
         <ul class="leads">
         {% for lead in lead_hierarchy %}
             {# each "lead" item here is a piece: can be a tag, a lead record, etc. #}
