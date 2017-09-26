@@ -1,5 +1,7 @@
 """Data model for the dichotomous key."""
 
+import re
+
 from django.db import models
 
 # Here are the possible dkey page ranks. Note that a "subgroup" can
@@ -77,6 +79,13 @@ class Lead(models.Model):
             return int(self.letter),
         else:
             return int(self.letter[:-1]), self.letter[-1]
+
+    def text_excerpt(self):
+        """Return a short excerpt of the lead text."""
+        MAX_WORDS = 7
+        excerpt = filter(None, re.split('[;,]+', self.text))[0]
+        words = excerpt.split(' ')
+        return ' '.join(words[0:MAX_WORDS])
 
 class Hybrid(models.Model):
     """A paragraph describing a hybrid species."""

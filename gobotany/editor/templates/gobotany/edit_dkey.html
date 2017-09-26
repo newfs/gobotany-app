@@ -125,7 +125,9 @@
                 {% with p=lead.goto_page %}
                 <span title="{{ lead.text }}">
                     {% if lead.letter %}
-                        {{ lead.letter }}. ({{ lead|safe }})
+                        {{ lead.letter }}.
+                        {{ lead.text_excerpt }} …
+                        ({{ lead|safe }})
                     {% else %}
                          {{ lead|safe }}
                     {% endif %}
