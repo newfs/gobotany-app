@@ -66,7 +66,7 @@ def display_title(page):
 @register.filter
 def dkey_url(name):
     name = name.lower()
-    if ' ' in name and not name.startswith('group '):
+    if ' ' in name and not name.find('group') > -1:
         return '/species/' + name.replace(' ', '/') + '/?key=dichotomous';
     else:
         return '/dkey/' + name.replace(' ', '-') + '/';
