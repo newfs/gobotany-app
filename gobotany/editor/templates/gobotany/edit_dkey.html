@@ -9,15 +9,19 @@
         <style>
             body {
                 background-color: #fff;
+                display: flex;
+                flex-direction: column;
                 font-family: Roboto, "Lucida Grande", "DejaVu Sans", "Bitstream Vera Sans", Verdana, sans-serif;
                 color: #333;
                 margin: 0;
+                min-height: 100vh;
                 padding: 0;
             }
             a:link {
                 color: #447e9b;
             }
-            nav {
+            nav,
+            footer {
                 background-color: #417690;
                 color: #ddd;
                 padding: 1rem;
@@ -39,14 +43,16 @@
             nav a {
                 white-space: nowrap;
             }
-            nav a:link {
+            nav a:link, footer a:link {
                 color: #fff;
                 text-decoration: none;
             }
-            nav a:hover {
+            nav a:hover,
+            footer a:hover {
                 text-decoration: underline;
             }
-            nav a:visited {
+            nav a:visited,
+            footer a:visited {
                 color: #f5dd5d;
             }
             nav p {
@@ -55,8 +61,13 @@
                 margin: 11px 0 0;
                 padding: 0 0 0 1rem;
             }
+            footer {
+                font-size: 85%;
+                padding: 0.5rem 1rem;
+            }
             main {
-                padding: 0 1rem;
+                flex: 1;
+                padding: 0 1rem 2rem;
             }
             .leads {
                 font-family: Verdana, sans-serif;
@@ -83,7 +94,7 @@
         <nav>
             <p><a href="/admin/dkey/">D. Key administration</a></p>
             <ul>
-                <li class="title" title="Key to the Families (top)"><a
+                <li class="title"><a title="Key to the Families (top)"
                     href="/edit/dkey/key-to-the-families/">D. Key
                     Compact View</a></li>
                 <li><a href="/edit/dkey/group-1/">Group 1</a></li>
@@ -164,5 +175,11 @@
         {% endfor %}
         </ul>
         </main>
+        <footer>
+            <p><a title="Key to the Families (top)"
+                    href="/edit/dkey/key-to-the-families/">D. Key
+                    Compact View</a>
+            </p>
+        </footer>
     </body>
 </html>
