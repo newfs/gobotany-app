@@ -3,7 +3,14 @@
 <!DOCTYPE html>
 <html lang="en">
     <head>
-        <title>Dichotomous Key: Compact View</title>
+        <title>
+        {% if page.title == 'Key to the Families' %}
+            Dichotomous Key to Families
+        {% else %}
+            {{ page.title }}
+        {% endif %} -
+        D. Key Compact View</title>
+
         <meta charset="utf-8">
         <link rel="stylesheet" href="/static/admin/css/fonts.css">
         <style>
@@ -115,8 +122,6 @@
         <h2>
             {% if title == 'Key to the Families' %}
                 Dichotomous Key to Families
-            {% elif page.rank == 'genus' %}
-                <i>{{ title }}</i>
             {% else %}
                 {{ title }}
             {% endif %}
