@@ -95,7 +95,7 @@ body#species #main .common {
 }
 body#species #main {
     /* layout: right-side content sections */
-    #breadcrumb, #name, #species-images, #images-note, #partner,
+    #breadcrumb, #name, .img-gallery, #images-note, #partner,
     #facts, #habitat, #chars, #wetland, #status, #info-dkey {
         clear: left;
         margin-left: $species-sidebar-margin;
