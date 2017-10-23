@@ -19,6 +19,8 @@ require([
 
         $('.img-gallery').each(function() {
             var gallery = this;
+            console.log('gallery:', gallery);
+
             var gallery_type = $(this).attr('data-gallery-type');
             var photo_helper = PhotoHelper();
 
@@ -53,6 +55,7 @@ require([
                     var rel = $(a).attr('rel');
                     var title = $(a).attr('title');
                     var galleryname = rel.split('[')[1].split(']')[0];
+                    console.log('galleryname:', galleryname);
                     Shadowbox.setup('.img-gallery .images a', {
                         onOpen: photo_helper.prepare_to_enlarge,
                         onChange: photo_helper.prepare_to_enlarge,

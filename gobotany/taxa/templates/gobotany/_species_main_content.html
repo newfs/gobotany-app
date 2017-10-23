@@ -29,15 +29,21 @@
         {% endif %}
     </div>
 
-    <div id="species-images">
-        {% for i in images %}
-            <a href="{{ i.image_medium|secure_url }}"
-                {% if forloop.counter == 1 %}id="startimage"{% endif %}
-                title="{% photo_credit i scientific_name %}">
-                <img src="{{ i.thumb_large|secure_url }}"
-                    alt="{% photo_credit i scientific_name %}">
-            </a>
-        {% endfor %}
+    <div class="img-gallery">
+        <div class="frame"></div>
+        <div class="img-container">
+            <div class="images" id="species-images">
+                {% for i in images %}
+                    <a href="{{ i.image_medium|secure_url }}"
+                        rel="shadowbox[species]"
+                        {% if forloop.counter == 1 %}id="startimage"{% endif %}
+                        title="{% photo_credit i scientific_name %}">
+                        <img src="{{ i.thumb_large|secure_url }}"
+                            alt="{% photo_credit i scientific_name %}">
+                    </a>
+                {% endfor %}
+            </div>
+        </div>
     </div>
     <p id="images-note">Copyright: various copyright holders. To reuse an
     image, please click it to see who you will need to contact.</p>

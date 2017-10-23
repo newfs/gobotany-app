@@ -84,6 +84,8 @@ var SpeciesPageHelper = {
         });
     },
 
+    // TODO: remove once gallery is working
+    /*
     enable_image_links: function () {
         // Wire up each image link to a Shadowbox popup handler.
         var IMAGE_LINKS_CSS = '#species-images a';
@@ -106,6 +108,7 @@ var SpeciesPageHelper = {
             }, this));
         });
     },
+    */
 
     enable_map_definitions_link: function () {
         $('.definitions-link').click(function (event) {
@@ -176,7 +179,7 @@ var SpeciesPageHelper = {
         glossarizer.glossarize($(selectors));
 
         // Make image gallery able to show larger images.
-        this.enable_image_links();
+        //this.enable_image_links();   // Disabled: let gallery events take over
 
         // Enable the Enlarge link on the U.S. map.
         this.enable_us_map_link();

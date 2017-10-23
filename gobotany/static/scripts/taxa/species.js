@@ -1,5 +1,8 @@
 define([
     'bridge/jquery',
+
+    'util/activate_image_gallery',
+
     // Basic resources
     'util/shadowbox_init',
 
@@ -8,8 +11,8 @@ define([
 
     'taxa/SpeciesPageHelper',
     'util/image_popup'
-], function($, shadowbox_init, activate_scroll, SpeciesPageHelper,
-    image_popup) {
+], function($, activate_image_gallery, shadowbox_init, activate_scroll,
+    SpeciesPageHelper, image_popup) {
 
     $(document).ready(function() {
         var helper = SpeciesPageHelper();
