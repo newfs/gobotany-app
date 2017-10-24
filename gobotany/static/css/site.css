@@ -677,8 +677,8 @@ body#species #images-note { font-size: 11px; font-style: italic; margin-bottom: 
   body#family ul.genera, body#genus ul.species { line-height: 24px; margin-bottom: 18px; }
   .visit-dkey { font-size: 12px; }
   body#species #main { background: none; /* layout for smartphones: sections in document sequence */ }
-  body#species #main #breadcrumb, body#species #main #name, body#species #main #species-images, body#species #main #partner, body#species #main #facts, body#species #main #habitat, body#species #main #chars, body#species #main #wetland, body#species #main #status, body#species #main #info-dkey { margin-left: 0; }
-  body#species #main #species-images { margin-bottom: 20px; }
+  body#species #main #breadcrumb, body#species #main #name, body#species #main .img-gallery, body#species #main #partner, body#species #main #facts, body#species #main #habitat, body#species #main #chars, body#species #main #wetland, body#species #main #status, body#species #main #info-dkey { margin-left: 0; }
+  body#species #main .img-gallery { margin-bottom: 20px; }
   body#species #main { /* omit images notice on smartphones, as it takes up two lines there of an already small space */ }
   body#species #main #images-note { display: none; }
   body#species #main h2 { margin-top: 14px; line-height: 18px; }
@@ -689,9 +689,10 @@ body#species #images-note { font-size: 11px; font-style: italic; margin-bottom: 
   body#species #main #maps { background: #fff; border: 1px solid #c3d941; padding-left: 16px; padding-right: 16px; z-index: 10; }
   body#species #main .definitions-link, body#species #main .found-plant { font-size: 10px; line-height: 14px; }
   body#species #main #side h2 { font-size: 16px; margin-top: 14px; }
-  body#species #main #species-images { border: 0; box-shadow: none; height: 120px; }
   body#species #main #species-images .scrollableArea a { border-right: 20px solid #f0f0c0; }
   body#species #main #species-images .scrollableArea a img { height: 120px; width: 120px; }
+  body#species #main #species-images, body#species #main .img-gallery .frame { border: 0; box-shadow: none; }
+  body#species #main #species-images, body#species #main .img-gallery .img-container { height: 120px; }
   body#species #main p { margin-bottom: 10px; }
   body#species #main ul.full-description > li div { padding-left: 0; }
   body#species #main .characteristics.full { margin-bottom: 0; }

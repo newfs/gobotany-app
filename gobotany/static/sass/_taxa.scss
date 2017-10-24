@@ -422,11 +422,11 @@ $mini-table-font-size: 10px;
         background: none;
 
         /* layout for smartphones: sections in document sequence */
-        #breadcrumb, #name, #species-images, #partner, #facts,
+        #breadcrumb, #name, .img-gallery, #partner, #facts,
         #habitat, #chars, #wetland, #status, #info-dkey {
             margin-left: 0;
         }
-        #species-images {
+        .img-gallery {
             margin-bottom: 20px;
         }
     }
@@ -472,9 +472,6 @@ $mini-table-font-size: 10px;
         }
     }
     body#species #main #species-images {
-        border: 0;
-        box-shadow: none;
-        height: 120px;
         .scrollableArea a {
             border-right: 20px solid $body_bg;
             img {
@@ -482,6 +479,15 @@ $mini-table-font-size: 10px;
                 width: 120px;
             }
         }
+    }
+    body#species #main #species-images,
+    body#species #main .img-gallery .frame {
+        border: 0;
+        box-shadow: none;
+    }
+    body#species #main #species-images,
+    body#species #main .img-gallery .img-container {
+        height: 120px;
     }
     body#species #main {
         p {
