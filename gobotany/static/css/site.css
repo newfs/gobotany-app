@@ -692,7 +692,7 @@ body#species #images-note { font-size: 11px; font-style: italic; margin-bottom: 
   body#species #main #species-images .scrollableArea a { border-right: 20px solid #f0f0c0; }
   body#species #main #species-images .scrollableArea a img { height: 120px; width: 120px; }
   body#species #main #species-images, body#species #main .img-gallery .frame { border: 0; box-shadow: none; }
-  body#species #main #species-images, body#species #main .img-gallery .img-container { height: 120px; }
+  body#species #main #species-images, body#species #main .img-gallery .frame, body#species #main .img-gallery .img-container { height: 120px; }
   body#species #main p { margin-bottom: 10px; }
   body#species #main ul.full-description > li div { padding-left: 0; }
   body#species #main .characteristics.full { margin-bottom: 0; }
