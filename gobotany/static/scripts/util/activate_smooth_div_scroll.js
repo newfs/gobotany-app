@@ -21,8 +21,8 @@ require([
         var options = {
             autoScrollingMode: 'onStart',
             autoScrollingMode: 'onStart', 
-            autoScrollingDirection: 'backAndForth', 
-            autoScrollingStep: 1, 
+            autoScrollingDirection: 'backAndForth',
+            autoScrollingStep: 1,
             autoScrollingInterval: 75
         };
 
@@ -38,12 +38,12 @@ require([
 
         // Activate.
         $images.smoothDivScroll(options);
-    
+
         // Stop autoscrolling upon viewing an image.
         $images.bind('click', function () {
             $images.smoothDivScroll('stopAutoScrolling');
         });
-        
+
         // Fire the window.load event in order to start autoscrolling.
         // (It used to work without this in an older version, so perhaps
         // this can be removed at some point.)
