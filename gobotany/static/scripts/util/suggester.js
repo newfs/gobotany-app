@@ -79,7 +79,7 @@ define([
                  (this.$input_box.attr('data-truncate-on-select') ===
                   'true');
          }
-    };
+    }
 
     Suggester.prototype.setup = function () {
         this.$form = this.$input_box.parents('form').first();

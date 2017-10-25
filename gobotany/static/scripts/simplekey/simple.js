@@ -6,7 +6,7 @@ require([
     'util/glossarizer'
 ], function(activate_image_gallery, Shadowbox, shadowbox_init,
             activate_video_links, glossarizer) {
-    $(document).ready(function() {
+    $(document).ready(function () {
         glossarizer.glossarize($('.key-char, .exceptions'));
     });
 });
