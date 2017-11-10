@@ -540,7 +540,7 @@ a.subscribe:active { background-position: 0 -32px; }
 body.taxa { /* Override Shadowbox styles to allow multiple title lines for showing a photo title, photographer credit, and copyright. */ }
 body.taxa #sb-title, body.taxa #sb-title-inner { height: 76px; line-height: 70%; position: relative; }
 body.taxa #sb-title-inner div { bottom: 6px; position: absolute; }
-body.taxa #sb-title-inner h6 { font-size: 16px; line-height: 110%; margin: 0 0 2px; padding: 0; }
+body.taxa #sb-title-inner h6 { font-size: 16px; font-style: normal; line-height: 110%; margin: 0 0 2px; padding: 0; }
 body.taxa #sb-title-inner span { font-family: "Trebuchet MS", Helvetica, Arial, "Lucida Sans Unicode", sans-serif; font-size: 10px; }
 body.taxa #sb-title-inner a { border-bottom: 1px solid #ccc; color: #fff; }
 body.taxa #sb-title-inner a:hover { text-decoration: none; }
@@ -707,7 +707,7 @@ body.skey.groups-subgroups { /* Styles for groups and subgroups (Levels 1 and 2)
 body.skey.groups-subgroups .img-gallery .frame { cursor: pointer; }
 body.skey.groups-subgroups #sb-title, body.skey.groups-subgroups #sb-title-inner { height: 76px; line-height: 70%; position: relative; }
 body.skey.groups-subgroups #sb-title-inner div { bottom: 6px; position: absolute; }
-body.skey.groups-subgroups #sb-title-inner h6 { font-size: 16px; line-height: 110%; margin: 0 0 2px; padding: 0; }
+body.skey.groups-subgroups #sb-title-inner h6 { font-size: 16px; font-style: normal; line-height: 110%; margin: 0 0 2px; padding: 0; }
 body.skey.groups-subgroups #sb-title-inner span { font-family: "Trebuchet MS", Helvetica, Arial, "Lucida Sans Unicode", sans-serif; font-size: 10px; }
 body.skey.groups-subgroups #sb-title-inner a { border-bottom: 1px solid #ccc; color: #fff; }
 body.skey.groups-subgroups #sb-title-inner a:hover { text-decoration: none; }
