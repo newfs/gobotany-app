@@ -309,3 +309,28 @@ div.popup a {
         color: $text_dark_green;
     }
 }
+
+/* For occasional, temporary donation campaigns: message at top of page */
+.top-message {
+    background-color: orange;
+    margin: 0;
+    padding: 12px 24px;
+}
+.top-message button {
+    border: 1px solid gray;
+    border-radius: 6px;
+    cursor: pointer;
+    float: right;
+    font-family: "Scala Sans Sc Offc", sans-serif;
+    font-size: 16px;
+    letter-spacing: 1px;
+    margin-right: 60px;
+    margin-top: -40px;
+    padding: 6px 10px;
+}
+.top-message svg {
+    cursor: pointer;
+    float: right;
+    margin-right: 4px;
+    margin-top: -30px;
+}
