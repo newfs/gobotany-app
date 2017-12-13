@@ -80,16 +80,22 @@
                 font-family: Verdana, sans-serif;
                 font-size: x-small;
             }
+            .leads li {
+                margin: 0.2rem 0;
+            }
             h1 {
                 display: none;
             }
             h2 {
                 font-weight: 300;
             }
-            h2 span {
+            a.edit {
+                border: 1px solid #ccc;
                 font-family: Verdana, sans-serif;
                 font-weight: normal;
                 font-size: x-small;
+                padding: 0 0.2rem;
+                text-decoration: none;
             }
             ul {
                 padding: 0 0 0 2rem;
@@ -126,8 +132,8 @@
                 {{ title }}
             {% endif %}
 
-            <span>[<a 
-            href="/admin/dkey/page/{{ page.id }}/change/">change</a>]</span></h2>
+            <a class="edit"
+            href="/admin/dkey/page/{{ page.id }}/change/">change</a></h2>
         {% endwith %}
 
         <ul class="leads">
@@ -146,7 +152,8 @@
                     {% endif %}
                 </span>
 
-                [<a href="/admin/dkey/lead/{{ lead.id }}/change/">change</a>]
+                <a class="edit"
+                    href="/admin/dkey/lead/{{ lead.id }}/change/">change</a>
 
                 {% if lead.rank_beneath and lead.taxa_beneath|length > 1 %}
                     {{ lead.taxa_beneath|length }}
