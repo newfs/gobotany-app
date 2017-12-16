@@ -184,12 +184,12 @@
                         {# Use a Unicode minus sign, not a hyphen. #}
                         <a class="edit"
                             onclick="submitForm('delete', {{ lead.id }}, '{{ lead.letter }}'); return false;"
-                            href="javascript: void(0);">− Delete Couplet</a>
+                            href="javascript: void(0);">− Delete Couplet…</a>
                     {% endif %}
                 {% else %}
                     <a class="edit"
                         onclick="submitForm('add', {{ lead.id }}, '{{ lead.letter }}'); return false;"
-                        href="javascript: void(0);">+ Add Couplet</a>
+                        href="javascript: void(0);">+ Add Couplet…</a>
                 {% endif %}
 
                 {% if lead.rank_beneath and lead.taxa_beneath|length > 1 %}
