@@ -90,6 +90,7 @@
                 font-weight: 300;
             }
             a.edit {
+                background: #fcfcfc;
                 border: 1px solid #ccc;
                 font-family: Verdana, sans-serif;
                 font-weight: normal;
@@ -149,7 +150,7 @@
             {% endif %}
 
             <a class="edit"
-            href="/admin/dkey/page/{{ page.id }}/change/">change</a></h2>
+            href="/admin/dkey/page/{{ page.id }}/change/">Change</a></h2>
         {% endwith %}
 
         <form id="edit-form" action="" method="post">
@@ -174,7 +175,7 @@
                 {% endif %}
 
                 <a class="edit"
-                    href="/admin/dkey/lead/{{ lead.id }}/change/">change</a>
+                    href="/admin/dkey/lead/{{ lead.id }}/change/">Change</a>
 
                 {% if lead.childlist %}
                     {# Only show the delete button if it's a 'bottom' node, #}
@@ -183,12 +184,12 @@
                         {# Use a Unicode minus sign, not a hyphen. #}
                         <a class="edit"
                             onclick="submitForm('delete', {{ lead.id }}, '{{ lead.letter }}'); return false;"
-                            href="javascript: void(0);">− delete couplet</a>
+                            href="javascript: void(0);">− Delete Couplet</a>
                     {% endif %}
                 {% else %}
                     <a class="edit"
                         onclick="submitForm('add', {{ lead.id }}, '{{ lead.letter }}'); return false;"
-                        href="javascript: void(0);">+ add couplet</a>
+                        href="javascript: void(0);">+ Add Couplet</a>
                 {% endif %}
 
                 {% if lead.rank_beneath and lead.taxa_beneath|length > 1 %}
