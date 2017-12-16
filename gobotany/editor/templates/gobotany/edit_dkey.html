@@ -106,11 +106,9 @@
         </style>
         <script>
             function submitForm(command, leadId, letter) {
-                var approved = true;
-                if (command === 'delete') {
-                    approved = confirm('Are you sure you want to delete ' +
-                        'the couplet under ' + letter + '?');
-                }
+                var approved = confirm('Are you sure you want to ' + command +
+                    (command === 'add' ? ' a' : ' the') +
+                    ' couplet under ' + letter + '?');
 
                 if (approved) {
                     document.getElementById('edit-command').value = command;
@@ -189,7 +187,7 @@
                     {% endif %}
                 {% else %}
                     <a class="edit"
-                        onclick="submitForm('add', {{ lead.id }}); return false;"
+                        onclick="submitForm('add', {{ lead.id }}, '{{ lead.letter }}'); return false;"
                         href="javascript: void(0);">+ add couplet</a>
                 {% endif %}
 
