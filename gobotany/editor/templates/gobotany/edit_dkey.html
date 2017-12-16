@@ -160,12 +160,12 @@
                 {% endwith %}
             {% else %}
                 {% with p=lead.goto_page %}
-                <span title="{{ lead.letter }}. {{ lead.text }}">
-                    {% if lead.letter %}
+                {% if lead.letter %}
+                    <span title="{{ lead.letter }}. {{ lead.text }}">
                         {{ lead.letter }}.
                         {{ lead.text_excerpt }} …
-                    {% endif %}
-                </span>
+                    </span>
+                {% endif %}
 
                 <a class="edit"
                     href="/admin/dkey/lead/{{ lead.id }}/change/">change</a>
