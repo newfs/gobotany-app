@@ -1,6 +1,6 @@
 from django.contrib import admin
 from django.db import models
-from django.forms import TextInput, Textarea
+from django.forms import ModelForm, TextInput, Textarea
 
 from gobotany.admin import GoBotanyModelAdmin
 from gobotany.dkey.models import Figure, Hybrid, IllustrativeSpecies, Lead, Page
@@ -36,14 +36,23 @@ def lead_id_name(obj):
     return obj.id
 lead_id_name.short_description = 'Lead ID'
 
+class LeadAdminForm(ModelForm):
+  class Meta:
+    model = Lead
+    widgets = {
+        'letter': TextInput(),
+    }
+    fields = '__all__'
+
 class LeadAdmin(GoBotanyModelAdmin):
+    form = LeadAdminForm
     formfield_overrides = {
         models.TextField: {'widget': Textarea(attrs={'rows': 4, 'cols': 80}) },
     }
     list_display = (lead_id_name, 'letter', 'text', 'parent', 'page', 'goto_page',
         'goto_num', 'taxa_cache',)
     ordering = ('page__title',)
-    readonly_fields = ('taxa_cache',)
+    readonly_fields = ('id', 'taxa_cache',)
     search_fields = ('id', 'letter', 'text', 'parent__letter', 'page__title',
         'goto_page__title', 'goto_num', 'taxa_cache',)
 
