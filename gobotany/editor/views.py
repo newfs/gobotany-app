@@ -555,21 +555,47 @@ def partner_plants_csv(request, idnum):
 
 @permission_required('core.botanist')
 def dkey(request, slug=u'key-to-the-families'):
-    if slug != slug.lower():
-        raise Http404
-    title = dkey_models.slug_to_title(slug)
-    if title.startswith('Section '):
-        title = title.title()
-    page = get_object_or_404(dkey_models.Page, title=title)
-    if page.rank == 'species':
-        raise Http404
-    proxy = _Proxy(page)
-    return render(request, 'gobotany/edit_dkey.html', {
-            'groups': get_groups,
-            'leads': (lambda: proxy.leads),
-            'lead_hierarchy': (lambda: proxy.lead_hierarchy),
-            'page': (lambda: proxy.page),
-            'rank_beneath': (lambda: proxy.rank_beneath),
-            'taxa_beneath': (lambda: proxy.taxa_beneath),
-            'next_page': (lambda: proxy.next() or proxy.page),
-        })
+    if request.method == 'GET':
+        # For showing the Compact View page
+        if slug != slug.lower():
+            raise Http404
+        title = dkey_models.slug_to_title(slug)
+        if title.startswith('Section '):
+            title = title.title()
+        page = get_object_or_404(dkey_models.Page, title=title)
+        if page.rank == 'species':
+            raise Http404
+        proxy = _Proxy(page)
+        return render(request, 'gobotany/edit_dkey.html', {
+                'groups': get_groups,
+                'leads': (lambda: proxy.leads),
+                'lead_hierarchy': (lambda: proxy.lead_hierarchy),
+                'page': (lambda: proxy.page),
+                'rank_beneath': (lambda: proxy.rank_beneath),
+                'taxa_beneath': (lambda: proxy.taxa_beneath),
+                'next_page': (lambda: proxy.next() or proxy.page),
+            })
+    elif request.method == 'POST':
+        # For adding or deleting couplets
+        # TODO: remove much of this:
+        if slug != slug.lower():
+            raise Http404
+        title = dkey_models.slug_to_title(slug)
+        if title.startswith('Section '):
+            title = title.title()
+        page = get_object_or_404(dkey_models.Page, title=title)
+        if page.rank == 'species':
+            raise Http404
+        proxy = _Proxy(page)
+        return render(request, 'gobotany/edit_dkey_post.html', {
+                'command': request.POST['command'],
+                'lead_id': request.POST['lead-id'],
+
+                'groups': get_groups,
+                'leads': (lambda: proxy.leads),
+                'lead_hierarchy': (lambda: proxy.lead_hierarchy),
+                'page': (lambda: proxy.page),
+                'rank_beneath': (lambda: proxy.rank_beneath),
+                'taxa_beneath': (lambda: proxy.taxa_beneath),
+                'next_page': (lambda: proxy.next() or proxy.page),
+            })

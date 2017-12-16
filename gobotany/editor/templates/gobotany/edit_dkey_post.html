@@ -100,17 +100,7 @@
             ul {
                 padding: 0 0 0 2rem;
             }
-            form {
-                display: inline;
-            }
         </style>
-        <script>
-            function submitForm(command, leadId) {
-                document.getElementById('edit-command').value = command;
-                document.getElementById('edit-lead-id').value = leadId;
-                document.getElementById('edit-form').submit();
-            }
-        </script>
     </head>
     <body>
         <h1>Dichotomous Key: Compact View</h1>
@@ -146,75 +136,15 @@
             href="/admin/dkey/page/{{ page.id }}/change/">change</a></h2>
         {% endwith %}
 
-        <form id="edit-form" action="" method="post">
-            {% csrf_token %}
-            <input id="edit-command" type="hidden" name="command" value="">
-            <input id="edit-lead-id" type="hidden" name="lead-id" value="">
+        <p>This is the POST response. It might be temporary:
+        when all done it's likely to just redirect back to the GET page
+        (unless maybe there's an error).</p>
 
-        <ul class="leads">
-        {% for lead in lead_hierarchy %}
-            {# each "lead" item here is a piece: can be a tag, a lead record, etc. #}
-            {% if lead.0 %}
-                {% with literal_string=lead %}
-                    {{ literal_string|safe }}
-                {% endwith %}
-            {% else %}
-                {% with p=lead.goto_page %}
-                <span title="{{ lead.letter }}. {{ lead.text }}">
-                    {% if lead.letter %}
-                        {{ lead.letter }}.
-                        {{ lead.text_excerpt }} …
-                    {% endif %}
-                </span>
-
-                <a class="edit"
-                    href="/admin/dkey/lead/{{ lead.id }}/change/">change</a>
-
-                {% if lead.childlist %}
-                    {# Only show the delete button if it's a 'bottom' node, #}
-                    {# i.e., if the node's couplet has no further children. #}
-                    {% if lead.childlist.0.childlist|length == 0 and lead.childlist.1.childlist|length == 0 %}
-                        {# Use a Unicode minus sign, not a hyphen. #}
-                        <a class="edit"
-                            onclick="submitForm('delete', {{ lead.id }}); return false;"
-                            href="javascript: void(0);">− delete couplet</a>
-                    {% endif %}
-                {% else %}
-                    <a class="edit"
-                        onclick="submitForm('add', {{ lead.id }}); return false;"
-                        href="javascript: void(0);">+ add couplet</a>
-                {% endif %}
-
-                {% if lead.rank_beneath and lead.taxa_beneath|length > 1 %}
-                    {{ lead.taxa_beneath|length }}
-                        {{ lead.rank_beneath|taxon_plural }}
-                {% endif %}
-
-                {% if p.title %}
-                →
-                <a {% if p.rank == 'species' %}
-                        href="{{ p.title|dkey_url }}"
-                    {% else %}
-                        href="/edit{{ p.title|dkey_url }}"
-                    {% endif %}
-                    >
-                    {% if p.rank == 'group' %}
-                        {{ p.title }}{% elif p.rank == 'subkey' %}
-                        VISIT KEY{% elif p.rank == 'family' %}
-                        {{ p.title }}{% elif p.rank == 'subgroup' and page.rank == 'family' %}
-                        {{ p.title|abbreviate_title }}{% elif p.rank == 'genus' %}
-                        <i>{{ p.title }}</i>{% elif p.rank == 'subgroup' and page.rank == 'genus' %}
-                        <i>{{ p.title|abbreviate_title }}</i>{% elif p.rank == 'species' %}
-                        <i>{{ p.title }}</i>{% elif p.rank == 'section' %}
-                        {{ p.title }}{% endif %}</a>
-                {% endif %}
-
-                {% endwith %}
-            {% endif %}
-        {% endfor %}
-        </ul>
-
-        </form>
+        <p>Command: {{ command }}</p>
+        
+        <p>Lead ID: {{ lead_id }}</p>
+        
+        <p>Finish: <a href="{{ request.path }}">return to page</a></p>
 
         </main>
         <footer>
