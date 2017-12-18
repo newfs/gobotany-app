@@ -553,6 +553,42 @@ def partner_plants_csv(request, idnum):
     return response
 
 
+def _set_letter(lead, number):
+    # Set a Lead's letter field, which consists of a number and letter,
+    # e.g., 1a, 33b.
+    # Here, a new number is passed in, but the letter is to stay the same.
+    letter = 'a'
+    if lead.letter.endswith('b'):
+        letter = 'b'
+    lead.letter = '%d%s' % (number, letter)
+    lead.save()
+    return lead.letter
+
+def _renumber_couplets(couplet, starting_number):
+        last_number = starting_number
+        if couplet.count() == 2:   # Safeguard: couplets always 2 leads
+            # Number this couplet.
+            for lead in couplet.all():
+                letter = _set_letter(lead, last_number)
+            # Recursively number the children of each couplet lead.
+            for lead in couplet.all():
+                if lead.children and lead.children.count() == 2:
+                    # Sort so that 'a' wlll be done before 'b'.
+                    couplet = lead.children.order_by('letter')
+                    last_number = _renumber_couplets(couplet, last_number + 1)
+        return last_number
+
+def _renumber_page(page):
+    number = 1
+    last_number = 0
+    # Sort on the letter field here because in order to number correctly,
+    # the 'a' sidt must be done first, then the 'b' side.
+    top_couplet = page.sorted_leads.filter(parent__isnull=True).order_by(
+        'letter')
+    if top_couplet and top_couplet.count() == 2:
+        last_number = _renumber_couplets(top_couplet, 1)
+    return last_number
+
 @permission_required('core.botanist')
 def dkey(request, slug=u'key-to-the-families'):
     if request.method == 'GET':
@@ -576,8 +612,45 @@ def dkey(request, slug=u'key-to-the-families'):
                 'next_page': (lambda: proxy.next() or proxy.page),
             })
     elif request.method == 'POST':
-        # For adding or deleting couplets
-        # TODO: remove much of this:
+        # Add or delete a couplet.
+        command = request.POST['command']
+        lead_id = request.POST['lead-id']
+        added_leads = []
+        deleted_leads = []
+        last_number = 0
+
+        this_lead = dkey_models.Lead.objects.get(id=lead_id)
+        if command == 'add':
+            # Add a couplet.
+            # Create a temporary sequence number for the new leads far above
+            # the likely highest on the page, to be renumbered later.
+            temp_seq_number = this_lead.letter.replace('a', '').replace(
+                'b', '') + '500'
+            a_lead = dkey_models.Lead()
+            a_lead.page = this_lead.page
+            a_lead.parent = this_lead
+            a_lead.letter = temp_seq_number + 'a'
+            a_lead.text = 'NEW A LEAD UNDER ' + this_lead.letter.upper()
+            a_lead.save()
+            b_lead = dkey_models.Lead()
+            b_lead.page = this_lead.page
+            b_lead.parent = this_lead
+            b_lead.letter = temp_seq_number + 'b'
+            b_lead.text = 'NEW B LEAD UNDER ' + this_lead.letter.upper()
+            b_lead.save()
+            added_leads = dkey_models.Lead.objects.filter(parent=lead_id)
+        elif command == 'delete':
+            # Delete a couplet.
+            leads_to_delete = dkey_models.Lead.objects.filter(parent=lead_id)
+            # Be careful about deleting lead records:
+            # verify that there are two, and delete no more than two.
+            if leads_to_delete.count() == 2:
+                deleted_leads.append(leads_to_delete[0].id)
+                deleted_leads.append(leads_to_delete[1].id)
+                leads_to_delete.delete()
+
+        last_number = _renumber_page(this_lead.page)
+
         if slug != slug.lower():
             raise Http404
         title = dkey_models.slug_to_title(slug)
@@ -588,8 +661,12 @@ def dkey(request, slug=u'key-to-the-families'):
             raise Http404
         proxy = _Proxy(page)
         return render(request, 'gobotany/edit_dkey_post.html', {
-                'command': request.POST['command'],
-                'lead_id': request.POST['lead-id'],
+                'command': command,
+                'lead_id': lead_id,
+                'this_lead': this_lead,
+                'added_leads': added_leads,
+                'deleted_leads': deleted_leads,
+                'last_number': last_number,
 
                 'groups': get_groups,
                 'leads': (lambda: proxy.leads),
