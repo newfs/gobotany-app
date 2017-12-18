@@ -121,6 +121,20 @@ sync script must be run, which updates the breadcrumb and taxa
 caches. The taxa caches in particular are used to help populate the
 lists for the pages.
 
+### Splitting up a single-species lead
+
+If you need to split up a single-species lead (where a lead is the only one
+on the page) into a couplet, here are the steps:
+
+1. Make a second lead on the page, with the same parent, so there
+are two together.
+2. Set the letter field of the first lead to 1a, and the letter field of the
+second lead to 1b.
+3. Proceed to edit further as usual.
+
+If this task comes up often, an enhancement can be made to the Editor tool
+to make it easier.
+
 ### Running the sync script
 
 After each batch of changes to the key, a site administrator should run
