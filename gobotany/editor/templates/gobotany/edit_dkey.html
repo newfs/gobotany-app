@@ -178,7 +178,7 @@
                     href="/admin/dkey/lead/{{ lead.id }}/change/">Change</a>
 
                 {% if lead.childlist %}
-                    {# Only show the delete button if it's a 'bottom' node, #}
+                    {# Only show the Delete button if it's a 'bottom' node, #}
                     {# i.e., if the node's couplet has no further children. #}
                     {% if lead.childlist.0.childlist|length == 0 and lead.childlist.1.childlist|length == 0 %}
                         {# Use a Unicode minus sign, not a hyphen. #}
@@ -187,9 +187,13 @@
                             href="javascript: void(0);">− Delete Couplet…</a>
                     {% endif %}
                 {% else %}
-                    <a class="edit"
-                        onclick="submitForm('add', {{ lead.id }}, '{{ lead.letter }}'); return false;"
-                        href="javascript: void(0);">+ Add Couplet…</a>
+                    {# Only show the Add button if there's a couplet; don't #}
+                    {# show it if it's a single-species Lead (no couplet). #}
+                    {% if lead.childlist|length == 0 and lead.letter %}
+                        <a class="edit"
+                            onclick="submitForm('add', {{ lead.id }}, '{{ lead.letter }}'); return false;"
+                            href="javascript: void(0);">+ Add Couplet…</a>
+                    {% endif %}
                 {% endif %}
 
                 {% if lead.rank_beneath and lead.taxa_beneath|length > 1 %}
