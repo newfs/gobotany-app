@@ -660,19 +660,22 @@ def dkey(request, slug=u'key-to-the-families'):
         if page.rank == 'species':
             raise Http404
         proxy = _Proxy(page)
-        return render(request, 'gobotany/edit_dkey_post.html', {
-                'command': command,
-                'lead_id': lead_id,
-                'this_lead': this_lead,
-                'added_leads': added_leads,
-                'deleted_leads': deleted_leads,
-                'last_number': last_number,
 
-                'groups': get_groups,
-                'leads': (lambda: proxy.leads),
-                'lead_hierarchy': (lambda: proxy.lead_hierarchy),
-                'page': (lambda: proxy.page),
-                'rank_beneath': (lambda: proxy.rank_beneath),
-                'taxa_beneath': (lambda: proxy.taxa_beneath),
-                'next_page': (lambda: proxy.next() or proxy.page),
-            })
+        return redirect(request.path)
+        # For debugging, comment out the redirect above, and uncomment
+        # the template page response below.
+        #return render(request, 'gobotany/edit_dkey_post.html', {
+        #        'command': command,
+        #        'lead_id': lead_id,
+        #        'this_lead': this_lead,
+        #        'added_leads': added_leads,
+        #        'deleted_leads': deleted_leads,
+        #        'last_number': last_number,
+        #        'groups': get_groups,
+        #        'leads': (lambda: proxy.leads),
+        #        'lead_hierarchy': (lambda: proxy.lead_hierarchy),
+        #        'page': (lambda: proxy.page),
+        #        'rank_beneath': (lambda: proxy.rank_beneath),
+        #        'taxa_beneath': (lambda: proxy.taxa_beneath),
+        #        'next_page': (lambda: proxy.next() or proxy.page),
+        #    })
