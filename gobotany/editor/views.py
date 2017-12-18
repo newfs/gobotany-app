@@ -592,7 +592,7 @@ def _renumber_page(page):
 @permission_required('core.botanist')
 def dkey(request, slug=u'key-to-the-families'):
     if request.method == 'GET':
-        # For showing the Compact View page
+        # For showing the D. Key Editor page
         if slug != slug.lower():
             raise Http404
         title = dkey_models.slug_to_title(slug)

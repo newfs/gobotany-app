@@ -20,8 +20,7 @@ django.jQuery(document).ready(function () {
 
     // D. Key: add custom navigation item
     django.jQuery('body.app-dkey .breadcrumbs').append(
-        '<div class="dkey-custom"><a href="/edit/dkey/">D. Key ' +
-        'Compact View</div>');
+        '<div class="dkey-custom"><a href="/edit/dkey/">D. Key Editor</div>');
 
     // Distribution records: Customize Save and Add Another by populating
     // the Scientific Name field with the name from the record just added.
