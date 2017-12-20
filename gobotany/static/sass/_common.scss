@@ -311,14 +311,14 @@ div.popup a {
 }
 
 /* For occasional, temporary donation campaigns: message at top of page */
-.top-message {
+#top-message {
     background-color: orange;
     font-family: "Scala Sans Offc", sans-serif;
     font-size: 15px;
     margin: 0;
     padding: 12px 24px;
 }
-.top-message button {
+#top-message button {
     border: 1px solid gray;
     border-radius: 6px;
     cursor: pointer;
@@ -330,7 +330,7 @@ div.popup a {
     margin-top: -45px;
     padding: 6px 10px;
 }
-.top-message svg {
+#top-message svg {
     cursor: pointer;
     float: right;
     margin-right: 4px;
