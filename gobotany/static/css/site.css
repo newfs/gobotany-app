@@ -121,10 +121,15 @@ div.popup a:hover { color: #35661C; }
 /* For occasional, temporary donation campaigns: message at top of page */
 #top-message { background-color: orange; font-family: "Scala Sans Offc", sans-serif; font-size: 15px; margin: 0; padding: 12px 24px; }
 
+#top-message p { line-height: 150%; }
+
 #top-message button { border: 1px solid gray; border-radius: 6px; cursor: pointer; float: right; font-family: "Scala Sans Sc Offc", sans-serif; font-size: 16px; letter-spacing: 1px; margin-right: 45px; margin-top: -45px; padding: 6px 10px; }
 
 #top-message svg { cursor: pointer; float: right; margin-right: 4px; margin-top: -36px; }
 
+@media only screen and (max-width: 980px) { #top-message p { margin: 0 0 1rem; }
+  #top-message button { float: none; }
+  #top-message svg { margin-top: -27px; } }
 /* Site-wide styles */
 body { background-color: #f0f0c0; background-image: url(/static/images/layout/little-plants.png); background-position: bottom 140px center; background-repeat: no-repeat; color: #000; font-family: Verdana, Geneva, "Lucida Sans Unicode", sans-serif; font-size: 12px; margin: 0; }
 
