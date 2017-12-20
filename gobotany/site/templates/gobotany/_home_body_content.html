@@ -2,21 +2,6 @@
 
     <div class="content">
         <div class="container">
-
-            {% block donate %}
-                <!--
-                <div class="donate">
-                    <p>
-                    <b>Your help is appreciated.</b> &nbsp;&nbsp;
-                    We depend on donations to help keep this site free and up to date
-                    for you. Can you please help us?
-                    <a class="orange-button caps"
-                        href="http://www.newenglandwild.org/support/">Donate</a>
-                    </p>
-                </div>
-                -->
-            {% endblock %}
-
             <div id="banner">
                 {% block images %}
                     {% for image in home_page_images %}
@@ -97,5 +82,15 @@
                 </div>
             {% endblock %}
 
+            {% block donate %}
+                <div class="donate">
+                    <p>Please contribute to our mission to conserve and promote
+                    the region’s plants by donating to New England Wild
+                    Flower Society.
+                    <a class="orange-button caps"
+                        href="http://www.newenglandwild.org/support/">Donate</a>
+                    </p>
+                </div>
+            {% endblock %}
         </div>
     </div>
