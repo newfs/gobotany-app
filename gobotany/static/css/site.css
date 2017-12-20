@@ -118,6 +118,13 @@ div.popup a { text-decoration: none; color: #000; }
 div.popup a:hover, div.popup a:focus { text-decoration: underline; }
 div.popup a:hover { color: #35661C; }
 
+/* For occasional, temporary donation campaigns: message at top of page */
+.top-message { background-color: orange; margin: 0; padding: 12px 24px; }
+
+.top-message button { border: 1px solid gray; border-radius: 6px; cursor: pointer; float: right; font-family: "Scala Sans Sc Offc", sans-serif; font-size: 16px; letter-spacing: 1px; margin-right: 60px; margin-top: -40px; padding: 6px 10px; }
+
+.top-message svg { cursor: pointer; float: right; margin-right: 4px; margin-top: -30px; }
+
 /* Site-wide styles */
 body { background-color: #f0f0c0; background-image: url(/static/images/layout/little-plants.png); background-position: bottom 140px center; background-repeat: no-repeat; color: #000; font-family: Verdana, Geneva, "Lucida Sans Unicode", sans-serif; font-size: 12px; margin: 0; }
 
@@ -465,7 +472,7 @@ a.subscribe:active { background-position: 0 -32px; }
 #home #potd .details h3 span.english { font-size: 12px; color: #807121; }
 #home #potd .details p { height: 72px; margin: 0; overflow: hidden; }
 
-#home .donate, #home .intro { background: #f1ebae; border: 3px solid #fff; box-shadow: 0px 0px 4px 0 rgba(0, 0, 0, 0.3); clear: left; margin: 15px 0; padding: 0; }
+#home .donate, #home .intro { background: #f1ebae; border: 3px solid #fff; box-shadow: 0px 0px 4px 0 rgba(0, 0, 0, 0.3); clear: left; margin: 0 0 15px 0; padding: 0; }
 #home .donate p, #home .intro p { margin: 14px; position: relative; }
 
 #home .donate a { cursor: pointer; float: right; position: absolute; right: 0; top: -4px; }
