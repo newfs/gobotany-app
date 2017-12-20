@@ -32,11 +32,11 @@ div.popup a:hover, div.popup a:focus { text-decoration: underline; }
 div.popup a:hover { color: #35661C; }
 
 /* For occasional, temporary donation campaigns: message at top of page */
-.top-message { background-color: orange; margin: 0; padding: 12px 24px; }
+#top-message { background-color: orange; font-family: "Scala Sans Offc", sans-serif; font-size: 15px; margin: 0; padding: 12px 24px; }
 
-.top-message button { border: 1px solid gray; border-radius: 6px; cursor: pointer; float: right; font-family: "Scala Sans Sc Offc", sans-serif; font-size: 16px; letter-spacing: 1px; margin-right: 60px; margin-top: -40px; padding: 6px 10px; }
+#top-message button { border: 1px solid gray; border-radius: 6px; cursor: pointer; float: right; font-family: "Scala Sans Sc Offc", sans-serif; font-size: 16px; letter-spacing: 1px; margin-right: 45px; margin-top: -45px; padding: 6px 10px; }
 
-.top-message svg { cursor: pointer; float: right; margin-right: 4px; margin-top: -30px; }
+#top-message svg { cursor: pointer; float: right; margin-right: 4px; margin-top: -36px; }
 
 .edit-page #all { margin: 2em; }
 
