@@ -318,6 +318,9 @@ div.popup a {
     margin: 0;
     padding: 12px 24px;
 }
+#top-message p {
+    line-height: 150%;
+}
 #top-message button {
     border: 1px solid gray;
     border-radius: 6px;
@@ -335,4 +338,15 @@ div.popup a {
     float: right;
     margin-right: 4px;
     margin-top: -36px;
+}
+@media only screen and (max-width: 980px) {
+    #top-message p {
+        margin: 0 0 1rem;
+    }
+    #top-message button {
+        float: none;
+    }
+    #top-message svg {
+        margin-top: -27px;
+    }
 }
