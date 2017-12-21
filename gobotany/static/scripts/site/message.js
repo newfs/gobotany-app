@@ -8,6 +8,13 @@ function getCookieValue(a) {   // https://stackoverflow.com/questions/5639346
 function hideMessageBanner() {
     document.getElementById('top-message').style.display = 'none';
 
+    // Reposition the top of the search-suggest menu, initially set on page load.
+    var elements = document.getElementsByClassName('suggester-menu');
+    var menuElement = elements[0];
+    if (menuElement) {
+        menuElement.style.top = '103px';
+    }
+
     // For species pages, make an adjustment to the maps positioning.
     var mapsElement = document.getElementById('maps');
     if (mapsElement) {
