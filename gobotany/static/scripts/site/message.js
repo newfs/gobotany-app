@@ -9,7 +9,10 @@ function hideMessageBanner() {
     document.getElementById('top-message').style.display = 'none';
 
     // For species pages, make an adjustment to the maps positioning.
-    document.getElementById('maps').style.top = '128px';
+    var mapsElement = document.getElementById('maps');
+    if (mapsElement) {
+        mapsElement.style.top = '128px';
+    }
 }
 
 // Hide the message banner if the cookie is still set.
@@ -18,7 +21,10 @@ if (getCookieValue('msg') === 'hide') {
 }
 else {
     // For species pages, make an adjustment to the maps positioning.
-    document.getElementById('maps').style.top = '205px';
+    var mapsElement = document.getElementById('maps');
+    if (mapsElement) {
+        mapsElement.style.top = '205px';
+    }
 }
 
 function closeMessageBanner() {
