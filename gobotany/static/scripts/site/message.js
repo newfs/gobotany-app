@@ -7,11 +7,18 @@ function getCookieValue(a) {   // https://stackoverflow.com/questions/5639346
 
 function hideMessageBanner() {
     document.getElementById('top-message').style.display = 'none';
+
+    // For species pages, make an adjustment to the maps positioning.
+    document.getElementById('maps').style.top = '128px';
 }
 
 // Hide the message banner if the cookie is still set.
 if (getCookieValue('msg') === 'hide') {
     hideMessageBanner();
+}
+else {
+    // For species pages, make an adjustment to the maps positioning.
+    document.getElementById('maps').style.top = '205px';
 }
 
 function closeMessageBanner() {
