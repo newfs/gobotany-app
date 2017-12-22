@@ -749,11 +749,11 @@ body.skey.results #page-head { margin-left: 250px; }
 body.skey.results .already-know { float: left; margin: 0 0 40px 0; }
 body.skey.results .already-know h6 { color: #807121; font-weight: bold; margin: 0 0 5px 0; }
 body.skey.results .already-know label { color: #807121; display: block; font-family: "Trebuchet MS", Helvetica, Arial, "Lucida Sans Unicode", sans-serif; font-size: 12px; font-weight: normal; margin: 5px 0 3px; vertical-align: middle; }
-body.skey.results .already-know select { font-size: 13px; height: 21px; width: 143px; background: #ebf6df; border: 1px solid #9cc86b; font-family: "Trebuchet MS", Helvetica, Arial, "Lucida Sans Unicode", sans-serif; padding: 0; -webkit-appearance: menulist; }
+body.skey.results .already-know select { font-size: 13px; height: 21px; width: 140px; background: #ebf6df; border: 1px solid #9cc86b; font-family: "Trebuchet MS", Helvetica, Arial, "Lucida Sans Unicode", sans-serif; padding: 0; -webkit-appearance: menulist; }
 body.skey.results .already-know button { background: #ebf6df; border: 1px solid #9cc86b; font: -webkit-control; padding: 2px 6px; -webkit-appearance: button; }
 body.skey.results .show-me { float: right; margin: 0 0 15px 0; }
 body.skey.results #results-display { margin: 8px 0; }
-body.skey.results #results-display label { color: #000; font-family: "Trebuchet MS", Helvetica, Arial, "Lucida Sans Unicode", sans-serif; font-size: 15px; font-weight: normal; }
+body.skey.results #results-display label { color: #000; font-family: ScalaSans, "Trebuchet MS", Helvetica, Arial, "Lucida Sans Unicode", sans-serif; font-size: 15px; font-weight: normal; }
 body.skey.results #results-display select { font-size: 15px; background: #ebf6df; border: 1px solid #9cc86b; font-family: "Trebuchet MS", Helvetica, Arial, "Lucida Sans Unicode", sans-serif; padding: 0; -webkit-appearance: menulist; }
 body.skey.results #results-display img.icon { margin: 0 3px 0 0; vertical-align: -1px; }
 body.skey.results #modal { display: none; }
@@ -791,12 +791,12 @@ body.skey.results #question-nav .scroll::-webkit-scrollbar-track { background-co
 body.skey.results #question-nav .scroll::-webkit-scrollbar-thumb:vertical { background-color: #fff; border-left: 1px solid #c3d941; background-image: url(/static/images/layout/scroll-thumb-top.png), url(/static/images/layout/scroll-thumb-bottom.png), url(/static/images/layout/scroll-thumb.png); background-position: center top, center bottom, center; background-repeat: no-repeat, no-repeat, repeat-y; }
 body.skey.results #question-nav .section { padding: 0 17px 16px; }
 body.skey.results #question-nav .section.instructions { background: #9cc86b; color: #fff; padding: 16px; }
-body.skey.results #question-nav .section.instructions h5 { line-height: 120%; margin: 0; }
+body.skey.results #question-nav .section.instructions h5 { font-size: 16px; line-height: 120%; margin: 0; }
 body.skey.results #question-nav .section .left { float: left; }
 body.skey.results #question-nav .section p.get-more { position: relative; /* for Brandon experiment */ font-size: 11px; line-height: 16px; margin: 0 0 20px; text-align: center; }
 body.skey.results #question-nav .section p.get-more a { color: white; cursor: pointer; display: block; margin: 18px auto 10px; width: 170px; }
 body.skey.results #question-nav .section p.get-more a.get-questions { margin: 0 auto 4px; }
-body.skey.results #question-nav .section a.clear-all-btn { color: white; margin: 0 0 0 20px; width: 80px; }
+body.skey.results #question-nav .section a.clear-all-btn { color: white; margin: 0 0 0 24px; width: 80px; }
 body.skey.results #question-nav .section a.get-help-btn { color: white; margin: 10px 0 0 18px; width: 80px; }
 body.skey.results #question-nav h6 { color: #807121; font-weight: bold; margin: 0 0 8px 0; }
 body.skey.results #question-nav .option-list > li { background: #fff; border-top: 1px solid #c3d941; cursor: pointer; display: block; height: auto; line-height: normal; margin: 0; padding: 12px; }
@@ -817,11 +817,11 @@ body.skey.results #intro-overlay h1 { font-size: 140%; }
 body.skey.results #intro-overlay .number-of-species:before, body.skey.results #intro-overlay .number-of-questions:before { border-style: solid; border-width: 0.9em 1.8em; bottom: 0.8em; content: ''; height: 0; position: absolute; width: 0; }
 body.skey.results #intro-overlay .number-of-species:before { border-color: transparent; right: -5em; }
 body.skey.results #intro-overlay .number-of-questions:before { border-color: transparent #508e31 transparent transparent; left: -3.9em; top: 0.4em; }
-body.skey.results h3.species-count-heading { /* Move "18 matching species" to the right of Photos/List tab */ font-size: 24px; margin: 0; padding: 0; position: relative; }
-body.skey.results h3.species-count-heading > span { left: 330px; position: absolute; top: 0px; }
+body.skey.results h3.species-count-heading { /* Move "18 matching species" to the right of Photos/List tab */ font-size: 22px; margin: 0; padding: 0; position: relative; }
+body.skey.results h3.species-count-heading > span { left: 330px; position: absolute; top: 10px; }
 body.skey.results h5.help { clear: left; font-size: 14px; margin: 0 0 0 0; padding: 3px 0 0 0; }
 body.skey.results h5.help.last { margin-top: 12px; }
-body.skey.results .view-tabs { border-bottom: 1px solid #c3d941; clear: left; height: 28px; margin: 5px 0 0; }
+body.skey.results .view-tabs { border-bottom: 1px solid #c3d941; clear: left; font-family: ScalaSans, "Trebuchet MS", sans-serif; height: 28px; margin: 15px 0 0; }
 body.skey.results .view-tabs a { background: #d6e6c5; background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #eaf2e2), color-stop(100%, #d6e6c5)); background: -moz-linear-gradient(center top, #eaf2e2, #d6e6c5); border: 1px solid #c3d941 !important; border-top-left-radius: 6px; border-top-right-radius: 6px; color: #354d1e; cursor: pointer; display: block; float: left; font-family: "Trebuchet MS", Helvetica, Arial, "Lucida Sans Unicode", sans-serif; font-size: 18px; line-height: 18px; margin: 0; min-width: 100px; padding: 5px 10px 4px; text-align: center; }
 body.skey.results .view-tabs a:hover { background: #e1f2cd; background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #f0f8e7), color-stop(100%, #e1f2cd)); background: -moz-linear-gradient(center top, #f0f8e7, #e1f2cd); cursor: pointer; text-decoration: none; }
 body.skey.results .view-tabs li { list-style-type: none; }
