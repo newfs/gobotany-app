@@ -16,11 +16,12 @@
         font-size: 24px;
         font-style: italic;
         margin-bottom: 0;
-        margin-left: 255px;
+        margin-left: 305px;
         span {
             color: #807121;
             font-size: 16px;
             font-style: normal;
+            margin-left: 10px;
         }
     }
     p {
@@ -39,7 +40,7 @@
     }
 }
 .modal-wrap #plant-details {
-    padding: 10px 10px 0;
+    padding: 10px 10px 0 60px;
 }
 .modal-wrap .list-item {
     border-top: none;
@@ -54,7 +55,7 @@
     .details {
         float: left;
         margin: 0 0 0 10px;
-        width: 610px;
+        width: 560px;
     }
 }
 .modal-wrap .img-gallery {
