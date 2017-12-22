@@ -725,7 +725,7 @@ body.skey.groups-subgroups #sb-title-inner a { border-bottom: 1px solid #ccc; co
 body.skey.groups-subgroups #sb-title-inner a:hover { text-decoration: none; }
 body.skey.groups-subgroups #sb-title-inner a.contact { cursor: pointer; display: inline-block; /* prevent link from wrapping, which makes tooltip position incorrect */ text-decoration: none; }
 body.skey.groups-subgroups #sb-nav-close { top: 56px !important; }
-body.skey.groups-subgroups p.question, body.skey.groups-subgroups p.tip { font-family: ScalaSans, "Trebuchet MS", Helvetica, Arial, "Lucida Sans Unicode", sans-serif; font-size: 24px; margin: 12px 0 0; padding: 0; }
+body.skey.groups-subgroups p.question, body.skey.groups-subgroups p.tip { font-family: ScalaSans, "Trebuchet MS", Helvetica, Arial, "Lucida Sans Unicode", sans-serif; font-size: 24px; margin: 8px 0 0; padding: 0; }
 body.skey.groups-subgroups p.tip { font-size: 18px; margin: 8px 0 0; padding: 0; }
 body.skey.groups-subgroups .list-item { clear: left; margin: 0; padding: 20px 0 0 0; }
 body.skey.groups-subgroups .list-item .details { float: left; width: 425px; }
