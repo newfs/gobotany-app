@@ -124,7 +124,7 @@ body.skey {
             select {
                 font-size: 13px;
                 height: 21px;
-                width: 143px;
+                width: 140px;
                 @include results-select;
             }
             button {
@@ -144,7 +144,7 @@ body.skey {
             margin: 8px 0;
             label {
                 color: #000;
-                font-family: $headings-font;
+                font-family: ScalaSans, $headings-font;
                 font-size: 15px;
                 font-weight: normal;
             }
@@ -347,6 +347,7 @@ body.skey {
                     color: #fff;
                     padding: 16px;
                     h5 {
+                        font-size: 16px;
                         line-height: 120%;
                         margin: 0;
                     }
@@ -373,7 +374,7 @@ body.skey {
                 }
                 a.clear-all-btn {
                     color: white;
-                    margin: 0 0 0 20px;
+                    margin: 0 0 0 24px;
                     width: 80px;
                 }
                 a.get-help-btn {
@@ -515,14 +516,14 @@ body.skey {
 
         h3.species-count-heading {
             /* Move "18 matching species" to the right of Photos/List tab */
-            font-size: 24px;
+            font-size: 22px;
             margin: 0;
             padding: 0;
             position: relative;
             > span {
                 left: 330px;
                 position: absolute;
-                top: 0px;
+                top: 10px;
             }
         }
         h5.help {
@@ -538,8 +539,9 @@ body.skey {
         .view-tabs {
             border-bottom: 1px solid #c3d941;
             clear: left;
+            font-family: ScalaSans, "Trebuchet MS", sans-serif;
             height: 28px;
-            margin: 5px 0 0;
+            margin: 15px 0 0;
             a {
                 background: #d6e6c5;
                 background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#eaf2e2), color-stop(100%,#d6e6c5));
