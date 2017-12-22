@@ -131,11 +131,12 @@ $disabled_orange_gradient: linear-gradient(
     border: 1px solid $orange1 !important;
     border-radius: 14px;
     box-shadow: 0px 1px 4px 0 $shadow_color;
-    color: white;
+    color: #251e0a !important;
     cursor: pointer;
     display: inline-block;
     font-family: ScalaSans, $headings-font;
     font-size: 12px;
+    font-weight: bold !important;
     letter-spacing: 1px;
     line-height: 18px;
     min-width: 80px;
