@@ -119,11 +119,11 @@ div.popup a:hover, div.popup a:focus { text-decoration: underline; }
 div.popup a:hover { color: #35661C; }
 
 /* For occasional, temporary donation campaigns: message at top of page */
-#top-message { background-color: orange; font-family: "Scala Sans Offc", sans-serif; font-size: 15px; margin: 0; padding: 12px 24px; }
+#top-message { background-color: orange; font-family: ScalaSans, sans-serif; font-size: 15px; margin: 0; padding: 12px 24px; }
 
 #top-message p { line-height: 150%; }
 
-#top-message button { border: 1px solid gray; border-radius: 6px; cursor: pointer; float: right; font-family: "Scala Sans Sc Offc", sans-serif; font-size: 16px; letter-spacing: 1px; margin-right: 45px; margin-top: -45px; padding: 6px 10px; }
+#top-message button { border: 1px solid gray; border-radius: 6px; cursor: pointer; float: right; font-family: ScalaSansSmallCaps, sans-serif; font-size: 16px; letter-spacing: 1px; margin-right: 45px; margin-top: -45px; padding: 6px 10px; }
 
 #top-message svg { cursor: pointer; float: right; margin-right: 4px; margin-top: -36px; }
 
@@ -153,15 +153,15 @@ a:not([href]):hover { text-decoration: none; }
 
 #main td.scientific-name a { border-bottom: 0; }
 
-h1, h2, h3, h4, h5, h6 { font-family: "Trebuchet MS", Helvetica, Arial, "Lucida Sans Unicode", sans-serif; font-weight: normal; line-height: 155%; margin: 0; padding: 0; }
+h1, h2, h3, h4, h5, h6 { font-family: ScalaSans, "Trebuchet MS", Helvetica, Arial, "Lucida Sans Unicode", sans-serif; font-weight: normal; line-height: 155%; margin: 0; padding: 0; }
 
-h1 { color: #437829; font-size: 35px; line-height: 110%; margin-bottom: 8px; }
+h1 { color: #437829; font-size: 38px; line-height: 110%; }
 
-h2 { font-size: 24px; margin: 8px 0; }
+h2 { font-size: 26px; margin: 8px 0; }
 
-h3 { font-size: 18px; }
+h3 { font-size: 20px; }
 
-h4 { font-size: 14px; }
+h4 { font-size: 16px; }
 
 h5, h6 { font-size: 12px; }
 
@@ -560,7 +560,7 @@ body.taxa #sb-title-inner a.contact { cursor: pointer; display: inline-block; /*
 body.taxa #sb-nav-close { top: 56px !important; }
 
 body.taxa #main ol, body.taxa #main ul { line-height: inherit; }
-body.taxa #main .common { color: #807121; font-family: "Trebuchet MS", Helvetica, Arial, "Lucida Sans Unicode", sans-serif; font-size: 28px; line-height: 105%; margin: 0 0 12px 0; }
+body.taxa #main .common { color: #807121; font-family: ScalaSans, "Trebuchet MS", Helvetica, Arial, "Lucida Sans Unicode", sans-serif; font-size: 28px; line-height: 105%; margin: 6px 0 15px; }
 
 #body.taxa .frame { cursor: pointer; }
 
@@ -596,7 +596,7 @@ body#species .section h4 { font-size: 14px; margin: 0; padding: 0; }
 body#species .section p { margin-bottom: 0; }
 
 body#species #maps, body#species #side { position: absolute; }
-body#species #maps h2, body#species #side h2 { font-size: 14px; margin: 0 0 4px 0; }
+body#species #maps h2, body#species #side h2 { font-size: 16px; margin: 0 0 4px 0; }
 
 body#species #maps { border-top: 1px solid #c3d941; top: 128px; }
 
@@ -725,9 +725,9 @@ body.skey.groups-subgroups #sb-title-inner a { border-bottom: 1px solid #ccc; co
 body.skey.groups-subgroups #sb-title-inner a:hover { text-decoration: none; }
 body.skey.groups-subgroups #sb-title-inner a.contact { cursor: pointer; display: inline-block; /* prevent link from wrapping, which makes tooltip position incorrect */ text-decoration: none; }
 body.skey.groups-subgroups #sb-nav-close { top: 56px !important; }
-body.skey.groups-subgroups p.question, body.skey.groups-subgroups p.tip { font-family: "Trebuchet MS", Helvetica, Arial, "Lucida Sans Unicode", sans-serif; font-size: 24px; margin: 12px 0 0; padding: 0; }
+body.skey.groups-subgroups p.question, body.skey.groups-subgroups p.tip { font-family: ScalaSans, "Trebuchet MS", Helvetica, Arial, "Lucida Sans Unicode", sans-serif; font-size: 24px; margin: 12px 0 0; padding: 0; }
 body.skey.groups-subgroups p.tip { font-size: 18px; margin: 8px 0 0; padding: 0; }
-body.skey.groups-subgroups .list-item { border-top: 1px solid rgba(128, 113, 33, 0.1); clear: left; margin: 20px 0 0 0; padding: 20px 0 0 0; }
+body.skey.groups-subgroups .list-item { clear: left; margin: 0; padding: 20px 0 0 0; }
 body.skey.groups-subgroups .list-item .details { float: left; width: 425px; }
 body.skey.groups-subgroups .list-item h2 { line-height: 110%; margin: 0 0 5px 0; }
 body.skey.groups-subgroups .list-item h2 + p { color: #807121; display: block; font-family: "Trebuchet MS", Helvetica, Arial, "Lucida Sans Unicode", sans-serif; font-size: 12px; font-style: italic; margin: 7px 0 1px; padding-left: 0; }
