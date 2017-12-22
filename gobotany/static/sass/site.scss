@@ -78,7 +78,7 @@ a:not([href]) {
 }
 
 h1, h2, h3, h4, h5, h6 {
-    font-family: $headings-font;
+    font-family: ScalaSans, $headings-font;
     font-weight: normal;
     line-height: 155%;
     margin: 0;
@@ -86,19 +86,18 @@ h1, h2, h3, h4, h5, h6 {
 }
 h1 {
     color: $heading-green;
-	font-size: 35px;
+	font-size: 38px;
     line-height: 110%;
-    margin-bottom: 8px;
 }
 h2 {
-	font-size: 24px;
+	font-size: 26px;
     margin: 8px 0;
 }
 h3 {
-	font-size: 18px;	
+	font-size: 20px;	
 }
 h4 {
-	font-size: 14px;	
+	font-size: 16px;	
 }
 h5, h6 {
 	font-size: $base-font-size;	

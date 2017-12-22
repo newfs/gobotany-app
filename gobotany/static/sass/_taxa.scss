@@ -31,10 +31,10 @@ body.taxa #main {
     }
     .common {
         color: $medium-brown;
-        font-family: $headings-font;
+        font-family: ScalaSans, $headings-font;
         font-size: 28px;
         line-height: 105%;
-        margin: 0 0 12px 0;
+        margin: 6px 0 15px;
     }
 }
 #body.taxa .frame {
@@ -118,7 +118,7 @@ body#species .section {
 body#species #maps, body#species #side {
     position: absolute;
     h2 {
-        font-size: 14px;
+        font-size: 16px;
         margin: 0 0 4px 0;
     }
 }

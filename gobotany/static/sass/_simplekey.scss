@@ -11,7 +11,7 @@ body.skey.groups-subgroups {
 
     p {
         &.question, &.tip {
-            font-family: $headings-font;
+            font-family: ScalaSans, $headings-font;
             font-size: 24px;
             margin: 12px 0 0;
             padding: 0;
@@ -24,9 +24,8 @@ body.skey.groups-subgroups {
     }
 
     .list-item {
-        border-top: 1px solid rgba(128, 113, 33, 0.1);
         clear: left;
-        margin: 20px 0 0 0;
+        margin: 0;
         padding: 20px 0 0 0;
         .details {
             float: left;
