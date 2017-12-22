@@ -96,7 +96,7 @@
         <div class="section map namap">
             <h2>North America Distribution</h2>
             {% include "gobotany/_map_attribution.html" %}
-            {% with map_title='North America distribution: '|add:scientific_name|add:'.' %}
+            {% with map_title='North America distribution: <i>'|add:scientific_name|add:'.</i>' %}
             <div>
                 <object
                     data="{% url 'na-distribution-map' taxon.genus|lower epithet %}"
