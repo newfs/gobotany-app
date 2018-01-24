@@ -43,6 +43,7 @@ TEMPLATES = [
                 'django.template.context_processors.static',
                 'gobotany.core.context_processors.gobotany_specific_context',
             ],
+            'debug': True,
         },
     },
 ]
