@@ -212,7 +212,7 @@ SOUTH_MIGRATION_MODULES = {
 
 # Static files (CSS, JavaScript, images)
 # https://docs.djangoproject.com/en/1.11/howto/static-files/
-STATIC_ROOT = ''
+STATIC_ROOT = (THIS_DIRECTORY)
 STATIC_URL = '/static/'
 STATICFILES_DIRS = (
     os.path.join(THIS_DIRECTORY, 'static'),
