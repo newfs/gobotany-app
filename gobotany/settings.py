@@ -202,9 +202,6 @@ APPEND_SLASH = False
 SMART_APPEND_SLASH = True
 ROOT_URLCONF = 'gobotany.urls'
 INTERNAL_IPS = ('127.0.0.1',)
-STATIC_ROOT = ''
-STATIC_URL = '/static/'
-STATICFILES_DIRS = [('', os.path.join(THIS_DIRECTORY, 'static'))]
 MEDIA_ROOT = os.path.join(THIS_DIRECTORY, 'media')
 MEDIA_URL = '/media/'
 SESSION_COOKIE_AGE = 2 * 24 * 60 * 60  # two days
@@ -212,6 +209,21 @@ SESSION_COOKIE_AGE = 2 * 24 * 60 * 60  # two days
 SOUTH_MIGRATION_MODULES = {
     'registration': 'registration.south_migrations',
 }
+
+
+# Static files (CSS, JavaScript, images)
+# https://docs.djangoproject.com/en/1.11/howto/static-files/
+
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+STATIC_URL = '/static/'
+
+# Extra places for collectstatic to find static files
+STATICFILES_DIRS = (
+    os.path.join(BASE_DIR, 'static'),
+)
+
 
 # https://docs.djangoproject.com/en/dev/topics/i18n/timezones/#time-zones-faq
 TIME_ZONE = 'America/New_York'
