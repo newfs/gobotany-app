@@ -7,28 +7,6 @@ from gobotany.site.utils import secure_url as utils_secure_url
 
 register = template.Library()
 
-# "Collect" tag courtesy of http://djangosnippets.org/snippets/2196/
-# Collects items into a list that can be used later in the template.
-@register.tag
-def collect(parser, token):
-    bits = list(token.split_contents())
-    if len(bits) > 3 and bits[-2] == 'as':
-        varname = bits[-1]
-        items = bits[1:-2]
-        return CollectNode(items, varname)
-    else:
-        raise template.TemplateSyntaxError( \
-            '%r expected format is "item [item ...] as varname"' % bits[0])
-
-class CollectNode(template.Node):
-    def __init__(self, items, varname):
-        self.items = map(template.Variable, items)
-        self.varname = varname
-
-    def render(self, context):
-        context[self.varname] = [i.resolve(context) for i in self.items]
-        return ''
-
 
 @register.filter
 @stringfilter
