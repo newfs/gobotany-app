@@ -162,6 +162,34 @@ def is_scientific_name(plant_name):
 @register.tag
 def nav_item(parser, token):
     """Return a navigation item, hyperlinked if appropriate."""
+    # The nav item tag is used like this:
+    # {% nav_item 'Link Label' named-url optional-extra-path %}
+    #
+    # Examples:
+    # {% nav_item 'Contact Us' site-contact %}
+    # 
+    # {% nav_item 'Simple Key' level1 'simple %}
+    #
+    # The output of the tag is either an HTML anchor or a span:
+    #
+    # <a href="/contact/">Contact Us</a>
+    # <a>Contact Us</a>
+    # <span>Contact Us</a>
+    #
+    # <a href="/simple/">Simple Key</a>
+    # <a>Simple Key</a>
+    # <span>Simple Key</a>
+    #
+    # An anchor is used if a match is found for the named URL.
+    # The href attribute appears if the request path differs from
+    # the named URL path, and therefore a link can be offered.
+    # If the request path and the named URL path are the same,
+    # no href attribute is added, the anchor is not linked because
+    # the user is already at that URL.
+    #
+    # A span is used if no match is found for the named URL. This
+    # seems as if it could happen primarily during new development.
+    #    
     token_parts = token.split_contents()
     label = token_parts[1]
     named_url = None
