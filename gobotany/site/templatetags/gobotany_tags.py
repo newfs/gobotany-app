@@ -210,29 +210,34 @@ class NavigationItemNode(template.Node):
         self.extra_path_item = None
         if extra_path_item:
             self.extra_path_item = extra_path_item[1:-1]
+        self.args = ()
+        if self.extra_path_item:
+            self.args = (self.extra_path_item,)
 
     def render(self, context):
-        # Handle either a variable or a string as the label.
+        # Do not directly alter any attributes of the Node here in render()
+        # because it would not be thread-safe for multi-threaded
+        # environments such as Heroku: it would result in bugs (such as
+        # missing page elements) there.
+        # For example, do not alter self.label within render().
+        label_to_display = self.label
+        # Handle the option of passing in a variable from the template.
         try:
-            label_from_variable = self.label.resolve(context)
-            self.label = label_from_variable
+            label_to_display = self.label.resolve(context)
         except template.VariableDoesNotExist:
-            # Treat the label as a string: trim quotes.
-            self.label = self.label.tostring()[1:-1]
+            # If no variable was passed in, process the label as a string.
+            label_to_display = str(self.label)[1:-1]
 
-        args = ()
-        if self.extra_path_item:
-            args = (self.extra_path_item,)
         try:
-            url_path = reverse(self.named_url, args=args)
+            url_path = reverse(self.named_url, args=self.args)
             request = context['request']
             href = ''
             if url_path != request.path:
                 href='href="%s"' % url_path
-            html = '<a %s>%s</a>' % (href, self.label)
+            html = '<a %s>%s</a>' % (href, label_to_display)
             return html
         except NoReverseMatch:
             # No matching URL exists yet, so display just the text.
-            return '<span>%s</span>' % self.label
+            return '<span>%s</span>' % label_to_display
         else:
             return ''
