@@ -327,28 +327,10 @@ class PlantDistributionMap(ChloroplethMap):
             # as fast as XPath, at least when breaking after finding a node
             # as is done for the county-level records.
 
-            # Take a pass through the nodes and shade any
-            # state-/province-/territory-level records.
-            state_records = self.distribution_records.filter(county='')
-            for record in state_records:
-                state_id_piece = '%s_' % record.state.lower()
-                for node in path_nodes:
-                    node_id = node.get('id').lower()
-                    if node_id.startswith(state_id_piece):
-                        label = self._get_label(record.present, record.native,
-                            level='state')
-                        if label not in legend_labels_found:
-                            legend_labels_found.append(label)
-                        box = Path(node)
-                        if self._should_shade(box, record.present,
-                                record.native):
-                            box.color(Legend.COLORS[label])
-                        # Keep going rather than break, because for each
-                        # state-level record there will be multiple
-                        # counties to shade.
-
             # Take a pass through the nodes and shade any county-level
             # records.
+            # Keep track of which states had any county-level records.
+            states_with_county_records = []
             county_records = self.distribution_records.exclude(county='')
             for record in county_records:
                 state_and_county = '%s_%s' % (record.state.lower(),
@@ -365,7 +347,33 @@ class PlantDistributionMap(ChloroplethMap):
                         if self._should_shade(box, record.present,
                                 record.native, level='county'):
                             box.color(Legend.COLORS[label])
+                            states_with_county_records.append(
+                                record.state.lower())
                         break   # Move on to the next distribution record.
+
+            # Take a pass through the nodes and shade any
+            # state-/province-/territory-level records.
+            state_records = self.distribution_records.filter(county='')
+            for record in state_records:
+                state_id_piece = '%s_' % record.state.lower()
+                for node in path_nodes:
+                    node_id = node.get('id').lower()
+                    if node_id.startswith(state_id_piece):
+                        # If this state is not one where any county records
+                        # were mapped, proceed to map state records.
+                        state = record.state.lower()
+                        if state not in list(set(states_with_county_records)):
+                            label = self._get_label(record.present,
+                                record.native, level='state')
+                            if label not in legend_labels_found:
+                                legend_labels_found.append(label)
+                            box = Path(node)
+                            if self._should_shade(box, record.present,
+                                    record.native):
+                                box.color(Legend.COLORS[label])
+                            # Keep going rather than break, because for each
+                            # state-level record there will be multiple
+                            # counties to shade.
 
             # Check all legend labels found to verify they should still
             # be visible on the map. Drop any labels that no longer have

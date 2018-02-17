@@ -995,7 +995,7 @@ def pile_vector_set(request, slug):
 
 # Plant distribution maps
 
-def _shade_map(distribution_map,  genus, epithet):
+def _shade_map(distribution_map, genus, epithet):
     scientific_name = ' '.join([genus.title(), epithet.lower()])
     distribution_map.set_plant(scientific_name)
     return distribution_map.shade()
@@ -1009,7 +1009,9 @@ def _compute_map_etag(request, distribution_map, genus, epithet):
     h.update(shaded_map.tostring())
     return h.hexdigest()
 
-@etag(_compute_map_etag)
+# Disable ETag calculation for now, as it is no longer working in
+# Production, and enabling it with the latest code results in an error.
+#@etag(_compute_map_etag)
 def _distribution_map(request, distribution_map, genus, epithet):
 
     # BONAP gives one species a different name than FNA; as a temporary
