@@ -584,7 +584,7 @@ class RankFilter(admin.SimpleListFilter):
 
 class DistributionAdmin(_Base):
     list_display = ('scientific_name', 'species_name', 'subspecific_epithet',
-        'state', 'county', 'present', 'native')
+        'state', 'county', 'present', 'native', 'map_link',)
     list_editable = ('present', 'native',)
     list_filter = (DistributionRegionFilter, RankFilter, 'native', 'present',
         'state', 'county')
@@ -593,6 +593,12 @@ class DistributionAdmin(_Base):
     list_per_page = 150
     search_fields = ('scientific_name',)
     actions = ['rename_records']
+
+    def map_link(self, obj):
+        return '<a href="/api/maps/%s-ne-distribution-map">View</a>' % (
+            obj.species_name.lower().replace(' ', '-'))
+    map_link.allow_tags = True
+    map_link.short_description = 'NE Map'
 
     # Override the change view to handle the Save and Edit Next button.
     def add_view(self, request, extra_context=None):
