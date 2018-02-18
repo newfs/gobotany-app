@@ -1,3 +1,4 @@
+import copy
 import hashlib
 import inflect
 import json
@@ -1002,16 +1003,17 @@ def _shade_map(distribution_map, genus, epithet):
 
 def _compute_map_etag(request, distribution_map, genus, epithet):
     """Generate an ETag for allowing caching of maps. This requires
-    shading the map upon every request, but saves much bandwidth.
+    shading a map upon every request, but saves much bandwidth.
     """
-    shaded_map = _shade_map(distribution_map, genus, epithet)
+    map = copy.deepcopy(distribution_map)
+    shaded_map = _shade_map(map, genus, epithet)
     h = hashlib.md5()
     h.update(shaded_map.tostring())
     return h.hexdigest()
 
 # Disable ETag calculation for now, as it is no longer working in
 # Production, and enabling it with the latest code results in an error.
-#@etag(_compute_map_etag)
+@etag(_compute_map_etag)
 def _distribution_map(request, distribution_map, genus, epithet):
 
     # BONAP gives one species a different name than FNA; as a temporary
