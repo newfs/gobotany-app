@@ -450,7 +450,7 @@ table.list th td:first-child { font-family: "Trebuchet MS", Helvetica, Arial, "L
 #home #banner { margin: 10px 0 0; position: absolute; }
 #home #banner > img { box-shadow: 0px 0px 4px 0 rgba(0, 0, 0, 0.6); display: none; height: 345px; left: 0; position: absolute; top: 0; width: 960px; }
 #home #banner img:first-child { display: block; }
-#home #banner h2 { color: #519136; font-size: 38px; line-height: normal; margin: 0 0 15px 0; }
+#home #banner h2 { color: #519136; font-size: 38px; font-weight: bold; line-height: normal; margin: 0 0 15px 0; }
 #home #banner p { margin: 12px 0 0 0; text-align: left; text-shadow: 0px 1px 1px #fff; }
 
 #home #cta { margin: 21px 2px 0; width: 184px; }
