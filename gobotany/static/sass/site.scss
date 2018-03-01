@@ -83,6 +83,7 @@ h1, h2, h3, h4, h5, h6 {
     line-height: 155%;
     margin: 0;
     padding: 0;
+    -webkit-font-smoothing: antialiased; /* needed for some WebKit browsers: prevent too bold */
 }
 h1 {
     color: $heading-green;
