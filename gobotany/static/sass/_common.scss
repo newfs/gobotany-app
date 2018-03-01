@@ -131,7 +131,7 @@ $disabled_orange_gradient: linear-gradient(
     border: 1px solid $orange1 !important;
     border-radius: 14px;
     box-shadow: 0px 1px 4px 0 $shadow_color;
-    color: #251e0a !important;
+    color: #fff;
     cursor: pointer;
     display: inline-block;
     font-family: ScalaSans, $headings-font;
@@ -143,10 +143,8 @@ $disabled_orange_gradient: linear-gradient(
     padding: 4px 12px;
     text-align: center;
     text-decoration: none;
+    text-shadow: 1px 2px 2px $orange1;
     @include background($orange_gradient);
-    &:hover {
-        @include background($bright_orange_gradient);
-    }
     &:active {
         background-color: $orange1;
         @include background($dull_orange_gradient);
