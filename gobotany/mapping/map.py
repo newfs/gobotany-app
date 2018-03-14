@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 import re
 
 from os.path import abspath, dirname
@@ -408,6 +410,131 @@ class PlantDistributionMap(ChloroplethMap):
         return self
 
 
+class PlantDiversityMap(ChloroplethMap):
+    """Base class for a map that shows plant diversity data."""
+
+    PATH_NODES_XPATH = 'svg:path'
+
+    def __init__(self, blank_map_path):
+        self.maximum_legend_categories = 1
+        self.maximum_legend_items = 5
+        self.scientific_name = None
+        super(PlantDiversityMap, self).__init__(blank_map_path,
+            self.maximum_legend_items)
+        self.legend = Legend(self.svg_map, self.maximum_legend_categories,
+            self.maximum_legend_items)
+        self.map_type = 'all'
+
+    def set_title(self, value):
+        super(PlantDiversityMap, self).set_title(value)
+        # Set map type based on the title.
+        if value.find('non-native') > 0:
+            self.map_type = 'nonnative'
+        elif value.find('native') > 0:
+            self.map_type = 'native'
+        # Also set the visible title label on the map.
+        label_node_id = 'title'
+        try:
+            label_node = self.svg_map.xpath(
+                'svg:text[@id="%s"]' % label_node_id,
+                namespaces=NAMESPACES)[0]
+            if label_node is not None:
+                label_text_node = label_node.find(
+                    '{http://www.w3.org/2000/svg}tspan')
+                label_text_node.text = value
+        except:
+            pass
+
+    def set_data(self, data):
+        self.data = data
+
+    def _get_color(self, taxa_count):
+        color = 'fff'
+        if self.map_type == 'native':
+            if taxa_count > 500 and taxa_count <= 670:
+                color = 'D6F98C'
+            elif taxa_count > 670 and taxa_count <= 840:
+                color = 'A4FF6C'
+            elif taxa_count > 840 and taxa_count <= 1010:
+                color = '00DF32'
+            elif taxa_count > 1010 and taxa_count <= 1180:
+                color = '01905D'
+            elif taxa_count > 1180 and taxa_count <= 1350:
+                color = '005A6F'
+        elif self.map_type == 'nonnative':
+            if taxa_count > 125 and taxa_count <= 275:
+                color = 'D6F98C'
+            elif taxa_count > 275 and taxa_count <= 425:
+                color = 'A4FF6C'
+            elif taxa_count > 425 and taxa_count <= 575:
+                color = '00DF32'
+            elif taxa_count > 575 and taxa_count <= 725:
+                color = '01905D'
+            elif taxa_count > 725 and taxa_count <= 875:
+                color = '005A6F'
+        elif self.map_type == 'all':
+            if taxa_count > 600 and taxa_count <= 920:
+                color = 'D6F98C'
+            elif taxa_count > 920 and taxa_count <= 1240:
+                color = 'A4FF6C'
+            elif taxa_count > 1240 and taxa_count <= 1560:
+                color = '00DF32'
+            elif taxa_count > 1560 and taxa_count <= 1880:
+                color = '01905D'
+            elif taxa_count > 1880 and taxa_count <= 2200:
+                color = '005A6F'
+        color = '#%s' % color
+        return color
+
+    def _shade_county(self, county, state, taxa_count):
+        color = self._get_color(taxa_count)
+        path_nodes = self.svg_map.xpath(self.PATH_NODES_XPATH,
+            namespaces=NAMESPACES)
+        state_and_county = '%s_%s' % (state.lower(),
+            county.replace(' ', '_').lower())
+        # When shading a map area, iterate over the nodes rather
+        # than selecting a node via XPath. Iterating is around twice
+        # as fast as XPath, at least when breaking after finding a node
+        # as is done for the county-level records.
+        for node in path_nodes:
+            node_id = node.get('id').lower()
+            if node_id == state_and_county:
+                box = Path(node)
+                box.color(color)
+
+    def _fill_legend(self):
+        border_color = '#000'
+        if self.map_type == 'native':
+            self.legend._set_item(1, '#D6F98C', border_color, u'500–670')
+            self.legend._set_item(2, '#A4FF6C', border_color, u'671–840')
+            self.legend._set_item(3, '#00DF32', border_color, u'841–1010')
+            self.legend._set_item(4, '#01905D', border_color, u'1011–1180')
+            self.legend._set_item(5, '#005A6F', border_color, u'1181–1350')
+        elif self.map_type == 'nonnative':
+            self.legend._set_item(1, '#D6F98C', border_color, u'125–275')
+            self.legend._set_item(2, '#A4FF6C', border_color, u'276–425')
+            self.legend._set_item(3, '#00DF32', border_color, u'426–575')
+            self.legend._set_item(4, '#01905D', border_color, u'576–725')
+            self.legend._set_item(5, '#005A6F', border_color, u'726–875')
+        elif self.map_type == 'all':
+            self.legend._set_item(1, '#D6F98C', border_color, u'600–920')
+            self.legend._set_item(2, '#A4FF6C', border_color, u'921–1240')
+            self.legend._set_item(3, '#00DF32', border_color, u'1241–1560')
+            self.legend._set_item(4, '#01905D', border_color, u'1561–1880')
+            self.legend._set_item(5, '#005A6F', border_color, u'1881–2200')
+
+    def shade(self):
+        """Shade a New England plant diversity map. Assumes the method
+        set_data(data) has already been called.
+        """
+        for record in self.data:
+            state, county, taxa_count = record
+            if county != '(all counties)':
+                self._shade_county(county, state, int(taxa_count))
+        self._fill_legend()
+        return self
+
+
 class NewEnglandPlantDistributionMap(PlantDistributionMap):
     """Class for a map that shows New England county-level distribution
     data for a plant.
@@ -420,6 +547,15 @@ class NewEnglandPlantDistributionMap(PlantDistributionMap):
         # code that scans existing maps.
         blank_map_path  = GRAPHICS_ROOT + '/new-england-counties-scoured.svg'
         super(NewEnglandPlantDistributionMap, self).__init__(blank_map_path)
+
+
+class NewEnglandPlantDiversityMap(PlantDiversityMap):
+    """Class for a map that shows New England county-level plant diversity data.
+    """
+
+    def __init__(self):
+        blank_map_path  = GRAPHICS_ROOT + '/new-england-counties-diversity.svg'
+        super(NewEnglandPlantDiversityMap, self).__init__(blank_map_path)
 
 
 class UnitedStatesPlantDistributionMap(PlantDistributionMap):
