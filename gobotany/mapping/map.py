@@ -417,7 +417,7 @@ class PlantDiversityMap(ChloroplethMap):
 
     def __init__(self, blank_map_path):
         self.maximum_legend_categories = 1
-        self.maximum_legend_items = 5
+        self.maximum_legend_items = 7
         self.scientific_name = None
         super(PlantDiversityMap, self).__init__(blank_map_path,
             self.maximum_legend_items)
@@ -451,38 +451,50 @@ class PlantDiversityMap(ChloroplethMap):
     def _get_color(self, taxa_count):
         color = 'fff'
         if self.map_type == 'native':
-            if taxa_count > 500 and taxa_count <= 670:
-                color = 'D6F98C'
-            elif taxa_count > 670 and taxa_count <= 840:
-                color = 'A4FF6C'
-            elif taxa_count > 840 and taxa_count <= 1010:
-                color = '00DF32'
-            elif taxa_count > 1010 and taxa_count <= 1180:
-                color = '01905D'
-            elif taxa_count > 1180 and taxa_count <= 1350:
-                color = '005A6F'
+            if taxa_count > 475 and taxa_count <= 600:
+                color = 'feffcd'
+            elif taxa_count > 600 and taxa_count <= 725:
+                color = 'dcf6c0'
+            elif taxa_count > 725 and taxa_count <= 850:
+                color = '8bdaba'
+            elif taxa_count > 850 and taxa_count <= 975:
+                color = '47c5c0'
+            elif taxa_count > 975 and taxa_count <= 1100:
+                color = '03aec3'
+            elif taxa_count > 1100 and taxa_count <= 1225:
+                color = '216db0'
+            elif taxa_count > 1225 and taxa_count <= 1350:
+                color = '2c3095'
         elif self.map_type == 'nonnative':
-            if taxa_count > 125 and taxa_count <= 275:
-                color = 'D6F98C'
-            elif taxa_count > 275 and taxa_count <= 425:
-                color = 'A4FF6C'
-            elif taxa_count > 425 and taxa_count <= 575:
-                color = '00DF32'
-            elif taxa_count > 575 and taxa_count <= 725:
-                color = '01905D'
-            elif taxa_count > 725 and taxa_count <= 875:
-                color = '005A6F'
+            if taxa_count > 120 and taxa_count <= 230:
+                color = 'feffcd'
+            elif taxa_count > 230 and taxa_count <= 340:
+                color = 'dcf6c0'
+            elif taxa_count > 340 and taxa_count <= 450:
+                color = '8bdaba'
+            elif taxa_count > 450 and taxa_count <= 560:
+                color = '47c5c0'
+            elif taxa_count > 560 and taxa_count <= 670:
+                color = '03aec3'
+            elif taxa_count > 670 and taxa_count <= 780:
+                color = '216db0'
+            elif taxa_count > 780 and taxa_count <= 890:
+                color = '2c3095'
         elif self.map_type == 'all':
-            if taxa_count > 600 and taxa_count <= 920:
-                color = 'D6F98C'
-            elif taxa_count > 920 and taxa_count <= 1240:
-                color = 'A4FF6C'
-            elif taxa_count > 1240 and taxa_count <= 1560:
-                color = '00DF32'
-            elif taxa_count > 1560 and taxa_count <= 1880:
-                color = '01905D'
-            elif taxa_count > 1880 and taxa_count <= 2200:
-                color = '005A6F'
+            if taxa_count > 640 and taxa_count <= 860:
+                color = 'feffcd'
+            elif taxa_count > 860 and taxa_count <= 1080:
+                color = 'dcf6c0'
+            elif taxa_count > 1080 and taxa_count <= 1300:
+                color = '8bdaba'
+            elif taxa_count > 1300 and taxa_count <= 1520:
+                color = '47c5c0'
+            elif taxa_count > 1520 and taxa_count <= 1740:
+                color = '03aec3'
+            elif taxa_count > 1740 and taxa_count <= 1960:
+                color = '216db0'
+            elif taxa_count > 1960 and taxa_count <= 2180:
+                color = '2c3095'
         color = '#%s' % color
         return color
 
@@ -505,23 +517,29 @@ class PlantDiversityMap(ChloroplethMap):
     def _fill_legend(self):
         border_color = '#000'
         if self.map_type == 'native':
-            self.legend._set_item(1, '#D6F98C', border_color, u'500–670')
-            self.legend._set_item(2, '#A4FF6C', border_color, u'671–840')
-            self.legend._set_item(3, '#00DF32', border_color, u'841–1010')
-            self.legend._set_item(4, '#01905D', border_color, u'1011–1180')
-            self.legend._set_item(5, '#005A6F', border_color, u'1181–1350')
+            self.legend._set_item(1, '#feffcd', border_color, u'475–600')
+            self.legend._set_item(2, '#dcf6c0', border_color, u'601–725')
+            self.legend._set_item(3, '#8bdaba', border_color, u'726–850')
+            self.legend._set_item(4, '#47c5c0', border_color, u'851–975')
+            self.legend._set_item(5, '#03aec3', border_color, u'976–1100')
+            self.legend._set_item(6, '#216db0', border_color, u'1101–1225')
+            self.legend._set_item(7, '#2c3095', border_color, u'1226–1350')
         elif self.map_type == 'nonnative':
-            self.legend._set_item(1, '#D6F98C', border_color, u'125–275')
-            self.legend._set_item(2, '#A4FF6C', border_color, u'276–425')
-            self.legend._set_item(3, '#00DF32', border_color, u'426–575')
-            self.legend._set_item(4, '#01905D', border_color, u'576–725')
-            self.legend._set_item(5, '#005A6F', border_color, u'726–875')
+            self.legend._set_item(1, '#feffcd', border_color, u'120–230')
+            self.legend._set_item(2, '#dcf6c0', border_color, u'231–340')
+            self.legend._set_item(3, '#8bdaba', border_color, u'341–450')
+            self.legend._set_item(4, '#47c5c0', border_color, u'451–560')
+            self.legend._set_item(5, '#03aec3', border_color, u'561–670')
+            self.legend._set_item(6, '#216db0', border_color, u'671–780')
+            self.legend._set_item(7, '#2c3095', border_color, u'781–890')
         elif self.map_type == 'all':
-            self.legend._set_item(1, '#D6F98C', border_color, u'600–920')
-            self.legend._set_item(2, '#A4FF6C', border_color, u'921–1240')
-            self.legend._set_item(3, '#00DF32', border_color, u'1241–1560')
-            self.legend._set_item(4, '#01905D', border_color, u'1561–1880')
-            self.legend._set_item(5, '#005A6F', border_color, u'1881–2200')
+            self.legend._set_item(1, '#feffcd', border_color, u'640–860')
+            self.legend._set_item(2, '#dcf6c0', border_color, u'861–1080')
+            self.legend._set_item(3, '#8bdaba', border_color, u'1081–1300')
+            self.legend._set_item(4, '#47c5c0', border_color, u'1301–1520')
+            self.legend._set_item(5, '#03aec3', border_color, u'1521–1740')
+            self.legend._set_item(6, '#216db0', border_color, u'1741–1960')
+            self.legend._set_item(7, '#2c3095', border_color, u'1961–2180')
 
     def shade(self):
         """Shade a New England plant diversity map. Assumes the method

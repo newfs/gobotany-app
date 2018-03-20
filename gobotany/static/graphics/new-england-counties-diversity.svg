@@ -48,11 +48,11 @@
      bordercolor="#666666"
      pagecolor="#ffffff"
      id="base"
-     inkscape:zoom="2.8324793"
-     inkscape:cx="91.184919"
-     inkscape:cy="173.56998"
+     inkscape:zoom="4.0172166"
+     inkscape:cx="77.279573"
+     inkscape:cy="206.19945"
      inkscape:window-x="27"
-     inkscape:window-y="0"
+     inkscape:window-y="22"
      inkscape:current-layer="svg9559"
      showguides="true"
      inkscape:guide-bbox="true"
@@ -70,6 +70,41 @@
        visible="true"
        enabled="true"
        snapvisiblegridlinesonly="true" />
+    <sodipodi:guide
+       position="5.4764286,272.07893"
+       orientation="0,1"
+       id="guide1398"
+       inkscape:locked="false" />
+    <sodipodi:guide
+       position="6.5966072,256.64536"
+       orientation="0,1"
+       id="guide1400"
+       inkscape:locked="false" />
+    <sodipodi:guide
+       position="10.703929,241.33625"
+       orientation="0,1"
+       id="guide1402"
+       inkscape:locked="false" />
+    <sodipodi:guide
+       position="3.7339286,225.90268"
+       orientation="0,1"
+       id="guide1404"
+       inkscape:locked="false" />
+    <sodipodi:guide
+       position="43.811429,210.59357"
+       orientation="0,1"
+       id="guide1406"
+       inkscape:locked="false" />
+    <sodipodi:guide
+       position="12.1975,195.28447"
+       orientation="0,1"
+       id="guide1408"
+       inkscape:locked="false" />
+    <sodipodi:guide
+       position="17.051607,179.85089"
+       orientation="0,1"
+       id="guide1410"
+       inkscape:locked="false" />
   </sodipodi:namedview>
   <defs
      id="defs9561" />
@@ -712,23 +747,23 @@
      width="8.8018112"
      height="8.8018122"
      x="0.8119778"
-     y="-31.013906"
+     y="-29.868034"
      inkscape:label="#box1"
      transform="scale(1,-1)" />
   <text
      xml:space="preserve"
      style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:12px;line-height:0%;font-family:'Scala Sans Offc';-inkscape-font-specification:'Scala Sans Offc, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:start;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none"
      x="12.070831"
-     y="30.036297"
+     y="29.535999"
      id="label1"
      inkscape:label="#label1"><tspan
        sodipodi:role="line"
        id="tspan4721"
        x="12.070831"
-       y="30.036297">label1</tspan></text>
+       y="29.535999">label1</tspan></text>
   <rect
      transform="scale(1,-1)"
-     y="-53.013905"
+     y="-45.225681"
      x="0.8119778"
      height="8.8018122"
      width="8.8018112"
@@ -737,12 +772,12 @@
      inkscape:label="#box2" />
   <text
      id="label2"
-     y="52.036282"
+     y="44.894001"
      x="12.107338"
      style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:12px;line-height:0%;font-family:'Scala Sans Offc';-inkscape-font-specification:'Scala Sans Offc, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:start;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none"
      xml:space="preserve"><tspan
        style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:12px;line-height:100%;font-family:'Scala Sans Offc';-inkscape-font-specification:'Scala Sans Offc, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:start;writing-mode:lr-tb;text-anchor:start"
-       y="52.036282"
+       y="44.894001"
        x="12.107338"
        sodipodi:role="line"
        id="tspan3196">label2</tspan></text>
@@ -753,21 +788,21 @@
      width="8.8018112"
      height="8.8018122"
      x="0.8119778"
-     y="-74.013908"
+     y="-60.583321"
      transform="scale(1,-1)" />
   <text
      id="label3"
-     y="73.336151"
+     y="60.251999"
      x="12.107338"
      style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:12px;line-height:0%;font-family:'Scala Sans Offc';-inkscape-font-specification:'Scala Sans Offc, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:start;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none"
      xml:space="preserve"><tspan
        style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:12px;line-height:100%;font-family:'Scala Sans Offc';-inkscape-font-specification:'Scala Sans Offc, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:start;writing-mode:lr-tb;text-anchor:start"
-       y="73.336151"
+       y="60.251999"
        x="12.107338"
        sodipodi:role="line"
        id="tspan3194">label3</tspan></text>
   <rect
-     y="-96.013908"
+     y="-75.940971"
      x="0.8119778"
      height="8.8018122"
      width="8.8018112"
@@ -779,12 +814,12 @@
      xml:space="preserve"
      style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:12px;line-height:0%;font-family:'Scala Sans Offc';-inkscape-font-specification:'Scala Sans Offc, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:start;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none"
      x="12.070831"
-     y="95.336128"
+     y="75.609001"
      id="label4"
      inkscape:label="#label4"><tspan
        sodipodi:role="line"
        x="12.070831"
-       y="95.336128"
+       y="75.609001"
        style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:12px;line-height:100%;font-family:'Scala Sans Offc';-inkscape-font-specification:'Scala Sans Offc, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:start;writing-mode:lr-tb;text-anchor:start"
        id="tspan3192">label4</tspan></text>
   <flowRoot
@@ -857,8 +892,7 @@
          y="68.369133"
          style="font-family:sans-serif" /></flowRegion><flowPara
        id="flowPara3440"
-       style="font-size:8px;line-height:1.25;font-family:sans-serif"> </flowPara></flowRoot>  
-  <text
+       style="font-size:8px;line-height:1.25;font-family:sans-serif"> </flowPara></flowRoot>  <text
      xml:space="preserve"
      style="font-style:normal;font-weight:bold;line-height:0%;font-family:'Scala Sans Offc';letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;-inkscape-font-specification:'Scala Sans Offc, Bold';font-stretch:normal;font-variant:normal;font-size:12px;text-anchor:start;text-align:start;writing-mode:lr;font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;"
      x="-0.00037503242"
@@ -878,17 +912,59 @@
      width="8.8018112"
      height="8.8018122"
      x="0.8119778"
-     y="-118.01391" />
+     y="-91.298607" />
   <text
      inkscape:label="#label5"
      id="label5"
-     y="117.33613"
+     y="90.967003"
      x="12.070831"
      style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:12px;line-height:0%;font-family:'Scala Sans Offc';-inkscape-font-specification:'Scala Sans Offc, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:start;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none"
      xml:space="preserve"><tspan
        id="tspan3908"
        style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:12px;line-height:100%;font-family:'Scala Sans Offc';-inkscape-font-specification:'Scala Sans Offc, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:start;writing-mode:lr-tb;text-anchor:start"
-       y="117.33613"
+       y="90.967003"
        x="12.070831"
        sodipodi:role="line">label5</tspan></text>
+  <rect
+     transform="scale(1,-1)"
+     inkscape:label="#box6"
+     style="fill:#ffffff;fill-opacity:1;stroke:#000000;stroke-width:0.19818828;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+     id="box6"
+     width="8.8018112"
+     height="8.8018122"
+     x="0.8119778"
+     y="-106.65626" />
+  <text
+     inkscape:label="#label6"
+     id="label6"
+     y="106.225"
+     x="12.070831"
+     style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:12px;line-height:0%;font-family:'Scala Sans Offc';-inkscape-font-specification:'Scala Sans Offc, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:start;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none"
+     xml:space="preserve"><tspan
+       id="tspan1388"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:12px;line-height:100%;font-family:'Scala Sans Offc';-inkscape-font-specification:'Scala Sans Offc, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:start;writing-mode:lr-tb;text-anchor:start"
+       y="106.225"
+       x="12.070831"
+       sodipodi:role="line">label6</tspan></text>
+  <rect
+     y="-122.01392"
+     x="0.8119778"
+     height="8.8018122"
+     width="8.8018112"
+     id="box7"
+     style="fill:#ffffff;fill-opacity:1;stroke:#000000;stroke-width:0.19818828;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+     inkscape:label="#box7"
+     transform="scale(1,-1)" />
+  <text
+     xml:space="preserve"
+     style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:12px;line-height:0%;font-family:'Scala Sans Offc';-inkscape-font-specification:'Scala Sans Offc, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:start;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none"
+     x="12.070831"
+     y="121.682"
+     id="label7"
+     inkscape:label="#label7"><tspan
+       sodipodi:role="line"
+       x="12.070831"
+       y="121.682"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:12px;line-height:100%;font-family:'Scala Sans Offc';-inkscape-font-specification:'Scala Sans Offc, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:start;writing-mode:lr-tb;text-anchor:start"
+       id="tspan1394">label7</tspan></text>
 </svg>
