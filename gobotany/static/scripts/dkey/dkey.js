@@ -349,6 +349,7 @@ define([
 
     var family_jumpbox = $('.jumpbox')[0];
     var genus_jumpbox = $('.jumpbox')[1];
+    var carex_section_jumpbox = $('.jumpbox')[2];
 
     var reset_select = function(element) {
         $(element).val('instructions');
@@ -384,6 +385,15 @@ define([
             return false;
         }
     });
+
+    console.log('about to check for Carex jumpbox');
+    var is_carex = true;
+    if (is_carex) {
+        $(carex_section_jumpbox).removeAttr('disabled');
+    }
+    else {
+        $(carex_section_jumpbox).hide();   // TODO: delete instead?
+    }
 
     $('.jumpbox').on('change', function(event) {
         var text = $(':selected', event.delegateTarget).html();
