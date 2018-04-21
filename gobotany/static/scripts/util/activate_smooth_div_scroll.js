@@ -29,7 +29,6 @@ require([
         // Add options for either mouse or touch.
         if (is_touch) {
             options.hotSpotScrolling = false;
-            options.touchScrolling = true;
             options.mousewheelScrolling = false;
         }
         else {
