@@ -1962,7 +1962,8 @@ header.partner-site nav li a { padding: 5px 32px 0; /* fewer sections, more hori
   .content #sidebar { background: #fff; border: 1px solid #c3d941; clear: left; height: auto; margin-left: 8px; margin-right: 8px; }
   .content #sidebar .section { padding-bottom: 16px; }
   .gb-tooltip { width: 200px; }
-  #sb-overlay { /* Fix: make the Shadowbox overlay cover the entire background on small screens in iOS. */ height: 120%; } }
+  #sb-overlay { /* Fix: make the Shadowbox overlay cover the entire background on small screens in iOS. */ height: 120%; }
+  #sb-wrapper { /* Move the Shadowbox image as far as possible to the top of the screen on small screens, so there is room for the navigation controls at bottom. */ margin-top: -55px; } }
 /* These styles apply to smartphones and tablets */
 @media only screen and (max-width: 1024px) { table { border-collapse: collapse; } }
 /* End global media queries styles */
