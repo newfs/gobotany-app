@@ -18,7 +18,7 @@ define([
     }
     
     ImageGallery.prototype.activate = function () {
-        // Turn on the scrollable for every gallery.
+        // Turn on the scrollable control for every gallery.
 
         var scrollItemsSelector = '.img-container';
         if ($('body#species').length > 0) {
@@ -32,7 +32,6 @@ define([
         $('.img-gallery').each(function () {
             var gallery = this;
             var gallery_type = $(this).attr('data-gallery-type');
-            var photo_helper = PhotoHelper();
 
             if (gallery_type !== undefined && gallery_type === 'link') {
                 // For a "link"-type gallery, also update a caption.
@@ -49,14 +48,9 @@ define([
                 );
             }
 
-            Shadowbox.setup('.img-gallery .images a', {
-                onOpen: photo_helper.prepare_to_enlarge,
-                onChange: photo_helper.prepare_to_enlarge,
-                onFinish: photo_helper.process_credit
-            });
-
             $(gallery).click(function () {
                 var container;
+                var photo_helper = PhotoHelper();
                 if ($('body#species').length > 0) {
                     // species page: deeper HTML structure created by scroller
                     container = $(gallery).find('.scrollWrapper');
@@ -79,6 +73,18 @@ define([
                     var rel = $(a).attr('rel');
                     var title = $(a).attr('title');
                     var galleryname = rel.split('[')[1].split(']')[0];
+
+                    // Before opening, ensure Shadowbox has the necessary
+                    // event handlers.
+                    // This serves most uses of the gallery, except for the
+                    // auto-scrolling area on species pages, which need
+                    // extra initialization for these event handlers.
+                    Shadowbox.setup('.img-gallery .images a', {
+                        onOpen: photo_helper.prepare_to_enlarge,
+                        onChange: photo_helper.prepare_to_enlarge,
+                        onFinish: photo_helper.process_credit
+                    });
+
                     Shadowbox.open({
                         content: a,
                         gallery: galleryname,

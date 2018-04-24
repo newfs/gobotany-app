@@ -134,8 +134,6 @@ define([
         },
 
         activate_image_gallery: function () {
-            // Activate the image gallery.
-            // Prerequisite: the image scroller must already be set up.
             var image_gallery = new ImageGallery();
             image_gallery.activate();
         },
@@ -160,9 +158,6 @@ define([
                 '#main li:not(.nogloss), #main dt, #main dd, #main th, ' +
                 '#main td';
             glossarizer.glossarize($(selectors));
-
-            // Make image gallery able to show larger images.
-            //this.enable_image_links();   // Disabled: let gallery events take over
 
             // Enable the Enlarge link on the U.S. map.
             this.enable_us_map_link();
