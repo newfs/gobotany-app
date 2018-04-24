@@ -363,6 +363,12 @@ $search-suggest-menu-top: 83px;
          * on small screens in iOS. */
         height: 120%;
     }
+    #sb-wrapper {
+        /* Move the Shadowbox image as far as possible to the top of
+         * the screen on small screens, so there is room for the
+         * navigation controls at bottom. */
+        margin-top: -55px;
+    }
 }
 /* These styles apply to smartphones and tablets */
 @media only screen and (max-width: 1024px) {
