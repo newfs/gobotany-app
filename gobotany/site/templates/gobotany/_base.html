@@ -1,4 +1,5 @@
 {% load gobotany_tags %}
+{% load recaptcha2 %}
 <!DOCTYPE html>
 <html>
     <head>
@@ -49,6 +50,8 @@
         {% if in_production %}
             {% include "gobotany/_google_analytics.html" %}
         {% endif %}
+
+        {% recaptcha_init %}
 
         {% block ember_templates %}{% endblock %}
     </head>
