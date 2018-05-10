@@ -169,7 +169,6 @@ INSTALLED_APPS = [
     'haystack',
     'haystack_panel',
     'imagekit',
-    'snowpenguin.django.recaptcha2',
     'tinymce',
     'registration',
     #'emailconfirmation', # Temporarily uncomment to create this app's
@@ -264,15 +263,14 @@ if EMAIL_HOST_USER:
 EMAIL_CONFIRMATION_DAYS = 3
 
 # For django-recaptcha
-if IN_PRODUCTION:   # Dev, Prod instances on Heroku
-    # Note: _DEV keys were generated to include Heroku Dev, so Dev may fail.
-    # TODO: may need to re-generate again: 1. Heroku (Prod, Dev), 2. Local
+if IN_PRODUCTION:   # instances on Heroku (Prod, Dev)
     RECAPTCHA_PUBLIC_KEY = os.environ.get('RECAPTCHA_PUBLIC_KEY', '')
     RECAPTCHA_PRIVATE_KEY = os.environ.get('RECAPTCHA_PRIVATE_KEY', '')
 else:   # local development
     RECAPTCHA_PUBLIC_KEY = os.environ.get('RECAPTCHA_PUBLIC_KEY_DEV', '')
     RECAPTCHA_PRIVATE_KEY = os.environ.get('RECAPTCHA_PRIVATE_KEY_DEV', '')
 RECAPTCHA_USE_SSL = True
+NOCAPTCHA = True
 
 # For static Google Maps (dynamic ones use a different key, in google_maps.js)
 GMAPS_STATIC_KEY = os.environ.get('GOBOTANY_GMAPS_KEY_STATIC', '')
