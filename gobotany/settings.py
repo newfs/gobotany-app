@@ -263,13 +263,14 @@ if EMAIL_HOST_USER:
 EMAIL_CONFIRMATION_DAYS = 3
 
 # For django-recaptcha
-if DEV_FEATURES:
-    RECAPTCHA_PUBLIC_KEY = os.environ.get('RECAPTCHA_PUBLIC_KEY_DEV', '')
-    RECAPTCHA_PRIVATE_KEY = os.environ.get('RECAPTCHA_PRIVATE_KEY_DEV', '')
-else:
+if IN_PRODUCTION:   # instances on Heroku (Prod, Dev)
     RECAPTCHA_PUBLIC_KEY = os.environ.get('RECAPTCHA_PUBLIC_KEY', '')
     RECAPTCHA_PRIVATE_KEY = os.environ.get('RECAPTCHA_PRIVATE_KEY', '')
+else:   # local development
+    RECAPTCHA_PUBLIC_KEY = os.environ.get('RECAPTCHA_PUBLIC_KEY_DEV', '')
+    RECAPTCHA_PRIVATE_KEY = os.environ.get('RECAPTCHA_PRIVATE_KEY_DEV', '')
 RECAPTCHA_USE_SSL = True
+NOCAPTCHA = True
 
 # For static Google Maps (dynamic ones use a different key, in google_maps.js)
 GMAPS_STATIC_KEY = os.environ.get('GOBOTANY_GMAPS_KEY_STATIC', '')
