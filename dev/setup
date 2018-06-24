@@ -13,6 +13,18 @@ rm -rf ./venv
 python2.7 virtualenv.py --distribute --unzip-setuptools \
     --system-site-packages ./venv
 
+# Install a dependency for Haystack, setuptools_scm, because
+# setuptools_scm is not detected properly if installed along with
+# the other the packages. Also, setuptools_scm requires a recent
+# version of setuptools, which in turn requires uninstalling the
+# old, related distribute package that is still in use for setting
+# up the virtual environment.
+./venv/bin/pip uninstall distribute --yes
+./venv/bin/pip install setuptools==39.2.0
+./venv/bin/pip install setuptools_scm==2.1.0
+
+# Install the rest of the packages.
+
 ./venv/bin/pip install -e ..
 ./venv/bin/pip install coverage
 ./venv/bin/pip install selenium
