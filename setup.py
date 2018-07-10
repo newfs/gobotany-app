@@ -22,7 +22,7 @@ requirements = [
 
     # The way we use pysolr introduces an extra dependency
 
-    'pysolr==3.4.0',
+    'pysolr==3.7.0',
     'BeautifulSoup==3.2.1',
 
     # Memcached on Heroku
