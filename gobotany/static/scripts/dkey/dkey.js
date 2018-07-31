@@ -386,13 +386,13 @@ define([
         }
     });
 
-    console.log('about to check for Carex jumpbox');
-    var is_carex = true;
+    // Check for /dkey/carex/, /dkey/carex-1/, /dkey/carex-2/, etc.
+    var is_carex = window.location.href.indexOf('/dkey/carex') > -1;
     if (is_carex) {
         $(carex_section_jumpbox).removeAttr('disabled');
     }
     else {
-        $(carex_section_jumpbox).hide();   // TODO: delete instead?
+        $(carex_section_jumpbox).remove();
     }
 
     $('.jumpbox').on('change', function(event) {
