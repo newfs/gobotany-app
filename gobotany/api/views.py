@@ -460,6 +460,11 @@ def hierarchy(request):
                       for key, value in hdict.items()],
         })
 
+def sections(request):
+    sections = list(dkey_models.Page.objects.filter(rank='section').values_list(
+        'title', flat=True))
+    return jsonify(sections)
+
 #
 
 def _get_characters(short_names):

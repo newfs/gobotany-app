@@ -127,6 +127,7 @@ else:
 urlpatterns.extend([
     url(r'^glossaryblob/$', both(views.glossary_blob)),
     url(r'^hierarchy/$', both(views.hierarchy)),
+    url(r'^sections/$', both(views.sections)),
     url(r'^dkey-images/([-\w\d]+)/$', both(views.dkey_images)),
     url(r'^families/([\w]+)/$', both(views.family)),
     url(r'^genera/([\w]+)/$', both(views.genus)),
