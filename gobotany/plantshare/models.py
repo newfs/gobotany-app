@@ -423,15 +423,23 @@ class ExifGpsExtractor(object):
                 direction = gps_info[EXIF_GPSLATITUDEREF]
                 if direction.upper() == 'S':
                     latitude = latitude * -1
-                self.target_object.latitude = latitude
-                # Get longitude.
-                degrees, minutes, seconds = self._get_dms(
-                    gps_info[EXIF_GPSLONGITUDE])
-                longitude = self._get_coordinate(degrees, minutes, seconds)
-                direction = gps_info[EXIF_GPSLONGITUDEREF]
-                if direction.upper() == 'W':
-                    longitude = longitude * -1
-                self.target_object.longitude = longitude
+                try:
+                    self.target_object.latitude = latitude
+                except AttributeError:
+                    print 'target_object NoneType, no latitude attribute'
+                finally:
+                    # Get longitude.
+                    degrees, minutes, seconds = self._get_dms(
+                        gps_info[EXIF_GPSLONGITUDE])
+                    longitude = self._get_coordinate(degrees, minutes,
+                        seconds)
+                    direction = gps_info[EXIF_GPSLONGITUDEREF]
+                    if direction.upper() == 'W':
+                        longitude = longitude * -1
+                    try:
+                        self.target_object.longitude = longitude
+                    except AttributeError:
+                        print 'target_object NoneType, no longitude attribute'
 
 
 class PlantshareGpsImage(ImageSpec):
