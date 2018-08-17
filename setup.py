@@ -10,7 +10,7 @@ requirements = [
     'django-debug-toolbar==1.5',
     'django-haystack==2.8.1',
     'django-haystack-panel==0.2.1',
-    'django-imagekit==3.3',
+    'django-imagekit==4.0.2',
     'django-tinymce==2.6.0',
     'inflect',
     'lxml==3.5.0',
