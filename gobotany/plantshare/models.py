@@ -458,6 +458,8 @@ class PlantshareGpsImage(ImageSpec):
     def processors(self):
         """ Dynamically create the list of image processors using the model
         instance. """
+        print 'processors() about to call get_field_info: self.source:', self.source
+        print 'type(self.source):', type(self.source)
         instance, field_name = get_field_info(self.source)
         print 'processors() instance:', instance
         print 'processors() field_name:', field_name
