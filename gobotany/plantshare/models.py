@@ -423,6 +423,11 @@ class ExifGpsExtractor(object):
                 direction = gps_info[EXIF_GPSLATITUDEREF]
                 if direction.upper() == 'S':
                     latitude = latitude * -1
+                ### testing
+                print '_extract_gps_data: about to try to get gps info'
+                print 'self:', self
+                print 'selt.target_object:', self.target_object
+                ###
                 try:
                     self.target_object.latitude = latitude
                 except AttributeError:
@@ -454,6 +459,8 @@ class PlantshareGpsImage(ImageSpec):
         """ Dynamically create the list of image processors using the model
         instance. """
         instance, field_name = get_field_info(self.source)
+        print 'processors() instance:', instance
+        print 'processors() field_name:', field_name
         return [
             ExifGpsExtractor(instance),
             ResizeToFit(1000, 1000, False),
