@@ -227,7 +227,8 @@ USE_TZ = True
 HAYSTACK_CONNECTIONS = {
     'default': {
         'ENGINE': 'haystack.backends.solr_backend.SolrEngine',
-        'URL': 'http://127.0.0.1:8983/solr',
+        'URL': 'http://127.0.0.1:8983/solr/gobotany_solr_core', # core needed at end for rebuild_index
+        'ADMIN_URL': 'http://127.0.0.1:8983/solr/#/~cores',
         'TIMEOUT': 20,  # Longer than default timeout; added for indexing
         'INCLUDE_SPELLING': True,
         'BATCH_SIZE': 100,

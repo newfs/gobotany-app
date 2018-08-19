@@ -1,7 +1,11 @@
 import copy
+import csv
 import hashlib
 import inflect
 import json
+import os
+import re
+
 from collections import defaultdict
 from operator import itemgetter
 from urllib import urlencode
@@ -11,7 +15,7 @@ from django.contrib.contenttypes.models import ContentType
 from django.core.urlresolvers import reverse
 from django.db import connection
 from django.forms.models import model_to_dict
-from django.http import HttpResponse, Http404
+from django.http import HttpResponse, Http404, JsonResponse
 from django.shortcuts import get_object_or_404
 from django.views.decorators.cache import cache_page
 from django.views.decorators.http import etag
@@ -26,9 +30,9 @@ from gobotany.core.models import (
     )
 from gobotany.core.partner import which_partner
 from gobotany.core.questions import get_questions
-from gobotany.mapping.map import (NewEnglandPlantDistributionMap,
-                                  NorthAmericanPlantDistributionMap,
-                                  UnitedStatesPlantDistributionMap)
+from gobotany.mapping.map import (NewEnglandPlantDiversityMap,
+    NewEnglandPlantDistributionMap, NorthAmericanPlantDistributionMap,
+    UnitedStatesPlantDistributionMap)
 from gobotany.site.utils import secure_url
 
 
@@ -455,6 +459,11 @@ def hierarchy(request):
         'hierarchy': [{'family_name': key, 'genus_names': value}
                       for key, value in hdict.items()],
         })
+
+def sections(request):
+    sections = list(dkey_models.Page.objects.filter(rank='section').values_list(
+        'title', flat=True))
+    return jsonify(sections)
 
 #
 
@@ -993,6 +1002,196 @@ def pile_vector_set(request, slug):
     # return HttpResponse('<html><head></head><body>foo</body>')
 
     return jsonify(character_map.values(), indent=False)
+
+
+# Plant diversity maps
+
+def _get_distribution_counts(new_england_distribution_records):
+    state_codes = [code.upper()
+        for code in sorted(settings.STATE_NAMES.keys())]
+    data = []
+
+    # Go state by state, getting all the Distribution records for each.
+    for new_england_state in state_codes:
+        state_plants = set()
+
+        # RULES:
+        # If a distribution record only exists at the state level (this is
+        # usually true for very old herbarium records), add it to the state
+        # count. And note the total number of plants in the state isn't the
+        # sum of plants in each county.
+        #
+        # In a county that includes only the binomial (no variety or
+        # subspecies) add it to the county and state.
+        #
+        # In a county that includes both the binomial and a variety or ssp.
+        # only include the variety or ssp. for the county and state. Do not
+        # add the binomial to the county or the state.
+
+        # Get all the state- and county-level records for this state.
+        all_records_for_state = new_england_distribution_records.filter(
+            state=new_england_state)
+
+        # Get the state-level records.
+        state_level = all_records_for_state.filter(county='')
+
+        state_only_counts = {}
+        for dist_record in state_level:
+            # If a record only exists at the state level for this plant, add
+            # it to the state count.
+            state_only_count = state_only_counts.get(
+                dist_record.scientific_name)
+            if state_only_count:
+                if state_only_count == 1:
+                    # It's already cached in the dictionary, and already counted.
+                    pass
+            else:
+                # Get the state-only count for this plant and cache it.
+                all_records_for_plant = all_records_for_state.filter(
+                    scientific_name=dist_record.scientific_name)
+                state_only_count = all_records_for_plant.count()
+                state_only_counts[
+                    dist_record.scientific_name] = state_only_count
+                if (state_only_count == 1 and
+                        all_records_for_plant.get().subspecific_epithet == ''):
+                    state_plants.add(dist_record.scientific_name)
+
+        # Get the county-level records.
+        county_level = all_records_for_state.exclude(county='')
+
+        county_plants = {}
+        county_binomials_only = {}
+        for dist_record in county_level:
+            # If this is a variety or subspecies, add it to the counts for the
+            # county and state.
+            if dist_record.subspecific_epithet != '':
+                if county_plants.get(dist_record.county):
+                    county_plants[dist_record.county].add(
+                        dist_record.scientific_name)
+                else:
+                    county_plants[dist_record.county] = { # new county
+                        dist_record.scientific_name }
+                state_plants.add(dist_record.scientific_name)
+            else:
+                # If this county has ONLY the binomial (straight species) for
+                # this plant, add it to the county and state counts.
+                binomial_only = False
+                if not county_binomials_only.get(dist_record.county):
+                    county_binomials_only[dist_record.county] = {}
+                if county_binomials_only[dist_record.county].get(
+                        dist_record.species_name):
+                    # Whether this plant has only the binomial in this county
+                    # has already been cached.
+                    binomial_only = county_binomials_only[dist_record.county][
+                        dist_record.species_name]
+                else:
+                    # Determine whether this plant has only the binomial in
+                    # this county, and cache the result.
+                    records_in_county_for_plant = county_level.filter(
+                        county=dist_record.county).filter(
+                        species_name=dist_record.species_name)
+                    # Only one record means there are no var. or ssp. records
+                    # besides, so this county must only have the binomial.
+                    binomial_only = (records_in_county_for_plant.count() == 1)
+                    county_binomials_only[dist_record.county][
+                        dist_record.species_name] = binomial_only
+                if binomial_only:
+                    if county_plants.get(dist_record.county):
+                        county_plants[dist_record.county].add(
+                            dist_record.scientific_name)
+                    else:
+                        county_plants[dist_record.county] = { # new county
+                            dist_record.scientific_name }
+                    state_plants.add(dist_record.scientific_name)
+
+        # Go through all the county counts and output their totals.
+        for county in county_plants.keys():
+            # Append a data line for the county.
+            data.append([new_england_state, county,
+                len(county_plants[county])])
+
+        # Append a data line for the state.
+        data.append([new_england_state, '(all counties)',
+            len(state_plants)])
+
+    data_list = list(data)
+    return data_list
+
+def _get_csv_data(filepath):
+    dir = os.path.dirname(__file__)
+    filename = os.path.join(dir, '../static/data/' + filepath)
+    data = []
+    with open(filename, 'r') as data_file:
+        reader = csv.reader(data_file)
+        for row in reader:
+            data.append(row)
+    return data
+
+def _diversity_map(title, data_filename):
+    diversity_map = NewEnglandPlantDiversityMap()
+    diversity_map.set_title(title)
+    data = _get_csv_data(data_filename)
+    diversity_map.set_data(data)
+    shaded_map = diversity_map.shade()
+    return shaded_map
+
+def new_england_native_diversity_map(request):
+    shaded_map = _diversity_map('Number of native plant taxa',
+        'ne-diversity-map-native.csv')
+    return HttpResponse(shaded_map.tostring(), content_type='image/svg+xml')
+
+def new_england_nonnative_diversity_map(request):
+    shaded_map = _diversity_map('Number of non-native plant taxa',
+        'ne-diversity-map-nonnative.csv')
+    return HttpResponse(shaded_map.tostring(), content_type='image/svg+xml')
+
+def new_england_all_diversity_map(request):
+    shaded_map = _diversity_map('Number of plant taxa',
+        'ne-diversity-map-all.csv')
+    return HttpResponse(shaded_map.tostring(), content_type='image/svg+xml')
+
+def new_england_native_diversity_csv(request):
+    response = HttpResponse(content_type='text/csv')
+    response['Content-Disposition'] = \
+        'attachment; filename="ne-diversity-map-native.csv"'
+    state_codes = [code.upper()
+        for code in sorted(settings.STATE_NAMES.keys())]
+    natives = models.Distribution.objects.filter(
+        state__in=state_codes).filter(native=True).filter(present=True)
+    data_list = _get_distribution_counts(natives)
+    writer = csv.writer(response)
+    for list_item in data_list:
+        writer.writerow(list_item)
+    return response
+
+def new_england_nonnative_diversity_csv(request):
+    response = HttpResponse(content_type='text/csv')
+    response['Content-Disposition'] = \
+        'attachment; filename="ne-diversity-map-nonnative.csv"'
+    state_codes = [code.upper()
+        for code in sorted(settings.STATE_NAMES.keys())]
+    nonnatives = models.Distribution.objects.filter(
+        state__in=state_codes).filter(native=False).filter(present=True)
+    data_list = _get_distribution_counts(nonnatives)
+    writer = csv.writer(response)
+    for list_item in data_list:
+        writer.writerow(list_item)
+    return response
+
+def new_england_all_diversity_csv(request):
+    response = HttpResponse(content_type='text/csv')
+    response['Content-Disposition'] = \
+        'attachment; filename="ne-diversity-map-all.csv"'
+    state_codes = [code.upper()
+        for code in sorted(settings.STATE_NAMES.keys())]
+    all = models.Distribution.objects.filter(
+        state__in=state_codes).filter(present=True)
+    data_list = _get_distribution_counts(all)
+    writer = csv.writer(response)
+    for list_item in data_list:
+        writer.writerow(list_item)
+    return response
+
 
 # Plant distribution maps
 

@@ -28,19 +28,20 @@ define([
                     height = MAX_HEIGHT;
                 }
             }
-            var canvas = document.getElementById('image_canvas');
-            canvas.width = width;
-            canvas.height = height;
-            console.log('canvas:', canvas);
-            var context = canvas.getContext('2d');
-            console.log('image:', image);
-            context.drawImage(image, 0, 0, width, height);
-            console.log('image resized to ' + width + ' px wide and ' +
-                height + ' px high');
-
-            // Copy the resized image back to the original element for upload.
-            $thumbnail_element.attr('src', canvas.toDataURL());
         }
+
+        var canvas = document.getElementById('image_canvas');
+        canvas.width = width;
+        canvas.height = height;
+        console.log('canvas:', canvas);
+        var context = canvas.getContext('2d');
+        console.log('image:', image);
+        context.drawImage(image, 0, 0, width, height);
+        console.log('image is now: ' + width + ' px wide and ' +
+            height + ' px high');
+
+        // Copy the resized image back to the original element for upload.
+        $thumbnail_element.attr('src', canvas.toDataURL());
     }
 
     function reset_dialog_controls($modal) {

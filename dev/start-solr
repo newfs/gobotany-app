@@ -8,22 +8,33 @@ set -e
 DEV=$(dirname "${BASH_SOURCE[0]}")
 cd $DEV
 
-EXAMPLE=usr/solr-4.7.2/example
+SOLR_VERSION=6.6.5
+SOLR_DIR=usr/solr-$SOLR_VERSION/
+CORE_NAME=gobotany_solr_core
 
-if [ ! -d $EXAMPLE ]
+if [ ! -d $SOLR_DIR ]
 then
     cd usr
-    curl -OL http://archive.apache.org/dist/lucene/solr/4.7.2/solr-4.7.2.tgz
-    tar xzf solr-4.7.2.tgz
+    curl -OL http://archive.apache.org/dist/lucene/solr/$SOLR_VERSION/solr-$SOLR_VERSION.tgz
+    tar xzf solr-$SOLR_VERSION.tgz
     cd ..
+fi
+
+echo 'Running Solr in the background'
+
+cd $SOLR_DIR
+bin/solr start
+
+# If a Solr core does not yet exist, create one.
+if [ ! -d ./server/solr/$CORE_NAME ]
+then
+    echo 'Creating a Solr core'
+    ./bin/solr create -c $CORE_NAME -d basic_configs
 fi
 
 echo 'Installing Solr XML schema'
 
-./django build_solr_schema > $EXAMPLE/solr/collection1/conf/schema.xml
-
-echo 'Running Solr in the background'
-
-cd $EXAMPLE
-rm -f nohup.out
-nohup java -jar start.jar "$@" > output.log 2>&1 &
+# Run Django/Haystack’s build_solr_schema command, from the usr/dev directory.
+../../django build_solr_schema \
+--configure-directory=./server/solr/$CORE_NAME/conf \
+--reload-core=$CORE_NAME

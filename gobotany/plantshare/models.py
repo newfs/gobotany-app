@@ -423,15 +423,32 @@ class ExifGpsExtractor(object):
                 direction = gps_info[EXIF_GPSLATITUDEREF]
                 if direction.upper() == 'S':
                     latitude = latitude * -1
-                self.target_object.latitude = latitude
-                # Get longitude.
-                degrees, minutes, seconds = self._get_dms(
-                    gps_info[EXIF_GPSLONGITUDE])
-                longitude = self._get_coordinate(degrees, minutes, seconds)
-                direction = gps_info[EXIF_GPSLONGITUDEREF]
-                if direction.upper() == 'W':
-                    longitude = longitude * -1
-                self.target_object.longitude = longitude
+                ### debugging
+                print '_extract_gps_data: latitude:', latitude
+                print '_extract_gps_data: about to try to set lat./long.s'
+                print 'self:', self
+                print 'selt.target_object:', self.target_object
+                ###
+                try:
+                    self.target_object.latitude = latitude
+                except AttributeError:
+                    print 'cannot set latitude on target_object:', \
+                        type(self.target_object)
+                finally:
+                    # Get longitude.
+                    degrees, minutes, seconds = self._get_dms(
+                        gps_info[EXIF_GPSLONGITUDE])
+                    longitude = self._get_coordinate(degrees, minutes,
+                        seconds)
+                    direction = gps_info[EXIF_GPSLONGITUDEREF]
+                    if direction.upper() == 'W':
+                        longitude = longitude * -1
+                    print '_extract_gps_data: longitude:', longitude
+                    try:
+                        self.target_object.longitude = longitude
+                    except AttributeError:
+                        print 'cannot set longitude on target_object:', \
+                            type(self.target_object)
 
 
 class PlantshareGpsImage(ImageSpec):
@@ -445,11 +462,23 @@ class PlantshareGpsImage(ImageSpec):
     def processors(self):
         """ Dynamically create the list of image processors using the model
         instance. """
+        # August 2018: found that this code no longer seems to be
+        # able to produce a model instance as it must have in the past.
+        # When this happens, the ExifGpsExtractor image processor below
+        # cannot save any extracted latitude or longitude coordinates.
+        # TODO: debug and resolve, or else extract and save coordinates
+        # another way (such as client side).
+        print 'processors(): self.source:', self.source
+        print 'processors(): type(self.source):', type(self.source)
         instance, field_name = get_field_info(self.source)
+        print 'processors() instance:', instance
+        print 'processors() field_name:', field_name
+
         return [
             ExifGpsExtractor(instance),
             ResizeToFit(1000, 1000, False),
         ]
+
 
 register.generator('plantshare:screenedimage:plantsharegpsimage',
         PlantshareGpsImage)

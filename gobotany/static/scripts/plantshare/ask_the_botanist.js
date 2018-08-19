@@ -54,7 +54,8 @@ define([
         function uploaded(info) {
             console.log('Successfully uploaded question image.');
             console.log('New image [id=' + info.id + ', thumb=' +
-                        info.thumb + ', url=' + info.url + ']');
+                info.thumb + ', url=' + info.url + ', latitude=' +
+                info.latitude + ', longitude=' + info.longitude + ']');
             add_new_thumbnail(info.thumb, info.url, info.id);
             attach_question_image(info.id);
         };

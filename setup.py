@@ -8,9 +8,9 @@ requirements = [
     'bleach==1.4.3',
     'cssselect',
     'django-debug-toolbar==1.5',
-    'django-haystack==2.5.dev1',
+    'django-haystack==2.8.1',
     'django-haystack-panel==0.2.1',
-    'django-imagekit==3.3',
+    'django-imagekit==4.0.2',
     'django-tinymce==2.6.0',
     'inflect',
     'lxml==3.5.0',
@@ -22,7 +22,7 @@ requirements = [
 
     # The way we use pysolr introduces an extra dependency
 
-    'pysolr==3.4.0',
+    'pysolr==3.7.0',
     'BeautifulSoup==3.2.1',
 
     # Memcached on Heroku

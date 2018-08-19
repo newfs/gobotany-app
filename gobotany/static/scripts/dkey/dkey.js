@@ -41,19 +41,28 @@ define([
         return name.toLowerCase().indexOf('group') === 0;
     };
 
+    var is_section = function(name) {
+        return name.toLowerCase().indexOf('section') === 0;
+    };
+
     var is_species = function(name) {
-        return (!is_group(name)) && (name.indexOf(' ') !== -1);
+        return (!is_group(name)) &&
+            (name.toLowerCase().indexOf('section') !== -1) &&
+            (name.indexOf(' ') !== -1);
     };
 
     var taxon_url = function(name) {
         var name = name.toLowerCase();
-        if (is_group(name))
+        if (is_group(name) || is_section(name)) {
             return '/dkey/' + name.replace(' ', '-') + '/';
-        else if (is_species(name))
+        }
+        else if (is_species(name)) {
             return '/species/' + name.replace(' ', '/') +
                 '/?key=dichotomous#dkey';
-        else
+        }
+        else {
             return '/dkey/' + name + '/';
+        }
     };
 
     var $taxon_anchor = function(name) {
@@ -349,6 +358,7 @@ define([
 
     var family_jumpbox = $('.jumpbox')[0];
     var genus_jumpbox = $('.jumpbox')[1];
+    var carex_section_jumpbox = $('.jumpbox')[2];
 
     var reset_select = function(element) {
         $(element).val('instructions');
@@ -385,11 +395,32 @@ define([
         }
     });
 
+    // Check for /dkey/carex/, /dkey/carex-, /dkey/section-, etc.
+    var is_carex = ((window.location.href.indexOf('/dkey/carex') > -1) ||
+        (window.location.href.indexOf('/dkey/section-') > -1));
+    if (is_carex) {
+        $.getJSON('/api/sections/', function (data) {
+            var sections = data;
+
+            sections.sort();
+
+            _.each(sections, function(name) {
+                $('<option>', {text: name}).appendTo(carex_section_jumpbox);
+            });
+
+            $(carex_section_jumpbox).removeAttr('disabled');
+        });
+    }
+    else {
+        $(carex_section_jumpbox).remove();
+    }
+
     $('.jumpbox').on('change', function(event) {
         var text = $(':selected', event.delegateTarget).html();
         reset_select(event.delegateTarget);
         if (text && ! text.match(/^jump/)) {
-            window.location = taxon_url(text);
+            var jump_to_url = taxon_url(text);
+            window.location = jump_to_url;
         }
     });
 

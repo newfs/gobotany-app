@@ -76,6 +76,29 @@ urlpatterns = [
     url(r'^pilegroups/(?P<slug>[^/]+)/$', views.pile_group,
         name='api-pilegroup'),
 
+    # Plant diversity maps, data:
+    # Maps
+    #url(r'^maps/ne-diversity-map-native?$',
+    #    views.new_england_native_diversity_map,
+    #    name='ne-native-diversity-map'),
+    #url(r'^maps/ne-diversity-map-nonnative?$',
+    #    views.new_england_nonnative_diversity_map,
+    #    name='ne-nonnative-diversity-map'),
+    #url(r'^maps/ne-diversity-map-all?$',
+    #    views.new_england_all_diversity_map,
+    #    name='ne-all-diversity-map'),
+    # CSV data
+    #url(r'^maps/ne-diversity-map-native\.csv',
+    #    views.new_england_native_diversity_csv,
+    #    name='ne-native-diversity-csv'),
+    #url(r'^maps/ne-diversity-map-nonnative\.csv',
+    #    views.new_england_nonnative_diversity_csv,
+    #    name='ne-nonnative-diversity-csv'),
+    #url(r'^maps/ne-diversity-map-all\.csv',
+    #    views.new_england_all_diversity_csv,
+    #    name='ne-all-diversity-csv'),
+
+
     # Plant distribution maps
     url(r'^maps/(?P<genus>[^/-]+)-(?P<epithet>[^/]+)'
          '-ne-distribution-map(\.svg|/)?$',
@@ -104,6 +127,7 @@ else:
 urlpatterns.extend([
     url(r'^glossaryblob/$', both(views.glossary_blob)),
     url(r'^hierarchy/$', both(views.hierarchy)),
+    url(r'^sections/$', both(views.sections)),
     url(r'^dkey-images/([-\w\d]+)/$', both(views.dkey_images)),
     url(r'^families/([\w]+)/$', both(views.family)),
     url(r'^genera/([\w]+)/$', both(views.genus)),

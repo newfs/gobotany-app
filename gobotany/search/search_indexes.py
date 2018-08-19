@@ -43,22 +43,9 @@ class BaseIndex(indexes.SearchIndex):
     text = indexes.CharField(document=True)
     url = indexes.CharField(use_template=True,
                             template_name='search_result_url.txt')
-    textSpell = indexes.FacetCharField()
 
     def index_queryset(self, using=None):
         return self.get_model()._default_manager.all()
-
-    def prepare(self, obj):
-        """Prepare data for index.
-
-        We make the (spelling) suggestions field mirror the text field,
-        but without post-processing.
-        (see http://django-haystack.readthedocs.org/en/v1.2.7/installing_search_engines.html#spelling-suggestions)
-        """
-        prepared_data = super(BaseIndex, self).prepare(obj)
-        if 'text' in prepared_data:
-            prepared_data['textSpell'] = prepared_data['text']
-        return prepared_data
 
 
 class BaseRealTimeIndex(indexes.SearchIndex):
