@@ -44,7 +44,7 @@ requirements = [
 
     # Heroku and deployment
 
-    'gunicorn==0.17.2',
+    'gunicorn==19.9.0',
     'newrelic',
     's3cmd',
     'django-sslify>=0.2',
