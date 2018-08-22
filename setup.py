@@ -17,7 +17,7 @@ requirements = [
     'psycopg2==2.7.3.2',
     'python-memcached',
     'pytz',
-    'tablib==0.9.11',
+    'tablib==0.12.1',
     'xlrd',
 
     # The way we use pysolr introduces an extra dependency
