@@ -602,7 +602,16 @@ def dkey(request, slug=u'key-to-the-families'):
         if page.rank == 'species':
             raise Http404
         proxy = _Proxy(page)
+        families = models.Family.objects.all()
+        genera = models.Genus.objects.all()
+        sections = list(dkey_models.Page.objects.filter(
+            rank='section').order_by('title').values_list('title', flat=True))
+        carex_sections = [(section.replace('Section ', ''),
+            section.lower().replace(' ', '-')) for section in sections]
         return render(request, 'gobotany/edit_dkey.html', {
+                'families': families,
+                'genera': genera,
+                'carex_sections': carex_sections,
                 'groups': get_groups,
                 'leads': (lambda: proxy.leads),
                 'lead_hierarchy': (lambda: proxy.lead_hierarchy),
