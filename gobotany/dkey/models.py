@@ -50,7 +50,8 @@ class Lead(models.Model):
     """A text description that leads you down one path in the dkey."""
 
     page = models.ForeignKey('Page', related_name='leads')
-    parent = models.ForeignKey('Lead', related_name='children', null=True)
+    parent = models.ForeignKey('Lead', related_name='children', null=True,
+        blank=True)
     letter = models.TextField()
     text = models.TextField()
     goto_page = models.ForeignKey('Page', related_name='leadins', null=True,
