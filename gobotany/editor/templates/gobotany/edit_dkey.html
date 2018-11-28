@@ -192,7 +192,7 @@
             {% endif %}
 
             <a class="edit"
-            href="/admin/dkey/page/{{ page.id }}/change/">Change</a></h2>
+            href="/admin/dkey/page/{{ page.id }}/change/?next={{ request.get_full_path|urlencode }}">Change</a></h2>
         {% endwith %}
 
         <form id="edit-form" action="" method="post">
@@ -217,7 +217,7 @@
                 {% endif %}
 
                 <a class="edit"
-                    href="/admin/dkey/lead/{{ lead.id }}/change/">Change</a>
+                    href="/admin/dkey/lead/{{ lead.id }}/change/?next={{ request.get_full_path|urlencode }}">Change</a>
 
                 {% if lead.childlist %}
                     {# Only show the Delete button if it's a 'bottom' node, #}

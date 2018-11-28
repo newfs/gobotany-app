@@ -1,6 +1,7 @@
 from django.contrib import admin
 from django.db import models
 from django.forms import ModelForm, TextInput, Textarea
+from django.http import HttpResponseRedirect
 
 from gobotany.admin import GoBotanyModelAdmin
 from gobotany.dkey.models import Figure, Hybrid, IllustrativeSpecies, Lead, Page
@@ -55,6 +56,14 @@ class LeadAdmin(GoBotanyModelAdmin):
     readonly_fields = ('id', 'taxa_cache',)
     search_fields = ('id', 'letter', 'text', 'parent__letter', 'page__title',
         'goto_page__title', 'goto_num', 'taxa_cache',)
+
+    def response_change(self, request, obj):
+        # TODO: fix: using 'next' in URL bypasses 'Save and Continue Editing'
+        response = super(LeadAdmin, self).response_change(request, obj)
+        if 'next' in request.GET:
+            return HttpResponseRedirect(request.GET['next'])
+        else:
+            return response
 
 
 class PageAdmin(GoBotanyModelAdmin):
