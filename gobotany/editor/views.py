@@ -6,6 +6,7 @@ from operator import attrgetter as pluck
 
 import tablib
 from datetime import datetime
+from django.contrib.messages import get_messages
 from django.contrib.auth.decorators import permission_required
 from django.http import Http404, HttpResponse
 from django.shortcuts import get_object_or_404, redirect, render
@@ -619,6 +620,7 @@ def dkey(request, slug=u'key-to-the-families'):
                 'rank_beneath': (lambda: proxy.rank_beneath),
                 'taxa_beneath': (lambda: proxy.taxa_beneath),
                 'next_page': (lambda: proxy.next() or proxy.page),
+                'messages': get_messages(request),
             })
     elif request.method == 'POST':
         # Add or delete a couplet.

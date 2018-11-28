@@ -84,6 +84,20 @@
             h2 {
                 font-weight: 300;
             }
+            ul.messagelist {
+                margin: 0;
+                padding: 0;
+            }
+            ul.messagelist li {
+                background: #dfd url(/static/admin/icon-yes.svg) 40px 12px no-repeat;
+                background-size: 16px auto;
+                color: #333;
+                display: block;
+                font-size: 13px;
+                font-weight: 400;
+                padding: 10px 10px 10px 65px;
+                margin: 0 0 10px 0;
+            }
             a.edit {
                 background: #fcfcfc;
                 border: 1px solid #ccc;
@@ -147,8 +161,17 @@
                 <li><a href="/edit/dkey/group-10/">Group 10</a></li>
             </ul>
         </nav>
-        <main>
 
+        {% if messages %}
+        <ul class="messagelist">
+            {% for message in messages %}
+            <li{% if message.tags %} class="{{ message.tags }}"{% endif %}
+                >{{ message }}</li>
+            {% endfor %}
+        </ul>
+        {% endif %}
+
+        <main>
         <div class="jump">
             <p>Jump to:</p>
             <form action="#"
