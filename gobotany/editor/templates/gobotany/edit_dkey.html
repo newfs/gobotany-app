@@ -177,7 +177,7 @@
             <form action="#"
                 onsubmit="window.location.href=this.elements[0].value; return false;">
                 <label for="family">Family</label>
-                <select name="family">
+                <select id="family" name="family">
                     {% for family in families %}
                     <option value="/edit/dkey/{{ family.slug }}/">{{ family.name }}</option>
                     {% endfor %}
@@ -187,7 +187,7 @@
             <form action="#"
                 onsubmit="window.location.href=this.elements[0].value; return false;">
                 <label for="genus">Genus</label>
-                <select name="genus">
+                <select id="genus" name="genus">
                     {% for genus in genera %}
                     <option value="/edit/dkey/{{ genus.slug }}/">{{ genus.name }}</option>
                     {% endfor %}
@@ -197,7 +197,7 @@
             <form action="#"
                 onsubmit="window.location.href=this.elements[0].value; return false;">
                 <label for="carex-section">Carex section</label>
-                <select name="carex-section">
+                <select id="carex-section" name="carex-section">
                     {% for section in carex_sections %}
                     <option value="/edit/dkey/{{ section.1 }}/">{{ section.0 }}</option>
                     {% endfor %}
@@ -218,7 +218,7 @@
             href="/admin/dkey/page/{{ page.id }}/change/?next={{ request.get_full_path|urlencode }}">Change</a></h2>
         {% endwith %}
 
-        <form id="edit-form" action="" method="post">
+        <form id="edit-form" action="#" method="post">
             {% csrf_token %}
             <input id="edit-command" type="hidden" name="command" value="">
             <input id="edit-lead-id" type="hidden" name="lead-id" value="">
