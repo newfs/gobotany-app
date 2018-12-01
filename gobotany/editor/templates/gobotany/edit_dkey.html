@@ -283,6 +283,10 @@
                         <i>{{ p.title|abbreviate_title }}</i>{% elif p.rank == 'species' %}
                         <i>{{ p.title }}</i>{% elif p.rank == 'section' %}
                         {{ p.title }}{% endif %}</a>
+                {% elif lead.goto_num > 0 %}
+                →
+                <a href="#c{{ lead.goto_num }}">Jump to
+                    {{ lead.goto_num }} on this page</a>
                 {% endif %}
 
                 {% endwith %}
