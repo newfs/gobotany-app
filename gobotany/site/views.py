@@ -19,7 +19,7 @@ from gobotany.core import botany
 from gobotany.core.models import (
     CommonName, ContentImage, CopyrightHolder, Distribution,
     Family, Genus, GlossaryTerm, HomePageImage, PartnerSite, PartnerSpecies,
-    Pile, Taxon, Video,
+    Pile, Taxon, Update, Video,
     )
 from gobotany.core.partner import (which_partner, partner_short_name,
                                    per_partner_template, render_per_partner)
@@ -91,6 +91,15 @@ def system_requirements_view(request):
 def about_view(request):
     return render_per_partner('about.html', {
            }, request)
+
+@vary_on_headers('Host')
+def updates_view(request):
+    updates = Update.objects.all()
+    print 'Update records:', len(updates)
+
+    return render_per_partner('updates.html', {
+            'updates': updates,
+            }, request)
 
 @vary_on_headers('Host')
 def getting_started_view(request):

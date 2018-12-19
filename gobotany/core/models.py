@@ -1086,6 +1086,15 @@ class CopyrightHolder(models.Model):
         return unicode_string
 
 
+class Update(models.Model):
+    """An entry for an Updates page regarding site (data) improvements."""
+    date = models.DateField()
+    description = models.TextField()
+
+    class Meta:
+        ordering = ['-date']
+
+
 class Video(models.Model):
     """Information on YouTube videos used for help."""
     title = models.CharField(max_length=100)

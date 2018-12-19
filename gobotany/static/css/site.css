@@ -241,7 +241,7 @@ header #search button { background: #317b0c url(/static/images/layout/search-btn
 .content { padding: 8px 0 0; }
 .content .container { margin: 0 auto; padding: 0 10px; width: 960px; }
 
-.content #main { background: url(/static/images/layout/sidebar-bg.png) repeat-y; float: right; min-height: 545px; padding-bottom: 24px; padding-left: 250px; width: 710px; }
+.content #main { background: url(/static/images/layout/sidebar-bg.png) repeat-y; float: right; min-height: 575px; padding-bottom: 24px; padding-left: 250px; width: 710px; }
 .content #main .smallscreen-anchor-nav { display: none; }
 
 .content .container.free-sidebar #main { background: none; }

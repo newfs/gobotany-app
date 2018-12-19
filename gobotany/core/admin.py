@@ -762,12 +762,16 @@ class PlantPreviewCharacterAdmin(_Base):
     list_display = ('character', 'pile', 'order',)
     list_filter = ('pile',)
 
+class UpdateAdmin(_Base):
+    list_display = ('date', 'description',)
+
 # Registrations
 
 admin.site.register(models.Parameter)
 admin.site.register(models.ImageType)
 admin.site.register(models.CharacterGroup)
 admin.site.register(models.SourceCitation)
+admin.site.register(models.Update, UpdateAdmin)
 
 admin.site.register(models.HomePageImage, HomePageImageAdmin)
 admin.site.register(models.Lookalike, LookalikeAdmin)
@@ -787,4 +791,3 @@ admin.site.register(models.InvasiveStatus, InvasiveStatusAdmin)
 admin.site.register(models.Distribution, DistributionAdmin)
 admin.site.register(models.DefaultFilter, DefaultFilterAdmin)
 admin.site.register(models.PlantPreviewCharacter, PlantPreviewCharacterAdmin)
-
