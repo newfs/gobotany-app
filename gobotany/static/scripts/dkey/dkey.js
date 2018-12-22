@@ -47,7 +47,7 @@ define([
 
     var is_species = function(name) {
         return (!is_group(name)) &&
-            (name.toLowerCase().indexOf('section') !== -1) &&
+            (!is_section(name)) &&
             (name.indexOf(' ') !== -1);
     };
 
