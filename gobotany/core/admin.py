@@ -595,7 +595,7 @@ class DistributionAdmin(_Base):
     list_max_show_all = 700   # to allow showing all for a species including
                               # subspecies and varieties
     list_per_page = 150
-    search_fields = ('scientific_name',)
+    search_fields = ['scientific_name']
     actions = ['rename_records']
     show_full_result_count = False   # eliminate a query, for speed
 
