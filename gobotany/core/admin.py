@@ -595,9 +595,25 @@ class DistributionAdmin(_Base):
     list_max_show_all = 700   # to allow showing all for a species including
                               # subspecies and varieties
     list_per_page = 150
-    search_fields = ['scientific_name']
+    search_fields = ['scientific_name',]   # Show search box,
+        # but custom search overrides behavior: see get_search_results()
     actions = ['rename_records']
     show_full_result_count = False   # eliminate a query, for speed
+
+    def get_search_results(self, request, queryset, search_term):
+        # Custom search: search on the scientific name, anchored to
+        # the beginning of the field, allowing spaces. This is to make
+        # search-related SQL queries as efficient as possible, and to
+        # work around limitations of the default searching options
+        # (namely, that search strings always get split up on spaces).
+        # With this custom search, one can search efficiently using a
+        # term such as galium verum, which will return results with the
+        # scientific names Galium verum, Galium verum var. verum,
+        # and Galium verum var. wirtgenii
+        queryset = queryset.filter(
+            scientific_name__istartswith=search_term)
+        use_distinct = False
+        return queryset, use_distinct
 
     def map_link(self, obj):
         return '<a href="/api/maps/%s-ne-distribution-map">View</a>' % (
