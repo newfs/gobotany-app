@@ -611,7 +611,7 @@ class DistributionAdmin(_Base):
         # scientific names Galium verum, Galium verum var. verum,
         # and Galium verum var. wirtgenii
         queryset = queryset.filter(
-            scientific_name__istartswith=search_term)
+            scientific_name__startswith=search_term)
         use_distinct = False
         return queryset, use_distinct
 
