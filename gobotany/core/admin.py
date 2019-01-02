@@ -597,6 +597,7 @@ class DistributionAdmin(_Base):
     list_per_page = 150
     search_fields = ('scientific_name',)
     actions = ['rename_records']
+    show_full_result_count = False   # eliminate a query, for speed
 
     def map_link(self, obj):
         return '<a href="/api/maps/%s-ne-distribution-map">View</a>' % (
