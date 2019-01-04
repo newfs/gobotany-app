@@ -371,3 +371,22 @@ if IN_PRODUCTION:
     # https://docs.djangoproject.com/en/1.5/topics/security/#ssl-https
     SESSION_COOKIE_SECURE = True
     CSRF_COOKIE_SECURE = True
+
+# Uncomment the following logging configuration in order to
+# log all SQL queries to the console, for debugging purposes.
+#LOGGING = {
+#    'disable_existing_loggers': False,
+#    'version': 1,
+#    'handlers': {
+#        'console': {   # handler that outputs to terminal
+#            'class': 'logging.StreamHandler',
+#            'level': 'DEBUG',
+#        },
+#    },
+#    'loggers': {
+#        'django.db.backends': {
+#            'level': 'DEBUG',
+#            'handlers': ['console'],
+#        },
+#    },
+#}
