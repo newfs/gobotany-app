@@ -610,8 +610,9 @@ class DistributionAdmin(_Base):
         # term such as galium verum, which will return results with the
         # scientific names Galium verum, Galium verum var. verum,
         # and Galium verum var. wirtgenii
-        queryset = queryset.filter(
-            scientific_name__startswith=search_term)
+        if search_term:
+            queryset = queryset.filter(
+                scientific_name__startswith=search_term.capitalize())
         use_distinct = False
         return queryset, use_distinct
 
