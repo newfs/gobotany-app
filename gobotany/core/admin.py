@@ -586,8 +586,8 @@ class DistributionAdmin(_Base):
     list_display = ('scientific_name', 'species_name', 'subspecific_epithet',
         'state', 'county', 'present', 'native', 'map_link',)
     list_editable = ('present', 'native',)
-    list_filter = ()
-        # Disabled the list view filters for now until it is verified which
+    list_filter = (DistributionRegionFilter,)
+        # Disabled most list view filters for now until it is verified which
         # ones are truly needed, because they can slow the pages down.
         # See the SQL queries in the Debug Toolbar.
         #(DistributionRegionFilter, RankFilter, 'native', 'present',
