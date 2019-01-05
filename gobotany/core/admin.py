@@ -691,7 +691,7 @@ class DistributionAdmin(_Base):
 
         if request.method == 'GET' or errors:
             # Return the form page.
-            return render_to_response(request,
+            return render(request,
                     'admin/core/distribution/add_set_form.html', {
                         'title': 'Add set of Distribution records',
                         'errors': errors,
