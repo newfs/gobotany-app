@@ -757,7 +757,7 @@ class DistributionAdmin(_Base):
                     admin.ACTION_CHECKBOX_NAME)}
                 )
 
-        return render_to_response(request,
+        return render(request,
             'admin/core/distribution/rename_records.html', {
                 'records': queryset,
                 'rename_records_form': form,
