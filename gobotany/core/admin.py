@@ -737,7 +737,6 @@ class DistributionAdmin(_Base):
                 number_of_records = queryset.count()
                 new_scientific_name = form.cleaned_data['new_scientific_name']
 
-                #queryset.update(scientific_name=new_scientific_name)
                 for record in queryset:
                     record.scientific_name = new_scientific_name
                     record.save()
