@@ -1041,7 +1041,7 @@ class Distribution(models.Model):
         # with the "master" scientific name field.
         parts = self.scientific_name.split(' ')
 
-        if 'X' in parts or 'x' or '×' in parts:
+        if 'X' in parts or 'x' in parts or '×' in parts:
             # Handle one form of a hybrid name: one that has an X (x) or a
             # multiplication sign, with a space after it.
             species_name = ' '.join(parts[0:3])
