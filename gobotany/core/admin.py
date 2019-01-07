@@ -677,16 +677,10 @@ class DistributionAdmin(_Base):
     def add_set_view(request):
         errors = []
         scientific_name = ''
-        species_name = ''
 
         if request.POST.has_key('scientific_name'):
             scientific_name = request.POST['scientific_name']
             if not scientific_name:
-                errors.append('This field is required.')
-
-        if request.POST.has_key('species_name'):
-            species_name = request.POST['species_name']
-            if not species_name:
                 errors.append('This field is required.')
 
         if request.method == 'GET' or errors:
@@ -713,9 +707,7 @@ class DistributionAdmin(_Base):
                 # create one, setting any requested defaults.
                 if not results.exists():
                     record = models.Distribution.objects.create(
-                        scientific_name=scientific_name,
-                        species_name=species_name,
-                        subspecific_epithet=subspecific_epithet, state=state,
+                        scientific_name=scientific_name, state=state,
                         county=county, present=present, native=native)
                     record.save()
                     records_created += 1
