@@ -712,11 +712,12 @@ class DistributionAdmin(_Base):
                 # If no record exists yet for this plant in this place,
                 # create one, setting any requested defaults.
                 if not results.exists():
-                    models.Distribution.objects.create(
+                    record = models.Distribution.objects.create(
                         scientific_name=scientific_name,
                         species_name=species_name,
                         subspecific_epithet=subspecific_epithet, state=state,
                         county=county, present=present, native=native)
+                    record.save()
                     records_created += 1
             # Return to the list page with a message to display.
             message = ('Added %d Distribution records for %s.' %
@@ -744,7 +745,10 @@ class DistributionAdmin(_Base):
                 number_of_records = queryset.count()
                 new_scientific_name = form.cleaned_data['new_scientific_name']
 
-                queryset.update(scientific_name=new_scientific_name)
+                #queryset.update(scientific_name=new_scientific_name)
+                for record in queryset:
+                    record.scientific_name = new_scientific_name
+                    record.save()
 
                 message = ('Successfully renamed %d records to %s.' % (
                     number_of_records, new_scientific_name))
