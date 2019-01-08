@@ -693,9 +693,9 @@ class DistributionAdmin(_Base):
                     })
         elif request.method == 'POST':
             subspecific_epithet = request.POST.get('subspecific_epithet', '')
-            # Get any defaults.
-            present = request.POST.get('present', False)
-            native = request.POST.get('native', False)
+            # Get any defaults to be set.
+            present = request.POST.get('present', False) == 'on'
+            native = request.POST.get('native', False) == 'on'
             # Create the set of distribution records.
             records_created = 0
             for place in DISTRIBUTION_PLACES:
