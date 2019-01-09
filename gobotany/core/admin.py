@@ -582,6 +582,7 @@ class RankFilter(admin.SimpleListFilter):
         return qs
 
 
+
 class DistributionAdmin(_Base):
     list_display = ('scientific_name', 'species_name', 'subspecific_epithet',
         'state', 'county', 'present', 'native', 'map_link',)
@@ -599,6 +600,8 @@ class DistributionAdmin(_Base):
         # but custom search overrides behavior: see get_search_results()
     actions = ['rename_records']
     show_full_result_count = False   # eliminate a query, for speed
+    readonly_fields = ['species_name', 'subspecific_epithet']    # these
+        # two fields are automatically populated from scientific_name on save
 
     def get_search_results(self, request, queryset, search_term):
         # Custom search: search on the scientific name, anchored to
