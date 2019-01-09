@@ -584,8 +584,8 @@ class RankFilter(admin.SimpleListFilter):
 
 
 class DistributionAdmin(_Base):
-    list_display = ('scientific_name', 'species_name', 'subspecific_epithet',
-        'state', 'county', 'present', 'native', 'map_link',)
+    list_display = ('scientific_name', 'state', 'county', 'present',
+        'native', 'map_link',)
     list_editable = ('present', 'native',)
     list_filter = (DistributionRegionFilter,)
         # Disabled most list view filters for now until it is verified which
