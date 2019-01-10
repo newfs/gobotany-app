@@ -1026,15 +1026,16 @@ class Distribution(models.Model):
         county = ' (%s County)' % self.county if len(self.county) > 0 else ''
         status = ''
         if self.present:
-            status = 'present, '
-            if self.native:
-                status += 'native'
-            else:
-                status += 'non-native'
+            status = 'present'
         else:
             status = 'absent'
+        status += ', '
+        if self.native:
+            status += 'native'
+        else:
+            status += 'non-native'
         return '%s: %s%s: %s' % (self.scientific_name, self.state,
-                                 county, status)
+            county, status)
 
     def save(self, *args, **kwargs):
         # Ensure the species name and specific epithet fields stay in sync
