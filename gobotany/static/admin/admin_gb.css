@@ -34,6 +34,12 @@ form:not(#distribution_form) input[name="_editnext"] {
     display: none;
 }
 
+/* Hide the Save and Continue Editing button on the Dist. form. */
+form#distribution_form input[name="_continue"] {
+    display: none;
+}
+
+
 /* Distribution: add set of Distribution records form */
 
 body.dist-add-set-form .aligned label {
