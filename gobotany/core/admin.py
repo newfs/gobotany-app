@@ -584,8 +584,9 @@ class RankFilter(admin.SimpleListFilter):
 
 
 class DistributionAdmin(_Base):
-    list_display = ('scientific_name', 'state', 'county', 'present',
+    list_display = ('sci_name', 'state', 'county', 'present',
         'native', 'map_link',)
+    list_display_links = None
     list_editable = ('present', 'native',)
     list_filter = (DistributionRegionFilter,)
         # Disabled most list view filters for now until it is verified which
@@ -624,6 +625,15 @@ class DistributionAdmin(_Base):
             obj.species_name.lower().replace(' ', '-'))
     map_link.allow_tags = True
     map_link.short_description = 'NE Map'
+
+    # Work around a bug where the link URL on the regular scientific_name
+    # field has a bunch of ids at the end.
+    def sci_name(self, obj):
+        return ('<a class="main-list-display" '
+            'href="/admin/core/distribution/%s/change/">%s') % (
+            obj.id, obj.scientific_name)
+    sci_name.allow_tags = True
+    sci_name.short_description = 'Scientific Name'
 
     # Override the change view to handle the Save and Edit Next button.
     def add_view(self, request, extra_context=None):

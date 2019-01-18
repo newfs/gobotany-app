@@ -21,6 +21,12 @@ textarea {
 }
 
 
+/* List view links: overridden "main" link */
+a.main-list-display {
+    font-weight: 600;
+}
+
+
 /* D. Key custom navigation item */
 .dkey-custom {
     float: right;
