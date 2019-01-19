@@ -33,13 +33,6 @@ a.main-list-display {
 }
 
 
-/* Distribution model change form: Save and Edit Next button */
-
-/* Hide the button on all other models' forms. */
-form:not(#distribution_form) input[name="_editnext"] {
-    display: none;
-}
-
 /* Hide the Save and Continue Editing button on the Dist. form. */
 form#distribution_form input[name="_continue"] {
     display: none;

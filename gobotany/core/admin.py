@@ -584,9 +584,8 @@ class RankFilter(admin.SimpleListFilter):
 
 
 class DistributionAdmin(_Base):
-    list_display = ('sci_name', 'state', 'county', 'present',
+    list_display = ('scientific_name', 'state', 'county', 'present',
         'native', 'map_link',)
-    list_display_links = None
     list_editable = ('present', 'native',)
     list_filter = (DistributionRegionFilter,)
         # Disabled most list view filters for now until it is verified which
@@ -597,6 +596,7 @@ class DistributionAdmin(_Base):
     list_max_show_all = 700   # to allow showing all for a species including
                               # subspecies and varieties
     list_per_page = 150
+    preseve_filters = True
     search_fields = ['scientific_name',]   # Show search box,
         # but custom search overrides behavior: see get_search_results()
     actions = ['rename_records']
@@ -625,62 +625,6 @@ class DistributionAdmin(_Base):
             obj.species_name.lower().replace(' ', '-'))
     map_link.allow_tags = True
     map_link.short_description = 'NE Map'
-
-    # Work around a bug where the link URL on the regular scientific_name
-    # field has a bunch of ids at the end.
-    def sci_name(self, obj):
-        return ('<a class="main-list-display" '
-            'href="/admin/core/distribution/%s/change/">%s') % (
-            obj.id, obj.scientific_name)
-    sci_name.allow_tags = True
-    sci_name.short_description = 'Scientific Name'
-
-    # Override the change view to handle the Save and Edit Next button.
-    def add_view(self, request, extra_context=None):
-        result = super(DistributionAdmin, self).add_view(request,
-            extra_context=extra_context)
-
-        # Although it would be preferable to hide the button for this
-        # view, for now just make it do something reasonable: the
-        # same thing as the Save and Add Another button.
-        if request.POST.has_key('_editnext'):
-            result['Location'] = '/admin/core/distribution/add/'
-
-        return result
-
-    # Override the change view to handle the Save and Edit Next button.
-    def change_view(self, request, object_id, extra_context=None):
-        result = super(DistributionAdmin, self).change_view(request,
-            object_id, extra_context=extra_context)
-
-        if request.POST.has_key('_editnext'):
-            if request.GET.has_key('ids'):
-                ids = request.GET['ids'].split(',');
-
-                try:
-                    # All the ids on the user's last list page are
-                    # passed on the URL. Find the current object id,
-                    # and the next in the sequence will be the id
-                    # of the next record on the page.
-                    current_id_index = ids.index(object_id);
-                    next_object_id = ids[current_id_index + 1];
-
-                    # Go to the next record, passing again the list of
-                    # all ids as a request parameter.
-                    request_path_parts = request.path.split('/')
-                    request_path_parts[4] = str(next_object_id)
-                    new_path = '/'.join(request_path_parts)
-                    new_path += '?ids=' + request.GET['ids']
-                    result['Location'] = new_path
-                except IndexError:
-                    # If there is no next record to edit, tell the user.
-                    message = ''.join([
-                        'Changed the last record on your page. ',
-                        'To edit more records in sequence, first search, ',
-                        'filter, sort, and go to a desired page.'])
-                    messages.info(request, message)
-
-        return result
 
     # Allow creating a set of Distribution records for a new plant, one
     # for each state, province and New England county, all at once. In
