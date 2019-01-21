@@ -365,7 +365,9 @@ tcvfieldname_re = re.compile('tcv([0-9]+)$')
 @permission_required('core.botanist')
 def edit_lit_sources(request, dotted_datetime):
 
-    return_to = request.REQUEST.get('return_to', '.')
+    return_to = request.GET.get('return_to', '.')
+    if len(return_to) <= 1:
+        return_to = request.POST.get('return_to', '.')
 
     if request.method == 'POST':
         for key in request.POST:
