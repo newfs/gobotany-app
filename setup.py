@@ -8,7 +8,7 @@ requirements = [
     'bleach==1.4.3',
     'cssselect',
     'django-debug-toolbar==1.5',
-    'django-haystack==2.8.1',
+    'django-haystack==2.7.dev0', # versions beyond this result in bugs: #717
     'django-haystack-panel==0.2.1',
     'django-imagekit==4.0.2',
     'django-tinymce==2.6.0',
