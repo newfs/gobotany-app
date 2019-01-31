@@ -19,7 +19,8 @@ class HybridAdmin(GoBotanyModelAdmin):
     formfield_overrides = {
         models.TextField: {'widget': Textarea(attrs={'rows': 4, 'cols': 80}) },
     }
-    list_display = ('scientific_name1', 'scientific_name2', 'text')
+    list_display = ('scientific_name1', 'number1', 'scientific_name2',
+        'number2', 'text')
     search_fields = ('scientific_name1', 'scientific_name2', 'text')
 
 
