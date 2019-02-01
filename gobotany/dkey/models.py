@@ -91,8 +91,8 @@ class Lead(models.Model):
 class Hybrid(models.Model):
     """A paragraph describing a hybrid species."""
 
-    number1 = models.IntegerField()
-    number2 = models.IntegerField()
+    number1 = models.IntegerField(null=True, blank=True)
+    number2 = models.IntegerField(null=True, blank=True)
     scientific_name1 = models.TextField(db_index=True)
     scientific_name2 = models.TextField(db_index=True)
     text = models.TextField(blank=True)
