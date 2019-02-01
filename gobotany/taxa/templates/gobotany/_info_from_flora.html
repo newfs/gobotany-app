@@ -8,7 +8,8 @@
                     {% with abbrev_name1=hybrid.scientific_name1|abbreviate_title %}
                     {% with abbrev_name2=hybrid.scientific_name2|abbreviate_title %}
                     <p>
-                    <b>{{ hybrid.number1|default_if_none:abbrev_name1 }}×{{ hybrid.number2|default_if_none:abbrev_name2 }}.
+                    <b>
+                        {% if hybrid.number1 %}{{ hybrid.number1 }}{% else %}<i>{{ abbrev_name1 }}</i>{% endif %}×{% if hybrid.number2 %}{{ hybrid.number2 }}.{% else %}<i>{{ abbrev_name2 }}</i>.{% endif %}
                         {% if dkey_page.title == hybrid.scientific_name1 %}
                         <i>{{ hybrid.scientific_name1 }}</i>
                         {% else %}
