@@ -5,8 +5,10 @@
             <div>
                 {{ dkey_page.text|discard_floating_figures|render_figure_links|safe }}
                 {% for hybrid in dkey_hybrids %}
+                    {% with abbrev_name1=hybrid.scientific_name1|abbreviate_title %}
+                    {% with abbrev_name2=hybrid.scientific_name2|abbreviate_title %}
                     <p>
-                    <b>{{ hybrid.number1 }}×{{ hybrid.number2 }}.
+                    <b>{{ hybrid.number1|default_if_none:abbrev_name1 }}×{{ hybrid.number2|default_if_none:abbrev_name2 }}.
                         {% if dkey_page.title == hybrid.scientific_name1 %}
                         <i>{{ hybrid.scientific_name1 }}</i>
                         {% else %}
@@ -23,6 +25,8 @@
                         →</b>
                     {{ hybrid.text|discard_floating_figures|render_figure_links|safe }}
                     </p>
+                    {% endwith %}
+                    {% endwith %}
                 {% endfor %}
             </div>
         </div>
