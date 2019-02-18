@@ -84,11 +84,13 @@
     text-align: center;
 }
 #home #update a {
+    margin-left: 0.3rem;
     text-decoration: underline;
 }
 #home #update .badge {
     background-color: rgba(236, 243, 151, 0.9);
     letter-spacing: 0.05rem;
+    margin-right: 0.3rem;
     padding: 0.1rem 0.3rem;
     text-transform: uppercase;
 }
