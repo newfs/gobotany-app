@@ -739,6 +739,10 @@ class PlantPreviewCharacterAdmin(_Base):
 class UpdateAdmin(_Base):
     list_display = ('date', 'description',)
 
+class HighlightAdmin(_Base):
+    list_display = ('id', 'note', 'active',)
+
+
 # Registrations
 
 admin.site.register(models.Parameter)
@@ -746,6 +750,7 @@ admin.site.register(models.ImageType)
 admin.site.register(models.CharacterGroup)
 admin.site.register(models.SourceCitation)
 admin.site.register(models.Update, UpdateAdmin)
+admin.site.register(models.Highlight, HighlightAdmin)
 
 admin.site.register(models.HomePageImage, HomePageImageAdmin)
 admin.site.register(models.Lookalike, LookalikeAdmin)
