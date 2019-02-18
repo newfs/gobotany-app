@@ -78,6 +78,21 @@
         text-shadow: 0px 1px 1px #fff;	
     }
 }
+
+#home #update p {
+    line-height: 150%;
+    text-align: center;
+}
+#home #update a {
+    text-decoration: underline;
+}
+#home #update .badge {
+    background-color: rgba(236, 243, 151, 0.9);
+    letter-spacing: 0.05rem;
+    padding: 0.1rem 0.3rem;
+    text-transform: uppercase;
+}
+
 #home #cta {
     margin: 21px 2px 0;
     width: 184px;

@@ -18,8 +18,8 @@ from django.views.decorators.vary import vary_on_headers
 from gobotany.core import botany
 from gobotany.core.models import (
     CommonName, ContentImage, CopyrightHolder, Distribution,
-    Family, Genus, GlossaryTerm, HomePageImage, PartnerSite, PartnerSpecies,
-    Pile, Taxon, Update, Video,
+    Family, Genus, GlossaryTerm, Highlight, HomePageImage, PartnerSite,
+    PartnerSpecies, Pile, Taxon, Update, Video,
     )
 from gobotany.core.partner import (which_partner, partner_short_name,
                                    per_partner_template, render_per_partner)
@@ -35,6 +35,9 @@ def home_view(request):
     """View for the home page of the Go Botany site."""
 
     partner = which_partner(request)
+
+    # Get the most recently added active Highlight, if present
+    highlight = Highlight.objects.filter(active=True).last()
 
     # Get home page images for the partner
     home_page_images = HomePageImage.objects.filter(partner_site=partner)
@@ -58,6 +61,7 @@ def home_view(request):
             plant_of_the_day_taxon)[0]
 
     return render_per_partner('home.html', {
+            'highlight': highlight,
             'home_page_images': home_page_images,
             'plant_of_the_day': plant_of_the_day_taxon,
             'plant_of_the_day_image': plant_of_the_day_image,

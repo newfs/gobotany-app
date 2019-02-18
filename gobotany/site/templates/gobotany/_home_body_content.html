@@ -2,6 +2,14 @@
 
     <div class="content">
         <div class="container">
+            {% if highlight %}
+            <div id="update">
+                <p><span class="badge">Update</span>
+                &nbsp; {{ highlight.note }} &nbsp;
+                <a href="/updates/">Read Updates</a></p>
+            </div>
+            {% endif %}
+
             <div id="banner">
                 {% block images %}
                     {% for image in home_page_images %}
@@ -92,5 +100,5 @@
                     </p>
                 </div>
             {% endblock %}
-        </div>
-    </div>
+        </div>{# end: container #}
+    </div>{# end: content #}
