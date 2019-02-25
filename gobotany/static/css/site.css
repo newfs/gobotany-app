@@ -302,7 +302,7 @@ a.get-help-btn { margin: 10px 0 20px; }
 
 .footer__support { margin-right: 0; padding: 18px 0; }
 
-.footer__nsf-logo { float: left; margin: 0 10px; }
+.footer__nsf-logo { float: left; margin: 0 10px; width: 40px; }
 
 /* Breadcrumb trails */
 #breadcrumb { color: #000; font-family: "Trebuchet MS", Helvetica, Arial, "Lucida Sans Unicode", sans-serif; font-size: 14px; margin: 0 0 6px; }
@@ -1906,7 +1906,7 @@ header.partner-site nav li a { padding: 5px 32px 0; /* fewer sections, more hori
   .content #main { width: 464px; }
   .content #sidebar { width: 462px; }
   .footer__container { width: 480px; }
-  .footer__navigation-list--secondary { margin-left: 72px; } }
+  .footer__navigation-list--secondary { margin-left: 63px; } }
 /* These styles are common to both smartphone widths */
 @media only screen and (max-width: 600px) { body { margin: 0 auto; padding: 0; }
   body#home header nav #search-suggest .menu { top: 83px; }
@@ -1952,7 +1952,7 @@ header.partner-site nav li a { padding: 5px 32px 0; /* fewer sections, more hori
   .footer__navigation-list--secondary .footer__navigation-list-item:after { content: none; }
   .footer__support { height: 63px; margin: 14px 0 0; padding: 0; width: auto; }
   .footer__nsf-logo { padding-bottom: 6px; }
-  .footer__nsf-note { padding-top: 19px; }
+  .footer__nsf-note { padding-right: 10px; padding-top: 14px; }
   /* Footer navigation: current section, page */
   body#home .footer__navigation-list-item.home a { background-color: #85c446; color: #000; }
   body#home .footer__navigation-list-item.home a::after { border-color: #666; }
