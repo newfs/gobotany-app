@@ -274,31 +274,35 @@ header #search button { background: #317b0c url(/static/images/layout/search-btn
 a.get-help-btn { margin: 10px 0 20px; }
 
 /* Footer */
-footer { background: #b4d57f; clear: both; height: 140px; position: relative; width: 100%; }
-footer .container { margin: 0 auto; padding: 0 10px; width: 960px; }
+.footer { background: #b4d57f; clear: both; height: 140px; position: relative; width: 100%; }
 
-footer > img { left: 50%; margin-left: -543px; position: absolute; top: -47px; z-index: -1; }
+.footer__container { margin: 0 auto; padding: 0 10px; width: 960px; }
 
-footer .publisher, footer .navigation { float: left; margin: 0 20px 0 0; padding: 18px 0; width: 305px; }
+.footer__copyright, .footer__address, .footer__nsf-note { font-size: 9px; margin: 0 0 10px 0; }
 
-footer .navigation { padding-left: 10px; }
+.footer__address { font-style: normal; line-height: 170%; }
 
-footer h6 { font-family: Verdana, Geneva, "Lucida Sans Unicode", sans-serif; font-size: 11px; }
+.footer__site-name { font-family: Verdana, Geneva, "Lucida Sans Unicode", sans-serif; font-size: 11px; margin: 0 0 0.5rem; }
 
-footer p { font-size: 9px; margin: 0 0 10px 0; }
+.footer__publisher, .footer__navigation { float: left; margin: 0 20px 0 0; padding: 18px 0; width: 305px; }
 
-footer ul { font-size: 9px; list-style-type: none; margin-bottom: 12px; }
+.footer__navigation { padding-left: 10px; }
 
-footer li { display: inline; line-height: 14px; }
-footer li::after { content: " |"; }
-footer li:last-child::after { content: none; }
+.footer__navigation-list { font-size: 9px; list-style-type: none; margin-bottom: 12px; }
 
-footer a:hover { text-decoration: none; }
-footer a[href]:hover { text-decoration: underline; }
+.footer__navigation-list-item { display: inline; line-height: 14px; }
 
-footer .nsf-logo { float: left; margin: 0 10px 0 7px; }
+.footer__navigation-list-item::after { content: " \00b7 "; }
 
-footer .support { margin-right: 0; padding: 18px 0; }
+.footer__navigation-list-item:last-child::after { content: none; }
+
+.footer__navigation-list--secondary .footer__navigation-list-item { margin-right: 10px; }
+
+.footer__navigation-list--secondary .footer__navigation-list-item:last-of-type { margin-right: 0; }
+
+.footer__support { margin-right: 0; padding: 18px 0; }
+
+.footer__nsf-logo { float: left; margin: 0 10px; }
 
 /* Breadcrumb trails */
 #breadcrumb { color: #000; font-family: "Trebuchet MS", Helvetica, Arial, "Lucida Sans Unicode", sans-serif; font-size: 14px; margin: 0 0 6px; }
@@ -1881,7 +1885,7 @@ header.partner-site nav li a { padding: 5px 32px 0; /* fewer sections, more hori
 /* Finally, include global media queries for smartphones and tablets. These should be last. */
 /* Begin global media queries styles.  So far there are three sections for smartphones (two fixed-width layouts to cover portrait and landscape orientations, with a section common to both orientations) and some additional styles for tablets. Using fixed-width layouts allows some pages to have a wider central content area for now. Various SASS "partials" (_home.scss, _help.scss, etc.) have their own media queries arranged like the ones below. Think of those as modular extensions to these. */
 /* Portrait-orientation styles */
-@media only screen and (max-width: 400px) { body, header .container, .content .container, footer .container { width: 320px; }
+@media only screen and (max-width: 400px) { body, header .container, .content .container { width: 320px; }
   body { padding-top: 110px; }
   header nav > a { width: 20px; }
   header #search form { width: 242px; }
@@ -1891,33 +1895,21 @@ header.partner-site nav li a { padding: 5px 32px 0; /* fewer sections, more hori
   #nav { left: 40px; width: 310px; }
   .content #main { width: 304px; }
   .content #sidebar { float: none; width: 302px; }
-  footer .navigation .prime-items li { margin-right: 10px; }
-  footer .navigation .prime-items li:last-of-type { margin-right: 0; } }
+  .footer__container { width: 320px; }
+  .footer__navigation-list--secondary { margin-left: 14px; } }
 /* Landscape-orientation styles */
 @media only screen and (min-width: 401px) and (max-width: 600px) { html { -webkit-text-size-adjust: none; }
   body { padding-top: 75px; }
-  body, header .container, .content .container, footer .container { width: 480px; }
+  body, header .container, .content .container { width: 480px; }
   header nav > a { /* small-screen nav. button */ width: 20px; }
   header nav > a span { position: absolute; }
   .content #main { width: 464px; }
-  .content #sidebar { width: 462px; } }
+  .content #sidebar { width: 462px; }
+  .footer__container { width: 480px; }
+  .footer__navigation-list--secondary { margin-left: 72px; } }
 /* These styles are common to both smartphone widths */
 @media only screen and (max-width: 600px) { body { margin: 0 auto; padding: 0; }
   body#home header nav #search-suggest .menu { top: 83px; }
-  body#home footer .navigation ul.sections li.home a { background-color: #85c446; color: #000; }
-  body#home footer .navigation ul.sections li.home a::after { border-color: #666; }
-  body.simple footer .navigation ul.sections li.simple a { background-color: #85c446; color: #000; }
-  body.simple footer .navigation ul.sections li.simple a::after { border-color: #666; }
-  body.plantshare footer .navigation ul.sections li.plantshare a { background-color: #85c446; color: #000; }
-  body.plantshare footer .navigation ul.sections li.plantshare a::after { border-color: #666; }
-  body.full footer .navigation ul.sections li.full a { background-color: #85c446; color: #000; }
-  body.full footer .navigation ul.sections li.full a::after { border-color: #666; }
-  body.dkey footer .navigation ul.sections li.dkey a { background-color: #85c446; color: #000; }
-  body.dkey footer .navigation ul.sections li.dkey a::after { border-color: #666; }
-  body.teaching footer .navigation ul.sections li.teaching a { background-color: #85c446; color: #000; }
-  body.teaching footer .navigation ul.sections li.teaching a::after { border-color: #666; }
-  body.help footer .navigation ul.sections li.help a { background-color: #85c446; color: #000; }
-  body.help footer .navigation ul.sections li.help a::after { border-color: #666; }
   #breadcrumb { font-size: 11px; margin: 6px 0; }
   #breadcrumb li { display: inline-block; height: 32px; list-style-type: none; margin: 0 2px 0 0; }
   #breadcrumb .label, #breadcrumb .this-page { display: none; /* Hide 'You are Here' and current page title */ }
@@ -1937,29 +1929,6 @@ header.partner-site nav li a { padding: 5px 32px 0; /* fewer sections, more hori
   header p.go-botany a { height: 56px; width: 170px; }
   header p.newfs a { background-size: 100px 55px; float: right; height: 55px; width: 101px; }
   header .container { padding: 0; }
-  footer { height: auto; margin: 14px 0 0; }
-  footer > img { display: none; }
-  footer .container { height: auto; padding: 0; }
-  footer .container div { width: auto; }
-  footer div div { height: auto; }
-  footer p { margin: 0; }
-  footer a { font-size: 11px; }
-  footer .publisher, footer .navigation { float: none; margin: 0; padding: 0; }
-  footer .publisher { margin: 14px 0 0; padding: 12px 8px 10px; }
-  footer .navigation h6:first-child { padding: 8px 0 8px 14px; }
-  footer .navigation > ul.sections li { display: block; margin: 0 0 1px 0; }
-  footer .navigation > ul.sections li:after { content: none; }
-  footer .navigation > ul.sections li a { background: #317b0c; color: #fff; display: block; font-family: "Trebuchet MS", Helvetica, Arial, "Lucida Sans Unicode", sans-serif; font-size: 14px; padding: 14px 14px; position: relative; text-decoration: none; }
-  footer .navigation > ul.sections li a[href] { color: #fff; }
-  footer .navigation > ul.sections li a[href]::after { border-color: #ccc; border-style: solid; border-width: 3px 3px 0 0; content: " \a0"; display: inline-block; height: 6px; position: absolute; right: 14px; top: 16px; vertical-align: middle; width: 6px; -moz-transform: rotate(45deg); -ms-transform: rotate(45deg); -webkit-transform: rotate(45deg); transform: rotate(45deg); }
-  footer .navigation > ul.sections + h6 { /* "Legal:" label */ display: none; }
-  footer .navigation > h6:nth-of-type(2) { margin: 14px 14px 4px 71px; }
-  footer .navigation > h6:nth-of-type(2):after { content: ":"; }
-  footer .navigation > h6:nth-of-type(2), footer .navigation > ul.prime-items { display: inline-block; margin-left: 72px; margin-top: 12px; }
-  footer .navigation .prime-items li { margin-right: 32px; }
-  footer .navigation .prime-items li:after { content: none; }
-  footer .support { height: 63px; margin: 14px 0 0; padding: 0; }
-  footer .support img { padding-bottom: 6px; }
   .content { padding: 0; }
   .content .container { padding: 0; }
   .content #main { background: none; float: none; min-height: inherit; padding-bottom: 14px; padding-left: 0; margin-left: 8px; margin-right: 8px; }
@@ -1967,6 +1936,38 @@ header.partner-site nav li a { padding: 5px 32px 0; /* fewer sections, more hori
   .content #main .smallscreen-anchor-nav a { font-family: "Trebuchet MS", Helvetica, Arial, "Lucida Sans Unicode", sans-serif; font-size: 14px; padding: 8px 0; text-decoration: underline; }
   .content #sidebar { background: #fff; border: 1px solid #c3d941; clear: left; height: auto; margin-left: 8px; margin-right: 8px; }
   .content #sidebar .section { padding-bottom: 16px; }
+  .footer { height: auto; margin: 14px 0 0; }
+  .footer__container { height: auto; padding: 0; }
+  .footer__site-name { margin-left: 14px; }
+  .footer__publisher, .footer__navigation { float: none; margin: 0; padding: 0; width: auto; }
+  .footer__publisher { margin: 14px 0 0 6px; padding: 12px 8px 10px; }
+  .footer__navigation { padding-left: 0; }
+  .footer__navigation-list-item { display: block; margin: 0 0 1px 0; }
+  .footer__navigation-list--primary .footer__navigation-list-item a { background: #317b0c; color: #fff; display: block; font-family: "Trebuchet MS", Helvetica, Arial, "Lucida Sans Unicode", sans-serif; font-size: 14px; padding: 14px 14px; position: relative; text-decoration: none; }
+  .footer__navigation-list--primary .footer__navigation-list-item a[href] { color: #fff; }
+  .footer__navigation-list--primary .footer__navigation-list-item a[href]:after { border-color: #ccc; border-style: solid; border-width: 3px 3px 0 0; content: " \a0"; display: inline-block; height: 6px; position: absolute; right: 14px; top: 16px; vertical-align: middle; width: 6px; -moz-transform: rotate(45deg); -ms-transform: rotate(45deg); -webkit-transform: rotate(45deg); transform: rotate(45deg); }
+  .footer__navigation-list-item::after { content: none; }
+  .footer__navigation-list--secondary { display: inline-block; margin-top: 12px; }
+  .footer__navigation-list--secondary .footer__navigation-list-item { display: inline; font-size: 11px; line-height: 14px; margin-right: 32px; }
+  .footer__navigation-list--secondary .footer__navigation-list-item:after { content: none; }
+  .footer__support { height: 63px; margin: 14px 0 0; padding: 0; width: auto; }
+  .footer__nsf-logo { padding-bottom: 6px; }
+  .footer__nsf-note { padding-top: 19px; }
+  /* Footer navigation: current section, page */
+  body#home .footer__navigation-list-item.home a { background-color: #85c446; color: #000; }
+  body#home .footer__navigation-list-item.home a::after { border-color: #666; }
+  body.simple .footer__navigation-list-item.simple a { background-color: #85c446; color: #000; }
+  body.simple .footer__navigation-list-item.simple a::after { border-color: #666; }
+  body.plantshare .footer__navigation-list-item.plantshare a { background-color: #85c446; color: #000; }
+  body.plantshare .footer__navigation-list-item.plantshare a::after { border-color: #666; }
+  body.full .footer__navigation-list-item.full a { background-color: #85c446; color: #000; }
+  body.full .footer__navigation-list-item.full a::after { border-color: #666; }
+  body.dkey .footer__navigation-list-item.dkey a { background-color: #85c446; color: #000; }
+  body.dkey .footer__navigation-list-item.dkey a::after { border-color: #666; }
+  body.teaching .footer__navigation-list-item.teaching a { background-color: #85c446; color: #000; }
+  body.teaching .footer__navigation-list-item.teaching a::after { border-color: #666; }
+  body.help .footer__navigation-list-item.help a { background-color: #85c446; color: #000; }
+  body.help .footer__navigation-list-item.help a::after { border-color: #666; }
   .gb-tooltip { width: 200px; }
   #sb-overlay { /* Fix: make the Shadowbox overlay cover the entire background on small screens in iOS. */ height: 120%; }
   #sb-wrapper { /* Move the Shadowbox image as far as possible to the top of the screen on small screens, so there is room for the navigation controls at bottom. */ margin-top: -55px; } }
