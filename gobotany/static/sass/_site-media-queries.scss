@@ -81,7 +81,7 @@ $search-suggest-menu-top: 83px;
         width: $smallscreen-landscape-width;
     }
     .footer__navigation-list--secondary {
-        margin-left: 72px;
+        margin-left: 63px;
     }
 }
 /* These styles are common to both smartphone widths */
@@ -297,7 +297,8 @@ $search-suggest-menu-top: 83px;
         padding-bottom: 6px;
     }
     .footer__nsf-note {
-        padding-top: 19px;
+        padding-right: 10px;
+        padding-top: 14px;
     }
     /* Footer navigation: current section, page */
     @mixin footer-nav-current-section {
