@@ -1,37 +1,44 @@
 {% load gobotany_tags %}
-        <footer>
-            <div class="container">
-                <div class="publisher">
-                    <p class="copyright">All images and text copyright 
-                    &#169; {% include "gobotany/_copyright_years.html" %}
-                    New England Wild Flower Society
-                    or respective copyright holders.
-                    All rights reserved.</p>
-                    <p><a href="http://www.newenglandwild.org/">New England Wild
-                        Flower Society</a><br>
-                    180 Hemenway Road, Framingham, MA 01701</p>
-                </div>
-                <div class="navigation">
-                    <h6>{% block site_name %}Go Botany{% endblock %}
-                        [{% gobotany_version %}]</h6>
-                    <ul id="footer-nav" class="sections">
-                        {% block footer_navigation %}
-                            {% include "gobotany/_primary_navigation.html" %}
-                        {% endblock %}
-                    </ul>
-                    <ul class="prime-items">
-                        <li>{% nav_item 'Privacy Policy' site-privacy %}</li>
-                        <li>{% nav_item 'Terms of Use' site-terms-of-use %}</li>
-                        <li>{% nav_item 'Contact Us' site-contact %}</li>
-                    </ul>
-                </div>
-                <div class="support">
-                    <img src="/static/images/layout/nsf-logo.png"
-                        alt="National Science Foundation" class="nsf-logo">
-                    <p>The Go Botany project is supported in part by the 
-                        National Science Foundation.<br><a
-                            href="http://www.nsf.gov"
-                            >www.nsf.gov</a></p>
-                </div>
-            </div>
-        </footer>
+<footer class="footer">
+    <div class="footer__container">
+        <div class="footer__publisher">
+            <p class="footer__copyright">All images and text ©
+            {% include "gobotany/_copyright_years.html" %}
+            New England Wild Flower Society or respective copyright holders.
+            All rights reserved.</p>
+            <address class="footer__address"><a
+                href="http://www.newenglandwild.org/">New England
+                Wild Flower Society</a><br>
+                180 Hemenway Road, Framingham, MA 01701 USA</address>
+        </div>
+        <div class="footer__navigation">
+            <p class="footer__site-name">
+                {% block site_name %}Go Botany</a>{% endblock %}
+                ({% gobotany_version %})</p>
+            <ul class="footer__navigation-list
+                footer__navigation-list--primary">
+                {% block footer_navigation %}
+                    {% include "gobotany/_footer_primary_navigation.html" %}
+                {% endblock %}
+            </ul>
+            <ul class="footer__navigation-list
+                footer__navigation-list--secondary">
+                <li class="footer__navigation-list-item"
+                    >{% nav_item 'Privacy Policy' site-privacy %}</li>
+                <li class="footer__navigation-list-item"
+                    >{% nav_item 'Terms of Use' site-terms-of-use %}</li>
+                <li class="footer__navigation-list-item"
+                    >{% nav_item 'Contact Us' site-contact %}</li>
+            </ul>
+        </div>
+        <div class="footer__support">
+            <img class="footer__nsf-logo"
+                src="/static/images/layout/nsf-logo.png"
+                alt="National Science Foundation">
+            <p class="footer__nsf-note">The Go Botany project is supported
+                in part by the <a href="https://www.nsf.gov/"
+                >National Science Foundation.</a>
+            </p>
+        </div>
+    </div>
+</footer>

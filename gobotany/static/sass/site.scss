@@ -21,6 +21,7 @@
 /* Import for Go Botany common definitions */
 @import "common";
 
+
 /* Site-wide styles */
 
 body {
@@ -467,71 +468,74 @@ a.get-help-btn {
     margin: 10px 0 20px;
 }
 
+
 /* Footer */
 
-footer {
+.footer {
     background: $footer-background-color;
     clear: both;
     height: 140px;
     position: relative;
     width: 100%;
-    @include container-div;
 }
-footer > img {
-    left: 50%;
-    margin-left: -543px;
-    position: absolute;
-    top: -47px;
-    z-index: -1;
+.footer__container {
+    @include container-div-styles;
 }
-footer .publisher, footer .navigation {
+.footer__copyright,
+.footer__address,
+.footer__nsf-note {
+    font-size: 9px;
+    margin: 0 0 10px 0;
+}
+.footer__address {
+    font-style: normal;
+    line-height: 170%;
+}
+.footer__site-name {
+    font-family: $body-font;
+    font-size: 11px;
+    margin: 0 0 0.5rem;
+}
+.footer__publisher,
+.footer__navigation {
     float: left;
     margin: 0 20px 0 0;
     padding: 18px 0;
     width: 305px;
 }
-footer .navigation {
+.footer__navigation {
     padding-left: 10px;
 }
-footer h6 {
-    font-family: $body-font;
-    font-size: 11px;
-}
-footer p {
-    font-size: 9px;
-    margin: 0 0 10px 0;
-}
-footer ul {
+.footer__navigation-list {
     font-size: 9px;
     list-style-type: none;
     margin-bottom: 12px;
 }
-footer li {
+.footer__navigation-list-item {
     display: inline;
     line-height: 14px;
-    &::after {
-        content: " |";
-    }
-    &:last-child::after {
-        content: none;
-    }
 }
-footer a {
-    &:hover {
-        text-decoration: none;
-    }
-    &[href]:hover {
-        text-decoration: underline;
-    }
+.footer__navigation-list-item::after {
+    content: " \00b7 ";
 }
-footer .nsf-logo {
-    float: left;
-    margin: 0 10px 0 7px;
+.footer__navigation-list-item:last-child::after {
+    content: none;
 }
-footer .support {
+.footer__navigation-list--secondary .footer__navigation-list-item {
+    margin-right: 10px;
+}
+.footer__navigation-list--secondary .footer__navigation-list-item:last-of-type {
+    margin-right: 0;
+}
+.footer__support {
     margin-right: 0;
     padding: 18px 0;
-}    
+}
+.footer__nsf-logo {
+    float: left;
+    margin: 0 10px;
+}
+
 
 /* Breadcrumb trails */
 #breadcrumb {

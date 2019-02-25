@@ -175,11 +175,14 @@ $disabled_orange_gradient: linear-gradient(
     text-indent: -9000px;
 }
 
-@mixin container-div {
+@mixin container-div-styles { // for new approach using BEM
+    margin: 0 auto;
+    padding: 0 10px;
+    width: 960px;
+}
+@mixin container-div { // for old non-BEM approach
     .container {
-        margin: 0 auto;
-        padding: 0 10px;
-        width: 960px;
+        @include container-div-styles;
     }
 }
 
