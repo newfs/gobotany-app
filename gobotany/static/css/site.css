@@ -296,8 +296,6 @@ a.get-help-btn { margin: 10px 0 20px; }
 
 .footer__navigation-list-item:last-child::after { content: none; }
 
-.footer__navigation-list--secondary .footer__navigation-list-item { margin-right: 10px; }
-
 .footer__navigation-list--secondary .footer__navigation-list-item:last-of-type { margin-right: 0; }
 
 .footer__support { margin-right: 0; padding: 18px 0; }
