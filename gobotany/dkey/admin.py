@@ -69,13 +69,20 @@ class LeadAdmin(GoBotanyModelAdmin):
 
 class PageAdmin(GoBotanyModelAdmin):
     formfield_overrides = {
-        models.TextField: {'widget': Textarea(attrs={'rows': 4, 'cols': 80}) },
+        models.TextField: {'widget': Textarea(attrs={'rows': 2, 'cols': 80}) },
     }
     list_display = ('title', 'rank', 'chapter')
     list_filter = ('rank',)
     ordering = ('title',)
     readonly_fields = ('breadcrumb_cache',)
     search_fields = ('title', 'chapter', 'rank')
+
+    def get_form(self, request, obj=None, **kwargs):
+        form = super(PageAdmin, self).get_form(request, obj, **kwargs)
+        # Make the 'Text' text field bigger for easier editing.
+        form.base_fields['text'].widget.attrs['style'] = \
+            'height: 24rem; width: 48rem'
+        return form
 
 
 admin.site.register(Figure, FigureAdmin)
