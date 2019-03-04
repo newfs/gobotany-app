@@ -12,9 +12,8 @@ from django.views.generic.base import TemplateView
 from registration.backends.default.views import ActivationView
 from registration.backends.default.views import RegistrationView
 
-from gobotany.plantshare.emailconfirmation_views import confirm_email
 from gobotany.plantshare.views import (change_email,
-    change_email_confirmation_sent)
+    change_email_confirmation_sent, confirm_email)
 from .forms import RegistrationFormWithCaptcha
 
 urlpatterns = [
@@ -68,7 +67,7 @@ urlpatterns = [
         name='ps-change-email'),
     url(r'^email/change/confirmation-sent/$', change_email_confirmation_sent,
         name='ps-change-email-confirmation-sent'),
-    url(r'^email/confirm/(\w+)/$', confirm_email,
+    url(r'^email/confirm/(?P<key>\w+)/$', confirm_email,
         name='ps-confirm-email'),
 
     url(r'', include('registration.auth_urls')),

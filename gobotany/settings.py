@@ -166,6 +166,7 @@ INSTALLED_APPS = [
 
     ] + (['debug_toolbar'] if USE_DEBUG_TOOLBAR else []) + [
 
+    'account',
     'haystack',
     'haystack_panel',
     'imagekit',
@@ -260,8 +261,10 @@ EMAIL_HOST_PASSWORD = os.environ.get('SENDGRID_PASSWORD', '')
 if EMAIL_HOST_USER:
     USE_TLS = True
 
-# For emailconfirmation
-EMAIL_CONFIRMATION_DAYS = 3
+# For django-user-accounts
+ACCOUNT_EMAIL_CONFIRMATION_EXPIRE_DAYS = 3
+ACCOUNT_EMAIL_CONFIRMATION_URL = 'ps-confirm-email'
+ACCOUNT_EMAIL_UNIQUE = False
 
 # For django-recaptcha
 if IN_PRODUCTION:   # instances on Heroku (Prod, Dev)
