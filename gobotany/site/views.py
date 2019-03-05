@@ -99,8 +99,6 @@ def about_view(request):
 @vary_on_headers('Host')
 def updates_view(request):
     updates = Update.objects.all()
-    print 'Update records:', len(updates)
-
     return render_per_partner('updates.html', {
             'updates': updates,
             }, request)
