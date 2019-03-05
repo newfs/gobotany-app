@@ -1673,12 +1673,18 @@ body.search-results h1 + p { margin-top: 12px; }
 /* End media queries styles for Search results */
 /* Help section */
 /* styles for all Help-section pages */
-.help #main > ul { padding-left: 18px; padding-right: 5px; }
+.help #main > ul, .help #main > div > ul { padding-left: 18px; padding-right: 5px; }
 
 /* styles for individual pages */
 /* About */
 #about #main img { float: right; margin: 5px 0 20px 20px; }
 #about #main img.bookcover { margin-right: 89px; }
+
+/* Updates */
+#updates #main ul { line-height: 140%; list-style-type: none; margin-bottom: 1rem; margin-top: 1rem; padding: 0; }
+#updates #main ul ul { margin: 0.5rem 0 0.5rem 1rem; }
+#updates hr { background-image: linear-gradient(to right, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.75), rgba(0, 0, 0, 0)); border: 0; height: 1px; margin: 1rem 0; }
+#updates .ref { font-size: 11px; margin-left: 2rem; }
 
 /* Getting Started */
 #getting-started h2 { margin-top: 0; padding-top: 0; }
