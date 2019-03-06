@@ -1022,6 +1022,7 @@ class Distribution(models.Model):
     native = models.BooleanField(default=False)
 
     class Meta:
+        ordering = ('scientific_name', 'state', 'county')
         verbose_name = 'Distribution record'
 
     def __unicode__(self):
