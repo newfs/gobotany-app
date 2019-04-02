@@ -131,7 +131,9 @@
             function submitForm(command, leadId, letter) {
                 var approved = confirm('Are you sure you want to ' + command +
                     (command === 'add' ? ' a' : ' the') +
-                    ' couplet under ' + letter + '?');
+                    ' couplet under ' + letter + '?' +
+                    (command === 'promote' ? ' The current ' +
+                        letter + ' and its sibling will be replaced by it.': ''));
 
                 if (approved) {
                     document.getElementById('edit-command').value = command;
@@ -223,6 +225,8 @@
             <input id="edit-command" type="hidden" name="command" value="">
             <input id="edit-lead-id" type="hidden" name="lead-id" value="">
 
+        {# <p>lead_hierarchy|length = {{ lead_hierarchy|length }}</p> #}
+
         <ul class="leads">
         {% for lead in lead_hierarchy %}
             {# each "lead" item here is a piece: can be a tag, a lead record, etc. #}
@@ -243,13 +247,29 @@
                     href="/admin/dkey/lead/{{ lead.id }}/change/?next={{ request.get_full_path|urlencode }}">Change</a>
 
                 {% if lead.childlist %}
+                    {# Only show the Promote button if the lead has a parent. #}
+                    {# So, don't allow promoting the topmost on a Page. #}
+                    {% if lead.parent %}
+                        <a class="edit"
+                            onclick="javascript: submitForm('promote', {{ lead.id }}, '{{ lead.letter }}'); return false;"
+                            href="javascript: void(0);"
+                            onmouseover="window.status='Move {{ lead.childlist.0.letter }}/{{ lead.childlist.1.letter }} up a level, replacing its parent pair';"
+                            onmouseout="window.status='';"
+                            title="Promote {{ lead.childlist.0.letter }}/{{ lead.childlist.1.letter }} up a level, replacing its parent pair"
+                            >↖ Promote
+                            {{ lead.childlist.0.letter }}/{{ lead.childlist.1.letter }}…</a>
+                    {% endif %}
+
                     {# Only show the Delete button if it's a 'bottom' node, #}
                     {# i.e., if the node's couplet has no further children. #}
                     {% if lead.childlist.0.childlist|length == 0 and lead.childlist.1.childlist|length == 0 %}
                         {# Use a Unicode minus sign, not a hyphen. #}
                         <a class="edit"
                             onclick="submitForm('delete', {{ lead.id }}, '{{ lead.letter }}'); return false;"
-                            href="javascript: void(0);">− Delete Couplet…</a>
+                            href="javascript: void(0);"
+                            title="Delete the couplet below {{ lead.letter }}"
+                            >− Delete
+                            {{ lead.childlist.0.letter }}/{{ lead.childlist.1.letter }}…</a>
                     {% endif %}
                 {% else %}
                     {# Only show the Add button if there's a couplet; don't #}
@@ -257,7 +277,9 @@
                     {% if lead.childlist|length == 0 and lead.letter %}
                         <a class="edit"
                             onclick="submitForm('add', {{ lead.id }}, '{{ lead.letter }}'); return false;"
-                            href="javascript: void(0);">+ Add Couplet…</a>
+                            href="javascript: void(0);"
+                            title="Add a new couplet below {{ lead.letter }}"
+                            >+ Add Couplet…</a>
                     {% endif %}
                 {% endif %}
 
