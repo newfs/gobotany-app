@@ -25,10 +25,7 @@
 /* Site-wide styles */
 
 body {
-    background-color: #f0f0c0;
-    background-image: url(/static/images/layout/little-plants.png);    
-    background-position: bottom 140px center;
-    background-repeat: no-repeat;
+    background-color: $body_bg;
     color: $text-color;
     font-family: $body-font;
     font-size: $base-font-size;
