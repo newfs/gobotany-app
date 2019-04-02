@@ -52,7 +52,7 @@ $headings-font: "Trebuchet MS", Helvetica, Arial, "Lucida Sans Unicode", sans-se
 $body-font: Verdana, Geneva, "Lucida Sans Unicode", sans-serif;
 $narrower-body-font: Tahoma, "Trebuchet MS", "Lucida Sans Unicode", sans-serif;
 
-$link-green: #317b0c;
+$link-green: #27610a;
 $heading-green: #437829;
 $border-green: #c3d941;
 $light-green: #e1f0d1;
@@ -60,12 +60,12 @@ $green-yellow: #ccdf53;
 $medium-brown: #807121;
 $pale-lime-green: #defcb3;
 
-$visited-link-color: #666e0b;
-$active-link-color: #45aC11;
+$visited-link-color: #50570a;
+$active-link-color: #45aC11; /* TODO: fix; too light for WCAG CC */
 
 $text-color: #000;
 $navbar-color: #508e31;
-$footer-background-color: #b4d57f;
+$footer-background-color: #a7da7e;
 $login-box-background-color: #d3eaad;
 
 $base-font-size: 12px;
