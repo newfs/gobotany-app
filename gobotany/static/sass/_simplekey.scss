@@ -35,7 +35,7 @@ body.skey.groups-subgroups {
             line-height: 110%;
             margin: 0 0 5px 0;	
             + p {
-                color: #807121;
+                color: $medium-brown;
                 display: block;
                 font-family: $headings-font;
                 font-size: 12px;
@@ -108,12 +108,12 @@ body.skey {
             float: left;
             margin: 0 0 40px 0;
             h6 {
-                color: #807121;
+                color: $medium-brown;
                 font-weight: bold;
                 margin: 0 0 5px 0;
             }
             label {
-                color: #807121;
+                color: $medium-brown;
                 display: block;
                 font-family: $headings-font;
                 font-size: 12px;
@@ -384,7 +384,7 @@ body.skey {
                 }
             }
             h6 {
-                color: #807121;
+                color: $medium-brown;
                 font-weight: bold;
                 margin: 0 0 8px 0;
             }

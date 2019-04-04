@@ -76,7 +76,6 @@
     p {
         margin: 12px 0 0 0;
         text-align: left;
-        text-shadow: 0px 1px 1px #fff;	
     }
 }
 
@@ -131,7 +130,7 @@
     h4 {
         margin: 0 0 3px 0;
         font-style: italic;
-        color: #807121;
+        color: $medium-brown;
     }
     p {
         margin: 0;
@@ -185,7 +184,7 @@ a {
                 font-style: italic;
             }
             &.english {
-                color: #807121;
+                color: $medium-brown;
                 font-size: 14px;
                 font-weight: bold;
             }
