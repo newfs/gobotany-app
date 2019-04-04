@@ -76,7 +76,7 @@ a:not([href]) {
 }
 
 h1, h2, h3, h4, h5, h6 {
-    font-family: ScalaSans, $headings-font;
+    font-family: $headings-font;
     font-weight: normal;
     line-height: 155%;
     margin: 0;
@@ -85,22 +85,22 @@ h1, h2, h3, h4, h5, h6 {
 }
 h1 {
     color: $heading-green;
-	font-size: 38px;
-	font-weight: bold;
+    font-family: Basetica, $headings-font;
+    font-size: 34px;
     line-height: 110%;
 }
 h2 {
-	font-size: 26px;
+    font-size: 22px;
     margin: 8px 0;
 }
 h3 {
-	font-size: 20px;	
+    font-size: 18px;
 }
 h4 {
-	font-size: 16px;	
+    font-size: 15px;
 }
 h5, h6 {
-	font-size: $base-font-size;	
+    font-size: $base-font-size;
 }
 h6 {
     font-style: italic;
@@ -288,6 +288,9 @@ header nav {
     font-family: $headings-font;
     height: 120px;
     padding: 0 0 0 48px;
+    > ul {
+        font-family: $navbar-font;
+    }
     a {
         color: #fff;
         display: block;
@@ -307,8 +310,7 @@ header nav {
         display: block;
         float: left;
         font-size: $nav-font-size;
-        line-height: normal;
-        margin: 0 12px 0 0;
+        margin: 0 10px 0 0;
         padding: 0;
         a:hover {
             text-decoration: none;

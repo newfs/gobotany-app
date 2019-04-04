@@ -11,13 +11,13 @@ body.skey.groups-subgroups {
 
     p {
         &.question, &.tip {
-            font-family: ScalaSans, $headings-font;
-            font-size: 24px;
+            font-family: $headings-font;
+            font-size: 20px;
             margin: 8px 0 0;
             padding: 0;
         }
         &.tip {
-            font-size: 18px;
+            font-size: 16px;
             margin: 8px 0 0;
             padding: 0;
         }
@@ -144,7 +144,7 @@ body.skey {
             margin: 8px 0;
             label {
                 color: #000;
-                font-family: ScalaSans, $headings-font;
+                font-family: $headings-font;
                 font-size: 15px;
                 font-weight: normal;
             }
@@ -539,7 +539,7 @@ body.skey {
         .view-tabs {
             border-bottom: 1px solid #c3d941;
             clear: left;
-            font-family: ScalaSans, "Trebuchet MS", sans-serif;
+            font-family: $headings-font;
             height: 28px;
             margin: 15px 0 0;
             a {

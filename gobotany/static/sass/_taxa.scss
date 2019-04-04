@@ -31,8 +31,8 @@ body.taxa #main {
     }
     .common {
         color: $medium-brown;
-        font-family: ScalaSans, $headings-font;
-        font-size: 28px;
+        font-family: $headings-font;
+        font-size: 24px;
         line-height: 105%;
         margin: 6px 0 15px;
     }
@@ -153,7 +153,7 @@ body#species #main .nemap h2 + p, body#species #main .namap h2 + p {
 }
 
 body#species #side {
-    top: 780px;   /* remaining side content is positioned
+    top: 850px;   /* remaining side content is positioned
                      further down to leave room for maps
                      in full-width layout */
 }

@@ -7,47 +7,24 @@
 /* Web fonts: style-linked groups */
 
 @font-face {
-    font-family: ScalaSans;
-    src: url(//newfs.s3.amazonaws.com/fonts/ScalaSansWeb.woff) format("woff");
+    font-family: Basetica;
+    src: url(/static/fonts/Basetica-Medium-205TF.woff2) format('woff2'),
+        url(/static/fonts/Basetica-Medium-205TF.woff) format('woff');
 }
+@font-face {
+    font-family: Basetica;
+    font-style: italic;
+    src: url(/static/fonts/Basetica-Medium-Italic-205TF.woff2) format('woff2'),
+        url(/static/fonts/Basetica-Medium-Italic-205TF.woff) format('woff');
+}
+
 @font-face {
     font-family: ScalaSans;
     font-weight: bold;
     src: url(//newfs.s3.amazonaws.com/fonts/ScalaSansWeb-Bold.woff) format("woff");
 }
-@font-face {
-    font-family: ScalaSans;
-    font-style: italic;
-    src: url(//newfs.s3.amazonaws.com/fonts/ScalaSansWeb-Ita.woff) format("woff");
-}
-@font-face {
-    font-family: ScalaSans;
-    font-style: italic;
-    font-weight: bold;
-    src: url(//newfs.s3.amazonaws.com/fonts/ScalaSansWeb-BoldIta.woff) format("woff");
-}
 
-@font-face {
-    font-family: ScalaSansSmallCaps;
-    src: url(//newfs.s3.amazonaws.com/fonts/ScalaSansScWeb.woff) format("woff");
-}
-@font-face {
-    font-family: ScalaSansSmallCaps;
-    font-weight: bold;
-    src: url(//newfs.s3.amazonaws.com/fonts/ScalaSansScWeb-Bold.woff) format("woff");
-}
-@font-face {
-    font-family: ScalaSansSmallCaps;
-    font-style: italic;
-    src: url(//newfs.s3.amazonaws.com/fonts/ScalaSansScWeb-Ita.woff) format("woff");
-}
-@font-face {
-    font-family: ScalaSansSmallCaps;
-    font-style: italic;
-    font-weight: bold;
-    src: url(//newfs.s3.amazonaws.com/fonts/ScalaSansScWeb-BoldIta.woff) format("woff");
-}
-
+$navbar-font: Basetica, "Trebuchet MS", sans-serif;
 $headings-font: "Trebuchet MS", Helvetica, Arial, "Lucida Sans Unicode", sans-serif;
 $body-font: Verdana, Geneva, "Lucida Sans Unicode", sans-serif;
 $narrower-body-font: Tahoma, "Trebuchet MS", "Lucida Sans Unicode", sans-serif;
@@ -61,7 +38,7 @@ $medium-brown: #807121;
 $pale-lime-green: #defcb3;
 
 $visited-link-color: #50570a;
-$active-link-color: #45aC11; /* TODO: fix; too light for WCAG CC */
+$active-link-color: #45aC11; /* TODO: fix; too light for WCAG AA */
 
 $text-color: #000;
 $navbar-color: #508e31;
@@ -316,8 +293,8 @@ div.popup a {
 #top-message {
     background-color: #d87e54;
     color: #000;
-    font-family: ScalaSans, sans-serif;
-    font-size: 15px;
+    font-family: $body-font;
+    font-size: 12px;
     margin: 0;
     padding: 12px 24px;
 }
@@ -329,18 +306,20 @@ div.popup a {
     border-radius: 6px;
     cursor: pointer;
     float: right;
-    font-family: ScalaSansSmallCaps, sans-serif;
-    font-size: 16px;
+    font-family: ScalaSans, $body-font;
+    font-size: 14px;
+    font-weight: bold;
     letter-spacing: 1px;
     margin-right: 45px;
-    margin-top: -45px;
-    padding: 6px 10px;
+    margin-top: -38px;
+    padding: 10px 10px 6px;
+    text-transform: uppercase;
 }
 #top-message svg {
     cursor: pointer;
     float: right;
     margin-right: 4px;
-    margin-top: -36px;
+    margin-top: -30px;
 }
 @media only screen and (max-width: 980px) {
     #top-message p {
