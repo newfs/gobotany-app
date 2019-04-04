@@ -19,7 +19,7 @@
         "pk": 3,
         "model": "sites.site",
         "fields": {
-            "domain": "gobotany.newenglandwild.org",
+            "domain": "gobotany.nativeplanttrust.org",
             "name": "Go Botany"
         }
     },

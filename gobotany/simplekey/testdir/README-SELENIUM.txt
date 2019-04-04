@@ -58,7 +58,7 @@ with something like:
 
 Or, you could even point the test suite directly at the live site:
 
-  $ SIMPLEHOST=gobotany.newenglandwild.org ...
+  $ SIMPLEHOST=gobotany.nativeplanttrust.org ...
 
 Running your tests using Sauce Labs
 -----------------------------------
