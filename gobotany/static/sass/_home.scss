@@ -15,8 +15,13 @@
     width: 595px;
     @include offscreen;
 }
+#home .newfs {
+    padding-top: 10px;
+}
 #home .newfs a {
-    background: url(/static/images/branding/newfs-logo-toplevel.png) no-repeat transparent;
+    background: url(/static/images/layout/npt-logo-stacked.svg) no-repeat transparent;
+    background-size: 160px 88px;
+    filter: brightness(0.9); /* make the contrast meet WCAG AA large text/graphics */
     height: 88px;
     width: 160px;
 }

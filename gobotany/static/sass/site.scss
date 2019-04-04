@@ -275,8 +275,10 @@ header .go-botany {
 }
 header .newfs {
     float: right;
+    padding-top: 6px;
     a {
-        background: url(/static/images/layout/newfs-logo-app.png) no-repeat transparent;
+        background: url(/static/images/layout/npt-logo-stacked.svg) no-repeat transparent;
+        background-size: 116px 66px;
         height: 66px;
         width: 116px;
         @include offscreen;
