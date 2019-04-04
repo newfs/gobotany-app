@@ -66,7 +66,7 @@ class HomeTests(FunctionalCase):
         self.get('/')
 
         title = self.css1('title').text
-        self.assertEqual(title, 'Go Botany: New England Wild Flower Society')
+        self.assertEqual(title, 'Go Botany: Native Plant Trust')
 
         get_started = self.css1('#cta')
         self.assertEqual(get_started.get_attribute('href'), '/simple/')
