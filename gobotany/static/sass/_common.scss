@@ -89,6 +89,8 @@ $orange3: #e39d0e;
 $orange4: #f0b448;
 $orange5: #f6be59;
 
+$npt-orange: #d87e54;
+
 $list_popup_border: #acac90;
 
 $orange_gradient: linear-gradient(
@@ -105,9 +107,10 @@ $disabled_orange_gradient: linear-gradient(
     mix($body_bg, $orange5, 50%) 50%, mix($body_bg, $orange3, 50%) 100%);
 
 .orange-button {
-    border: 1px solid $orange1 !important;
+    background-color: $npt-orange;
+    border: 1px solid $npt-orange !important;
     border-radius: 14px;
-    box-shadow: 0px 1px 4px 0 $shadow_color;
+    box-shadow: 0px 1px 2px 0 $shadow_color;
     color: #fff;
     cursor: pointer;
     display: inline-block;
@@ -120,11 +123,9 @@ $disabled_orange_gradient: linear-gradient(
     padding: 4px 12px;
     text-align: center;
     text-decoration: none;
-    text-shadow: 1px 2px 2px $orange1;
-    @include background($orange_gradient);
+    text-shadow: 1px 2px 2px $npt-orange;
     &:active {
-        background-color: $orange1;
-        @include background($dull_orange_gradient);
+        background-color: $npt-orange; /* TODO: active button style/color */
     }
     &:hover, &:visited, &:active {
         color: white;

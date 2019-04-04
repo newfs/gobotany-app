@@ -470,7 +470,7 @@ body.skey {
                 background-color: #508e31;
             }
             .continue {
-                background-color: #dc9402;
+                background-color: $npt-orange;
                 border-radius: 2em;
                 border: 2px solid #dc9402;
                 cursor: pointer;
@@ -478,17 +478,6 @@ body.skey {
                 letter-spacing: 3px;
                 text-shadow: 1px 1px 2px #dc9402;
                 text-transform: uppercase;
-
-                /* Gradient generated using the tool "Ultimate CSS Gradient Generator":
-                 * www.colorzilla.com/gradient-editor
-                 */
-                background: #dc9302; /* Old browsers */
-                background: -moz-linear-gradient(top,  #dc9302 0%, #f4bc53 50%, #dc9302 100%); /* FF3.6+ */
-                background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#dc9302), color-stop(50%,#f4bc53), color-stop(100%,#dc9302)); /* Chrome,Safari4+ */
-                background: -webkit-linear-gradient(top,  #dc9302 0%,#f4bc53 50%,#dc9302 100%); /* Chrome10+,Safari5.1+ */
-                background: -o-linear-gradient(top,  #dc9302 0%,#f4bc53 50%,#dc9302 100%); /* Opera 11.10+ */
-                background: -ms-linear-gradient(top,  #dc9302 0%,#f4bc53 50%,#dc9302 100%); /* IE10+ */
-                background: linear-gradient(top,  #dc9302 0%,#f4bc53 50%,#dc9302 100%); /* W3C */
             }
             h1 {
                 font-size: 140%;
