@@ -89,7 +89,7 @@ $orange3: #e39d0e;
 $orange4: #f0b448;
 $orange5: #f6be59;
 
-$npt-orange: #bb582a; /* darker version of orange #d87e54, for white text */
+$npt-orange: #d87e54;
 
 $list_popup_border: #acac90;
 
@@ -111,7 +111,7 @@ $disabled_orange_gradient: linear-gradient(
     border: 1px solid $npt-orange !important;
     border-radius: 14px;
     box-shadow: 0px 1px 2px 0 $shadow_color;
-    color: #fff;
+    color: #000;
     cursor: pointer;
     display: inline-block;
     font-family: ScalaSans, $headings-font;
@@ -128,7 +128,7 @@ $disabled_orange_gradient: linear-gradient(
         background-color: $npt-orange; /* TODO: active button style/color */
     }
     &:hover, &:visited, &:active {
-        color: white;
+        color: #000;
     }
     &.caps {
         text-transform: uppercase;
