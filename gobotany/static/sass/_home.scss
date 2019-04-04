@@ -107,14 +107,13 @@
     z-index: 50;
 }
 #home .three-col {
-    background: url(/static/images/layout/dot.png) right top repeat-y;
     float: left;
     height: 240px;
     margin: 354px 23px 5px 0;
     padding: 8px 23px 0 0;
     width: 289px;
     &.last {
-        background: 0;	
+        background: 0;
         margin-right: 0;
         padding: 8px 0 0 0;
         a.orange-button {
@@ -126,7 +125,7 @@
     }
     h4 {
         margin: 0 0 3px 0;
-        font-style: italic;	
+        font-style: italic;
         color: #807121;
     }
     p {
