@@ -17,7 +17,8 @@ gettext = lambda s: s
 SECRET_KEY = os.environ.get('GOBOTANY_DJANGO_SECRET_KEY', '')
 
 # New in Django 1.5: allowed hosts required for production-like deployments
-ALLOWED_HOSTS = ['.newenglandwild.org', # any subdomain of newenglandwild.org
+ALLOWED_HOSTS = ['.nativeplanttrust.org', # any subdomain of nativeplanttrust.org
+    '.newenglandwild.org', # any subdomain of newenglandwild.org
     'gobotany-dev.herokuapp.com',
     'gobotany-staging.herokuapp.com',
     'gobotany-prod.herokuapp.com',
@@ -254,7 +255,7 @@ LOGIN_URL = '/plantshare/accounts/login/'
 # python -m smtpd -n -c DebuggingServer localhost:1025
 EMAIL_HOST = os.environ.get('EMAIL_HOST', '')
 EMAIL_PORT = os.environ.get('EMAIL_PORT', '')
-DEFAULT_FROM_EMAIL = 'no-reply@newenglandwild.org'
+DEFAULT_FROM_EMAIL = 'no-reply@nativeplanttrust.org'
 # SendGrid Heroku add-on configuration
 EMAIL_HOST_USER = os.environ.get('SENDGRID_USERNAME', '')
 EMAIL_HOST_PASSWORD = os.environ.get('SENDGRID_PASSWORD', '')
@@ -364,7 +365,8 @@ if IN_PRODUCTION:
 # agreed to the PlantShare Terms of Agreement.
 AGREED_TO_TERMS_GROUP = 'Agreed to PlantShare Terms'
 
-ADMINS = (('Go Botany Dev', 'gobotanydev@newenglandwild.org'), )
+ADMINS = (('Go Botany Dev', 'gobotanydev@newenglandwild.org',
+    'gobotanydev@nativeplanttrust.org'), )
 
 # https://docs.djangoproject.com/en/1.5/ref/settings/#secure-proxy-ssl-header
 # Use SSL
