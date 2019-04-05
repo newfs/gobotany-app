@@ -175,7 +175,7 @@ $disabled_orange_gradient: linear-gradient(
 }
 
 @mixin highlight-global-nav {
-    background: url(/static/images/layout/active-nav-app.png) bottom center no-repeat;
+    background: url(/static/images/layout/active-nav.png) bottom center no-repeat transparent;
 }
 
 @mixin highlight-global-nav-home {
