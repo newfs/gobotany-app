@@ -41,9 +41,12 @@ $pale-lime-green: #defcb3;
 $visited-link-color: #50570a;
 $active-link-color: #45ac11; /* TODO: fix; too light for WCAG AA */
 
+$bright-green: #a7da7e; /* from NPT palette */
+$lighter-green: #bde29c; /* lightened version of #a7da7e green from NPT palette */
+
 $text-color: #000;
 $navbar-color: #508e31;
-$footer-background-color: #a7da7e;
+$footer-background-color: $bright-green;
 $login-box-background-color: #d3eaad;
 
 $base-font-size: 12px;
@@ -78,11 +81,11 @@ $logo_width: 450px;
 $body_bg: #f8eeda;
 $text_gray: #606060;
 $text_green: #519136;
-$text_dark_green: #35661C;
+$text_dark_green: #35661c;
 $inactive_bg: #d9dbb1;
 $shadow_color: darken($inactive_bg, 30);
 $active_border: #7abe58;
-$active_bg: #b4d57f;
+$active_bg: #bedc8f;
 
 $orange1: #dc9402;
 $orange2: #e29b0b;

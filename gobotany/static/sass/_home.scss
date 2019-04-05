@@ -155,7 +155,7 @@ a {
     }
 }
 #home #potd {   /* Plant of the Day */
-    background: #d7eec3; /* lightened version of #a7da7e green from NPT palette */
+    background: $lighter-green;
     border: 3px solid #fff;
     box-shadow: 0px 0px 4px 0 rgba(0, 0, 0, 0.3);
     clear: left;
