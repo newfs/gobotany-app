@@ -263,14 +263,22 @@ header {
 }
 header .go-botany {
     float: left;
-    margin: 0 0 0 -15px;
-    padding: 14px 0 0 0;
-    width: 443px;
+    height: 54px;
+    margin: 0;
+    padding: 18px 0 0 0;
+    width: 350px;
     a {
-        background: url(/static/images/layout/logo-app.png) no-repeat transparent;
-        height: 65px;
-        width: 443px;
+        background: url(/static/images/layout/gobotany-logo.svg) no-repeat transparent;
+        background-size: 150px 28px;
+        height: 28px;
+        width: 150px;
         @include offscreen;
+    }
+    .tagline {
+        display: block;
+        font-family: Verdana;
+        font-size: 12px;
+        padding: 4px 0 0;
     }
 }
 header .newfs {
@@ -285,11 +293,11 @@ header .newfs {
     }
 }
 header nav {
-    background: url(/static/images/layout/nav-app-green.png) no-repeat;
+    background: url(/static/images/layout/nav-app-npt.png) no-repeat;
     background-position: 0px 79px;
     font-family: $headings-font;
     height: 120px;
-    padding: 0 0 0 48px;
+    padding: 0 0 0 16px;
     > ul {
         font-family: $navbar-font;
     }
@@ -307,12 +315,13 @@ header nav {
     }
     ul {
         clear: both;
+        margin-top: 7px;
     }
     li {
         display: block;
         float: left;
         font-size: $nav-font-size;
-        margin: 0 10px 0 0;
+        margin: 7px 10px 0 0;
         padding: 0;
         a:hover {
             text-decoration: none;
