@@ -84,7 +84,7 @@ h1, h2, h3, h4, h5, h6 {
     -webkit-font-smoothing: antialiased; /* needed for some WebKit browsers: prevent too bold */
 }
 h1 {
-    color: $heading-spruce;
+    color: $heading-green;
     font-family: Basetica, $headings-font;
     font-size: 34px;
     line-height: 110%;
@@ -275,8 +275,9 @@ header .go-botany {
         @include offscreen;
     }
     .tagline {
+        color: $heading-spruce;
         display: block;
-        font-family: Verdana;
+        font-family: Verdana, sans-serif;
         font-size: 12px;
         padding: 4px 0 0;
     }

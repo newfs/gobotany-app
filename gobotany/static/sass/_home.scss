@@ -7,16 +7,28 @@
     background-repeat: repeat-x;
 }
 
-#home h1 {
-    background: url(/static/images/branding/logo-toplevel.png) no-repeat transparent;
+#home header {
+    height: 126px;
+}
+#home .id {
     float: left;
-    margin: 0 0 0 67px;
-    height: 107px;
-    width: 595px;
+}
+#home h1 {
+    background: url(/static/images/layout/gobotany-logo.svg) no-repeat transparent;
+    background-size: 250px 45px;
+    height: 45px;
+    margin: 24px 0 2px;
+    width: 250px;
     @include offscreen;
 }
+#home .tagline {
+    color: $heading-spruce;
+    font-family: Basetica, sans-serif;
+    font-size: 18px;
+    margin: 6px 0 2px;
+}
 #home .newfs {
-    padding-top: 10px;
+    padding-top: 13px;
 }
 #home .newfs a {
     background: url(/static/images/layout/npt-logo-stacked.svg) no-repeat transparent;
@@ -26,17 +38,12 @@
     width: 160px;
 }
 #home nav {
-    background: url(/static/images/layout/nav-toplevel.png) center 107px no-repeat;
+    background: url(/static/images/layout/nav-app-npt.png) no-repeat;
+    background-position: 0px 114px;
     height: 160px;
     padding: 0 0 0 19px;
     li {
-        margin-right: 7px;
-        &.home {
-            margin: 0 63px 0 0;
-            a {
-                color: #fff;
-            }
-        }
+        margin-right: 10px;
         a:hover {
             text-decoration: none;
         }
@@ -67,7 +74,7 @@
         display: block;
     }
     h2 {
-        color: #519136;
+        color: $heading-green;
         font-family: Basetica, $headings-font;
         font-size: 36px;
         line-height: normal;
