@@ -177,11 +177,27 @@ $disabled_orange_gradient: linear-gradient(
 }
 
 @mixin highlight-global-nav {
-    background: url(/static/images/layout/active-nav.png) bottom center no-repeat transparent;
+    /* For use on active nav item, with :after */
+    border: 10px solid transparent;
+    border-bottom-color: $body_bg;
+    content: "";
+    height: 0;
+    left: calc(50% - 10px); /* calc not fully supported on IE 10-11 */
+    position: absolute;
+    top: 14px;
+    width: 0;
 }
 
 @mixin highlight-global-nav-home {
-    background: url(/static/images/layout/active-nav-home.png) bottom center no-repeat transparent;
+    /* For use on active nav item, with :after */
+    border: 10px solid transparent;
+    border-bottom-color: #6c9956;
+    content: "";
+    height: 0;
+    left: calc(50% - 10px); /* calc not fully supported on IE 10-11 */
+    position: absolute;
+    top: 14px;
+    width: 0;
 }
 
 @mixin highlight-sidebar-nav-item {

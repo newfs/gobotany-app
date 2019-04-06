@@ -164,37 +164,37 @@ p.meta {
 
 /* Global navigation (header) */
 body#home {
-    header nav li.home {
+    header nav li.home:after {
         @include highlight-global-nav-home;
     }
 }
 body.simple {
-    header nav li.simple {
+    header nav li.simple:after {
         @include highlight-global-nav;
     }
 }
 body.plantshare {
-    header nav li.plantshare {
+    header nav li.plantshare:after {
         @include highlight-global-nav;
     }
 }
 body.full {
-    header nav li.full {
+    header nav li.full:after {
         @include highlight-global-nav;
     }
 }
 body.dkey {
-    header nav li.dkey {
+    header nav li.dkey:after {
         @include highlight-global-nav;
     }
 }
 body.teaching {
-    header nav li.teaching {
+    header nav li.teaching:after {
         @include highlight-global-nav;
     }
 }
 body.help {
-    header nav li.help {
+    header nav li.help:after {
         @include highlight-global-nav;
     }
 }
@@ -325,6 +325,7 @@ header nav {
         font-size: $nav-font-size;
         margin: 7px 10px 0 0;
         padding: 0;
+        position: relative;
         a:hover {
             text-decoration: none;
         }
@@ -373,6 +374,10 @@ header #search {
 /* Main content */
 
 .content {
+    padding: 0;
+    @include container-div;
+}
+#home .content {
     padding: 8px 0 0;
     @include container-div;
 }
