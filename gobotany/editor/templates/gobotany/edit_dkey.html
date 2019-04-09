@@ -50,22 +50,17 @@
             nav a {
                 white-space: nowrap;
             }
-            nav a:link, footer a:link {
-                color: #fff;
-                text-decoration: none;
-            }
-            nav a:hover,
-            footer a:hover {
-                text-decoration: underline;
-            }
+            nav a:link,
+            footer a:link,
             nav a:visited,
             footer a:visited {
-                color: #f5dd5d;
+                color: #fff;
+                text-decoration: none;
             }
             nav p {
                 float: right;
                 font-size: 85%;
-                margin: 11px 0 0;
+                margin: 10px 0 0;
                 padding: 0 0 0 1rem;
             }
             footer {
@@ -73,7 +68,7 @@
                 padding: 0.5rem 1rem;
             }
             main {
-                flex: 1;
+                flex: 1 0 0;
                 padding: 0 1rem 2rem;
             }
             .leads {
@@ -88,6 +83,20 @@
             }
             h2 {
                 font-weight: 300;
+            }
+            ul.messagelist {
+                margin: 0;
+                padding: 0;
+            }
+            ul.messagelist li {
+                background: #dfd url(/static/admin/icon-yes.svg) 40px 12px no-repeat;
+                background-size: 16px auto;
+                color: #333;
+                display: block;
+                font-size: 13px;
+                font-weight: 400;
+                padding: 10px 10px 10px 65px;
+                margin: 0 0 10px 0;
             }
             a.edit {
                 background: #fcfcfc;
@@ -104,12 +113,27 @@
             form {
                 display: inline;
             }
+            .jump {
+                border: 0;
+                float: right;
+                margin-top: 0.4rem;
+            }
+            .jump form {
+                display: block;
+                margin: 1rem 0 0;
+            }
+            .jump label {
+                display: block;
+                font-size: 0.75rem;
+            }
         </style>
         <script>
             function submitForm(command, leadId, letter) {
                 var approved = confirm('Are you sure you want to ' + command +
                     (command === 'add' ? ' a' : ' the') +
-                    ' couplet under ' + letter + '?');
+                    ' couplet under ' + letter + '?' +
+                    (command === 'promote' ? ' The current ' +
+                        letter + ' and its sibling will be replaced by it.': ''));
 
                 if (approved) {
                     document.getElementById('edit-command').value = command;
@@ -139,7 +163,50 @@
                 <li><a href="/edit/dkey/group-10/">Group 10</a></li>
             </ul>
         </nav>
+
+        {% if messages %}
+        <ul class="messagelist">
+            {% for message in messages %}
+            <li{% if message.tags %} class="{{ message.tags }}"{% endif %}
+                >{{ message }}</li>
+            {% endfor %}
+        </ul>
+        {% endif %}
+
         <main>
+        <div class="jump">
+            <p>Jump to:</p>
+            <form action="#"
+                onsubmit="window.location.href=this.elements[0].value; return false;">
+                <label for="family">Family</label>
+                <select id="family" name="family">
+                    {% for family in families %}
+                    <option value="/edit/dkey/{{ family.slug }}/">{{ family.name }}</option>
+                    {% endfor %}
+                </select>
+                <input type="submit" value="Go">
+            </form>
+            <form action="#"
+                onsubmit="window.location.href=this.elements[0].value; return false;">
+                <label for="genus">Genus</label>
+                <select id="genus" name="genus">
+                    {% for genus in genera %}
+                    <option value="/edit/dkey/{{ genus.slug }}/">{{ genus.name }}</option>
+                    {% endfor %}
+                </select>
+                <input type="submit" value="Go">
+            </form>
+            <form action="#"
+                onsubmit="window.location.href=this.elements[0].value; return false;">
+                <label for="carex-section">Carex section</label>
+                <select id="carex-section" name="carex-section">
+                    {% for section in carex_sections %}
+                    <option value="/edit/dkey/{{ section.1 }}/">{{ section.0 }}</option>
+                    {% endfor %}
+                </select>
+                <input type="submit" value="Go">
+            </form>
+        </div>
 
         {% with title=page|display_title|expand_group_title %}
         <h2>
@@ -150,13 +217,15 @@
             {% endif %}
 
             <a class="edit"
-            href="/admin/dkey/page/{{ page.id }}/change/">Change</a></h2>
+            href="/admin/dkey/page/{{ page.id }}/change/?next={{ request.get_full_path|urlencode }}">Change</a></h2>
         {% endwith %}
 
-        <form id="edit-form" action="" method="post">
+        <form id="edit-form" action="#" method="post">
             {% csrf_token %}
             <input id="edit-command" type="hidden" name="command" value="">
             <input id="edit-lead-id" type="hidden" name="lead-id" value="">
+
+        {# <p>lead_hierarchy|length = {{ lead_hierarchy|length }}</p> #}
 
         <ul class="leads">
         {% for lead in lead_hierarchy %}
@@ -175,16 +244,32 @@
                 {% endif %}
 
                 <a class="edit"
-                    href="/admin/dkey/lead/{{ lead.id }}/change/">Change</a>
+                    href="/admin/dkey/lead/{{ lead.id }}/change/?next={{ request.get_full_path|urlencode }}">Change</a>
 
                 {% if lead.childlist %}
+                    {# Only show the Promote button if the lead has a parent. #}
+                    {# So, don't allow promoting the topmost on a Page. #}
+                    {% if lead.parent %}
+                        <a class="edit"
+                            onclick="javascript: submitForm('promote', {{ lead.id }}, '{{ lead.letter }}'); return false;"
+                            href="javascript: void(0);"
+                            onmouseover="window.status='Move {{ lead.childlist.0.letter }}/{{ lead.childlist.1.letter }} up a level, replacing its parent pair';"
+                            onmouseout="window.status='';"
+                            title="Promote {{ lead.childlist.0.letter }}/{{ lead.childlist.1.letter }} up a level, replacing its parent pair"
+                            >↖ Promote
+                            {{ lead.childlist.0.letter }}/{{ lead.childlist.1.letter }}…</a>
+                    {% endif %}
+
                     {# Only show the Delete button if it's a 'bottom' node, #}
                     {# i.e., if the node's couplet has no further children. #}
                     {% if lead.childlist.0.childlist|length == 0 and lead.childlist.1.childlist|length == 0 %}
                         {# Use a Unicode minus sign, not a hyphen. #}
                         <a class="edit"
                             onclick="submitForm('delete', {{ lead.id }}, '{{ lead.letter }}'); return false;"
-                            href="javascript: void(0);">− Delete Couplet…</a>
+                            href="javascript: void(0);"
+                            title="Delete the couplet below {{ lead.letter }}"
+                            >− Delete
+                            {{ lead.childlist.0.letter }}/{{ lead.childlist.1.letter }}…</a>
                     {% endif %}
                 {% else %}
                     {# Only show the Add button if there's a couplet; don't #}
@@ -192,7 +277,9 @@
                     {% if lead.childlist|length == 0 and lead.letter %}
                         <a class="edit"
                             onclick="submitForm('add', {{ lead.id }}, '{{ lead.letter }}'); return false;"
-                            href="javascript: void(0);">+ Add Couplet…</a>
+                            href="javascript: void(0);"
+                            title="Add a new couplet below {{ lead.letter }}"
+                            >+ Add Couplet…</a>
                     {% endif %}
                 {% endif %}
 
@@ -218,6 +305,10 @@
                         <i>{{ p.title|abbreviate_title }}</i>{% elif p.rank == 'species' %}
                         <i>{{ p.title }}</i>{% elif p.rank == 'section' %}
                         {{ p.title }}{% endif %}</a>
+                {% elif lead.goto_num > 0 %}
+                →
+                <a href="#c{{ lead.goto_num }}">Jump to
+                    {{ lead.goto_num }} on this page</a>
                 {% endif %}
 
                 {% endwith %}

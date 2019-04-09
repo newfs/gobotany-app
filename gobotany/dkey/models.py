@@ -50,7 +50,8 @@ class Lead(models.Model):
     """A text description that leads you down one path in the dkey."""
 
     page = models.ForeignKey('Page', related_name='leads')
-    parent = models.ForeignKey('Lead', related_name='children', null=True)
+    parent = models.ForeignKey('Lead', related_name='children', null=True,
+        blank=True)
     letter = models.TextField()
     text = models.TextField()
     goto_page = models.ForeignKey('Page', related_name='leadins', null=True,
@@ -90,8 +91,8 @@ class Lead(models.Model):
 class Hybrid(models.Model):
     """A paragraph describing a hybrid species."""
 
-    number1 = models.IntegerField()
-    number2 = models.IntegerField()
+    number1 = models.IntegerField(null=True, blank=True)
+    number2 = models.IntegerField(null=True, blank=True)
     scientific_name1 = models.TextField(db_index=True)
     scientific_name2 = models.TextField(db_index=True)
     text = models.TextField(blank=True)

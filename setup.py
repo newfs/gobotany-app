@@ -2,7 +2,7 @@ from distutils.core import setup
 from setuptools import find_packages
 
 requirements = [
-    'django==1.11.9',
+    'django==1.11.18',
 
     'Pillow==3.3.1',
     'bleach==1.4.3',
@@ -17,7 +17,7 @@ requirements = [
     'psycopg2==2.7.3.2',
     'python-memcached',
     'pytz',
-    'tablib==0.9.11',
+    'tablib==0.12.1',
     'xlrd',
 
     # The way we use pysolr introduces an extra dependency
@@ -32,9 +32,9 @@ requirements = [
 
     # Login and registration
 
-    'django-email-confirmation==0.2',
     'django-recaptcha==1.4.0',
     'django-registration==2.1.1',
+    'django-user-accounts==2.1.0', # for changing email addresses
 
     # For storing images on S3.
 
@@ -44,7 +44,7 @@ requirements = [
 
     # Heroku and deployment
 
-    'gunicorn==0.17.2',
+    'gunicorn==19.9.0',
     'newrelic',
     's3cmd',
     'django-sslify>=0.2',

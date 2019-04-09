@@ -9,9 +9,9 @@
         href="https://{{ request.META.HTTP_HOST }}/plantoftheday/atom.xml" />
     <id>https://{{ request.META.HTTP_HOST }}/plantoftheday/</id>
     <updated>{{ plants_of_the_day.0.post_datetime }}</updated>
-    <author><name>New England Wild Flower Society</name></author>
-    <rights>All images and text copyright (c) 2011-2012 New England Wild 
-        Flower Society or respective copyright holders. All rights 
+    <author><name>Native Plant Trust</name></author>
+    <rights>All images and text copyright Native Plant Trust (formerly New
+        England Wild Flower Society) or respective copyright holders. All rights 
         reserved.</rights> 
 
     {% for plant in plants_of_the_day %}

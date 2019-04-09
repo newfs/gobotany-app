@@ -11,13 +11,13 @@ body.skey.groups-subgroups {
 
     p {
         &.question, &.tip {
-            font-family: ScalaSans, $headings-font;
-            font-size: 24px;
+            font-family: $headings-font;
+            font-size: 20px;
             margin: 8px 0 0;
             padding: 0;
         }
         &.tip {
-            font-size: 18px;
+            font-size: 16px;
             margin: 8px 0 0;
             padding: 0;
         }
@@ -35,7 +35,7 @@ body.skey.groups-subgroups {
             line-height: 110%;
             margin: 0 0 5px 0;	
             + p {
-                color: #807121;
+                color: $medium-brown;
                 display: block;
                 font-family: $headings-font;
                 font-size: 12px;
@@ -108,12 +108,12 @@ body.skey {
             float: left;
             margin: 0 0 40px 0;
             h6 {
-                color: #807121;
+                color: $medium-brown;
                 font-weight: bold;
                 margin: 0 0 5px 0;
             }
             label {
-                color: #807121;
+                color: $medium-brown;
                 display: block;
                 font-family: $headings-font;
                 font-size: 12px;
@@ -144,7 +144,7 @@ body.skey {
             margin: 8px 0;
             label {
                 color: #000;
-                font-family: ScalaSans, $headings-font;
+                font-family: $headings-font;
                 font-size: 15px;
                 font-weight: normal;
             }
@@ -384,7 +384,7 @@ body.skey {
                 }
             }
             h6 {
-                color: #807121;
+                color: $medium-brown;
                 font-weight: bold;
                 margin: 0 0 8px 0;
             }
@@ -458,7 +458,7 @@ body.skey {
             text-align: center;
             z-index: 1000;
             div {
-                background-color: #f0f0c0;
+                background-color: $body_bg;
                 border-radius: 0.25em;
                 box-shadow: 0px 5px 20px rgba(0, 0, 0, 1);
                 color: #fff;
@@ -470,7 +470,7 @@ body.skey {
                 background-color: #508e31;
             }
             .continue {
-                background-color: #dc9402;
+                background-color: $npt-orange;
                 border-radius: 2em;
                 border: 2px solid #dc9402;
                 cursor: pointer;
@@ -478,17 +478,6 @@ body.skey {
                 letter-spacing: 3px;
                 text-shadow: 1px 1px 2px #dc9402;
                 text-transform: uppercase;
-
-                /* Gradient generated using the tool "Ultimate CSS Gradient Generator":
-                 * www.colorzilla.com/gradient-editor
-                 */
-                background: #dc9302; /* Old browsers */
-                background: -moz-linear-gradient(top,  #dc9302 0%, #f4bc53 50%, #dc9302 100%); /* FF3.6+ */
-                background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#dc9302), color-stop(50%,#f4bc53), color-stop(100%,#dc9302)); /* Chrome,Safari4+ */
-                background: -webkit-linear-gradient(top,  #dc9302 0%,#f4bc53 50%,#dc9302 100%); /* Chrome10+,Safari5.1+ */
-                background: -o-linear-gradient(top,  #dc9302 0%,#f4bc53 50%,#dc9302 100%); /* Opera 11.10+ */
-                background: -ms-linear-gradient(top,  #dc9302 0%,#f4bc53 50%,#dc9302 100%); /* IE10+ */
-                background: linear-gradient(top,  #dc9302 0%,#f4bc53 50%,#dc9302 100%); /* W3C */
             }
             h1 {
                 font-size: 140%;
@@ -539,7 +528,7 @@ body.skey {
         .view-tabs {
             border-bottom: 1px solid #c3d941;
             clear: left;
-            font-family: ScalaSans, "Trebuchet MS", sans-serif;
+            font-family: $headings-font;
             height: 28px;
             margin: 15px 0 0;
             a {
@@ -870,9 +859,9 @@ body.skey {
 
 
 .modal-wrap.more-questions-dialog {
-    background-color: #f0f0c0;
+    background-color: $body_bg;
     .inner {
-        background-color: #f0f0c0;
+        background-color: $body_bg;
         padding-bottom: 10px;
         p {
             clear: left;

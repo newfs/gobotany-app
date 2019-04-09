@@ -56,36 +56,20 @@
                         type="text" value="{{ scientific_name }}">
                 </div>
             </div>
-            <div class="form-row field-species-name">
-                <div>
-                    <label for="id_species_name"
-                        class="required">Species name:</label>
-                    <input class="vTextField" id="id_species_name"
-                        maxlength="60" name="species_name"
-                        type="text" value="{{ species_name }}">
-                </div>
-            </div>
-            <div class="form-row field-subspecific_epithet">
-                <div>
-                    <label for="id_subspecific_epithet"
-                        class="required">Subspecific epithet:</label>
-                    <input class="vTextField" id="id_subspecific_epithet"
-                        maxlength="60" name="subspecific_epithet"
-                        type="text" value="{{ subspecific_epithet }}">
-                </div>
-            </div>
             <div class="form-row field-present">
                 <div>
-                    <input id="id_present" name="present" 
-                        type="checkbox"><label for="id_present" 
+                    <label for="id_present"
                         class="vCheckboxLabel">Present</label>
+                    <input id="id_present" name="present"
+                        type="checkbox">
                 </div>
             </div>
             <div class="form-row field-native">
                 <div>
-                    <input id="id_native" name="native"
-                        type="checkbox"><label for="id_native"
+                    <label for="id_native"
                         class="vCheckboxLabel">Native</label>
+                    <input id="id_native" name="native"
+                        type="checkbox">
                 </div>
             </div>
         </fieldset>

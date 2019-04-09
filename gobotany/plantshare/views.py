@@ -19,8 +19,7 @@ from django.shortcuts import get_object_or_404, redirect, render
 from django.template import RequestContext
 from django.utils.timezone import utc
 
-import emailconfirmation_views
-from emailconfirmation_models import EmailConfirmation
+from account.models import EmailConfirmation
 
 from gobotany.plantshare.forms import (ChangeEmailForm, ChecklistEntryForm,
     ChecklistForm, QuestionForm, ScreenedImageForm, SightingForm,
@@ -1056,27 +1055,35 @@ def change_email(request):
         'change_email_form': change_email_form,
     }
 
-    return render(request, 'emailconfirmation/change_email_address.html',
+    return render(request, 'account/change_email_address.html',
         context)
 
 
 @login_required
 def change_email_confirmation_sent(request):
     return render(request,
-        'emailconfirmation/change_email_confirmation_sent.html', {})
+        'account/change_email_confirmation_sent.html', {})
 
 
-# Patch the emailconfirmation view 'confirm_email' to make it require
-# that the user be logged in.
 @login_required
-def confirm_email(request, confirmation_key):
-    confirmation_key = confirmation_key.lower()
-    email_address = EmailConfirmation.objects.confirm_email(confirmation_key)
-    return render(request, 'emailconfirmation/confirm_email.html', {
+def confirm_email(request, key):
+    confirmation_key = key.lower()
+    try:
+        confirmation = EmailConfirmation.objects.get(
+            key=confirmation_key)
+    except EmailConfirmation.DoesNotExist:
+        raise Http404
+    confirmed = confirmation.confirm() is not None
+    if confirmed:
+        email_address = confirmation.email_address
+        email_address.verified = True
+        email_address.set_as_primary()
+        email_address.save()
+    else:
+        email_address = None
+    return render(request, 'account/email_confirm.html', {
         'email_address': email_address,
     })
-
-emailconfirmation_views.confirm_email = confirm_email
 
 
 @login_required

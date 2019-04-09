@@ -1010,9 +1010,11 @@ class Distribution(models.Model):
     scientific_name = models.CharField(max_length=100, db_index=True)
 
     species_name = models.CharField(max_length=60, db_index=True, default='',
-        blank=True)
+        blank=True,
+        help_text='Automatically populated from scientific_name')
     subspecific_epithet = models.CharField(max_length=60, db_index=True,
-        default='', blank=True)
+        default='', blank=True,
+        help_text='Automatically populated from scientific_name')
 
     state = models.CharField(max_length=2, db_index=True)
     county = models.CharField(max_length=50, blank=True)
@@ -1027,22 +1029,23 @@ class Distribution(models.Model):
         county = ' (%s County)' % self.county if len(self.county) > 0 else ''
         status = ''
         if self.present:
-            status = 'present, '
-            if self.native:
-                status += 'native'
-            else:
-                status += 'non-native'
+            status = 'present'
         else:
             status = 'absent'
+        status += ', '
+        if self.native:
+            status += 'native'
+        else:
+            status += 'non-native'
         return '%s: %s%s: %s' % (self.scientific_name, self.state,
-                                 county, status)
+            county, status)
 
     def save(self, *args, **kwargs):
         # Ensure the species name and specific epithet fields stay in sync
         # with the "master" scientific name field.
         parts = self.scientific_name.split(' ')
 
-        if 'X' in parts or 'x' or '×' in parts:
+        if u'X' in parts or u'x' in parts or u'×' in parts:
             # Handle one form of a hybrid name: one that has an X (x) or a
             # multiplication sign, with a space after it.
             species_name = ' '.join(parts[0:3])
@@ -1085,6 +1088,27 @@ class CopyrightHolder(models.Model):
         if self.source:
             unicode_string += u' Source: %s' % self.source
         return unicode_string
+
+
+class Update(models.Model):
+    """An entry for an Updates page regarding site (data) improvements."""
+    date = models.DateField()
+    description = models.TextField()
+
+    class Meta:
+        ordering = ['-date']
+
+
+class Highlight(models.Model):
+    """A home page highlight to tell about a recently added Update.
+
+    A single active Highlight record, the most recent, shows on the page.
+
+    Intended to be turned on only temporarily, when a home page notice
+    is needed, but not to be present all the time on the home page.
+    """
+    note = models.TextField()
+    active = models.BooleanField(default=False)
 
 
 class Video(models.Model):

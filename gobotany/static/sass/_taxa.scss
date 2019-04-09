@@ -31,8 +31,8 @@ body.taxa #main {
     }
     .common {
         color: $medium-brown;
-        font-family: ScalaSans, $headings-font;
-        font-size: 28px;
+        font-family: $headings-font;
+        font-size: 24px;
         line-height: 105%;
         margin: 6px 0 15px;
     }
@@ -118,7 +118,7 @@ body#species .section {
 body#species #maps, body#species #side {
     position: absolute;
     h2 {
-        font-size: 16px;
+        font-size: 15px;
         margin: 0 0 4px 0;
     }
 }
@@ -141,7 +141,7 @@ body#species .definitions-link {
     padding: 0 0 0 15px;
 }
 body#species .found-plant {
-    background-color: #f0f0c0;
+    background-color: $body_bg;
     font-size: 12px;
     line-height: 16px;
     padding: 4px 12px;

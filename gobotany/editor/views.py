@@ -6,6 +6,7 @@ from operator import attrgetter as pluck
 
 import tablib
 from datetime import datetime
+from django.contrib.messages import get_messages
 from django.contrib.auth.decorators import permission_required
 from django.http import Http404, HttpResponse
 from django.shortcuts import get_object_or_404, redirect, render
@@ -364,7 +365,9 @@ tcvfieldname_re = re.compile('tcv([0-9]+)$')
 @permission_required('core.botanist')
 def edit_lit_sources(request, dotted_datetime):
 
-    return_to = request.REQUEST.get('return_to', '.')
+    return_to = request.GET.get('return_to', '.')
+    if len(return_to) <= 1:
+        return_to = request.POST.get('return_to', '.')
 
     if request.method == 'POST':
         for key in request.POST:
@@ -582,7 +585,7 @@ def _renumber_page(page):
     number = 1
     last_number = 0
     # Sort on the letter field here because in order to number correctly,
-    # the 'a' sidt must be done first, then the 'b' side.
+    # the 'a' side must be done first, then the 'b' side.
     top_couplet = page.sorted_leads.filter(parent__isnull=True).order_by(
         'letter')
     if top_couplet and top_couplet.count() == 2:
@@ -602,7 +605,16 @@ def dkey(request, slug=u'key-to-the-families'):
         if page.rank == 'species':
             raise Http404
         proxy = _Proxy(page)
+        families = models.Family.objects.all()
+        genera = models.Genus.objects.all()
+        sections = list(dkey_models.Page.objects.filter(
+            rank='section').order_by('title').values_list('title', flat=True))
+        carex_sections = [(section.replace('Section ', ''),
+            section.lower().replace(' ', '-')) for section in sections]
         return render(request, 'gobotany/edit_dkey.html', {
+                'families': families,
+                'genera': genera,
+                'carex_sections': carex_sections,
                 'groups': get_groups,
                 'leads': (lambda: proxy.leads),
                 'lead_hierarchy': (lambda: proxy.lead_hierarchy),
@@ -610,6 +622,7 @@ def dkey(request, slug=u'key-to-the-families'):
                 'rank_beneath': (lambda: proxy.rank_beneath),
                 'taxa_beneath': (lambda: proxy.taxa_beneath),
                 'next_page': (lambda: proxy.next() or proxy.page),
+                'messages': get_messages(request),
             })
     elif request.method == 'POST':
         # Add or delete a couplet.
@@ -648,6 +661,49 @@ def dkey(request, slug=u'key-to-the-families'):
                 deleted_leads.append(leads_to_delete[0].id)
                 deleted_leads.append(leads_to_delete[1].id)
                 leads_to_delete.delete()
+        elif command == 'promote':
+            print('command: promote')
+            # Determine the new parent of the leads that will be promoted.
+            promoted_leads_parent = this_lead.parent
+            print('promoted_leads_parent:', promoted_leads_parent)
+
+            # Disconnect the leads that are being replaced rather than fully
+            # delete them. This way the records stay around for future use.
+            #
+            # Query the leads whose parent equals the promoted_leads_parent.
+            # This should return just the two leads to be disconnected.
+            leads_to_disconnect = dkey_models.Lead.objects.filter(
+                parent=this_lead.parent)
+            print('leads to disconnect:', leads_to_disconnect)
+            # Be careful about disconnecting old leads: verify there are two.
+            if leads_to_disconnect.count() == 2:
+                print('leads_to_disconnect[0].parent (set to None):',
+                    leads_to_disconnect[0].parent)
+                leads_to_disconnect[0].parent = None
+                leads_to_disconnect[0].save()
+                print('leads_to_disconnect[0].parent:', leads_to_disconnect[0].parent)
+                print('leads_to_disconnect[1].parent (set to None):',
+                    leads_to_disconnect[1].parent)
+                leads_to_disconnect[1].parent = None
+                leads_to_disconnect[1].save()
+                print('leads_to_disconnect[1].parent:', leads_to_disconnect[1].parent)
+
+            # Query the leads that are to be promoted.
+            leads_to_promote = dkey_models.Lead.objects.filter(parent=lead_id)
+            # Be careful about promoting lead records: verify there are two.
+            if leads_to_promote.count() == 2:
+                print('leads_to_promote[0]: %s - current parent is %s, set to %s' % (
+                    leads_to_promote[0], leads_to_promote[0].parent,
+                    promoted_leads_parent))
+                leads_to_promote[0].parent = promoted_leads_parent
+                leads_to_promote[0].save()
+                print('leads_to_promote[0].parent:', leads_to_promote[0].parent)
+                print('leads_to_promote[1]: %s - current parent is %s, set to %s' % (
+                    leads_to_promote[1], leads_to_promote[1].parent,
+                    promoted_leads_parent))
+                leads_to_promote[1].parent = promoted_leads_parent
+                leads_to_promote[1].save()
+                print('leads_to_promote[1].parent:', leads_to_promote[1].parent)
 
         last_number = _renumber_page(this_lead.page)
 

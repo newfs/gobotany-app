@@ -21,18 +21,23 @@ textarea {
 }
 
 
+/* List view links: overridden "main" link */
+a.main-list-display {
+    font-weight: 600;
+}
+
+
 /* D. Key custom navigation item */
 .dkey-custom {
     float: right;
 }
 
 
-/* Distribution model change form: Save and Edit Next button */
-
-/* Hide the button on all other models' forms. */
-form:not(#distribution_form) input[name="_editnext"] {
+/* Hide the Save and Continue Editing button on the Dist. form. */
+form#distribution_form input[name="_continue"] {
     display: none;
 }
+
 
 /* Distribution: add set of Distribution records form */
 

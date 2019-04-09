@@ -1,6 +1,6 @@
 {% load gobotany_tags %}
 <!DOCTYPE html>
-<html>
+<html lang="en">
     <head>
         <title>{% block title %}{% endblock %}{% block title_sep %}:{% endblock %}
             {% block title_suffix %}Go Botany{% endblock %}</title>
@@ -8,7 +8,7 @@
         <meta name="viewport" content="width=device-width,
         initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
-        <link rel="canonical" href="https://gobotany.newenglandwild.org{{ request.path }}">
+        <link rel="canonical" href="https://gobotany.nativeplanttrust.org{{ request.path }}">
 
         <link rel="shortcut icon" href="/static/images/branding/favicon.png">
 
@@ -61,7 +61,7 @@
                 donations to help keep this site free and up to date for
                 you. Can you please help us?</p>
                 <form action="https://46858.blackbaudhosting.com/46858/Online-Flora">
-                    <button>donate</button>
+                    <button>Donate</button>
                 </form>
                 <a href="javascript: void(0);" onclick="javascript: closeMessageBanner();">
                     <svg aria-hidden="true" height="16"
@@ -81,8 +81,8 @@
                 {% include "gobotany/_footer.html" %}
             {% endblock %}
         </div>
-    </body>
 
-    {# Temporary: for message banner at top of page #}
-    <script src="/static/scripts/site/message.js"></script>
+        {# Temporary: for message banner at top of page #}
+        <script src="/static/scripts/site/message.js"></script>
+    </body>
 </html>

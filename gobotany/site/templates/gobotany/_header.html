@@ -3,15 +3,18 @@
     <header class="{% block header_css_class %}{% endblock %}">
         <div class="container">
             {% if page == "home" %}
-                <h1>{% block home_page_main_heading %}Go Botany: Discover
-                    thousands of New England plants{% endblock %}</h1>
+                <div class="id">
+                    <h1>{% block home_page_main_heading %}Go Botany: Native Plant Trust{% endblock %}</h1>
+                    <p class="tagline">Discover thousands of New England plants</p>
+                </div>
                 {% block home_page_partner_site_name_tagline %}{% endblock %}
             {% else %}
-                <p class="go-botany">{% nav_item 'Go Botany: Discover thousands of New England plants' site-home %}</p>
+                <p class="go-botany"
+                >{% nav_item 'Go Botany: Native Plant Trust' site-home %}
+                <span class="tagline">Discover thousands of New England plants</span>
+                </p>
                 {% block partner_site_name_tagline %}{% endblock %}
             {% endif %}
-            <p class="newfs"><a href="http://www.newenglandwild.org/">New
-                England Wild Flower Society</a></p>
             <nav>
                 <a href="javascript:document.getElementById('footer-nav').scrollIntoView();"><span>menu</span></a>
                 <ul>

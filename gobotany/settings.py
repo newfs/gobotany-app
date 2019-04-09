@@ -17,7 +17,8 @@ gettext = lambda s: s
 SECRET_KEY = os.environ.get('GOBOTANY_DJANGO_SECRET_KEY', '')
 
 # New in Django 1.5: allowed hosts required for production-like deployments
-ALLOWED_HOSTS = ['.newenglandwild.org', # any subdomain of newenglandwild.org
+ALLOWED_HOSTS = ['.nativeplanttrust.org', # any subdomain of nativeplanttrust.org
+    '.newenglandwild.org', # any subdomain of newenglandwild.org
     'gobotany-dev.herokuapp.com',
     'gobotany-staging.herokuapp.com',
     'gobotany-prod.herokuapp.com',
@@ -166,6 +167,7 @@ INSTALLED_APPS = [
 
     ] + (['debug_toolbar'] if USE_DEBUG_TOOLBAR else []) + [
 
+    'account',
     'haystack',
     'haystack_panel',
     'imagekit',
@@ -253,15 +255,17 @@ LOGIN_URL = '/plantshare/accounts/login/'
 # python -m smtpd -n -c DebuggingServer localhost:1025
 EMAIL_HOST = os.environ.get('EMAIL_HOST', '')
 EMAIL_PORT = os.environ.get('EMAIL_PORT', '')
-DEFAULT_FROM_EMAIL = 'no-reply@newenglandwild.org'
+DEFAULT_FROM_EMAIL = 'no-reply@nativeplanttrust.org'
 # SendGrid Heroku add-on configuration
 EMAIL_HOST_USER = os.environ.get('SENDGRID_USERNAME', '')
 EMAIL_HOST_PASSWORD = os.environ.get('SENDGRID_PASSWORD', '')
 if EMAIL_HOST_USER:
     USE_TLS = True
 
-# For emailconfirmation
-EMAIL_CONFIRMATION_DAYS = 3
+# For django-user-accounts
+ACCOUNT_EMAIL_CONFIRMATION_EXPIRE_DAYS = 3
+ACCOUNT_EMAIL_CONFIRMATION_URL = 'ps-confirm-email'
+ACCOUNT_EMAIL_UNIQUE = False
 
 # For django-recaptcha
 if IN_PRODUCTION:   # instances on Heroku (Prod, Dev)
@@ -361,7 +365,8 @@ if IN_PRODUCTION:
 # agreed to the PlantShare Terms of Agreement.
 AGREED_TO_TERMS_GROUP = 'Agreed to PlantShare Terms'
 
-ADMINS = (('Go Botany Dev', 'gobotanydev@newenglandwild.org'), )
+ADMINS = (('Go Botany Dev', 'gobotanydev@newenglandwild.org',
+    'gobotanydev@nativeplanttrust.org'), )
 
 # https://docs.djangoproject.com/en/1.5/ref/settings/#secure-proxy-ssl-header
 # Use SSL
@@ -371,3 +376,22 @@ if IN_PRODUCTION:
     # https://docs.djangoproject.com/en/1.5/topics/security/#ssl-https
     SESSION_COOKIE_SECURE = True
     CSRF_COOKIE_SECURE = True
+
+# Uncomment the following logging configuration in order to
+# log all SQL queries to the console, for debugging purposes.
+#LOGGING = {
+#    'disable_existing_loggers': False,
+#    'version': 1,
+#    'handlers': {
+#        'console': {   # handler that outputs to terminal
+#            'class': 'logging.StreamHandler',
+#            'level': 'DEBUG',
+#        },
+#    },
+#    'loggers': {
+#        'django.db.backends': {
+#            'level': 'DEBUG',
+#            'handlers': ['console'],
+#        },
+#    },
+#}

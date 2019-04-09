@@ -39,31 +39,5 @@ django.jQuery(document).ready(function () {
             django.jQuery('#id_state').focus();
         }
     }
-
-    // Distribution records: for the Save and Edit Next button, modify
-    // the record link URLs to pass all record ids for the current page.
-    // These will be used to determine which record is the next one each
-    // time the button is pressed.
-    if (django.jQuery(
-        '#content h1').text() === 'Select Distribution record to change') {
-
-        var ids = [],
-            url_parts, all_ids;
-
-        // Get the list of all ids in sequence, for passing as a
-        // request parameter value.
-        django.jQuery('#result_list tbody th a').each(function () {
-            url_parts = django.jQuery(this).attr('href').split('/');
-            ids.push(url_parts[4]);
-        });
-        all_ids = ids.join(',');
-
-        // Make another pass through all the links and append the
-        // request parameter to each URL.
-        django.jQuery('#result_list tbody th a').each(function () {
-            url = django.jQuery(this).attr('href') + '?ids=' + all_ids;
-            django.jQuery(this).attr('href', url);
-        });
-    }
 });
 

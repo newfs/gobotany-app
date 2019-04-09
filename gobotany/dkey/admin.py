@@ -1,6 +1,7 @@
 from django.contrib import admin
 from django.db import models
 from django.forms import ModelForm, TextInput, Textarea
+from django.http import HttpResponseRedirect
 
 from gobotany.admin import GoBotanyModelAdmin
 from gobotany.dkey.models import Figure, Hybrid, IllustrativeSpecies, Lead, Page
@@ -18,7 +19,8 @@ class HybridAdmin(GoBotanyModelAdmin):
     formfield_overrides = {
         models.TextField: {'widget': Textarea(attrs={'rows': 4, 'cols': 80}) },
     }
-    list_display = ('scientific_name1', 'scientific_name2', 'text')
+    list_display = ('scientific_name1', 'number1', 'scientific_name2',
+        'number2', 'text')
     search_fields = ('scientific_name1', 'scientific_name2', 'text')
 
 
@@ -56,16 +58,31 @@ class LeadAdmin(GoBotanyModelAdmin):
     search_fields = ('id', 'letter', 'text', 'parent__letter', 'page__title',
         'goto_page__title', 'goto_num', 'taxa_cache',)
 
+    def response_change(self, request, obj):
+        # TODO: fix: using 'next' in URL bypasses 'Save and Continue Editing'
+        response = super(LeadAdmin, self).response_change(request, obj)
+        if 'next' in request.GET:
+            return HttpResponseRedirect(request.GET['next'])
+        else:
+            return response
+
 
 class PageAdmin(GoBotanyModelAdmin):
     formfield_overrides = {
-        models.TextField: {'widget': Textarea(attrs={'rows': 4, 'cols': 80}) },
+        models.TextField: {'widget': Textarea(attrs={'rows': 2, 'cols': 80}) },
     }
     list_display = ('title', 'rank', 'chapter')
     list_filter = ('rank',)
     ordering = ('title',)
     readonly_fields = ('breadcrumb_cache',)
     search_fields = ('title', 'chapter', 'rank')
+
+    def get_form(self, request, obj=None, **kwargs):
+        form = super(PageAdmin, self).get_form(request, obj, **kwargs)
+        # Make the 'Text' text field bigger for easier editing.
+        form.base_fields['text'].widget.attrs['style'] = \
+            'height: 24rem; width: 48rem'
+        return form
 
 
 admin.site.register(Figure, FigureAdmin)

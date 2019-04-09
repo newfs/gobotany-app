@@ -2,6 +2,14 @@
 
     <div class="content">
         <div class="container">
+            {% if highlight %}
+            <div id="update">
+                <p><span class="badge">Update</span>
+                {{ highlight.note }}
+                <a href="/updates/">Read Updates</a></p>
+            </div>
+            {% endif %}
+
             <div id="banner">
                 {% block images %}
                     {% for image in home_page_images %}
@@ -11,7 +19,6 @@
                 {% block images_overlay %}
                     <div id="overlay">
                         <h2>Simple ID Key</h2>
-                        <img src="/static/images/layout/separator.png" alt="">
                         <p>Want to know what that plant is? With our Simple Key,
                         you can identify over 1,200 common native and naturalized
                         New England plants! Observe closely, collect a sample or
@@ -85,12 +92,11 @@
             {% block donate %}
                 <div class="donate">
                     <p>Please contribute to our mission to conserve and promote
-                    the region’s plants by donating to New England Wild
-                    Flower Society.
+                    the region’s plants by donating to Native Plant Trust.
                     <a class="orange-button caps"
-                        href="http://www.newenglandwild.org/support/">Donate</a>
+                        href="http://www.nativeplanttrust.org/support/">Donate</a>
                     </p>
                 </div>
             {% endblock %}
-        </div>
-    </div>
+        </div>{# end: container #}
+    </div>{# end: content #}

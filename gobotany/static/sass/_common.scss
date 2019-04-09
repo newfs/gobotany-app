@@ -7,65 +7,48 @@
 /* Web fonts: style-linked groups */
 
 @font-face {
-    font-family: ScalaSans;
-    src: url(//newfs.s3.amazonaws.com/fonts/ScalaSansWeb.woff) format("woff");
+    font-family: Basetica;
+    src: url(/static/fonts/Basetica-Medium-205TF.woff2) format('woff2'),
+        url(/static/fonts/Basetica-Medium-205TF.woff) format('woff');
 }
+@font-face {
+    font-family: Basetica;
+    font-style: italic;
+    src: url(/static/fonts/Basetica-Medium-Italic-205TF.woff2) format('woff2'),
+        url(/static/fonts/Basetica-Medium-Italic-205TF.woff) format('woff');
+}
+
 @font-face {
     font-family: ScalaSans;
     font-weight: bold;
     src: url(//newfs.s3.amazonaws.com/fonts/ScalaSansWeb-Bold.woff) format("woff");
 }
-@font-face {
-    font-family: ScalaSans;
-    font-style: italic;
-    src: url(//newfs.s3.amazonaws.com/fonts/ScalaSansWeb-Ita.woff) format("woff");
-}
-@font-face {
-    font-family: ScalaSans;
-    font-style: italic;
-    font-weight: bold;
-    src: url(//newfs.s3.amazonaws.com/fonts/ScalaSansWeb-BoldIta.woff) format("woff");
-}
 
-@font-face {
-    font-family: ScalaSansSmallCaps;
-    src: url(//newfs.s3.amazonaws.com/fonts/ScalaSansScWeb.woff) format("woff");
-}
-@font-face {
-    font-family: ScalaSansSmallCaps;
-    font-weight: bold;
-    src: url(//newfs.s3.amazonaws.com/fonts/ScalaSansScWeb-Bold.woff) format("woff");
-}
-@font-face {
-    font-family: ScalaSansSmallCaps;
-    font-style: italic;
-    src: url(//newfs.s3.amazonaws.com/fonts/ScalaSansScWeb-Ita.woff) format("woff");
-}
-@font-face {
-    font-family: ScalaSansSmallCaps;
-    font-style: italic;
-    font-weight: bold;
-    src: url(//newfs.s3.amazonaws.com/fonts/ScalaSansScWeb-BoldIta.woff) format("woff");
-}
-
+$navbar-font: Basetica, "Trebuchet MS", sans-serif;
 $headings-font: "Trebuchet MS", Helvetica, Arial, "Lucida Sans Unicode", sans-serif;
 $body-font: Verdana, Geneva, "Lucida Sans Unicode", sans-serif;
 $narrower-body-font: Tahoma, "Trebuchet MS", "Lucida Sans Unicode", sans-serif;
 
-$link-green: #317b0c;
+$link-green: #27610a;
 $heading-green: #437829;
+$heading-spruce: #21555c;
 $border-green: #c3d941;
 $light-green: #e1f0d1;
 $green-yellow: #ccdf53;
-$medium-brown: #807121;
+$medium-brown: #7a6f1f; /* was #807121, darkened for WCAG AA */
 $pale-lime-green: #defcb3;
 
-$visited-link-color: #666e0b;
-$active-link-color: #45aC11;
+$visited-link-color: #50570a;
+$active-link-color: #45ac11; /* TODO: fix; too light for WCAG AA */
+
+$bright-green: #a7da7e; /* from NPT palette */
+$lighter-green: #bde29c; /* lighter version of #a7da7e green from NPT palette */
+$darker-green: #508226; /* darker version of #a7da7e green from NPT palette */
+$dark-green: #467321; /* dark version of #a7da7e green from NPT palette */
 
 $text-color: #000;
 $navbar-color: #508e31;
-$footer-background-color: #b4d57f;
+$footer-background-color: $bright-green;
 $login-box-background-color: #d3eaad;
 
 $base-font-size: 12px;
@@ -97,20 +80,22 @@ $smallscreen-choices-border-radius: 8px;
 
 $logo_width: 450px;
 
-$body_bg: #f0f0c0;
+$body_bg: #f8eeda;
 $text_gray: #606060;
 $text_green: #519136;
-$text_dark_green: #35661C;
+$text_dark_green: #35661c;
 $inactive_bg: #d9dbb1;
 $shadow_color: darken($inactive_bg, 30);
 $active_border: #7abe58;
-$active_bg: #b4d57f;
+$active_bg: #bedc8f;
 
 $orange1: #dc9402;
 $orange2: #e29b0b;
 $orange3: #e39d0e;
 $orange4: #f0b448;
 $orange5: #f6be59;
+
+$npt-orange: #d87e54;
 
 $list_popup_border: #acac90;
 
@@ -128,10 +113,11 @@ $disabled_orange_gradient: linear-gradient(
     mix($body_bg, $orange5, 50%) 50%, mix($body_bg, $orange3, 50%) 100%);
 
 .orange-button {
-    border: 1px solid $orange1 !important;
+    background-color: $npt-orange;
+    border: 1px solid $npt-orange !important;
     border-radius: 14px;
-    box-shadow: 0px 1px 4px 0 $shadow_color;
-    color: #fff;
+    box-shadow: 0px 1px 2px 0 $shadow_color;
+    color: #000;
     cursor: pointer;
     display: inline-block;
     font-family: ScalaSans, $headings-font;
@@ -143,14 +129,12 @@ $disabled_orange_gradient: linear-gradient(
     padding: 4px 12px;
     text-align: center;
     text-decoration: none;
-    text-shadow: 1px 2px 2px $orange1;
-    @include background($orange_gradient);
+    text-shadow: 1px 2px 2px $npt-orange;
     &:active {
-        background-color: $orange1;
-        @include background($dull_orange_gradient);
+        background-color: $npt-orange; /* TODO: active button style/color */
     }
     &:hover, &:visited, &:active {
-        color: white;
+        color: #000;
     }
     &.caps {
         text-transform: uppercase;
@@ -162,6 +146,7 @@ $disabled_orange_gradient: linear-gradient(
     }
     &.large {
         border-radius: 20px;
+        color: #000;
         font-size: 16px;
         letter-spacing: 1.5px;
         min-width: 150px;
@@ -175,11 +160,14 @@ $disabled_orange_gradient: linear-gradient(
     text-indent: -9000px;
 }
 
-@mixin container-div {
+@mixin container-div-styles { // for new approach using BEM
+    margin: 0 auto;
+    padding: 0 10px;
+    width: 960px;
+}
+@mixin container-div { // for old non-BEM approach
     .container {
-        margin: 0 auto;
-        padding: 0 10px;
-        width: 960px;
+        @include container-div-styles;
     }
 }
 
@@ -189,11 +177,27 @@ $disabled_orange_gradient: linear-gradient(
 }
 
 @mixin highlight-global-nav {
-    background: url(/static/images/layout/active-nav-app.png) bottom center no-repeat;
+    /* For use on active nav item, with :after */
+    border: 10px solid transparent;
+    border-bottom-color: $body_bg;
+    content: "";
+    height: 0;
+    left: calc(50% - 10px); /* calc not fully supported on IE 10-11 */
+    position: absolute;
+    top: 14px;
+    width: 0;
 }
 
 @mixin highlight-global-nav-home {
-    background: url(/static/images/layout/active-nav-home.png) bottom center no-repeat transparent;
+    /* For use on active nav item, with :after */
+    border: 10px solid transparent;
+    border-bottom-color: #6c9956;
+    content: "";
+    height: 0;
+    left: calc(50% - 10px); /* calc not fully supported on IE 10-11 */
+    position: absolute;
+    top: 14px;
+    width: 0;
 }
 
 @mixin highlight-sidebar-nav-item {
@@ -311,9 +315,10 @@ div.popup a {
 
 /* For occasional, temporary donation campaigns: message at top of page */
 #top-message {
-    background-color: orange;
-    font-family: ScalaSans, sans-serif;
-    font-size: 15px;
+    background-color: #d87e54;
+    color: #000;
+    font-family: $body-font;
+    font-size: 12px;
     margin: 0;
     padding: 12px 24px;
 }
@@ -325,18 +330,20 @@ div.popup a {
     border-radius: 6px;
     cursor: pointer;
     float: right;
-    font-family: ScalaSansSmallCaps, sans-serif;
-    font-size: 16px;
+    font-family: ScalaSans, $body-font;
+    font-size: 14px;
+    font-weight: bold;
     letter-spacing: 1px;
     margin-right: 45px;
-    margin-top: -45px;
-    padding: 6px 10px;
+    margin-top: -38px;
+    padding: 10px 10px 6px;
+    text-transform: uppercase;
 }
 #top-message svg {
     cursor: pointer;
     float: right;
     margin-right: 4px;
-    margin-top: -36px;
+    margin-top: -30px;
 }
 @media only screen and (max-width: 980px) {
     #top-message p {

@@ -1,0 +1,40 @@
+{% extends "gobotany/_page_full_sidebar.html" %}
+
+{% block title %}Updates: Help{% endblock %}
+
+{% block js_require %}
+    {% include "gobotany/_help_js_require.html" %}
+{% endblock %}
+
+{% block body_attributes %}
+    id="updates" class="help"
+{% endblock %}
+
+{% block main_content %}
+    <h1>Updates</h1>
+
+    <p>This is a list of recent updates to the site, in reverse
+        chronological order.</p>
+
+    {% regroup updates by date|date:"F Y" as updates_by_month %}
+    {% for group in updates_by_month %}
+        <h2>{{ group.grouper }}</h2>
+        {% for update in group.list %}
+            {# If there is an opening brace, assume block-level HTML. #}
+            {% if update.description|first == '<' %}
+                {{ update.description|safe }}
+            {% else %}
+                {# No opening brace: no block-level HTML. Add as paragraph. #}
+                <p>{{ update.description|safe }}</p>
+            {% endif %}
+            {% if not forloop.last %}
+            <hr>
+            {% endif %}
+        {% endfor %}
+    {% endfor %}
+
+{% endblock %}
+
+{% block sidebar_content %}
+    {% include "gobotany/_help_navigation.html" %}
+{% endblock %}

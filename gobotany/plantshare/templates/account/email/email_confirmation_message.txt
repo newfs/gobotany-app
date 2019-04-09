@@ -14,5 +14,5 @@ Go Botany
 --
 
 If you think you received this message in error, please contact
-gobotany@newenglandwild.org.
+gobotany@nativeplanttrust.org.
 {% endblocktrans %}

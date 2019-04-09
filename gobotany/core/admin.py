@@ -582,70 +582,49 @@ class RankFilter(admin.SimpleListFilter):
         return qs
 
 
+
 class DistributionAdmin(_Base):
-    list_display = ('scientific_name', 'species_name', 'subspecific_epithet',
-        'state', 'county', 'present', 'native', 'map_link',)
+    list_display = ('scientific_name', 'state', 'county', 'present',
+        'native', 'map_link',)
     list_editable = ('present', 'native',)
-    list_filter = (DistributionRegionFilter, RankFilter, 'native', 'present',
-        'state', 'county')
+    list_filter = (DistributionRegionFilter,)
+        # Disabled most list view filters for now until it is verified which
+        # ones are truly needed, because they can slow the pages down.
+        # See the SQL queries in the Debug Toolbar.
+        #(DistributionRegionFilter, RankFilter, 'native', 'present',
+        #'state', 'county')
     list_max_show_all = 700   # to allow showing all for a species including
                               # subspecies and varieties
     list_per_page = 150
-    search_fields = ('scientific_name',)
+    preseve_filters = True
+    search_fields = ['scientific_name',]   # Show search box,
+        # but custom search overrides behavior: see get_search_results()
     actions = ['rename_records']
+    show_full_result_count = False   # eliminate a query, for speed
+    readonly_fields = ['species_name', 'subspecific_epithet']    # these
+        # two fields are automatically populated from scientific_name on save
+
+    def get_search_results(self, request, queryset, search_term):
+        # Custom search: search on the scientific name, anchored to
+        # the beginning of the field, allowing spaces. This is to make
+        # search-related SQL queries as efficient as possible, and to
+        # work around limitations of the default searching options
+        # (namely, that search strings always get split up on spaces).
+        # With this custom search, one can search efficiently using a
+        # term such as galium verum, which will return results with the
+        # scientific names Galium verum, Galium verum var. verum,
+        # and Galium verum var. wirtgenii
+        if search_term:
+            queryset = queryset.filter(
+                scientific_name__startswith=search_term.capitalize())
+        use_distinct = False
+        return queryset, use_distinct
 
     def map_link(self, obj):
         return '<a href="/api/maps/%s-ne-distribution-map">View</a>' % (
             obj.species_name.lower().replace(' ', '-'))
     map_link.allow_tags = True
     map_link.short_description = 'NE Map'
-
-    # Override the change view to handle the Save and Edit Next button.
-    def add_view(self, request, extra_context=None):
-        result = super(DistributionAdmin, self).add_view(request,
-            extra_context=extra_context)
-
-        # Although it would be preferable to hide the button for this
-        # view, for now just make it do something reasonable: the
-        # same thing as the Save and Add Another button.
-        if request.POST.has_key('_editnext'):
-            result['Location'] = '/admin/core/distribution/add/'
-
-        return result
-
-    # Override the change view to handle the Save and Edit Next button.
-    def change_view(self, request, object_id, extra_context=None):
-        result = super(DistributionAdmin, self).change_view(request,
-            object_id, extra_context=extra_context)
-
-        if request.POST.has_key('_editnext'):
-            if request.GET.has_key('ids'):
-                ids = request.GET['ids'].split(',');
-
-                try:
-                    # All the ids on the user's last list page are
-                    # passed on the URL. Find the current object id,
-                    # and the next in the sequence will be the id
-                    # of the next record on the page.
-                    current_id_index = ids.index(object_id);
-                    next_object_id = ids[current_id_index + 1];
-
-                    # Go to the next record, passing again the list of
-                    # all ids as a request parameter.
-                    request_path_parts = request.path.split('/')
-                    request_path_parts[4] = str(next_object_id)
-                    new_path = '/'.join(request_path_parts)
-                    new_path += '?ids=' + request.GET['ids']
-                    result['Location'] = new_path
-                except IndexError:
-                    # If there is no next record to edit, tell the user.
-                    message = ''.join([
-                        'Changed the last record on your page. ',
-                        'To edit more records in sequence, first search, ',
-                        'filter, sort, and go to a desired page.'])
-                    messages.info(request, message)
-
-        return result
 
     # Allow creating a set of Distribution records for a new plant, one
     # for each state, province and New England county, all at once. In
@@ -655,21 +634,15 @@ class DistributionAdmin(_Base):
     def add_set_view(request):
         errors = []
         scientific_name = ''
-        species_name = ''
 
         if request.POST.has_key('scientific_name'):
             scientific_name = request.POST['scientific_name']
             if not scientific_name:
                 errors.append('This field is required.')
 
-        if request.POST.has_key('species_name'):
-            species_name = request.POST['species_name']
-            if not species_name:
-                errors.append('This field is required.')
-
         if request.method == 'GET' or errors:
             # Return the form page.
-            return render_to_response(request,
+            return render(request,
                     'admin/core/distribution/add_set_form.html', {
                         'title': 'Add set of Distribution records',
                         'errors': errors,
@@ -677,9 +650,9 @@ class DistributionAdmin(_Base):
                     })
         elif request.method == 'POST':
             subspecific_epithet = request.POST.get('subspecific_epithet', '')
-            # Get any defaults.
-            present = request.POST.get('present', False)
-            native = request.POST.get('native', False)
+            # Get any defaults to be set.
+            present = request.POST.get('present', False) == 'on'
+            native = request.POST.get('native', False) == 'on'
             # Create the set of distribution records.
             records_created = 0
             for place in DISTRIBUTION_PLACES:
@@ -690,11 +663,10 @@ class DistributionAdmin(_Base):
                 # If no record exists yet for this plant in this place,
                 # create one, setting any requested defaults.
                 if not results.exists():
-                    models.Distribution.objects.create(
-                        scientific_name=scientific_name,
-                        species_name=species_name,
-                        subspecific_epithet=subspecific_epithet, state=state,
+                    record = models.Distribution.objects.create(
+                        scientific_name=scientific_name, state=state,
                         county=county, present=present, native=native)
+                    record.save()
                     records_created += 1
             # Return to the list page with a message to display.
             message = ('Added %d Distribution records for %s.' %
@@ -722,7 +694,9 @@ class DistributionAdmin(_Base):
                 number_of_records = queryset.count()
                 new_scientific_name = form.cleaned_data['new_scientific_name']
 
-                queryset.update(scientific_name=new_scientific_name)
+                for record in queryset:
+                    record.scientific_name = new_scientific_name
+                    record.save()
 
                 message = ('Successfully renamed %d records to %s.' % (
                     number_of_records, new_scientific_name))
@@ -735,7 +709,7 @@ class DistributionAdmin(_Base):
                     admin.ACTION_CHECKBOX_NAME)}
                 )
 
-        return render_to_response(request,
+        return render(request,
             'admin/core/distribution/rename_records.html', {
                 'records': queryset,
                 'rename_records_form': form,
@@ -762,12 +736,28 @@ class PlantPreviewCharacterAdmin(_Base):
     list_display = ('character', 'pile', 'order',)
     list_filter = ('pile',)
 
+class UpdateAdmin(_Base):
+    list_display = ('date', 'description',)
+
+    def get_form(self, request, obj=None, **kwargs):
+        form = super(UpdateAdmin, self).get_form(request, obj, **kwargs)
+        # Make the 'Description' text field bigger for easier editing.
+        form.base_fields['description'].widget.attrs['style'] = \
+            'height: 28rem; width: 48rem'
+        return form
+
+class HighlightAdmin(_Base):
+    list_display = ('id', 'note', 'active',)
+
+
 # Registrations
 
 admin.site.register(models.Parameter)
 admin.site.register(models.ImageType)
 admin.site.register(models.CharacterGroup)
 admin.site.register(models.SourceCitation)
+admin.site.register(models.Update, UpdateAdmin)
+admin.site.register(models.Highlight, HighlightAdmin)
 
 admin.site.register(models.HomePageImage, HomePageImageAdmin)
 admin.site.register(models.Lookalike, LookalikeAdmin)
@@ -787,4 +777,3 @@ admin.site.register(models.InvasiveStatus, InvasiveStatusAdmin)
 admin.site.register(models.Distribution, DistributionAdmin)
 admin.site.register(models.DefaultFilter, DefaultFilterAdmin)
 admin.site.register(models.PlantPreviewCharacter, PlantPreviewCharacterAdmin)
-

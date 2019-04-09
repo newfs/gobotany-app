@@ -1,7 +1,7 @@
 from django import forms
 from django.core.urlresolvers import reverse_lazy
 
-from gobotany.plantshare.emailconfirmation_models import EmailAddress
+from account.models import EmailAddress
 
 from gobotany.plantshare.models import (Checklist, ChecklistEntry,
     Location, ScreenedImage, SIGHTING_DEFAULT_VISIBILITY,
@@ -165,14 +165,28 @@ class ChangeEmailForm(forms.ModelForm):
     def clean_email(self):
         email = self.cleaned_data['email']
         if email == self.user.email:
+            # Give an error if trying to change to the same email address.
             raise forms.ValidationError(
                 u'This email address is already used by your account.')
         else:
             return email
 
     def save(self):
-        email = self.cleaned_data['email']
-        return EmailAddress.objects.add_email(self.user, email)
+        email = self.clean_email()
+        # After ruling out the possibility of the user asking to change to
+        # the same email address (via clean_email), check to see if the
+        # email address is already in the account EmailAddress table.
+        # This would happen if a user is changing back to an email
+        # address they had previously used. If so, must call a change
+        # method rather than add a new record, otherwise a unique key
+        # error would occur.
+        try:
+            address_record = EmailAddress.objects.get(user=self.user,
+                email=email)
+            return address_record.change(email, confirm=True)
+        except EmailAddress.DoesNotExist:
+            return EmailAddress.objects.add_email(self.user, email,
+                confirm=True)
 
 
 class ScreenedImageForm(forms.ModelForm):
