@@ -187,7 +187,7 @@ p.meta + p { margin-top: 2px; }
 
 /* Navigation highlighting */
 /* Global navigation (header) */
-body#home header nav li.home:after { /* For use on active nav item, with :after */ border: 10px solid transparent; border-bottom-color: #6c9956; /* TODO: better match with home bg */ content: ""; height: 0; left: calc(50% - 10px); /* calc not fully supported on IE 10-11 */ position: absolute; top: 14px; width: 0; }
+body#home header nav li.home:after { /* For use on active nav item, with :after */ border: 10px solid transparent; border-bottom-color: #6c9956; content: ""; height: 0; left: calc(50% - 10px); /* calc not fully supported on IE 10-11 */ position: absolute; top: 14px; width: 0; }
 
 body.simple header nav li.simple:after { /* For use on active nav item, with :after */ border: 10px solid transparent; border-bottom-color: #f8eeda; content: ""; height: 0; left: calc(50% - 10px); /* calc not fully supported on IE 10-11 */ position: absolute; top: 14px; width: 0; }
 
@@ -225,7 +225,7 @@ header .go-botany .tagline { color: #467321; float: right; font-family: Basetica
 header .newfs { float: right; padding-top: 6px; }
 header .newfs a { background: url(/static/images/layout/npt-logo-stacked.svg) no-repeat transparent; background-size: 116px 66px; height: 66px; width: 116px; display: block; text-indent: -9000px; }
 
-header nav { background: url(/static/images/layout/nav-app-npt.png) no-repeat; background-position: 0px 79px; font-family: "Trebuchet MS", Helvetica, Arial, "Lucida Sans Unicode", sans-serif; height: 120px; padding: 0 0 0 16px; }
+header nav { background: url(/static/images/layout/nav-app-npt.png) no-repeat; background-position: 0px 79px; font-family: "Trebuchet MS", Helvetica, Arial, "Lucida Sans Unicode", sans-serif; height: 120px; padding: 0 0 0 16px; position: relative; }
 header nav > ul { font-family: Basetica, "Trebuchet MS", sans-serif; }
 header nav a { color: #fff; display: block; height: 35px; padding: 5px 8px 0; }
 header nav a:visited, header nav a:not([href]) { color: #fff; }
@@ -234,12 +234,14 @@ header nav ul { clear: both; margin-top: 7px; }
 header nav li { display: block; float: left; font-size: 14px; margin: 7px 10px 0 0; padding: 0; position: relative; }
 header nav li a:hover { text-decoration: none; }
 
-header #search { background: #fff url(/static/images/layout/search-left.png) left center no-repeat; float: right; height: 20px; margin: 4px 4px 0 0; padding: 0 0 0 11px; }
+header #search { background: #fff url(/static/images/layout/search-left.png) left center no-repeat; float: right; height: 20px; margin: 0; padding: 0 0 0 11px; position: relative; right: 4px; top: 4px; }
 header #search form { display: block; margin: 0; padding: 0; width: 262px; }
 header #search input { background: #fff; border: 0; float: left; font-family: "Trebuchet MS", Helvetica, Arial, "Lucida Sans Unicode", sans-serif; font-size: 14px; height: 20px; margin: 0; padding: 0; width: 219px; }
 header #search input:focus { outline: none; }
 header #search button { background: #27610a url(/static/images/layout/search-btn.png) 0 0 no-repeat; border: none; cursor: pointer; float: right; height: 20px; margin: 0; outline: none; padding: 0; width: 42px; display: block; text-indent: -9000px; }
 
+/* Firefox media query: temporary fix for search box position */
+@-moz-document url-prefix() { header #search { top: 11px; } }
 /* Main content */
 .content { padding: 0; }
 .content .container { margin: 0 auto; padding: 0 10px; width: 960px; }
