@@ -222,9 +222,6 @@ header .go-botany { float: left; height: 54px; margin: 0; padding: 18px 0 0 0; w
 header .go-botany a { background: url(/static/images/layout/npt-gb-logo.svg) no-repeat transparent; background-size: 150px 48px; height: 48px; width: 150px; display: block; text-indent: -9000px; }
 header .go-botany .tagline { color: #467321; float: right; font-family: Basetica, sans-serif; font-size: 13px; margin: -19px 0 0 0; padding: 4px 0 0; }
 
-header .newfs { float: right; padding-top: 6px; }
-header .newfs a { background: url(/static/images/layout/npt-logo-stacked.svg) no-repeat transparent; background-size: 116px 66px; height: 66px; width: 116px; display: block; text-indent: -9000px; }
-
 header nav { background: url(/static/images/layout/nav-app-npt.png) no-repeat; background-position: 0px 79px; font-family: "Trebuchet MS", Helvetica, Arial, "Lucida Sans Unicode", sans-serif; height: 120px; padding: 0 0 0 16px; position: relative; }
 header nav > ul { font-family: Basetica, "Trebuchet MS", sans-serif; }
 header nav a { color: #fff; display: block; height: 35px; padding: 5px 8px 0; }
@@ -507,19 +504,23 @@ a.subscribe:active { background-position: 0 -32px; }
 
 /* Begin media queries styles for Home page */
 /* Portrait-orientation styles */
-@media only screen and (max-width: 400px) { #home #banner #overlay { top: 115px; width: 320px; }
+@media only screen and (max-width: 400px) { #home .content .container { width: 320px; }
+  #home #banner #overlay { top: 115px; width: 320px; }
   #home #banner > img { height: 115px; width: 320px; }
-  #home #banner + .three-col { padding-top: 375px; } }
+  #home #banner + .three-col { padding-top: 355px; } }
 /* Landscape-orientation styles */
 @media only screen and (min-width: 401px) and (max-width: 600px) { #home #banner #overlay { top: 172px; width: 480px; }
   #home #banner > img { height: 172px; width: 480px; }
   #home #banner + .three-col { padding-top: 400px; } }
 /* These styles are common to both smartphone widths */
 @media only screen and (max-width: 600px) { #home .content { margin-top: 0; padding-top: 0; }
-  #home header h1 { background-position: -56px -7px; height: 56px; margin-left: 0; width: 200px; }
-  #home header nav { background: #508e31; height: 32px; padding-left: 0; }
+  #home .content .container { padding: 0; }
+  #home header { height: 106px; }
+  #home header h1 { background-position: 0 0; background-size: 120px 40px; height: 40px; margin-left: 0; width: 120px; }
+  #home header .id { float: none; padding-left: 10px; width: auto; }
+  #home header .tagline { float: none; margin: 0; }
+  #home header nav { background: #21555c; height: 32px; padding-left: 0; }
   #home header nav > a:hover { text-decoration: none; }
-  #home header .newfs a { background-size: 100px 55px; float: right; height: 55px; width: 101px; }
   #home #banner { margin: 0; position: relative; }
   #home #banner #overlay { background: #f7fbe9; height: auto; left: 0; padding: 0; text-align: center; }
   #home #banner #overlay h2 { font-size: 28px; margin: 6px 0 0; }
@@ -543,7 +544,7 @@ a.subscribe:active { background-position: 0 -32px; }
   #home #potd .details a { margin-top: 6px; position: inherit; top: 0; }
   #home .donate, #home .intro { margin: 0; }
   #home .donate p, #home .intro p { margin: 8px; padding: 0; }
-  #home .donate a { float: none; margin: 6px 20px 0 0; position: static; } }
+  #home .donate a { display: block; float: none; margin: 6px 20px 0 0; position: static; width: 80px; } }
 /* End media queries styles for the Home page */
 /* Styles for maps */
 /* Location and sightings maps */
@@ -1936,14 +1937,14 @@ header.partner-site nav li a { padding: 5px 32px 0; /* fewer sections, more hori
   h2 { font-size: 16px; }
   h3 { font-size: 14px; }
   header { height: 90px; }
-  header nav { background: #508e31; clear: left; height: 32px; padding: 0; }
+  header nav { background: #21555c; clear: left; height: 32px; padding: 0; }
   header nav > a { background: #437829; border: 1px solid #437829; border-radius: 5px; display: inline-block; font-size: 14px; height: 24px; line-height: 22px; margin: 3px 0 0 4px; padding: 0 20px 0 6px; position: relative; }
-  header nav #search { margin-top: 6px; padding-left: 10px; }
+  header nav #search { margin-top: 2px; padding-left: 10px; }
   header nav > ul { display: none; /* will use bottom navigation instead of top */ }
   header nav #search-suggest .menu { top: 83px; }
-  header p.go-botany { margin: 0; padding: 0; width: auto; }
-  header p.go-botany a { height: 56px; width: 170px; }
-  header p.newfs a { background-size: 100px 55px; float: right; height: 55px; width: 101px; }
+  header p.go-botany { margin: 0; padding: 0 0 0 8px; width: auto; }
+  header p.go-botany a { background-size: 100px 42px; height: 42px; width: 100px; }
+  header p.go-botany .tagline { display: block; float: none; font-size: 10px; margin: -6px 0 0 0; padding: 0; }
   header .container { padding: 0; }
   .content { padding: 0; }
   .content .container { padding: 0; }
@@ -1959,7 +1960,7 @@ header.partner-site nav li a { padding: 5px 32px 0; /* fewer sections, more hori
   .footer__publisher { margin: 14px 0 0 6px; padding: 12px 8px 10px; }
   .footer__navigation { padding-left: 0; }
   .footer__navigation-list-item { display: block; margin: 0 0 1px 0; }
-  .footer__navigation-list--primary .footer__navigation-list-item a { background: #27610a; color: #fff; display: block; font-family: "Trebuchet MS", Helvetica, Arial, "Lucida Sans Unicode", sans-serif; font-size: 14px; padding: 14px 14px; position: relative; text-decoration: none; }
+  .footer__navigation-list--primary .footer__navigation-list-item a { background: #21555c; color: #fff; display: block; font-family: "Trebuchet MS", Helvetica, Arial, "Lucida Sans Unicode", sans-serif; font-size: 14px; padding: 14px 14px; position: relative; text-decoration: none; }
   .footer__navigation-list--primary .footer__navigation-list-item a[href] { color: #fff; }
   .footer__navigation-list--primary .footer__navigation-list-item a[href]:after { border-color: #ccc; border-style: solid; border-width: 3px 3px 0 0; content: " \a0"; display: inline-block; height: 6px; position: absolute; right: 14px; top: 16px; vertical-align: middle; width: 6px; -moz-transform: rotate(45deg); -ms-transform: rotate(45deg); -webkit-transform: rotate(45deg); transform: rotate(45deg); }
   .footer__navigation-list-item::after { content: none; }
@@ -1986,7 +1987,9 @@ header.partner-site nav li a { padding: 5px 32px 0; /* fewer sections, more hori
   body.help .footer__navigation-list-item.help a::after { border-color: #666; }
   .gb-tooltip { width: 200px; }
   #sb-overlay { /* Fix: make the Shadowbox overlay cover the entire background on small screens in iOS. */ height: 120%; }
-  #sb-wrapper { /* Move the Shadowbox image as far as possible to the top of the screen on small screens, so there is room for the navigation controls at bottom. */ margin-top: -55px; } }
+  #sb-wrapper { /* Move the Shadowbox image as far as possible to the top of the screen on small screens, so there is room for the navigation controls at bottom. */ margin-top: -55px; }
+  /* Firefox media query: temporary fix for search box position */
+  @-moz-document url-prefix() { header nav #search { margin-top: -5px; } } }
 /* These styles apply to smartphones and tablets */
 @media only screen and (max-width: 1024px) { table { border-collapse: collapse; } }
 /* End global media queries styles */
