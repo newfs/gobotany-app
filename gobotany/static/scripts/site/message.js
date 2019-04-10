@@ -41,4 +41,5 @@ function closeMessageBanner() {
     date.setTime(date.getTime() + MINUTES_TO_HIDE * 60 * 1000);
     document.cookie = 'msg=hide; expires=' + date.toGMTString() + '; path=/';
     hideMessageBanner();
+    console.log('hide message banner');
 }
