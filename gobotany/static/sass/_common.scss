@@ -140,9 +140,11 @@ $disabled_orange_gradient: linear-gradient(
         text-transform: uppercase;
     }
     &.disabled {
+        background-color: lighten($npt-orange, 25%);
         border-color: mix($body_bg, $orange2, 50%) !important;
+        color: #666 !important;
         cursor: default !important;
-        @include background($disabled_orange_gradient);
+        text-shadow: none;
     }
     &.large {
         border-radius: 20px;
