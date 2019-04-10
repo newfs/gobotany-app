@@ -1,4 +1,4 @@
-// temporary: message banner
+// Temporary: message banner
 
 function getCookieValue(a) {   // https://stackoverflow.com/questions/5639346
     var b = document.cookie.match('(^|;)\\s*' + a + '\\s*=\\s*([^;]+)');
