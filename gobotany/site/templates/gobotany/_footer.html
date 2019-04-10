@@ -21,7 +21,8 @@
             <p class="footer__site-name">
                 {% block site_name %}Go Botany{% endblock %}
                 ({% gobotany_version %})</p>
-            <ul class="footer__navigation-list
+            <ul id="footer-nav" {# used by menu button on small screens #}
+                class="footer__navigation-list
                 footer__navigation-list--primary">
                 {% block footer_navigation %}
                     {% include "gobotany/_footer_primary_navigation.html" %}
