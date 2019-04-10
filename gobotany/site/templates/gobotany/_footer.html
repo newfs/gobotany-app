@@ -6,10 +6,16 @@
             {% include "gobotany/_copyright_years.html" %}
             Native Plant Trust or respective copyright holders.
             All rights reserved.</p>
-            <address class="footer__address"><a
-                href="/">Native Plant Trust</a><br>
-                (formerly New England Wild Flower Society)<br>
-                180 Hemenway Road, Framingham, MA 01701 USA</address>
+            <address class="footer__address vcard"
+                >{# hCard: http://microformats.org/wiki/hcard #}
+                <a class="fn org url"
+                    href="http://www.nativeplanttrust.org/">Native Plant Trust</a><br>
+                <span class="street-address">180 Hemenway Road</span><br>
+                <span class="locality">Framingham</span>,
+                <span class="region">Massachusetts</span>
+                <span class="postal-code">01701</span>
+                <span class="country-name">USA</span>
+            </address>
         </div>
         <div class="footer__navigation">
             <p class="footer__site-name">
