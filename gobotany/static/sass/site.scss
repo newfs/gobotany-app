@@ -300,6 +300,7 @@ header nav {
     font-family: $headings-font;
     height: 120px;
     padding: 0 0 0 16px;
+    position: relative;
     > ul {
         font-family: $navbar-font;
     }
@@ -335,8 +336,11 @@ header #search {
     background: #fff url(/static/images/layout/search-left.png) left center no-repeat;
     float: right;
     height: 20px;
-    margin: 4px 4px 0 0;
+    margin: 0;
     padding: 0 0 0 11px;
+    position: relative;
+    right: 4px;
+    top: 4px;
     form {
         display: block;
         margin: 0;
@@ -368,6 +372,13 @@ header #search {
         padding: 0;
         width: 42px;
         @include offscreen;
+    }
+}
+
+/* Firefox media query: temporary fix for search box position */
+@-moz-document url-prefix() {
+    header #search {
+        top: 11px;
     }
 }
 
