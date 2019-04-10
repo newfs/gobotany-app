@@ -247,7 +247,7 @@ a {
             width: $smallscreen-portrait-width;
         }
         + .three-col {
-            padding-top: 375px;
+            padding-top: 355px;
         }
     }
 }
@@ -272,8 +272,12 @@ a {
     #home .content {
         margin-top: 0;
         padding-top: 0;
+        .container {
+            padding: 0;
+        }
     }
     #home header {
+        height: 106px;
         h1 {
             background-position: 0 0;
             background-size: 120px 40px;
@@ -283,6 +287,7 @@ a {
         }
         .id {
             float: none;
+            padding-left: 10px;
             width: auto;
         }
         .tagline {
@@ -389,9 +394,11 @@ a {
         }
     }
     #home .donate a {
+        display: block;
         float: none;
         margin: 6px 20px 0 0;
         position: static;
+        width: 80px;
     }
 }
 
