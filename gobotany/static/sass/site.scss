@@ -283,17 +283,6 @@ header .go-botany {
         padding: 4px 0 0;
     }
 }
-header .newfs {
-    float: right;
-    padding-top: 6px;
-    a {
-        background: url(/static/images/layout/npt-logo-stacked.svg) no-repeat transparent;
-        background-size: 116px 66px;
-        height: 66px;
-        width: 116px;
-        @include offscreen;
-    }
-}
 header nav {
     background: url(/static/images/layout/nav-app-npt.png) no-repeat;
     background-position: 0px 79px;

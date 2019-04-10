@@ -234,6 +234,9 @@ a {
 
 /* Portrait-orientation styles */
 @media only screen and (max-width: 400px) {
+    #home .content .container {
+        width: $smallscreen-portrait-width;
+    }
     #home #banner {
         #overlay {
             top: 115px;
@@ -272,24 +275,27 @@ a {
     }
     #home header {
         h1 {
-            background-position: -56px -7px;
-            height: 56px;
+            background-position: 0 0;
+            background-size: 120px 40px;
+            height: 40px;
             margin-left: 0;
-            width: 200px;
+            width: 120px;
+        }
+        .id {
+            float: none;
+            width: auto;
+        }
+        .tagline {
+            float: none;
+            margin: 0;
         }
         nav {
-            background: #508e31;
+            background: #21555c;
             height: 32px;
             padding-left: 0;
             > a:hover {
                 text-decoration: none;
             }
-        }
-        .newfs a {
-            background-size: 100px 55px;
-            float: right;
-            height: 55px;
-            width: 101px;
         }
     }
     #home #banner {
