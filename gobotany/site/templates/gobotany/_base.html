@@ -11,9 +11,9 @@
 
         <link rel="shortcut icon" href="/static/images/branding/favicon.png">
 
-        {# Unless this is the main Production site, ask not to be indexed. #}
-        {% if 'gobotany.newenglandwild.org' not in request.META.HTTP_HOST %}
-            <!-- Host is not gobotany.newenglandwild.org, so ask not to be indexed -->
+        {# Unless this is the Production site, ask not to be indexed. #}
+        {% if 'gobotany.nativeplanttrust.org' not in request.META.HTTP_HOST %}
+            <!-- Host is not the Production site, so ask not to be indexed: -->
             {% include "gobotany/_meta_robots_noindex.html" %}
         {% endif %}
 
