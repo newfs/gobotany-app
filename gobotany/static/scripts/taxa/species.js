@@ -9,7 +9,7 @@ define([
 
     'taxa/SpeciesPageHelper',
     'util/image_popup',
-], function($, shadowbox_init, activate_scroll, SpeciesPageHelper,
+], function ($, shadowbox_init, activate_scroll, SpeciesPageHelper,
     image_popup) {
 
     $(document).ready(function () {
@@ -26,5 +26,7 @@ define([
         // Clicking on D. Key figure links pops up a larger image.
         image_popup.init();
         image_popup.pop_up_links('.figure-link');
+
+        console.log('species page initialized');
     });
 });
