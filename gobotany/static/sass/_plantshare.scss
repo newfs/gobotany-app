@@ -25,16 +25,6 @@ $avatar-image-width: 169px;
     }
 }
 
-body.plantshare .recaptchatable {
-    a {
-        color: $link-green;
-    }
-    #recaptcha_response_field {
-        font-family: $headings-font;
-        font-size: $nav-font-size;
-    }
-}
-
 body.plantshare .nav-links {
     font-family: $headings-font;
     font-size: 14px;
@@ -58,7 +48,7 @@ body.plantshare .content {
         }
         input {
             margin-bottom: 10px;
-            &[type=text], &[type=password] {
+            &[type=email], &[type=text], &[type=password] {
                 height: 16px;
                 @include form-field-base;
             }
@@ -422,6 +412,11 @@ body.plantshare#sign-up #main {
             margin-top: 12px;
             width: 204px;
         }
+    }
+    #id_url, label[for=id_url], #id_url + .helptext {
+        /* hide from visual browsers, leave for screenreaders */
+        position: absolute;
+        top: -9999px;
     }
 }
 body.plantshare#log-in {

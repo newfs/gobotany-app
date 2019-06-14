@@ -181,7 +181,6 @@ INSTALLED_APPS = [
                           # applying South migrations.
                           # Update: also keep commented out for the Django 1.7
                           # upgrade when running: dev/django makemigrations
-    'captcha',
     ]
 MIDDLEWARE_CLASSES = (
     ) + (('sslify.middleware.SSLifyMiddleware',)
@@ -266,16 +265,6 @@ if EMAIL_HOST_USER:
 ACCOUNT_EMAIL_CONFIRMATION_EXPIRE_DAYS = 3
 ACCOUNT_EMAIL_CONFIRMATION_URL = 'ps-confirm-email'
 ACCOUNT_EMAIL_UNIQUE = False
-
-# For django-recaptcha
-if IN_PRODUCTION:   # instances on Heroku (Prod, Dev)
-    RECAPTCHA_PUBLIC_KEY = os.environ.get('RECAPTCHA_PUBLIC_KEY', '')
-    RECAPTCHA_PRIVATE_KEY = os.environ.get('RECAPTCHA_PRIVATE_KEY', '')
-else:   # local development
-    RECAPTCHA_PUBLIC_KEY = os.environ.get('RECAPTCHA_PUBLIC_KEY_DEV', '')
-    RECAPTCHA_PRIVATE_KEY = os.environ.get('RECAPTCHA_PRIVATE_KEY_DEV', '')
-RECAPTCHA_USE_SSL = True
-NOCAPTCHA = True
 
 # For static Google Maps (dynamic ones use a different key, in google_maps.js)
 GMAPS_STATIC_KEY = os.environ.get('GOBOTANY_GMAPS_KEY_STATIC', '')

@@ -32,7 +32,6 @@ requirements = [
 
     # Login and registration
 
-    'django-recaptcha==1.4.0',
     'django-registration==2.1.1',
     'django-user-accounts==2.1.0', # for changing email addresses
 

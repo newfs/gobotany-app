@@ -231,6 +231,8 @@ class PlantShareTests(FunctionalCase):
         self.assertEqual(len(navigation_items), 2)   # includes Signup item
 
     @unittest.skip('Skip for now: test requires reaching a server on the Web')
+    # TODO: rewrite with the new replacement for recaptcha, a hidden
+    # field, which doesn't require reaching a server on the web
     def test_sign_up_with_incorrect_captcha_response(self):
         form_submit_url = self.PLANTSHARE_BASE + self.SIGNUP_FORM_URL
         client = Client()

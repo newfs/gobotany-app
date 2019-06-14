@@ -14,7 +14,7 @@ from registration.backends.default.views import RegistrationView
 
 from gobotany.plantshare.views import (change_email,
     change_email_confirmation_sent, confirm_email)
-from .forms import RegistrationFormWithCaptcha
+from .forms import RegistrationFormWithHiddenField
 
 urlpatterns = [
     url(r'^activate/complete/$',
@@ -29,7 +29,7 @@ urlpatterns = [
         ActivationView.as_view(),
         name='registration_activate'),
     url(r'^register/$',
-        RegistrationView.as_view(form_class=RegistrationFormWithCaptcha),
+        RegistrationView.as_view(form_class=RegistrationFormWithHiddenField),
         name='registration_register'),
     url(r'^register/complete/$',
         TemplateView.as_view(
