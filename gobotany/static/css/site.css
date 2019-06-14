@@ -1113,16 +1113,13 @@ min-width: 0;
 @media only screen and (max-width: 1024px) { body.skey.results #question-nav .option-list > li:hover, body.skey.results #question-nav .option-list > li.active, body.skey.results #question-nav .option-list > li.answered.active { background: #fff; } }
 /* End media queries styles for Simple and Full Keys */
 /* PlantShare */
-body.plantshare .recaptchatable a { color: #27610a; }
-body.plantshare .recaptchatable #recaptcha_response_field { font-family: "Trebuchet MS", Helvetica, Arial, "Lucida Sans Unicode", sans-serif; font-size: 14px; }
-
 body.plantshare .nav-links { font-family: "Trebuchet MS", Helvetica, Arial, "Lucida Sans Unicode", sans-serif; font-size: 14px; margin: 0 0 16px; }
 
 body.plantshare .content li { list-style-type: none; }
 body.plantshare .content form p { margin: 0; }
 body.plantshare .content form label { clear: left; display: block; margin-bottom: 4px; text-transform: uppercase; width: 353px; }
 body.plantshare .content form input { margin-bottom: 10px; }
-body.plantshare .content form input[type=text], body.plantshare .content form input[type=password] { height: 16px; border: 1px solid #c3d941; padding: 5px; width: 353px; }
+body.plantshare .content form input[type=email], body.plantshare .content form input[type=text], body.plantshare .content form input[type=password] { height: 16px; border: 1px solid #c3d941; padding: 5px; width: 353px; }
 body.plantshare .content form textarea { height: 82px; border: 1px solid #c3d941; padding: 5px; width: 353px; }
 body.plantshare .content form input[type=text], body.plantshare .content form textarea { font-family: Verdana, Geneva, "Lucida Sans Unicode", sans-serif; }
 
@@ -1219,6 +1216,7 @@ body.plantshare#find-people-profile .not-found { padding: 70px 0; text-align: ce
 
 body.plantshare#sign-up #main form input { width: 350px; }
 body.plantshare#sign-up #main form input.button { margin-top: 12px; width: 204px; }
+body.plantshare#sign-up #main #id_url, body.plantshare#sign-up #main label[for=id_url], body.plantshare#sign-up #main #id_url + .helptext { /* hide from visual browsers, leave for screenreaders */ position: absolute; top: -9999px; }
 
 body.plantshare#log-in h1 + p { font-family: "Trebuchet MS", Helvetica, Arial, "Lucida Sans Unicode", sans-serif; font-size: 14px; margin: 0; padding: 16px 0; }
 body.plantshare#log-in ul.errorlist { padding: 16px 0; }
