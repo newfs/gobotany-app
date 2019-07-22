@@ -2,9 +2,9 @@ from distutils.core import setup
 from setuptools import find_packages
 
 requirements = [
-    'django==1.11.20',
+    'django==1.11.22',
 
-    'Pillow==3.3.1',
+    'Pillow==3.3.2',
     'bleach==1.4.3',
     'cssselect',
     'django-debug-toolbar==1.5',
