@@ -266,7 +266,9 @@ header .go-botany {
     height: 54px;
     margin: 0;
     padding: 18px 0 0 0;
+    position: relative;
     width: 424px;
+    z-index: 5;
     a {
         background: url(/static/images/layout/npt-gb-logo.svg) no-repeat transparent;
         background-size: 150px 48px;
