@@ -218,7 +218,7 @@ header { height: 120px; }
 header .container { margin: 0 auto; padding: 0 10px; width: 960px; }
 header p { margin: 0; }
 
-header .go-botany { float: left; height: 54px; margin: 0; padding: 18px 0 0 0; width: 424px; }
+header .go-botany { float: left; height: 54px; margin: 0; padding: 18px 0 0 0; position: relative; width: 424px; z-index: 5; }
 header .go-botany a { background: url(/static/images/layout/npt-gb-logo.svg) no-repeat transparent; background-size: 150px 48px; height: 48px; width: 150px; display: block; text-indent: -9000px; }
 header .go-botany .tagline { color: #467321; float: right; font-family: Basetica, sans-serif; font-size: 13px; margin: -19px 0 0 0; padding: 4px 0 0; }
 
