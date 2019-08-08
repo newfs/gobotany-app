@@ -149,3 +149,13 @@ def species_slug(page_title):
 @register.filter
 def taxon_plural(s):
     return plurals[s]
+
+@register.filter
+def both_siblings_have_children(lead):
+    # Detect whether both this lead and its sibling have child leads.
+    both_have_children = True
+    for child in lead.parent.children.all():
+        if child.children.count() == 0:
+            both_have_children = False
+            break
+    return both_have_children

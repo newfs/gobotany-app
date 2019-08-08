@@ -8,6 +8,7 @@ import tablib
 from datetime import datetime
 from django.contrib.messages import get_messages
 from django.contrib.auth.decorators import permission_required
+from django.core.exceptions import ValidationError
 from django.http import Http404, HttpResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from django.template import RequestContext
@@ -662,48 +663,75 @@ def dkey(request, slug=u'key-to-the-families'):
                 deleted_leads.append(leads_to_delete[1].id)
                 leads_to_delete.delete()
         elif command == 'promote':
-            print('command: promote')
             # Determine the new parent of the leads that will be promoted.
             promoted_leads_parent = this_lead.parent
-            print('promoted_leads_parent:', promoted_leads_parent)
 
-            # Disconnect the leads that are being replaced rather than fully
-            # delete them. This way the records stay around for future use.
-            #
+            # Disconnect the leads that are being replaced.
+
             # Query the leads whose parent equals the promoted_leads_parent.
             # This should return just the two leads to be disconnected.
             leads_to_disconnect = dkey_models.Lead.objects.filter(
-                parent=this_lead.parent)
-            print('leads to disconnect:', leads_to_disconnect)
-            # Be careful about disconnecting old leads: verify there are two.
-            if leads_to_disconnect.count() == 2:
-                print('leads_to_disconnect[0].parent (set to None):',
-                    leads_to_disconnect[0].parent)
-                leads_to_disconnect[0].parent = None
-                leads_to_disconnect[0].save()
-                print('leads_to_disconnect[0].parent:', leads_to_disconnect[0].parent)
-                print('leads_to_disconnect[1].parent (set to None):',
-                    leads_to_disconnect[1].parent)
-                leads_to_disconnect[1].parent = None
-                leads_to_disconnect[1].save()
-                print('leads_to_disconnect[1].parent:', leads_to_disconnect[1].parent)
+                parent=this_lead.parent).order_by('letter')
 
-            # Query the leads that are to be promoted.
-            leads_to_promote = dkey_models.Lead.objects.filter(parent=lead_id)
+            # Be careful about disconnecting leads: verify there are two.
+            if leads_to_disconnect.count() == 2:
+                first_removed_lead = leads_to_disconnect[0]
+                second_removed_lead = leads_to_disconnect[1]
+
+                # Disconnect the first lead.
+                first_removed_lead.parent = None
+                try:
+                    first_removed_lead.save()
+                except ValidationError as e:
+                    print('ValidationError when disconnecting first lead:',
+                        e.message_dict)
+
+                # Disconnect the second lead.
+                second_removed_lead.parent = None
+                try:
+                    second_removed_lead.save()
+                except ValidationError as e:
+                    print('ValidationError when disconnecting second lead:',
+                        e.message_dict)
+
+            # Query the leads that are to be promoted, i.e. moved up,
+            # to replace the leads that have just been removed.
+            leads_to_promote = dkey_models.Lead.objects.filter(
+                parent=lead_id).order_by('letter')
+
             # Be careful about promoting lead records: verify there are two.
             if leads_to_promote.count() == 2:
-                print('leads_to_promote[0]: %s - current parent is %s, set to %s' % (
-                    leads_to_promote[0], leads_to_promote[0].parent,
-                    promoted_leads_parent))
-                leads_to_promote[0].parent = promoted_leads_parent
-                leads_to_promote[0].save()
-                print('leads_to_promote[0].parent:', leads_to_promote[0].parent)
-                print('leads_to_promote[1]: %s - current parent is %s, set to %s' % (
-                    leads_to_promote[1], leads_to_promote[1].parent,
-                    promoted_leads_parent))
-                leads_to_promote[1].parent = promoted_leads_parent
-                leads_to_promote[1].save()
-                print('leads_to_promote[1].parent:', leads_to_promote[1].parent)
+                first_lead = leads_to_promote[0]
+                second_lead = leads_to_promote[1]
+
+                # Set a new parent for the first lead.
+                first_lead.parent = promoted_leads_parent
+                try:
+                    first_lead.save()
+                except ValidationError as e:
+                    print('ValidationError:', e.message_dict)
+
+                # Set a new parent for the second lead.
+                second_lead.parent = promoted_leads_parent
+                try:
+                    second_lead.save()
+                except ValidationError as e:
+                    print('ValidationError:', e.message_dict)
+
+                # Delete the two disconnected leads, which should also
+                # delete any child leads that one of them may have had.
+                # This deletion was mentioned to the user in a confirmation
+                # message to let them know that this would happen.
+                try:
+                    first_removed_lead.delete()
+                except ValidationError as e:
+                    print('ValidationError when deleting first lead:',
+                        e.message_dict)
+                try:
+                    second_removed_lead.delete()
+                except ValidationError as e:
+                    print('ValidationError when deleting second lead:',
+                        e.message_dict)
 
         last_number = _renumber_page(this_lead.page)
 

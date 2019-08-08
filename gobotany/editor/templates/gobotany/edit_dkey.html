@@ -128,12 +128,50 @@
             }
         </style>
         <script>
-            function submitForm(command, leadId, letter) {
-                var approved = confirm('Are you sure you want to ' + command +
-                    (command === 'add' ? ' a' : ' the') +
-                    ' couplet under ' + letter + '?' +
-                    (command === 'promote' ? ' The current ' +
-                        letter + ' and its sibling will be replaced by it.': ''));
+            function submitForm(command, leadId, letter, siblingHasChildren) {
+                // Note: the siblingHasChildren parameter is only used
+                // with the 'promote' command.
+
+                var approved = false;
+
+                if (command === 'add') {
+                    // There is no need to confirm before adding a couplet.
+                    approved = true;
+                }
+                else if (command === 'delete') {
+                    // Confirm before deleting.
+                    var approved = confirm('Are you sure you want to ' +
+                        'delete the couplet below ' + letter + '?');
+                }
+                else if (command === 'promote') {
+                    var siblingLetter = letter.toLowerCase();
+                    if (siblingLetter.indexOf('a') > -1) {
+                        siblingLetter = siblingLetter.replace('a', 'b');
+                    }
+                    else {
+                        siblingLetter = siblingLetter.replace('b', 'a');
+                    }
+
+                    // Check whether this lead's sibling has children.
+                    // If so, disallow promoting the lead for now because
+                    // it could potentially delete a sizable structure if the
+                    // user chose this by mistake.
+                    if (siblingHasChildren === true) {
+                        alert('Sorry, cannot Promote this now because ' +
+                            'the sibling lead, ' + siblingLetter +
+                            ', has child couplets.\n\nPlease delete the ' +
+                            'couplets below ' + siblingLetter +
+                            ' and try again.');
+                        return;
+                    }
+                    else {
+                        // Confirm before promoting.
+                        var approved = confirm('Are you sure you want to ' +
+                            'promote the couplet below ' + letter + '?' +
+                            '\n\nThe current ' + letter + ' and ' +
+                            siblingLetter + ' will be replaced by it.');
+                    }
+                }
 
                 if (approved) {
                     document.getElementById('edit-command').value = command;
@@ -250,14 +288,14 @@
                     {# Only show the Promote button if the lead has a parent. #}
                     {# So, don't allow promoting the topmost on a Page. #}
                     {% if lead.parent %}
-                        <a class="edit"
-                            onclick="javascript: submitForm('promote', {{ lead.id }}, '{{ lead.letter }}'); return false;"
-                            href="javascript: void(0);"
-                            onmouseover="window.status='Move {{ lead.childlist.0.letter }}/{{ lead.childlist.1.letter }} up a level, replacing its parent pair';"
-                            onmouseout="window.status='';"
-                            title="Promote {{ lead.childlist.0.letter }}/{{ lead.childlist.1.letter }} up a level, replacing its parent pair"
-                            >↖ Promote
-                            {{ lead.childlist.0.letter }}/{{ lead.childlist.1.letter }}…</a>
+                    <a class="edit"
+                        onclick="javascript: submitForm('promote', {{ lead.id }}, '{{ lead.letter }}', {{ lead|both_siblings_have_children|lower }}); return false;"
+                        href="javascript: void(0);"
+                        onmouseover="window.status='Move {{ lead.childlist.0.letter }}/{{ lead.childlist.1.letter }} up a level, replacing its parent pair';"
+                        onmouseout="window.status='';"
+                        title="Promote {{ lead.childlist.0.letter }}/{{ lead.childlist.1.letter }} up a level, replacing its parent pair"
+                        >↖ Promote
+                        {{ lead.childlist.0.letter }}/{{ lead.childlist.1.letter }}…</a>
                     {% endif %}
 
                     {# Only show the Delete button if it's a 'bottom' node, #}
