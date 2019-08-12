@@ -1,8 +1,10 @@
 import json
 import re
+import sys
 import urllib
 from itertools import groupby
 from operator import attrgetter as pluck
+from StringIO import StringIO   # Python 3: from io import StringIO
 
 import tablib
 from datetime import datetime
@@ -19,6 +21,7 @@ from gobotany.core import models
 from gobotany.core.partner import which_partner
 
 from gobotany.dkey import models as dkey_models
+from gobotany.dkey.sync import sync
 from gobotany.dkey.views import _Proxy, get_groups
 
 from . import wranglers
@@ -763,3 +766,18 @@ def dkey(request, slug=u'key-to-the-families'):
         #        'taxa_beneath': (lambda: proxy.taxa_beneath),
         #        'next_page': (lambda: proxy.next() or proxy.page),
         #    })
+
+
+@permission_required('core.botanist')
+def dkey_run_sync(request):
+    # Run the D. Key sync script. This can also be done at the command
+    # line locally, or as a Heroku command for Dev/Prod.
+    previous_stdout = sys.stdout
+    result = StringIO()
+    sys.stdout = result
+    sync()
+    sys.stdout = previous_stdout
+
+    return render(request, 'gobotany/dkey_sync.html', {
+        'output': result.getvalue(),
+    })
