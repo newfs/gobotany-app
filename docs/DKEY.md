@@ -34,7 +34,7 @@ the full text for that couplet question will appear as a tooltip.
 
 ### Changing leads
 
-You can edit a lead at any time by pressing its Change button in teh
+You can edit a lead at any time by pressing its Change button in the
 D. Key Editor.
 
 This will take you to the Change page for that lead record, where you
@@ -69,6 +69,19 @@ Note that not every couplet can be immediately deleted: only ones
 at the bottom-most branches of a page's tree. So, there is no way
 to delete couplets which have further child couplets, without deleting
 starting from the bottom first.
+
+### Promoting leads
+
+You can promote a couplet, which moves it up a level and replaces
+its parent and the parent’s sibling.
+
+You can only promote a couplet if the parent’s sibling has no child
+couplets. These would normally be deleted upon promoting the couplet.
+
+In order to promote such a couplet, you will need to delete each of the
+parent’s sibling’s child couplets one at a time (from the bottom up).
+This restriction is a safeguard against accidentally deleting a deep
+tree of child nodes all at once.
 
 ### Text at bottom of species pages
 
@@ -148,3 +161,14 @@ The command on Heroku:
 The command for local development:
 
     python gobotany/dkey/sync.py
+
+On Heroku (both Dev and Prod), the sync script is now set up to run
+at regular intervals (currently every hour). For a few minutes after
+the script runs each time, its logged output can be seen by running:
+
+    heroku logs --ps scheduler --app {app-name}
+
+A few minutes after the script finishes, this output is no longer
+available. You can wait until the next time it runs and look at it then.
+You can also set the schedule to run more frequently if needed, i.e.,
+every 10 minutes.
