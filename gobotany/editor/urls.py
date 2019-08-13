@@ -14,7 +14,6 @@ urlpatterns = [
     url(r'^partner/(\d+)/plants/upload/$', views.partner_plants_upload),
     url(r'^partner(\d+)-plants.csv$', views.partner_plants_csv),
     url(r'^dkey/$', views.dkey),
-    url(r'^dkey/sync/$', views.dkey_run_sync),
     url(r'^dkey/(?P<slug>[^/]*)/$', views.dkey),
     url(r'^.*', views.e404),  # prevent fall-through to wildcard rewrite URL
 ]
