@@ -156,7 +156,7 @@ a:not([href]):hover { text-decoration: none; }
 
 h1, h2, h3, h4, h5, h6 { font-family: "Trebuchet MS", Helvetica, Arial, "Lucida Sans Unicode", sans-serif; font-weight: normal; line-height: 155%; margin: 0; padding: 0; -webkit-font-smoothing: antialiased; /* needed for some WebKit browsers: prevent too bold */ }
 
-h1 { color: #437829; font-family: Basetica, "Trebuchet MS", Helvetica, Arial, "Lucida Sans Unicode", sans-serif; font-size: 34px; line-height: 110%; }
+h1 { color: #437829; font-family: Basetica, "Trebuchet MS", Helvetica, Arial, "Lucida Sans Unicode", sans-serif; font-size: 34px; line-height: 110%; margin: 0.5rem 0; }
 
 h2 { font-size: 22px; margin: 8px 0; }
 
