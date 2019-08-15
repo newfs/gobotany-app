@@ -1,6 +1,6 @@
 from django.contrib import admin
 from django.db import models
-from django.forms import ModelForm, TextInput, Textarea
+from django.forms import ChoiceField, ModelForm, Textarea, TextInput
 from django.http import HttpResponseRedirect
 
 from gobotany.admin import GoBotanyModelAdmin
@@ -38,25 +38,26 @@ def lead_id_name(obj):
     return obj.id
 lead_id_name.short_description = 'Lead ID'
 
-class LeadAdminForm(ModelForm):
-  class Meta:
-    model = Lead
-    widgets = {
-        'letter': TextInput(),
-    }
-    fields = '__all__'
-
 class LeadAdmin(GoBotanyModelAdmin):
-    form = LeadAdminForm
+    raw_id_fields = ('page', 'parent', 'goto_page')
+    fields = ('id', 'letter', 'text', 'goto_page', 'goto_num', 'page',
+        'parent', 'taxa_cache',)
     formfield_overrides = {
         models.TextField: {'widget': Textarea(attrs={'rows': 4, 'cols': 80}) },
     }
-    list_display = (lead_id_name, 'letter', 'text', 'parent', 'page', 'goto_page',
-        'goto_num', 'taxa_cache',)
-    ordering = ('page__title',)
-    readonly_fields = ('id', 'taxa_cache',)
+    list_display = (lead_id_name, 'letter', 'text', 'parent', 'page',
+        'goto_page', 'goto_num',)
+    list_select_related = ('page', 'parent', 'goto_page',)
+    readonly_fields = ('id', 'page', 'parent', 'taxa_cache',)
     search_fields = ('id', 'letter', 'text', 'parent__letter', 'page__title',
-        'goto_page__title', 'goto_num', 'taxa_cache',)
+        'goto_page__title', 'goto_num',)
+    show_full_result_count = False
+
+    # Use a regular small text input field for the Letter field.
+    def formfield_for_dbfield(self, db_field, **kwargs):
+        if db_field.name == 'letter':
+            kwargs['widget'] = TextInput
+        return super(LeadAdmin, self).formfield_for_dbfield(db_field,**kwargs)
 
     def response_change(self, request, obj):
         # TODO: fix: using 'next' in URL bypasses 'Save and Continue Editing'
