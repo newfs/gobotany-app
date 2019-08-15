@@ -39,7 +39,7 @@
                 discoveries, get help identifying plants, make maps, and
                 develop checklists of plants for particular sites you are
                 exploring.</p>
-                <a class="orange-button caps" href="{% url 'ps-main' %}">Learn More</a>
+                <a class="orange-button caps" href="{% url 'ps-main' %}">PlantShare</a>
             </div>
             <div class="three-col">
                 <h3>Advanced ID Tools</h3>
@@ -49,7 +49,7 @@
                 dichotomous keys to families, genera, and species. Also learn
                 about subspecies and varieties native to our region.</p>
                 <a class="orange-button caps"
-                    href="{% url 'advanced-id-tools' %}">Learn More</a>
+                    href="{% url 'advanced-id-tools' %}">Advanced ID</a>
             </div>
             <div class="three-col last">
                 <h3>Teaching Tools</h3>
@@ -59,7 +59,7 @@
                 botanists. Professors, teachers, and environmental educators
                 can share curricula and teaching ideas.</p>
                 <a class="orange-button caps"
-                    href="{% url 'site-teaching' %}" >Learn More</a>
+                    href="{% url 'site-teaching' %}" >Teaching</a>
             </div>
             {% endblock %}
 
@@ -81,7 +81,7 @@
                         <p>{{ plant_of_the_day.factoid|slice:":274"}}
                         {% if plant_of_the_day.factoid|length > 274 %}...{% endif %}</p>
                         <a class="learn-more orange-button caps" 
-                            href="/species/{{ plant_of_the_day.genus_name|lower }}/{{ plant_of_the_day.epithet }}/">Learn More</a>
+                            href="/species/{{ plant_of_the_day.genus_name|lower }}/{{ plant_of_the_day.epithet }}/">Full Profile</a>
                     </div>
                 {% else %}
                     <p>Error: Plant of the Day information missing</p>
