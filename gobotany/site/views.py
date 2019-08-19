@@ -104,6 +104,13 @@ def updates_view(request):
             }, request)
 
 @vary_on_headers('Host')
+def updates_family_view(request):
+    updates = Update.objects.all().order_by('family', '-date')
+    return render_per_partner('updates_family.html', {
+            'updates': updates,
+            }, request)
+
+@vary_on_headers('Host')
 def getting_started_view(request):
     youtube_id = ''
     getting_started_video = Video.objects.get(title='Getting Started')

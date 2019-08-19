@@ -737,13 +737,13 @@ class PlantPreviewCharacterAdmin(_Base):
     list_filter = ('pile',)
 
 class UpdateAdmin(_Base):
-    list_display = ('date', 'description',)
+    list_display = ('date', 'description', 'family')
 
     def get_form(self, request, obj=None, **kwargs):
         form = super(UpdateAdmin, self).get_form(request, obj, **kwargs)
         # Make the 'Description' text field bigger for easier editing.
         form.base_fields['description'].widget.attrs['style'] = \
-            'height: 28rem; width: 48rem'
+            'height: 24rem; width: 48rem'
         return form
 
 class HighlightAdmin(_Base):

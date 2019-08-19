@@ -1094,6 +1094,7 @@ class Update(models.Model):
     """An entry for an Updates page regarding site (data) improvements."""
     date = models.DateField()
     description = models.TextField()
+    family = models.CharField(max_length=100, blank=True, null=True)
 
     class Meta:
         ordering = ['-date']
