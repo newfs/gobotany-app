@@ -60,6 +60,15 @@ $image-box-shadow-color: rgba(0, 0, 0, 0.6);
         margin-left: 2rem;
     }
 }
+@media print {
+    #updates #sidebar {
+        display: none;
+    }
+    #updates #main {
+        padding-left: 0;
+        width: auto;
+    }
+}
 
 /* Getting Started */
 
