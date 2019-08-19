@@ -94,7 +94,6 @@ div.scrollableArea { position: relative; width: auto; height: 100%; }
 @font-face { font-family: Basetica; font-style: italic; src: url(/static/fonts/Basetica-Medium-Italic-205TF.woff2) format("woff2"), url(/static/fonts/Basetica-Medium-Italic-205TF.woff) format("woff"); }
 @font-face { font-family: ScalaSans; font-weight: bold; src: url(//newfs.s3.amazonaws.com/fonts/ScalaSansWeb-Bold.woff) format("woff"); }
 /* was #807121, darkened for WCAG AA */
-/* TODO: fix; too light for WCAG AA */
 /* from NPT palette */
 /* lighter version of #a7da7e green from NPT palette */
 /* darker version of #a7da7e green from NPT palette */
@@ -117,7 +116,7 @@ div.popup h2 { /* "See list of 14 species in 1b" */ border-bottom: 1px solid #51
 
 div.popup a { text-decoration: none; color: #000; }
 div.popup a:hover, div.popup a:focus { text-decoration: underline; }
-div.popup a:hover { color: #35661c; }
+div.popup a:hover { color: #27610a; }
 
 /* For occasional, temporary donation campaigns: message at top of page */
 #top-message { background-color: #d87e54; color: #000; font-family: Verdana, Geneva, "Lucida Sans Unicode", sans-serif; font-size: 12px; margin: 0; padding: 12px 24px; }
@@ -142,15 +141,15 @@ a { color: #27610a; text-decoration: none; }
 
 a:visited { color: #50570a; }
 
-a:active { color: #45ac11; }
+a:active { color: #266407; }
 
 a:not([href]) { color: #000; }
 a:not([href]):hover { text-decoration: none; }
 
-#main p a, #main li > a, #main li > i a, #main dt a, #main td a, #main h2 a, #main form > a, #main form div > a, #main li li a, #sidebar form > a, .nemap a { border-bottom: 1px solid #c3d941; }
-#main p a:hover, #main li > a:hover, #main li > i a:hover, #main dt a:hover, #main td a:hover, #main h2 a:hover, #main form > a:hover, #main form div > a:hover, #main li li a:hover, #sidebar form > a:hover, .nemap a:hover { border-color: #27610a; }
-#main p a:active, #main li > a:active, #main li > i a:active, #main dt a:active, #main td a:active, #main h2 a:active, #main form > a:active, #main form div > a:active, #main li li a:active, #sidebar form > a:active, .nemap a:active { border-color: #45ac11; }
-#main p a:not([href]), #main li > a:not([href]), #main li > i a:not([href]), #main dt a:not([href]), #main td a:not([href]), #main h2 a:not([href]), #main form > a:not([href]), #main form div > a:not([href]), #main li li a:not([href]), #sidebar form > a:not([href]), .nemap a:not([href]) { border: 0; }
+#main p a, #main li > a, #main li > i a, #main dt a, #main td a, #main h2 a, #main h3 a, #main form > a, #main form div > a, #main li li a, #sidebar form > a, .nemap a { border-bottom: 1px solid #27610a; }
+#main p a:visited, #main li > a:visited, #main li > i a:visited, #main dt a:visited, #main td a:visited, #main h2 a:visited, #main h3 a:visited, #main form > a:visited, #main form div > a:visited, #main li li a:visited, #sidebar form > a:visited, .nemap a:visited { border-bottom: 1px solid #50570a; }
+#main p a:active, #main li > a:active, #main li > i a:active, #main dt a:active, #main td a:active, #main h2 a:active, #main h3 a:active, #main form > a:active, #main form div > a:active, #main li li a:active, #sidebar form > a:active, .nemap a:active { border-color: #266407; }
+#main p a:not([href]), #main li > a:not([href]), #main li > i a:not([href]), #main dt a:not([href]), #main td a:not([href]), #main h2 a:not([href]), #main h3 a:not([href]), #main form > a:not([href]), #main form div > a:not([href]), #main li li a:not([href]), #sidebar form > a:not([href]), .nemap a:not([href]) { border: 0; }
 
 #main td.scientific-name a { border-bottom: 0; }
 
@@ -207,6 +206,9 @@ body.help #sidebar nav li, body.plantshare #sidebar nav li { padding-left: 28px;
 body.help #sidebar nav li:first-child, body.plantshare #sidebar nav li:first-child { padding-left: 15px; }
 body.help #sidebar nav li a:not([href])::before, body.plantshare #sidebar nav li a:not([href])::before { color: #000; content: "\25b8"; margin-left: -14px; padding-bottom: 5px; padding-right: 5px; }
 body.help #sidebar nav li > span, body.plantshare #sidebar nav li > span { color: #ccc; padding-left: 10px; }
+
+/* Always place the "you are here" marker next to the pages in the Updates section, including on the Order by Family page. */
+body.help.updates.family #sidebar nav li a[href='/updates/']::before { color: #000; content: "\25b8"; margin-left: -14px; padding-bottom: 5px; padding-right: 5px; }
 
 /* Handle pages beneath subsections so they will have a "you are here" marker. Each of these must be set up individually where needed. */
 body.help#glossary #sidebar .glossary a::before, body.help#fullkey-placeholder #sidebar .advanced-id-tools a::before, body.help#dkey-placeholder #sidebar .advanced-id-tools a::before { color: #000; content: "\25b8"; margin-left: -14px; padding-bottom: 5px; padding-right: 5px; }
@@ -356,8 +358,7 @@ a.get-help-btn { margin: 10px 0 20px; }
 .plant-grid .missing-image:after { display: block; position: absolute; top: 50%; left: 50%; margin: -20px 0 0 -50px; width: 100px; height: 40px; font-size: 12px; line-height: 130%; text-align: center; content: 'Image not available yet'; }
 
 /* Glossary-term links */
-.gloss { border-bottom: 1px dashed #c3d941; color: #27610a; cursor: pointer; }
-.gloss:hover { border-bottom: 1px dashed #27610a; }
+.gloss { border-bottom: 1px dashed #27610a; color: #27610a; cursor: pointer; }
 
 /* Tooltips for working area images and highlighted glossary terms */
 .gb-tooltip { border: 1px solid #c3d941; border-radius: 2px; box-shadow: 0px 1px 4px 0 #333333; display: none; /* initially invisible, fades in */ padding: 8px; position: absolute; width: 300px; z-index: 1000; background: url('data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz4gPHN2ZyB2ZXJzaW9uPSIxLjEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGRlZnM+PGxpbmVhckdyYWRpZW50IGlkPSJncmFkIiBncmFkaWVudFVuaXRzPSJvYmplY3RCb3VuZGluZ0JveCIgeDE9IjAuNSIgeTE9IjAuMCIgeDI9IjAuNSIgeTI9IjEuMCI+PHN0b3Agb2Zmc2V0PSIwJSIgc3RvcC1jb2xvcj0iI2VhZjJlMiIvPjxzdG9wIG9mZnNldD0iMTAwJSIgc3RvcC1jb2xvcj0iI2Q2ZTZjNSIvPjwvbGluZWFyR3JhZGllbnQ+PC9kZWZzPjxyZWN0IHg9IjAiIHk9IjAiIHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiIGZpbGw9InVybCgjZ3JhZCkiIC8+PC9zdmc+IA=='); background: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #eaf2e2), color-stop(100%, #d6e6c5)); background: -moz-linear-gradient(top center, #eaf2e2, #d6e6c5); background: -webkit-linear-gradient(top center, #eaf2e2, #d6e6c5); background: linear-gradient(to bottom center, #eaf2e2, #d6e6c5); }
@@ -1604,7 +1605,7 @@ body.plantshare#screen-images div.form-control { margin: 0 30px; }
 #dkey p.backlinks a { text-decoration: none; margin-right: 0.5em; color: #519136; font-family: "Trebuchet MS", Helvetica, Arial, "Lucida Sans Unicode", sans-serif; }
 #dkey p.backlinks a:hover, #dkey p.backlinks a:focus { text-decoration: underline; }
 
-#dkey a.what-lies-beneath { /* "See list of 7 species in 1a" */ text-decoration: none; color: #35661c; font-family: "Trebuchet MS", Helvetica, Arial, "Lucida Sans Unicode", sans-serif; font-size: 12px; text-transform: uppercase; }
+#dkey a.what-lies-beneath { /* "See list of 7 species in 1a" */ text-decoration: none; border-bottom: 0; color: #27610a; font-family: "Trebuchet MS", Helvetica, Arial, "Lucida Sans Unicode", sans-serif; font-size: 12px; text-decoration: underline; text-transform: uppercase; }
 #dkey a.what-lies-beneath:hover, #dkey a.what-lies-beneath:focus { text-decoration: underline; }
 
 #dkey > a.what-lies-beneath { display: block; max-width: 47.5em; text-align: right; }
@@ -1630,13 +1631,13 @@ body.plantshare#screen-images div.form-control { margin: 0 30px; }
 
 #dkey a.button { /* big orange button */ display: inline-block; font-size: 12px; margin-top: 6px; }
 
-#dkey a.figure-link { /* clickable figure numbers: [Fig. 3] */ color: #35661c; text-decoration: underline; font-weight: bold; }
+#dkey a.figure-link { /* clickable figure numbers: [Fig. 3] */ color: #27610a; text-decoration: underline; font-weight: bold; }
 
 #dkey ul.couplets .chosen { border-color: #7abe58; }
 
 #dkey ul.active > li > .lead, #dkey ul:target > li > .lead { background-color: #bedc8f; border-color: #bedc8f; }
 
-#dkey .couplets .gloss { color: #35661c; cursor: pointer; }
+#dkey .couplets .gloss { color: #27610a; cursor: pointer; }
 
 #dkey a.show-all-button { display: inline-block; font-size: 12px; font-weight: normal; text-transform: uppercase; }
 

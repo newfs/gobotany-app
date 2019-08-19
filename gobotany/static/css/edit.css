@@ -6,7 +6,6 @@
 @font-face { font-family: Basetica; font-style: italic; src: url(/static/fonts/Basetica-Medium-Italic-205TF.woff2) format("woff2"), url(/static/fonts/Basetica-Medium-Italic-205TF.woff) format("woff"); }
 @font-face { font-family: ScalaSans; font-weight: bold; src: url(//newfs.s3.amazonaws.com/fonts/ScalaSansWeb-Bold.woff) format("woff"); }
 /* was #807121, darkened for WCAG AA */
-/* TODO: fix; too light for WCAG AA */
 /* from NPT palette */
 /* lighter version of #a7da7e green from NPT palette */
 /* darker version of #a7da7e green from NPT palette */
@@ -29,7 +28,7 @@ div.popup h2 { /* "See list of 14 species in 1b" */ border-bottom: 1px solid #51
 
 div.popup a { text-decoration: none; color: #000; }
 div.popup a:hover, div.popup a:focus { text-decoration: underline; }
-div.popup a:hover { color: #35661c; }
+div.popup a:hover { color: #27610a; }
 
 /* For occasional, temporary donation campaigns: message at top of page */
 #top-message { background-color: #d87e54; color: #000; font-family: Verdana, Geneva, "Lucida Sans Unicode", sans-serif; font-size: 12px; margin: 0; padding: 12px 24px; }
