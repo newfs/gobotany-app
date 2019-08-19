@@ -58,7 +58,7 @@ a:not([href]) {
 }
 
 #main p a, #main li > a, #main li > i a, #main dt a, #main td a, #main h2 a,
-#main h3 a, #main form > a, #main form div > a, #main li li a,
+#main h3 a, #main form > a, #main form div > a, #main li li a, #main nav a,
 #sidebar form > a, .nemap a {
     border-bottom: 1px solid $link-green;
     &:visited {

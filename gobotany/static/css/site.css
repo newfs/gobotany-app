@@ -146,10 +146,10 @@ a:active { color: #266407; }
 a:not([href]) { color: #000; }
 a:not([href]):hover { text-decoration: none; }
 
-#main p a, #main li > a, #main li > i a, #main dt a, #main td a, #main h2 a, #main h3 a, #main form > a, #main form div > a, #main li li a, #sidebar form > a, .nemap a { border-bottom: 1px solid #27610a; }
-#main p a:visited, #main li > a:visited, #main li > i a:visited, #main dt a:visited, #main td a:visited, #main h2 a:visited, #main h3 a:visited, #main form > a:visited, #main form div > a:visited, #main li li a:visited, #sidebar form > a:visited, .nemap a:visited { border-bottom: 1px solid #50570a; }
-#main p a:active, #main li > a:active, #main li > i a:active, #main dt a:active, #main td a:active, #main h2 a:active, #main h3 a:active, #main form > a:active, #main form div > a:active, #main li li a:active, #sidebar form > a:active, .nemap a:active { border-color: #266407; }
-#main p a:not([href]), #main li > a:not([href]), #main li > i a:not([href]), #main dt a:not([href]), #main td a:not([href]), #main h2 a:not([href]), #main h3 a:not([href]), #main form > a:not([href]), #main form div > a:not([href]), #main li li a:not([href]), #sidebar form > a:not([href]), .nemap a:not([href]) { border: 0; }
+#main p a, #main li > a, #main li > i a, #main dt a, #main td a, #main h2 a, #main h3 a, #main form > a, #main form div > a, #main li li a, #main nav a, #sidebar form > a, .nemap a { border-bottom: 1px solid #27610a; }
+#main p a:visited, #main li > a:visited, #main li > i a:visited, #main dt a:visited, #main td a:visited, #main h2 a:visited, #main h3 a:visited, #main form > a:visited, #main form div > a:visited, #main li li a:visited, #main nav a:visited, #sidebar form > a:visited, .nemap a:visited { border-bottom: 1px solid #50570a; }
+#main p a:active, #main li > a:active, #main li > i a:active, #main dt a:active, #main td a:active, #main h2 a:active, #main h3 a:active, #main form > a:active, #main form div > a:active, #main li li a:active, #main nav a:active, #sidebar form > a:active, .nemap a:active { border-color: #266407; }
+#main p a:not([href]), #main li > a:not([href]), #main li > i a:not([href]), #main dt a:not([href]), #main td a:not([href]), #main h2 a:not([href]), #main h3 a:not([href]), #main form > a:not([href]), #main form div > a:not([href]), #main li li a:not([href]), #main nav a:not([href]), #sidebar form > a:not([href]), .nemap a:not([href]) { border: 0; }
 
 #main td.scientific-name a { border-bottom: 0; }
 
@@ -1695,6 +1695,8 @@ body.search-results h1 + p { margin-top: 12px; }
 /* Updates */
 #updates #main ul { line-height: 140%; list-style-type: none; margin-bottom: 1rem; margin-top: 1rem; padding: 0; }
 #updates #main ul ul { margin: 0.5rem 0 0.5rem 1rem; }
+#updates h1 + nav { font-family: "Trebuchet MS", Helvetica, Arial, "Lucida Sans Unicode", sans-serif; font-size: 1rem; margin: 1rem 0; }
+#updates h2 { margin-top: 1.5rem; }
 #updates hr { background-image: linear-gradient(to right, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.75), rgba(0, 0, 0, 0)); border: 0; height: 1px; margin: 1rem 0; }
 #updates .ref { font-size: 11px; margin-left: 2rem; }
 

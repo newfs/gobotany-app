@@ -13,13 +13,13 @@
 {% block main_content %}
     <h1>Updates</h1>
 
-    <h2><a
-        href="{% url 'site-updates-date' %}">Order by Date</a> ∙
-        Order by Family</h2>
+    <nav><a
+        href="{% url 'site-updates-date' %}">Ordered by Date</a> ∙
+        Ordered by Family</nav>
 
     {% regroup updates by family as updates_by_family %}
     {% for group in updates_by_family %}
-        <h3>{% if group.grouper %}{{ group.grouper }}{% else %}Site Updates{% endif %}</h3>
+        <h2>{% if group.grouper %}{{ group.grouper }}{% else %}Site Updates{% endif %}</h2>
         {% for update in group.list %}
             {# If there is an opening brace, assume block-level HTML. #}
             {% if update.description|first == '<' %}
