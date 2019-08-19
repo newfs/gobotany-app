@@ -106,9 +106,11 @@
 
 #dkey a.what-lies-beneath {       /* "See list of 7 species in 1a" */
     @include hover-link;
-    color: $text_dark_green;
+    border-bottom: 0;
+    color: $link_green;
     font-family: $headings-font;
     font-size:  $base-font-size;
+    text-decoration: underline;
     text-transform: uppercase;
 }
 #dkey > a.what-lies-beneath {
@@ -181,7 +183,7 @@
     margin-top: 6px;
 }
 #dkey a.figure-link {             /* clickable figure numbers: [Fig. 3] */
-    color: $text_dark_green;
+    color: $link_green;
     text-decoration: underline;
     font-weight: bold;
 }
@@ -195,7 +197,7 @@
 }
 
 #dkey .couplets .gloss {
-    color: $text_dark_green;
+    color: $link_green;
     cursor: pointer;
 }
 

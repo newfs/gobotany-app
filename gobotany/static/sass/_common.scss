@@ -39,7 +39,7 @@ $medium-brown: #7a6f1f; /* was #807121, darkened for WCAG AA */
 $pale-lime-green: #defcb3;
 
 $visited-link-color: #50570a;
-$active-link-color: #45ac11; /* TODO: fix; too light for WCAG AA */
+$active-link-color: #266407;
 
 $bright-green: #a7da7e; /* from NPT palette */
 $lighter-green: #bde29c; /* lighter version of #a7da7e green from NPT palette */
@@ -311,7 +311,7 @@ div.popup a {
     @include hover-link;
     color: #000;
     &:hover {
-        color: $text_dark_green;
+        color: $link_green;
     }
 }
 

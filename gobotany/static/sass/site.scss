@@ -58,11 +58,11 @@ a:not([href]) {
 }
 
 #main p a, #main li > a, #main li > i a, #main dt a, #main td a, #main h2 a,
-#main form > a, #main form div > a, #main li li a, #sidebar form > a,
-.nemap a {
-    border-bottom: 1px solid $border-green;
-    &:hover {
-        border-color: $link-green;
+#main h3 a, #main form > a, #main form div > a, #main li li a,
+#sidebar form > a, .nemap a {
+    border-bottom: 1px solid $link-green;
+    &:visited {
+        border-bottom: 1px solid $visited-link-color;
     }
     &:active {
         border-color: $active-link-color;
@@ -220,6 +220,11 @@ body.help, body.plantshare {
             padding-left: 10px;
         }
     }
+}
+/* Always place the "you are here" marker next to the pages in
+ * the Updates section, including on the Order by Family page. */
+body.help.updates.family #sidebar nav li a[href='/updates/']::before {
+    @include highlight-sidebar-nav-item;
 }
 
 /* Handle pages beneath subsections so they will have a "you are
@@ -728,12 +733,9 @@ a.get-help-btn {
 
 /* Glossary-term links */
 .gloss {
-    border-bottom: 1px dashed $border-green;
+    border-bottom: 1px dashed $link-green;
     color: $link-green;
     cursor: pointer;
-    &:hover {
-        border-bottom: 1px dashed $link-green;
-    }
 }
 
 /* Tooltips for working area images and highlighted glossary terms */
@@ -948,6 +950,7 @@ header nav #search input {
 body.teaching #main li {
     list-style-type: none;
 }
+
 
 /* List-style tables (Species List page, Manage Your Sightings page,
  * etc.) */
