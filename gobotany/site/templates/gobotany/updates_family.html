@@ -7,14 +7,14 @@
 {% endblock %}
 
 {% block body_attributes %}
-    id="updates" class="help"
+    id="updates" class="help updates family"
 {% endblock %}
 
 {% block main_content %}
     <h1>Updates</h1>
 
     <h2><a
-        href="{% url 'site-updates' %}">Order by Date</a> ∙
+        href="{% url 'site-updates-date' %}">Order by Date</a> ∙
         Order by Family</h2>
 
     {% regroup updates by family as updates_by_family %}

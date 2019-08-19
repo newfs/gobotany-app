@@ -17,9 +17,9 @@ urlpatterns = [
     # Help section
     url(r'^help/$', views.help_view, name='site-help'),
     url(r'^help/dkey/$', views.help_dkey_view, name='site-help-dkey'),
-    url(r'^updates/$', views.updates_view, name='site-updates'),
     url(r'^updates/family/$', views.updates_family_view,
         name='site-updates-family'),
+    url(r'^updates/$', views.updates_date_view, name='site-updates-date'),
     url(r'^start/$', views.getting_started_view, name='site-getting-started'),
     url(r'^video/$', views.video_view, name='site-video'),
     url(r'^map/$', views.advanced_map_view, name='site-advanced-map'),
@@ -45,7 +45,7 @@ urlpatterns = [
     url(r'^plant-name-suggestions/', views.plant_name_suggestions_view,
         name='site-plant-name-suggestions'),
 
-    # Redirects for old URLs
+    # Redirects for old and "higher-level" URLs
     url('^teaching-tools/$', RedirectView.as_view(url='/teaching/',
         permanent=True)),
     url(r'^help/about/$', RedirectView.as_view(url='/about/',

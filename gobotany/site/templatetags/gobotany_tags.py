@@ -168,7 +168,7 @@ def nav_item(parser, token):
     # Examples:
     # {% nav_item 'Contact Us' site-contact %}
     # 
-    # {% nav_item 'Simple Key' level1 'simple %}
+    # {% nav_item 'Simple Key' level1 'simple' %}
     #
     # The output of the tag is either an HTML anchor or a span:
     #

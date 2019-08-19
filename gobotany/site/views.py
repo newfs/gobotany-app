@@ -97,7 +97,7 @@ def about_view(request):
            }, request)
 
 @vary_on_headers('Host')
-def updates_view(request):
+def updates_date_view(request):
     updates = Update.objects.all()
     return render_per_partner('updates.html', {
             'updates': updates,
