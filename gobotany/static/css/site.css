@@ -1700,6 +1700,8 @@ body.search-results h1 + p { margin-top: 12px; }
 #updates hr { background-image: linear-gradient(to right, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.75), rgba(0, 0, 0, 0)); border: 0; height: 1px; margin: 1rem 0; }
 #updates .ref { font-size: 11px; margin-left: 2rem; }
 
+@media print { #updates #sidebar { display: none; }
+  #updates #main { padding-left: 0; width: auto; } }
 /* Getting Started */
 #getting-started h2 { margin-top: 0; padding-top: 0; }
 #getting-started .question { padding: 18px 0 18px 45px; background-position: left 22px; background-repeat: no-repeat; border-bottom: 1px solid #e2dfcb; }
