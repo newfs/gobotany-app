@@ -2,20 +2,22 @@
 /* Go Botany common definitions */
 /* for gradient, etc. */
 /* Web fonts: style-linked groups */
-@font-face { font-family: Basetica; src: url(/static/fonts/Basetica-Medium-205TF.woff2) format("woff2"), url(/static/fonts/Basetica-Medium-205TF.woff) format("woff"); }
-@font-face { font-family: Basetica; font-style: italic; src: url(/static/fonts/Basetica-Medium-Italic-205TF.woff2) format("woff2"), url(/static/fonts/Basetica-Medium-Italic-205TF.woff) format("woff"); }
-@font-face { font-family: ScalaSans; font-weight: bold; src: url(//newfs.s3.amazonaws.com/fonts/ScalaSansWeb-Bold.woff) format("woff"); }
+@font-face { font-family: Basetica; font-weight: 400; src: url(/static/fonts/Basetica-Medium-205TF.woff2) format("woff2"), url(/static/fonts/Basetica-Medium-205TF.woff) format("woff"); }
+@font-face { font-family: Basetica; font-style: italic; font-weight: 400; src: url(/static/fonts/Basetica-Medium-Italic-205TF.woff2) format("woff2"), url(/static/fonts/Basetica-Medium-Italic-205TF.woff) format("woff"); }
+@font-face { font-family: Basetica; font-weight: 900; src: url(/static/fonts/Basetica-Black-205TF.woff2) format("woff2"), url(/static/fonts/Basetica-Black-205TF.woff) format("woff"); }
+@font-face { font-family: Basetica; font-style: italic; font-weight: 900; src: url(/static/fonts/Basetica-Black-Italic-205TF.woff2) format("woff2"), url(/static/fonts/Basetica-Black-Italic-205TF.woff) format("woff"); }
+@font-face { font-family: ScalaSans; font-weight: 900; src: url(//newfs.s3.amazonaws.com/fonts/ScalaSansWeb-Bold.woff) format("woff"); }
 /* was #807121, darkened for WCAG AA */
 /* from NPT palette */
 /* lighter version of #a7da7e green from NPT palette */
 /* darker version of #a7da7e green from NPT palette */
 /* dark version of #a7da7e green from NPT palette */
-.orange-button, span.all-species-button, span.simple-key-button, .save-button, .length-save-button { background-color: #d87e54; border: 1px solid #d87e54 !important; border-radius: 14px; box-shadow: 0px 1px 2px 0 #a2a64d; color: #000; cursor: pointer; display: inline-block; font-family: ScalaSans, "Trebuchet MS", Helvetica, Arial, "Lucida Sans Unicode", sans-serif; font-size: 12px; font-weight: bold !important; letter-spacing: 1px; line-height: 18px; min-width: 80px; padding: 4px 12px; text-align: center; text-decoration: none; text-shadow: 1px 2px 2px #d87e54; }
-.orange-button:active, span.all-species-button:active, span.simple-key-button:active, .save-button:active, .length-save-button:active { background-color: #d87e54; /* TODO: active button style/color */ }
-.orange-button:hover, span.all-species-button:hover, span.simple-key-button:hover, .save-button:hover, .length-save-button:hover, .orange-button:visited, span.all-species-button:visited, span.simple-key-button:visited, .save-button:visited, .length-save-button:visited, .orange-button:active, span.all-species-button:active, span.simple-key-button:active, .save-button:active, .length-save-button:active { color: #000; }
+.orange-button, span.all-species-button, span.simple-key-button, .save-button, .length-save-button { background-color: #bb582a; border: 1px solid #bb582a !important; border-radius: 14px; box-shadow: 0px 1px 2px 0 #a2a64d; color: #fff; cursor: pointer; display: inline-block; font-family: ScalaSans, "Trebuchet MS", Helvetica, Arial, "Lucida Sans Unicode", sans-serif; font-size: 12px; font-weight: bold !important; letter-spacing: 1px; line-height: 18px; min-width: 80px; padding: 4px 12px; text-align: center; text-decoration: none; }
+.orange-button:active, span.all-species-button:active, span.simple-key-button:active, .save-button:active, .length-save-button:active { background-color: #bb582a; /* TODO: active button style/color */ }
+.orange-button:hover, span.all-species-button:hover, span.simple-key-button:hover, .save-button:hover, .length-save-button:hover, .orange-button:visited, span.all-species-button:visited, span.simple-key-button:visited, .save-button:visited, .length-save-button:visited, .orange-button:active, span.all-species-button:active, span.simple-key-button:active, .save-button:active, .length-save-button:active { color: #fff; }
 .orange-button.caps, span.caps.all-species-button, span.caps.simple-key-button, .caps.save-button, .caps.length-save-button { text-transform: uppercase; }
 .orange-button.disabled, span.disabled.all-species-button, span.disabled.simple-key-button, .disabled.save-button, .disabled.length-save-button { background-color: #f0ccbc; border-color: #edc573 !important; color: #666 !important; cursor: default !important; text-shadow: none; }
-.orange-button.large, span.large.all-species-button, span.large.simple-key-button, .large.save-button, .large.length-save-button { border-radius: 20px; color: #000; font-size: 16px; letter-spacing: 1.5px; min-width: 150px; padding: 9px 30px; }
+.orange-button.large, span.large.all-species-button, span.large.simple-key-button, .large.save-button, .large.length-save-button { border-radius: 20px; color: #fff; font-size: 16px; letter-spacing: 1.5px; min-width: 150px; padding: 9px 30px; }
 
 .hidden { display: none !important; }
 
