@@ -8,19 +8,34 @@
 
 @font-face {
     font-family: Basetica;
+    font-weight: 400;
     src: url(/static/fonts/Basetica-Medium-205TF.woff2) format('woff2'),
         url(/static/fonts/Basetica-Medium-205TF.woff) format('woff');
 }
 @font-face {
     font-family: Basetica;
     font-style: italic;
+    font-weight: 400;
     src: url(/static/fonts/Basetica-Medium-Italic-205TF.woff2) format('woff2'),
         url(/static/fonts/Basetica-Medium-Italic-205TF.woff) format('woff');
+}
+@font-face {
+    font-family: Basetica;
+    font-weight: 900;
+    src: url(/static/fonts/Basetica-Black-205TF.woff2) format('woff2'),
+        url(/static/fonts/Basetica-Black-205TF.woff) format('woff');
+}
+@font-face {
+    font-family: Basetica;
+    font-style: italic;
+    font-weight: 900;
+    src: url(/static/fonts/Basetica-Black-Italic-205TF.woff2) format('woff2'),
+        url(/static/fonts/Basetica-Black-Italic-205TF.woff) format('woff');
 }
 
 @font-face {
     font-family: ScalaSans;
-    font-weight: bold;
+    font-weight: 900;
     src: url(//newfs.s3.amazonaws.com/fonts/ScalaSansWeb-Bold.woff) format("woff");
 }
 
@@ -38,6 +53,10 @@ $green-yellow: #ccdf53;
 $medium-brown: #7a6f1f; /* was #807121, darkened for WCAG AA */
 $pale-lime-green: #defcb3;
 
+$dark-brown: #766b1e;
+$darker-brown: #554e16;
+$darkest-brown: #413b11;
+
 $visited-link-color: #50570a;
 $active-link-color: #266407;
 
@@ -54,7 +73,7 @@ $login-box-background-color: #d3eaad;
 $base-font-size: 12px;
 $nav-font-size: 14px;
 
-$text-line-height: 170%;
+$text-line-height: 160%;
 
 $sidebar-box-vertical-padding: 16px;
 
@@ -96,6 +115,7 @@ $orange4: #f0b448;
 $orange5: #f6be59;
 
 $npt-orange: #d87e54;
+$npt-orange-dark: #bb582a;
 
 $list_popup_border: #acac90;
 
@@ -113,11 +133,11 @@ $disabled_orange_gradient: linear-gradient(
     mix($body_bg, $orange5, 50%) 50%, mix($body_bg, $orange3, 50%) 100%);
 
 .orange-button {
-    background-color: $npt-orange;
-    border: 1px solid $npt-orange !important;
+    background-color: $npt-orange-dark;
+    border: 1px solid $npt-orange-dark !important;
     border-radius: 14px;
     box-shadow: 0px 1px 2px 0 $shadow_color;
-    color: #000;
+    color: #fff;
     cursor: pointer;
     display: inline-block;
     font-family: ScalaSans, $headings-font;
@@ -129,12 +149,11 @@ $disabled_orange_gradient: linear-gradient(
     padding: 4px 12px;
     text-align: center;
     text-decoration: none;
-    text-shadow: 1px 2px 2px $npt-orange;
     &:active {
-        background-color: $npt-orange; /* TODO: active button style/color */
+        background-color: $npt-orange-dark; /* TODO: active button style/color */
     }
     &:hover, &:visited, &:active {
-        color: #000;
+        color: #fff;
     }
     &.caps {
         text-transform: uppercase;
@@ -148,7 +167,7 @@ $disabled_orange_gradient: linear-gradient(
     }
     &.large {
         border-radius: 20px;
-        color: #000;
+        color: #fff;
         font-size: 16px;
         letter-spacing: 1.5px;
         min-width: 150px;
