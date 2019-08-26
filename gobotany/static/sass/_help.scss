@@ -19,12 +19,15 @@ $image-box-shadow-color: rgba(0, 0, 0, 0.6);
 /* About */
 
 #about #main {
+    h2 {
+        clear: both;
+    }
     img {
         float: right;
         margin: 5px 0 20px 20px;
     }
     img.bookcover {
-        margin-right: 89px;
+        margin: -5px 89px 10px 20px;
     }
 }
 
@@ -74,6 +77,7 @@ $image-box-shadow-color: rgba(0, 0, 0, 0.6);
 
 #getting-started {
     h2 {
+        line-height: 185%;
         margin-top: 0;
         padding-top: 0;
     }
@@ -193,6 +197,7 @@ $image-box-shadow-color: rgba(0, 0, 0, 0.6);
             bottom: 146px;
             color: $link-green;
             font-size: 12px;
+            font-weight: 400;
             line-height: 120%;
             margin: 0 0 0 0;
             padding: 6px 0 6px 5px;
@@ -271,6 +276,7 @@ $image-box-shadow-color: rgba(0, 0, 0, 0.6);
 
 #glossary {
     #alphabet {
+        font-family: Verdana, sans-serif;
         height: 33px;
         list-style-type: none;
         margin: 7px 0;
@@ -414,10 +420,11 @@ $image-box-shadow-color: rgba(0, 0, 0, 0.6);
         width: 220px;
     }
     > p {
-        font-family: $headings-font;
+        color: $darkest-brown;
+        font-family: Basetica, $headings-font;
         font-size: 16px;
         line-height: 105%;
-        margin-top: 4px;
+        margin-top: 8px;
     }
     .missing-image {
         border: 1px solid $link-green;
@@ -489,9 +496,6 @@ $image-box-shadow-color: rgba(0, 0, 0, 0.6);
 
 /* Legal notification pages */
 .legal #main {
-    h3 {
-        margin: 8px 0;
-    }
     p {
         + p, + ul {
             margin-top: 8px;

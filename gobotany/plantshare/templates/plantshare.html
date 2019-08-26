@@ -100,7 +100,7 @@
                 <li>Ask one of our expert botanists questions</li>
             </li>
             <a class="orange-button caps large"
-                href="{% url 'registration_register' %}">Get Started</a>
+                href="{% url 'registration_register' %}">Sign Up</a>
         </div>
     {% endif %}
 {% endif %}
@@ -109,7 +109,7 @@
     <h2>Sightings Locator</h2>
     <div class="box">
         <form>
-            <h3>Show recent plant sightings for</h3>
+            <h3>Show recent sightings for</h3>
 
             {% csrf_token %}
             <input type="text" autocomplete="off"

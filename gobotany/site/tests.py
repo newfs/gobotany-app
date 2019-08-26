@@ -70,7 +70,7 @@ class HomeTests(FunctionalCase):
 
         get_started = self.css1('#cta')
         self.assertEqual(get_started.get_attribute('href'), '/simple/')
-        self.assertEqual(get_started.text, 'Get Started')
+        self.assertEqual(get_started.text, 'Simple Key')
 
     def test_copyright_contains_current_year(self):
         self.get('/')

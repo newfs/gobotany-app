@@ -123,7 +123,7 @@
     {% endblock %}
 
     <div id="facts">
-        <h2>Facts About</h2>
+        <h2>Facts</h2>
         <p>
             {% if taxon.factoid|length > 0 %}
                 {{ taxon.factoid }}
@@ -322,9 +322,8 @@
         {% endif %}
         
         <div class="section help">
-            <h2 class="help">Need Help?</h2>
             <a href="{% url 'site-getting-started' %}"
-                class="orange-button caps">Get Help</a>
+                class="orange-button caps">Help</a>
         </div>
     </div>
 

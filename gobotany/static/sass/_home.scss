@@ -133,7 +133,8 @@
         color: $darkest-brown;
         font-family: Basetica;
         font-size: 1.4rem;
-        margin: 0.8rem 0 0.4rem;
+        font-weight: 400;
+        margin: 0.6rem 0 0.4rem;
     }
     h4 {
         color: $medium-brown;
@@ -184,7 +185,7 @@ a {
         }
     }
     .details {
-        margin: 0 0 0 295px;
+        margin: 0 0 0 290px;
         position: absolute;
         width: 630px;
         h3 {

@@ -154,6 +154,7 @@ body.plantshare #main .profile {
     a.edit {
         display: block;
         float: right;
+        margin-top: 1rem;
     }
     h3 {
         font-size: 18px;
@@ -445,6 +446,7 @@ body.plantshare #sightings-locator {
         display: inline-block;
         float: left;
         font-size: 14px;
+        font-weight: 400;
         line-height: 22px;
         margin: 0 7px 5px 0;
     }

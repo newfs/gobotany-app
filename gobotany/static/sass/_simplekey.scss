@@ -11,15 +11,14 @@ body.skey.groups-subgroups {
 
     p {
         &.question, &.tip {
-            font-family: $headings-font;
-            font-size: 20px;
-            margin: 8px 0 0;
+            color: $dark-brown;
+            font-family: Basetica, $headings-font;
+            font-size: 1.6rem;
+            margin: 0.5rem 0;
             padding: 0;
         }
         &.tip {
-            font-size: 16px;
-            margin: 8px 0 0;
-            padding: 0;
+            font-size: 1.1rem;
         }
     }
 
@@ -35,11 +34,11 @@ body.skey.groups-subgroups {
             line-height: 110%;
             margin: 0 0 5px 0;	
             + p {
-                color: $medium-brown;
+                color: $dark-brown;
                 display: block;
-                font-family: $headings-font;
-                font-size: 12px;
-                font-style: italic;
+                font-family: Basetica, $headings-font;
+                font-size: 0.9rem;
+                line-height: 130%;
                 margin: 7px 0 1px;
                 padding-left: 0;
             }
@@ -297,7 +296,7 @@ body.skey {
             background-color: #fcfdf5;
             border: 1px solid $border-green;
             float: left;
-            margin-top: -82px;
+            margin-top: -105px;
             padding: 0 0 16px 0;
             width: 230px;
             &.tinted {
@@ -347,6 +346,7 @@ body.skey {
                     color: #fff;
                     padding: 16px;
                     h5 {
+                        color: $darkest-brown;
                         font-size: 16px;
                         line-height: 120%;
                         margin: 0;
@@ -356,13 +356,13 @@ body.skey {
                     float: left;
                 }
                 p.get-more {
-                    position: relative;  /* for Brandon experiment */
+                    position: relative;
                     font-size: 11px;
                     line-height: 16px;
                     margin: 0 0 20px;
                     text-align: center;
                     a {
-                        color: #000;
+                        color: #fff;
                         cursor: pointer;
                         display: block;
                         margin: 18px auto 10px;
@@ -373,14 +373,14 @@ body.skey {
                     }
                 }
                 a.clear-all-btn {
-                    color: #000;
-                    margin: 0 0 0 24px;
-                    width: 80px;
+                    color: #fff;
+                    margin: 0 10px 0 0;
+                    min-width: 60px;
                 }
                 a.get-help-btn {
-                    color: #000;
-                    margin: 10px 0 0 18px;
-                    width: 80px;
+                    color: #fff;
+                    margin: 0 0 0 15px;
+                    min-width: 50px;
                 }
             }
             h6 {
@@ -538,16 +538,15 @@ body.skey {
                 border: 1px solid #c3d941 !important;
                 border-top-left-radius: 6px;
                 border-top-right-radius: 6px;
-                color: #354d1e;
+                color: $dark-brown;
                 cursor: pointer;
                 display: block;
                 float: left;
-                font-family: $headings-font;
-                font-size: 18px;
-                line-height: 18px;
+                font-family: Basetica, $headings-font;
+                font-size: 1.1rem;
                 margin: 0;
                 min-width: 100px;
-                padding: 5px 10px 4px;
+                padding: 6px 10px 2px;
                 text-align: center;
                 &:hover {
                     background: #e1f2cd;
@@ -729,7 +728,7 @@ body.skey {
             } /* end ul */
 
             .apply-btn {
-                color: #000;
+                color: #fff;
                 width: 180px;
             }
             .choose_length label {   /* Length input */
