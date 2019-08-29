@@ -19,14 +19,16 @@
 
     {% regroup updates by family as updates_by_family %}
     {% for group in updates_by_family %}
-        <h2>{% if group.grouper %}{{ group.grouper }}{% else %}Site Updates{% endif %}</h2>
+        <h2 id="{{ group.grouper }}">{% if group.grouper %}{{ group.grouper }}{% else %}Site Updates{% endif %}</h2>
         {% for update in group.list %}
             {# If there is an opening brace, assume block-level HTML. #}
             {% if update.description|first == '<' %}
+                <div id="{{ update.id }}">
                 {{ update.description|safe }}
+                </div>
             {% else %}
                 {# No opening brace: no block-level HTML. Add as paragraph. #}
-                <p>{{ update.description|safe }}</p>
+                <p id="{{ update.id }}">{{ update.description|safe }}</p>
             {% endif %}
             <p>({{ update.date|date:"F Y" }})</p>
             {% if not forloop.last %}

@@ -1,6 +1,6 @@
 from haystack import indexes
 
-from gobotany.core.models import Family, Genus, GlossaryTerm, Taxon
+from gobotany.core.models import Family, Genus, GlossaryTerm, Taxon, Update
 from gobotany.dkey.models import Page as DichotomousKeyPage
 from gobotany.plantshare.models import Question, Sighting
 from gobotany.search.models import (GroupsListPage, PlainPage,
@@ -352,3 +352,21 @@ class QuestionIndex(BaseRealTimeIndex, indexes.Indexable):
     def index_queryset(self, using=None):
         # Index only published questions, i.e., those with approved answers.
         return self.get_model().objects.answered()
+
+
+class UpdateIndex(BaseIndex, indexes.Indexable):
+    # Index
+
+    text = indexes.CharField(
+        document=True, use_template=True,
+        template_name='update_text_searchindex.txt')
+
+    # Display
+
+    title = indexes.CharField(use_template=True,
+        template_name='update_title_searchindex.txt')
+
+    # Required
+
+    def get_model(self):
+        return Update

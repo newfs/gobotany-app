@@ -18,14 +18,16 @@
 
     {% regroup updates by date|date:"F Y" as updates_by_month %}
     {% for group in updates_by_month %}
-        <h2>{{ group.grouper }}</h2>
+        <h2 id="{{ group.grouper }}">{{ group.grouper }}</h2>
         {% for update in group.list %}
             {# If there is an opening brace, assume block-level HTML. #}
             {% if update.description|first == '<' %}
+                <div id="{{ update.id }}">
                 {{ update.description|safe }}
+                </div>
             {% else %}
                 {# No opening brace: no block-level HTML. Add as paragraph. #}
-                <p>{{ update.description|safe }}</p>
+                <p id="{{ update.id }}">{{ update.description|safe }}</p>
             {% endif %}
             {% if not forloop.last %}
             <hr>

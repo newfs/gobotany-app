@@ -105,12 +105,17 @@
                             {% if result.model_name == 'sighting' %}
                                 <img
                                     src="/static/images/icons/icon-sighting.png"
-                                    alt="" title="sighting">
+                                    alt="" title="Sighting">
                             {% endif %}
                             {% if result.model_name == 'question' %}
                                 <img
                                     src="/static/images/icons/icon-question.png"
-                                    alt="" title="question and answer">
+                                    alt="" title="Question and answer">
+                            {% endif %}
+                            {% if result.model_name == 'update' %}
+                                <img
+                                    src="/static/images/icons/icon-info.png"
+                                    alt="" title="Update">
                             {% endif %}
                             {{ result.title|quick_highlight:query|safe }}
                             </a>

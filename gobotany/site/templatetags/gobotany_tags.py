@@ -56,6 +56,10 @@ def url(obj):
         url = reverse('site-glossary', args=(obj.term[0].lower(),))
         return url + '#' + slugify(obj.term)
 
+    if isinstance(obj, core_models.Update):
+        url = reverse('site-updates-family', args=())
+        return url + '#' + slugify(obj.id)
+
     if isinstance(obj, plantshare_models.Sighting):
         return reverse('ps-sighting', args=(obj.id,))
 
@@ -63,7 +67,7 @@ def url(obj):
         year = obj.asked.year
         return '%s#q%d' % (reverse('ps-all-questions-by-year',
             args=(year,)), obj.id)
-
+        
     # Pages.
 
     if isinstance(obj, search_models.GroupsListPage):

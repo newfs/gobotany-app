@@ -1,0 +1,3 @@
+{{ object.description|striptags }}
+
+Family: {{ object.family }}
