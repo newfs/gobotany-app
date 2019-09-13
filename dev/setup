@@ -20,7 +20,7 @@ python3.7 virtualenv.py --distribute --unzip-setuptools \
 # old, related distribute package that is still in use for setting
 # up the virtual environment.
 ./venv/bin/pip uninstall distribute --yes
-./venv/bin/pip install setuptools==39.2.0
+./venv/bin/pip install setuptools==41.2.0
 ./venv/bin/pip install setuptools_scm==2.1.0
 
 # Install the rest of the packages.
