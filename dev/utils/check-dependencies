@@ -1,6 +1,6 @@
 #!/bin/bash
 
-PYTHON=${1:-python2.7}
+PYTHON=${1:-python3.7}
 
 # Make sure that the system has provided requirements that we would
 # rather not have to build for ourselves.
@@ -12,7 +12,7 @@ then
 Error: The "lxml" library needs to be installed in your system Python.
 
        Ubuntu Linux:        sudo apt-get install python-lxml
-       OS X with MacPorts:  sudo port install py27-lxml
+       OS X with MacPorts:  sudo port install py37-lxml
 
 EOF
     exit 1
@@ -24,7 +24,7 @@ then
 
 Error: The "psycopg" library needs to be installed in your system Python.
 
-       OS X with MacPorts:  sudo port install py27-psycopg2
+       OS X with MacPorts:  sudo port install py37-psycopg2
 
 EOF
     exit 1
@@ -36,7 +36,7 @@ then
 
 Error: The "pylibmc" library needs to be installed in your system Python.
 
-       OS X with MacPorts:  sudo port install py27-pylibmc
+       OS X with MacPorts:  sudo port install py37-pylibmc
 
 EOF
     exit 1
