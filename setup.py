@@ -13,7 +13,7 @@ requirements = [
     'django-imagekit==4.0.2',
     'django-tinymce==2.6.0',
     'inflect',
-    'lxml==3.5.0',
+    'lxml==4.4.1',
     'psycopg2==2.7.3.2',
     'python-memcached',
     'pytz',
@@ -23,7 +23,7 @@ requirements = [
     # The way we use pysolr introduces an extra dependency
 
     'pysolr==3.7.0',
-    'BeautifulSoup==3.2.1',
+    'beautifulsoup4==4.8.0',
 
     # Memcached on Heroku
 
