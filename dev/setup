@@ -10,7 +10,7 @@ cd $(dirname ${BASH_SOURCE[0]})
 
 rm -rf ./venv
 
-python2.7 virtualenv.py --distribute --unzip-setuptools \
+python3.7 virtualenv.py --distribute --unzip-setuptools \
     --system-site-packages ./venv
 
 # Install a dependency for Haystack, setuptools_scm, because
