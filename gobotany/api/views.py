@@ -8,7 +8,7 @@ import re
 
 from collections import defaultdict
 from operator import itemgetter
-from urllib import urlencode
+from urllib.parse import urlencode
 
 from django.conf import settings
 from django.contrib.contenttypes.models import ContentType
@@ -46,7 +46,7 @@ def jsonify(value, headers=None, indent=1):
         content_type='application/json; charset=utf-8',
         )
     if headers:
-        for k, v in headers.items():  # set headers
+        for k, v in list(headers.items()):  # set headers
             response[k] = v
     return response
 
@@ -120,7 +120,7 @@ def _taxon_with_chars(taxon):
         name = cv.character.short_name
         # Any character might have multiple values. For any that do,
         # return a list instead of a single value.
-        if not res.has_key(name):
+        if name not in res:
             # Add a single value the first time this name comes up.
             res[name] = cv.friendliest_text()
         else:
@@ -169,9 +169,9 @@ rc = rc_factory()
 # API views.
 
 def taxa(request, scientific_name=None):
-    getdict = dict(request.GET.items())  # call items() to avoid lists
+    getdict = dict(list(request.GET.items()))  # call items() to avoid lists
     kwargs = {}
-    for k, v in getdict.items():
+    for k, v in list(getdict.items()):
         kwargs[str(k)] = v
     try:
         species = botany.query_species(**kwargs)
@@ -199,7 +199,7 @@ def taxa(request, scientific_name=None):
 
 def taxa_count(request):
     kwargs = {}
-    for k, v in request.GET.items():
+    for k, v in list(request.GET.items()):
         kwargs[str(k)] = v
     try:
         species = botany.query_species(**kwargs)
@@ -212,7 +212,7 @@ def taxa_count(request):
 
 def taxon_image(request):
     kwargs = {}
-    items = request.GET.items()
+    items = list(request.GET.items())
     if items:
         for k, v in items:
             kwargs[str(k)] = v
@@ -238,7 +238,7 @@ def characters(request):
             'short_name': character.short_name,
             'name': character.name,
         })
-    return jsonify(sorted(group_map.values(), key=itemgetter('name')))
+    return jsonify(sorted(list(group_map.values()), key=itemgetter('name')))
 
 def character(request, character_short_name):
     """Retrieve all character values for a character regardless of pile."""
@@ -457,7 +457,7 @@ def hierarchy(request):
         hdict[genus.family.name].append(genus.name)
     return jsonify({
         'hierarchy': [{'family_name': key, 'genus_names': value}
-                      for key, value in hdict.items()],
+                      for key, value in list(hdict.items())],
         })
 
 def sections(request):
@@ -489,7 +489,7 @@ def _choose_best(pile, count, species_ids,
     for score, entropy, coverage, character in result:
         # There are several reasons we might disqualify a character.
 
-        if character.value_type not in (u'TEXT', u'LENGTH'):
+        if character.value_type not in ('TEXT', 'LENGTH'):
             continue
         if character.short_name in exclude_short_names:
             continue
@@ -575,16 +575,16 @@ def questions(request, pile_slug):
 # The images that should be displayed on a particular dkey page.
 
 extra_image_types = {
-    u'Group 1': ['leaf'],
-    u'Group 2': ['fruits', 'leaves'],
-    u'Group 3': ['inflorescences', 'leaves'],
-    u'Group 4': ['bark', 'leaves'],
-    u'Group 5': ['bark', 'leaves'],
-    u'Group 6': ['flowers', 'leaves'],
-    u'Group 7': ['flowers', 'leaves'],
-    u'Group 8': ['flowers', 'leaves'],
-    u'Group 9': ['flowers', 'leaves'],
-    u'Group 10': ['flowers', 'leaves'],
+    'Group 1': ['leaf'],
+    'Group 2': ['fruits', 'leaves'],
+    'Group 3': ['inflorescences', 'leaves'],
+    'Group 4': ['bark', 'leaves'],
+    'Group 5': ['bark', 'leaves'],
+    'Group 6': ['flowers', 'leaves'],
+    'Group 7': ['flowers', 'leaves'],
+    'Group 8': ['flowers', 'leaves'],
+    'Group 9': ['flowers', 'leaves'],
+    'Group 10': ['flowers', 'leaves'],
     }
 
 def dkey_images(request, slug):
@@ -622,12 +622,12 @@ def dkey_images(request, slug):
     image_types_allowed = ['plant form']
     image_types_allowed.extend(extra_image_types.get(group_title, ()))
 
-    if rank == u'family':
+    if rank == 'family':
 
         # See https://github.com/newfs/gobotany-app/issues/302
         # and https://github.com/newfs/gobotany-app/issues/304
 
-        group_number = title.split()[-1] if page.rank == u'group' else u''
+        group_number = title.split()[-1] if page.rank == 'group' else ''
 
         cursor = connection.cursor()
         cursor.execute("""
@@ -648,9 +648,9 @@ def dkey_images(request, slug):
                 taxon_id = random_taxon_id
             family_map[taxon_id] = family_name
 
-        taxon_ids = family_map.keys()
+        taxon_ids = list(family_map.keys())
 
-    elif rank == u'genus':
+    elif rank == 'genus':
 
         cursor = connection.cursor()
         cursor.execute("""
@@ -660,7 +660,7 @@ def dkey_images(request, slug):
               WHERE g.name IN %s""", (tuple(taxa_names),))
         taxon_ids = [ id for (id,) in cursor.fetchall() ]
 
-    elif rank == u'species':
+    elif rank == 'species':
 
         taxa = Taxon.objects.filter(scientific_name__in=taxa_names)
         taxon_ids = [ taxon.id for taxon in taxa ]
@@ -688,15 +688,15 @@ def dkey_images(request, slug):
 
     for taxon in taxa:
 
-        if rank == u'family':
+        if rank == 'family':
             name = family_map[taxon.id]
-            title = u'{}<br><i>({})</i>'.format(name, taxon.scientific_name)
+            title = '{}<br><i>({})</i>'.format(name, taxon.scientific_name)
         else:
-            if rank == u'genus':
+            if rank == 'genus':
                 name = taxon.genus_name()
             else:
                 name = taxon.scientific_name
-            title = u'<i>{}</i>'.format(taxon.scientific_name)
+            title = '<i>{}</i>'.format(taxon.scientific_name)
 
         image_list = []
         for image_type in image_types:
@@ -1001,7 +1001,7 @@ def pile_vector_set(request, slug):
     # from django.http import HttpResponse
     # return HttpResponse('<html><head></head><body>foo</body>')
 
-    return jsonify(character_map.values(), indent=False)
+    return jsonify(list(character_map.values()), indent=False)
 
 
 # Plant diversity maps
@@ -1105,7 +1105,7 @@ def _get_distribution_counts(new_england_distribution_records):
                     state_plants.add(dist_record.scientific_name)
 
         # Go through all the county counts and output their totals.
-        for county in county_plants.keys():
+        for county in list(county_plants.keys()):
             # Append a data line for the county.
             data.append([new_england_state, county,
                 len(county_plants[county])])

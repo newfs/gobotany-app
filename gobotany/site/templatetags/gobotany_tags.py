@@ -89,7 +89,7 @@ def url(obj):
         slug = slugify(obj.title)
         return reverse('dkey_page', args=(slug,))
 
-    raise ValueError(u'cannot construct canonical URL for %r' % (obj))
+    raise ValueError('cannot construct canonical URL for %r' % (obj))
 
 
 @register.filter
@@ -237,7 +237,7 @@ class NavigationItemNode(template.Node):
             request = context['request']
             href = ''
             if url_path != request.path:
-                href='href="%s"' % url_path
+                href = 'href="%s"' % url_path
             html = '<a %s>%s</a>' % (href, label_to_display)
             return html
         except NoReverseMatch:

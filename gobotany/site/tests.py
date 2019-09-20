@@ -526,16 +526,16 @@ class PlantNameSuggestionsTests(TestCase):
 
     def test_returns_names_matching_at_beginning_of_string(self):
         EXPECTED_NAMES = [
-            u'Amelanchier arborea',
-            u'Amelanchier bartramiana',
-            u'Amelanchier canadensis',
-            u'Amelanchier laevis',
-            u'Amelanchier spicata',
-            u'American barnyard grass',
-            u'American beach grass',
-            u'American beech',
-            u'American bittersweet',
-            u'American bladdernut',
+            'Amelanchier arborea',
+            'Amelanchier bartramiana',
+            'Amelanchier canadensis',
+            'Amelanchier laevis',
+            'Amelanchier spicata',
+            'American barnyard grass',
+            'American beach grass',
+            'American beech',
+            'American bittersweet',
+            'American bladdernut',
             ]
         response = self.client.get('/plant-name-suggestions/?q=ame')
         names = json.loads(response.content)

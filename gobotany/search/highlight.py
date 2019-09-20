@@ -31,12 +31,12 @@ class ExtendedHighlighter(Highlighter):
         previous_word_offset = 0
         if start_offset > 1:
             # Find the end of the previous word.
-            for i in reversed(xrange(0, start_offset)):
+            for i in reversed(range(0, start_offset)):
                 if text_block[i] != ' ':
                     end_previous_word_offset = i
                     break
             # Find the beginning of the previous word.
-            for i in reversed(xrange(0, end_previous_word_offset)):
+            for i in reversed(range(0, end_previous_word_offset)):
                 if text_block[i] == ' ':
                     previous_word_offset = i + 1
                     break

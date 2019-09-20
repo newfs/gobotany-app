@@ -51,7 +51,7 @@ class Table(object):
         self.keycolumnset = None
 
     def __iter__(self):
-        return self.rowdict.itervalues()
+        return iter(self.rowdict.values())
 
     def get(self, **kw):
         keycolumns = list(kw)
@@ -73,14 +73,14 @@ class Table(object):
 
     def replace(self, attr, mapping):
         """Set ``row.attr`` to the value ``mapping[row.attr]`` for each row."""
-        for row in self.rowdict.itervalues():
+        for row in self.rowdict.values():
             d = row.__dict__
             d[attr] = mapping[d[attr]]
 
         # If rows are indexed by the changed column, then rebuild our index.
 
         if self.rowdict and (attr in self.keycolumnset):
-            rows = self.rowdict.itervalues()
+            rows = iter(self.rowdict.values())
             rowdict = self.rowdict = {}
             for row in rows:
                 d = row.__dict__
@@ -104,14 +104,14 @@ class Table(object):
                     if delete_old:
                         deletes.append(key)
                     continue
-                writeables = set(row.__dict__.iterkeys()) - self.keycolumnset
+                writeables = set(row.__dict__.keys()) - self.keycolumnset
                 for columnname in writeables:
                     columnno = columndict[columnname]
                     columnvalue = row.__dict__[columnname]
                     if old[columnno] != columnvalue:
                         batch.update(row, writeables, self.keycolumns, key)
                         break
-            for row in inserts.values():
+            for row in list(inserts.values()):
                 batch.insert(row)
             for key in deletes:
                 batch.delete(self.keycolumns, key)
@@ -152,8 +152,8 @@ class Batch(object):
 
     def insert(self, row):
         self.inserts += 1
-        columns = row.__dict__.keys()
-        values = row.__dict__.values()
+        columns = list(row.__dict__.keys())
+        values = list(row.__dict__.values())
         self.do('INSERT INTO {0} ({1}) VALUES ({2});'
                 .format(self.table.name, column_names(columns),
                         ','.join(['%s'] * len(columns))),

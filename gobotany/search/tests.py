@@ -3,7 +3,7 @@ import unittest
 from django.conf import settings
 from django.test.testcases import TestCase
 from haystack.utils import Highlighter
-from highlight import ExtendedHighlighter
+from .highlight import ExtendedHighlighter
 
 from gobotany.libtest import FunctionalCase
 

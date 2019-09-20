@@ -51,7 +51,7 @@ PIXEL_STATUSES = [
     ]
 
 del c
-range3 = range(3)
+range3 = list(range(3))
 
 THRESHOLD = 999
 
@@ -83,7 +83,7 @@ def brightness_of(color):
 Y = namedtuple('Y', 'value y')
 
 def find_map_scale(im):
-    y_straddle = range(2180, 2300)  # straddles border of New York state
+    y_straddle = list(range(2180, 2300))  # straddles border of New York state
     samples = [ Y(brightness_of(im.getpixel((0, y))), y) for y in y_straddle ]
     samples.sort()
 
@@ -191,7 +191,7 @@ def report(bonap_path, taxa_path):
     bonap_reader = csv.DictReader(open(bonap_path, 'rb'))
     bonap_states = defaultdict(set)
     for row in bonap_reader:
-        if None in row.values():
+        if None in list(row.values()):
             # Survive a partially-written row, in case reports are being
             # run while bonap.csv itself is being regenerated.
             break
@@ -217,38 +217,38 @@ def report(bonap_path, taxa_path):
 
         bstates = bonap_states.get(sn)
         if bstates is None:
-            print '{0} - BONAP has no map'.format(sn),
+            print('{0} - BONAP has no map'.format(sn), end=' ')
             similars = [ n for n in bonap_states if n.startswith(sn+' ') ]
             if similars:
-                print '(but does have {0})'.format(
-                    ', '.join('"{0}"'.format(s) for s in similars)),
-            print
+                print('(but does have {0})'.format(
+                    ', '.join('"{0}"'.format(s) for s in similars)), end=' ')
+            print()
             misses += 1
             continue
 
         distribution = row['Distribution'].strip()
         if not distribution:
-            print '{0} - our taxa.csv has no distribution'.format(sn)
+            print('{0} - our taxa.csv has no distribution'.format(sn))
             continue
 
         nstates = set(s.strip() for s in distribution.split('|'))
 
         if nstates == bstates:
-            print '{0} - perfect match'.format(sn)
+            print('{0} - perfect match'.format(sn))
             continue
         ours = nstates - bstates
         theirs = bstates - nstates
         if ours or theirs:
-            print sn,
-            print '- both={0}'.format('|'.join(nstates & bstates)),
+            print(sn, end=' ')
+            print('- both={0}'.format('|'.join(nstates & bstates)), end=' ')
         if ours:
-            print 'newfs_only={0}'.format('|'.join(ours)),
+            print('newfs_only={0}'.format('|'.join(ours)), end=' ')
         if theirs:
-            print 'bonap_only={0}'.format('|'.join(theirs)),
-        print
+            print('bonap_only={0}'.format('|'.join(theirs)), end=' ')
+        print()
 
-    print '%d/%d (%f%%) species have images' % (
-        total - misses, total, 100. * (total - misses) / total)
+    print('%d/%d (%f%%) species have images' % (
+        total - misses, total, 100. * (total - misses) / total))
 
 #
 
@@ -287,7 +287,7 @@ def main():
         bonap_path = join(datadir, 'bonap.csv')
         report(bonap_path, taxa_path)
     else:
-        print >>sys.stderr, 'usage: {0} scan|report'.format(sys.argv[0])
+        print('usage: {0} scan|report'.format(sys.argv[0]), file=sys.stderr)
 
 if __name__ == '__main__':
     main()

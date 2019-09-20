@@ -1,4 +1,4 @@
-import urlparse
+import urllib.parse
 import os
 import sys
 
@@ -128,7 +128,7 @@ if 'DATABASE_URL' in os.environ:
     # connect to a Heroku database in the cloud, if its URL provided.
     # This code is adapted from: http://devcenter.heroku.com/articles/django
 
-    url = urlparse.urlparse(os.environ['DATABASE_URL'])
+    url = urllib.parse.urlparse(os.environ['DATABASE_URL'])
 
     # Ensure default database exists.
     DATABASES['default'] = DATABASES.get('default', {})
@@ -156,6 +156,7 @@ INSTALLED_APPS = [
     'gobotany.site',
     'gobotany.taxa',
 
+    'django_extensions',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -219,6 +220,9 @@ STATIC_URL = '/static/'
 STATICFILES_DIRS = (
     os.path.join(THIS_DIRECTORY, 'static'),
 )
+
+LANGUAGE_CODE = 'en-us'
+USE_I18N = False
 
 # https://docs.djangoproject.com/en/dev/topics/i18n/timezones/#time-zones-faq
 TIME_ZONE = 'America/New_York'
@@ -319,21 +323,21 @@ else:
 
 REGION_NAME = 'New England'
 STATE_NAMES = {
-    'ct': u'Connecticut',
-    'ma': u'Massachusetts',
-    'me': u'Maine',
-    'nh': u'New Hampshire',
-    'ri': u'Rhode Island',
-    'vt': u'Vermont',
+    'ct': 'Connecticut',
+    'ma': 'Massachusetts',
+    'me': 'Maine',
+    'nh': 'New Hampshire',
+    'ri': 'Rhode Island',
+    'vt': 'Vermont',
     }
 
 CONTENT_IMAGE_LOCATIONS = {
-    u'pilegroup': 'taxon-images',
-    u'pile': 'taxon-images',
-    u'family': lambda i,f: 'taxon-images/%s/%s'%(i.content_object.name, f),
-    u'genus': lambda i,f: 'taxon-images/%s/%s'%(i.content_object.family.name,
+    'pilegroup': 'taxon-images',
+    'pile': 'taxon-images',
+    'family': lambda i,f: 'taxon-images/%s/%s'%(i.content_object.name, f),
+    'genus': lambda i,f: 'taxon-images/%s/%s'%(i.content_object.family.name,
                                                 f),
-    u'taxon': lambda i,f: 'taxon-images/%s/%s'%(i.content_object.family.name,
+    'taxon': lambda i,f: 'taxon-images/%s/%s'%(i.content_object.family.name,
                                                 f),
 }
 

@@ -43,7 +43,7 @@ def sync():
     c.execute("UPDATE dkey_lead SET taxa_cache = ''")
 
     # Load pages.
-    print 'Loading pages...'
+    print('Loading pages...')
 
     pagelist = list(models.Page.objects.all())
     pagedict = { page.id: page for page in pagelist }
@@ -52,7 +52,7 @@ def sync():
     idgetter = attrgetter('id')
 
     # Follow leads to learn which pages are parents to which other pages.
-    print 'Following leads...'
+    print('Following leads...')
 
     for page in pagelist:
         leadins = leadindict[page.id]
@@ -61,7 +61,7 @@ def sync():
             parents[page] = pagedict[leadins[0].page_id]
 
     # Rebuild the caches.
-    print 'Rebuilding the caches...'
+    print('Rebuilding the caches...')
 
     for page in pagelist:
         parent = parents.get(page)
@@ -72,13 +72,13 @@ def sync():
         if is_major_taxon(page):
             cache_taxon(pagedict, leadindict, page.rank, page.title, page)
 
-    for leadins in leadindict.values():
+    for leadins in list(leadindict.values()):
         for leadin in leadins:
             tc = leadin.taxa_cache
             leadin.taxa_cache = '{}:{}'.format(tc[0], ','.join(sorted(tc[1])))
             leadin.save()  # save the new `taxa_cache` strings
 
-    print 'Done.'
+    print('Done.')
 
 
 if __name__ == '__main__':

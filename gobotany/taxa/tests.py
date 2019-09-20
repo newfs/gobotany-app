@@ -76,32 +76,32 @@ class SpeciesPageTests(FunctionalCase):
 
     def test_simplekey_species_breadcrumbs(self):
         self.get('/species/dendrolycopodium/dendroideum/?pile=lycophytes')
-        self.assertEqual(self.crumb(0), u'Simple Key')
-        self.assertEqual(self.crumb(1), u'Ferns')
+        self.assertEqual(self.crumb(0), 'Simple Key')
+        self.assertEqual(self.crumb(1), 'Ferns')
         self.assertEqual(self.crumb(2),
-                         u'Clubmosses and relatives, plus quillworts')
+                         'Clubmosses and relatives, plus quillworts')
 
     def test_fullkey_species_breadcrumbs(self):
         self.get('/species/diphasiastrum/complanatum/?pile=lycophytes')
-        self.assertEqual(self.crumb(0), u'Full Key')
-        self.assertEqual(self.crumb(1), u'Ferns')
+        self.assertEqual(self.crumb(0), 'Full Key')
+        self.assertEqual(self.crumb(1), 'Ferns')
         self.assertEqual(self.crumb(2),
-                         u'Clubmosses and relatives, plus quillworts')
+                         'Clubmosses and relatives, plus quillworts')
 
     # Test breadcrumb trails for the same species, but coming from the
     # Dichotomous Key. Both should have Dichotomous Key breadcrumbs.
 
     def test_simplekey_species_dichotomous_breadcrumbs(self):
         self.get('/species/dendrolycopodium/dendroideum/?key=dichotomous')
-        self.assertEqual(self.crumb(0), u'Dichotomous Key')
-        self.assertEqual(self.crumb(1), u'Lycopodiaceae')
-        self.assertEqual(self.crumb(2), u'Dendrolycopodium')
+        self.assertEqual(self.crumb(0), 'Dichotomous Key')
+        self.assertEqual(self.crumb(1), 'Lycopodiaceae')
+        self.assertEqual(self.crumb(2), 'Dendrolycopodium')
 
     def test_fullkey_species_dichotomous_breadcrumbs(self):
         self.get('/species/diphasiastrum/complanatum/?key=dichotomous')
-        self.assertEqual(self.crumb(0), u'Dichotomous Key')
-        self.assertEqual(self.crumb(1), u'Lycopodiaceae')
-        self.assertEqual(self.crumb(2), u'Diphasiastrum')
+        self.assertEqual(self.crumb(0), 'Dichotomous Key')
+        self.assertEqual(self.crumb(1), 'Lycopodiaceae')
+        self.assertEqual(self.crumb(2), 'Diphasiastrum')
 
     # Test photo titles and credits.
 

@@ -28,7 +28,7 @@ class SmartAppendSlashMiddleware(object):
         if settings.SMART_APPEND_SLASH and (not old_url[1].endswith('/')) and not _resolves(old_url[1]) and _resolves(old_url[1] + '/'):
             new_url[1] = new_url[1] + '/'
             if settings.DEBUG and request.method == 'POST':
-                raise RuntimeError, "You called this URL via POST, but the URL doesn't end in a slash and you have SMART_APPEND_SLASH set. Django can't redirect to the slash URL while maintaining POST data. Change your form to point to %s%s (note the trailing slash), or set SMART_APPEND_SLASH=False in your Django settings." % (new_url[0], new_url[1])
+                raise RuntimeError("You called this URL via POST, but the URL doesn't end in a slash and you have SMART_APPEND_SLASH set. Django can't redirect to the slash URL while maintaining POST data. Change your form to point to %s%s (note the trailing slash), or set SMART_APPEND_SLASH=False in your Django settings." % (new_url[0], new_url[1]))
         if new_url != old_url:
             # Redirect
             if new_url[0]:

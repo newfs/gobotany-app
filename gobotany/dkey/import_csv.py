@@ -35,7 +35,7 @@ def import_illustrative_species(csvfile):
 
     for record in records:
         i = models.IllustrativeSpecies()
-        for key, value in record.items():
+        for key, value in list(record.items()):
             setattr(i, key, value)
         i.save()
 

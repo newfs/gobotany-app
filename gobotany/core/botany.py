@@ -4,9 +4,9 @@ from gobotany.core import models
 
 
 CHAR_MAP = {
-    u'TEXT': 'character_values__value_str',
-    u'LENGTH': 'character_values__value_int',
-    u'RATIO': 'character_values__value_flt',
+    'TEXT': 'character_values__value_str',
+    'LENGTH': 'character_values__value_int',
+    'RATIO': 'character_values__value_flt',
     }
 
 
@@ -46,7 +46,7 @@ class SpeciesReader(object):
                 scientific_name__iexact=scientific_name)
         else:
             base_query = models.Taxon.objects
-            for k, v in kw.items():
+            for k, v in list(kw.items()):
                 if k == 'pilegroup':
                     base_query = base_query.filter(piles__pilegroup__slug=v)
                 elif k == 'pile':
@@ -58,7 +58,7 @@ class SpeciesReader(object):
                 else:
                     character = models.Character.objects.get(short_name=k)
 
-                    if character.value_type == u'LENGTH':
+                    if character.value_type == 'LENGTH':
                         base_query = base_query.filter(
                             character_values__character=character,
                             character_values__value_min__lte=float(v),
@@ -86,12 +86,12 @@ class SpeciesReader(object):
         """
         query = {'rank__lte': max_rank}
         if image_types:
-            if isinstance(image_types, basestring):
+            if isinstance(image_types, str):
                 image_types = [s.strip() for s in image_types.split(',')]
             query['image_type__name__in'] = image_types
         # If we have a string assume it's the scientific name, otherwise
         # we have a taxon object or id
-        if isinstance(species, basestring):
+        if isinstance(species, str):
             species = models.Taxon.objects.get(scientific_name__iexact=species)
 
         species_images = None

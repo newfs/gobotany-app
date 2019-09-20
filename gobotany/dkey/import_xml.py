@@ -40,7 +40,7 @@ class Info(object):
         lead = models.Lead()
         lead.page = page
         lead.parent = parent
-        if isinstance(goto_page, basestring):
+        if isinstance(goto_page, str):
             goto_page = self.get_or_create_page(goto_page)
         lead.goto_page = goto_page
         lead.goto_num = goto_num
@@ -56,37 +56,37 @@ level_tags = dict([ ('text_indent_%02d' % i, i) for i in range(1, 25) ])
 level_tags['text_no_indent'] = 0
 
 misspellings = {
-    u'graveolenst': u'graveolens',
-    u'ambrosioides': u'ambrosoides',
-    u'Cuminun': u'Cuminum',
-    u'depaupertata': u'depauperata',
-    u'nodusus': u'nodosus',
-    u'Plantanthera': u'Platanthera',
-    u'Rubus parviflorus': u'Rubus parvifolius',
+    'graveolenst': 'graveolens',
+    'ambrosioides': 'ambrosoides',
+    'Cuminun': 'Cuminum',
+    'depaupertata': 'depauperata',
+    'nodusus': 'nodosus',
+    'Plantanthera': 'Platanthera',
+    'Rubus parviflorus': 'Rubus parvifolius',
     }
 
 def norm(u):
     """Normalize a string so it matches other strings in the document."""
-    u = u.replace(u'‑', u'-').replace(u'\u202f', u' ')
-    for k, v in misspellings.iteritems():
+    u = u.replace('‑', '-').replace('\u202f', ' ')
+    for k, v in misspellings.items():
         if k in u:
             log.error('misspelling: "%s"' % k)
             u = u.replace(k, v)
     if u.endswith('arvens'):
         log.error('misspelling: "arvens"')
-        u = u.replace(u'arvens', u'arvense')
+        u = u.replace('arvens', 'arvense')
     if u.endswith('morrowi'):
         log.error('misspelling: "morrowi"')
-        u = u.replace(u'morrowi', u'morrowii')
+        u = u.replace('morrowi', 'morrowii')
     return u
 
 re_number = re.compile('\d+')
-re_genus_letter = re.compile(ur'\b([A-Z]\.)(<[^>]+>|)[ \n]+')
-re_newline_and_indent = re.compile(ur'\n *$', re.M)
-re_preceding_punctuation = re.compile(ur'[;.][\s\u2002\u2028 ]*$')
+re_genus_letter = re.compile(r'\b([A-Z]\.)(<[^>]+>|)[ \n]+')
+re_newline_and_indent = re.compile(r'\n *$', re.M)
+re_preceding_punctuation = re.compile(r'[;.][\s\u2002\u2028 ]*$')
 
 def p(text):
-    return u'<p>{}</p>'.format(text)
+    return '<p>{}</p>'.format(text)
 
 def extract_html(x, skip=0, endskip=0):
     """Convert the xml children of `x` to html, skipping `skip` children."""
@@ -94,61 +94,61 @@ def extract_html(x, skip=0, endskip=0):
     end = len(x) - endskip
     for i in range(skip, end):
         tag = x[i].tag
-        text = x[i].text or u''
-        tail = x[i].tail or u''
+        text = x[i].text or ''
+        tail = x[i].tail or ''
         tail0 = tail[0:1]
         space = ' ' if tail0.isalpha() or tail0 in '(' else ''
         last = (i + 1) >= end
         plus1 = None if last else x[i + 1]
 
-        if tag in (u'bold_L', u'light_var', u'more_or_less_sign'):
-            s += u'%s%s%s' % (text, space, tail)
-        elif tag == u'bold_ex':
-            s += u'<i>%s</i>%s%s' % (text, space, tail)
-        elif tag == u'bold_italic':
-            s += u'<b><i>%s</i></b>%s%s' % (text, space, tail)
-        elif tag == u'bold_sitations':
-            s += u'%s%s%s' % (text, space, tail)
-        elif tag in (u'bold_ssp', u'bold_var'):
-            s += u'<b>%s</b>%s%s' % (text, space, tail)
-        elif tag in u'designation_f':
-            s += u'%s%s%s' % (text, space, tail)
-        elif tag == u'distribution_character':
+        if tag in ('bold_L', 'light_var', 'more_or_less_sign'):
+            s += '%s%s%s' % (text, space, tail)
+        elif tag == 'bold_ex':
+            s += '<i>%s</i>%s%s' % (text, space, tail)
+        elif tag == 'bold_italic':
+            s += '<b><i>%s</i></b>%s%s' % (text, space, tail)
+        elif tag == 'bold_sitations':
+            s += '%s%s%s' % (text, space, tail)
+        elif tag in ('bold_ssp', 'bold_var'):
+            s += '<b>%s</b>%s%s' % (text, space, tail)
+        elif tag in 'designation_f':
+            s += '%s%s%s' % (text, space, tail)
+        elif tag == 'distribution_character':
             for letter in text.split():
-                s += u'<span class="distribution-character">%s</span>' % letter
+                s += '<span class="distribution-character">%s</span>' % letter
             s += '%s%s' % (space, tail)
-        elif tag == u'figure_reference':
+        elif tag == 'figure_reference':
             numbers = re_number.findall(text)
             for number in reversed(numbers):
                 s += '<FIG-%s>' % number
             s += tail
-        elif tag == u'fraction':
-            s += u'<span class="fraction">%s</span>%s%s' % (
+        elif tag == 'fraction':
+            s += '<span class="fraction">%s</span>%s%s' % (
                 text, space, tail)
-        elif tag == u'italic':
-            s += u'<i>%s</i>%s%s' % (text, space, tail)
-        elif tag in (u'lead_number_letter', u'lead_number_letter_inner'):
+        elif tag == 'italic':
+            s += '<i>%s</i>%s%s' % (text, space, tail)
+        elif tag in ('lead_number_letter', 'lead_number_letter_inner'):
             if not last and plus1.tag == 'multiplication_sign_bold':
-                s += u'<b>%s</b>' % text
-            elif (tag == u'lead_number_letter_inner'
+                s += '<b>%s</b>' % text
+            elif (tag == 'lead_number_letter_inner'
                   and not re_preceding_punctuation.search(s)):
                 # Put an ellipsis in front of a variety name that
                 # concludes a paragraph describing that variety, to
                 # resemble the long line of periods that right-justifies
                 # such variety names in the printed book.
-                s += u'… <b>%s</b>%s%s' % (text, space, tail)
+                s += '… <b>%s</b>%s%s' % (text, space, tail)
             else:
-                s += u'<b>%s</b>%s%s' % (text, space, tail)
+                s += '<b>%s</b>%s%s' % (text, space, tail)
         elif tag == 'multiplication_sign_bold':
-            s += u'<b>%s</b>' % text
-        elif tag == u'small_caps':
-            s += u'<small>%s</small>%s%s' % (text, space, tail)
+            s += '<b>%s</b>' % text
+        elif tag == 'small_caps':
+            s += '<small>%s</small>%s%s' % (text, space, tail)
 
         elif tag == 'multiplication_sign_light':
             hybrid_name_follows = (not last) and (
-                text.endswith(u'\u200c')
-                or plus1.text.startswith(u'\u200c')
-                or plus1.text[1:2] == u'.'
+                text.endswith('\u200c')
+                or plus1.text.startswith('\u200c')
+                or plus1.text[1:2] == '.'
                 )
             if hybrid_name_follows:
                 s += text + space + tail.strip()
@@ -167,12 +167,12 @@ def extract_html(x, skip=0, endskip=0):
          #.replace(u'–', u'–\u2060')    # tell n-dashes not to break
          # (disabled because Windows just displays a box for the \u2060)
 
-         .replace(u' cm', u'\u00a0cm') # refuse to orphan units
-         .replace(u' mm', u'\u00a0mm')
-         .replace(u'\u2009cm', u'\u202fcm')
-         .replace(u'\u2009mm', u'\u202fmm')
+         .replace(' cm', '\u00a0cm') # refuse to orphan units
+         .replace(' mm', '\u00a0mm')
+         .replace('\u2009cm', '\u202fcm')
+         .replace('\u2009mm', '\u202fmm')
          )
-    s = re_genus_letter.sub(ur'\1\2\u00a0', s) # "F. bar" non breaking space
+    s = re_genus_letter.sub(r'\1\2\u00a0', s) # "F. bar" non breaking space
 
     return s.strip()
 
@@ -254,7 +254,7 @@ def parse(filename):
     xcaptions = root.find('.//caption_list').findall('caption')
     for i, xcaption in enumerate(xcaptions):
         n = i + 1
-        assert xcaption[0].text == u'Fig.\u2009%03d\u2002' % n
+        assert xcaption[0].text == 'Fig.\u2009%03d\u2002' % n
         info.captions[n] = extract_html(xcaption, skip=1)
 
     # All done.
@@ -277,7 +277,7 @@ def parse_chapter(xchapter, info):
     # series of couplets; subsequent chapters have headings instead, so
     # we can skip on down to the processing logic below.
 
-    if title == u'Key to the Families':
+    if title == 'Key to the Families':
         page = info.get_or_create_page(title)
         page.rank = 'top'
         i = parse_subchapter(info, page, None, xchildren, 1)
@@ -607,7 +607,7 @@ def do_parse(filename):
     # Save the changes that have been made to pages and leads since
     # their initial creation.
 
-    for page in info.pages.values():
+    for page in list(info.pages.values()):
         page.save()
     for lead in info.leads:
         lead.save()

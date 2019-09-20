@@ -13,7 +13,7 @@ from gobotany.core import models
 
 GRAPHICS_ROOT = abspath(dirname(__file__) + '/../static/graphics')
 NAMESPACES = {'svg': 'http://www.w3.org/2000/svg'}
-STATES = [k.upper() for k, v in settings.STATE_NAMES.iteritems()]
+STATES = [k.upper() for k, v in list(settings.STATE_NAMES.items())]
 
 class Path(object):
     """Class for operating on a SVG path node."""
@@ -517,29 +517,29 @@ class PlantDiversityMap(ChloroplethMap):
     def _fill_legend(self):
         border_color = '#000'
         if self.map_type == 'native':
-            self.legend._set_item(1, '#feffcd', border_color, u'475–600')
-            self.legend._set_item(2, '#dcf6c0', border_color, u'601–725')
-            self.legend._set_item(3, '#8bdaba', border_color, u'726–850')
-            self.legend._set_item(4, '#47c5c0', border_color, u'851–975')
-            self.legend._set_item(5, '#03aec3', border_color, u'976–1100')
-            self.legend._set_item(6, '#216db0', border_color, u'1101–1225')
-            self.legend._set_item(7, '#2c3095', border_color, u'1226–1350')
+            self.legend._set_item(1, '#feffcd', border_color, '475–600')
+            self.legend._set_item(2, '#dcf6c0', border_color, '601–725')
+            self.legend._set_item(3, '#8bdaba', border_color, '726–850')
+            self.legend._set_item(4, '#47c5c0', border_color, '851–975')
+            self.legend._set_item(5, '#03aec3', border_color, '976–1100')
+            self.legend._set_item(6, '#216db0', border_color, '1101–1225')
+            self.legend._set_item(7, '#2c3095', border_color, '1226–1350')
         elif self.map_type == 'nonnative':
-            self.legend._set_item(1, '#feffcd', border_color, u'120–230')
-            self.legend._set_item(2, '#dcf6c0', border_color, u'231–340')
-            self.legend._set_item(3, '#8bdaba', border_color, u'341–450')
-            self.legend._set_item(4, '#47c5c0', border_color, u'451–560')
-            self.legend._set_item(5, '#03aec3', border_color, u'561–670')
-            self.legend._set_item(6, '#216db0', border_color, u'671–780')
-            self.legend._set_item(7, '#2c3095', border_color, u'781–890')
+            self.legend._set_item(1, '#feffcd', border_color, '120–230')
+            self.legend._set_item(2, '#dcf6c0', border_color, '231–340')
+            self.legend._set_item(3, '#8bdaba', border_color, '341–450')
+            self.legend._set_item(4, '#47c5c0', border_color, '451–560')
+            self.legend._set_item(5, '#03aec3', border_color, '561–670')
+            self.legend._set_item(6, '#216db0', border_color, '671–780')
+            self.legend._set_item(7, '#2c3095', border_color, '781–890')
         elif self.map_type == 'all':
-            self.legend._set_item(1, '#feffcd', border_color, u'640–860')
-            self.legend._set_item(2, '#dcf6c0', border_color, u'861–1080')
-            self.legend._set_item(3, '#8bdaba', border_color, u'1081–1300')
-            self.legend._set_item(4, '#47c5c0', border_color, u'1301–1520')
-            self.legend._set_item(5, '#03aec3', border_color, u'1521–1740')
-            self.legend._set_item(6, '#216db0', border_color, u'1741–1960')
-            self.legend._set_item(7, '#2c3095', border_color, u'1961–2180')
+            self.legend._set_item(1, '#feffcd', border_color, '640–860')
+            self.legend._set_item(2, '#dcf6c0', border_color, '861–1080')
+            self.legend._set_item(3, '#8bdaba', border_color, '1081–1300')
+            self.legend._set_item(4, '#47c5c0', border_color, '1301–1520')
+            self.legend._set_item(5, '#03aec3', border_color, '1521–1740')
+            self.legend._set_item(6, '#216db0', border_color, '1741–1960')
+            self.legend._set_item(7, '#2c3095', border_color, '1961–2180')
 
     def shade(self):
         """Shade a New England plant diversity map. Assumes the method

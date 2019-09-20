@@ -5,28 +5,28 @@ from gobotany.core.partner import partner_short_name
 from gobotany.dkey import models
 
 group_texts = {
-    1: u'Lycophytes, Monilophytes',
-    2: u'Gymnosperms',
-    3: u'Monocots',
-    4: u'Woody angiosperms with opposite or whorled leaves',
-    5: u'Woody angiosperms with alternate leaves',
-    6: u'Herbaceous angiosperms with inferior ovaries',
-    7: u'Herbaceous angiosperms with superior ovaries and zygomorphic flowers',
-    8: u'Herbaceous angiosperms with superior ovaries, actinomorphic flowers, '
-       u'and 2 or more distinct carpels',
-    9: u'Herbaceous angiosperms with superior ovaries, actinomorphic flowers, '
-       u'connate petals, and a solitary carpel or 2 or more connate carpels',
-    10:u'Herbaceous angiosperms with superior ovaries, actinomorphic flowers, '
-       u'distinct petals or the petals lacking, and 2 or more connate carpels',
+    1: 'Lycophytes, Monilophytes',
+    2: 'Gymnosperms',
+    3: 'Monocots',
+    4: 'Woody angiosperms with opposite or whorled leaves',
+    5: 'Woody angiosperms with alternate leaves',
+    6: 'Herbaceous angiosperms with inferior ovaries',
+    7: 'Herbaceous angiosperms with superior ovaries and zygomorphic flowers',
+    8: 'Herbaceous angiosperms with superior ovaries, actinomorphic flowers, '
+       'and 2 or more distinct carpels',
+    9: 'Herbaceous angiosperms with superior ovaries, actinomorphic flowers, '
+       'connate petals, and a solitary carpel or 2 or more connate carpels',
+    10:'Herbaceous angiosperms with superior ovaries, actinomorphic flowers, '
+       'distinct petals or the petals lacking, and 2 or more connate carpels',
     }
 
-group_texts_sorted = sorted(key_value for key_value in group_texts.items())
+group_texts_sorted = sorted(key_value for key_value in list(group_texts.items()))
 
 class _Proxy(object):
     def __init__(self, page):
         self.set_page(page)
 
-    def next(self):
+    def __next__(self):
         self.set_page(self.leads[0].goto_page)
 
     def set_page(self, page):
@@ -82,7 +82,7 @@ def get_groups():
 
 # Our view.
 
-def page(request, slug=u'key-to-the-families'):
+def page(request, slug='key-to-the-families'):
     if slug != slug.lower():
         raise Http404
     title = models.slug_to_title(slug)
@@ -100,5 +100,5 @@ def page(request, slug=u'key-to-the-families'):
             'page': (lambda: proxy.page),
             'rank_beneath': (lambda: proxy.rank_beneath),
             'taxa_beneath': (lambda: proxy.taxa_beneath),
-            'next_page': (lambda: proxy.next() or proxy.page),
+            'next_page': (lambda: next(proxy) or proxy.page),
             })

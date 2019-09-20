@@ -123,17 +123,17 @@ def search_highlight(parser, token):
     tag_name = bits[0]
 
     if not len(bits) % 2 == 0:
-        raise template.TemplateSyntaxError(u"'%s' tag requires valid "
+        raise template.TemplateSyntaxError("'%s' tag requires valid "
             "pairings arguments." % tag_name)
 
     text_block = bits[1]
 
     if len(bits) < 4:
-        raise template.TemplateSyntaxError(u"'%s' tag requires an object "
+        raise template.TemplateSyntaxError("'%s' tag requires an object "
             "and a query provided by 'with'." % tag_name)
 
     if bits[2] != 'with':
-        raise template.TemplateSyntaxError(u"'%s' tag's second argument "
+        raise template.TemplateSyntaxError("'%s' tag's second argument "
             "should be 'with'." % tag_name)
 
     query = bits[3]
@@ -145,19 +145,19 @@ def search_highlight(parser, token):
 
     for bit in arg_bits:
         if bit == 'css_class':
-            kwargs['css_class'] = arg_bits.next()
+            kwargs['css_class'] = next(arg_bits)
 
         if bit == 'html_tag':
-            kwargs['html_tag'] = arg_bits.next()
+            kwargs['html_tag'] = next(arg_bits)
 
         if bit == 'max_length':
-            kwargs['max_length'] = arg_bits.next()
+            kwargs['max_length'] = next(arg_bits)
 
         if bit == 'excerpt':
-            kwargs['excerpt'] = arg_bits.next()
+            kwargs['excerpt'] = next(arg_bits)
 
         if bit == 'ignore_between':
-            kwargs['ignore_between'] = arg_bits.next()
+            kwargs['ignore_between'] = next(arg_bits)
 
     return ExtendedHighlightNode(text_block, query, var_name, **kwargs)
 
@@ -173,7 +173,7 @@ def quick_highlight(text, query):
 
     """
     def embolden(match):
-        return u'<b>{}</b>'.format(match.group(0))
+        return '<b>{}</b>'.format(match.group(0))
 
     # Without a query, there are no words to highlight.
 
@@ -185,7 +185,7 @@ def quick_highlight(text, query):
     # to find within the text.
 
     escaped_words = (re.escape(word) for word in words)
-    word_match = u'|'.join(ur'\b{}\b'.format(word) for word in escaped_words)
+    word_match = '|'.join(r'\b{}\b'.format(word) for word in escaped_words)
     words_re = re.compile(word_match, flags=re.I)
 
     # We step across the even-numbered elements in our list, to only

@@ -1301,7 +1301,7 @@ def ajax_sightings(request):
             sightings_json.append({
                 'id': sighting.id,
                 'identification': sighting.identification,
-                'created': unicode(sighting.created.strftime(
+                'created': str(sighting.created.strftime(
                                    SIGHTING_SHORT_DATE_YEAR_FORMAT)),
                 'location': location_user_input,
                 'latitude': latitude,

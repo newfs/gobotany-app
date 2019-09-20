@@ -5,7 +5,7 @@ import sys
 import unittest
 
 from datetime import date, timedelta
-from StringIO import StringIO
+from io import StringIO
 
 from django.test import TestCase
 
@@ -50,7 +50,7 @@ UPDATED_NON_SIMPLEKEY_PLANTS = {
 # Utility methods
 
 def _import_plants(plants, family, genus, simplekey=True):
-    for partner, species in plants.items():
+    for partner, species in list(plants.items()):
         for epithet in species:
             scientific_name = '%s %s' % (GENUS, epithet)
             taxon, created = Taxon.objects.get_or_create(
@@ -75,9 +75,9 @@ def _import_plant_data(simplekey_plants, non_simplekey_plants):
 
 def _get_expected_taxa_count(simplekey_plants, non_simplekey_plants):
     epithets = list(itertools.chain(
-        *[p[1] for p in simplekey_plants.items()]))
+        *[p[1] for p in list(simplekey_plants.items())]))
     epithets += list(itertools.chain(
-        *[p[1] for p in non_simplekey_plants.items()]))
+        *[p[1] for p in list(non_simplekey_plants.items())]))
     expected_taxa_count = len(set(epithets))
     return expected_taxa_count
 

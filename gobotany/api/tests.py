@@ -201,9 +201,9 @@ class TaxaListTestCase(TestCase):
 
     def test_get_with_char_param_returns_no_items_if_bad_char_value(self):
         response = self.client.get('/api/taxa/?c1=badvalue')
-        expected = {u'items': [],
-                    u'identifier': u'scientific_name',
-                    u'label': u'scientific_name'}
+        expected = {'items': [],
+                    'identifier': 'scientific_name',
+                    'label': 'scientific_name'}
         self.assertEqual(expected, json.loads(response.content))
 
 
@@ -340,12 +340,12 @@ class TaxonImageTestCase(TestCase):
         json_object = json.loads(response.content)
         self.assertEqual(2, len(json_object))   # Expect 2 images.
         for image in json_object:
-            self.assertEqual(unicode, type(image['url']))
-            self.assertEqual(unicode, type(image['type']))
+            self.assertEqual(str, type(image['url']))
+            self.assertEqual(str, type(image['type']))
             self.assertEqual(int, type(image['rank']))
-            self.assertEqual(unicode, type(image['title']))
-            self.assertEqual(unicode, type(image['thumb_url']))
-            self.assertEqual(unicode, type(image['large_thumb_url']))
+            self.assertEqual(str, type(image['title']))
+            self.assertEqual(str, type(image['thumb_url']))
+            self.assertEqual(str, type(image['large_thumb_url']))
 
     def test_get_returns_empty_list_when_images_do_not_exist(self):
         response = self.client.get('/api/taxon-image/?species=Fooium%20fooia')

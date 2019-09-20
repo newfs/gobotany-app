@@ -11,7 +11,7 @@ import argparse
 import os
 import re
 import zipfile
-from StringIO import StringIO
+from io import StringIO
 
 MAX_WIDTH = MAX_HEIGHT = 640
 

@@ -4,8 +4,6 @@ import re
 from haystack.views import SearchView
 
 class GoBotanySearchView(SearchView):
-    __name__ = "GoBotanySearchView"
-
     def get_results(self):
         """When no results are found for multiple word searches, try
         searching without some of the words in order to be able to
@@ -26,7 +24,7 @@ class GoBotanySearchView(SearchView):
             query_words = self.get_query().split(' ')
             if len(query_words) > 1:
                 # Try queries that drop a word at a time off the end.
-                for end_index in reversed(range(1, len(query_words))):
+                for end_index in reversed(list(range(1, len(query_words)))):
                     new_query = ' '.join(query_words[0:end_index])
                     self.form.cleaned_data['q'] = new_query
                     queryset = self.form.search()

@@ -7,7 +7,7 @@ import re
 from django.db.models import Q
 from django.template import Context, Library
 from django.template.loader import get_template
-from django.utils.safestring import SafeUnicode, mark_safe
+from django.utils.safestring import mark_safe
 from django.conf import settings
 from gobotany.dkey import models
 
@@ -25,32 +25,32 @@ short_group_texts = {
     # These are briefer than the equivalent texts in gobotany.dkey.views
     # so that the breadcrumb navigation does not become overly verbose.
 
-    1: u'Lycophytes, Monilophytes',
-    2: u'Gymnosperms',
-    3: u'Monocots',
-    4: u'Woody angiosperms with opposite or whorled leaves',
-    5: u'Woody angiosperms with alternate leaves',
-    6: u'Herbaceous angiosperms with inferior ovaries',
-    7: u'Herbaceous angiosperms with superior ovaries and zygomorphic flowers',
-    8: u'Herbaceous angiosperms with superior ovaries, actinomorphic flowers, '
-       u'and 2 or more distinct carpels',
-    9: u'Herbaceous angiosperms with superior ovaries, actinomorphic flowers, '
-       u'connate petals, and a solitary carpel or 2 or more connate carpels',
-    10:u'Herbaceous angiosperms with superior ovaries, actinomorphic flowers, '
-       u'distinct petals or the petals lacking, and 2 or more connate carpels',
+    1: 'Lycophytes, Monilophytes',
+    2: 'Gymnosperms',
+    3: 'Monocots',
+    4: 'Woody angiosperms with opposite or whorled leaves',
+    5: 'Woody angiosperms with alternate leaves',
+    6: 'Herbaceous angiosperms with inferior ovaries',
+    7: 'Herbaceous angiosperms with superior ovaries and zygomorphic flowers',
+    8: 'Herbaceous angiosperms with superior ovaries, actinomorphic flowers, '
+       'and 2 or more distinct carpels',
+    9: 'Herbaceous angiosperms with superior ovaries, actinomorphic flowers, '
+       'connate petals, and a solitary carpel or 2 or more connate carpels',
+    10:'Herbaceous angiosperms with superior ovaries, actinomorphic flowers, '
+       'distinct petals or the petals lacking, and 2 or more connate carpels',
     }
 
 @register.filter
 def abbreviate_title(s):
     """Make 'Acer rubrum' 'A. rubrum' and remove 'Group' from group titles."""
-    if u'Group ' in s:
-        return s.replace(u'Group ', u'')
+    if 'Group ' in s:
+        return s.replace('Group ', '')
     else:
         parts = s.split(None, 1)
         if len(parts) < 2:
             return s
         genus, rest = s.split(None, 1)
-        return u'%s. %s' % (genus[0], rest)
+        return '%s. %s' % (genus[0], rest)
 
 @register.filter
 def breadcrumbs(page):
@@ -59,7 +59,7 @@ def breadcrumbs(page):
 @register.filter
 def display_title(page):
     if page.rank == 'genus' or page.rank == 'species':
-        return mark_safe(u'<i>{}</i>'.format(page.title))
+        return mark_safe('<i>{}</i>'.format(page.title))
     else:
         return page.title
 
@@ -76,7 +76,7 @@ def expand_group_title(title):
     if not title.startswith('Group '):
         return title
     number = int(title[6:])
-    return u'{}: {}'.format(title, short_group_texts[number])
+    return '{}: {}'.format(title, short_group_texts[number])
 
 @register.filter
 def figure_url(figure):
@@ -88,12 +88,12 @@ def figure_url(figure):
 def genus_slug(page_title):
     return page_title.split()[0].lower()
 
-re_floating_figure = re.compile(ur'<FIG-(\d+)>')  # see parser.py
+re_floating_figure = re.compile(r'<FIG-(\d+)>')  # see parser.py
 
 # The [RL] is because Figure 834 has two pieces, Right and Left,
 # designated with references like "[Fig. 834, L]". The "\s*" catches
 # some malformed figure references like "[Fig. 940 \n]".
-re_figure_link = re.compile(ur'\[Figs?\. ([\d, ]+)(, [RL])?\s*\]')
+re_figure_link = re.compile(r'\[Figs?\. ([\d, ]+)(, [RL])?\s*\]')
 
 @register.filter
 def render_floating_figure(match):
@@ -135,12 +135,12 @@ def lastword(text):
 
 @register.filter
 def nobr(text):
-    new = text.replace(u' ', u'\u00a0')
-    return mark_safe(new) if isinstance(text, SafeUnicode) else new
+    new = text.replace(' ', '\\u00a0')
+    return mark_safe(new)
 
 @register.filter
 def slug(page, chars=None):
-    return page.title.lower().replace(u' ', u'-')
+    return page.title.lower().replace(' ', '-')
 
 @register.filter
 def species_slug(page_title):

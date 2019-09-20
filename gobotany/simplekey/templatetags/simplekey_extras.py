@@ -131,8 +131,8 @@ def habitat_names(character_values):
 
     """
     def words_inside(text):
-        return set(word.rstrip(u's') for word in text.split()
-                   if word not in (u'and', u'of', u'or'))
+        return set(word.rstrip('s') for word in text.split()
+                   if word not in ('and', 'of', 'or'))
 
     names = []
     for cv in character_values:
@@ -158,7 +158,7 @@ def habitat_names(character_values):
             # need not repeat ourselves by showing both.
             name = t
         else:
-            name = u'{} ({})'.format(s, t)
+            name = '{} ({})'.format(s, t)
         names.append(name)
     return names
 

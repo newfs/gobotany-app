@@ -9,7 +9,7 @@ from datetime import date
 from django.conf import settings
 from django.core.exceptions import ObjectDoesNotExist
 from django.db.models import Q
-from django.core.urlresolvers import reverse
+from django.core.urlresolvers import reverse_lazy
 from django.http import HttpResponse
 from django.shortcuts import redirect, render
 from django.template import RequestContext
@@ -202,7 +202,7 @@ def privacy_view(request):
 
 @vary_on_headers('Host')
 def terms_of_use_view(request):
-    site_url = request.build_absolute_uri(reverse('site-home'))
+    site_url = request.build_absolute_uri('/')
     return render_per_partner('terms.html', {
             'site_url': site_url,
             }, request)
@@ -341,15 +341,15 @@ def sitemap_view(request):
     urls = [URL_FORMAT % (
                 PROTOCOL,
                 host,
-                reverse('taxa-species', args=(plant_name.split(' '))))
+                reverse_lazy('taxa-species', args=(plant_name.split(' '))))
             for plant_name in plant_names]
     urls.extend([URL_FORMAT % (PROTOCOL,
                                host,
-                               reverse('taxa-family', args=([family_name])))
+                               reverse_lazy('taxa-family', args=([family_name])))
                  for family_name in families])
     urls.extend([URL_FORMAT % (PROTOCOL,
                                host,
-                               reverse('taxa-genus', args=([genus_name])))
+                               reverse_lazy('taxa-genus', args=([genus_name])))
                  for genus_name in genera])
     return render(request, 'gobotany/sitemap.txt', {
             'urls': urls,
@@ -433,11 +433,11 @@ def species_list_view(request):
             plantmap[taxon_id]['common_names'].append(common_name)
 
     # Populate states from Distribution data.
-    taxon_ids = plantmap.keys()
+    taxon_ids = list(plantmap.keys())
     t = Taxon.objects.filter(id__in=taxon_ids).values_list(
         'id', 'scientific_name')
     sci_names = list(set([name for id, name in t]))
-    states = [state.upper() for state in settings.STATE_NAMES.keys()]
+    states = [state.upper() for state in list(settings.STATE_NAMES.keys())]
     d = Distribution.objects.filter(present=True).filter(
         county__exact='').filter(state__in=states).filter(
         species_name__in=sci_names).values_list('species_name', 'state')

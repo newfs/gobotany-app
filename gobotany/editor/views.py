@@ -1,10 +1,10 @@
 import json
 import re
 import sys
-import urllib
+import urllib.request, urllib.parse, urllib.error
 from itertools import groupby
 from operator import attrgetter as pluck
-from StringIO import StringIO   # Python 3: from io import StringIO
+from io import StringIO   # Python 3: from io import StringIO
 
 import tablib
 from datetime import datetime
@@ -106,7 +106,7 @@ def _edit_pile_length_character(request, pile, character, taxa):
     simple_ids = set(ps.species_id for ps in models.PartnerSpecies.objects
                      .filter(partner_id=partner.id, simple_key=True))
 
-    valued_ids = {id for id, value in minmaxes.items() if value != ['', ''] }
+    valued_ids = {id for id, value in list(minmaxes.items()) if value != ['', ''] }
     coverage_percent_full = len(valued_ids) * 100.0 / len(taxa)
     coverage_percent_simple = (len(simple_ids.intersection(valued_ids))
                      * 100.0 / len(simple_ids.intersection(taxon_ids)))
@@ -213,7 +213,7 @@ def edit_pile_taxon(request, pile_slug, taxon_slug):
     # Each value has .checked, indicating that the species has it.
 
     common_characters = list(models.Character.objects.filter(
-            short_name__in=models.COMMON_CHARACTERS, value_type=u'TEXT'))
+            short_name__in=models.COMMON_CHARACTERS, value_type='TEXT'))
     pile_characters = list(pile.characters.all())
 
     tcvlist = list(models.TaxonCharacterValue.objects.filter(taxon=taxon)
@@ -288,7 +288,7 @@ def _save(request, new_values, character=None, taxon=None):
 
     return redirect(dt.strftime(
         '/edit/cv/lit-sources/%Y.%m.%d.%H.%M.%S.%f/?return_to='
-        + urllib.quote(request.path)))
+        + urllib.parse.quote(request.path)))
 
 def _save_length(request, character, taxon, minmax):
 
@@ -494,45 +494,45 @@ def partner_plants_upload(request, idnum):
             bad_inserts = [ record for record in de.inserts if not len(
                     models.Taxon.objects.filter(scientific_name=record[0])) ]
             if bad_inserts:
-                printout.append(u'Unrecognized plants that will NOT be '
-                                u'imported but ignored for now:')
-                printout.append(u'')
+                printout.append('Unrecognized plants that will NOT be '
+                                'imported but ignored for now:')
+                printout.append('')
                 for bad in bad_inserts:
-                    printout.append(u'- {}'.format(bad[0]))
-                printout.append(u'')
+                    printout.append('- {}'.format(bad[0]))
+                printout.append('')
 
             de.inserts = [ record for record in de.inserts
                            if record[0].lower() != 'scientific_name'
                               and record not in bad_inserts ]
 
             if de.inserts:
-                printout.append(u'Plants to insert:')
+                printout.append('Plants to insert:')
                 printout.append('')
                 for record in de.inserts:
-                    printout.append(u'- {}'.format(record[0]))
+                    printout.append('- {}'.format(record[0]))
             else:
-                printout.append(u'No plants to insert.')
+                printout.append('No plants to insert.')
             printout.append('')
             if de.updates:
-                printout.append(u'Plants changing simple-key membership:')
+                printout.append('Plants changing simple-key membership:')
                 printout.append('')
                 for record in de.updates:
-                    printout.append(u'- {} changing to: {}'.format(*record[1]))
+                    printout.append('- {} changing to: {}'.format(*record[1]))
             else:
-                printout.append(u'No plants to update.')
+                printout.append('No plants to update.')
             printout.append('')
             if de.deletes:
-                printout.append(u'Plants to remove from this partner:')
+                printout.append('Plants to remove from this partner:')
                 printout.append('')
                 for record in de.deletes:
-                    printout.append(u'- {}'.format(record[0]))
+                    printout.append('- {}'.format(record[0]))
             else:
-                printout.append(u'No plants to delete.')
+                printout.append('No plants to delete.')
             printout.append('')
 
             changes = json.dumps([de.inserts, de.updates, de.deletes])
         else:
-            printout.append(u'Please select a file for upload and try again.')
+            printout.append('Please select a file for upload and try again.')
 
     # Step 1: an admin visits the page.
     return render(request, 'gobotany/upload_partner_plants.html', {
@@ -597,7 +597,7 @@ def _renumber_page(page):
     return last_number
 
 @permission_required('core.botanist')
-def dkey(request, slug=u'key-to-the-families'):
+def dkey(request, slug='key-to-the-families'):
     if request.method == 'GET':
         # For showing the D. Key Editor page
         if slug != slug.lower():
@@ -625,7 +625,7 @@ def dkey(request, slug=u'key-to-the-families'):
                 'page': (lambda: proxy.page),
                 'rank_beneath': (lambda: proxy.rank_beneath),
                 'taxa_beneath': (lambda: proxy.taxa_beneath),
-                'next_page': (lambda: proxy.next() or proxy.page),
+                'next_page': (lambda: next(proxy) or proxy.page),
                 'messages': get_messages(request),
             })
     elif request.method == 'POST':
@@ -686,16 +686,16 @@ def dkey(request, slug=u'key-to-the-families'):
                 try:
                     first_removed_lead.save()
                 except ValidationError as e:
-                    print('ValidationError when disconnecting first lead:',
-                        e.message_dict)
+                    print(('ValidationError when disconnecting first lead:',
+                        e.message_dict))
 
                 # Disconnect the second lead.
                 second_removed_lead.parent = None
                 try:
                     second_removed_lead.save()
                 except ValidationError as e:
-                    print('ValidationError when disconnecting second lead:',
-                        e.message_dict)
+                    print(('ValidationError when disconnecting second lead:',
+                        e.message_dict))
 
             # Query the leads that are to be promoted, i.e. moved up,
             # to replace the leads that have just been removed.
@@ -712,14 +712,14 @@ def dkey(request, slug=u'key-to-the-families'):
                 try:
                     first_lead.save()
                 except ValidationError as e:
-                    print('ValidationError:', e.message_dict)
+                    print(('ValidationError:', e.message_dict))
 
                 # Set a new parent for the second lead.
                 second_lead.parent = promoted_leads_parent
                 try:
                     second_lead.save()
                 except ValidationError as e:
-                    print('ValidationError:', e.message_dict)
+                    print(('ValidationError:', e.message_dict))
 
                 # Delete the two disconnected leads, which should also
                 # delete any child leads that one of them may have had.
@@ -728,13 +728,13 @@ def dkey(request, slug=u'key-to-the-families'):
                 try:
                     first_removed_lead.delete()
                 except ValidationError as e:
-                    print('ValidationError when deleting first lead:',
-                        e.message_dict)
+                    print(('ValidationError when deleting first lead:',
+                        e.message_dict))
                 try:
                     second_removed_lead.delete()
                 except ValidationError as e:
-                    print('ValidationError when deleting second lead:',
-                        e.message_dict)
+                    print(('ValidationError when deleting second lead:',
+                        e.message_dict))
 
         last_number = _renumber_page(this_lead.page)
 

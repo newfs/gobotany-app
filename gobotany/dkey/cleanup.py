@@ -16,8 +16,8 @@ from django.db import transaction
 from gobotany.dkey import models
 
 debug = False
-re_paragraph_number = re.compile(ur'^<p><b>(\d+)\.')
-re_hybrid_subtitle = re.compile(ur'<p><b>(\d+)×(\d+)\.[\s\u202f]*')
+re_paragraph_number = re.compile(r'^<p><b>(\d+)\.')
+re_hybrid_subtitle = re.compile(r'<p><b>(\d+)×(\d+)\.[\s\u202f]*')
 
 @transaction.atomic
 def main():
@@ -39,8 +39,8 @@ def main():
         key = (genus_name, paragraph_int)
         names[key] = species_name
         if debug and page.title == 'Huperzia appressa':
-            print repr(page.text)
-            print '-' * 72
+            print(repr(page.text))
+            print('-' * 72)
 
     # Now we are prepared to embark on our rewrite: we snip off of each
     # dkey page's text any paragraphs describing hybrid species, improve
@@ -55,7 +55,7 @@ def main():
 
         # These useless '</b><b>' sequences interfere with our RE.
 
-        text = page.text.replace(u'</b><b>', u'')
+        text = page.text.replace('</b><b>', '')
 
         # Splitting on this RE generates a list that looks like:
         # [text, hybrid1_number1, hybrid1_number2, hybrid1_text,
@@ -72,7 +72,7 @@ def main():
             species1 = names[(genus_name, int1)]
             species2 = names[(genus_name, int2)]
 
-            text = u'<b>' + text.rstrip()
+            text = '<b>' + text.rstrip()
             if text.endswith('</p>'):
                 text = text[:-4]
 
@@ -85,14 +85,14 @@ def main():
             h.save()
 
         if debug and page.title == 'Huperzia appressa':
-            print page.text
-            print '-' * 72
+            print(page.text)
+            print('-' * 72)
 
 
 def abbr(scientific_name):
     """Abbreviate 'Genus epithet' to 'G. epithet'."""
     words = scientific_name.split()
-    return u'{}. {}'.format(words[0][0], words[1])
+    return '{}. {}'.format(words[0][0], words[1])
 
 
 if __name__ == '__main__':

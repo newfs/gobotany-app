@@ -119,14 +119,14 @@ class ChloroplethMapTestCase(TestCase):
         self.assertEqual(TITLE, self.chloropleth_map.get_title())
 
     def test_tostring(self):
-        self.assertEqual(u'<svg xmlns', self.chloropleth_map.tostring()[0:10])
+        self.assertEqual('<svg xmlns', self.chloropleth_map.tostring()[0:10])
 
 
 def create_distribution_records():
     """Create dummy distribution records for New England and beyond."""
     taxa = {'Dendrolycopodium dendroideum': 'Lycopodiaceae',
             'Vaccinium vitis-idaea': 'Ericaceae'}
-    for scientific_name, family_name in taxa.items():
+    for scientific_name, family_name in list(taxa.items()):
         family = Family(name=family_name)
         family.save()
         genus = Genus(name=scientific_name.split(' ')[0], family=family)
@@ -272,7 +272,7 @@ def create_distribution_records():
             ('Barnstable', 'MA', True, True),
             ],
         }
-    for scientific_name, data_list in distribution_data.items():
+    for scientific_name, data_list in list(distribution_data.items()):
         for entry in data_list:
             distribution = Distribution(scientific_name=scientific_name,
                 county=entry[0], state=entry[1], present=entry[2],
@@ -471,7 +471,7 @@ class NewEnglandPlantDistributionMapTestCase(TestCase):
         for path in shaded_paths:
             path_id = path.path_node.get('id')
             area_key = path_id[0:2]
-            self.assertTrue(area_key in expected_shaded_areas.keys())
+            self.assertTrue(area_key in list(expected_shaded_areas.keys()))
             label = expected_shaded_areas[area_key]
             # To debug a failing test, uncomment the following line and
             # run the failing test alone:
@@ -563,7 +563,7 @@ class NorthAmericanPlantDistributionMapTestCase(TestCase):
         for path in shaded_paths:
             path_id = path.path_node.get('id')
             area_key = path_id[0:2]
-            self.assertTrue(area_key in expected_shaded_areas.keys())
+            self.assertTrue(area_key in list(expected_shaded_areas.keys()))
             label = expected_shaded_areas[area_key]
             # To debug a failing test, uncomment the following line and
             # run the failing test alone:

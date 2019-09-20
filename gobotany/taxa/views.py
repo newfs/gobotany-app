@@ -146,9 +146,9 @@ def _format_character_value(character_value):
         character = character_value.character
         if character.value_type == 'TEXT':
             return (character_value.friendly_text or
-                    character_value.value_str or u'')
+                    character_value.value_str or '')
         else:
-            NUM_FORMAT = u'%.9g'
+            NUM_FORMAT = '%.9g'
             vmin = character_value.value_min
             vmax = character_value.value_max
 
@@ -158,20 +158,20 @@ def _format_character_value(character_value):
                 vmax = NUM_FORMAT % vmax
 
             if vmin is None and vmax is None:
-                return u'anything'
+                return 'anything'
             elif vmin is None:
-                text = u'Up to {}'.format(vmax)
+                text = 'Up to {}'.format(vmax)
             elif vmax is None:
-                text = u'At least {}'.format(vmin)
+                text = 'At least {}'.format(vmin)
             elif vmin == vmax:
                 text = vmin
             else:
-                text = u'%s–%s' % (vmin, vmax)
+                text = '%s–%s' % (vmin, vmax)
 
-            if character.unit in (None, u'', u'NA'):
+            if character.unit in (None, '', 'NA'):
                 return text
             else:
-                return u'{} {}'.format(text, character.unit)
+                return '{} {}'.format(text, character.unit)
 
     else:
         return ''

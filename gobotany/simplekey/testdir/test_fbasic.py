@@ -286,13 +286,13 @@ class FilterFunctionalTests(FunctionalTestCase):
     def test_family_genus_filters(self):
 
         all_families = [
-            u'Huperziaceae', u'Isoetaceae', u'Lycopodiaceae',
-            u'Selaginellaceae',
+            'Huperziaceae', 'Isoetaceae', 'Lycopodiaceae',
+            'Selaginellaceae',
             ]
         all_genera = [
-            u'Dendrolycopodium', u'Diphasiastrum', u'Huperzia',
-            u'Isoetes', u'Lycopodiella', u'Lycopodium', u'Selaginella',
-            u'Spinulum',
+            'Dendrolycopodium', 'Diphasiastrum', 'Huperzia',
+            'Isoetes', 'Lycopodiella', 'Lycopodium', 'Selaginella',
+            'Spinulum',
             ]
 
         # Does the page load and show 18 species?
@@ -312,8 +312,8 @@ class FilterFunctionalTests(FunctionalTestCase):
         self.wait_on_species(11)
         self.assertEqual(self.list_family_choices(), all_families)
         self.assertEqual(self.list_genus_choices(), [
-                u'Dendrolycopodium', u'Diphasiastrum',
-                u'Lycopodiella', u'Lycopodium', u'Spinulum',
+                'Dendrolycopodium', 'Diphasiastrum',
+                'Lycopodiella', 'Lycopodium', 'Spinulum',
                 ])
 
         # Clear the family.
@@ -326,17 +326,17 @@ class FilterFunctionalTests(FunctionalTestCase):
 
         self.css1('select#genera option[value="Lycopodium"]').click()
         self.wait_on_species(2)
-        self.assertEqual(self.list_family_choices(), [u'Lycopodiaceae'])
+        self.assertEqual(self.list_family_choices(), ['Lycopodiaceae'])
         self.assertEqual(self.list_genus_choices(), all_genera)
 
         # Select the one family that is now possible.
 
         self.css1('select#families option[value="Lycopodiaceae"]').click()
         self.wait_on_species(2)
-        self.assertEqual(self.list_family_choices(), [u'Lycopodiaceae'])
+        self.assertEqual(self.list_family_choices(), ['Lycopodiaceae'])
         self.assertEqual(self.list_genus_choices(), [
-                u'Dendrolycopodium', u'Diphasiastrum',
-                u'Lycopodiella', u'Lycopodium', u'Spinulum',
+                'Dendrolycopodium', 'Diphasiastrum',
+                'Lycopodiella', 'Lycopodium', 'Spinulum',
                 ])
 
         # Clear the genus, leaving the family in place.
@@ -345,8 +345,8 @@ class FilterFunctionalTests(FunctionalTestCase):
         self.wait_on_species(11)
         self.assertEqual(self.list_family_choices(), all_families)
         self.assertEqual(self.list_genus_choices(), [
-                u'Dendrolycopodium', u'Diphasiastrum',
-                u'Lycopodiella', u'Lycopodium', u'Spinulum',
+                'Dendrolycopodium', 'Diphasiastrum',
+                'Lycopodiella', 'Lycopodium', 'Spinulum',
                 ])
 
     def test_thumbnail_presentation(self):
@@ -457,7 +457,7 @@ class FilterFunctionalTests(FunctionalTestCase):
         instructions = self.css1(INSTRUCTIONS_CSS)
         apply_button = self.css1('.apply-btn')
 
-        self.assertIn(u' 10 mm – 15000 mm', range_div.text)
+        self.assertIn(' 10 mm – 15000 mm', range_div.text)
         self.assertEqual(
             'Change the value to get a new set of matching species.',
             instructions.text)
@@ -513,7 +513,7 @@ class FilterFunctionalTests(FunctionalTestCase):
         measure_input = self.css1(INPUT_METRIC_CSS)
         self.css1('input[value="cm"]').click()
         range_div = self.css1(RANGE_DIV_CSS)
-        self.assertIn(u' 1 cm – 1500 cm', range_div.text)
+        self.assertIn(' 1 cm – 1500 cm', range_div.text)
         instructions = self.css1(INSTRUCTIONS_CSS)
         self.assertIn('to get 1 matching species', instructions.text)
         apply_button.click()
@@ -524,7 +524,7 @@ class FilterFunctionalTests(FunctionalTestCase):
         measure_input = self.css1(INPUT_METRIC_CSS)
         self.css1('input[value="m"]').click()
         range_div = self.css1(RANGE_DIV_CSS)
-        self.assertIn(u' 0.01 m – 15 m', range_div.text)
+        self.assertIn(' 0.01 m – 15 m', range_div.text)
         instructions = self.css1(INSTRUCTIONS_CSS)
         self.assertEqual('', instructions.text)
         apply_button.click()  # should do nothing
@@ -683,7 +683,7 @@ class SearchSuggestionsFunctionalTests(FunctionalTestCase):
                 suggestion_exists = True
                 break
         if not suggestion_exists:
-            print 'Search suggestion does not exist: ', query
+            print('Search suggestion does not exist: ', query)
 
         return suggestion_exists
 
@@ -1229,8 +1229,8 @@ class PlantPreviewCharactersFunctionalTests(FunctionalTestCase):
                     self.assertIn(decoded_value, actual_values)
                 break
         if not expected_item_found:
-            print '%s: Expected item not found: %s %s' % (
-                species, expected_name, expected_values)
+            print('%s: Expected item not found: %s %s' % (
+                species, expected_name, expected_values))
         self.assertTrue(expected_item_found)
         self.css1(self.CLOSE_LINK_CSS).click()
 

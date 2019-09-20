@@ -23,7 +23,7 @@ class LookalikeItemNode(template.Node):
         scientific_name = self.scientific_name.resolve(context)
         partner = which_partner(context['request'])
 
-        partner_site = PartnerSite.objects.get(short_name=partner)
+        partner_site = PartnerSite.objects.get(short_name=partner.short_name)
         partner_has_species = partner_site.has_species(scientific_name)
 
         try:

@@ -9,7 +9,7 @@ import shutil
 import sys
 import xlrd
 import zipfile
-from BeautifulSoup import BeautifulSoup
+from bs4 import BeautifulSoup
 from collections import defaultdict
 from functools import partial
 from operator import attrgetter
@@ -63,11 +63,11 @@ def open_csv(data_file, lower=True):
     """
     w = 'Windows-1252'
     r = csv.reader(data_file.open())
-    names = [ name.decode(w) for name in r.next() ]
+    names = [ name.decode(w) for name in next(r) ]
     if lower:
         names = [ name.lower() for name in names ]
     for row in r:
-        yield dict(zip(names, (s.decode(w) for s in row)))
+        yield dict(list(zip(names, (s.decode(w) for s in row))))
 
 class CSVReader(object):
 
@@ -85,7 +85,7 @@ def read_default_filters(characters_csv):
     for row in open_csv(characters_csv):
 
         pile_names = []
-        pile_name = row[u'pile'].title()
+        pile_name = row['pile'].title()
         pile_names.append(pile_name)
         if pile_name == 'Remaining Non-Monocots':
             # For the Remaining Non-Monocots pile, which is to be split,
@@ -93,11 +93,11 @@ def read_default_filters(characters_csv):
             pile_names.extend(['Alternate Remaining Non-Monocots',
                                'Non-Alternate Remaining Non-Monocots'])
 
-        character_slug = shorten_character_name(row[u'character'])
+        character_slug = shorten_character_name(row['character'])
 
         for pile_name in pile_names:
             pile_suffix = None
-            for name, suffix in pile_suffixes.iteritems():
+            for name, suffix in pile_suffixes.items():
                 if name == pile_name:
                     pile_suffix = suffix
             if not pile_suffix:
@@ -108,13 +108,13 @@ def read_default_filters(characters_csv):
                 character_slug.startswith('leaf_arrangement_general_')):
                 continue
 
-            if 'default_question' in row.keys():
+            if 'default_question' in list(row.keys()):
                 n = row['default_question']
                 if n:
                     defaultlist.append(('simple', pile_name, n,
                                         character_slug))
 
-            if 'default_question_fullkey' in row.keys():
+            if 'default_question_fullkey' in list(row.keys()):
                 n = row['default_question_fullkey']
                 if n:
                     defaultlist.append(('full', pile_name, n, character_slug))
@@ -243,14 +243,14 @@ class Importer(object):
         """Strip the taxonomic authority out of a full plant name."""
         CONNECTING_TERMS = ['subsp.', 'ssp.', 'var.', 'subvar.', 'f.',
                             'forma', 'subf.']
-        UNEXPECTED_CHARACTERS = [u'\N{NO-BREAK SPACE}', u'\N{DAGGER}',
-            u'\N{EURO SIGN}', u'\N{LATIN SMALL LETTER A WITH CIRCUMFLEX}']
+        UNEXPECTED_CHARACTERS = ['\N{NO-BREAK SPACE}', '\N{DAGGER}',
+            '\N{EURO SIGN}', '\N{LATIN SMALL LETTER A WITH CIRCUMFLEX}']
 
         # Replace unexpected characters before splitting.
-        if not isinstance(full_plant_name, unicode):
-            full_plant_name = unicode(full_plant_name, 'UTF-8')
+        if not isinstance(full_plant_name, str):
+            full_plant_name = str(full_plant_name, 'UTF-8')
         for character in UNEXPECTED_CHARACTERS:
-            full_plant_name = full_plant_name.replace(character, u' ')
+            full_plant_name = full_plant_name.replace(character, ' ')
 
         name = []
         words = full_plant_name.split(' ')
@@ -513,7 +513,7 @@ class Importer(object):
         REQUIRED_COLUMNS = ['family', 'family_common_name', 
                 'description_revised']
         iterator = iter(open_csv(family_file))
-        colnames = [x for x in iterator.next()]
+        colnames = [x for x in next(iterator)]
         for column in REQUIRED_COLUMNS:
             if column not in colnames:
                 log.error('Required column missing from family.csv: %s', column)
@@ -542,7 +542,7 @@ class Importer(object):
         REQUIRED_COLUMNS = ['family', 'genus', 'genus_common_name', 
                 'description_revised']
         iterator = iter(open_csv(genera_file))
-        colnames = [x for x in iterator.next()]
+        colnames = [x for x in next(iterator)]
         for column in REQUIRED_COLUMNS:
             if column not in colnames:
                 log.error('Required column missing from genera.csv: %s', column)
@@ -608,7 +608,7 @@ class Importer(object):
             endangerment_code = row['endangerment_code'].strip()
 
             allow_public_posting = True
-            if 'allow_public_posting' in row.keys():
+            if 'allow_public_posting' in list(row.keys()):
                 if row['allow_public_posting'].strip().upper() == 'NO':
                     allow_public_posting = False
 
@@ -626,8 +626,8 @@ class Importer(object):
                     log.info('Synonym not found')
                     continue
                 taxon = synonym.taxon
-                print 'Found synonym: %s --> %s' % (
-                    synonym.scientific_name, taxon.scientific_name)
+                print('Found synonym: %s --> %s' % (
+                    synonym.scientific_name, taxon.scientific_name))
 
             if taxon:
                 cs, created = models.ConservationStatus.objects.get_or_create(
@@ -662,10 +662,10 @@ class Importer(object):
         # Create a pile_map {'_ca': 8, '_nm': 9, ...}
         pile_map1 = db.map('core_pile', 'slug', 'id')
         pile_map = {}
-        for (name, suffix) in pile_suffixes.iteritems():
+        for (name, suffix) in pile_suffixes.items():
             slug = slugify(name)
             # Only add suffixes whose piles exist, ignoring any others.
-            if slug in pile_map1.keys():
+            if slug in list(pile_map1.keys()):
                 pile_map['_' + suffix] = pile_map1[slug]
 
         taxon_map = db.map('core_taxon', 'scientific_name', 'id')
@@ -687,7 +687,7 @@ class Importer(object):
             for row in open_csv(filename, lower=False):
                 # Look for a column name that ends with _litsrc in order
                 # to reliably extract the pile suffix for these CSV files.
-                for colname in row.keys():
+                for colname in list(row.keys()):
                     if colname.endswith('_litsrc'):
                         suffix = colname[-10:-7]
                         suffixes.append(suffix)
@@ -717,7 +717,7 @@ class Importer(object):
                     length_pairs = defaultdict(lambda: [None, None])
 
                     # Go through the key/value pairs for this row.
-                    for character_name, v in row.items():
+                    for character_name, v in list(row.items()):
                         if not v.strip():
                             continue
 
@@ -765,7 +765,7 @@ class Importer(object):
                     # Now we have seen both the min and max of every range.
 
                     for character_name, (vmin,
-                                         vmax) in length_pairs.iteritems():
+                                         vmax) in length_pairs.items():
                         character_id = character_map[character_name]
                         cv_table.get(
                             character_id=character_id,
@@ -832,7 +832,7 @@ class Importer(object):
         # Create a pile_map {'_ca': 8, '_nm': 9, ...}
         pile_map1 = db.map('core_pile', 'slug', 'id')
         pile_map = dict(('_' + suffix, pile_map1[slugify(name)])
-                        for (name, suffix) in pile_suffixes.iteritems()
+                        for (name, suffix) in pile_suffixes.items()
                         if slugify(name) in pile_map1  # for tests.py
                         )
 
@@ -982,7 +982,7 @@ class Importer(object):
 
             suffixes = []
             pile_suffix = character_name.rsplit('_', 1)[1]
-            if not pile_suffix in pile_suffixes.values():
+            if not pile_suffix in list(pile_suffixes.values()):
                 continue
             suffixes.append(pile_suffix)
 
@@ -998,7 +998,7 @@ class Importer(object):
                     continue
 
                 friendly_text = ''
-                if 'friendly_text' in row.keys():
+                if 'friendly_text' in list(row.keys()):
                     friendly_text = self._clean_up_html(row['friendly_text'])
 
                 charactervalue_table.get(
@@ -1058,7 +1058,7 @@ class Importer(object):
                 log.warn('character lacks pile suffix: %r', character_name)
                 continue
             pile_suffix = character_name.rsplit('_', 1)[1]
-            if not pile_suffix in pile_suffixes.values():
+            if not pile_suffix in list(pile_suffixes.values()):
                 log.warn('character has bad pile suffix: %r', character_name)
                 continue
 
@@ -1556,7 +1556,7 @@ class Importer(object):
                 continue
 
             # Clean up Windows dash characters.
-            tips = row['lookalike_tips'].replace(u'\u2013', '-')
+            tips = row['lookalike_tips'].replace('\u2013', '-')
 
             if tips.find(':') > 1:
                 # Split on plant name at the left of the first colon.
@@ -1682,7 +1682,7 @@ class Importer(object):
         # appropriate column.
         status_column_name = DEFAULT_STATUS_COLUMN_NAME
         for row in open_csv(distributionsf):
-            if row.has_key(ADJUSTED_STATUS_COLUMN_NAME.lower()):
+            if ADJUSTED_STATUS_COLUMN_NAME.lower() in row:
                 status_column_name = ADJUSTED_STATUS_COLUMN_NAME.lower()
             break   # Now that the correct status column name is known
 
@@ -2046,18 +2046,18 @@ def _set_partner_species(taxon, partner, blurb, current_species_list):
         # the current list of partner species, delete the PartnerSpecies
         # record (this also automatically deletes any associated blurb).
         if not taxon_in_current_species_list:
-            print 'Deleting partner species', taxon.scientific_name
+            print('Deleting partner species', taxon.scientific_name)
             ps[0].delete()
         else:
             # Update this PartnerSpecies record (blurb, etc.).
-            print 'Updating partner species', taxon.scientific_name
+            print('Updating partner species', taxon.scientific_name)
             ps[0].species_page_blurb = blurb
             ps[0].save()
     elif not ps and taxon_in_current_species_list:
         # Otherwise, if no PartnerSpecies record exists, but the species
         # (again, accounting also for synonyms) is in the current list of
         # partner species, add a record.
-        print 'Adding partner species', taxon.scientific_name
+        print('Adding partner species', taxon.scientific_name)
         models.PartnerSpecies(species=taxon, partner=partner,
                               species_page_blurb=blurb).save()
 
@@ -2078,16 +2078,16 @@ def import_partner_species(partner_short_name, excel_file):
     knowns = theirs & ours
     unknowns = theirs - ours
 
-    print 'Partner site:', partner_short_name, 'Data file:', excel_file
-    print 'We list', len(ours), 'species'
-    print 'They list', len(theirs), 'species'
-    print 'We know about', len(knowns), 'of their species'
+    print('Partner site:', partner_short_name, 'Data file:', excel_file)
+    print('We list', len(ours), 'species')
+    print('They list', len(theirs), 'species')
+    print('We know about', len(knowns), 'of their species')
     if unknowns:
-        print 'That leaves', len(unknowns), ' that do not match our names'
-        print '(will try to match against synonyms):'
+        print('That leaves', len(unknowns), ' that do not match our names')
+        print('(will try to match against synonyms):')
         for name in sorted(unknowns):
-            print '   ', repr(name)
-    print
+            print('   ', repr(name))
+    print()
 
     # Each species for a partner site can define a "blurb" of notes, such
     # as the varieties or subspecies particular to that partner site, etc.
@@ -2105,7 +2105,7 @@ def import_partner_species(partner_short_name, excel_file):
 
     # Try matching any "unknown" species to synonyms.
     if len(unknowns) > 0:
-        print 'Looking for synonyms:'
+        print('Looking for synonyms:')
         for unknown_name in unknowns:
             try:
                 synonym = models.Synonym.objects.get(
@@ -2113,11 +2113,11 @@ def import_partner_species(partner_short_name, excel_file):
             except ObjectDoesNotExist:
                 continue
             taxon = synonym.taxon
-            print 'Found synonym: %s --> %s' % (synonym.scientific_name,
-                                                taxon.scientific_name)
+            print('Found synonym: %s --> %s' % (synonym.scientific_name,
+                                                taxon.scientific_name))
             blurb = blurbs.get(taxon.scientific_name)
             _set_partner_species(taxon, partner, blurb, theirs)
-        print 'Done looking for synonyms'
+        print('Done looking for synonyms')
 
 
 # Routines for doing full import.
@@ -2268,7 +2268,7 @@ def ziplist():
     directories, filenames = default_storage.listdir('/data/')
     for filename in sorted(filenames):
         if filename:
-            print filename
+            print(filename)
 
 
 def get_data_fileopener(name):
@@ -2294,21 +2294,21 @@ def get_data_fileopener(name):
 
     """
     if name is None:
-        print 'Searching S3 for the most recent data zip file ...'
+        print('Searching S3 for the most recent data zip file ...')
         directories, filenames = default_storage.listdir('/data/')
         name = sorted([ f for f in filenames if f.endswith('.zip') ])[-1]
-        print 'Most recent data zip file is:'
-        print
-        print '   ', name
-        print
+        print('Most recent data zip file is:')
+        print()
+        print('   ', name)
+        print()
         if os.path.exists(name):
-            print 'Using copy already present on filesystem'
+            print('Using copy already present on filesystem')
         else:
-            print 'Downloading', name, '...'
+            print('Downloading', name, '...')
             with open(name, 'w') as dst:
                 with default_storage.open('/data/' + name) as src:
                     shutil.copyfileobj(src, dst)
-            print 'Done'
+            print('Done')
 
     if os.path.isdir(name):
         fileopener = partial(PlainFile, name)
@@ -2316,12 +2316,12 @@ def get_data_fileopener(name):
         try:
             zipfileobj = zipfile.ZipFile(name)
         except Exception as e:
-            print >>sys.stderr, 'Error:', e
+            print('Error:', e, file=sys.stderr)
             sys.exit(1)
         fileopener = partial(ZipMember, zipfileobj)
         log.info('Data will be imported from zip file: %s', name)
     else:
-        print >>sys.stderr, 'No such file or directory:', name
+        print('No such file or directory:', name, file=sys.stderr)
         sys.exit(1)
 
     return fileopener
@@ -2356,9 +2356,9 @@ def zipimport(name):
             fn[1:] if fn.startswith('!') else fileopener(fn)
             for fn in filenames
             )
-        print
-        print 'Calling', function.__name__ + '()'
-        print
+        print()
+        print('Calling', function.__name__ + '()')
+        print()
 
         wrapped_function = transaction.atomic(function)
         try:

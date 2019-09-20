@@ -42,7 +42,7 @@ def rebuild_default_filters(characters_csv):
     # Since we do not know whether we have been called directly with
     # "-m" or whether we have been called from .importer as part of a
     # big full import:
-    if isinstance(characters_csv, basestring):
+    if isinstance(characters_csv, str):
         characters_csv = importer.PlainFile('.', characters_csv)
 
     log.info('  Clearing the DefaultFilter table')
@@ -59,7 +59,7 @@ def rebuild_default_filters(characters_csv):
     stuff = importer.read_default_filters(characters_csv)
 
     for key_name, pile_name, n, character_slug in stuff:
-        if pile_name in pile_map.keys():
+        if pile_name in list(pile_map.keys()):
             piles_seen.add(pile_name)
             table.get(
                 key=key_name,
@@ -97,15 +97,15 @@ def rebuild_default_filters(characters_csv):
 
 def _remove_sample_species_images(pile_or_group_model):
     """Remove any sample species_images from all piles or all pile groups."""
-    print '  Removing old images:'
+    print('  Removing old images:')
     for pile in pile_or_group_model.objects.all():
-        print '    %s ' % pile.name
+        print('    %s ' % pile.name)
         image_count = pile.sample_species_images.count()
         if image_count:
-            print '      removing %d old images' % image_count
+            print('      removing %d old images' % image_count)
             pile.sample_species_images.clear()
         else:
-            print '      none'
+            print('      none')
 
 
 def rebuild_sample_pile_group_images(name=None):
@@ -116,15 +116,15 @@ def rebuild_sample_pile_group_images(name=None):
     fileopener = importer.get_data_fileopener(name)
     pilegroup_csv = fileopener('pile_group_info.csv')
 
-    print 'Removing old sample pile-group images:'
+    print('Removing old sample pile-group images:')
     _remove_sample_species_images(models.PileGroup)
 
-    print '  Scanning species images'
+    print('  Scanning species images')
     taxontype = ContentType.objects.get_for_model(models.Taxon)
     imagedict = { image.image.name.rsplit('/')[-1]: image for image in
                   models.ContentImage.objects.filter(content_type=taxontype) }
 
-    print '  Adding pile-group images from CSV data:'
+    print('  Adding pile-group images from CSV data:')
     for row in importer.open_csv(pilegroup_csv):
 
         # Skip junk rows.
@@ -132,7 +132,7 @@ def rebuild_sample_pile_group_images(name=None):
             continue
 
         pile_group = models.PileGroup.objects.get(name=row['name'])
-        print '    PileGroup:', pile_group.name
+        print('    PileGroup:', pile_group.name)
 
         # Go through the image filenames specified in the CSV data and
         # look for them in the image dict.  If found, add them to the
@@ -141,12 +141,12 @@ def rebuild_sample_pile_group_images(name=None):
         image_filenames = row['image_filenames'].split(';')
         for filename in image_filenames:
 
-            print '      filename:', filename,
+            print('      filename:', filename, end=' ')
 
             # Skip unknown filenames.
             image = imagedict.get(filename, None)
             if image is None:
-                print '- UNKNOWN'
+                print('- UNKNOWN')
                 continue
 
             pgimage = models.PileGroupImage(
@@ -156,7 +156,7 @@ def rebuild_sample_pile_group_images(name=None):
             pgimage.order = image.id
             pgimage.save()
 
-            print '- found'
+            print('- found')
 
 
 def rebuild_sample_pile_images(name=None):
@@ -167,15 +167,15 @@ def rebuild_sample_pile_images(name=None):
     fileopener = importer.get_data_fileopener(name)
     pile_csv = fileopener('pile_info.csv')
 
-    print 'Removing old sample pile images:'
+    print('Removing old sample pile images:')
     _remove_sample_species_images(models.Pile)
 
-    print '  Scanning species images'
+    print('  Scanning species images')
     taxontype = ContentType.objects.get_for_model(models.Taxon)
     imagedict = { image.image.name.rsplit('/')[-1]: image for image in
                   models.ContentImage.objects.filter(content_type=taxontype) }
 
-    print '  Adding pile images from CSV data:'
+    print('  Adding pile images from CSV data:')
     for row in importer.open_csv(pile_csv):
 
         # Skip junk rows.
@@ -183,7 +183,7 @@ def rebuild_sample_pile_images(name=None):
             continue
 
         pile = models.Pile.objects.get(name=row['name'].title())
-        print '    Pile:', pile.name
+        print('    Pile:', pile.name)
 
         # Go through the image filenames specified in the CSV data and
         # look for them in the image list. If found, add them to the
@@ -192,12 +192,12 @@ def rebuild_sample_pile_images(name=None):
         image_filenames = row['image_filenames'].split(';')
         for filename in image_filenames:
 
-            print '      filename:', filename,
+            print('      filename:', filename, end=' ')
 
             # Skip unknown filenames.
             image = imagedict.get(filename, None)
             if image is None:
-                print '- UNKNOWN'
+                print('- UNKNOWN')
                 continue
 
             pimage = models.PileImage(content_image=image, pile=pile)
@@ -206,7 +206,7 @@ def rebuild_sample_pile_images(name=None):
             pimage.order = image.id
             pimage.save()
 
-            print '- found'
+            print('- found')
 
 
 def rebuild_plant_of_the_day(include_plants='SIMPLEKEY'):   # or 'ALL'
@@ -222,11 +222,11 @@ def rebuild_plant_of_the_day(include_plants='SIMPLEKEY'):   # or 'ALL'
     For now, this is left as an occasional manual maintenance task.
     """
     if include_plants not in ['SIMPLEKEY', 'ALL']:
-        print '  Unknown include_plants value: %s' % include_plants
+        print('  Unknown include_plants value: %s' % include_plants)
     else:
-        print '  Rebuilding Plant of the Day list (%s):' % include_plants
+        print('  Rebuilding Plant of the Day list (%s):' % include_plants)
         for partner_site in models.PartnerSite.objects.all():
-            print '    Partner site: %s' % partner_site
+            print('    Partner site: %s' % partner_site)
             species = models.PartnerSpecies.objects.filter(
                 partner=partner_site)
             if include_plants == 'SIMPLEKEY':
@@ -252,7 +252,7 @@ def main():
     start_logging()
 
     if len(sys.argv) < 2:
-        print >>sys.stderr, "Usage: rebuild THING {args}"
+        print("Usage: rebuild THING {args}", file=sys.stderr)
         exit(2)
     thing = sys.argv[1]
     function_name = 'rebuild_' + thing
@@ -261,7 +261,7 @@ def main():
         wrapped_function = transaction.atomic(function)
         wrapped_function(*sys.argv[2:])
     else:
-        print >>sys.stderr, "Error: rebuild target %r unknown" % thing
+        print("Error: rebuild target %r unknown" % thing, file=sys.stderr)
         exit(2)
 
 if __name__ == '__main__':

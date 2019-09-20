@@ -23,7 +23,7 @@ from django.db import models
 
 def slug_to_title(slug):
     """The canonical transform between a URL slug and a dkey Page title."""
-    return slug.replace(u'-', u' ').capitalize().replace(
+    return slug.replace('-', ' ').capitalize().replace(
         ' families', ' Families').replace(' group ', ' Group ')
 
 class Page(models.Model):
@@ -39,7 +39,7 @@ class Page(models.Model):
         verbose_name = 'dichotomous key page'
         verbose_name_plural = 'dichotomous key pages'
 
-    def __unicode__(self):
+    def __str__(self):
         return self.title
 
     @property
@@ -59,8 +59,8 @@ class Lead(models.Model):
     goto_num = models.IntegerField(null=True, blank=True)
     taxa_cache = models.TextField(blank=True)
 
-    def __unicode__(self):
-        return u'{}:{}.{}'.format(self.id, self.letter, self.goto_page_id
+    def __str__(self):
+        return '{}:{}.{}'.format(self.id, self.letter, self.goto_page_id
                                   or self.goto_num or '')
 
     def number(self):
@@ -84,7 +84,7 @@ class Lead(models.Model):
     def text_excerpt(self):
         """Return a short excerpt of the lead text."""
         MAX_WORDS = 7
-        excerpt = filter(None, re.split('[;,]+', self.text))[0]
+        excerpt = [_f for _f in re.split('[;,]+', self.text) if _f][0]
         words = excerpt.split(' ')
         return ' '.join(words[0:MAX_WORDS])
 

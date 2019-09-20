@@ -18,11 +18,11 @@ urlpatterns = []
 
 if settings.USE_DEBUG_TOOLBAR and settings.DEBUG:
     import debug_toolbar
-    urlpatterns.extend([
+    urlpatterns += [
         url(r'^__debug__/', include(debug_toolbar.urls)),
-    ])
+    ]
 
-urlpatterns.extend([
+urlpatterns += [
     url(r'^admin/core/distribution/addset/', DistributionAdmin.add_set_view),
     url(r'^admin/', include(admin.site.urls)),
     url(r'^api/', include('gobotany.api.urls')),
@@ -35,15 +35,15 @@ urlpatterns.extend([
     url(r'^', include('gobotany.site.urls')),
     url(r'^', include('gobotany.taxa.urls')),
     url(r'^', include('gobotany.simplekey.urls')),
-])
+]
 
 # Serve uploaded media files as static files in development
 if settings.DEBUG:
-    urlpatterns.extend([
+    urlpatterns += [
         url(r'^media/(?P<path>.*)$', static.serve, {
             'document_root': settings.MEDIA_ROOT,
         }),
-    ])
+    ]
 # For now, always have staticfiles turned on, even in production.
 
 class FakeSettings():

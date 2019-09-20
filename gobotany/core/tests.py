@@ -72,13 +72,13 @@ class SampleData(TestCase):
         self.create(models.CharacterGroup, 'dimensions')
 
         self.create(models.Character, 'color', friendly_name='What color?',
-                    character_group=self.appearance, value_type=u'TEXT',
+                    character_group=self.appearance, value_type='TEXT',
                     pile=self.pets)
         self.create(models.Character, 'cuteness',
-                    character_group=self.appearance, value_type=u'TEXT',
+                    character_group=self.appearance, value_type='TEXT',
                     pile=self.pets)
         self.create(models.Character, 'length',
-                    character_group=self.dimensions, value_type=u'LENGTH',
+                    character_group=self.dimensions, value_type='LENGTH',
                     pile=self.pets)
 
         def make_cv(name, **kw):
@@ -117,7 +117,7 @@ class SampleData(TestCase):
 class SimpleTests(TestCase):
 
     def test_environment(self):
-        self.assert_(True)
+        self.assertTrue(True)
 
 
 class ModelTests(SampleData):
@@ -127,25 +127,25 @@ class ModelTests(SampleData):
         self.setup_sample_data()
 
     def do_unicode(self, obj, expected):
-        actual = re.sub(r'id=\d+', 'id=x', unicode(obj))
+        actual = re.sub(r'id=\d+', 'id=x', str(obj))
         self.assertEqual(expected, actual)
 
     # Make sure each model has a reasonable Unicode representation.
 
     def test_PileGroup_unicode(self):
-        self.do_unicode(self.pilegroup1, u'pilegroup1 id=x')
+        self.do_unicode(self.pilegroup1, 'pilegroup1 id=x')
 
     def test_Pile_unicode(self):
-        self.do_unicode(self.pets, u'Pets id=x')
+        self.do_unicode(self.pets, 'Pets id=x')
 
     def test_CharacterGroup_unicode(self):
-        self.do_unicode(self.appearance, u'appearance id=x')
+        self.do_unicode(self.appearance, 'appearance id=x')
 
     def test_numeric_CharacterValue_unicode(self):
-        self.do_unicode(self.size1, u'length: 2 - 4')
+        self.do_unicode(self.size1, 'length: 2 - 4')
 
     def test_ImageType_unicode(self):
-        self.do_unicode(models.ImageType(name='my imagetype'), u'my imagetype')
+        self.do_unicode(models.ImageType(name='my imagetype'), 'my imagetype')
 
     def test_ContentImage_unicode(self):
         leaf = models.ImageType(name='leaf')
@@ -157,16 +157,16 @@ class ModelTests(SampleData):
         ci = models.ContentImage(alt='alttext', rank=3, image_type=leaf,
                                  content_type=taxon, object_id=self.cat.id)
         ci.save()
-        self.do_unicode(ci, u'"alttext" - leaf image for Felis cat 3: ')
+        self.do_unicode(ci, '"alttext" - leaf image for Felis cat 3: ')
 
         ci = models.ContentImage(alt='alttext', rank=3, image_type=leaf,
                                  content_type=pile, object_id=self.pets.id)
         ci.save()
-        self.do_unicode(ci, u'"alttext" - leaf image for pile: %d 3: '
+        self.do_unicode(ci, '"alttext" - leaf image for pile: %d 3: '
                         % self.pets.id)
 
     def test_TaxonCharacterValue_unicode(self):
-        self.do_unicode(self.tcv, u'Oryctolagus rabbit: length: 2 - 4')
+        self.do_unicode(self.tcv, 'Oryctolagus rabbit: length: 2 - 4')
 
     def test_DefaultFilter_unicode(self):
         defaultfilter1 = models.DefaultFilter()
@@ -175,7 +175,7 @@ class ModelTests(SampleData):
         defaultfilter1.order = 7
         defaultfilter1.save()
 
-        self.do_unicode(defaultfilter1, u'Carnivores default #7: What color?')
+        self.do_unicode(defaultfilter1, 'Carnivores default #7: What color?')
 
     def test_PlantPreviewCharacter_unicode(self):
         plantpreview = models.PlantPreviewCharacter()
@@ -184,7 +184,7 @@ class ModelTests(SampleData):
         plantpreview.order = 7
         plantpreview.save()
 
-        self.do_unicode(plantpreview, u'Carnivores 7: What color?')
+        self.do_unicode(plantpreview, 'Carnivores 7: What color?')
 
     def test_CharacterValue_value_with_float(self):
         cv = models.CharacterValue()
@@ -303,7 +303,7 @@ class APITests(SampleData):
 
     def test_query_species(self):
         queried = botany.query_species(scientific_name='Felis cat').all()
-        self.assert_(len(queried) == 1)
+        self.assertTrue(len(queried) == 1)
 
         self.try_query([self.fox], color='red')
         self.try_query([self.cat, self.rabbit], color='gray')
@@ -353,7 +353,7 @@ class APITests(SampleData):
             ci = CI(rank=rank, image_type=image_type,
                     content_type=taxon, object_id=species.id)
             ci.save()
-            exec '%s = ci' % i
+            exec('%s = ci' % i)
 
         # Try fetching some images.
 
@@ -402,17 +402,17 @@ class ImportTestCase(TestCase):
 
     def test_character_short_name_retains_pile_suffix(self):
         short_name = importer.shorten_character_name('this_is_a_character_ly')
-        self.assertEquals('this_is_a_character_ly', short_name)
+        self.assertEqual('this_is_a_character_ly', short_name)
 
     def test_character_short_name_removes_min(self):
         short_name = importer.shorten_character_name(
             'this_is_a_length_char_min_ly')
-        self.assertEquals('this_is_a_length_char_ly', short_name)
+        self.assertEqual('this_is_a_length_char_ly', short_name)
 
     def test_character_short_name_removes_max(self):
         short_name = importer.shorten_character_name(
             'this_is_a_length_char_max_ly')
-        self.assertEquals('this_is_a_length_char_ly', short_name)
+        self.assertEqual('this_is_a_length_char_ly', short_name)
 
     def test_import_characters(self):
         im = importer.Importer()
@@ -423,7 +423,7 @@ class ImportTestCase(TestCase):
         f.close()
         expected = len(content.splitlines()) - min(content.count('_min'),
                                                    content.count('_max')) - 1
-        self.assertEquals(len(models.Character.objects.all()), expected)
+        self.assertEqual(len(models.Character.objects.all()), expected)
 
     def test_import_taxons(self):
         im = importer.Importer()
@@ -436,11 +436,11 @@ class ImportTestCase(TestCase):
             importer.PlainFile('.', testdata('wetland_indicators.csv')))
         im.import_taxa(self.db,
             importer.PlainFile('.', testdata('taxa.csv')))
-        self.assertEquals(len(models.Taxon.objects.all()), 3522)
+        self.assertEqual(len(models.Taxon.objects.all()), 3522)
 
     def test_clean_up_html_non_breaking_spaces(self):
         im = importer.Importer()
-        self.assertEquals('Remove non-breaking spaces. Please.',
+        self.assertEqual('Remove non-breaking spaces. Please.',
             im._clean_up_html('Remove non-breaking spaces. &nbsp;Please.'))
 
     def test_clean_up_html_font_tags(self):
@@ -449,7 +449,7 @@ class ImportTestCase(TestCase):
                 'leaves, but produce showy flowers</font></div>')
         expected = ('<div>non-grasses have very narrow leaves, but produce '
                     'showy flowers</div>')
-        self.assertEquals(expected, im._clean_up_html(html))
+        self.assertEqual(expected, im._clean_up_html(html))
 
     def test_has_unexpected_delimiter(self):
         im = importer.Importer()
@@ -498,24 +498,24 @@ class StateDistributionLabelsTestCase(TestCase):
     def test_get_state_distribution_labels_all_present(self):
         taxon = models.Taxon.objects.get(scientific_name='Acer rubrum')
         expected = OrderedDict()
-        expected[u'Connecticut'] = 'present'
-        expected[u'Maine'] = 'present'
-        expected[u'Massachusetts'] = 'present'
-        expected[u'New Hampshire'] = 'present'
-        expected[u'Rhode Island'] = 'present'
-        expected[u'Vermont'] = 'present'
+        expected['Connecticut'] = 'present'
+        expected['Maine'] = 'present'
+        expected['Massachusetts'] = 'present'
+        expected['New Hampshire'] = 'present'
+        expected['Rhode Island'] = 'present'
+        expected['Vermont'] = 'present'
         labels = taxon.get_state_distribution_labels()
         self.assertEqual(labels, expected)
 
     def test_get_state_distribution_labels_mixed(self):
         taxon = models.Taxon.objects.get(scientific_name='Carex kobomugi')
         expected = OrderedDict()
-        expected[u'Connecticut'] = 'absent'
-        expected[u'Maine'] = 'absent'
-        expected[u'Massachusetts'] = 'present, invasive, prohibited'
-        expected[u'New Hampshire'] = 'absent'
-        expected[u'Rhode Island'] = 'present'
-        expected[u'Vermont'] = 'absent'
+        expected['Connecticut'] = 'absent'
+        expected['Maine'] = 'absent'
+        expected['Massachusetts'] = 'present, invasive, prohibited'
+        expected['New Hampshire'] = 'absent'
+        expected['Rhode Island'] = 'present'
+        expected['Vermont'] = 'absent'
         labels = taxon.get_state_distribution_labels()
         self.assertEqual(labels, expected)
 

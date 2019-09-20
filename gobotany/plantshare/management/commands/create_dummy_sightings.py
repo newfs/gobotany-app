@@ -46,6 +46,6 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
         amount = int(args[0])
         username = args[1]
-        for i in xrange(1, amount + 1):
+        for i in range(1, amount + 1):
             self.stdout.write('%d: %s' % (i, username))
             self._create_dummy_sighting(username)

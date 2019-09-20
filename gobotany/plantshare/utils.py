@@ -1,6 +1,6 @@
 import json
 import re
-import urllib2
+import urllib.request, urllib.error, urllib.parse
 
 from itertools import chain
 
@@ -30,13 +30,13 @@ def get_covered_state(location):
                    'latitude=%s&longitude=%s&showall=true') % (latitude,
                                                                longitude)
             try:
-                data = urllib2.urlopen(url).read()
+                data = urllib.request.urlopen(url).read()
                 response = json.loads(data)
                 state = response['State']['name']
-            except urllib2.HTTPError, e:
-                print 'HTTP error: %d' % e.code
-            except urllib2.URLError, e:
-                print 'Network error: %s' % e.reason.args[1]
+            except urllib.error.HTTPError as e:
+                print(('HTTP error: %d' % e.code))
+            except urllib.error.URLError as e:
+                print(('Network error: %s' % e.reason.args[1]))
         elif re.search(r'\d{5}(-\d{4})?$', location):
             # Determine the state name from a ZIP code.
             if re.search(r'06[0-9]{3}(-\d{4})?$', location):
@@ -69,7 +69,7 @@ def get_covered_state(location):
                 state = 'Vermont'
 
     state = state if state in [
-        v for k, v in settings.STATE_NAMES.iteritems()] else None
+        v for k, v in list(settings.STATE_NAMES.items())] else None
 
     return state
 
@@ -102,14 +102,14 @@ def restrictions(plant_name, location=None):
             state_name = settings.STATE_NAMES[status.region.lower()]
             # If a status entry has already set a state's "allow public
             # posting" value to False, prevent another from overwriting it.
-            if (state_name not in allow_public_posting.keys() or
+            if (state_name not in list(allow_public_posting.keys()) or
                     allow_public_posting[state_name] != False):
                 allow_public_posting[state_name] = status.allow_public_posting
         # Fill in any states that do not have conservation status
         # records.
-        for key in settings.STATE_NAMES.keys():
+        for key in list(settings.STATE_NAMES.keys()):
             state_name = settings.STATE_NAMES[key]
-            if state_name not in allow_public_posting.keys():
+            if state_name not in list(allow_public_posting.keys()):
                 allow_public_posting[state_name] = True
 
         sightings_restricted = False
@@ -131,7 +131,7 @@ def restrictions(plant_name, location=None):
             # This is a conservative measure for various edge cases
             # such as plants that may be rare outside New England,
             # incorrect location detection, etc.
-            for state in allow_public_posting.keys():
+            for state in list(allow_public_posting.keys()):
                 if not allow_public_posting[state]:
                     sightings_flagged = True
                     break

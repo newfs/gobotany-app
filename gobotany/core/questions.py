@@ -95,8 +95,8 @@ def get_questions(request, pile):
     # did not qualify, also in order of ease of observability.
     if len(best_questions) < number_of_best_questions:
         for question in candidate_questions:
-            if ((not question.has_key('best')) or
-                (question.has_key('best') and question['best'] == False)):
+            if (('best' not in question) or
+                ('best' in question and question['best'] == False)):
                 best_questions.append(question)
             if len(best_questions) >= number_of_best_questions:
                 break

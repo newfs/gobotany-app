@@ -128,19 +128,19 @@ class URLs(TestCase):
 
         m = core.models
 
-        pg = save(m.PileGroup(slug=u'woody-plants', name=u'Woody Plants'))
-        p = save(m.Pile(slug=u'woody-angiosperms', name=u'Woody Angiosperms',
+        pg = save(m.PileGroup(slug='woody-plants', name='Woody Plants'))
+        p = save(m.Pile(slug='woody-angiosperms', name='Woody Angiosperms',
                         pilegroup=pg))
-        f = save(m.Family(name=u'Sapindaceae'))
-        g = save(m.Genus(name=u'Acer', family=f))
-        t = save(m.Taxon(scientific_name=u'Acer rubrum', family=f, genus=g))
+        f = save(m.Family(name='Sapindaceae'))
+        g = save(m.Genus(name='Acer', family=f))
+        t = save(m.Taxon(scientific_name='Acer rubrum', family=f, genus=g))
         t.piles.add(p)
 
         m = simplekey.models
 
-        save(m.GroupsListPage(title=u''))
-        save(m.SubgroupsListPage(title=u'', group=pg))
-        save(m.SubgroupResultsPage(title=u'', subgroup=p))
+        save(m.GroupsListPage(title=''))
+        save(m.SubgroupsListPage(title='', group=pg))
+        save(m.SubgroupResultsPage(title='', subgroup=p))
 
         c = Client()
 
@@ -613,7 +613,7 @@ class FormatCharacterValueTestCase(TestCase):
                                          value_max=2500.0)
         character_value.save()
 
-        expected_value = u'200\u20132500 cm'
+        expected_value = '200\u20132500 cm'
         actual_value = _format_character_value(character_value)
         self._assert_unicode_equal(expected_value, actual_value)
 
@@ -630,6 +630,6 @@ class FormatCharacterValueTestCase(TestCase):
                                          value_max=2.0)
         character_value.save()
 
-        expected_value = u'2'
+        expected_value = '2'
         actual_value = _format_character_value(character_value)
         self._assert_unicode_equal(expected_value, actual_value)

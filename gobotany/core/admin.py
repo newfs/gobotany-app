@@ -189,7 +189,7 @@ class CharacterValuesInline(admin.TabularInline):
     def get_queryset(self, request):
         """Only show character values for text-type characters."""
         qs = super(CharacterValuesInline, self).get_queryset(request)
-        qs = qs.filter(character__value_type=u'TEXT')
+        qs = qs.filter(character__value_type='TEXT')
         return qs
 
 class CharacterAdmin(_Base):
@@ -407,8 +407,8 @@ def species_summary(obj):
     total_number = len(seq)
     simple_number = len([ s for s in seq if s.simple_key ])
     return mark_safe(
-        u'{} plants, of which {} are shown in the Simple Key<br>'
-        u'<a href="/edit/partner/{}/plants/">Edit Plant List</b>'
+        '{} plants, of which {} are shown in the Simple Key<br>'
+        '<a href="/edit/partner/{}/plants/">Edit Plant List</b>'
         .format(total_number, simple_number, obj.id))
 
 species_summary.short_description = 'Species'
@@ -484,7 +484,7 @@ class ContentImageAdmin(_Base):
     def copyright(self, obj):
         copyright_obj = models.CopyrightHolder.objects.get(coded_name=obj.creator)
         url = admin_url_from_model(copyright_obj)
-        markup = u'<a href={0}>{1}</a>'.format(
+        markup = '<a href={0}>{1}</a>'.format(
             url,
             'Copyright Info for {0}'.format(obj.creator)
         )
@@ -549,7 +549,7 @@ class DistributionRegionFilter(admin.SimpleListFilter):
     def queryset(self, request, queryset):
         """Returns the filtered queryset based on the query string value."""
         states_in_region = [k.upper()
-                            for k, v in settings.STATE_NAMES.iteritems()]
+                            for k, v in settings.STATE_NAMES.items()]
         if self.value() == slugify(settings.REGION_NAME): # e.g. 'New England'
             return queryset.filter(state__in=states_in_region)
 
@@ -635,7 +635,7 @@ class DistributionAdmin(_Base):
         errors = []
         scientific_name = ''
 
-        if request.POST.has_key('scientific_name'):
+        if 'scientific_name' in request.POST:
             scientific_name = request.POST['scientific_name']
             if not scientific_name:
                 errors.append('This field is required.')

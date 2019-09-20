@@ -4,7 +4,7 @@ from django.http import Http404
 from django.shortcuts import get_object_or_404, redirect, render
 #from django.views.decorators.cache import cache_control, cache_page
 from django.views.decorators.vary import vary_on_headers
-from django.urls import reverse
+from django.urls import reverse_lazy
 
 from gobotany.core.models import ContentImage, Pile, PileGroup
 from gobotany.core.partner import partner_short_name, render_per_partner
@@ -24,12 +24,14 @@ def add_query_string(request, url):
 #
 
 def get_simple_url(key, pilegroup, pile=None):
+    print('key:', key)
+    print('pilegroup.slug:', pilegroup.slug)
     if pile is None:
-        return reverse('level2',
+        return reverse_lazy('level2',
                        kwargs={'key': key,
                                'pilegroup_slug': pilegroup.slug})
     else:
-        return reverse('level3',
+        return reverse_lazy('level3',
                        kwargs={'key': key,
                                'pilegroup_slug': pilegroup.slug,
                                'pile_slug': pile.slug})
@@ -103,7 +105,7 @@ def level3(request, key, pilegroup_slug, pile_slug):
     subgroup_results_page = SubgroupResultsPage.objects.get(subgroup=pile)
 
     return render_per_partner('results.html', {
-                'dev_flag': 1 if request.GET.has_key('dev') else 0,
+                'dev_flag': 1 if 'dev' in request.GET else 0,
                 'key': key,
                 'partner_site': short_name,
                 'subgroup_results_page': subgroup_results_page,

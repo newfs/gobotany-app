@@ -54,8 +54,8 @@ class Parameter(models.Model):
     class Meta:
         ordering = ['name']
 
-    def __unicode__(self):
-        return u'Parameter %s value=%s' % (self.name, self.value)
+    def __str__(self):
+        return 'Parameter %s value=%s' % (self.name, self.value)
 
 class CharacterGroup(models.Model):
     """A group of characters that should be associated in the UI.
@@ -74,8 +74,8 @@ class CharacterGroup(models.Model):
     class Meta:
         ordering = ['name']
 
-    def __unicode__(self):
-        return u'%s id=%s' % (self.name, self.id)
+    def __str__(self):
+        return '%s id=%s' % (self.name, self.id)
 
     def natural_key(self):
         return (self.name,)
@@ -106,8 +106,8 @@ class GlossaryTerm(models.Model):
         # Don't allow duplicate definitions
         unique_together = ('term', 'lay_definition')
 
-    def __unicode__(self):
-        return u'%s: %s' % (self.term, self.lay_definition)
+    def __str__(self):
+        return '%s: %s' % (self.term, self.lay_definition)
 
 
 class Character(models.Model):
@@ -136,27 +136,27 @@ class Character(models.Model):
     character_group = models.ForeignKey(CharacterGroup)
     pile = models.ForeignKey('Pile', null=True, related_name='characters', blank=True)
     ease_of_observability = models.PositiveSmallIntegerField(null=True,
-        blank=True, choices=zip(range(1, 6), range(1, 6)))
+        blank=True, choices=list(zip(list(range(1, 6)), list(range(1, 6)))))
 
     VALUE_CHOICES = OrderedDict({
-        u'TEXT': u'Textual', # string
-        u'LENGTH': u'Length', # length
-        u'RATIO': u'Ratio', # float
+        'TEXT': 'Textual', # string
+        'LENGTH': 'Length', # length
+        'RATIO': 'Ratio', # float
         })
     UNIT_CHOICES = OrderedDict({
-        u'mm': u'Millimeters',
-        u'cm': u'Centimeters',
-        u'm': u'Meters',
+        'mm': 'Millimeters',
+        'cm': 'Centimeters',
+        'm': 'Meters',
         })
     UNIT_MM = OrderedDict({
-        u'mm': 1.0,
-        u'cm': 10.0,
-        u'm': 1000.0,
+        'mm': 1.0,
+        'cm': 10.0,
+        'm': 1000.0,
         })
     value_type = models.CharField(
-        max_length=10, choices=VALUE_CHOICES.items())
+        max_length=10, choices=list(VALUE_CHOICES.items()))
     unit = models.CharField(
-        max_length=2, null=True, blank=True, choices=UNIT_CHOICES.items())
+        max_length=2, null=True, blank=True, choices=list(UNIT_CHOICES.items()))
     question = models.TextField(blank=True)
     hint = models.TextField(blank=True)
 
@@ -169,11 +169,11 @@ class Character(models.Model):
     class Meta:
         ordering = ['short_name']
 
-    def __unicode__(self):
+    def __str__(self):
         if self.short_name[-3:-2] == '_':
-            return u'%s (%s)' % (self.name, self.short_name[-2:])
+            return '%s (%s)' % (self.name, self.short_name[-2:])
         else:
-            return u'%s' % (self.name)
+            return '%s' % (self.name)
 
     def natural_key(self):
         return (self.short_name,)
@@ -263,14 +263,14 @@ class CharacterValue(models.Model):
                 raise ValidationError('The minimum value may not be greater '
                                       'than the maximum value')
 
-    def __unicode__(self):
+    def __str__(self):
         if self.value_min is not None and self.value_max is not None:
-            v = u'%i - %i' % (self.value_min, self.value_max)
+            v = '%i - %i' % (self.value_min, self.value_max)
         elif self.value_flt is not None:
-            v = unicode(self.value_flt)
+            v = str(self.value_flt)
         else:
             v = self.value_str
-        return u'%s: %s' % (
+        return '%s: %s' % (
             self.character.short_name, v)
 
 
@@ -289,8 +289,8 @@ class PileInfo(models.Model):
         abstract = True
         ordering = ['name']
 
-    def __unicode__(self):
-        return u'%s id=%s' % (self.name, self.id)
+    def __str__(self):
+        return '%s id=%s' % (self.name, self.id)
 
     def key_characteristics_text(self):
         return bleach.clean(self.key_characteristics, strip=True)
@@ -333,7 +333,7 @@ class PileImage(models.Model):
     class Meta:
         ordering = ['order']
 
-    def __unicode__(self):
+    def __str__(self):
         return '%s (%s: order %s)' % (self.content_image.image.name,
                                       self.pile.name, self.order)
 
@@ -360,7 +360,7 @@ class PileGroupImage(models.Model):
     class Meta:
         ordering = ['order']
 
-    def __unicode__(self):
+    def __str__(self):
         return '%s (%s: order %s)' % (self.content_image.image.name,
                                       self.pile_group.name, self.order)
 
@@ -377,14 +377,14 @@ class ImageType(models.Model):
 
     """
     name = models.CharField(max_length=100,
-                            verbose_name=u'image type', unique=True)
+                            verbose_name='image type', unique=True)
     # Normally only 2 characters long, but save some space just in case
     code = models.CharField(max_length=4,
-                            verbose_name=u'type code')
+                            verbose_name='type code')
 
     objects = NameManager()
 
-    def __unicode__(self):
+    def __str__(self):
         return self.name
 
     def natural_key(self):
@@ -469,11 +469,11 @@ class ContentImage(models.Model):
                               upload_to=_content_image_path,
                               help_text='Image will be renamed and moved based on other field information.')
     alt = models.CharField(max_length=300,
-                           verbose_name=u'title (alt text)')
+                           verbose_name='title (alt text)')
     rank = models.PositiveSmallIntegerField(
-        choices=zip(range(1, 11), range(1, 11)))
+        choices=list(zip(list(range(1, 11)), list(range(1, 11)))))
     creator = models.CharField(max_length=100,
-                               verbose_name=u'photographer')
+                               verbose_name='photographer')
     image_type = models.ForeignKey(ImageType,
                                    verbose_name='image type')
     content_type = models.ForeignKey(ContentType)
@@ -511,7 +511,7 @@ class ContentImage(models.Model):
         self.clean()
         super(ContentImage, self).save(*args, **kw)
 
-    def __unicode__(self):
+    def __str__(self):
         name = '"%s" - %s image for ' % (self.alt, self.image_type)
         if self.content_type.name == 'taxon' and self.content_object:
             name += self.content_object.scientific_name
@@ -542,7 +542,7 @@ class HomePageImage(models.Model):
         # users prefix filenames with "01_", "02_", etc.
         ordering = ['partner_site', 'image']
 
-    def __unicode__(self):
+    def __str__(self):
         return self.image.name
 
 
@@ -550,7 +550,7 @@ class Family(models.Model):
     """A biological family."""
     name = models.CharField(max_length=100, unique=True)
     common_name = models.CharField(max_length=100)
-    description = models.TextField(verbose_name=u'description',
+    description = models.TextField(verbose_name='description',
                                    blank=True)
     # We use 'example image' and 'example drawing' for the image types here
     images = GenericRelation(ContentImage)
@@ -562,7 +562,7 @@ class Family(models.Model):
         verbose_name_plural = 'families'
         ordering = ['name']
 
-    def __unicode__(self):
+    def __str__(self):
         return self.name
 
     @property
@@ -577,7 +577,7 @@ class Genus(models.Model):
     """A biological genus."""
     name = models.CharField(max_length=100, unique=True)
     common_name = models.CharField(max_length=100)
-    description = models.TextField(verbose_name=u'description', blank=True)
+    description = models.TextField(verbose_name='description', blank=True)
     family = models.ForeignKey(Family, related_name='genera')
     # We use 'example image' and 'example drawing' for the image types here
     images = GenericRelation(ContentImage)
@@ -589,7 +589,7 @@ class Genus(models.Model):
         verbose_name_plural = 'genera'
         ordering = ['name']
 
-    def __unicode__(self):
+    def __str__(self):
         return self.name
 
     @property
@@ -609,7 +609,7 @@ class Synonym(models.Model):
     class Meta:
         ordering = ['scientific_name']
 
-    def __unicode__(self):
+    def __str__(self):
         return '%s (%s)' % (self.scientific_name, self.full_name)
 
 
@@ -621,7 +621,7 @@ class CommonName(models.Model):
     class Meta:
         ordering = ['common_name']
 
-    def __unicode__(self):
+    def __str__(self):
         return self.common_name
 
 
@@ -631,7 +631,7 @@ class Lookalike(models.Model):
     lookalike_characteristic = models.CharField(max_length=1000, blank=True)
     taxon = models.ForeignKey('Taxon', related_name='lookalikes')
 
-    def __unicode__(self):
+    def __str__(self):
         return '%s (%s)' % (self.lookalike_scientific_name,
                             self.lookalike_characteristic)
 
@@ -646,7 +646,7 @@ class WetlandIndicator(models.Model):
     class Meta:
         ordering = ['sequence']
 
-    def __unicode__(self):
+    def __str__(self):
         return '%s (%s)' % (self.code, self.name)
 
 
@@ -687,8 +687,8 @@ class Taxon(models.Model):
         verbose_name_plural = 'taxa'
         ordering = ['scientific_name']
 
-    def __unicode__(self):
-        return u'%s id=%s' % (self.scientific_name, self.id)
+    def __str__(self):
+        return '%s id=%s' % (self.scientific_name, self.id)
 
     def slug(self):
         return self.scientific_name.lower().replace(' ', '-')
@@ -715,7 +715,7 @@ class Taxon(models.Model):
         the presence or absence of the species, and, where applicable,
         any invasive status.
         """
-        states = [key.upper() for key in settings.STATE_NAMES.keys()]
+        states = [key.upper() for key in list(settings.STATE_NAMES.keys())]
         distributions = Distribution.objects.all_records_for_plant(
             self.scientific_name).filter(state__in=states).values_list(
             'state', 'present')
@@ -731,14 +731,14 @@ class Taxon(models.Model):
                 state = state.lower()
                 key = settings.STATE_NAMES[state]
                 label = 'present'
-                if state in invasive_dict.keys():
+                if state in list(invasive_dict.keys()):
                     invasive, prohibited = invasive_dict[state]
                     if invasive:
                         label += ', invasive'
                     if prohibited:
                         label += ', prohibited'
                 mapping[key] = label
-        labels = OrderedDict(sorted(mapping.iteritems()))
+        labels = OrderedDict(sorted(mapping.items()))
         return labels
 
     def get_default_image(self):
@@ -779,25 +779,25 @@ class SourceCitation(models.Model):
     """
     citation_text = models.CharField(max_length=300)
     author = models.CharField(max_length=100, blank=True,
-            verbose_name=u'Author or Editor')
+            verbose_name='Author or Editor')
     publication_year = models.PositiveSmallIntegerField(null=True, blank=True,
-            verbose_name=u'Publication Year', validators=[
+            verbose_name='Publication Year', validators=[
                 MaxValueValidator(datetime.now().year),
             ])
     article_title = models.CharField(max_length=100, blank=True,
-            verbose_name=u'Article Title')
+            verbose_name='Article Title')
     publication_title = models.CharField(max_length=100, blank=True,
-            verbose_name=u'Periodical or Book Title')
+            verbose_name='Periodical or Book Title')
     publisher_name = models.CharField(max_length=100, blank=True,
-            verbose_name=u'Publisher Name')
+            verbose_name='Publisher Name')
     publisher_location = models.CharField(max_length=100, blank=True,
-            verbose_name=u'Publisher Location')
+            verbose_name='Publisher Location')
 
     class Meta:
         ordering = ['citation_text']
 
-    def __unicode__(self):
-        return u'{0}'.format(self.citation_text)
+    def __str__(self):
+        return '{0}'.format(self.citation_text)
 
 
 class TaxonCharacterValue(models.Model):
@@ -817,8 +817,8 @@ class TaxonCharacterValue(models.Model):
         verbose_name_plural = 'character values for taxon'
         #ordering = ['taxon__scientific_name']  # This makes queries expensive!
 
-    def __unicode__(self):
-        return u'%s: %s' % (self.taxon.scientific_name, self.character_value)
+    def __str__(self):
+        return '%s: %s' % (self.taxon.scientific_name, self.character_value)
 
 
 class Edit(models.Model):
@@ -844,7 +844,7 @@ class Edit(models.Model):
 
 class ConservationStatus(models.Model):
     STATE_NAMES = sorted([(abbrev.upper(), name)
-                         for abbrev, name in settings.STATE_NAMES.items()],
+                         for abbrev, name in list(settings.STATE_NAMES.items())],
                          key=lambda x: x[1])
 
     taxon = models.ForeignKey(Taxon, related_name='conservation_statuses')
@@ -859,8 +859,8 @@ class ConservationStatus(models.Model):
         verbose_name = 'conservation status'
         verbose_name_plural = 'conservation statuses'
 
-    def __unicode__(self):
-        return u'%s %s in %s: %s %s' % (self.taxon.scientific_name,
+    def __str__(self):
+        return '%s %s in %s: %s %s' % (self.taxon.scientific_name,
             self.variety_subspecies_hybrid, self.region, self.s_rank,
             self.endangerment_code)
 
@@ -887,8 +887,8 @@ class InvasiveStatus(models.Model):
         verbose_name = 'invasive status'
         verbose_name_plural = 'invasive statuses'
 
-    def __unicode__(self):
-        return u'%s in %s: %s %s' % (self.taxon.scientific_name,
+    def __str__(self):
+        return '%s in %s: %s %s' % (self.taxon.scientific_name,
             self.region, self.invasive_in_region,
             self.prohibited_from_sale)
 
@@ -918,7 +918,7 @@ class DefaultFilter(models.Model):
         ordering = ['order']
         unique_together = ('key', 'pile', 'character')
 
-    def __unicode__(self):
+    def __str__(self):
         return '%s default #%d: %s' % (self.pile.name, self.order,
                                        self.character.friendly_name)
 
@@ -938,7 +938,7 @@ class PartnerSite(models.Model):
     class Meta:
         ordering = ['short_name']
 
-    def __unicode__(self):
+    def __str__(self):
         return '%s' % self.short_name
 
     def has_species(self, scientific_name):
@@ -963,7 +963,7 @@ class PartnerSpecies(models.Model):
         verbose_name = 'Partner species'
         verbose_name_plural = 'Partner species list'
 
-    def __unicode__(self):
+    def __str__(self):
         return '%s: %s' % (self.partner.short_name,
                            self.species.scientific_name)
 
@@ -980,7 +980,7 @@ class PlantPreviewCharacter(models.Model):
         ordering = ('partner_site', 'order')
         unique_together = ('pile', 'character', 'partner_site')
 
-    def __unicode__(self):
+    def __str__(self):
         return '%s %d: %s' % (self.pile.name, self.order,
                               self.character.friendly_name)
 
@@ -1025,7 +1025,7 @@ class Distribution(models.Model):
         ordering = ('scientific_name', 'state', 'county')
         verbose_name = 'Distribution record'
 
-    def __unicode__(self):
+    def __str__(self):
         county = ' (%s County)' % self.county if len(self.county) > 0 else ''
         status = ''
         if self.present:
@@ -1045,7 +1045,7 @@ class Distribution(models.Model):
         # with the "master" scientific name field.
         parts = self.scientific_name.split(' ')
 
-        if u'X' in parts or u'x' in parts or u'×' in parts:
+        if 'X' in parts or 'x' in parts or '×' in parts:
             # Handle one form of a hybrid name: one that has an X (x) or a
             # multiplication sign, with a space after it.
             species_name = ' '.join(parts[0:3])
@@ -1079,14 +1079,14 @@ class CopyrightHolder(models.Model):
     permission_location = models.CharField(max_length=300)
     notes = models.CharField(max_length=1000)
 
-    def __unicode__(self):
-        unicode_string = u'%s: %s. Copyright: %s.' % (self.coded_name,
+    def __str__(self):
+        unicode_string = '%s: %s. Copyright: %s.' % (self.coded_name,
                                                       self.expanded_name,
                                                       self.copyright)
         if self.contact_info:
-            unicode_string += u' Contact Info: %s' % self.contact_info
+            unicode_string += ' Contact Info: %s' % self.contact_info
         if self.source:
-            unicode_string += u' Source: %s' % self.source
+            unicode_string += ' Source: %s' % self.source
         return unicode_string
 
 
@@ -1121,5 +1121,5 @@ class Video(models.Model):
     # http://gdata.youtube.com/feeds/api/videos/LQ-jv8g1YVI?v=2
     # See docs: http://bit.ly/c1vHUz
 
-    def __unicode__(self):
-        return u'%s: %s' % (self.title, self.youtube_id)
+    def __str__(self):
+        return '%s: %s' % (self.title, self.youtube_id)

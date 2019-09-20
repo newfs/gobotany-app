@@ -85,14 +85,14 @@ def compute_character_entropies(pile, species_list):
     n = float(len(species_list))
 
     result = []
-    for character_id, cv_set in cv_by_character_id.items():
+    for character_id, cv_set in list(cv_by_character_id.items()):
         species_set = character_species[character_id]
 
         # To avoid the expense of fetching characters from the database,
         # we use a random character value to guess whether this is a
         # textual or numeric character.
 
-        cv = iter(cv_set).next()  # random element without removing it
+        cv = next(iter(cv_set))  # random element without removing it
         if cv.value_str is not None:
             ne = _text_entropy(cv_set, species_set, cv_counts)
         elif cv.value_min is not None or cv.value_max is not None:
@@ -148,8 +148,8 @@ def _length_entropy(cv_set, species_set, cv_counts):
         if cv.value_min is None or cv.value_max is None:
             continue
         if cv.value_min > cv.value_max:
-            print '    Skipped invalid range: min %.1f, max %.1f' % \
-                (cv.value_min, cv.value_max)
+            print('    Skipped invalid range: min %.1f, max %.1f' % \
+                (cv.value_min, cv.value_max))
             continue
         endpoints.append((cv.value_min, +1))
         endpoints.append((cv.value_max, -1))
@@ -158,7 +158,7 @@ def _length_entropy(cv_set, species_set, cv_counts):
     tally = 0.0
     i = iter(endpoints)
     try:
-        left, weight = i.next()  # the first endpoint
+        left, weight = next(i)  # the first endpoint
     except StopIteration:
         # empty
         pass
@@ -184,7 +184,7 @@ def compute_score(entropy, coverage, ease, value_type,
     score = (entropy
              + 10. * (1. - coverage) * coverage_weight
              + 0.1 * ease_weight * ease)
-    if value_type == u'LENGTH':
+    if value_type == 'LENGTH':
         score /= length_weight  # so that a high weight makes a better score
     return score
 
@@ -222,7 +222,7 @@ def rank_characters(pile, species_list):
     for character_id, entropy, coverage in celist:
         character = characters[character_id]
         char_value_type = character.value_type
-        if char_value_type not in (u'TEXT', u'LENGTH'):
+        if char_value_type not in ('TEXT', 'LENGTH'):
             continue  # skip non-textual filters
         ease = character.ease_of_observability
         score = compute_score(entropy, coverage, ease, char_value_type,

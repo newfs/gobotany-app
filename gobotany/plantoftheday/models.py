@@ -127,6 +127,6 @@ class PlantOfTheDay(models.Model):
         verbose_name = 'Plant of the Day'
         verbose_name_plural = 'Plants of the Day'
 
-    def __unicode__(self):
+    def __str__(self):
         return '%s (%s) %s' % (self.scientific_name, self.partner_short_name,
                                self.last_seen)

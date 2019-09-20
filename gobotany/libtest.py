@@ -147,4 +147,4 @@ class FakeDriverElement(object):
 
     @property
     def text(self):
-        return u' '.join(self.e.xpath('string()').split())
+        return ' '.join(self.e.xpath('string()').split())

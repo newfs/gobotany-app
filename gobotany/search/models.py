@@ -20,8 +20,8 @@ class PlainPage(models.Model):
         verbose_name = 'plain page'
         verbose_name_plural = 'plain pages'
 
-    def __unicode__(self):
-        return u'%s' % self.title
+    def __str__(self):
+        return '%s' % self.title
 
 
 def _get_search_suggestions(input_list):
@@ -76,8 +76,8 @@ class GroupsListPage(models.Model):
         verbose_name = 'groups list page'
         verbose_name_plural = 'groups list pages'
 
-    def __unicode__(self):
-        return u'%s' % self.title
+    def __str__(self):
+        return '%s' % self.title
 
     def search_suggestions(self):
         """Helper function to supply search suggestions for the importer."""
@@ -97,8 +97,8 @@ class SubgroupsListPage(models.Model):
         verbose_name = 'subgroups list page'
         verbose_name_plural = 'subgroups list pages'
 
-    def __unicode__(self):
-        return u'%s' % self.title
+    def __str__(self):
+        return '%s' % self.title
 
     def search_suggestions(self):
         """Helper function to supply search suggestions for the importer."""
@@ -119,8 +119,8 @@ class SubgroupResultsPage(models.Model):
         verbose_name = 'subgroup results page'
         verbose_name_plural = 'subgroup results pages'
 
-    def __unicode__(self):
-        return u'%s' % self.title
+    def __str__(self):
+        return '%s' % self.title
 
     def search_suggestions(self):
         """Helper function to supply search suggestions for the importer."""

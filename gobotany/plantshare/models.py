@@ -2,7 +2,7 @@ import sys
 import datetime
 import hashlib
 import os
-import urlparse
+import urllib.parse
 
 from decimal import Decimal, getcontext
 
@@ -51,9 +51,9 @@ IMAGE_TYPES = (
     ('QUESTION', 'Question Photo'),
 )
 
-DEFAULT_AVATAR_URL = urlparse.urljoin(settings.STATIC_URL,
+DEFAULT_AVATAR_URL = urllib.parse.urljoin(settings.STATIC_URL,
     'images/icons/generic-avatar.png')
-DEFAULT_AVATAR_THUMB = urlparse.urljoin(settings.STATIC_URL,
+DEFAULT_AVATAR_THUMB = urllib.parse.urljoin(settings.STATIC_URL,
     'images/icons/generic-avatar.png')
 
 
@@ -74,7 +74,7 @@ class Location(models.Model):
     latitude = models.FloatField(null=True, blank=True)
     longitude = models.FloatField(null=True, blank=True)
 
-    def __unicode__(self):
+    def __str__(self):
         return self.user_input
 
     def _parse_user_input(self):
@@ -117,8 +117,8 @@ class UserProfile(models.Model):
         default=LOCATION_DEFAULT_VISIBILITY)
     location = models.ForeignKey(Location, null=True, blank=True)
 
-    def __unicode__(self):
-        return u'%s (%s)' % (self.display_name, self.user.username)
+    def __str__(self):
+        return '%s (%s)' % (self.display_name, self.user.username)
 
     @classmethod
     def default_avatar_image(cls):
@@ -255,7 +255,7 @@ class Sighting(models.Model):
         verbose_name = 'sighting'
         verbose_name_plural = 'sightings'
 
-    def __unicode__(self):
+    def __str__(self):
         sighting_id = ''
         if self.id:
             sighting_id = ' %d' % self.id
@@ -292,7 +292,7 @@ if not settings.IN_PRODUCTION:
     # Local development environment upload
     upload_storage = FileSystemStorage(
             location=os.path.join(settings.MEDIA_ROOT, 'upload_images'),
-            base_url=urlparse.urljoin(settings.MEDIA_URL, 'upload_images/'))
+            base_url=urllib.parse.urljoin(settings.MEDIA_URL, 'upload_images/'))
 elif settings.IS_AWS_AUTHENTICATED:
     # Direct upload to S3
     upload_storage = S3BotoStorage(location='/upload_images',
@@ -358,7 +358,7 @@ class ExifGpsExtractor(object):
             pass
         if exif:
             tagged_exif = {
-                TAGS[k]: v for k, v in exif.items() if k in TAGS
+                TAGS[k]: v for k, v in list(exif.items()) if k in TAGS
             }
             gps_info = tagged_exif.get('GPSInfo', {})
             available_tags = set(gps_info.keys())
@@ -374,16 +374,16 @@ class ExifGpsExtractor(object):
                 if direction.upper() == 'S':
                     latitude = latitude * -1
                 ### debugging
-                print '_extract_gps_data: latitude:', latitude
-                print '_extract_gps_data: about to try to set lat./long.s'
-                print 'self:', self
-                print 'selt.target_object:', self.target_object
+                print(('_extract_gps_data: latitude:', latitude))
+                print('_extract_gps_data: about to try to set lat./long.s')
+                print(('self:', self))
+                print(('selt.target_object:', self.target_object))
                 ###
                 try:
                     self.target_object.latitude = latitude
                 except AttributeError:
-                    print 'cannot set latitude on target_object:', \
-                        type(self.target_object)
+                    print(('cannot set latitude on target_object:', \
+                        type(self.target_object)))
                 finally:
                     # Get longitude.
                     degrees, minutes, seconds = self._get_dms(
@@ -393,12 +393,12 @@ class ExifGpsExtractor(object):
                     direction = gps_info[EXIF_GPSLONGITUDEREF]
                     if direction.upper() == 'W':
                         longitude = longitude * -1
-                    print '_extract_gps_data: longitude:', longitude
+                    print(('_extract_gps_data: longitude:', longitude))
                     try:
                         self.target_object.longitude = longitude
                     except AttributeError:
-                        print 'cannot set longitude on target_object:', \
-                            type(self.target_object)
+                        print(('cannot set longitude on target_object:', \
+                            type(self.target_object)))
 
 
 class PlantshareGpsImage(ImageSpec):
@@ -418,11 +418,11 @@ class PlantshareGpsImage(ImageSpec):
         # cannot save any extracted latitude or longitude coordinates.
         # TODO: debug and resolve, or else extract and save coordinates
         # another way (such as client side).
-        print 'processors(): self.source:', self.source
-        print 'processors(): type(self.source):', type(self.source)
+        print(('processors(): self.source:', self.source))
+        print(('processors(): type(self.source):', type(self.source)))
         instance, field_name = get_field_info(self.source)
-        print 'processors() instance:', instance
-        print 'processors() field_name:', field_name
+        print(('processors() instance:', instance))
+        print(('processors() field_name:', field_name))
 
         return [
             ExifGpsExtractor(instance),
@@ -499,7 +499,7 @@ class Question(models.Model):
         verbose_name = 'question'
         verbose_name_plural = 'questions'
 
-    def __unicode__(self):
+    def __str__(self):
         return '%d: %s' % (self.id, self.question)
 
     def notify_user(self):

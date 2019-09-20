@@ -167,7 +167,7 @@ class ChangeEmailForm(forms.ModelForm):
         if email == self.user.email:
             # Give an error if trying to change to the same email address.
             raise forms.ValidationError(
-                u'This email address is already used by your account.')
+                'This email address is already used by your account.')
         else:
             return email
 
