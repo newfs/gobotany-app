@@ -2,12 +2,13 @@ from distutils.core import setup
 from setuptools import find_packages
 
 requirements = [
-    'django==1.11.23',
+    'django==1.11.24',
 
     'Pillow==3.3.2',
     'bleach==1.4.3',
     'cssselect',
     'django-debug-toolbar==1.5',
+    'django-extensions==2.2.1',
     'django-haystack==2.7.dev0', # versions beyond this result in bugs: #717
     'django-haystack-panel==0.2.1',
     'django-imagekit==4.0.2',
@@ -37,8 +38,8 @@ requirements = [
 
     # For storing images on S3.
 
-    'boto==2.39.0',
-    'django-storages==1.4.1',
+    'boto==2.49.0',
+    'django-storages==1.7.2',
     'requests',
 
     # Heroku and deployment
