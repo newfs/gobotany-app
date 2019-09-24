@@ -343,6 +343,15 @@ class APITests(SampleData):
 
         # Create several images.
 
+        fox_habit_1 = '"" - habit image for Vulpes fox 1: '
+        fox_habit_2 = '"" - habit image for Vulpes fox 2: '
+        fox_habit_3 = '"" - habit image for Vulpes fox 3: '
+        fox_habit_11 = '"" - habit image for Vulpes fox 11: '
+        fox_stem_2 = '"" - stem image for Vulpes fox 2: '
+        fox_stem_4 = '"" - stem image for Vulpes fox 4: '
+        cat_habit_1 = '"" - habit image for Vulpes cat 1: '
+        cat_stem_2 = '"" - stem image for Vulpes cat 4: '
+
         for i in ('fox_habit_1', 'fox_habit_2', 'fox_habit_3', 'fox_habit_11',
                   'fox_stem_2', 'fox_stem_4',
                   'cat_habit_1', 'cat_stem_2',
@@ -353,33 +362,37 @@ class APITests(SampleData):
             ci = CI(rank=rank, image_type=image_type,
                     content_type=taxon, object_id=species.id)
             ci.save()
-            exec('%s = ci' % i)
 
         # Try fetching some images.
 
         self.assertEqual(
-            set(species_images(self.fox)),
+            set([str(image) for image in species_images(self.fox)]),
             set([fox_habit_1, fox_habit_2, fox_habit_3,
                  fox_stem_2, fox_stem_4]))
 
         self.assertEqual(
-            set(species_images(self.fox, image_types=[self.habit])),
+            set([str(image) for image in species_images(self.fox,
+                image_types=[self.habit])]),
             set([fox_habit_1, fox_habit_2, fox_habit_3]))
 
         self.assertEqual(
-            set(species_images(self.fox, max_rank=2)),
+            set([str(image) for image in species_images(self.fox,
+                max_rank=2)]),
             set([fox_habit_1, fox_habit_2, fox_stem_2]))
 
         self.assertEqual(
-            set(species_images(self.fox, image_types='stem', max_rank=3)),
+            set([str(image) for image in species_images(self.fox,
+                image_types='stem', max_rank=3)]),
             set([fox_stem_2]))
 
         self.assertEqual(
-            set(species_images(self.fox, image_types='stem', max_rank=3)),
+            set([str(image) for image in species_images(self.fox,
+                image_types='stem', max_rank=3)]),
             set([fox_stem_2]))
 
         self.assertEqual(
-            set(species_images('Vulpes fox', image_types='stem', max_rank=3)),
+            set([str(image) for image in species_images('Vulpes fox',
+                image_types='stem', max_rank=3)]),
             set([fox_stem_2]))
 
     def test_best_filters(self):
@@ -525,76 +538,76 @@ class StripTaxonomicAuthorityTestCase(TestCase):
     def test_strip_taxonomic_authority_species(self):
         im = importer.Importer()
         name = im._strip_taxonomic_authority('Viburnum cassanoides L.')
-        self.assertEqual('Viburnum cassanoides', name)
+        self.assertEqual(b'Viburnum cassanoides', name)
 
     def test_strip_taxonomic_authority_species_extra_punctuation(self):
         im = importer.Importer()
         name = im._strip_taxonomic_authority( \
             'Actaea alba, of authors not (L.) P. Mill.')
-        self.assertEqual('Actaea alba', name)
+        self.assertEqual(b'Actaea alba', name)
 
     def test_strip_taxonomic_authority_subspecies(self):
         im = importer.Importer()
         name = im._strip_taxonomic_authority( \
             'Lysimachia lanceolata subsp. hybrida (Michx.) J.D. Ray')
-        self.assertEqual('Lysimachia lanceolata subsp. hybrida', name)
+        self.assertEqual(b'Lysimachia lanceolata subsp. hybrida', name)
         # Test alternate connector.
         name = im._strip_taxonomic_authority( \
             'Lysimachia lanceolata ssp. hybrida (Michx.) J.D. Ray')
-        self.assertEqual('Lysimachia lanceolata ssp. hybrida', name)
+        self.assertEqual(b'Lysimachia lanceolata ssp. hybrida', name)
 
     def test_strip_taxonomic_authority_variety(self):
         im = importer.Importer()
         name = im._strip_taxonomic_authority( \
             'Vitis labrusca var. subedentata Fern.')
-        self.assertEqual('Vitis labrusca var. subedentata', name)
+        self.assertEqual(b'Vitis labrusca var. subedentata', name)
 
     def test_strip_taxonomic_authority_subvariety(self):
         im = importer.Importer()
         name = im._strip_taxonomic_authority( \
             'Potentilla anserina subvar. minima (Peterm. ex Th.Wolf) Th.Wolf')
-        self.assertEqual('Potentilla anserina subvar. minima', name)
+        self.assertEqual(b'Potentilla anserina subvar. minima', name)
 
     def test_strip_taxonomic_authority_forma(self):
         im = importer.Importer()
         name = im._strip_taxonomic_authority( \
             ('Acanthocalycium spiniflorum f. klimpelianum (Weidlich & '
              'Werderm.) Donald'))
-        self.assertEqual('Acanthocalycium spiniflorum f. klimpelianum', name)
+        self.assertEqual(b'Acanthocalycium spiniflorum f. klimpelianum', name)
         # Test alternate connector.
         name = im._strip_taxonomic_authority( \
             ('Acanthocalycium spiniflorum forma klimpelianum (Weidlich & '
              'Werderm.) Donald'))
-        self.assertEqual('Acanthocalycium spiniflorum forma klimpelianum',
+        self.assertEqual(b'Acanthocalycium spiniflorum forma klimpelianum',
                          name)
 
     def test_strip_taxonomic_authority_subforma(self):
         im = importer.Importer()
         name = im._strip_taxonomic_authority( \
             'Saxifraga aizoon subf. surculosa Engl. & Irmsch.')
-        self.assertEqual('Saxifraga aizoon subf. surculosa', name)
+        self.assertEqual(b'Saxifraga aizoon subf. surculosa', name)
 
     def test_strip_taxonomic_authority_infraspecific_epithet_later(self):
         im = importer.Importer()
         name = im._strip_taxonomic_authority( \
             'Actaea spicata L. ssp. rubra (Ait.) Hulten')
-        self.assertEqual('Actaea spicata ssp. rubra', name)
+        self.assertEqual(b'Actaea spicata ssp. rubra', name)
         # Test another connector, with the epithet coming even later.
         im = importer.Importer()
         name = im._strip_taxonomic_authority( \
             'Gerardia paupercula (Gray) Britt. var. typica Pennell')
-        self.assertEqual('Gerardia paupercula var. typica', name)
+        self.assertEqual(b'Gerardia paupercula var. typica', name)
 
     def test_strip_taxonomic_authority_skip_consecutive_connector(self):
         im = importer.Importer()
         name = im._strip_taxonomic_authority( \
             'Betula lutea Michx. f. var. fallax Fassett')
-        self.assertEqual('Betula lutea var. fallax', name)
+        self.assertEqual(b'Betula lutea var. fallax', name)
 
     def test_strip_taxonomic_authority_no_epithet_after_connector(self):
         im = importer.Importer()
         name = im._strip_taxonomic_authority('Betula lutea Michx. f.')
-        self.assertEqual('Betula lutea', name)
+        self.assertEqual(b'Betula lutea', name)
 
     def test_strip_taxonomic_authority_unexpected_characters(self):
         im = importer.Importer()
@@ -603,20 +616,19 @@ class StripTaxonomicAuthorityTestCase(TestCase):
         # Windows-1252 like the importer does when reading CSV files (see
         # CSVReader read method override in importer.py).
         name_with_unexpected_characters = \
-            'Cornus amomum var. schuetzeana†(C.A. Mey.) Rickett'.decode(
-            'Windows-1252')
+            'Cornus amomum var. schuetzeana†(C.A. Mey.) Rickett'
         name = im._strip_taxonomic_authority(name_with_unexpected_characters)
-        self.assertEqual('Cornus amomum var. schuetzeana', name)
+        self.assertEqual(b'Cornus amomum var. schuetzeana', name)
 
     def test_strip_taxonomic_authority_missing_space_after_epithet(self):
         im = importer.Importer()
         name_missing_space = 'Lycopodium annotinum var. montanumTuckerman'
         name = im._strip_taxonomic_authority(name_missing_space)
-        self.assertEqual('Lycopodium annotinum var. montanum', name)
+        self.assertEqual(b'Lycopodium annotinum var. montanum', name)
         # Sometimes there are parentheses instead of a capital letter.
         name_missing_space = 'Huperzia selago ssp. appressa(Desv.)'
         name = im._strip_taxonomic_authority(name_missing_space)
-        self.assertEqual('Huperzia selago ssp. appressa', name)
+        self.assertEqual(b'Huperzia selago ssp. appressa', name)
 
 
 def setup_integration(test):

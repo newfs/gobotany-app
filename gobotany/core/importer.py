@@ -61,13 +61,12 @@ def open_csv(data_file, lower=True):
     the file with codecs.open() causes an exception in the csv module.
 
     """
-    w = 'Windows-1252'
     r = csv.reader(data_file.open())
-    names = [ name.decode(w) for name in next(r) ]
+    names = [ name for name in next(r) ]
     if lower:
         names = [ name.lower() for name in names ]
     for row in r:
-        yield dict(list(zip(names, (s.decode(w) for s in row))))
+        yield dict(list(zip(names, (s for s in row))))
 
 class CSVReader(object):
 
@@ -444,7 +443,7 @@ class Importer(object):
                     # as was seen with some bad data.
                     if not scientific_name:
                         continue
-                    if scientific_name.startswith(' '):
+                    if scientific_name.startswith(b' '):
                         continue
                     synonym_table.get(
                         scientific_name=scientific_name,
@@ -2222,7 +2221,7 @@ class PlainFile(object):
 
     def open(self, mode='rU'):
         try:
-            f = open(self.path, mode)
+            f = open(self.path, mode, newline='', encoding='Windows-1252')
         except IOError:
             raise CannotOpen(self.path)
         self.openfiles.append(f)

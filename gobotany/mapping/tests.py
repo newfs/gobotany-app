@@ -119,7 +119,7 @@ class ChloroplethMapTestCase(TestCase):
         self.assertEqual(TITLE, self.chloropleth_map.get_title())
 
     def test_tostring(self):
-        self.assertEqual('<svg xmlns', self.chloropleth_map.tostring()[0:10])
+        self.assertEqual(b'<svg xmlns', self.chloropleth_map.tostring()[0:10])
 
 
 def create_distribution_records():

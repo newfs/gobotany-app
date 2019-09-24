@@ -55,7 +55,7 @@ def _setup_sample_data(load_images=False):
             creator='photographer A', image_type=image_type,
             content_type=content_type, object_id=bar.id)
         filename = 'huperzia-appressa-ha-flastname-1.jpg'
-        f = open('%s/%s' % (_testdata_dir(), filename), 'r')
+        f = open('%s/%s' % (_testdata_dir(), filename), 'rb')
         image_file = File(f)
         im1.image.save(filename, image_file)
         im1.save()
@@ -65,7 +65,7 @@ def _setup_sample_data(load_images=False):
             creator='photographer B', image_type=image_type,
             content_type=content_type, object_id=bar.id)
         filename = 'huperzia-appressa-ha-flastname-1.jpg'
-        f = open('%s/%s' % (_testdata_dir(), filename), 'r')
+        f = open('%s/%s' % (_testdata_dir(), filename), 'rb')
         image_file = File(f)
         im2.image.save(filename, image_file)
         im2.save()
@@ -255,7 +255,7 @@ class TaxaTestCase(TestCase):
 
     def test_get_with_char_param_returns_no_item_if_bad_char_value(self):
         response = self.client.get('/api/taxa/Fooium%20fooia/?c1=badvalue')
-        self.assertEqual('{}', response.content)
+        self.assertEqual(b'{}', response.content)
 
     def test_get_response_contains_habitat(self):
         response = self.client.get('/api/taxa/Fooium%20barula/')
@@ -349,7 +349,7 @@ class TaxonImageTestCase(TestCase):
 
     def test_get_returns_empty_list_when_images_do_not_exist(self):
         response = self.client.get('/api/taxon-image/?species=Fooium%20fooia')
-        self.assertEqual('[]', response.content)
+        self.assertEqual(b'[]', response.content)
 
 
 class PileGroupListTestCase(TestCase):

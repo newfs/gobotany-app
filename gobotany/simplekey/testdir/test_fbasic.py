@@ -1225,8 +1225,7 @@ class PlantPreviewCharactersFunctionalTests(FunctionalTestCase):
             if char_name.text == expected_name:
                 expected_item_found = True
                 for expected_value in expected_values:
-                    decoded_value = expected_value.decode('utf-8')
-                    self.assertIn(decoded_value, actual_values)
+                    self.assertIn(expected_value, actual_values)
                 break
         if not expected_item_found:
             print('%s: Expected item not found: %s %s' % (

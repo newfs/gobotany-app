@@ -74,7 +74,6 @@ class FunctionalCase(TestCase):
                 self.tree = etree.fromstring(content)
             else:
                 parser = etree.HTMLParser()
-                content = content.decode('utf-8')
                 self.tree = etree.fromstring(content, parser)
         elif self.response.status_code == 302:
             redirect_url = self.response['Location']

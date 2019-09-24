@@ -29,7 +29,7 @@ class CSVReader(object):
         with self.data_file.open('rU') as f:
             r = csv.reader(f, dialect=csv.excel, delimiter=',')
             for row in r:
-                yield [c.decode('Windows-1252') for c in row]
+                yield [c for c in row]
 
 
 def rebuild_default_filters(characters_csv):

@@ -18,7 +18,7 @@ class CSVReader(object):
         with open(self.filename, 'rU') as f:
             r = csv.reader(f, dialect=csv.excel, delimiter=',')
             for row in r:
-                yield [c.decode('Windows-1252') for c in row]
+                yield [c for c in row]
 
 
 class DataCoverageChecker(object):
