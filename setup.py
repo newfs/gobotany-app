@@ -15,7 +15,7 @@ requirements = [
     'django-tinymce==2.6.0',
     'inflect',
     'lxml==4.4.1',
-    'psycopg2==2.7.3.2',
+    'psycopg2==2.8.5',
     'python-memcached',
     'pytz',
     'tablib==0.12.1',
