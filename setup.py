@@ -47,7 +47,6 @@ requirements = [
     'gunicorn==20.0.4',
     'newrelic',
     's3cmd',
-    'django-sslify>=0.2',
     ]
 
 dependency_links = [

@@ -184,9 +184,6 @@ INSTALLED_APPS = [
                           # upgrade when running: dev/django makemigrations
     ]
 MIDDLEWARE = (
-    ) + (('sslify.middleware.SSLifyMiddleware',)
-         if IN_PRODUCTION else ()) + (
-
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.middleware.gzip.GZipMiddleware',
 
@@ -361,7 +358,10 @@ AGREED_TO_TERMS_GROUP = 'Agreed to PlantShare Terms'
 ADMINS = (('Go Botany Dev', 'gobotanydev@newenglandwild.org',
     'gobotanydev@nativeplanttrust.org'), )
 
-# https://docs.djangoproject.com/en/1.5/ref/settings/#secure-proxy-ssl-header
+# Force HTTPS (Django 1.8 and later)
+SECURE_SSL_REDIRECT = True
+
+# https://docs.djangoproject.com/en/2.0/ref/settings/#secure-proxy-ssl-header
 # Use SSL
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 
