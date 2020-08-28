@@ -1,6 +1,6 @@
 from django import db, forms
 from django.contrib import admin
-from django.core import urlresolvers
+from django.urls import reverse
 from django.utils.safestring import mark_safe
 
 from gobotany.admin import GoBotanyModelAdmin
@@ -65,7 +65,7 @@ class SightingAdmin(GoBotanyModelAdmin):
     search_fields = ('identification', 'location__city', 'location__state',)
 
     def location_link(self, obj):
-        change_url = urlresolvers.reverse('admin:plantshare_location_change',
+        change_url = reverse('admin:plantshare_location_change',
             args=(obj.location.id,))
         return mark_safe('<a href="%s">%s</a>' % (change_url,
             obj.location.user_input))

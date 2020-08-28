@@ -56,7 +56,7 @@ class Migration(migrations.Migration):
                 ('value_flt', models.FloatField(null=True, blank=True)),
                 ('friendly_text', models.TextField(blank=True)),
                 ('image', models.ImageField(null=True, upload_to=b'character-value-images', blank=True)),
-                ('character', models.ForeignKey(related_name='character_values', to='core.Character')),
+                ('character', models.ForeignKey(related_name='character_values', to='core.Character', on_delete=models.PROTECT)),
             ],
             options={
             },
@@ -99,7 +99,7 @@ class Migration(migrations.Migration):
                 ('rank', models.PositiveSmallIntegerField(choices=[(1, 1), (2, 2), (3, 3), (4, 4), (5, 5), (6, 6), (7, 7), (8, 8), (9, 9), (10, 10)])),
                 ('creator', models.CharField(max_length=100, verbose_name='photographer')),
                 ('object_id', models.PositiveIntegerField()),
-                ('content_type', models.ForeignKey(to='contenttypes.ContentType')),
+                ('content_type', models.ForeignKey(to='contenttypes.ContentType', on_delete=models.PROTECT)),
             ],
             options={
             },
@@ -132,7 +132,7 @@ class Migration(migrations.Migration):
                 ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
                 ('key', models.CharField(max_length=36)),
                 ('order', models.IntegerField()),
-                ('character', models.ForeignKey(to='core.Character', null=True)),
+                ('character', models.ForeignKey(to='core.Character', null=True, on_delete=models.PROTECT)),
             ],
             options={
                 'ordering': ['order'],
@@ -194,7 +194,7 @@ class Migration(migrations.Migration):
                 ('name', models.CharField(unique=True, max_length=100)),
                 ('common_name', models.CharField(max_length=100)),
                 ('description', models.TextField(verbose_name='description', blank=True)),
-                ('family', models.ForeignKey(related_name='genera', to='core.Family')),
+                ('family', models.ForeignKey(related_name='genera', to='core.Family', on_delete=models.PROTECT)),
             ],
             options={
                 'ordering': ['name'],
@@ -297,7 +297,7 @@ class Migration(migrations.Migration):
                 ('simple_key', models.BooleanField(default=True)),
                 ('species_page_heading', models.CharField(max_length=128, null=True, blank=True)),
                 ('species_page_blurb', models.TextField(null=True, blank=True)),
-                ('partner', models.ForeignKey(to='core.PartnerSite')),
+                ('partner', models.ForeignKey(to='core.PartnerSite', on_delete=models.PROTECT)),
             ],
             options={
                 'verbose_name': 'Partner species',
@@ -345,8 +345,8 @@ class Migration(migrations.Migration):
             fields=[
                 ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
                 ('order', models.IntegerField(null=True)),
-                ('content_image', models.ForeignKey(to='core.ContentImage')),
-                ('pile_group', models.ForeignKey(to='core.PileGroup')),
+                ('content_image', models.ForeignKey(to='core.ContentImage', on_delete=models.PROTECT)),
+                ('pile_group', models.ForeignKey(to='core.PileGroup', on_delete=models.PROTECT)),
             ],
             options={
                 'ordering': ['order'],
@@ -358,8 +358,8 @@ class Migration(migrations.Migration):
             fields=[
                 ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
                 ('order', models.IntegerField(null=True)),
-                ('content_image', models.ForeignKey(to='core.ContentImage')),
-                ('pile', models.ForeignKey(to='core.Pile')),
+                ('content_image', models.ForeignKey(to='core.ContentImage', on_delete=models.PROTECT)),
+                ('pile', models.ForeignKey(to='core.Pile', on_delete=models.PROTECT)),
             ],
             options={
                 'ordering': ['order'],
@@ -371,9 +371,9 @@ class Migration(migrations.Migration):
             fields=[
                 ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
                 ('order', models.IntegerField()),
-                ('character', models.ForeignKey(to='core.Character')),
-                ('partner_site', models.ForeignKey(blank=True, to='core.PartnerSite', null=True)),
-                ('pile', models.ForeignKey(to='core.Pile')),
+                ('character', models.ForeignKey(to='core.Character', on_delete=models.PROTECT)),
+                ('partner_site', models.ForeignKey(blank=True, to='core.PartnerSite', null=True, on_delete=models.PROTECT)),
+                ('pile', models.ForeignKey(to='core.Pile', on_delete=models.PROTECT)),
             ],
             options={
                 'ordering': ('partner_site', 'order'),
@@ -433,9 +433,9 @@ class Migration(migrations.Migration):
             name='TaxonCharacterValue',
             fields=[
                 ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
-                ('character_value', models.ForeignKey(related_name='taxon_character_values', to='core.CharacterValue')),
-                ('literary_source', models.ForeignKey(related_name='taxon_character_values', to='core.SourceCitation', null=True)),
-                ('taxon', models.ForeignKey(to='core.Taxon')),
+                ('character_value', models.ForeignKey(related_name='taxon_character_values', to='core.CharacterValue', on_delete=models.PROTECT)),
+                ('literary_source', models.ForeignKey(related_name='taxon_character_values', to='core.SourceCitation', null=True, on_delete=models.PROTECT)),
+                ('taxon', models.ForeignKey(to='core.Taxon', on_delete=models.PROTECT)),
             ],
             options={
                 'verbose_name': 'taxon character value',
@@ -481,13 +481,13 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='taxon',
             name='family',
-            field=models.ForeignKey(related_name='taxa', to='core.Family'),
+            field=models.ForeignKey(related_name='taxa', to='core.Family', on_delete=models.PROTECT),
             preserve_default=True,
         ),
         migrations.AddField(
             model_name='taxon',
             name='genus',
-            field=models.ForeignKey(related_name='taxa', to='core.Genus'),
+            field=models.ForeignKey(related_name='taxa', to='core.Genus', on_delete=models.PROTECT),
             preserve_default=True,
         ),
         migrations.AddField(
@@ -499,7 +499,7 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='synonym',
             name='taxon',
-            field=models.ForeignKey(related_name='synonyms', to='core.Taxon'),
+            field=models.ForeignKey(related_name='synonyms', to='core.Taxon', on_delete=models.PROTECT),
             preserve_default=True,
         ),
         migrations.AlterUniqueTogether(
@@ -515,13 +515,13 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='pilegroup',
             name='video',
-            field=models.ForeignKey(to='core.Video', null=True),
+            field=models.ForeignKey(to='core.Video', null=True, on_delete=models.PROTECT),
             preserve_default=True,
         ),
         migrations.AddField(
             model_name='pile',
             name='pilegroup',
-            field=models.ForeignKey(related_name='piles', to='core.PileGroup', null=True),
+            field=models.ForeignKey(related_name='piles', to='core.PileGroup', null=True, on_delete=models.PROTECT),
             preserve_default=True,
         ),
         migrations.AddField(
@@ -545,13 +545,13 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='pile',
             name='video',
-            field=models.ForeignKey(to='core.Video', null=True),
+            field=models.ForeignKey(to='core.Video', null=True, on_delete=models.PROTECT),
             preserve_default=True,
         ),
         migrations.AddField(
             model_name='partnerspecies',
             name='species',
-            field=models.ForeignKey(to='core.Taxon'),
+            field=models.ForeignKey(to='core.Taxon', on_delete=models.PROTECT),
             preserve_default=True,
         ),
         migrations.AlterUniqueTogether(
@@ -573,19 +573,19 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='lookalike',
             name='taxon',
-            field=models.ForeignKey(related_name='lookalikes', to='core.Taxon'),
+            field=models.ForeignKey(related_name='lookalikes', to='core.Taxon', on_delete=models.PROTECT),
             preserve_default=True,
         ),
         migrations.AddField(
             model_name='invasivestatus',
             name='taxon',
-            field=models.ForeignKey(related_name='invasive_statuses', to='core.Taxon'),
+            field=models.ForeignKey(related_name='invasive_statuses', to='core.Taxon', on_delete=models.PROTECT),
             preserve_default=True,
         ),
         migrations.AddField(
             model_name='homepageimage',
             name='partner_site',
-            field=models.ForeignKey(related_name='home_page_images', to='core.PartnerSite'),
+            field=models.ForeignKey(related_name='home_page_images', to='core.PartnerSite', on_delete=models.PROTECT),
             preserve_default=True,
         ),
         migrations.AlterUniqueTogether(
@@ -595,7 +595,7 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='defaultfilter',
             name='pile',
-            field=models.ForeignKey(to='core.Pile'),
+            field=models.ForeignKey(to='core.Pile', on_delete=models.PROTECT),
             preserve_default=True,
         ),
         migrations.AlterUniqueTogether(
@@ -605,31 +605,31 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='contentimage',
             name='image_type',
-            field=models.ForeignKey(verbose_name=b'image type', to='core.ImageType'),
+            field=models.ForeignKey(verbose_name=b'image type', to='core.ImageType', on_delete=models.PROTECT),
             preserve_default=True,
         ),
         migrations.AddField(
             model_name='conservationstatus',
             name='taxon',
-            field=models.ForeignKey(related_name='conservation_statuses', to='core.Taxon'),
+            field=models.ForeignKey(related_name='conservation_statuses', to='core.Taxon', on_delete=models.PROTECT),
             preserve_default=True,
         ),
         migrations.AddField(
             model_name='commonname',
             name='taxon',
-            field=models.ForeignKey(related_name='common_names', to='core.Taxon'),
+            field=models.ForeignKey(related_name='common_names', to='core.Taxon', on_delete=models.PROTECT),
             preserve_default=True,
         ),
         migrations.AddField(
             model_name='character',
             name='character_group',
-            field=models.ForeignKey(to='core.CharacterGroup'),
+            field=models.ForeignKey(to='core.CharacterGroup', on_delete=models.PROTECT),
             preserve_default=True,
         ),
         migrations.AddField(
             model_name='character',
             name='pile',
-            field=models.ForeignKey(related_name='characters', blank=True, to='core.Pile', null=True),
+            field=models.ForeignKey(related_name='characters', blank=True, to='core.Pile', null=True, on_delete=models.PROTECT),
             preserve_default=True,
         ),
     ]

@@ -24,7 +24,7 @@ if settings.USE_DEBUG_TOOLBAR and settings.DEBUG:
 
 urlpatterns += [
     url(r'^admin/core/distribution/addset/', DistributionAdmin.add_set_view),
-    url(r'^admin/', include(admin.site.urls)),
+    url(r'^admin/', admin.site.urls),
     url(r'^api/', include('gobotany.api.urls')),
     url(r'^dkey/', include('gobotany.dkey.urls')),
     url(r'^edit/', include('gobotany.editor.urls')),

@@ -1,5 +1,5 @@
 from django import forms
-from django.core.urlresolvers import reverse_lazy
+from django.urls import reverse_lazy
 
 from account.models import EmailAddress
 
@@ -38,10 +38,9 @@ class LocationField(forms.RegexField):
         'invalid': 'Enter %s.' % VALIDATION_MESSAGE
     }
 
-    def __init__(self, required=True, max_length=120, min_length=None, *args,
-                 **kwargs):
-        super(LocationField, self).__init__(required, max_length, min_length,
-                                            *args, **kwargs)
+    def __init__(self, required=True, *args, **kwargs):
+        super(LocationField, self).__init__(required, max_length=120,
+            min_length=None, *args, **kwargs)
         self._set_regex(LocationField.VALIDATION_PATTERN)
         if required:
             self.widget.attrs['required'] = 'required'

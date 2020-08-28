@@ -133,8 +133,10 @@ class Character(models.Model):
     short_name = models.CharField(max_length=100, unique=True)
     name = models.CharField(max_length=100)
     friendly_name = models.CharField(max_length=100)
-    character_group = models.ForeignKey(CharacterGroup)
-    pile = models.ForeignKey('Pile', null=True, related_name='characters', blank=True)
+    character_group = models.ForeignKey(CharacterGroup,
+        on_delete=models.PROTECT)
+    pile = models.ForeignKey('Pile', null=True, related_name='characters',
+        blank=True, on_delete=models.PROTECT)
     ease_of_observability = models.PositiveSmallIntegerField(null=True,
         blank=True, choices=list(zip(list(range(1, 6)), list(range(1, 6)))))
 
@@ -213,7 +215,8 @@ class CharacterValue(models.Model):
     value_max = models.FloatField(null=True, blank=True)
     value_flt = models.FloatField(null=True, blank=True)
 
-    character = models.ForeignKey(Character, related_name='character_values')
+    character = models.ForeignKey(Character, related_name='character_values',
+        on_delete=models.PROTECT)
     friendly_text = models.TextField(blank=True)
     image = models.ImageField(upload_to='character-value-images',
                               blank=True,
@@ -281,7 +284,7 @@ class PileInfo(models.Model):
     friendly_name = models.CharField(max_length=100, blank=True)
     friendly_title = models.CharField(max_length=100, blank=True)
     images = GenericRelation('ContentImage')
-    video = models.ForeignKey('Video', null=True)
+    video = models.ForeignKey('Video', null=True, on_delete=models.PROTECT)
     key_characteristics = tinymce_models.HTMLField(blank=True)
     notable_exceptions = tinymce_models.HTMLField(blank=True)
 
@@ -315,7 +318,8 @@ class Pile(PileInfo):
     """An informal grouping of species distinguished by common characters."""
     description = models.TextField(blank=True)
     species = models.ManyToManyField('Taxon', related_name='+')
-    pilegroup = models.ForeignKey('PileGroup', related_name='piles', null=True)
+    pilegroup = models.ForeignKey('PileGroup', related_name='piles',
+        null=True, on_delete=models.PROTECT)
     plant_preview_characters = models.ManyToManyField(Character,
         through='PlantPreviewCharacter', related_name='preview_characters')
     sample_species_images = models.ManyToManyField(
@@ -326,8 +330,9 @@ class PileImage(models.Model):
     """Intermediary model used to govern the many-to-many relationship
     between a Pile and its sample species images.
     """
-    content_image = models.ForeignKey('ContentImage')
-    pile = models.ForeignKey('Pile')
+    content_image = models.ForeignKey('ContentImage',
+        on_delete=models.PROTECT)
+    pile = models.ForeignKey('Pile', on_delete=models.PROTECT)
     order = models.IntegerField(null=True)
 
     class Meta:
@@ -353,8 +358,9 @@ class PileGroupImage(models.Model):
     """Intermediary model used to govern the many-to-many relationship
     between a PileGroup and its sample species images.
     """
-    content_image = models.ForeignKey('ContentImage')
-    pile_group = models.ForeignKey('PileGroup')
+    content_image = models.ForeignKey('ContentImage',
+        on_delete=models.PROTECT)
+    pile_group = models.ForeignKey('PileGroup', on_delete=models.PROTECT)
     order = models.IntegerField(null=True)
 
     class Meta:
@@ -474,9 +480,9 @@ class ContentImage(models.Model):
         choices=list(zip(list(range(1, 11)), list(range(1, 11)))))
     creator = models.CharField(max_length=100,
                                verbose_name='photographer')
-    image_type = models.ForeignKey(ImageType,
-                                   verbose_name='image type')
-    content_type = models.ForeignKey(ContentType)
+    image_type = models.ForeignKey(ImageType, verbose_name='image type',
+        on_delete=models.PROTECT)
+    content_type = models.ForeignKey(ContentType, on_delete=models.PROTECT)
     object_id = models.PositiveIntegerField()
     content_object = GenericForeignKey('content_type', 'object_id')
 
@@ -535,7 +541,8 @@ def _partner_subdirectory_path(instance, filename):
 class HomePageImage(models.Model):
     """An image that appears on the home page, cycled among others."""
     root_path = 'home-page-images'
-    partner_site = models.ForeignKey('PartnerSite', related_name='home_page_images')
+    partner_site = models.ForeignKey('PartnerSite',
+        related_name='home_page_images', on_delete=models.PROTECT)
     image = models.ImageField(upload_to=_partner_subdirectory_path)
 
     class Meta:
@@ -578,7 +585,8 @@ class Genus(models.Model):
     name = models.CharField(max_length=100, unique=True)
     common_name = models.CharField(max_length=100)
     description = models.TextField(verbose_name='description', blank=True)
-    family = models.ForeignKey(Family, related_name='genera')
+    family = models.ForeignKey(Family, related_name='genera',
+        on_delete=models.PROTECT)
     # We use 'example image' and 'example drawing' for the image types here
     images = GenericRelation(ContentImage)
 
@@ -604,7 +612,8 @@ class Synonym(models.Model):
     """Other (generally previous) scientific names for species."""
     scientific_name = models.CharField(max_length=100)
     full_name = models.CharField(max_length=150)
-    taxon = models.ForeignKey('Taxon', related_name='synonyms')
+    taxon = models.ForeignKey('Taxon', related_name='synonyms',
+        on_delete=models.PROTECT)
 
     class Meta:
         ordering = ['scientific_name']
@@ -616,7 +625,8 @@ class Synonym(models.Model):
 class CommonName(models.Model):
     """A common name for a species, of which there can be more than one."""
     common_name = models.CharField(max_length=100)
-    taxon = models.ForeignKey('Taxon', related_name='common_names')
+    taxon = models.ForeignKey('Taxon', related_name='common_names',
+        on_delete=models.PROTECT)
 
     class Meta:
         ordering = ['common_name']
@@ -629,7 +639,8 @@ class Lookalike(models.Model):
     """Species that can be mistaken for others."""
     lookalike_scientific_name = models.CharField(max_length=100)
     lookalike_characteristic = models.CharField(max_length=1000, blank=True)
-    taxon = models.ForeignKey('Taxon', related_name='lookalikes')
+    taxon = models.ForeignKey('Taxon', related_name='lookalikes',
+        on_delete=models.PROTECT)
 
     def __str__(self):
         return '%s (%s)' % (self.lookalike_scientific_name,
@@ -662,8 +673,10 @@ class Taxon(models.Model):
     scientific_name = models.CharField(max_length=100, unique=True)
     piles = models.ManyToManyField(
         Pile, through=Pile.species.through, related_name='+', blank=True)
-    family = models.ForeignKey(Family, related_name='taxa')
-    genus = models.ForeignKey(Genus, related_name='taxa')
+    family = models.ForeignKey(Family, related_name='taxa',
+        on_delete=models.PROTECT)
+    genus = models.ForeignKey(Genus, related_name='taxa',
+        on_delete=models.PROTECT)
     character_values = models.ManyToManyField(
         CharacterValue,
         through='TaxonCharacterValue')
@@ -804,12 +817,12 @@ class TaxonCharacterValue(models.Model):
     """Binary relation specifying the character values of a particular Taxon.
 
     """
-    taxon = models.ForeignKey(Taxon)
+    taxon = models.ForeignKey(Taxon, on_delete=models.PROTECT)
     character_value = models.ForeignKey(CharacterValue,
-                                        related_name='taxon_character_values')
+        related_name='taxon_character_values', on_delete=models.PROTECT)
     literary_source = models.ForeignKey(SourceCitation,
-                                        related_name='taxon_character_values',
-                                        null=True)
+        related_name='taxon_character_values', null=True,
+        on_delete=models.PROTECT)
 
     class Meta:
         unique_together = ('taxon', 'character_value')
@@ -847,7 +860,8 @@ class ConservationStatus(models.Model):
                          for abbrev, name in list(settings.STATE_NAMES.items())],
                          key=lambda x: x[1])
 
-    taxon = models.ForeignKey(Taxon, related_name='conservation_statuses')
+    taxon = models.ForeignKey(Taxon, related_name='conservation_statuses',
+        on_delete=models.PROTECT)
     variety_subspecies_hybrid = models.CharField(max_length=80, blank=True)
     region = models.CharField(choices=STATE_NAMES, max_length=80)
     s_rank = models.CharField(max_length=10, blank=True)
@@ -877,7 +891,8 @@ class InvasiveStatus(models.Model):
 
     STATE_NAMES = sorted(settings.STATE_NAMES.items())
 
-    taxon = models.ForeignKey(Taxon, related_name='invasive_statuses')
+    taxon = models.ForeignKey(Taxon, related_name='invasive_statuses',
+        on_delete=models.PROTECT)
     region = models.CharField(choices=STATE_NAMES, max_length=80)
     invasive_in_region = models.NullBooleanField(default=None)
     prohibited_from_sale = models.NullBooleanField(default=None)
@@ -910,9 +925,10 @@ class DefaultFilter(models.Model):
 
     """
     key = models.CharField(max_length=36)
-    pile = models.ForeignKey(Pile)
+    pile = models.ForeignKey(Pile, on_delete=models.PROTECT)
     order = models.IntegerField()
-    character = models.ForeignKey(Character, null=True)
+    character = models.ForeignKey(Character, null=True,
+        on_delete=models.PROTECT)
 
     class Meta:
         ordering = ['order']
@@ -950,8 +966,8 @@ class PartnerSite(models.Model):
 
 class PartnerSpecies(models.Model):
     """A binary relation putting taxa in `TaxonGroup` collections."""
-    species = models.ForeignKey(Taxon)
-    partner = models.ForeignKey(PartnerSite)
+    species = models.ForeignKey(Taxon, on_delete=models.PROTECT)
+    partner = models.ForeignKey(PartnerSite, on_delete=models.PROTECT)
     # Does this species appear in the simple key for the TaxaGroup
     simple_key = models.BooleanField(default=True)
     species_page_heading = models.CharField(max_length=128, null=True,
@@ -971,9 +987,10 @@ class PartnerSpecies(models.Model):
 class PlantPreviewCharacter(models.Model):
     """A designation that a character appear on the preview popup for a plant.
     """
-    pile = models.ForeignKey(Pile)
-    character = models.ForeignKey(Character)
-    partner_site = models.ForeignKey(PartnerSite, blank=True, null=True)
+    pile = models.ForeignKey(Pile, on_delete=models.PROTECT)
+    character = models.ForeignKey(Character, on_delete=models.PROTECT)
+    partner_site = models.ForeignKey(PartnerSite, blank=True, null=True,
+        on_delete=models.PROTECT)
     order = models.IntegerField()
 
     class Meta:

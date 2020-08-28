@@ -10,13 +10,13 @@ from django.contrib.auth.forms import PasswordChangeForm
 from django.contrib.auth.models import Group, User
 from django.contrib.auth.views import redirect_to_login
 from django.core.exceptions import ObjectDoesNotExist
-from django.core.urlresolvers import reverse, reverse_lazy
 from django.db.models import Q
 from django.forms import widgets
 from django.forms.models import modelformset_factory
 from django.http import Http404, HttpResponse, HttpResponseRedirect
 from django.shortcuts import get_object_or_404, redirect, render
 from django.template import RequestContext
+from django.urls import reverse, reverse_lazy
 from django.utils.timezone import utc
 
 from account.models import EmailConfirmation
@@ -47,7 +47,7 @@ SIGHTING_DAY_DATE_FORMAT = '%A, ' + SIGHTING_DATE_FORMAT
 # the PlantShare section of the site with member priveleges.
 
 def logged_in_user_agreed_to_terms(user):
-    if user and user.is_authenticated():
+    if user and user.is_authenticated:
         agreed_to_terms = user.groups.filter(
             name=settings.AGREED_TO_TERMS_GROUP).exists()
         return agreed_to_terms
@@ -180,7 +180,7 @@ def plantshare_view(request):
 
     avatar_info = UserProfile.default_avatar_image()
     profile = None
-    if request.user.is_authenticated():
+    if request.user.is_authenticated:
         try:
             profile = UserProfile.objects.get(user=request.user)
             avatar_info = profile.private_avatar_image()
@@ -219,13 +219,13 @@ def _may_show_sighting(sighting, user):
 
     if sighting.visibility == 'PUBLIC':
         may_show_sighting = True
-    if (sighting.visibility == 'USERS') and user.is_authenticated():
+    if (sighting.visibility == 'USERS') and user.is_authenticated:
         may_show_sighting = True
     #elif:
         # TODO: later when available, handle GROUPS visibility
     elif sighting.visibility == 'PRIVATE':
         if (((user.id == sighting.user.id) or user.is_staff) and
-                user.is_authenticated()):
+                user.is_authenticated):
             may_show_sighting = True
 
     return may_show_sighting
@@ -275,7 +275,7 @@ def sightings_view(request):
 
     if request.method == 'POST':
         # Handle posting a new sighting to the sightings collection.
-        if request.user.is_authenticated():
+        if request.user.is_authenticated:
             form = SightingForm(request.POST)
             if form.is_valid():
                 location = Location(user_input=form.cleaned_data['location'],
@@ -400,7 +400,7 @@ def sightings_by_year_view(request, year):
 @terms_agreed_on_login
 def sightings_locator_view(request):
     profile = None
-    if request.user.is_authenticated():
+    if request.user.is_authenticated:
         try:
             profile = UserProfile.objects.get(user=request.user)
         except UserProfile.DoesNotExist:
@@ -429,7 +429,7 @@ def sighting_view(request, sighting_id):
         if s.visibility == 'PUBLIC':
             is_visible = True
         elif s.visibility == 'USERS':
-            if request.user.is_authenticated():
+            if request.user.is_authenticated:
                 is_visible = True
             else:
                 return redirect_to_login(request.path)
@@ -437,7 +437,7 @@ def sighting_view(request, sighting_id):
             # TODO: future support for a GROUPS visibility level
         elif s.visibility == 'PRIVATE':
             if (request.user.id == s.user.id) or request.user.is_staff:
-                if request.user.is_authenticated():
+                if request.user.is_authenticated:
                     is_visible = True
                 else:
                     return redirect_to_login(request.path)
@@ -469,7 +469,7 @@ def sighting_view(request, sighting_id):
                     'map_zoom': SIGHTING_MAP_ZOOM,
                })
     elif request.method == 'POST':   # Update an edited sighting.
-        if not request.user.is_authenticated():
+        if not request.user.is_authenticated:
             return HttpResponse(status=401)
         # Ensure this sighting belongs to the user requesting to update it.
         if s.user.id == request.user.id:
@@ -513,7 +513,7 @@ def sighting_view(request, sighting_id):
                 return _sighting_form_page(request, form, edit=True,
                                            sighting=s)
     elif request.method == 'DELETE':
-        if not request.user.is_authenticated():
+        if not request.user.is_authenticated:
             return HttpResponse(status=401)   # 401 Unauthorized
         # Ensure this sighting belongs to the user requesting its deletion.
         if s.user.id == request.user.id:
@@ -653,7 +653,7 @@ def questions_view(request):
 
     if request.method == 'POST':
         # Handle posting a new question to the questions collection.
-        if request.user.is_authenticated():
+        if request.user.is_authenticated:
             question_form = QuestionForm(request.POST)
             if question_form.is_valid():
                 question_text = question_form.cleaned_data['question']
@@ -885,7 +885,7 @@ def checklist_view(request, checklist_id):
                 'checklist': checklist
             })
     elif request.method == 'DELETE':
-        if not request.user.is_authenticated():
+        if not request.user.is_authenticated:
             return HttpResponse(status=401)   # 401 Unauthorized
         # Ensure this checklist belongs to the user requesting its deletion.
         checklist_owner_profile = checklist.owner.get_owner()
@@ -1135,7 +1135,7 @@ def screen_images(request):
 # AJAX API
 def ajax_profile_edit(request):
     """ Ajax form submission of profile form """
-    if not request.user.is_authenticated():
+    if not request.user.is_authenticated:
         return HttpResponse(json.dumps({
             'error': True,
             'info': 'User is not authenticated.'
@@ -1164,7 +1164,7 @@ def ajax_profile_edit(request):
 
 def ajax_image_upload(request):
     """ Ajax form submission of image upload form """
-    if not request.user.is_authenticated():
+    if not request.user.is_authenticated:
         return HttpResponse(json.dumps({
             'error': True,
             'info': 'Authentication error'
@@ -1228,7 +1228,7 @@ def ajax_image_upload(request):
 
 def ajax_image_reject(request, image_id):
     """ Reject an image that was previously uploaded. """
-    if not request.user.is_authenticated():
+    if not request.user.is_authenticated:
         return HttpResponse(json.dumps({
             'error': True,
             'info': 'Authentication error'

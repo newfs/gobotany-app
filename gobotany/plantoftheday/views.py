@@ -1,7 +1,7 @@
 from datetime import date, datetime, timedelta
 
 from django.core.exceptions import ObjectDoesNotExist
-from django.core.urlresolvers import reverse
+from django.urls import reverse
 
 from gobotany.core import botany
 from gobotany.core.models import Taxon

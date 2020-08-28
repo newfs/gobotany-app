@@ -2,14 +2,14 @@ from distutils.core import setup
 from setuptools import find_packages
 
 requirements = [
-    'django==1.11.29',
+    'django==2.0.13',
 
     'Pillow==7.2.0',
     'bleach==3.1.5',
     'cssselect',
     'django-debug-toolbar==1.5',
     'django-extensions==2.2.1',
-    'django-haystack==2.7.dev0', # versions beyond this result in bugs: #717
+    'django-haystack==2.8.0', # note: versions > 2.7.0 may result in bugs: #717
     'django-haystack-panel==0.2.1',
     'django-imagekit==4.0.2',
     'django-tinymce==2.6.0',
@@ -33,7 +33,7 @@ requirements = [
 
     # Login and registration
 
-    'django-registration==2.1.1',
+    'django-registration==2.5',
     'django-user-accounts==2.1.0', # for changing email addresses
 
     # For storing images on S3.

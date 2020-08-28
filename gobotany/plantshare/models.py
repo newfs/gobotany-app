@@ -97,7 +97,7 @@ class Location(models.Model):
 
 class UserProfile(models.Model):
 
-    user = models.OneToOneField(User)
+    user = models.OneToOneField(User, on_delete=models.PROTECT)
 
     zipcode = models.CharField(max_length=5, blank=True)
     security_question = models.CharField(max_length=100, blank=True)
@@ -107,7 +107,8 @@ class UserProfile(models.Model):
     details_visibility = models.CharField(blank=False, max_length=7,
         choices=PROFILE_VISIBILITY_CHOICES,
         default=DETAILS_DEFAULT_VISIBILITY)
-    avatar = models.ForeignKey('ScreenedImage', null=True, blank=True)
+    avatar = models.ForeignKey('ScreenedImage', null=True, blank=True,
+        on_delete=models.PROTECT)
     display_name = models.CharField(max_length=60, blank=True)
     saying = models.CharField(max_length=100, blank=True)
 
@@ -115,7 +116,8 @@ class UserProfile(models.Model):
     location_visibility = models.CharField(blank=False, max_length=7,
         choices=PROFILE_VISIBILITY_CHOICES,
         default=LOCATION_DEFAULT_VISIBILITY)
-    location = models.ForeignKey(Location, null=True, blank=True)
+    location = models.ForeignKey(Location, null=True, blank=True,
+        on_delete=models.PROTECT)
 
     def __str__(self):
         return '%s (%s)' % (self.display_name, self.user.username)
@@ -229,13 +231,14 @@ class SightingManager(models.Manager):
 
 
 class Sighting(models.Model):
-    user = models.ForeignKey(User)
+    user = models.ForeignKey(User, on_delete=models.PROTECT)
 
     created = models.DateTimeField(blank=False)
     identification = models.CharField(max_length=120, blank=True)
     notes = models.TextField(blank=True)
 
-    location = models.ForeignKey(Location, null=True)
+    location = models.ForeignKey(Location, null=True,
+        on_delete=models.PROTECT)
     location_notes = models.TextField(blank=True)
 
     photos = models.ManyToManyField('ScreenedImage', blank=True)
@@ -308,10 +311,10 @@ def rename_image_by_type(instance, filename):
 
     # Create and update a hash object for getting a unique name.
     md5 = hashlib.md5()
-    md5.update(filename)
-    md5.update(user_name)
-    md5.update(image_type)
-    md5.update(str(datetime.datetime.now()))
+    md5.update(filename.encode('utf-8'))
+    md5.update(user_name.encode('utf-8'))
+    md5.update(image_type.encode('utf-8'))
+    md5.update(str(datetime.datetime.now()).encode('utf-8'))
 
     new_name = '{0}_{1}.jpg'.format(user_name, md5.hexdigest())
     return os.path.join(image_type, new_name)
@@ -450,7 +453,7 @@ class ScreenedImage(models.Model):
 
     uploaded = models.DateTimeField(blank=False, auto_now_add=True)
     uploaded_by = models.ForeignKey(User, null=False,
-                                    related_name='images_uploaded')
+        related_name='images_uploaded', on_delete=models.PROTECT)
 
     image_type = models.CharField(blank=True, max_length=10,
                                   choices=IMAGE_TYPES)
@@ -462,7 +465,7 @@ class ScreenedImage(models.Model):
 
     screened = models.DateTimeField(null=True)
     screened_by = models.ForeignKey(User, null=True,
-                                    related_name='images_approved')
+        related_name='images_approved', on_delete=models.PROTECT)
     is_approved = models.BooleanField(default=False)
 
     # Flag true if the image has been orphaned (old avatars, user-deleted
@@ -487,7 +490,7 @@ class Question(models.Model):
     answer = models.CharField(max_length=3000, blank=True)
     asked = models.DateTimeField(blank=False, auto_now_add=True)
     asked_by = models.ForeignKey(User, blank=False,
-                                 related_name='questions_asked')
+        related_name='questions_asked', on_delete=models.PROTECT)
 
     approved = models.BooleanField(default=False)
 
@@ -555,8 +558,8 @@ class Pod(models.Model):
 
 
 class PodMembership(models.Model):
-    member = models.ForeignKey(UserProfile)
-    pod = models.ForeignKey(Pod)
+    member = models.ForeignKey(UserProfile, on_delete=models.PROTECT)
+    pod = models.ForeignKey(Pod, on_delete=models.PROTECT)
     # Is this the pod owner?
     is_owner = models.BooleanField(default=False)
     # Is this this user's personal pod (for sharing purposes)
@@ -623,12 +626,14 @@ class ChecklistEntry(models.Model):
     """An individual entry on a checklist. An entry on a checklist represents
     a taxon to be searched for, and which can later be "checked off" when
     found."""
-    checklist = models.ForeignKey(Checklist, related_name='entries')
+    checklist = models.ForeignKey(Checklist, related_name='entries',
+        on_delete=models.PROTECT)
 
     plant_name = models.CharField(max_length=100, blank=False)
 
     is_checked = models.BooleanField(default=False)
-    plant_photo = models.ForeignKey(ScreenedImage, null=True, blank=True)
+    plant_photo = models.ForeignKey(ScreenedImage, null=True, blank=True,
+        on_delete=models.PROTECT)
     location = models.CharField(max_length=100, blank=True)
 
     date_found = models.DateTimeField(null=True, blank=True)
@@ -638,7 +643,7 @@ class ChecklistEntry(models.Model):
 
 
 class ChecklistCollaborator(models.Model):
-    collaborator = models.ForeignKey(Pod)
-    checklist = models.ForeignKey(Checklist)
+    collaborator = models.ForeignKey(Pod, on_delete=models.PROTECT)
+    checklist = models.ForeignKey(Checklist, on_delete=models.PROTECT)
 
     is_owner = models.BooleanField(default=False)

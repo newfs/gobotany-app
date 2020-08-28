@@ -183,7 +183,7 @@ INSTALLED_APPS = [
                           # Update: also keep commented out for the Django 1.7
                           # upgrade when running: dev/django makemigrations
     ]
-MIDDLEWARE_CLASSES = (
+MIDDLEWARE = (
     ) + (('sslify.middleware.SSLifyMiddleware',)
          if IN_PRODUCTION else ()) + (
 

@@ -91,7 +91,7 @@ class SubgroupsListPage(models.Model):
     """
     title = models.CharField(max_length=100)
     main_heading = models.CharField(max_length=100)
-    group = models.ForeignKey(PileGroup)
+    group = models.ForeignKey(PileGroup, on_delete=models.PROTECT)
 
     class Meta:
         verbose_name = 'subgroups list page'
@@ -113,7 +113,7 @@ class SubgroupResultsPage(models.Model):
     """
     title = models.CharField(max_length=200)
     main_heading = models.CharField(max_length=200)
-    subgroup = models.ForeignKey(Pile)
+    subgroup = models.ForeignKey(Pile, on_delete=models.PROTECT)
 
     class Meta:
         verbose_name = 'subgroup results page'

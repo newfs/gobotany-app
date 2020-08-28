@@ -46,7 +46,7 @@ class Migration(migrations.Migration):
                 ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
                 ('title', models.CharField(max_length=200)),
                 ('main_heading', models.CharField(max_length=200)),
-                ('subgroup', models.ForeignKey(to='core.Pile')),
+                ('subgroup', models.ForeignKey(to='core.Pile', on_delete=models.PROTECT)),
             ],
             options={
                 'verbose_name': 'subgroup results page',
@@ -60,7 +60,7 @@ class Migration(migrations.Migration):
                 ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
                 ('title', models.CharField(max_length=100)),
                 ('main_heading', models.CharField(max_length=100)),
-                ('group', models.ForeignKey(to='core.PileGroup')),
+                ('group', models.ForeignKey(to='core.PileGroup', on_delete=models.PROTECT)),
             ],
             options={
                 'verbose_name': 'subgroups list page',

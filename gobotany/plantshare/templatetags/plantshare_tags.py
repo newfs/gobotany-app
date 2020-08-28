@@ -37,7 +37,7 @@ def user_first_name(user):
         name = user_profile.user_first_name()
     return name
 
-@register.assignment_tag(takes_context=True)
+@register.simple_tag(takes_context=True)
 def assign_user_display_name(context, user):
     return user_display_name(user)
 

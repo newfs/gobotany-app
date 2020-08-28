@@ -1,9 +1,11 @@
 from django.conf import settings
 from django import http
-from django.core.urlresolvers import resolve
+from django.urls import resolve
+from django.utils.deprecation import MiddlewareMixin
 
-# Middleware class courtesy of http://djangosnippets.org/snippets/601/
-class SmartAppendSlashMiddleware(object):
+# Middleware class courtesy of https://djangosnippets.org/snippets/601/
+# (adapte for new-style Middleware)
+class SmartAppendSlashMiddleware(MiddlewareMixin):
     """
     "SmartAppendSlash" middleware for taking care of URL rewriting.
 

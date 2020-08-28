@@ -5,8 +5,8 @@ import re
 from hashlib import md5
 
 from django import template
-from django.core.urlresolvers import NoReverseMatch, reverse
 from django.template.defaultfilters import slugify, stringfilter
+from django.urls import NoReverseMatch, reverse
 
 from gobotany import settings
 from gobotany.version import get_version

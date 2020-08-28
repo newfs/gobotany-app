@@ -9,10 +9,10 @@ from datetime import date
 from django.conf import settings
 from django.core.exceptions import ObjectDoesNotExist
 from django.db.models import Q
-from django.core.urlresolvers import reverse_lazy
 from django.http import HttpResponse
 from django.shortcuts import redirect, render
 from django.template import RequestContext
+from django.urls import reverse_lazy
 from django.views.decorators.vary import vary_on_headers
 
 from gobotany.core import botany

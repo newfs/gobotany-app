@@ -3,12 +3,12 @@
 from django import forms
 from django.conf import settings
 from django.contrib import admin, messages
-from django.core.urlresolvers import reverse
 from django.db import models as dbmodels
 from django.http import HttpResponseRedirect
 from django.shortcuts import render
 from django.template import Context, RequestContext, Template
 from django.template.defaultfilters import slugify
+from django.urls import reverse
 from django.utils.safestring import mark_safe
 from django.utils.translation import ugettext_lazy as _
 

@@ -49,13 +49,14 @@ class Page(models.Model):
 class Lead(models.Model):
     """A text description that leads you down one path in the dkey."""
 
-    page = models.ForeignKey('Page', related_name='leads')
+    page = models.ForeignKey('Page', related_name='leads',
+        on_delete=models.PROTECT)
     parent = models.ForeignKey('Lead', related_name='children', null=True,
-        blank=True)
+        blank=True, on_delete=models.PROTECT)
     letter = models.TextField()
     text = models.TextField()
     goto_page = models.ForeignKey('Page', related_name='leadins', null=True,
-        blank=True)
+        blank=True, on_delete=models.PROTECT)
     goto_num = models.IntegerField(null=True, blank=True)
     taxa_cache = models.TextField(blank=True)
 

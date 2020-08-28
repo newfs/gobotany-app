@@ -31,7 +31,7 @@ class Migration(migrations.Migration):
             fields=[
                 ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
                 ('is_owner', models.BooleanField(default=False)),
-                ('checklist', models.ForeignKey(to='plantshare.Checklist')),
+                ('checklist', models.ForeignKey(to='plantshare.Checklist', on_delete=models.PROTECT)),
             ],
             options={
             },
@@ -47,7 +47,7 @@ class Migration(migrations.Migration):
                 ('date_found', models.DateTimeField(null=True, blank=True)),
                 ('date_posted', models.DateTimeField(null=True, blank=True)),
                 ('note', models.TextField(blank=True)),
-                ('checklist', models.ForeignKey(related_name='entries', to='plantshare.Checklist')),
+                ('checklist', models.ForeignKey(related_name='entries', to='plantshare.Checklist', on_delete=models.PROTECT)),
             ],
             options={
             },
@@ -60,7 +60,7 @@ class Migration(migrations.Migration):
                 ('email', models.EmailField(max_length=75)),
                 ('verified', models.BooleanField(default=False)),
                 ('primary', models.BooleanField(default=False)),
-                ('user', models.ForeignKey(to=settings.AUTH_USER_MODEL)),
+                ('user', models.ForeignKey(to=settings.AUTH_USER_MODEL, on_delete=models.PROTECT)),
             ],
             options={
                 'verbose_name': 'email address',
@@ -74,7 +74,7 @@ class Migration(migrations.Migration):
                 ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
                 ('sent', models.DateTimeField()),
                 ('confirmation_key', models.CharField(max_length=40)),
-                ('email_address', models.ForeignKey(to='plantshare.EmailAddress')),
+                ('email_address', models.ForeignKey(to='plantshare.EmailAddress', on_delete=models.PROTECT)),
             ],
             options={
                 'verbose_name': 'email confirmation',
@@ -128,7 +128,7 @@ class Migration(migrations.Migration):
                 ('asked', models.DateTimeField(auto_now_add=True)),
                 ('approved', models.BooleanField(default=False)),
                 ('answered', models.DateTimeField(null=True, editable=False)),
-                ('asked_by', models.ForeignKey(related_name='questions_asked', to=settings.AUTH_USER_MODEL)),
+                ('asked_by', models.ForeignKey(related_name='questions_asked', to=settings.AUTH_USER_MODEL, on_delete=models.PROTECT)),
             ],
             options={
                 'verbose_name': 'question',
@@ -149,8 +149,8 @@ class Migration(migrations.Migration):
                 ('is_approved', models.BooleanField(default=False)),
                 ('orphaned', models.BooleanField(default=False)),
                 ('deleted', models.BooleanField(default=False)),
-                ('screened_by', models.ForeignKey(related_name='images_approved', to=settings.AUTH_USER_MODEL, null=True)),
-                ('uploaded_by', models.ForeignKey(related_name='images_uploaded', to=settings.AUTH_USER_MODEL)),
+                ('screened_by', models.ForeignKey(related_name='images_approved', to=settings.AUTH_USER_MODEL, null=True, on_delete=models.PROTECT)),
+                ('uploaded_by', models.ForeignKey(related_name='images_uploaded', to=settings.AUTH_USER_MODEL, on_delete=models.PROTECT)),
             ],
             options={
             },
@@ -167,9 +167,9 @@ class Migration(migrations.Migration):
                 ('visibility', models.CharField(default=b'PUBLIC', max_length=7, choices=[(b'PUBLIC', b'Everyone: public'), (b'USERS', b'All PlantShare users'), (b'PRIVATE', b'Only you and PlantShare staff')])),
                 ('flagged', models.BooleanField(default=False)),
                 ('approved', models.BooleanField(default=False)),
-                ('location', models.ForeignKey(to='plantshare.Location', null=True)),
+                ('location', models.ForeignKey(to='plantshare.Location', null=True, on_delete=models.PROTECT)),
                 ('photos', models.ManyToManyField(to='plantshare.ScreenedImage', null=True, blank=True)),
-                ('user', models.ForeignKey(to=settings.AUTH_USER_MODEL)),
+                ('user', models.ForeignKey(to=settings.AUTH_USER_MODEL, on_delete=models.PROTECT)),
             ],
             options={
                 'ordering': ['-created'],
@@ -189,9 +189,9 @@ class Migration(migrations.Migration):
                 ('display_name', models.CharField(max_length=60, blank=True)),
                 ('saying', models.CharField(max_length=100, blank=True)),
                 ('location_visibility', models.CharField(default=b'USERS', max_length=7, choices=[(b'USERS', b'All PlantShare users'), (b'PRIVATE', b'Only you and PlantShare staff')])),
-                ('avatar', models.ForeignKey(blank=True, to='plantshare.ScreenedImage', null=True)),
-                ('location', models.ForeignKey(blank=True, to='plantshare.Location', null=True)),
-                ('user', models.OneToOneField(to=settings.AUTH_USER_MODEL)),
+                ('avatar', models.ForeignKey(blank=True, to='plantshare.ScreenedImage', null=True, on_delete=models.PROTECT)),
+                ('location', models.ForeignKey(blank=True, to='plantshare.Location', null=True, on_delete=models.PROTECT)),
+                ('user', models.OneToOneField(to=settings.AUTH_USER_MODEL, on_delete=models.PROTECT)),
             ],
             options={
             },
@@ -206,13 +206,13 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='podmembership',
             name='member',
-            field=models.ForeignKey(to='plantshare.UserProfile'),
+            field=models.ForeignKey(to='plantshare.UserProfile', on_delete=models.PROTECT),
             preserve_default=True,
         ),
         migrations.AddField(
             model_name='podmembership',
             name='pod',
-            field=models.ForeignKey(to='plantshare.Pod'),
+            field=models.ForeignKey(to='plantshare.Pod', on_delete=models.PROTECT),
             preserve_default=True,
         ),
         migrations.AddField(
@@ -228,13 +228,13 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='checklistentry',
             name='plant_photo',
-            field=models.ForeignKey(blank=True, to='plantshare.ScreenedImage', null=True),
+            field=models.ForeignKey(blank=True, to='plantshare.ScreenedImage', null=True, on_delete=models.PROTECT),
             preserve_default=True,
         ),
         migrations.AddField(
             model_name='checklistcollaborator',
             name='collaborator',
-            field=models.ForeignKey(to='plantshare.Pod'),
+            field=models.ForeignKey(to='plantshare.Pod', on_delete=models.PROTECT),
             preserve_default=True,
         ),
         migrations.AddField(

@@ -78,19 +78,19 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='lead',
             name='goto_page',
-            field=models.ForeignKey(related_name='leadins', to='dkey.Page', null=True),
+            field=models.ForeignKey(related_name='leadins', to='dkey.Page', null=True, on_delete=models.PROTECT),
             preserve_default=True,
         ),
         migrations.AddField(
             model_name='lead',
             name='page',
-            field=models.ForeignKey(related_name='leads', to='dkey.Page'),
+            field=models.ForeignKey(related_name='leads', to='dkey.Page', on_delete=models.PROTECT),
             preserve_default=True,
         ),
         migrations.AddField(
             model_name='lead',
             name='parent',
-            field=models.ForeignKey(related_name='children', to='dkey.Lead', null=True),
+            field=models.ForeignKey(related_name='children', to='dkey.Lead', null=True, on_delete=models.PROTECT),
             preserve_default=True,
         ),
     ]
