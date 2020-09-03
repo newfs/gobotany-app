@@ -5,8 +5,9 @@ a little.
 """
 
 from django.conf.urls import url, include
-from django.contrib.auth.views import (password_change, password_reset,
-    password_reset_complete, password_reset_confirm, password_reset_done)
+from django.contrib.auth.views import (PasswordChangeView,
+    PasswordChangeDoneView, PasswordResetView, PasswordResetDoneView,
+    PasswordResetConfirmView, PasswordResetCompleteView)
 from django.views.generic.base import TemplateView
 
 from registration.backends.default.views import ActivationView
@@ -33,36 +34,61 @@ urlpatterns = [
         name='registration_register'),
     url(r'^register/complete/$',
         TemplateView.as_view(
-        template_name='registration/registration_complete.html'),
+            template_name='registration/registration_complete.html'),
         name='registration_complete'),
     url(r'^register/closed/$',
         TemplateView.as_view(
-        template_name='registration/registration_closed.html'),
+            template_name='registration/registration_closed.html'),
         name='registration_disallowed'),
 
+    ###
+    # Change Password and Forgot Password (reset)
+    #
     # Use names from django.auth.urls.py to avoid a NoMatch error as seen with
     # password_reset_done (http://stackoverflow.com/questions/20307473).
-    url(r'^password/change/$', password_change,
-        {'template_name': 'registration/change_password.html'},
+    #
+    # Change Password
+    #
+    # 1. Change Password form (also appears on Your Profile page)
+    #url(r'^password/change/$', password_change,
+    #    {'template_name': 'registration/change_password.html'},
+    #    name='password_change'),
+    url(r'^password/change/$',
+        PasswordChangeView.as_view(
+            template_name='registration/change_password.html'),
         name='password_change'),
+    # 2. Done changing password (confirmation page)
     url(r'^password/change/done/$',
-        TemplateView.as_view(
-        template_name='registration/change_password_done.html'),
+        PasswordChangeDoneView.as_view(
+            template_name='registration/change_password_done.html'),
         name='password_change_done'),
-    url(r'^password/reset/$', password_reset,
-        {'template_name': 'registration/forgot_password.html'},
+
+    # Forgot Password (reset password)
+    #
+    # 1. Forgot Password form
+    url(r'^password/reset/$',
+        PasswordResetView.as_view(
+            template_name='registration/forgot_password.html'),
         name='password_reset'),
-    url(r'^password/reset/done/$', password_reset_done,
-        {'template_name': 'registration/reset_password_email_sent.html'},
+    # 2. Reset password email sent (confirmation page)
+    url(r'^password/reset/done/$',
+        PasswordResetDoneView.as_view(
+            template_name='registration/reset_password_email_sent.html'),
         name='password_reset_done'),
+    # 3. Link sent in reset password email: redirects to
+    # Choose New Password form (.../set-password/)
     url(r'^password/reset/confirm/(?P<uidb64>[0-9A-Za-z_\-]+)/(?P<token>[0-9A-Za-z]{1,13}-[0-9A-Za-z]{1,20})/$',
-        password_reset_confirm,
-        {'template_name': 'registration/choose_new_password.html'},
+        PasswordResetConfirmView.as_view(
+            template_name='registration/choose_new_password.html'),
         name='password_reset_confirm'),
-    url(r'^password/reset/complete/$', password_reset_complete,
-        {'template_name': 'registration/change_password_done.html'},
+    # 4. Done choosing new password (confirmation page)
+    url(r'^password/reset/complete/$',
+        PasswordResetCompleteView.as_view(
+            template_name='registration/change_password_done.html'),
         name='password_reset_complete'),
 
+    # Change Email Address
+    #
     url(r'^email/change/$', change_email,
         name='ps-change-email'),
     url(r'^email/change/confirmation-sent/$', change_email_confirmation_sent,

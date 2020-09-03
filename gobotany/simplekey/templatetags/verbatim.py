@@ -34,14 +34,14 @@ def verbatim(parser, token):
         token = parser.tokens.pop(0)
         if token.contents == 'endverbatim':
             break
-        if token.token_type == template.TOKEN_VAR:
+        if token.token_type == template.TokenType.VAR:
             text.append('{{')
-        elif token.token_type == template.TOKEN_BLOCK:
+        elif token.token_type == template.TokenType.BLOCK:
             text.append('{%')
         text.append(token.contents)
-        if token.token_type == template.TOKEN_VAR:
+        if token.token_type == template.TokenType.VAR:
             text.append('}}')
-        elif token.token_type == template.TOKEN_BLOCK:
+        elif token.token_type == template.TokenType.BLOCK:
             text.append('%}')
     return VerbatimNode(''.join(text))
 
@@ -62,14 +62,14 @@ def handlebars(parser, token):
         token = parser.tokens.pop(0)
         if token.contents == 'endhandlebars':
             break
-        if token.token_type == template.TOKEN_VAR:
+        if token.token_type == template.TokenType.VAR:
             text.append('{{')
-        elif token.token_type == template.TOKEN_BLOCK:
+        elif token.token_type == template.TokenType.BLOCK:
             text.append('{%')
         text.append(token.contents)
-        if token.token_type == template.TOKEN_VAR:
+        if token.token_type == template.TokenType.VAR:
             text.append('}}')
-        elif token.token_type == template.TOKEN_BLOCK:
+        elif token.token_type == template.TokenType.BLOCK:
             text.append('%}')
     text.append('</script>')
     return VerbatimNode(''.join(text))
@@ -86,14 +86,14 @@ def handlebars_template(parser, token):
         token = parser.tokens.pop(0)
         if token.contents == 'endhandlebars_template':
             break
-        if token.token_type == template.TOKEN_VAR:
+        if token.token_type == template.TokenType.VAR:
             text.append('{{')
-        elif token.token_type == template.TOKEN_BLOCK:
+        elif token.token_type == template.TokenType.BLOCK:
             text.append('{%')
         text.append(token.contents)
-        if token.token_type == template.TOKEN_VAR:
+        if token.token_type == template.TokenType.VAR:
             text.append('}}')
-        elif token.token_type == template.TOKEN_BLOCK:
+        elif token.token_type == template.TokenType.BLOCK:
             text.append('%}')
     text.append('</script>')
     return VerbatimNode(''.join(text))

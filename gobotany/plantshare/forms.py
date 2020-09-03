@@ -13,14 +13,15 @@ def plant_name_suggestions_url():
 class LocationTextInput(forms.TextInput):
     """ Renders a location field so that a previously saved location
     appears as the user input text, rather than the ForeignKey value. """
-    def render(self, name, value, attrs=None):
+    def render(self, name, value, attrs=None, renderer=None):
         if value:
             location = Location.objects.get(pk=value)
             if location:
                 value = location.user_input
             else:
                 value = None
-        return super(LocationTextInput, self).render(name, value, attrs)
+        return super(LocationTextInput, self).render(name, value, attrs,
+            renderer)
 
 
 class LocationField(forms.RegexField):

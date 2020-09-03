@@ -2,7 +2,7 @@ from distutils.core import setup
 from setuptools import find_packages
 
 requirements = [
-    'django==2.0.13',
+    'django==2.1.15',
 
     'Pillow==7.2.0',
     'bleach==3.1.5',
