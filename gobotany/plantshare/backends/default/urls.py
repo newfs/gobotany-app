@@ -4,14 +4,15 @@ NOTE: This can be tweaked in the future if we want to change the workflow
 a little.
 """
 
-from django.conf.urls import url, include
-from django.contrib.auth.views import (PasswordChangeView,
-    PasswordChangeDoneView, PasswordResetView, PasswordResetDoneView,
-    PasswordResetConfirmView, PasswordResetCompleteView)
+from django.conf.urls import url
+from django.contrib.auth.views import (LoginView, LogoutView,
+    PasswordChangeView, PasswordChangeDoneView, PasswordResetView,
+    PasswordResetDoneView, PasswordResetConfirmView,
+    PasswordResetCompleteView)
 from django.views.generic.base import TemplateView
 
-from registration.backends.default.views import ActivationView
-from registration.backends.default.views import RegistrationView
+from django_registration.backends.activation.views import (ActivationView,
+    RegistrationView)
 
 from gobotany.plantshare.views import (change_email,
     change_email_confirmation_sent, confirm_email)
@@ -96,5 +97,11 @@ urlpatterns = [
     url(r'^email/confirm/(?P<key>\w+)/$', confirm_email,
         name='ps-confirm-email'),
 
-    url(r'', include('registration.auth_urls')),
+    # Log In, Log Out
+    url(r'^login/$', LoginView.as_view(
+            template_name='registration/login.html'),
+        name='login'),
+    url(r'^logout/$', LogoutView.as_view(
+            template_name='registration/logout.html'),
+        name='logout'),
 ]

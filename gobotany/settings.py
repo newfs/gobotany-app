@@ -173,7 +173,7 @@ INSTALLED_APPS = [
     'haystack_panel',
     'imagekit',
     'tinymce',
-    'registration',
+    'django_registration',
     #'emailconfirmation', # Temporarily uncomment to create this app's
                           # tables using syncdb. This will also allow
                           # the app's tables to be visible in the Admin.
@@ -205,10 +205,6 @@ INTERNAL_IPS = ('127.0.0.1',)
 MEDIA_ROOT = os.path.join(THIS_DIRECTORY, 'media')
 MEDIA_URL = '/media/'
 SESSION_COOKIE_AGE = 2 * 24 * 60 * 60  # two days
-
-SOUTH_MIGRATION_MODULES = {
-    'registration': 'registration.south_migrations',
-}
 
 # Static files (CSS, JavaScript, images)
 # https://docs.djangoproject.com/en/1.11/howto/static-files/

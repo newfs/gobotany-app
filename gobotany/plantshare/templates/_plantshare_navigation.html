@@ -24,7 +24,7 @@
                 <li class="profile">{% nav_item 'Your Profile' ps-your-profile %}</li>
                 {% assign_user_display_name user=user as display_name %}
                 {% with logout_label="Log Out "|add:display_name %}
-                    <li class="logout">{% nav_item logout_label auth_logout %}</li>
+                    <li class="logout">{% nav_item logout_label logout %}</li>
                 {% endwith %}
             {% else %}
                 {% comment %}
