@@ -1,8 +1,8 @@
-from django.conf.urls import url
+from django.urls import path
 
 from gobotany.plantoftheday import views
 
 urlpatterns = [
-    url('^$', views.atom_view, name='plantoftheday-feed'),
-    url('^atom.xml$', views.atom_view, name='plantoftheday-feed-atom'),
+    path('', views.atom_view, name='plantoftheday-feed'),
+    path('atom.xml', views.atom_view, name='plantoftheday-feed-atom'),
 ]

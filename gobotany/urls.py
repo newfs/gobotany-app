@@ -1,7 +1,7 @@
 from django.conf import settings
-from django.conf.urls import include, url
 from django.contrib import admin
 from django.contrib.staticfiles.urls import staticfiles_urlpatterns
+from django.urls import include, path, re_path
 from django.views import static
 
 from gobotany.core.admin import DistributionAdmin
@@ -19,28 +19,28 @@ urlpatterns = []
 if settings.USE_DEBUG_TOOLBAR and settings.DEBUG:
     import debug_toolbar
     urlpatterns += [
-        url(r'^__debug__/', include(debug_toolbar.urls)),
+        path('__debug__/', include(debug_toolbar.urls)),
     ]
 
 urlpatterns += [
-    url(r'^admin/core/distribution/addset/', DistributionAdmin.add_set_view),
-    url(r'^admin/', admin.site.urls),
-    url(r'^api/', include('gobotany.api.urls')),
-    url(r'^dkey/', include('gobotany.dkey.urls')),
-    url(r'^edit/', include('gobotany.editor.urls')),
-    url(r'^plantoftheday/', include('gobotany.plantoftheday.urls')),
-    url(r'^plantshare/', include('gobotany.plantshare.urls')),
-    url(r'^tinymce/', include('tinymce.urls')),
-    url(r'^', include('gobotany.search.urls')),
-    url(r'^', include('gobotany.site.urls')),
-    url(r'^', include('gobotany.taxa.urls')),
-    url(r'^', include('gobotany.simplekey.urls')),
+    path('admin/core/distribution/addset/', DistributionAdmin.add_set_view),
+    path('admin/', admin.site.urls),
+    path('api/', include('gobotany.api.urls')),
+    path('dkey/', include('gobotany.dkey.urls')),
+    path('edit/', include('gobotany.editor.urls')),
+    path('plantoftheday/', include('gobotany.plantoftheday.urls')),
+    path('plantshare/', include('gobotany.plantshare.urls')),
+    path('tinymce/', include('tinymce.urls')),
+    path('', include('gobotany.search.urls')),
+    path('', include('gobotany.site.urls')),
+    path('', include('gobotany.taxa.urls')),
+    path('', include('gobotany.simplekey.urls')),
 ]
 
 # Serve uploaded media files as static files in development
 if settings.DEBUG:
     urlpatterns += [
-        url(r'^media/(?P<path>.*)$', static.serve, {
+        re_path(r'^media/(?P<path>.*)$', static.serve, {
             'document_root': settings.MEDIA_ROOT,
         }),
     ]

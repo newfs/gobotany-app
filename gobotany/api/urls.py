@@ -1,6 +1,6 @@
 from django.conf import settings
-from django.conf.urls import url
 from django.contrib import admin
+from django.urls import path, re_path
 from django.views.decorators.cache import cache_control, cache_page
 from django.views.generic import RedirectView
 
@@ -25,89 +25,89 @@ def allow_cross_site_access(f):
     return add_cross_site_header
 
 urlpatterns = [
-    url(r'^taxa/(?P<scientific_name>[^/]+)/$', allow_cross_site_access(
-        views.taxa), name='api-taxa'),
-    url(r'^taxa/$', views.taxa, name='api-taxa-list'),
+    re_path(r'^taxa/(?P<scientific_name>[^/]+)/$',
+        allow_cross_site_access(views.taxa), name='api-taxa'),
+    path('taxa/', views.taxa, name='api-taxa-list'),
 
-    url(r'^taxa-count/$', views.taxa_count, name='api-taxa-count'),
+    path('taxa-count/', views.taxa_count, name='api-taxa-count'),
 
-    url(r'^taxon-image/$', views.taxon_image, name='api-taxon-image'),
+    path('taxon-image/', views.taxon_image, name='api-taxon-image'),
 
-    url(r'^characters/$', views.characters, name='api-characters'),
-    url(r'^characters/(?P<character_short_name>[^/]+)/$', views.character,
+    path('characters/', views.characters, name='api-characters'),
+    path('characters/<slug:character_short_name>/', views.character,
         name='api-character'),
 
-    url(r'^piles/$', views.pile_listing, name='api-pile-list'),
+    path('piles/', views.pile_listing, name='api-pile-list'),
 
 
     # Redirects for the split Remaining Non-Monocots piles, so that the
     # Get More Questions feature works for them
-    url(r'^piles/(?:non-)?alternate-remaining-non-monocots/characters/$',
+    re_path(r'^piles/(?:non-)?alternate-remaining-non-monocots/characters/$',
         RedirectView.as_view(
             url='/api/piles/remaining-non-monocots/characters/',
             query_string=True,
             permanent=True,
         )),
-    url(r'^piles/(?:non-)?alternate-remaining-non-monocots/questions/$',
+    re_path(r'^piles/(?:non-)?alternate-remaining-non-monocots/questions/$',
         RedirectView.as_view(
             url='/api/piles/remaining-non-monocots/questions/',
             query_string=True,
             permanent=True,
         )),
-    url(r'^piles/(?:non-)?alternate-remaining-non-monocots/$',
+    re_path(r'^piles/(?:non-)?alternate-remaining-non-monocots/$',
         RedirectView.as_view(
             url='/api/piles/remaining-non-monocots/',
             permanent=True,
         )),
 
 
-    url(r'^piles/(?P<pile_slug>[^/]+)/characters/$', views.piles_characters,
+    path('piles/<slug:pile_slug>/characters/', views.piles_characters,
         name='api-character-list'),
 
-    url(r'^piles/(?P<pile_slug>[^/]+)/questions/$', views.questions,
+    path('piles/<slug:pile_slug>/questions/', views.questions,
         name='api-questions'),
 
-    url(r'^piles/(?P<slug>[^/]+)/?$', views.pile, name='api-pile'),
+    path('piles/<slug:slug>/', views.pile, name='api-pile'),
 
-    url(r'^piles/(?P<pile_slug>[^/]+)/(?P<character_short_name>[^/]+)/$',
+    path('piles/<slug:pile_slug>/<slug:character_short_name>/',
         views.character_values, name='api-character-values'),
 
-    url(r'^pilegroups/$', views.pile_group_listing, name='api-pilegroup-list'),
-    url(r'^pilegroups/(?P<slug>[^/]+)/$', views.pile_group,
+    path('pilegroups/', views.pile_group_listing, name='api-pilegroup-list'),
+    path('pilegroups/<slug:slug>/', views.pile_group,
         name='api-pilegroup'),
 
     # Plant diversity maps, data:
     # Maps
-    #url(r'^maps/ne-diversity-map-native?$',
+    #re_path(r'^maps/ne-diversity-map-native?$',
     #    views.new_england_native_diversity_map,
     #    name='ne-native-diversity-map'),
-    #url(r'^maps/ne-diversity-map-nonnative?$',
+    #re_path(r'^maps/ne-diversity-map-nonnative?$',
     #    views.new_england_nonnative_diversity_map,
     #    name='ne-nonnative-diversity-map'),
-    #url(r'^maps/ne-diversity-map-all?$',
+    #re_path(r'^maps/ne-diversity-map-all?$',
     #    views.new_england_all_diversity_map,
     #    name='ne-all-diversity-map'),
     # CSV data
-    #url(r'^maps/ne-diversity-map-native\.csv',
+    #re_path(r'^maps/ne-diversity-map-native\.csv',
     #    views.new_england_native_diversity_csv,
     #    name='ne-native-diversity-csv'),
-    #url(r'^maps/ne-diversity-map-nonnative\.csv',
+    #re_path(r'^maps/ne-diversity-map-nonnative\.csv',
     #    views.new_england_nonnative_diversity_csv,
     #    name='ne-nonnative-diversity-csv'),
-    #url(r'^maps/ne-diversity-map-all\.csv',
+    #re_path(r'^maps/ne-diversity-map-all\.csv',
     #    views.new_england_all_diversity_csv,
     #    name='ne-all-diversity-csv'),
 
 
     # Plant distribution maps
-    url(r'^maps/(?P<genus>[^/-]+)-(?P<epithet>[^/]+)'
+    re_path(r'^maps/(?P<genus>[^/-]+)-(?P<epithet>[^/]+)'
          '-ne-distribution-map(\.svg|/)?$',
         views.new_england_distribution_map, name='ne-distribution-map'),
-    url(r'^maps/(?P<genus>[^/-]+)-(?P<epithet>[^/]+)'
+    re_path(r'^maps/(?P<genus>[^/-]+)-(?P<epithet>[^/]+)'
          '-na-distribution-map(\.svg|/)?$',
         views.north_american_distribution_map, name='na-distribution-map'),
 
-    url(r'^$', views.nonexistent, name='api-base'),   # helps compute base URL
+    path('', views.nonexistent, name='api-base'),   # helps compute base URL
 ]
 
 # We only use caching if memcached itself is configured; otherwise, we
@@ -125,24 +125,25 @@ else:
     both = lambda view: view
 
 urlpatterns.extend([
-    url(r'^glossaryblob/$', both(views.glossary_blob)),
-    url(r'^hierarchy/$', both(views.hierarchy)),
-    url(r'^sections/$', both(views.sections)),
-    url(r'^dkey-images/([-\w\d]+)/$', both(views.dkey_images)),
-    url(r'^families/([\w]+)/$', both(views.family)),
-    url(r'^genera/([\w]+)/$', both(views.genus)),
-    url(r'^species/([\w-]+)/$', browsercache(views.species)),
-    url(r'^vectors/character/([\w()-]+)/$', both(views.vectors_character)),
-    url(r'^vectors/key/([\w-]+)/$', both(views.vectors_key)),
-    url(r'^vectors/pile/([\w-]+)/$', both(views.vectors_pile)),
+    path('glossaryblob/', both(views.glossary_blob)),
+    path('hierarchy/', both(views.hierarchy)),
+    path('sections/', both(views.sections)),
+    re_path(r'^dkey-images/([-\w\d]+)/$', both(views.dkey_images)),
+    re_path(r'^families/([\w]+)/$', both(views.family)),
+    re_path(r'^genera/([\w]+)/$', both(views.genus)),
+    re_path(r'^species/([\w-]+)/$', browsercache(views.species)),
+    re_path(r'^vectors/character/([\w()-]+)/$',
+        both(views.vectors_character)),
+    re_path(r'^vectors/key/([\w-]+)/$', both(views.vectors_key)),
+    re_path(r'^vectors/pile/([\w-]+)/$', both(views.vectors_pile)),
 
     # Another redirect for the split Remaining Non-Monocots piles, for
     # the feature Get More Questions > Pick Your Own
-    url(r'^vectors/pile-set/(?:non-)?alternate-remaining-non-monocots/$',
+    re_path(r'^vectors/pile-set/(?:non-)?alternate-remaining-non-monocots/$',
         RedirectView.as_view(
             url='/api/vectors/pile-set/remaining-non-monocots/',
             permanent=True,
         )),
 
-    url(r'^vectors/pile-set/([\w-]+)/$', both(views.pile_vector_set)),
+    re_path(r'^vectors/pile-set/([\w-]+)/$', both(views.pile_vector_set)),
 ])

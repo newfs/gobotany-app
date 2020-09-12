@@ -2,6 +2,6 @@ Thank you for signing up for PlantShare on the Go Botany site!
 
 Please click the following link to activate your account:
 
-https://{{site.domain}}{% url 'registration_activate' activation_key %} 
+https://{{site.domain}}{% url 'django_registration_activate' activation_key %} 
 
 This link is valid for 7 days. (After then, you would need to sign up again.)
