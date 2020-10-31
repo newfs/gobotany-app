@@ -1,7 +1,8 @@
 // Go Botany Admin: customizations
 
-// Django assigns jQuery's $ to django.jQuery
-django.jQuery(document).ready(function () {
+// Django assigns jQuery's $ to django.jQuery, but in some cases
+// it's not ready right away, so use a non-jQuery way to start.
+document.addEventListener("DOMContentLoaded", function (event) {
 
     // Pagination: Go To Page customization (see pagination.html):
 
@@ -40,4 +41,3 @@ django.jQuery(document).ready(function () {
         }
     }
 });
-
