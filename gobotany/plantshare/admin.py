@@ -110,7 +110,10 @@ class ScreenedImageAdmin(GoBotanyModelAdmin):
         try:
             html = '<img src="%s">' % obj.thumb.url
         except (FileNotFoundError, OSError) as e:
-            html = '<img src="" title="error retrieving image: %s">' % e
+            # Return a non-existent image path so it shows up as a broken
+            # image icon in the browser rather than empty space.
+            html = '<img src="./error.jpg" ' + \
+                'title="error retrieving image: %s">' % e
         return mark_safe(html)
     admin_thumb.short_description = 'Thumbnail'
 
