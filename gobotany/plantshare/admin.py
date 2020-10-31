@@ -39,11 +39,10 @@ class QuestionAdmin(GoBotanyModelAdmin):
             for image in images:
                 html += '<a href="%s"><img src="%s"></a> ' % (
                     image.image.url, image.thumb.url)
-            return html
+            return mark_safe(html)
         else:
             return None
     image_links.short_description = 'Images'
-    image_links.allow_tags = True
 
 
 class LocationAdmin(GoBotanyModelAdmin):
@@ -93,9 +92,8 @@ class SightingAdmin(GoBotanyModelAdmin):
         for photo in obj.private_photos():
             html += '<a href="%s"><img src="%s"></a> ' % (photo.image.url,
                 photo.thumb.url)
-        return html
+        return mark_safe(html)
     photographs.short_description = 'Photos'
-    photographs.allow_tags = True
 
 class ScreenedImageAdmin(GoBotanyModelAdmin):
     list_display = ('image_type', 'uploaded', 'uploaded_by',
@@ -109,9 +107,8 @@ class ScreenedImageAdmin(GoBotanyModelAdmin):
     def admin_thumb(self, obj):
         """Show thumbnails. Doing this, because ImageKit's AdminThumbnail
         would not render."""
-        return '<img src="%s">' % (obj.thumb.url)
+        return mark_safe('<img src="%s">' % (obj.thumb.url))
     admin_thumb.short_description = 'Thumbnail'
-    admin_thumb.allow_tags = True
 
 
 admin.site.register(models.Question, QuestionAdmin)

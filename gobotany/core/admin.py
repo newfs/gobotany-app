@@ -621,9 +621,9 @@ class DistributionAdmin(_Base):
         return queryset, use_distinct
 
     def map_link(self, obj):
-        return '<a href="/api/maps/%s-ne-distribution-map">View</a>' % (
-            obj.species_name.lower().replace(' ', '-'))
-    map_link.allow_tags = True
+        return mark_safe(
+            '<a href="/api/maps/%s-ne-distribution-map">View</a>' % (
+            obj.species_name.lower().replace(' ', '-')))
     map_link.short_description = 'NE Map'
 
     # Allow creating a set of Distribution records for a new plant, one
