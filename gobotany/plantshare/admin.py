@@ -107,7 +107,11 @@ class ScreenedImageAdmin(GoBotanyModelAdmin):
     def admin_thumb(self, obj):
         """Show thumbnails. Doing this, because ImageKit's AdminThumbnail
         would not render."""
-        return mark_safe('<img src="%s">' % (obj.thumb.url))
+        try:
+            html = '<img src="%s">' % obj.thumb.url
+        except OSError as e:
+            html = '<img src="" alt="error retrieving image: %s">' % e
+        return mark_safe(html)
     admin_thumb.short_description = 'Thumbnail'
 
 
