@@ -278,7 +278,6 @@ header .go-botany {
     height: 54px;
     margin: 0;
     padding: 18px 0 0 0;
-    position: relative;
     width: 424px;
     z-index: 5;
     a {
@@ -298,20 +297,16 @@ header .go-botany {
     }
 }
 header nav {
-    background: url(/static/images/layout/nav-app-npt.png) no-repeat;
-    background-position: 0px 79px;
+    clear: both;
     font-family: $headings-font;
-    height: 120px;
-    padding: 0 0 0 16px;
-    position: relative;
+    padding-top: 7px;
     > ul {
         font-family: $navbar-font;
     }
     a {
         color: #fff;
-        display: block;
-        height: 35px;
-        padding: 5px 8px 0;
+        display: inline-block;
+        padding: 5px 8px 4px;
         &:visited, &:not([href]) {
             color: #fff;
         }
@@ -319,20 +314,26 @@ header nav {
     > a {
         display: none;  /* Omit the 'sections' link by default */
     }
-    ul {
+    > ul {
+        background-color: #17555b;
+        border-radius: 24px;
         clear: both;
-        margin-top: 7px;
+        display: flex;
+        line-height: 159%;
+        list-style-type: none;
+        padding-left: 1rem;
     }
-    li {
-        display: block;
-        float: left;
+    > ul li {
         font-size: $nav-font-size;
-        margin: 7px 10px 0 0;
+        margin: 0 10px 0 1px;
         padding: 0;
         position: relative;
         a:hover {
             text-decoration: none;
         }
+    }
+    .suggester-menu {
+        margin-top: 22px;
     }
     .suggester-menu ul {
         margin-top: 0;
@@ -346,7 +347,7 @@ header #search {
     padding: 0 0 0 11px;
     position: relative;
     right: 4px;
-    top: 4px;
+    top: -24px;
     form {
         display: block;
         margin: 0;
@@ -381,21 +382,11 @@ header #search {
     }
 }
 
-/* Firefox media query: temporary fix for search box position */
-@-moz-document url-prefix() {
-    header #search {
-        top: 11px;
-    }
-}
 
 /* Main content */
 
 .content {
     padding: 0;
-    @include container-div;
-}
-#home .content {
-    padding: 8px 0 0;
     @include container-div;
 }
 .content #main {
@@ -422,6 +413,7 @@ header #search {
     }
     &.no-sidebar #main {
         background: none;
+        clear: both;
         float: none;
         min-height: 0;
         padding-left: 0;
@@ -576,10 +568,15 @@ a.get-help-btn {
     font-size: 0.9rem;
     margin: 0 0 6px;
 }
+#breadcrumb ul {
+    display: flex;
+    flex-wrap: wrap;
+    white-space: nowrap;
+}
 #breadcrumb li {
-    display: inline-block;
     list-style-type: none;
     margin-bottom: 8px;
+    margin-right: 4px;
     &::after {
         color: $medium-brown;
         content: ' >';
@@ -606,8 +603,8 @@ a.get-help-btn {
 .img-gallery {
     float: left;
 	margin: 0 10px 0 0;	
-	position: relative;
-	width: 244px;
+    position: relative;
+    width: 244px;
     @include user-select(none);
 }
 .img-gallery .img-container {
@@ -628,7 +625,7 @@ a.get-help-btn {
 .img-gallery .images {
     clear: both;
     margin: 0;
-    padding: 0;	
+    padding: 0;
     position: absolute;
     width: 12000px;
     > * {
@@ -638,12 +635,12 @@ a.get-help-btn {
 }
 .img-gallery .controls {
     margin: 8px 0 12px 0;
-    text-align: center;	
+    text-align: center;
     a {
         cursor: pointer;
         display: inline-block;
         height: 32px;
-        text-indent: -9000px;	
+        text-indent: -9000px;
         width: 32px;
         &.next {
             background: url(/static/images/icons/next-larger.png) 0 0 no-repeat transparent;	

@@ -8,7 +8,7 @@
 }
 
 #home header {
-    height: 126px;
+    height: 146px;
 }
 #home .id {
     float: left;
@@ -38,18 +38,6 @@
     filter: brightness(0.9); /* make the contrast meet WCAG AA large text/graphics */
     height: 88px;
     width: 160px;
-}
-#home nav {
-    background: url(/static/images/layout/nav-app-npt.png) no-repeat;
-    background-position: 0px 101px;
-    height: 160px;
-    padding: 0 0 0 19px;
-    li {
-        margin-right: 10px;
-        a:hover {
-            text-decoration: none;
-        }
-    }
 }
 
 #search-suggest .menu {

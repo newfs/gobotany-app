@@ -89,7 +89,7 @@ body#genus {
 body#species #main {
     background: url(/static/images/layout/sidebar-bg.png) repeat-y;
 }
-body#species #main .common {
+body.taxa #main .common {
     font-family: Basetica, $headings-font;
     font-size: 1.6rem;
     margin: 1.6rem 0;

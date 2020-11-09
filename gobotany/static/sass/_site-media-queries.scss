@@ -154,6 +154,7 @@ $search-suggest-menu-top: 83px;
         #search {
             margin-top: 2px;
             padding-left: 10px;
+            top: 4px;
         }
         > ul {
             display: none;  /* will use bottom navigation instead of top */
@@ -348,14 +349,6 @@ $search-suggest-menu-top: 83px;
          * navigation controls at bottom. */
         margin-top: -55px;
     }
-
-    /* Firefox media query: temporary fix for search box position */
-    @-moz-document url-prefix() {
-        header nav #search {
-            margin-top: -5px;
-        }
-    }
-
 }
 /* These styles apply to smartphones and tablets */
 @media only screen and (max-width: 1024px) {

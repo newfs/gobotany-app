@@ -372,6 +372,10 @@ body.plantshare #find-people-form {
         clear: left;
         padding-top: 14px;
     }
+    .suggester-menu {
+        margin-left: 10px;
+        margin-top: 22px;
+    }
 }
 
 body.plantshare#find-people-profile {
@@ -478,6 +482,10 @@ body.plantshare #sightings-locator {
         clear: left;
         margin-top: 36px;
     }
+    .suggester-menu {
+        margin-left: 170px;
+        margin-top: 21px;
+    }
 }
 body.plantshare #sightings-locator.mini {
     clear: both;
@@ -525,6 +533,10 @@ body.plantshare #sightings-locator.mini {
             padding: 0;
         }
     }
+    .content .suggester-menu {
+        margin-left: 8px;
+        margin-top: 54px;
+    }
 } /* end .mini */
 
 body.plantshare#new-sighting {
@@ -539,6 +551,9 @@ body.plantshare#new-sighting {
 body.plantshare#new-sighting, body.plantshare#edit-sighting {
     #id_identification, .restricted {
         display: inline-block;
+    }
+    .content .suggester-menu {
+        margin-top: -10px;
     }
     .images {
         margin-top: 10px;
