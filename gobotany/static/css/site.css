@@ -222,41 +222,37 @@ header { height: 120px; }
 header .container { margin: 0 auto; padding: 0 10px; width: 960px; }
 header p { margin: 0; }
 
-header .go-botany { float: left; height: 54px; margin: 0; padding: 18px 0 0 0; position: relative; width: 424px; z-index: 5; }
+header .go-botany { float: left; height: 54px; margin: 0; padding: 18px 0 0 0; width: 424px; z-index: 5; }
 header .go-botany a { background: url(/static/images/layout/npt-gb-logo.svg) no-repeat transparent; background-size: 150px 48px; height: 48px; width: 150px; display: block; text-indent: -9000px; }
 header .go-botany .tagline { color: #467321; float: right; font-family: Basetica, sans-serif; font-size: 13px; margin: -19px 0 0 0; padding: 4px 0 0; }
 
-header nav { background: url(/static/images/layout/nav-app-npt.png) no-repeat; background-position: 0px 79px; font-family: "Trebuchet MS", Helvetica, Arial, "Lucida Sans Unicode", sans-serif; height: 120px; padding: 0 0 0 16px; position: relative; }
+header nav { clear: both; font-family: "Trebuchet MS", Helvetica, Arial, "Lucida Sans Unicode", sans-serif; padding-top: 7px; }
 header nav > ul { font-family: Basetica, "Trebuchet MS", sans-serif; }
-header nav a { color: #fff; display: block; height: 35px; padding: 5px 8px 0; }
+header nav a { color: #fff; display: inline-block; padding: 5px 8px 4px; }
 header nav a:visited, header nav a:not([href]) { color: #fff; }
 header nav > a { display: none; /* Omit the 'sections' link by default */ }
-header nav ul { clear: both; margin-top: 7px; }
-header nav li { display: block; float: left; font-size: 14px; margin: 7px 10px 0 0; padding: 0; position: relative; }
-header nav li a:hover { text-decoration: none; }
+header nav > ul { background-color: #17555b; border-radius: 24px; clear: both; display: flex; line-height: 159%; list-style-type: none; padding-left: 1rem; }
+header nav > ul li { font-size: 14px; margin: 0 10px 0 1px; padding: 0; position: relative; }
+header nav > ul li a:hover { text-decoration: none; }
+header nav .suggester-menu { margin-top: 22px; }
 header nav .suggester-menu ul { margin-top: 0; }
 
-header #search { background: #fff url(/static/images/layout/search-left.png) left center no-repeat; float: right; height: 20px; margin: 0; padding: 0 0 0 11px; position: relative; right: 4px; top: 4px; }
+header #search { background: #fff url(/static/images/layout/search-left.png) left center no-repeat; float: right; height: 20px; margin: 0; padding: 0 0 0 11px; position: relative; right: 4px; top: -24px; }
 header #search form { display: block; margin: 0; padding: 0; width: 262px; }
 header #search input { background: #fff; border: 0; float: left; font-family: "Trebuchet MS", Helvetica, Arial, "Lucida Sans Unicode", sans-serif; font-size: 14px; height: 20px; margin: 0; padding: 0; width: 219px; }
 header #search input:focus { outline: none; }
 header #search button { background: #27610a url(/static/images/layout/search-btn.png) 0 0 no-repeat; border: none; cursor: pointer; float: right; height: 20px; margin: 0; outline: none; padding: 0; width: 42px; display: block; text-indent: -9000px; }
 
-/* Firefox media query: temporary fix for search box position */
-@-moz-document url-prefix() { header #search { top: 11px; } }
 /* Main content */
 .content { padding: 0; }
 .content .container { margin: 0 auto; padding: 0 10px; width: 960px; }
-
-#home .content { padding: 8px 0 0; }
-#home .content .container { margin: 0 auto; padding: 0 10px; width: 960px; }
 
 .content #main { background: url(/static/images/layout/sidebar-bg.png) repeat-y; float: right; min-height: 575px; padding-bottom: 24px; padding-left: 250px; width: 710px; }
 .content #main .smallscreen-anchor-nav { display: none; }
 
 .content .container.free-sidebar #main { background: none; }
 .content .container.free-sidebar #sidebar { border-top: 0; height: auto; padding: 0; }
-.content .container.no-sidebar #main { background: none; float: none; min-height: 0; padding-left: 0; width: auto; }
+.content .container.no-sidebar #main { background: none; clear: both; float: none; min-height: 0; padding-left: 0; width: auto; }
 
 /* Sidebar (usually in a #sidebar section, but sometimes not, being arranged by floating and positioning content) */
 #sidebar { border-top: 1px solid #c3d941; float: left; height: 100%; margin-right: -230px; padding: 16px 0 0; width: 230px; }
@@ -315,7 +311,9 @@ a.get-help-btn { margin: 10px 0 20px; }
 /* Breadcrumb trails */
 #breadcrumb { color: #000; font-family: "Trebuchet MS", Helvetica, Arial, "Lucida Sans Unicode", sans-serif; font-size: 0.9rem; margin: 0 0 6px; }
 
-#breadcrumb li { display: inline-block; list-style-type: none; margin-bottom: 8px; }
+#breadcrumb ul { display: flex; flex-wrap: wrap; white-space: nowrap; }
+
+#breadcrumb li { list-style-type: none; margin-bottom: 8px; margin-right: 4px; }
 #breadcrumb li::after { color: #7a6f1f; content: ' >'; }
 #breadcrumb li:first-of-type::after, #breadcrumb li:last-of-type::after { content: none; }
 
@@ -443,7 +441,7 @@ table.list th td:first-child { font-family: "Trebuchet MS", Helvetica, Arial, "L
 /* Home */
 #home { background-color: #f8eeda; background-image: url(/static/images/layout/body-home.png); background-position: left 0px top; background-repeat: repeat-x; }
 
-#home header { height: 126px; }
+#home header { height: 146px; }
 
 #home .id { float: left; width: 516px; }
 
@@ -454,10 +452,6 @@ table.list th td:first-child { font-family: "Trebuchet MS", Helvetica, Arial, "L
 #home .newfs { padding-top: 13px; }
 
 #home .newfs a { background: url(/static/images/layout/npt-logo-stacked.svg) no-repeat transparent; background-size: 160px 88px; filter: brightness(0.9); /* make the contrast meet WCAG AA large text/graphics */ height: 88px; width: 160px; }
-
-#home nav { background: url(/static/images/layout/nav-app-npt.png) no-repeat; background-position: 0px 101px; height: 160px; padding: 0 0 0 19px; }
-#home nav li { margin-right: 10px; }
-#home nav li a:hover { text-decoration: none; }
 
 #search-suggest .menu { top: 133px; }
 
@@ -611,7 +605,7 @@ body#genus p.family { font-size: 14px; margin: 0; }
 
 body#species #main { background: url(/static/images/layout/sidebar-bg.png) repeat-y; }
 
-body#species #main .common { font-family: Basetica, "Trebuchet MS", Helvetica, Arial, "Lucida Sans Unicode", sans-serif; font-size: 1.6rem; margin: 1.6rem 0; }
+body.taxa #main .common { font-family: Basetica, "Trebuchet MS", Helvetica, Arial, "Lucida Sans Unicode", sans-serif; font-size: 1.6rem; margin: 1.6rem 0; }
 
 body#species #main { /* layout: right-side content sections */ }
 body#species #main #breadcrumb, body#species #main #name, body#species #main .img-gallery, body#species #main #images-note, body#species #main #partner, body#species #main #facts, body#species #main #habitat, body#species #main #chars, body#species #main #wetland, body#species #main #status, body#species #main #info-dkey { clear: left; margin-left: 250px; }
@@ -1209,6 +1203,7 @@ body.plantshare #find-people-form input[type='text'] { background: transparent u
 body.plantshare #find-people-form input[type='submit'] { background: transparent url(../images/layout/plantshare-btns.png) no-repeat -380px -4px; border: 0 none; display: block; float: left; height: 22px; padding: 0; text-indent: -9999px; width: 40px; }
 body.plantshare #find-people-form input:focus { outline: 0 none; }
 body.plantshare #find-people-form + p { clear: left; padding-top: 14px; }
+body.plantshare #find-people-form .suggester-menu { margin-left: 10px; margin-top: 22px; }
 
 body.plantshare#find-people-profile { background: none; }
 body.plantshare#find-people-profile div { background: #fff; border: 5px solid #acac90; height: 185px; padding: 0 16px 0 0; }
@@ -1235,6 +1230,7 @@ body.plantshare #sightings-locator input[type='submit'] { background: transparen
 body.plantshare #sightings-locator input:focus { outline: 0 none; }
 body.plantshare #sightings-locator input + div { font-size: 11px; }
 body.plantshare #sightings-locator .map { clear: left; margin-top: 36px; }
+body.plantshare #sightings-locator .suggester-menu { margin-left: 170px; margin-top: 21px; }
 
 body.plantshare #sightings-locator.mini { clear: both; margin-top: 20px; }
 body.plantshare #sightings-locator.mini .box { font-size: 11px; height: 297px; padding: 0 0 0 10px; }
@@ -1245,11 +1241,13 @@ body.plantshare #sightings-locator.mini .box form p { line-height: 14px; margin:
 body.plantshare #sightings-locator.mini .box form p#sightings-status { margin-left: -1000px; /* hide until JS shows it */ padding: 65px 0 0; }
 body.plantshare #sightings-locator.mini .box form p.full-link { margin-top: 10px; }
 body.plantshare #sightings-locator.mini .box .map { clear: none; border-bottom: 0; border-right: 0; border-top: 0; float: right; margin-top: 0; padding: 0; }
+body.plantshare #sightings-locator.mini .content .suggester-menu { margin-left: 8px; margin-top: 54px; }
 
 /* end .mini */
 body.plantshare#new-sighting h1 + div { background: #fff; border: 1px solid #c3d941; margin-bottom: 16px; padding: 5px 16px; width: 654px; }
 
 body.plantshare#new-sighting #id_identification, body.plantshare#new-sighting .restricted, body.plantshare#edit-sighting #id_identification, body.plantshare#edit-sighting .restricted { display: inline-block; }
+body.plantshare#new-sighting .content .suggester-menu, body.plantshare#edit-sighting .content .suggester-menu { margin-top: -10px; }
 body.plantshare#new-sighting .images, body.plantshare#edit-sighting .images { margin-top: 10px; }
 body.plantshare#new-sighting .restricted, body.plantshare#edit-sighting .restricted { margin-left: 14px; }
 body.plantshare#new-sighting .restricted-dialog, body.plantshare#edit-sighting .restricted-dialog { background: #fff; color: #000; padding: 20px; height: auto; width: auto; }
@@ -1945,7 +1943,7 @@ header.partner-site nav li a { padding: 5px 32px 0; /* fewer sections, more hori
   header { height: 90px; }
   header nav { background: #21555c; clear: left; height: 32px; padding: 0; }
   header nav > a { background: #437829; border: 1px solid #437829; border-radius: 5px; display: inline-block; font-size: 14px; height: 24px; line-height: 22px; margin: 3px 0 0 4px; padding: 0 20px 0 6px; position: relative; }
-  header nav #search { margin-top: 2px; padding-left: 10px; }
+  header nav #search { margin-top: 2px; padding-left: 10px; top: 4px; }
   header nav > ul { display: none; /* will use bottom navigation instead of top */ }
   header nav #search-suggest .menu { top: 83px; }
   header p.go-botany { margin: 0; padding: 0 0 0 8px; width: auto; }
@@ -1993,9 +1991,7 @@ header.partner-site nav li a { padding: 5px 32px 0; /* fewer sections, more hori
   body.help .footer__navigation-list-item.help a::after { border-color: #666; }
   .gb-tooltip { width: 200px; }
   #sb-overlay { /* Fix: make the Shadowbox overlay cover the entire background on small screens in iOS. */ height: 120%; }
-  #sb-wrapper { /* Move the Shadowbox image as far as possible to the top of the screen on small screens, so there is room for the navigation controls at bottom. */ margin-top: -55px; }
-  /* Firefox media query: temporary fix for search box position */
-  @-moz-document url-prefix() { header nav #search { margin-top: -5px; } } }
+  #sb-wrapper { /* Move the Shadowbox image as far as possible to the top of the screen on small screens, so there is room for the navigation controls at bottom. */ margin-top: -55px; } }
 /* These styles apply to smartphones and tablets */
 @media only screen and (max-width: 1024px) { table { border-collapse: collapse; } }
 /* End global media queries styles */
