@@ -533,7 +533,7 @@ body.plantshare #sightings-locator.mini {
             padding: 0;
         }
     }
-    .content .suggester-menu {
+    .suggester-menu {
         margin-left: 8px;
         margin-top: 54px;
     }
@@ -1621,6 +1621,12 @@ body.plantshare#screen-images {
             }
             div {
                 height: auto;
+            }
+        }
+        #sightings-locator {
+            .suggester-menu {
+                margin-left: 10px;
+                margin-top: 51px;
             }
         }
         #sightings-locator.mini .box {
