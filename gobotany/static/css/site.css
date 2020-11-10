@@ -1241,7 +1241,7 @@ body.plantshare #sightings-locator.mini .box form p { line-height: 14px; margin:
 body.plantshare #sightings-locator.mini .box form p#sightings-status { margin-left: -1000px; /* hide until JS shows it */ padding: 65px 0 0; }
 body.plantshare #sightings-locator.mini .box form p.full-link { margin-top: 10px; }
 body.plantshare #sightings-locator.mini .box .map { clear: none; border-bottom: 0; border-right: 0; border-top: 0; float: right; margin-top: 0; padding: 0; }
-body.plantshare #sightings-locator.mini .content .suggester-menu { margin-left: 8px; margin-top: 54px; }
+body.plantshare #sightings-locator.mini .suggester-menu { margin-left: 8px; margin-top: 54px; }
 
 /* end .mini */
 body.plantshare#new-sighting h1 + div { background: #fff; border: 1px solid #c3d941; margin-bottom: 16px; padding: 5px 16px; width: 654px; }
@@ -1514,6 +1514,7 @@ body.plantshare#screen-images div.form-control { margin: 0 30px; }
   body.plantshare .profile { margin-top: 10px; width: auto; }
   body.plantshare .profile a.edit { margin-top: 8px; }
   body.plantshare .profile div { height: auto; }
+  body.plantshare #sightings-locator .suggester-menu { margin-left: 10px; margin-top: 51px; }
   body.plantshare #sightings-locator.mini .box { height: 424px; width: auto; }
   body.plantshare #sightings-locator.mini .box h4, body.plantshare #sightings-locator.mini .box h4 + p { display: none; }
   body.plantshare #sightings-locator.mini .box form { padding: 0 10px 0 0; width: auto; }
