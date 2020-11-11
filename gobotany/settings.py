@@ -281,7 +281,6 @@ if 'MEMCACHIER_SERVERS' in os.environ:
             'BACKEND': 'django.core.cache.backends.memcached.PyLibMCCache',
             'TIMEOUT': 500,
             'BINARY': True,
-            'OPTIONS': { 'tcp_nodelay': True }
         }
     }
 
