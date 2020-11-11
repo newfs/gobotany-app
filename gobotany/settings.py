@@ -277,11 +277,12 @@ if 'MEMCACHIER_SERVERS' in os.environ:
     os.environ['MEMCACHE_PASSWORD'] = os.environ.get('MEMCACHIER_PASSWORD', '')
 
     CACHES = {
-        'default': {
-            'BACKEND': 'django.core.cache.backends.memcached.PyLibMCCache',
-            'TIMEOUT': 500,
-            'BINARY': True,
-        }
+      'default': {
+        'BACKEND': 'django_pylibmc.memcached.PyLibMCCache',
+        'TIMEOUT': 500,
+        'BINARY': True,
+        'OPTIONS': { 'tcp_nodelay': True }
+      }
     }
 
 # Normally we pull images in read-only mode from our NEWFS S3 bucket.

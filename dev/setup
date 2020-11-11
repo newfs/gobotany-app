@@ -10,7 +10,7 @@ cd $(dirname ${BASH_SOURCE[0]})
 
 rm -rf ./venv
 
-python3.9 -m venv --system-site-packages --upgrade-deps ./venv
+python3.8 -m venv --system-site-packages ./venv
 
 # Install a dependency for Haystack, setuptools_scm, because
 # setuptools_scm is not detected properly if installed along with

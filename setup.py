@@ -26,6 +26,11 @@ requirements = [
     'pysolr==3.7.0',
     'beautifulsoup4==4.8.0',
 
+    # Memcached on Heroku
+
+    'django-pylibmc==0.6.1',
+    'pylibmc==1.5.2',
+
     # Login and registration
 
     'django-registration==3.1.1',
