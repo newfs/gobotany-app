@@ -2,7 +2,7 @@ from distutils.core import setup
 from setuptools import find_packages
 
 requirements = [
-    'django==2.2.16',
+    'django==2.2.17',
 
     'Pillow==7.2.0',
     'bleach==3.1.5',
@@ -27,9 +27,9 @@ requirements = [
     'beautifulsoup4==4.8.0',
 
     # Memcached on Heroku
-
-    'django-pylibmc==0.6.1',
-    'pylibmc==1.5.2',
+#
+#    'django-pylibmc==0.6.1',
+#    'pylibmc==1.5.2',
 
     # Login and registration
 
