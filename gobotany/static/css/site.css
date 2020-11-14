@@ -618,7 +618,7 @@ body#species .section p { margin-bottom: 0; }
 body#species #maps, body#species #side { position: absolute; }
 body#species #maps h2, body#species #side h2 { font-size: 15px; margin: 0 0 4px 0; }
 
-body#species #maps { border-top: 1px solid #c3d941; top: 128px; }
+body#species #maps { background-color: #fff; border-left: 1px solid #c3d941; border-right: 1px solid #c3d941; border-top: 1px solid #c3d941; top: 128px; }
 
 body#species .namap { padding-top: 0; }
 
@@ -629,7 +629,7 @@ body#species .found-plant { background-color: #f8eeda; font-size: 12px; line-hei
 /* space maps enough away from text atop them */
 body#species #main .nemap h2 + p, body#species #main .namap h2 + p { margin: 0; padding-bottom: 8px; }
 
-body#species #side { top: 780px; /* remaining side content is positioned further down to leave room for maps in full-width layout */ }
+body#species #side { top: 790px; /* remaining side content is positioned further down to leave room for maps in full-width layout */ }
 
 body#species #side dt, body#species #side dd { display: inline-block; }
 
