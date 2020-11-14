@@ -389,6 +389,7 @@ $image-box-shadow-color: rgba(0, 0, 0, 0.6);
         background-position: top 9px left;
         background-repeat: no-repeat;
         background-size: 173px 121px;
+        min-height: 130px;
     }
     div + div {
         background-image: url(/static/images/layout/screen-tablet.svg), url(/static/images/layout/screen-smartphone.svg);
