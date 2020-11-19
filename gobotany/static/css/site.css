@@ -1773,11 +1773,9 @@ body.search-results h1 + p { margin-top: 12px; }
 #advanced-id #main .dk-landing-section > a { bottom: 10px; margin: 0 0 0 20px; position: absolute; width: 235px; }
 
 /* System Requirements */
-#system-requirements #main p + div { background-image: url(/static/images/layout/screen-desktop-laptop.svg); background-position: top 9px left; background-repeat: no-repeat; background-size: 173px 121px; }
-#system-requirements #main div + div { background-image: url(/static/images/layout/screen-tablet.svg), url(/static/images/layout/screen-smartphone.svg); background-position: top 9px left 20px, top 9px left 122px; background-repeat: no-repeat, no-repeat; background-size: 74px 98px, 30px 57px; }
-#system-requirements #main p + div, #system-requirements #main div + div { padding-left: 200px; }
-#system-requirements #main div + div, #system-requirements #main div + h2 { clear: left; }
-#system-requirements #main div + h2 { padding-top: 10px; }
+#system-requirements #main .desktop { float: left; padding: 10px 25px 10px 0; width: 160px; }
+#system-requirements #main .tablet { float: left; padding: 12px 10px 48px 20px; width: 70px; }
+#system-requirements #main .smartphone { float: left; padding: 12px 40px 83px 15px; vertical-align: top; width: 30px; }
 
 /* Video Help Topics */
 #video .video-topic { float: left; height: 176px; margin: 10px 16px 10px 0; position: relative; width: 220px; }
@@ -1817,9 +1815,6 @@ body.search-results h1 + p { margin-top: 12px; }
 @media only screen and (max-width: 400px) { #about #main > img { width: 57%; }
   #about #main img.bookcover { width: auto; }
   #advanced-map #group-section { height: 600px; }
-  #system-requirements #main p + div, #system-requirements #main div + div { padding-left: 0; }
-  #system-requirements #main p + div { padding-top: 135px; }
-  #system-requirements #main div + div { padding-top: 115px; }
   #glossary #alphabet { height: 99px; } }
 /* Landscape-orientation styles */
 @media only screen and (min-width: 401px) and (max-width: 600px) { #advanced-map #group-section { height: 400px; }
@@ -1841,6 +1836,9 @@ body.search-results h1 + p { margin-top: 12px; }
   #glossary #terms img { padding-left: 2px; }
   #glossary #terms dt { border-top: 0; clear: none; float: none; font-weight: bold; padding-bottom: 0; width: auto; }
   #glossary #terms dd { border-top: 0; margin: 0; padding: 0 5px 10px 39px; }
+  #system-requirements #main .desktop { padding: 10px 20px 10px 5px; width: 80px; }
+  #system-requirements #main .tablet { padding: 12px 8px 14px 10px; width: 35px; }
+  #system-requirements #main .smartphone { padding: 12px 28px 31px 7px; width: 15px; }
   #video .video-topic { margin-right: 12px; }
   #video .video-topic > p { font-size: 14px; }
   #video .missing-image p { margin-left: 0; margin-right: 0; } }
