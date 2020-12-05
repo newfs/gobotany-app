@@ -51,9 +51,6 @@ $search-suggest-menu-top: 83px;
     .footer__container {
         width: $smallscreen-portrait-width;
     }
-    .footer__navigation-list--secondary {
-        margin-left: 14px;
-    }
 }
 /* Landscape-orientation styles */
 @media only screen and (min-width: 401px) and (max-width: 600px) {
@@ -80,9 +77,6 @@ $search-suggest-menu-top: 83px;
     }
     .footer__container {
         width: $smallscreen-landscape-width;
-    }
-    .footer__navigation-list--secondary {
-        margin-left: 63px;
     }
 }
 /* These styles are common to both smartphone widths */
@@ -221,9 +215,10 @@ $search-suggest-menu-top: 83px;
 
     .footer {
         height: auto;
-        margin: 14px 0 0;
+        margin: 14px 1em 0;
     }
     .footer__container {
+        display: block;
         height: auto;
         padding: 0;
     }
@@ -232,7 +227,6 @@ $search-suggest-menu-top: 83px;
     }
     .footer__publisher,
     .footer__navigation {
-        float: none;
         margin: 0;
         padding: 0;
         width: auto;
@@ -281,28 +275,31 @@ $search-suggest-menu-top: 83px;
     .footer__navigation-list--secondary {
         display: inline-block;
         margin-top: 12px;
+        text-align: center;
+        width: 100%;
     }
     .footer__navigation-list--secondary .footer__navigation-list-item {
         display: inline;
         font-size: 11px;
         line-height: 14px;
-        margin-right: 32px;
+        margin: 0 0.5em;
     }
     .footer__navigation-list--secondary .footer__navigation-list-item:after {
         content: none;
     }
     .footer__support {
         height: 63px;
-        margin: 14px 0 0;
+        margin: 14px 1em 0;
         padding: 0;
         width: auto;
     }
     .footer__nsf-logo {
+        margin: 0.5em 1em;
         padding-bottom: 6px;
     }
     .footer__nsf-note {
-        padding-right: 10px;
-        padding-top: 14px;
+        padding-right: 12px;
+        padding-top: 4px;
     }
     /* Footer navigation: current section, page */
     @mixin footer-nav-current-section {

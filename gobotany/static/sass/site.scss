@@ -500,17 +500,19 @@ a.get-help-btn {
 .footer {
     background: $footer-background-color;
     clear: both;
-    height: 140px;
+    font-size: 10px;
+    min-height: 140px;
     position: relative;
     width: 100%;
 }
 .footer__container {
     @include container-div-styles;
+
+    display: flex;
 }
 .footer__copyright,
 .footer__address,
 .footer__nsf-note {
-    font-size: 9px;
     margin: 0 0 10px 0;
 }
 .footer__address {
@@ -519,21 +521,18 @@ a.get-help-btn {
 }
 .footer__site-name {
     font-family: $body-font;
-    font-size: 11px;
+    font-size: 12px;
     margin: 0 0 0.5rem;
 }
 .footer__publisher,
 .footer__navigation {
-    float: left;
     margin: 0 20px 0 0;
     padding: 18px 0;
-    width: 305px;
 }
 .footer__navigation {
     padding-left: 10px;
 }
 .footer__navigation-list {
-    font-size: 9px;
     list-style-type: none;
     margin-bottom: 12px;
 }
@@ -556,8 +555,8 @@ a.get-help-btn {
 }
 .footer__nsf-logo {
     float: left;
-    margin: 0 10px;
-    width: 40px;
+    margin: 0.3em 5% 0 0;
+    width: 3em;
 }
 
 
