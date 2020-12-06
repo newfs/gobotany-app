@@ -56,18 +56,18 @@
 
         <div id="all">
             <div id="top-message">
-                <p><b>Your help is appreciated.</b> &nbsp;&nbsp; We depend on 
+                <p><b>Your help is appreciated.</b> We depend on
                 donations to help keep this site free and up to date for
                 you. Can you please help us?</p>
-                <form action="https://46858.blackbaudhosting.com/46858/Online-Flora">
-                    <button>Donate</button>
-                </form>
-                <a href="javascript: void(0);" onclick="javascript: closeMessageBanner();">
-                    <svg aria-hidden="true" height="16"
-                    version="1.1" viewBox="0 0 12 16" width="12"><path
-                    fill-rule="evenodd" d="M7.48 8l3.75 3.75-1.48 1.48L6 9.48l-3.75 3.75-1.48-1.48L4.52 8 .77 4.25l1.48-1.48L6 6.52l3.75-3.75 1.48 1.48z"></path>
-                    </svg>
-                </a>
+                <div class="controls">
+                    <form action="https://46858.blackbaudhosting.com/46858/Online-Flora">
+                        <button>Donate</button>
+                    </form>
+                    <a title="Close" href="javascript: void(0);"
+                        onclick="javascript: closeMessageBanner();">
+                        &#x2715;
+                    </a>
+                </div>
             </div>
 
             {% block header %}

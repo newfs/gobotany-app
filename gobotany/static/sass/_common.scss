@@ -337,15 +337,29 @@ div.popup a {
 
 /* For occasional, temporary donation campaigns: message at top of page */
 #top-message {
+    align-items: center;
     background-color: #d87e54;
     color: #000;
+    display: flex;
     font-family: $body-font;
     font-size: 12px;
+    justify-content: space-between;
     margin: 0;
     padding: 12px 24px;
 }
 #top-message p {
     line-height: 150%;
+    padding-right: 1em;
+}
+#top-message p b {
+    margin-right: 1em;
+}
+#top-message .controls {
+    align-items: center;
+    display: flex;
+}
+#top-message form {
+    margin: 0.4em 2em;
 }
 #top-message button {
     border: 1px solid gray;
@@ -356,25 +370,14 @@ div.popup a {
     font-size: 14px;
     font-weight: bold;
     letter-spacing: 1px;
-    margin-right: 45px;
-    margin-top: -38px;
-    padding: 10px 10px 6px;
+    padding: 0.6em 0.7em 0.4em;
     text-transform: uppercase;
 }
-#top-message svg {
-    cursor: pointer;
-    float: right;
-    margin-right: 4px;
-    margin-top: -30px;
-}
-@media only screen and (max-width: 980px) {
-    #top-message p {
-        margin: 0 0 1rem;
-    }
-    #top-message button {
-        float: none;
-    }
-    #top-message svg {
-        margin-top: -27px;
-    }
+#top-message a {
+    color: #000;
+    font-size: 1em;
+    font-weight: bold;
+    margin: 1em 0 1em 0;
+    text-align: center;
+    width: 1em;
 }
