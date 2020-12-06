@@ -159,18 +159,19 @@ $search-suggest-menu-top: 83px;
     }
     header p.go-botany {
         margin: 0;
-        padding: 0 0 0 8px;
+        padding: 0.7em 0 0.4em 8px;
         width: auto;
         a {
             background-size: 100px 42px;
-            height: 42px;
             width: 100px;
         }
         .tagline {
+            bottom: 0.8em;
             display: block;
-            float: none;
-            font-size: 10px;
-            margin: -6px 0 0 0;
+            font-size: 0.8em;
+            left: 12em;
+            line-height: 120%;
+            margin: 0;
             padding: 0;
         }
     }

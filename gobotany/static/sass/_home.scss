@@ -11,23 +11,26 @@
     height: 146px;
 }
 #home .id {
-    float: left;
-    width: 516px;
+    display: flex;
+    padding: 1.5em 0 0;
+    position: relative;
 }
 #home h1 {
-    background: url(/static/images/layout/npt-gb-logo-home.svg) no-repeat transparent;
-    background-size: 220px 80px;
-    height: 80px;
-    margin: 12px 0 2px;
-    width: 220px;
-    @include offscreen;
+    font-weight: unset;
+    margin: 0;
+    img {
+        width: 7.7em;
+    }
 }
 #home .tagline {
+    bottom: 0.6em;
     color: #fff;
-    float: right;
     font-family: Basetica, sans-serif;
-    font-size: 14px;
-    margin: -24px 0 0;
+    font-size: 1.15em;
+    left: 17.2em;
+    line-height: 120%;
+    margin: 0;
+    position: absolute;
 }
 #home .newfs {
     padding-top: 13px;
@@ -275,20 +278,20 @@ a {
     #home header {
         height: 106px;
         h1 {
-            background-position: 0 0;
-            background-size: 120px 40px;
             height: 40px;
             margin-left: 0;
             width: 120px;
         }
         .id {
-            float: none;
-            padding-left: 10px;
+            padding: 0.7em 0 0.7em 10px;
             width: auto;
         }
         .tagline {
-            float: none;
+            bottom: 0.4em;
+            font-size: 0.9em;
+            left: 15em;
             margin: 0;
+            padding-right: 2em; /* keep 'New England' one line when narrow */
         }
         nav {
             background: #21555c;
