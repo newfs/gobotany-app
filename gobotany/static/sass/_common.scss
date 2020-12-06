@@ -342,14 +342,13 @@ div.popup a {
     color: #000;
     display: flex;
     font-family: $body-font;
-    font-size: 12px;
+    font-size: 1.1em;
     justify-content: space-between;
     margin: 0;
-    padding: 12px 24px;
+    padding: 0.7em 1.8em;
 }
 #top-message p {
     line-height: 150%;
-    padding-right: 1em;
 }
 #top-message p b {
     margin-right: 1em;
@@ -367,7 +366,7 @@ div.popup a {
     cursor: pointer;
     float: right;
     font-family: ScalaSans, $body-font;
-    font-size: 14px;
+    font-size: 1.2em;
     font-weight: bold;
     letter-spacing: 1px;
     padding: 0.6em 0.7em 0.4em;
@@ -375,9 +374,26 @@ div.popup a {
 }
 #top-message a {
     color: #000;
-    font-size: 1em;
+    font-size: 1.2em;
     font-weight: bold;
-    margin: 1em 0 1em 0;
+    padding: 1em 0;
     text-align: center;
-    width: 1em;
+    width: 2em;
+}
+@media only screen and (max-width: 600px) {
+    #top-message {
+        flex-direction: column;
+        padding: 1em 1.5em 0.4em;
+    }
+    #top-message p {
+        margin-bottom: 0.5em;
+        margin-top: 0;
+    }
+    #top-message .controls {
+        justify-content: space-between;
+        width: 100%;
+    }
+    #top-message form {
+        margin-left: 0;
+    }
 }
