@@ -1908,7 +1908,6 @@ header.partner-site nav li a { padding: 5px 32px 0; /* fewer sections, more hori
   body { padding-top: 110px; }
   header #search form { width: 242px; }
   header nav #search input { width: 192px; }
-  /* #search-suggest + div { width: 232px !important; li { width: 226px; } } */
   #nav { left: 40px; width: 310px; }
   .content #main { width: 304px; }
   .content #sidebar { float: none; width: 302px; }
