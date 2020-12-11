@@ -245,7 +245,7 @@ header nav .suggester-menu ul { margin-top: 0; }
 
 header #search { margin: 0; padding: 0; }
 header #search form { display: flex; margin: 0; padding: 0; }
-header #search input { background: #fff; border: 0; border-radius: 1em; font-family: "Trebuchet MS", Helvetica, Arial, "Lucida Sans Unicode", sans-serif; font-size: 1.16667em; height: 1.4em; margin: 0; padding: 0 0.5em; width: 220px; /* keep search from becoming too wide on zoom */ }
+header #search input { background: #fff; border: 0; border-radius: 1em; font-family: "Trebuchet MS", Helvetica, Arial, "Lucida Sans Unicode", sans-serif; font-size: 1.16667em; height: 1.4em; margin: 0; padding: 0 0.5em; width: 247px; /* keep search from becoming too wide on zoom */ }
 header #search button { background-color: #d2805f; border: 0; border-radius: 2em; margin: 0 0 0 -1.25em; padding: 0 0.75em; }
 header #search button img { height: 1.4em; vertical-align: middle; }
 
