@@ -20,21 +20,20 @@ $search-suggest-menu-top: 83px;
     body {
         padding-top: 110px;
     }
-    header nav > a {
-        width: 20px;
-    }
     header #search form {
         width: 242px;
     }
     header nav #search input {
         width: 192px;
     }
+    /*
     #search-suggest + div {
         width: 232px !important;
         li {
             width: 226px;
         }
     }
+    */
     #nav {
         left: 40px;
         width: 310px;
@@ -62,12 +61,6 @@ $search-suggest-menu-top: 83px;
     }
     body, header .container, .content .container {
         width: $smallscreen-landscape-width;
-    }
-    header nav > a {   /* small-screen nav. button */
-        width: 20px;
-        span {
-            position: absolute;
-        }
     }
     .content #main {
         width: 464px;
@@ -130,25 +123,21 @@ $search-suggest-menu-top: 83px;
     }
     header nav {
         background: $navbar-color;
+        border-radius: 0;
         clear: left;
         height: 32px;
         padding: 0;
         > a {
             background: $nav-button-color;
             border: 1px solid $nav-button-color;
-            border-radius: 5px;
+            border-radius: 0.3em;
             display: inline-block;
-            font-size: 14px;
-            height: 24px;
-            line-height: 22px;
-            margin: 3px 0 0 4px;
-            padding: 0 20px 0 6px;
-            position: relative;
+            font-size: 1.2em;
+            margin: 0 0.5em;
+            padding: 0.2em 1em;
         }
         #search {
-            margin-top: 2px;
-            padding-left: 10px;
-            top: 4px;
+            margin-left: 0.5em;
         }
         > ul {
             display: none;  /* will use bottom navigation instead of top */
@@ -215,6 +204,7 @@ $search-suggest-menu-top: 83px;
     }
 
     .footer {
+        box-shadow: none;
         height: auto;
         margin: 14px 1em 0;
     }

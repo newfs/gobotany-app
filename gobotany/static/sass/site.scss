@@ -267,7 +267,6 @@ body.plantshare {
 /* Header */
 
 header {
-    height: 120px;
     @include container-div;
     p {
         margin: 0;
@@ -276,8 +275,8 @@ header {
 header .go-botany {
     align-items: baseline;
     display: flex;
-    margin: 0;
-    padding: 18px 0 0 0;
+    margin: 1.5em 0 0.8em;
+    padding: 0;
     position: relative;
     z-index: 5;
     a {
@@ -294,11 +293,14 @@ header .go-botany {
     }
 }
 header nav {
+    align-items: center;
+    background-color: #17555b;
+    border-radius: 2em;
+    display: flex;
     font-family: $headings-font;
-    padding-top: 7px;
-    > ul {
-        font-family: $navbar-font;
-    }
+    justify-content: space-between;
+    margin-bottom: 1em;
+    padding-right: 0.3em;
     a {
         color: #fff;
         display: inline-block;
@@ -311,70 +313,64 @@ header nav {
         display: none;  /* Omit the 'sections' link by default */
     }
     > ul {
-        background-color: #17555b;
-        border-radius: 24px;
-        clear: both;
-        display: flex;
-        line-height: 159%;
+        font-family: $navbar-font;
         list-style-type: none;
         padding-left: 1rem;
     }
     > ul li {
+        display: block;
+        float: left;
         font-size: $nav-font-size;
-        margin: 0 10px 0 1px;
-        padding: 0;
+        line-height: 1.25em;
+        margin: 0 10px 0 0; /* px here to help save space on zoom */
+        padding: 0.05em 0 0;
         position: relative;
+        white-space: nowrap;
+        &:last-child {
+            margin-right: 0;
+        }
         a:hover {
             text-decoration: none;
         }
     }
     .suggester-menu {
-        margin-top: 22px;
+        font-size: $nav-font-size;
+        margin-top: 1.5em;
+        margin-left: 0.3em;
     }
     .suggester-menu ul {
         margin-top: 0;
     }
 }
 header #search {
-    background: #fff url(/static/images/layout/search-left.png) left center no-repeat;
-    float: right;
-    height: 20px;
     margin: 0;
-    padding: 0 0 0 11px;
-    position: relative;
-    right: 4px;
-    top: -24px;
+    padding: 0;
     form {
-        display: block;
+        display: flex;
         margin: 0;
         padding: 0;
-        width: 262px;
     }
     input {
         background: #fff;
         border: 0;
-        float: left;
+        border-radius: 1em;
         font-family: $headings-font;
         font-size: $nav-font-size;
-        height: 20px;
+        height: 1.4em;
         margin: 0;
-        padding: 0;
-        width: 219px;
-        &:focus {
-            outline: none;
-        }
+        padding: 0 0.5em;
+        width: 220px;   /* keep search from becoming too wide on zoom */
     }
     button {
-        background: $link-green url(/static/images/layout/search-btn.png) 0 0 no-repeat;
-        border: none;
-        cursor: pointer;
-        float: right;
-        height: 20px;
-        margin: 0;
-        outline: none;
-        padding: 0;
-        width: 42px;
-        @include offscreen;
+        background-color: #d2805f;
+        border: 0;
+        border-radius: 2em;
+        margin: 0 0 0 -1.25em;
+        padding: 0 0.75em;
+        img {
+            height: 1.4em;
+            vertical-align: middle;
+        }
     }
 }
 
@@ -495,6 +491,8 @@ a.get-help-btn {
 
 .footer {
     background: $footer-background-color;
+    /* Make footer color continue to bottom on short pages. */
+    box-shadow: 0 50vh 0 50vh $footer-background-color;
     clear: both;
     font-size: 10px;
     min-height: 140px;
@@ -931,17 +929,6 @@ input.suggest + div li {
     }
     span {
         font-weight: normal;
-    }
-}
-/* Adjustments for site search box */
-header nav #search input {
-    padding-left: 4px;
-    width: 215px;
-}
-#search-suggest + div {
-    width: 253px !important;  /* widen a bit, beneath wide orange button */
-    li {
-        width: 247px;
     }
 }
 

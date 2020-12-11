@@ -71,7 +71,7 @@ $footer-background-color: $bright-green;
 $login-box-background-color: #d3eaad;
 
 $base-font-size: 12px;
-$nav-font-size: 14px;
+$nav-font-size: 1.166666em;
 
 $text-line-height: 160%;
 
@@ -203,9 +203,9 @@ $disabled_orange_gradient: linear-gradient(
     border-bottom-color: $body_bg;
     content: "";
     height: 0;
-    left: calc(50% - 10px); /* calc not fully supported on IE 10-11 */
+    left: calc(50% - 10px);
     position: absolute;
-    top: 14px;
+    top: 0.9em;
     width: 0;
 }
 
@@ -215,9 +215,9 @@ $disabled_orange_gradient: linear-gradient(
     border-bottom-color: #6c9956;
     content: "";
     height: 0;
-    left: calc(50% - 10px); /* calc not fully supported on IE 10-11 */
+    left: calc(50% - 10px);
     position: absolute;
-    top: 14px;
+    top: 0.9em;
     width: 0;
 }
 

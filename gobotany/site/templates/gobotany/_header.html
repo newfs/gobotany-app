@@ -37,7 +37,10 @@
                             class="suggest"
                             data-suggest-url="{% url 'site-search-suggestions' %}?q=%s"
                             data-submit-on-select="true">
-                        <button type="submit">Search</button>
+                        <button type="submit" aria-label="Search">
+                            <img src="/static/images/icons/gb-search-icon.svg"
+                                alt="">
+                        </button>
                     </form>
                 </div>
                 {% endblock %}
