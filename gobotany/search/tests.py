@@ -102,8 +102,9 @@ class SearchTests(FunctionalCase):
         # Check a number of queries for which searches have failed in the
         # past, evidently due to out-of-date indexes. (To fix those, run
         # Haystack's update_index command with the --remove switch.)
-        queries = ['physocarpus', 'ninebark', 'nyssa', 'nyssa sylvatica',
-            'carex plantaginea', 'cynoglossum virginianum']
+        queries = ['physocarpus', 'ninebark', 'viburnum lantanoides',
+            'nyssa', 'nyssa sylvatica', 'carex plantaginea',
+            'cynoglossum virginianum']
         for query in queries:
             self.get('/search/?q=%s' % 'nyssa')
             result_links = self._result_links()
