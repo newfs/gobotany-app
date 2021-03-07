@@ -8,7 +8,7 @@ from .highlight import ExtendedHighlighter
 from gobotany.libtest import FunctionalCase
 
 
-@unittest.skip('Skipping tests that run against the real database')
+#@unittest.skip('Skipping tests that run against the real database')
 class SearchTests(FunctionalCase):
 
     solr_available = None
@@ -38,8 +38,8 @@ class SearchTests(FunctionalCase):
 
     def test_search_results_page_has_navigation_links(self):
         d = self.get('/search/?q=carex&page=2')
-        self.assertTrue(d.find_element_by_link_text('Previous'))
-        self.assertTrue(d.find_element_by_link_text('Next'))
+        self.assertTrue(d.find_element_by_link_text('← Previous'))
+        self.assertTrue(d.find_element_by_link_text('Next →'))
         nav_links = d.find_elements_by_css_selector('.search-navigation a')
         self.assertTrue(len(nav_links) >= 5)
 
@@ -107,11 +107,11 @@ class SearchTests(FunctionalCase):
 
     def test_search_results_page_previous_link_is_present(self):
         d = self.get('/search/?q=monocot&page=2')
-        self.assertTrue(d.find_element_by_link_text('Previous'))
+        self.assertTrue(d.find_element_by_link_text('← Previous'))
 
     def test_search_results_page_next_link_is_present(self):
         d = self.get('/search/?q=monocot&page=2')
-        self.assertTrue(d.find_element_by_link_text('Next'))
+        self.assertTrue(d.find_element_by_link_text('Next →'))
 
     def test_search_results_page_heading_number_has_thousands_comma(self):
         self.get('/search/?q=monocot')  # query that returns > 1,000 results
@@ -122,7 +122,7 @@ class SearchTests(FunctionalCase):
         self.assertTrue(int(results_count.replace(',', '')) > 1000)
 
     def test_search_results_page_omits_navigation_links_above_limit(self):
-        MAX_PAGE_LINKS = 20
+        MAX_PAGE_LINKS = 10
         self.get('/search/?q=monocot')  # query that returns > 1,000 results
         nav_links = self.css('.search-navigation li a')
         self.assertTrue(len(nav_links))
@@ -130,13 +130,6 @@ class SearchTests(FunctionalCase):
         # the page links minus one (the current unlinked page) plus one
         # for the Next link.
         self.assertTrue(len(nav_links) == MAX_PAGE_LINKS)
-
-    def test_search_results_page_navigation_has_ellipsis_above_limit(self):
-        self.get('/search/?q=monocot')  # query that returns > 1,000 results
-        nav_list_items = self.css('.search-navigation li')
-        self.assertTrue(len(nav_list_items))
-        ellipsis = nav_list_items[-2]
-        self.assertTrue(ellipsis.text == '...')
 
     def test_search_results_page_query_is_in_search_box(self):
         self.get('/search/?q=acer')
@@ -382,7 +375,7 @@ class SearchTests(FunctionalCase):
     # or exceptions text
 
     def test_search_results_have_group_page_for_key_characteristics(self):
-        self.get('/search/?q=bark')
+        self.get('/search/?q=submersed')
         result_links = self._result_links()
         self.assertTrue(len(result_links) > 0)
         self.assertTrue(self._is_group_page_found(result_links))
@@ -395,7 +388,7 @@ class SearchTests(FunctionalCase):
                                                      'Grass-like plants'))
 
     def test_search_results_have_group_page_for_exceptions(self):
-        self.get('/search/?q=showy%20flowers')   # Grass-like plants
+        self.get('/search/?q=amphibious')
         result_links = self._result_links()
         self.assertTrue(len(result_links) > 0)
         self.assertTrue(self._is_group_page_found(result_links))
@@ -515,8 +508,10 @@ class SearchTests(FunctionalCase):
         result_links = self._result_links()
         self.assertTrue(len(result_links) > 0)
         result_excerpts = self.css('#search-results-list li p')
-        self.assertTrue(result_excerpts[0].text.find(
-            '...the understories of cool woods.') > -1);
+        expected_excerpt_text = '...the understories of cool woods.'
+        self.assertTrue(
+            result_excerpts[0].text.find(expected_excerpt_text) > -1 or
+            result_excerpts[1].text.find(expected_excerpt_text) > -1);
 
     # Test searching miscellaneous pages around the site (about, etc.)
 
