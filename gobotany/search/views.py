@@ -17,9 +17,9 @@ class GoBotanySearchView(SearchView):
 
         queryset = self.form.search()
 
-        # Fall back to less specific searches.
+        if queryset.count() == 0:
+            # Consider falling back to less specific searches.
 
-        if len(queryset) == 0:
             # Query words come back "cleaned" from get_query().
             query_words = self.get_query().split(' ')
             if len(query_words) > 1:

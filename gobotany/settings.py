@@ -104,7 +104,11 @@ DEBUG_TOOLBAR_PANELS = [
     'debug_toolbar.panels.cache.CachePanel',
     'debug_toolbar.panels.signals.SignalsPanel',
     'debug_toolbar.panels.logging.LoggingPanel',
-    'haystack_panel.panel.HaystackDebugPanel',
+
+    # Haystack has its own Panel now, but it throws an error with recent
+    # versions of the Toolbar because it hasn't been updated yet.
+    #'haystack.panels.HaystackDebugPanel',
+
     'debug_toolbar.panels.redirects.RedirectsPanel',
 ]
 
@@ -170,7 +174,6 @@ INSTALLED_APPS = [
 
     'account',
     'haystack',
-    'haystack_panel',
     'imagekit',
     'tinymce',
     'django_registration',
