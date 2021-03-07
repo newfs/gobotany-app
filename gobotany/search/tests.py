@@ -232,9 +232,8 @@ class SearchTests(FunctionalCase):
     # TODO: Add a test for genus common names if they become available.
 
     def test_search_results_page_glossary_term_returns_first_result(self):
-        terms = ['acuminate', 'dichasial cyme', 'joint',
-                 #'perigynium', # Why does this one still fail?
-                 'terminal', 'woody']
+        terms = ['acuminate', 'dichasial cyme', 'joint', 'perigynium',
+            'terminal', 'woody']
         for term in terms:
             self.get('/search/?q=%s' % term.lower())
             result_links = self._result_links()
