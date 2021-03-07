@@ -7,8 +7,14 @@ from .highlight import ExtendedHighlighter
 
 from gobotany.libtest import FunctionalCase
 
+# To run all search tests:
+#
+# dev/test-python search
+#
+# To run a single test:
+#
+# dev/test-python search.SearchTests.{test_function_name}
 
-#@unittest.skip('Skipping tests that run against the real database')
 class SearchTests(FunctionalCase):
 
     solr_available = None
@@ -91,6 +97,17 @@ class SearchTests(FunctionalCase):
         self.assertTrue(len(message))
         self.assertEqual('Please adjust your search and try again.',
                          message[0].text)
+
+    def test_search_results_page_previously_failing_have_results(self):
+        # Check a number of queries for which searches have failed in the
+        # past, evidently due to out-of-date indexes. (To fix those, run
+        # Haystack's update_index command with the --remove switch.)
+        queries = ['physocarpus', 'ninebark', 'nyssa', 'nyssa sylvatica',
+            'carex plantaginea', 'cynoglossum virginianum']
+        for query in queries:
+            self.get('/search/?q=%s' % 'nyssa')
+            result_links = self._result_links()
+            self.assertTrue(len(result_links))
 
     def test_search_results_page_has_singular_heading(self):
         query = '%22simple+key+for+plant+identification%22'   # in quotes
