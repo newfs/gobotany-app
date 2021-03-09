@@ -5,7 +5,7 @@ requirements = [
     'django==2.2.17',
 
     'Pillow==7.2.0',
-    'bleach==3.1.5',
+    'bleach==3.3.0',
     'cssselect',
     'django-debug-toolbar==3.2',
     'django-extensions==2.2.1',
@@ -19,7 +19,7 @@ requirements = [
     'django-imagekit==4.0.2',
     'django-tinymce==2.6.0',
     'inflect',
-    'lxml==4.4.1',
+    'lxml==4.6.2',
     'psycopg2==2.8.5',
     'python-memcached',
     'pytz',
