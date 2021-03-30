@@ -70,7 +70,7 @@ class FunctionalCase(TestCase):
         self.response = client.get(url)
         if self.response.status_code == 200:
             content = self.response.content
-            if content.startswith('<?xml'):
+            if content.startswith(b'<?xml'):
                 self.tree = etree.fromstring(content)
             else:
                 parser = etree.HTMLParser()

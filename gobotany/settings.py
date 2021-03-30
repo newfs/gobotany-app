@@ -104,7 +104,11 @@ DEBUG_TOOLBAR_PANELS = [
     'debug_toolbar.panels.cache.CachePanel',
     'debug_toolbar.panels.signals.SignalsPanel',
     'debug_toolbar.panels.logging.LoggingPanel',
-    'haystack_panel.panel.HaystackDebugPanel',
+
+    # Haystack has its own Panel now, but it throws an error with recent
+    # versions of the Toolbar because it hasn't been updated yet.
+    #'haystack.panels.HaystackDebugPanel',
+
     'debug_toolbar.panels.redirects.RedirectsPanel',
 ]
 
@@ -170,7 +174,6 @@ INSTALLED_APPS = [
 
     'account',
     'haystack',
-    'haystack_panel',
     'imagekit',
     'tinymce',
     'django_registration',
@@ -183,6 +186,7 @@ INSTALLED_APPS = [
                           # Update: also keep commented out for the Django 1.7
                           # upgrade when running: dev/django makemigrations
     ]
+
 MIDDLEWARE = (
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.middleware.gzip.GZipMiddleware',
@@ -197,6 +201,10 @@ MIDDLEWARE = (
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'gobotany.middleware.SmartAppendSlashMiddleware',
 )
+# On Heroku, enable the Security Middleware for http to https redirects, etc.
+if IN_PRODUCTION:
+    MIDDLEWARE = ('django.middleware.security.SecurityMiddleware',) + \
+        MIDDLEWARE
 
 APPEND_SLASH = False
 SMART_APPEND_SLASH = True
@@ -356,10 +364,9 @@ ADMINS = (('Go Botany Dev', 'gobotanydev@newenglandwild.org',
 
 # Force HTTPS (Django 1.8 and later)
 SECURE_SSL_REDIRECT = True
-
-# https://docs.djangoproject.com/en/2.0/ref/settings/#secure-proxy-ssl-header
-# Use SSL
-SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+#
+# For now, this setting evidently is not also needed to redirect to HTTPS.
+SECURE_PROXY_SSL_HEADER = None
 
 if IN_PRODUCTION:
     # https://docs.djangoproject.com/en/1.5/topics/security/#ssl-https

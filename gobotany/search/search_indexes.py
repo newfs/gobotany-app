@@ -1,4 +1,5 @@
 from haystack import indexes
+from haystack.fields import NOT_PROVIDED
 
 from gobotany.core.models import Family, Genus, GlossaryTerm, Taxon, Update
 from gobotany.dkey.models import Page as DichotomousKeyPage
@@ -14,7 +15,7 @@ class CharacterCharField(indexes.CharField):
 
     def __init__(self, character_name=None,
                  document=False, indexed=True, stored=True,
-                 default=indexes.NOT_PROVIDED, null=False):
+                 default=NOT_PROVIDED, null=False):
         super(CharacterCharField, self).__init__(model_attr=None,
                                                  use_template=False,
                                                  template_name=False,

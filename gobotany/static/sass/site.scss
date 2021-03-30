@@ -267,51 +267,44 @@ body.plantshare {
 /* Header */
 
 header {
-    height: 120px;
     @include container-div;
     p {
         margin: 0;
     }
 }
 header .go-botany {
-    float: left;
-    height: 54px;
-    margin: 0;
-    padding: 18px 0 0 0;
+    align-items: baseline;
+    display: flex;
+    margin: 1.5em 0 0.8em;
+    padding: 0;
     position: relative;
-    width: 424px;
     z-index: 5;
     a {
-        background: url(/static/images/layout/npt-gb-logo.svg) no-repeat transparent;
-        background-size: 150px 48px;
-        height: 48px;
-        width: 150px;
-        @include offscreen;
+        margin-right: 1.2em;
+        width: 12.5em;
     }
     .tagline {
+        bottom: 0;
         color: $dark-green;
-        float: right;
         font-family: Basetica, sans-serif;
-        font-size: 13px;
-        margin: -19px 0 0 0;
-        padding: 4px 0 0;
+        font-size: 1.07em;
+        position: absolute;
+        left: 13em;
     }
 }
 header nav {
-    background: url(/static/images/layout/nav-app-npt.png) no-repeat;
-    background-position: 0px 79px;
+    align-items: center;
+    background-color: #17555b;
+    border-radius: 2em;
+    display: flex;
     font-family: $headings-font;
-    height: 120px;
-    padding: 0 0 0 16px;
-    position: relative;
-    > ul {
-        font-family: $navbar-font;
-    }
+    justify-content: space-between;
+    margin-bottom: 1em;
+    padding-right: 0.3em;
     a {
         color: #fff;
-        display: block;
-        height: 35px;
-        padding: 5px 8px 0;
+        display: inline-block;
+        padding: 5px 8px 4px;
         &:visited, &:not([href]) {
             color: #fff;
         }
@@ -319,83 +312,73 @@ header nav {
     > a {
         display: none;  /* Omit the 'sections' link by default */
     }
-    ul {
-        clear: both;
-        margin-top: 7px;
+    > ul {
+        font-family: $navbar-font;
+        list-style-type: none;
+        padding-left: 1rem;
     }
-    li {
+    > ul li {
         display: block;
         float: left;
         font-size: $nav-font-size;
-        margin: 7px 10px 0 0;
-        padding: 0;
+        line-height: 1.25em;
+        margin: 0 10px 0 0; /* px here to help save space on zoom */
+        padding: 0.05em 0 0;
         position: relative;
+        white-space: nowrap;
+        &:last-child {
+            margin-right: 0;
+        }
         a:hover {
             text-decoration: none;
         }
+    }
+    .suggester-menu {
+        font-size: $nav-font-size;
+        margin-top: 1.5em;
+        margin-left: 0.3em;
     }
     .suggester-menu ul {
         margin-top: 0;
     }
 }
 header #search {
-    background: #fff url(/static/images/layout/search-left.png) left center no-repeat;
-    float: right;
-    height: 20px;
     margin: 0;
-    padding: 0 0 0 11px;
-    position: relative;
-    right: 4px;
-    top: 4px;
+    padding: 0;
     form {
-        display: block;
+        display: flex;
         margin: 0;
         padding: 0;
-        width: 262px;
     }
     input {
         background: #fff;
         border: 0;
-        float: left;
+        border-radius: 1em;
         font-family: $headings-font;
         font-size: $nav-font-size;
-        height: 20px;
+        height: 1.4em;
         margin: 0;
-        padding: 0;
-        width: 219px;
-        &:focus {
-            outline: none;
-        }
+        padding: 0 0.5em;
+        width: 247px;   /* keep search from becoming too wide on zoom */
     }
     button {
-        background: $link-green url(/static/images/layout/search-btn.png) 0 0 no-repeat;
-        border: none;
-        cursor: pointer;
-        float: right;
-        height: 20px;
-        margin: 0;
-        outline: none;
-        padding: 0;
-        width: 42px;
-        @include offscreen;
+        background-color: #d2805f;
+        border: 0;
+        border-radius: 2em;
+        margin: 0 0 0 -1.25em;
+        padding: 0 0.75em;
+        img {
+            height: 1.4em;
+            vertical-align: middle;
+        }
     }
 }
 
-/* Firefox media query: temporary fix for search box position */
-@-moz-document url-prefix() {
-    header #search {
-        top: 11px;
-    }
-}
 
 /* Main content */
 
 .content {
     padding: 0;
-    @include container-div;
-}
-#home .content {
-    padding: 8px 0 0;
     @include container-div;
 }
 .content #main {
@@ -422,6 +405,7 @@ header #search {
     }
     &.no-sidebar #main {
         background: none;
+        clear: both;
         float: none;
         min-height: 0;
         padding-left: 0;
@@ -507,18 +491,22 @@ a.get-help-btn {
 
 .footer {
     background: $footer-background-color;
+    /* Make footer color continue to bottom on short pages. */
+    box-shadow: 0 50vh 0 50vh $footer-background-color;
     clear: both;
-    height: 140px;
+    font-size: 10px;
+    min-height: 140px;
     position: relative;
     width: 100%;
 }
 .footer__container {
     @include container-div-styles;
+
+    display: flex;
 }
 .footer__copyright,
 .footer__address,
 .footer__nsf-note {
-    font-size: 9px;
     margin: 0 0 10px 0;
 }
 .footer__address {
@@ -527,21 +515,18 @@ a.get-help-btn {
 }
 .footer__site-name {
     font-family: $body-font;
-    font-size: 11px;
+    font-size: 12px;
     margin: 0 0 0.5rem;
 }
 .footer__publisher,
 .footer__navigation {
-    float: left;
     margin: 0 20px 0 0;
     padding: 18px 0;
-    width: 305px;
 }
 .footer__navigation {
     padding-left: 10px;
 }
 .footer__navigation-list {
-    font-size: 9px;
     list-style-type: none;
     margin-bottom: 12px;
 }
@@ -564,8 +549,8 @@ a.get-help-btn {
 }
 .footer__nsf-logo {
     float: left;
-    margin: 0 10px;
-    width: 40px;
+    margin: 0.3em 5% 0 0;
+    width: 3em;
 }
 
 
@@ -576,10 +561,15 @@ a.get-help-btn {
     font-size: 0.9rem;
     margin: 0 0 6px;
 }
+#breadcrumb ul {
+    display: flex;
+    flex-wrap: wrap;
+    white-space: nowrap;
+}
 #breadcrumb li {
-    display: inline-block;
     list-style-type: none;
     margin-bottom: 8px;
+    margin-right: 4px;
     &::after {
         color: $medium-brown;
         content: ' >';
@@ -606,8 +596,8 @@ a.get-help-btn {
 .img-gallery {
     float: left;
 	margin: 0 10px 0 0;	
-	position: relative;
-	width: 244px;
+    position: relative;
+    width: 244px;
     @include user-select(none);
 }
 .img-gallery .img-container {
@@ -628,7 +618,7 @@ a.get-help-btn {
 .img-gallery .images {
     clear: both;
     margin: 0;
-    padding: 0;	
+    padding: 0;
     position: absolute;
     width: 12000px;
     > * {
@@ -638,12 +628,12 @@ a.get-help-btn {
 }
 .img-gallery .controls {
     margin: 8px 0 12px 0;
-    text-align: center;	
+    text-align: center;
     a {
         cursor: pointer;
         display: inline-block;
         height: 32px;
-        text-indent: -9000px;	
+        text-indent: -9000px;
         width: 32px;
         &.next {
             background: url(/static/images/icons/next-larger.png) 0 0 no-repeat transparent;	
@@ -939,17 +929,6 @@ input.suggest + div li {
     }
     span {
         font-weight: normal;
-    }
-}
-/* Adjustments for site search box */
-header nav #search input {
-    padding-left: 4px;
-    width: 215px;
-}
-#search-suggest + div {
-    width: 253px !important;  /* widen a bit, beneath wide orange button */
-    li {
-        width: 247px;
     }
 }
 

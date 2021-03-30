@@ -4,15 +4,20 @@
         <div class="container">
             {% if page == "home" %}
                 <div class="id">
-                    <h1>{% block home_page_main_heading %}Go Botany: Native Plant Trust{% endblock %}</h1>
+                    <h1>{% block home_page_main_heading %}<img
+                        src="/static/images/layout/npt-gb-logo-home.svg"
+                        alt="Native Plant Trust: Go Botany">{% endblock %}</h1>
                     <p class="tagline">Discover thousands of New England plants</p>
                 </div>
                 {% block home_page_partner_site_name_tagline %}{% endblock %}
             {% else %}
-                <p class="go-botany"
-                >{% nav_item 'Go Botany: Native Plant Trust' site-home %}
-                <span class="tagline">Discover thousands of New England plants</span>
-                </p>
+                <p class="go-botany">
+                    <a href="/"><img
+                        src="/static/images/layout/npt-gb-logo.svg"
+                        alt="Native Plant Trust: Go Botany"></a>
+                    <span class="tagline">Discover thousands of New England
+                        plants</span>
+                    </p>
                 {% block partner_site_name_tagline %}{% endblock %}
             {% endif %}
             <nav>
@@ -32,7 +37,10 @@
                             class="suggest"
                             data-suggest-url="{% url 'site-search-suggestions' %}?q=%s"
                             data-submit-on-select="true">
-                        <button type="submit">Search</button>
+                        <button type="submit" aria-label="Search">
+                            <img src="/static/images/icons/gb-search-icon.svg"
+                                alt="">
+                        </button>
                     </form>
                 </div>
                 {% endblock %}

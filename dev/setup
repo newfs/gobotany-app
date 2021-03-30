@@ -10,18 +10,14 @@ cd $(dirname ${BASH_SOURCE[0]})
 
 rm -rf ./venv
 
-python3.8 virtualenv.py --distribute --unzip-setuptools \
-    --system-site-packages ./venv
+python3.8 -m venv --system-site-packages ./venv
 
 # Install a dependency for Haystack, setuptools_scm, because
 # setuptools_scm is not detected properly if installed along with
 # the other the packages. Also, setuptools_scm requires a recent
-# version of setuptools, which in turn requires uninstalling the
-# old, related distribute package that is still in use for setting
-# up the virtual environment.
-./venv/bin/pip uninstall distribute --yes
-./venv/bin/pip install setuptools==41.2.0
-./venv/bin/pip install setuptools_scm==2.1.0
+# version of setuptools.
+./venv/bin/pip install setuptools==50.3.2
+./venv/bin/pip install setuptools_scm==4.1.2
 
 # Install the rest of the packages.
 

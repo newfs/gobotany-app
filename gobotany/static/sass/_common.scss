@@ -71,7 +71,7 @@ $footer-background-color: $bright-green;
 $login-box-background-color: #d3eaad;
 
 $base-font-size: 12px;
-$nav-font-size: 14px;
+$nav-font-size: 1.166666em;
 
 $text-line-height: 160%;
 
@@ -203,9 +203,9 @@ $disabled_orange_gradient: linear-gradient(
     border-bottom-color: $body_bg;
     content: "";
     height: 0;
-    left: calc(50% - 10px); /* calc not fully supported on IE 10-11 */
+    left: calc(50% - 10px);
     position: absolute;
-    top: 14px;
+    top: 0.9em;
     width: 0;
 }
 
@@ -215,9 +215,9 @@ $disabled_orange_gradient: linear-gradient(
     border-bottom-color: #6c9956;
     content: "";
     height: 0;
-    left: calc(50% - 10px); /* calc not fully supported on IE 10-11 */
+    left: calc(50% - 10px);
     position: absolute;
-    top: 14px;
+    top: 0.9em;
     width: 0;
 }
 
@@ -337,15 +337,28 @@ div.popup a {
 
 /* For occasional, temporary donation campaigns: message at top of page */
 #top-message {
+    align-items: center;
     background-color: #d87e54;
     color: #000;
+    display: flex;
     font-family: $body-font;
-    font-size: 12px;
+    font-size: 1.1em;
+    justify-content: space-between;
     margin: 0;
-    padding: 12px 24px;
+    padding: 0.7em 1.8em;
 }
 #top-message p {
     line-height: 150%;
+}
+#top-message p b {
+    margin-right: 1em;
+}
+#top-message .controls {
+    align-items: center;
+    display: flex;
+}
+#top-message form {
+    margin: 0.4em 2em;
 }
 #top-message button {
     border: 1px solid gray;
@@ -353,28 +366,34 @@ div.popup a {
     cursor: pointer;
     float: right;
     font-family: ScalaSans, $body-font;
-    font-size: 14px;
+    font-size: 1.2em;
     font-weight: bold;
     letter-spacing: 1px;
-    margin-right: 45px;
-    margin-top: -38px;
-    padding: 10px 10px 6px;
+    padding: 0.6em 0.7em 0.4em;
     text-transform: uppercase;
 }
-#top-message svg {
-    cursor: pointer;
-    float: right;
-    margin-right: 4px;
-    margin-top: -30px;
+#top-message a {
+    color: #000;
+    font-size: 1.2em;
+    font-weight: bold;
+    padding: 1em 0;
+    text-align: center;
+    width: 2em;
 }
-@media only screen and (max-width: 980px) {
+@media only screen and (max-width: 600px) {
+    #top-message {
+        flex-direction: column;
+        padding: 1em 1.5em 0.4em;
+    }
     #top-message p {
-        margin: 0 0 1rem;
+        margin-bottom: 0.5em;
+        margin-top: 0;
     }
-    #top-message button {
-        float: none;
+    #top-message .controls {
+        justify-content: space-between;
+        width: 100%;
     }
-    #top-message svg {
-        margin-top: -27px;
+    #top-message form {
+        margin-left: 0;
     }
 }

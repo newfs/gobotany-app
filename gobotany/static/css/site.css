@@ -121,17 +121,24 @@ div.popup a:hover, div.popup a:focus { text-decoration: underline; }
 div.popup a:hover { color: #27610a; }
 
 /* For occasional, temporary donation campaigns: message at top of page */
-#top-message { background-color: #d87e54; color: #000; font-family: Verdana, Geneva, "Lucida Sans Unicode", sans-serif; font-size: 12px; margin: 0; padding: 12px 24px; }
+#top-message { align-items: center; background-color: #d87e54; color: #000; display: flex; font-family: Verdana, Geneva, "Lucida Sans Unicode", sans-serif; font-size: 1.1em; justify-content: space-between; margin: 0; padding: 0.7em 1.8em; }
 
 #top-message p { line-height: 150%; }
 
-#top-message button { border: 1px solid gray; border-radius: 6px; cursor: pointer; float: right; font-family: ScalaSans, Verdana, Geneva, "Lucida Sans Unicode", sans-serif; font-size: 14px; font-weight: bold; letter-spacing: 1px; margin-right: 45px; margin-top: -38px; padding: 10px 10px 6px; text-transform: uppercase; }
+#top-message p b { margin-right: 1em; }
 
-#top-message svg { cursor: pointer; float: right; margin-right: 4px; margin-top: -30px; }
+#top-message .controls { align-items: center; display: flex; }
 
-@media only screen and (max-width: 980px) { #top-message p { margin: 0 0 1rem; }
-  #top-message button { float: none; }
-  #top-message svg { margin-top: -27px; } }
+#top-message form { margin: 0.4em 2em; }
+
+#top-message button { border: 1px solid gray; border-radius: 6px; cursor: pointer; float: right; font-family: ScalaSans, Verdana, Geneva, "Lucida Sans Unicode", sans-serif; font-size: 1.2em; font-weight: bold; letter-spacing: 1px; padding: 0.6em 0.7em 0.4em; text-transform: uppercase; }
+
+#top-message a { color: #000; font-size: 1.2em; font-weight: bold; padding: 1em 0; text-align: center; width: 2em; }
+
+@media only screen and (max-width: 600px) { #top-message { flex-direction: column; padding: 1em 1.5em 0.4em; }
+  #top-message p { margin-bottom: 0.5em; margin-top: 0; }
+  #top-message .controls { justify-content: space-between; width: 100%; }
+  #top-message form { margin-left: 0; } }
 /* Site-wide styles */
 body { background-color: #f8eeda; color: #000; font-family: Verdana, Geneva, "Lucida Sans Unicode", sans-serif; font-size: 12px; margin: 0; }
 
@@ -188,19 +195,19 @@ p.meta + p { margin-top: 2px; }
 
 /* Navigation highlighting */
 /* Global navigation (header) */
-body#home header nav li.home:after { /* For use on active nav item, with :after */ border: 10px solid transparent; border-bottom-color: #6c9956; content: ""; height: 0; left: calc(50% - 10px); /* calc not fully supported on IE 10-11 */ position: absolute; top: 14px; width: 0; }
+body#home header nav li.home:after { /* For use on active nav item, with :after */ border: 10px solid transparent; border-bottom-color: #6c9956; content: ""; height: 0; left: calc(50% - 10px); position: absolute; top: 0.9em; width: 0; }
 
-body.simple header nav li.simple:after { /* For use on active nav item, with :after */ border: 10px solid transparent; border-bottom-color: #f8eeda; content: ""; height: 0; left: calc(50% - 10px); /* calc not fully supported on IE 10-11 */ position: absolute; top: 14px; width: 0; }
+body.simple header nav li.simple:after { /* For use on active nav item, with :after */ border: 10px solid transparent; border-bottom-color: #f8eeda; content: ""; height: 0; left: calc(50% - 10px); position: absolute; top: 0.9em; width: 0; }
 
-body.plantshare header nav li.plantshare:after { /* For use on active nav item, with :after */ border: 10px solid transparent; border-bottom-color: #f8eeda; content: ""; height: 0; left: calc(50% - 10px); /* calc not fully supported on IE 10-11 */ position: absolute; top: 14px; width: 0; }
+body.plantshare header nav li.plantshare:after { /* For use on active nav item, with :after */ border: 10px solid transparent; border-bottom-color: #f8eeda; content: ""; height: 0; left: calc(50% - 10px); position: absolute; top: 0.9em; width: 0; }
 
-body.full header nav li.full:after { /* For use on active nav item, with :after */ border: 10px solid transparent; border-bottom-color: #f8eeda; content: ""; height: 0; left: calc(50% - 10px); /* calc not fully supported on IE 10-11 */ position: absolute; top: 14px; width: 0; }
+body.full header nav li.full:after { /* For use on active nav item, with :after */ border: 10px solid transparent; border-bottom-color: #f8eeda; content: ""; height: 0; left: calc(50% - 10px); position: absolute; top: 0.9em; width: 0; }
 
-body.dkey header nav li.dkey:after { /* For use on active nav item, with :after */ border: 10px solid transparent; border-bottom-color: #f8eeda; content: ""; height: 0; left: calc(50% - 10px); /* calc not fully supported on IE 10-11 */ position: absolute; top: 14px; width: 0; }
+body.dkey header nav li.dkey:after { /* For use on active nav item, with :after */ border: 10px solid transparent; border-bottom-color: #f8eeda; content: ""; height: 0; left: calc(50% - 10px); position: absolute; top: 0.9em; width: 0; }
 
-body.teaching header nav li.teaching:after { /* For use on active nav item, with :after */ border: 10px solid transparent; border-bottom-color: #f8eeda; content: ""; height: 0; left: calc(50% - 10px); /* calc not fully supported on IE 10-11 */ position: absolute; top: 14px; width: 0; }
+body.teaching header nav li.teaching:after { /* For use on active nav item, with :after */ border: 10px solid transparent; border-bottom-color: #f8eeda; content: ""; height: 0; left: calc(50% - 10px); position: absolute; top: 0.9em; width: 0; }
 
-body.help header nav li.help:after { /* For use on active nav item, with :after */ border: 10px solid transparent; border-bottom-color: #f8eeda; content: ""; height: 0; left: calc(50% - 10px); /* calc not fully supported on IE 10-11 */ position: absolute; top: 14px; width: 0; }
+body.help header nav li.help:after { /* For use on active nav item, with :after */ border: 10px solid transparent; border-bottom-color: #f8eeda; content: ""; height: 0; left: calc(50% - 10px); position: absolute; top: 0.9em; width: 0; }
 
 /* Section navigation (sidebar, only in some sections) */
 body.help #sidebar nav, body.plantshare #sidebar nav { /* Place "you are here" marker next to a non-linked item. This is the top level of each sub-section. */ /* Show future nav. items that do not have a URL yet in gray. */ }
@@ -218,45 +225,40 @@ body.help#glossary #sidebar .glossary a::before, body.help#fullkey-placeholder #
 body.plantshare#sightings #sidebar .sightings a::before, body.plantshare#sighting #sidebar .sightings a::before, body.plantshare#edit-sighting #sidebar .manage-sightings a::before, body.plantshare#questions #sidebar .ask a::before, body.plantshare#checklist #sidebar .checklists a::before, body.plantshare#new-checklist #sidebar .checklists a::before, body.plantshare#edit-checklist #sidebar .checklists a::before, body.plantshare#change-password #sidebar .profile a::before, body.plantshare#password-changed #sidebar .profile a::before, body.plantshare#change-email-address #sidebar .profile a::before, body.plantshare#change-email-sent-confirmation #sidebar .profile a::before, body.plantshare#confirm-email #sidebar .profile a::before { color: #000; content: "\25b8"; margin-left: -14px; padding-bottom: 5px; padding-right: 5px; }
 
 /* Header */
-header { height: 120px; }
 header .container { margin: 0 auto; padding: 0 10px; width: 960px; }
 header p { margin: 0; }
 
-header .go-botany { float: left; height: 54px; margin: 0; padding: 18px 0 0 0; position: relative; width: 424px; z-index: 5; }
-header .go-botany a { background: url(/static/images/layout/npt-gb-logo.svg) no-repeat transparent; background-size: 150px 48px; height: 48px; width: 150px; display: block; text-indent: -9000px; }
-header .go-botany .tagline { color: #467321; float: right; font-family: Basetica, sans-serif; font-size: 13px; margin: -19px 0 0 0; padding: 4px 0 0; }
+header .go-botany { align-items: baseline; display: flex; margin: 1.5em 0 0.8em; padding: 0; position: relative; z-index: 5; }
+header .go-botany a { margin-right: 1.2em; width: 12.5em; }
+header .go-botany .tagline { bottom: 0; color: #467321; font-family: Basetica, sans-serif; font-size: 1.07em; position: absolute; left: 13em; }
 
-header nav { background: url(/static/images/layout/nav-app-npt.png) no-repeat; background-position: 0px 79px; font-family: "Trebuchet MS", Helvetica, Arial, "Lucida Sans Unicode", sans-serif; height: 120px; padding: 0 0 0 16px; position: relative; }
-header nav > ul { font-family: Basetica, "Trebuchet MS", sans-serif; }
-header nav a { color: #fff; display: block; height: 35px; padding: 5px 8px 0; }
+header nav { align-items: center; background-color: #17555b; border-radius: 2em; display: flex; font-family: "Trebuchet MS", Helvetica, Arial, "Lucida Sans Unicode", sans-serif; justify-content: space-between; margin-bottom: 1em; padding-right: 0.3em; }
+header nav a { color: #fff; display: inline-block; padding: 5px 8px 4px; }
 header nav a:visited, header nav a:not([href]) { color: #fff; }
 header nav > a { display: none; /* Omit the 'sections' link by default */ }
-header nav ul { clear: both; margin-top: 7px; }
-header nav li { display: block; float: left; font-size: 14px; margin: 7px 10px 0 0; padding: 0; position: relative; }
-header nav li a:hover { text-decoration: none; }
+header nav > ul { font-family: Basetica, "Trebuchet MS", sans-serif; list-style-type: none; padding-left: 1rem; }
+header nav > ul li { display: block; float: left; font-size: 1.16667em; line-height: 1.25em; margin: 0 10px 0 0; /* px here to help save space on zoom */ padding: 0.05em 0 0; position: relative; white-space: nowrap; }
+header nav > ul li:last-child { margin-right: 0; }
+header nav > ul li a:hover { text-decoration: none; }
+header nav .suggester-menu { font-size: 1.16667em; margin-top: 1.5em; margin-left: 0.3em; }
 header nav .suggester-menu ul { margin-top: 0; }
 
-header #search { background: #fff url(/static/images/layout/search-left.png) left center no-repeat; float: right; height: 20px; margin: 0; padding: 0 0 0 11px; position: relative; right: 4px; top: 4px; }
-header #search form { display: block; margin: 0; padding: 0; width: 262px; }
-header #search input { background: #fff; border: 0; float: left; font-family: "Trebuchet MS", Helvetica, Arial, "Lucida Sans Unicode", sans-serif; font-size: 14px; height: 20px; margin: 0; padding: 0; width: 219px; }
-header #search input:focus { outline: none; }
-header #search button { background: #27610a url(/static/images/layout/search-btn.png) 0 0 no-repeat; border: none; cursor: pointer; float: right; height: 20px; margin: 0; outline: none; padding: 0; width: 42px; display: block; text-indent: -9000px; }
+header #search { margin: 0; padding: 0; }
+header #search form { display: flex; margin: 0; padding: 0; }
+header #search input { background: #fff; border: 0; border-radius: 1em; font-family: "Trebuchet MS", Helvetica, Arial, "Lucida Sans Unicode", sans-serif; font-size: 1.16667em; height: 1.4em; margin: 0; padding: 0 0.5em; width: 247px; /* keep search from becoming too wide on zoom */ }
+header #search button { background-color: #d2805f; border: 0; border-radius: 2em; margin: 0 0 0 -1.25em; padding: 0 0.75em; }
+header #search button img { height: 1.4em; vertical-align: middle; }
 
-/* Firefox media query: temporary fix for search box position */
-@-moz-document url-prefix() { header #search { top: 11px; } }
 /* Main content */
 .content { padding: 0; }
 .content .container { margin: 0 auto; padding: 0 10px; width: 960px; }
-
-#home .content { padding: 8px 0 0; }
-#home .content .container { margin: 0 auto; padding: 0 10px; width: 960px; }
 
 .content #main { background: url(/static/images/layout/sidebar-bg.png) repeat-y; float: right; min-height: 575px; padding-bottom: 24px; padding-left: 250px; width: 710px; }
 .content #main .smallscreen-anchor-nav { display: none; }
 
 .content .container.free-sidebar #main { background: none; }
 .content .container.free-sidebar #sidebar { border-top: 0; height: auto; padding: 0; }
-.content .container.no-sidebar #main { background: none; float: none; min-height: 0; padding-left: 0; width: auto; }
+.content .container.no-sidebar #main { background: none; clear: both; float: none; min-height: 0; padding-left: 0; width: auto; }
 
 /* Sidebar (usually in a #sidebar section, but sometimes not, being arranged by floating and positioning content) */
 #sidebar { border-top: 1px solid #c3d941; float: left; height: 100%; margin-right: -230px; padding: 16px 0 0; width: 230px; }
@@ -284,21 +286,21 @@ header #search button { background: #27610a url(/static/images/layout/search-btn
 a.get-help-btn { margin: 10px 0 20px; }
 
 /* Footer */
-.footer { background: #a7da7e; clear: both; height: 140px; position: relative; width: 100%; }
+.footer { background: #a7da7e; /* Make footer color continue to bottom on short pages. */ box-shadow: 0 50vh 0 50vh #a7da7e; clear: both; font-size: 10px; min-height: 140px; position: relative; width: 100%; }
 
-.footer__container { margin: 0 auto; padding: 0 10px; width: 960px; }
+.footer__container { margin: 0 auto; padding: 0 10px; width: 960px; display: flex; }
 
-.footer__copyright, .footer__address, .footer__nsf-note { font-size: 9px; margin: 0 0 10px 0; }
+.footer__copyright, .footer__address, .footer__nsf-note { margin: 0 0 10px 0; }
 
 .footer__address { font-style: normal; line-height: 160%; }
 
-.footer__site-name { font-family: Verdana, Geneva, "Lucida Sans Unicode", sans-serif; font-size: 11px; margin: 0 0 0.5rem; }
+.footer__site-name { font-family: Verdana, Geneva, "Lucida Sans Unicode", sans-serif; font-size: 12px; margin: 0 0 0.5rem; }
 
-.footer__publisher, .footer__navigation { float: left; margin: 0 20px 0 0; padding: 18px 0; width: 305px; }
+.footer__publisher, .footer__navigation { margin: 0 20px 0 0; padding: 18px 0; }
 
 .footer__navigation { padding-left: 10px; }
 
-.footer__navigation-list { font-size: 9px; list-style-type: none; margin-bottom: 12px; }
+.footer__navigation-list { list-style-type: none; margin-bottom: 12px; }
 
 .footer__navigation-list-item { display: inline; line-height: 14px; }
 
@@ -310,12 +312,14 @@ a.get-help-btn { margin: 10px 0 20px; }
 
 .footer__support { margin-right: 0; padding: 18px 0; }
 
-.footer__nsf-logo { float: left; margin: 0 10px; width: 40px; }
+.footer__nsf-logo { float: left; margin: 0.3em 5% 0 0; width: 3em; }
 
 /* Breadcrumb trails */
 #breadcrumb { color: #000; font-family: "Trebuchet MS", Helvetica, Arial, "Lucida Sans Unicode", sans-serif; font-size: 0.9rem; margin: 0 0 6px; }
 
-#breadcrumb li { display: inline-block; list-style-type: none; margin-bottom: 8px; }
+#breadcrumb ul { display: flex; flex-wrap: wrap; white-space: nowrap; }
+
+#breadcrumb li { list-style-type: none; margin-bottom: 8px; margin-right: 4px; }
 #breadcrumb li::after { color: #7a6f1f; content: ' >'; }
 #breadcrumb li:first-of-type::after, #breadcrumb li:last-of-type::after { content: none; }
 
@@ -418,12 +422,6 @@ input.suggest + div li { clear: both; font-weight: bold; list-style-type: none; 
 input.suggest + div li.selected { background-color: #defcb3; }
 input.suggest + div li span { font-weight: normal; }
 
-/* Adjustments for site search box */
-header nav #search input { padding-left: 4px; width: 215px; }
-
-#search-suggest + div { width: 253px !important; /* widen a bit, beneath wide orange button */ }
-#search-suggest + div li { width: 247px; }
-
 /* Teaching page */
 body.teaching h3 { margin-bottom: 0.5rem; }
 body.teaching #main li { list-style-type: none; }
@@ -443,21 +441,16 @@ table.list th td:first-child { font-family: "Trebuchet MS", Helvetica, Arial, "L
 /* Home */
 #home { background-color: #f8eeda; background-image: url(/static/images/layout/body-home.png); background-position: left 0px top; background-repeat: repeat-x; }
 
-#home header { height: 126px; }
+#home .id { display: flex; padding: 1.5em 0 0; position: relative; }
 
-#home .id { float: left; width: 516px; }
+#home h1 { font-weight: unset; margin: 0; }
+#home h1 img { width: 7.7em; }
 
-#home h1 { background: url(/static/images/layout/npt-gb-logo-home.svg) no-repeat transparent; background-size: 220px 80px; height: 80px; margin: 12px 0 2px; width: 220px; display: block; text-indent: -9000px; }
-
-#home .tagline { color: #fff; float: right; font-family: Basetica, sans-serif; font-size: 14px; margin: -24px 0 0; }
+#home .tagline { bottom: 0.6em; color: #fff; font-family: Basetica, sans-serif; font-size: 1.15em; left: 17.2em; line-height: 120%; margin: 0; position: absolute; }
 
 #home .newfs { padding-top: 13px; }
 
 #home .newfs a { background: url(/static/images/layout/npt-logo-stacked.svg) no-repeat transparent; background-size: 160px 88px; filter: brightness(0.9); /* make the contrast meet WCAG AA large text/graphics */ height: 88px; width: 160px; }
-
-#home nav { background: url(/static/images/layout/nav-app-npt.png) no-repeat; background-position: 0px 101px; height: 160px; padding: 0 0 0 19px; }
-#home nav li { margin-right: 10px; }
-#home nav li a:hover { text-decoration: none; }
 
 #search-suggest .menu { top: 133px; }
 
@@ -521,9 +514,9 @@ a.subscribe:active { background-position: 0 -32px; }
 @media only screen and (max-width: 600px) { #home .content { margin-top: 0; padding-top: 0; }
   #home .content .container { padding: 0; }
   #home header { height: 106px; }
-  #home header h1 { background-position: 0 0; background-size: 120px 40px; height: 40px; margin-left: 0; width: 120px; }
-  #home header .id { float: none; padding-left: 10px; width: auto; }
-  #home header .tagline { float: none; margin: 0; }
+  #home header h1 { height: 40px; margin-left: 0; width: 120px; }
+  #home header .id { padding: 0.7em 0 0.7em 10px; width: auto; }
+  #home header .tagline { bottom: 0.4em; font-size: 0.9em; left: 15em; margin: 0; padding-right: 2em; /* keep 'New England' one line when narrow */ }
   #home header nav { background: #21555c; height: 32px; padding-left: 0; }
   #home header nav > a:hover { text-decoration: none; }
   #home #banner { margin: 0; position: relative; }
@@ -611,7 +604,7 @@ body#genus p.family { font-size: 14px; margin: 0; }
 
 body#species #main { background: url(/static/images/layout/sidebar-bg.png) repeat-y; }
 
-body#species #main .common { font-family: Basetica, "Trebuchet MS", Helvetica, Arial, "Lucida Sans Unicode", sans-serif; font-size: 1.6rem; margin: 1.6rem 0; }
+body.taxa #main .common { font-family: Basetica, "Trebuchet MS", Helvetica, Arial, "Lucida Sans Unicode", sans-serif; font-size: 1.6rem; margin: 1.6rem 0; }
 
 body#species #main { /* layout: right-side content sections */ }
 body#species #main #breadcrumb, body#species #main #name, body#species #main .img-gallery, body#species #main #images-note, body#species #main #partner, body#species #main #facts, body#species #main #habitat, body#species #main #chars, body#species #main #wetland, body#species #main #status, body#species #main #info-dkey { clear: left; margin-left: 250px; }
@@ -624,7 +617,7 @@ body#species .section p { margin-bottom: 0; }
 body#species #maps, body#species #side { position: absolute; }
 body#species #maps h2, body#species #side h2 { font-size: 15px; margin: 0 0 4px 0; }
 
-body#species #maps { border-top: 1px solid #c3d941; top: 128px; }
+body#species #maps { background-color: #fff; border-left: 1px solid #c3d941; border-right: 1px solid #c3d941; border-top: 1px solid #c3d941; top: 128px; }
 
 body#species .namap { padding-top: 0; }
 
@@ -635,7 +628,7 @@ body#species .found-plant { background-color: #f8eeda; font-size: 12px; line-hei
 /* space maps enough away from text atop them */
 body#species #main .nemap h2 + p, body#species #main .namap h2 + p { margin: 0; padding-bottom: 8px; }
 
-body#species #side { top: 780px; /* remaining side content is positioned further down to leave room for maps in full-width layout */ }
+body#species #side { top: 790px; /* remaining side content is positioned further down to leave room for maps in full-width layout */ }
 
 body#species #side dt, body#species #side dd { display: inline-block; }
 
@@ -1209,6 +1202,7 @@ body.plantshare #find-people-form input[type='text'] { background: transparent u
 body.plantshare #find-people-form input[type='submit'] { background: transparent url(../images/layout/plantshare-btns.png) no-repeat -380px -4px; border: 0 none; display: block; float: left; height: 22px; padding: 0; text-indent: -9999px; width: 40px; }
 body.plantshare #find-people-form input:focus { outline: 0 none; }
 body.plantshare #find-people-form + p { clear: left; padding-top: 14px; }
+body.plantshare #find-people-form .suggester-menu { margin-left: 10px; margin-top: 22px; }
 
 body.plantshare#find-people-profile { background: none; }
 body.plantshare#find-people-profile div { background: #fff; border: 5px solid #acac90; height: 185px; padding: 0 16px 0 0; }
@@ -1235,6 +1229,7 @@ body.plantshare #sightings-locator input[type='submit'] { background: transparen
 body.plantshare #sightings-locator input:focus { outline: 0 none; }
 body.plantshare #sightings-locator input + div { font-size: 11px; }
 body.plantshare #sightings-locator .map { clear: left; margin-top: 36px; }
+body.plantshare #sightings-locator .suggester-menu { margin-left: 170px; margin-top: 21px; }
 
 body.plantshare #sightings-locator.mini { clear: both; margin-top: 20px; }
 body.plantshare #sightings-locator.mini .box { font-size: 11px; height: 297px; padding: 0 0 0 10px; }
@@ -1245,11 +1240,13 @@ body.plantshare #sightings-locator.mini .box form p { line-height: 14px; margin:
 body.plantshare #sightings-locator.mini .box form p#sightings-status { margin-left: -1000px; /* hide until JS shows it */ padding: 65px 0 0; }
 body.plantshare #sightings-locator.mini .box form p.full-link { margin-top: 10px; }
 body.plantshare #sightings-locator.mini .box .map { clear: none; border-bottom: 0; border-right: 0; border-top: 0; float: right; margin-top: 0; padding: 0; }
+body.plantshare #sightings-locator.mini .suggester-menu { margin-left: 8px; margin-top: 54px; }
 
 /* end .mini */
 body.plantshare#new-sighting h1 + div { background: #fff; border: 1px solid #c3d941; margin-bottom: 16px; padding: 5px 16px; width: 654px; }
 
 body.plantshare#new-sighting #id_identification, body.plantshare#new-sighting .restricted, body.plantshare#edit-sighting #id_identification, body.plantshare#edit-sighting .restricted { display: inline-block; }
+body.plantshare#new-sighting .content .suggester-menu, body.plantshare#edit-sighting .content .suggester-menu { margin-top: -10px; }
 body.plantshare#new-sighting .images, body.plantshare#edit-sighting .images { margin-top: 10px; }
 body.plantshare#new-sighting .restricted, body.plantshare#edit-sighting .restricted { margin-left: 14px; }
 body.plantshare#new-sighting .restricted-dialog, body.plantshare#edit-sighting .restricted-dialog { background: #fff; color: #000; padding: 20px; height: auto; width: auto; }
@@ -1516,6 +1513,7 @@ body.plantshare#screen-images div.form-control { margin: 0 30px; }
   body.plantshare .profile { margin-top: 10px; width: auto; }
   body.plantshare .profile a.edit { margin-top: 8px; }
   body.plantshare .profile div { height: auto; }
+  body.plantshare #sightings-locator .suggester-menu { margin-left: 10px; margin-top: 51px; }
   body.plantshare #sightings-locator.mini .box { height: 424px; width: auto; }
   body.plantshare #sightings-locator.mini .box h4, body.plantshare #sightings-locator.mini .box h4 + p { display: none; }
   body.plantshare #sightings-locator.mini .box form { padding: 0 10px 0 0; width: auto; }
@@ -1604,7 +1602,7 @@ body.plantshare#screen-images div.form-control { margin: 0 30px; }
 #dkey p.figure img { width: 16em; /* force thumbnails to a consistent width */ }
 #dkey p.figure .number { font-weight: bold; margin-right: 0.5em; }
 
-#dkey p.backlinks { margin-top: 0.57143em; margin-bottom: 0.64286em; font-size: 14px; }
+#dkey p.backlinks { margin-top: 0.57143em; margin-bottom: 0.64286em; font-size: 1.16667em; }
 #dkey p.backlinks a { text-decoration: none; margin-right: 0.5em; color: #519136; font-family: "Trebuchet MS", Helvetica, Arial, "Lucida Sans Unicode", sans-serif; }
 #dkey p.backlinks a:hover, #dkey p.backlinks a:focus { text-decoration: underline; }
 
@@ -1774,11 +1772,9 @@ body.search-results h1 + p { margin-top: 12px; }
 #advanced-id #main .dk-landing-section > a { bottom: 10px; margin: 0 0 0 20px; position: absolute; width: 235px; }
 
 /* System Requirements */
-#system-requirements #main p + div { background-image: url(/static/images/layout/screen-desktop-laptop.svg); background-position: top 9px left; background-repeat: no-repeat; background-size: 173px 121px; }
-#system-requirements #main div + div { background-image: url(/static/images/layout/screen-tablet.svg), url(/static/images/layout/screen-smartphone.svg); background-position: top 9px left 20px, top 9px left 122px; background-repeat: no-repeat, no-repeat; background-size: 74px 98px, 30px 57px; }
-#system-requirements #main p + div, #system-requirements #main div + div { padding-left: 200px; }
-#system-requirements #main div + div, #system-requirements #main div + h2 { clear: left; }
-#system-requirements #main div + h2 { padding-top: 10px; }
+#system-requirements #main .desktop { float: left; padding: 10px 25px 10px 0; width: 160px; }
+#system-requirements #main .tablet { float: left; padding: 12px 10px 48px 20px; width: 70px; }
+#system-requirements #main .smartphone { float: left; padding: 12px 40px 83px 15px; vertical-align: top; width: 30px; }
 
 /* Video Help Topics */
 #video .video-topic { float: left; height: 176px; margin: 10px 16px 10px 0; position: relative; width: 220px; }
@@ -1818,9 +1814,6 @@ body.search-results h1 + p { margin-top: 12px; }
 @media only screen and (max-width: 400px) { #about #main > img { width: 57%; }
   #about #main img.bookcover { width: auto; }
   #advanced-map #group-section { height: 600px; }
-  #system-requirements #main p + div, #system-requirements #main div + div { padding-left: 0; }
-  #system-requirements #main p + div { padding-top: 135px; }
-  #system-requirements #main div + div { padding-top: 115px; }
   #glossary #alphabet { height: 99px; } }
 /* Landscape-orientation styles */
 @media only screen and (min-width: 401px) and (max-width: 600px) { #advanced-map #group-section { height: 400px; }
@@ -1842,6 +1835,9 @@ body.search-results h1 + p { margin-top: 12px; }
   #glossary #terms img { padding-left: 2px; }
   #glossary #terms dt { border-top: 0; clear: none; float: none; font-weight: bold; padding-bottom: 0; width: auto; }
   #glossary #terms dd { border-top: 0; margin: 0; padding: 0 5px 10px 39px; }
+  #system-requirements #main .desktop { padding: 10px 20px 10px 5px; width: 80px; }
+  #system-requirements #main .tablet { padding: 12px 8px 14px 10px; width: 35px; }
+  #system-requirements #main .smartphone { padding: 12px 28px 31px 7px; width: 15px; }
   #video .video-topic { margin-right: 12px; }
   #video .video-topic > p { font-size: 14px; }
   #video .missing-image p { margin-left: 0; margin-right: 0; } }
@@ -1910,26 +1906,19 @@ header.partner-site nav li a { padding: 5px 32px 0; /* fewer sections, more hori
 /* Portrait-orientation styles */
 @media only screen and (max-width: 400px) { body, header .container, .content .container { width: 320px; }
   body { padding-top: 110px; }
-  header nav > a { width: 20px; }
   header #search form { width: 242px; }
   header nav #search input { width: 192px; }
-  #search-suggest + div { width: 232px !important; }
-  #search-suggest + div li { width: 226px; }
   #nav { left: 40px; width: 310px; }
   .content #main { width: 304px; }
   .content #sidebar { float: none; width: 302px; }
-  .footer__container { width: 320px; }
-  .footer__navigation-list--secondary { margin-left: 14px; } }
+  .footer__container { width: 320px; } }
 /* Landscape-orientation styles */
 @media only screen and (min-width: 401px) and (max-width: 600px) { html { -webkit-text-size-adjust: none; }
   body { padding-top: 75px; }
   body, header .container, .content .container { width: 480px; }
-  header nav > a { /* small-screen nav. button */ width: 20px; }
-  header nav > a span { position: absolute; }
   .content #main { width: 464px; }
   .content #sidebar { width: 462px; }
-  .footer__container { width: 480px; }
-  .footer__navigation-list--secondary { margin-left: 63px; } }
+  .footer__container { width: 480px; } }
 /* These styles are common to both smartphone widths */
 @media only screen and (max-width: 600px) { body { margin: 0 auto; padding: 0; }
   body#home header nav #search-suggest .menu { top: 83px; }
@@ -1943,14 +1932,14 @@ header.partner-site nav li a { padding: 5px 32px 0; /* fewer sections, more hori
   h2 { font-size: 16px; }
   h3 { font-size: 14px; }
   header { height: 90px; }
-  header nav { background: #21555c; clear: left; height: 32px; padding: 0; }
-  header nav > a { background: #437829; border: 1px solid #437829; border-radius: 5px; display: inline-block; font-size: 14px; height: 24px; line-height: 22px; margin: 3px 0 0 4px; padding: 0 20px 0 6px; position: relative; }
-  header nav #search { margin-top: 2px; padding-left: 10px; }
+  header nav { background: #21555c; border-radius: 0; clear: left; height: 32px; padding: 0; }
+  header nav > a { background: #437829; border: 1px solid #437829; border-radius: 0.3em; display: inline-block; font-size: 1.2em; margin: 0 0.5em; padding: 0.2em 1em; }
+  header nav #search { margin-left: 0.5em; }
   header nav > ul { display: none; /* will use bottom navigation instead of top */ }
   header nav #search-suggest .menu { top: 83px; }
-  header p.go-botany { margin: 0; padding: 0 0 0 8px; width: auto; }
-  header p.go-botany a { background-size: 100px 42px; height: 42px; width: 100px; }
-  header p.go-botany .tagline { display: block; float: none; font-size: 10px; margin: -6px 0 0 0; padding: 0; }
+  header p.go-botany { margin: 0; padding: 0.7em 0 0.4em 8px; width: auto; }
+  header p.go-botany a { background-size: 100px 42px; width: 100px; }
+  header p.go-botany .tagline { bottom: 0.8em; display: block; font-size: 0.8em; left: 12em; line-height: 120%; margin: 0; padding: 0; }
   header .container { padding: 0; }
   .content { padding: 0; }
   .content .container { padding: 0; }
@@ -1959,10 +1948,10 @@ header.partner-site nav li a { padding: 5px 32px 0; /* fewer sections, more hori
   .content #main .smallscreen-anchor-nav a { font-family: "Trebuchet MS", Helvetica, Arial, "Lucida Sans Unicode", sans-serif; font-size: 14px; padding: 8px 0; text-decoration: underline; }
   .content #sidebar { background: #fff; border: 1px solid #c3d941; clear: left; height: auto; margin-left: 8px; margin-right: 8px; }
   .content #sidebar .section { padding-bottom: 16px; }
-  .footer { height: auto; margin: 14px 0 0; }
-  .footer__container { height: auto; padding: 0; }
+  .footer { box-shadow: none; height: auto; margin: 14px 1em 0; }
+  .footer__container { display: block; height: auto; padding: 0; }
   .footer__site-name { margin-left: 14px; }
-  .footer__publisher, .footer__navigation { float: none; margin: 0; padding: 0; width: auto; }
+  .footer__publisher, .footer__navigation { margin: 0; padding: 0; width: auto; }
   .footer__publisher { margin: 14px 0 0 6px; padding: 12px 8px 10px; }
   .footer__navigation { padding-left: 0; }
   .footer__navigation-list-item { display: block; margin: 0 0 1px 0; }
@@ -1970,12 +1959,12 @@ header.partner-site nav li a { padding: 5px 32px 0; /* fewer sections, more hori
   .footer__navigation-list--primary .footer__navigation-list-item a[href] { color: #fff; }
   .footer__navigation-list--primary .footer__navigation-list-item a[href]:after { border-color: #ccc; border-style: solid; border-width: 3px 3px 0 0; content: " \a0"; display: inline-block; height: 6px; position: absolute; right: 14px; top: 16px; vertical-align: middle; width: 6px; -moz-transform: rotate(45deg); -ms-transform: rotate(45deg); -webkit-transform: rotate(45deg); transform: rotate(45deg); }
   .footer__navigation-list-item::after { content: none; }
-  .footer__navigation-list--secondary { display: inline-block; margin-top: 12px; }
-  .footer__navigation-list--secondary .footer__navigation-list-item { display: inline; font-size: 11px; line-height: 14px; margin-right: 32px; }
+  .footer__navigation-list--secondary { display: inline-block; margin-top: 12px; text-align: center; width: 100%; }
+  .footer__navigation-list--secondary .footer__navigation-list-item { display: inline; font-size: 11px; line-height: 14px; margin: 0 0.5em; }
   .footer__navigation-list--secondary .footer__navigation-list-item:after { content: none; }
-  .footer__support { height: 63px; margin: 14px 0 0; padding: 0; width: auto; }
-  .footer__nsf-logo { padding-bottom: 6px; }
-  .footer__nsf-note { padding-right: 10px; padding-top: 14px; }
+  .footer__support { height: 63px; margin: 14px 1em 0; padding: 0; width: auto; }
+  .footer__nsf-logo { margin: 0.5em 1em; padding-bottom: 6px; }
+  .footer__nsf-note { padding-right: 12px; padding-top: 4px; }
   /* Footer navigation: current section, page */
   body#home .footer__navigation-list-item.home a { background-color: #85c446; color: #000; }
   body#home .footer__navigation-list-item.home a::after { border-color: #666; }
@@ -1993,9 +1982,7 @@ header.partner-site nav li a { padding: 5px 32px 0; /* fewer sections, more hori
   body.help .footer__navigation-list-item.help a::after { border-color: #666; }
   .gb-tooltip { width: 200px; }
   #sb-overlay { /* Fix: make the Shadowbox overlay cover the entire background on small screens in iOS. */ height: 120%; }
-  #sb-wrapper { /* Move the Shadowbox image as far as possible to the top of the screen on small screens, so there is room for the navigation controls at bottom. */ margin-top: -55px; }
-  /* Firefox media query: temporary fix for search box position */
-  @-moz-document url-prefix() { header nav #search { margin-top: -5px; } } }
+  #sb-wrapper { /* Move the Shadowbox image as far as possible to the top of the screen on small screens, so there is room for the navigation controls at bottom. */ margin-top: -55px; } }
 /* These styles apply to smartphones and tablets */
 @media only screen and (max-width: 1024px) { table { border-collapse: collapse; } }
 /* End global media queries styles */

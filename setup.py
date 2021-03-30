@@ -2,19 +2,24 @@ from distutils.core import setup
 from setuptools import find_packages
 
 requirements = [
-    'django==2.2.16',
+    'django==2.2.19',
 
-    'Pillow==7.2.0',
-    'bleach==3.1.5',
+    'Pillow==8.1.2',
+    'bleach==3.3.0',
     'cssselect',
-    'django-debug-toolbar==1.5',
+    'django-debug-toolbar==3.2',
     'django-extensions==2.2.1',
-    'django-haystack==2.8.0', # note: versions > 2.7.0 may result in bugs: #717
-    'django-haystack-panel==0.2.1',
+
+    'django-haystack==3.0',
+    # There is now a debug toolbar panel included with Haystack, but
+    # unfortunately as of version 3.0 it needs fixes to work. The old
+    # panel we used, django-haystack-panel, is a retired project and
+    # no longer shows the Haystack queries, so it was removed.
+
     'django-imagekit==4.0.2',
     'django-tinymce==2.6.0',
     'inflect',
-    'lxml==4.4.1',
+    'lxml==4.6.2',
     'psycopg2==2.8.5',
     'python-memcached',
     'pytz',
@@ -23,8 +28,8 @@ requirements = [
 
     # The way we use pysolr introduces an extra dependency
 
-    'pysolr==3.7.0',
-    'beautifulsoup4==4.8.0',
+    'pysolr==3.9.0',
+    'beautifulsoup4==4.9.3',
 
     # Memcached on Heroku
 

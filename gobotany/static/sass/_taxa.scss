@@ -89,7 +89,7 @@ body#genus {
 body#species #main {
     background: url(/static/images/layout/sidebar-bg.png) repeat-y;
 }
-body#species #main .common {
+body.taxa #main .common {
     font-family: Basetica, $headings-font;
     font-size: 1.6rem;
     margin: 1.6rem 0;
@@ -124,6 +124,9 @@ body#species #maps, body#species #side {
     }
 }
 body#species #maps {
+    background-color: #fff;
+    border-left: 1px solid $border-green;
+    border-right: 1px solid $border-green;
     border-top: 1px solid $border-green;
     top: 128px;
 }
@@ -154,7 +157,7 @@ body#species #main .nemap h2 + p, body#species #main .namap h2 + p {
 }
 
 body#species #side {
-    top: 780px;   /* remaining side content is positioned
+    top: 790px;   /* remaining side content is positioned
                      further down to leave room for maps
                      in full-width layout */
 }
