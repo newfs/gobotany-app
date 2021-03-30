@@ -364,10 +364,9 @@ ADMINS = (('Go Botany Dev', 'gobotanydev@newenglandwild.org',
 
 # Force HTTPS (Django 1.8 and later)
 SECURE_SSL_REDIRECT = True
-
-# https://docs.djangoproject.com/en/2.0/ref/settings/#secure-proxy-ssl-header
-# Use SSL
-SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+#
+# For now, this setting evidently is not also needed to redirect to HTTPS.
+SECURE_PROXY_SSL_HEADER = None
 
 if IN_PRODUCTION:
     # https://docs.djangoproject.com/en/1.5/topics/security/#ssl-https
