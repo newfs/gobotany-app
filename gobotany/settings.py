@@ -186,6 +186,7 @@ INSTALLED_APPS = [
                           # Update: also keep commented out for the Django 1.7
                           # upgrade when running: dev/django makemigrations
     ]
+
 MIDDLEWARE = (
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.middleware.gzip.GZipMiddleware',
@@ -200,6 +201,10 @@ MIDDLEWARE = (
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'gobotany.middleware.SmartAppendSlashMiddleware',
 )
+# On Heroku, enable the Security Middleware for http to https redirects, etc.
+if IN_PRODUCTION:
+    MIDDLEWARE = ('django.middleware.security.SecurityMiddleware',) + \
+        MIDDLEWARE
 
 APPEND_SLASH = False
 SMART_APPEND_SLASH = True
