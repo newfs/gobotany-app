@@ -2,7 +2,7 @@ from distutils.core import setup
 from setuptools import find_packages
 
 requirements = [
-    'django==2.2.19',
+    'django==2.2.20',
 
     'Pillow==8.1.2',
     'bleach==3.3.0',
@@ -19,7 +19,7 @@ requirements = [
     'django-imagekit==4.0.2',
     'django-tinymce==2.6.0',
     'inflect',
-    'lxml==4.6.2',
+    'lxml==4.6.3',
     'psycopg2==2.8.5',
     'python-memcached',
     'pytz',
@@ -38,7 +38,7 @@ requirements = [
 
     # Login and registration
 
-    'django-registration==3.1.1',
+    'django-registration==3.1.2',
     'django-user-accounts==2.1.0', # for changing email addresses
 
     # For storing images on S3.
