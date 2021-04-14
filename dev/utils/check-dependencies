@@ -12,7 +12,7 @@ then
 Error: The "lxml" library needs to be installed in your system Python.
 
        Ubuntu Linux:        sudo apt-get install python-lxml
-       Mac OS with MacPorts:  sudo port install py38-lxml
+       Mac OS with MacPorts:  sudo port install py39-lxml
 
 EOF
     exit 1
@@ -37,7 +37,8 @@ then
 Error: The "pylibmc" library needs to be installed in your system Python.
 
        Mac OS with MacPorts:  sudo port install py38-pylibmc
-
+       (do port search pylibmc to see if a py39 version has become available)
+        
 EOF
     exit 1
 fi
