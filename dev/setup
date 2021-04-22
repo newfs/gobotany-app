@@ -14,6 +14,9 @@ rm -rf ./venv
 # (If another is needed, can change to something like python39, etc.)
 python -m venv --system-site-packages ./venv
 
+# Upgrade pip.
+./venv/bin/pip install --upgrade pip
+
 # Install a dependency for Haystack, setuptools_scm, because
 # setuptools_scm is not detected properly if installed along with
 # the other the packages. Also, setuptools_scm requires a recent
