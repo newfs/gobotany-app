@@ -1,6 +1,6 @@
 #!/bin/bash
 
-PYTHON=${1:-python3.8}
+PYTHON=${1:-python3.9}
 
 # Make sure that the system has provided requirements that we would
 # rather not have to build for ourselves.
