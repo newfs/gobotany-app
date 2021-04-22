@@ -6,7 +6,8 @@ from django.test.client import Client
 
 from gobotany.libtest import FunctionalCase
 
-@unittest.skip('Skipping tests that run against the real database')
+# Uncomment the line below to skip tests that run against the real database.
+#@unittest.skip('Skipping tests that run against the real database')
 class HomeTests(FunctionalCase):
 
     def test_home_page(self):

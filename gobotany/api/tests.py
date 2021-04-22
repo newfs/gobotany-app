@@ -71,7 +71,7 @@ def _setup_sample_data(load_images=False):
         im2.save()
         f.close()
         # Add the images to the taxon.
-        bar.images = [im1, im2]
+        bar.images.set([im1, im2])
         bar.save()
 
     pile1.species.add(foo)

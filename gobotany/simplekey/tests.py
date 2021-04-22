@@ -7,7 +7,8 @@ from gobotany.simplekey.templatetags.simplekey_extras import habitat_names
 from gobotany.libtest import FunctionalCase, TestCase
 
 
-@unittest.skip('Skipping tests that run against the real database')
+# Uncomment the line below to skip tests that run against the real database.
+#@unittest.skip('Skipping tests that run against the real database')
 class SimpleKeyTests(FunctionalCase):
 
     def test_simple_first_level_page_title(self):
@@ -55,7 +56,8 @@ class SimpleKeyTests(FunctionalCase):
             e[2].get_attribute('href').endswith('/ferns/equisetaceae/'))
 
 
-@unittest.skip('Skipping tests that run against the real database')
+# Uncomment the line below to skip tests that run against the real database.
+#@unittest.skip('Skipping tests that run against the real database')
 class FullKeyTests(FunctionalCase):
 
     def test_full_first_level_page_title(self):

@@ -59,7 +59,8 @@ def _setup_sample_data():
         s.save()
 
 
-@unittest.skip('Skipping tests that run against the real database')
+# Uncomment the line below to skip tests that run against the real database.
+#@unittest.skip('Skipping tests that run against the real database')
 class HomeTests(FunctionalCase):
 
     def test_home_page(self):
@@ -74,12 +75,13 @@ class HomeTests(FunctionalCase):
 
     def test_copyright_contains_current_year(self):
         self.get('/')
-        copyright = self.css1('footer .copyright')
+        copyright = self.css1('.footer__copyright')
         current_year = str(datetime.now().year)
         self.assertIn(current_year, copyright.text)
 
 
-@unittest.skip('Skipping tests that run against the real database')
+# Uncomment the line below to skip tests that run against the real database.
+#@unittest.skip('Skipping tests that run against the real database')
 class NavigationTests(FunctionalCase):
 
     def _get_anchor(self, on_page='', anchor_label='', within=''):
@@ -115,10 +117,9 @@ class NavigationTests(FunctionalCase):
                              within='header')
         self.assertTrue(a.get('href'))
 
-    @unittest.skip('Skip until release, because tests unaware of DEBUG')
     def test_header_plantshare_item_is_unlinked(self):
         a = self._get_anchor(on_page='/plantshare/',
-                             anchok_label='PlantShare', within='header')
+            anchor_label='PlantShare', within='header')
         self.assertFalse(a.get('href'))
 
     def test_header_full_key_item_is_linked(self):
@@ -126,10 +127,9 @@ class NavigationTests(FunctionalCase):
                              within='header')
         self.assertTrue(a.get('href'))
 
-    @unittest.skip('Skip until release, because tests unaware of DEBUG')
     def test_header_full_key_item_is_unlinked(self):
         a = self._get_anchor(on_page='/full/', anchor_label='Full Key',
-                             within='header')
+            within='header')
         self.assertFalse(a.get('href'))
 
     def test_header_dichotomous_key_item_is_linked(self):
@@ -137,10 +137,9 @@ class NavigationTests(FunctionalCase):
                              within='header')
         self.assertTrue(a.get('href'))
 
-    @unittest.skip('Skip until release, because tests unaware of DEBUG')
     def test_header_dichotomous_key_item_is_unlinked(self):
-        a = self._get_anchor(on_page='/simple/',
-                             anchor_label='Dichotomous Key', within='header')
+        a = self._get_anchor(on_page='/dkey/',
+            anchor_label='Dichotomous Key', within='header')
         self.assertFalse(a.get('href'))
 
     def test_header_teaching_item_is_linked(self):
@@ -186,10 +185,9 @@ class NavigationTests(FunctionalCase):
         self.get('/full/ferns/')
         self.assertEqual(self.css1('h1').text, 'Ferns')
 
-    @unittest.skip('Skip for now: page returns error')
     def test_main_heading_dichotomous_key(self):
         self.get('/dkey/')
-        self.assertEqual(self.css1('h1').text, 'Dichotomous Key')
+        self.assertEqual(self.css1('h1').text, 'Dichotomous Key to Families')
 
     def test_main_heading_teaching(self):
         self.get('/teaching/')
@@ -226,10 +224,9 @@ class NavigationTests(FunctionalCase):
                              within='footer')
         self.assertTrue(a.get('href'))
 
-    @unittest.skip('Skip until release, because tests unaware of DEBUG')
     def test_footer_plantshare_item_is_unlinked(self):
         a = self._get_anchor(on_page='/plantshare/',
-                             anchor_label='PlantShare', within='footer')
+            anchor_label='PlantShare', within='footer')
         self.assertFalse(a.get('href'))
 
     def test_footer_full_key_item_is_linked(self):
@@ -237,10 +234,9 @@ class NavigationTests(FunctionalCase):
                              within='footer')
         self.assertTrue(a.get('href'))
 
-    @unittest.skip('Skip until release, because tests unaware of DEBUG')
     def test_footer_full_key_item_is_unlinked(self):
         a = self._get_anchor(on_page='/full/', anchor_label='Full Key',
-                             within='footer')
+            within='footer')
         self.assertFalse(a.get('href'))
 
     def test_footer_dichotomous_key_item_is_linked(self):
@@ -248,10 +244,9 @@ class NavigationTests(FunctionalCase):
                              within='footer')
         self.assertTrue(a.get('href'))
 
-    @unittest.skip('Skip until release, because tests unaware of DEBUG')
     def test_footer_dichotomous_key_item_is_unlinked(self):
-        a = self._get_anchor(on_page='/simple/',
-                             anchor_label='Dichotomous Key', within='footer')
+        a = self._get_anchor(on_page='/dkey/',
+            anchor_label='Dichotomous Key', within='footer')
         self.assertFalse(a.get('href'))
 
     def test_footer_teaching_item_is_linked(self):
@@ -295,7 +290,8 @@ class NavigationTests(FunctionalCase):
         self.assertFalse(a.get('href'))
 
 
-@unittest.skip('Skipping tests that run against the real database')
+# Uncomment the line below to skip tests that run against the real database.
+#@unittest.skip('Skipping tests that run against the real database')
 class GlossaryTests(FunctionalCase):
 
     def test_getting_started_has_link_to_glossary(self):
@@ -338,7 +334,8 @@ class GlossaryTests(FunctionalCase):
         self.assertTrue(e.get('href').endswith('/glossary/g/'))
 
 
-@unittest.skip('Skipping tests that run against the real database')
+# Uncomment the line below to skip tests that run against the real database.
+#@unittest.skip('Skipping tests that run against the real database')
 class TeachingTests(FunctionalCase):
     TEACHING_URL_PATH = '/teaching/'
 
@@ -372,7 +369,8 @@ class TeachingTests(FunctionalCase):
         self.assertTrue('Teaching Tools' in self._h2_headings())
 
 
-@unittest.skip('Skipping tests that run against the real database')
+# Uncomment the line below to skip tests that run against the real database.
+#@unittest.skip('Skipping tests that run against the real database')
 class HelpTests(FunctionalCase):
 
     PATHS = {
@@ -408,12 +406,12 @@ class HelpTests(FunctionalCase):
     def test_getting_started_simple_key_page_title(self):
         self.get(self.PATHS['START'])
         self.assertEqual(self.css1('title').text,
-            'Getting Started with the Simple Key: Help: Go Botany')
+            'Getting Started: Simple Key: Help: Go Botany')
 
     def test_getting_started_simple_key_page_main_heading(self):
         self.get(self.PATHS['START'])
         self.assertEqual(self.css1('h1').text,
-                         'Getting Started with the Simple Key')
+            'Getting Started: Simple Key')
 
     # Video Help Topics page
 
@@ -575,7 +573,8 @@ class RobotsTests(TestCase):
         self.assertEqual(200, response.status_code)
 
 
-@unittest.skip('Skipping tests that run against the real database')
+# Uncomment the line below to skip tests that run against the real database.
+#@unittest.skip('Skipping tests that run against the real database')
 class SitemapTests(FunctionalCase):
 
     def test_sitemap_returns_ok(self):
@@ -583,7 +582,8 @@ class SitemapTests(FunctionalCase):
         self.assertEqual(200, self.response.status_code)
 
 
-@unittest.skip('Skipping tests that run against the real database')
+# Uncomment the line below to skip tests that run against the real database.
+#@unittest.skip('Skipping tests that run against the real database')
 class SpeciesListTests(FunctionalCase):
 
     def test_species_list_returns_ok(self):

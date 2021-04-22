@@ -24,8 +24,6 @@ def add_query_string(request, url):
 #
 
 def get_simple_url(key, pilegroup, pile=None):
-    print('key:', key)
-    print('pilegroup.slug:', pilegroup.slug)
     if pile is None:
         return reverse_lazy('level2',
                        kwargs={'key': key,

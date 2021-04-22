@@ -16,7 +16,8 @@ from gobotany.core.models import (ConservationStatus, CommonName, Family,
     Genus, Synonym, Taxon)
 from gobotany.plantshare.models import Location
 
-@unittest.skip('Skipping tests that run against the real database')
+# Uncomment the line below to skip tests that run against the real database.
+#@unittest.skip('Skipping tests that run against the real database')
 class PlantShareTests(FunctionalCase):
 
     PLANTSHARE_BASE = '/plantshare'
@@ -230,19 +231,16 @@ class PlantShareTests(FunctionalCase):
         navigation_items = self.css('#sidebar nav li')
         self.assertEqual(len(navigation_items), 2)   # includes Signup item
 
-    @unittest.skip('Skip for now: test requires reaching a server on the Web')
-    # TODO: rewrite with the new replacement for recaptcha, a hidden
-    # field, which doesn't require reaching a server on the web
-    def test_sign_up_with_incorrect_captcha_response(self):
+    # Ensure that the replacement for ReCaptcha—a visually-hidden URL field
+    # that should be empty—fails with an error if it has any text.
+    def test_sign_up_with_text_in_hidden_url_field_fails(self):
         form_submit_url = self.PLANTSHARE_BASE + self.SIGNUP_FORM_URL
         client = Client()
         response = client.post(form_submit_url, {'username': 'test2',
             'email': 'test2@test2.net', 'password1': 'testpass2',
-            'password2': 'testpass2',
-            'recaptcha_response_field': 'spam eggs'})
+            'password2': 'testpass2', 'url': 'asdf'})
         self.assertEqual(response.status_code, 200)
-        self.assertTrue(
-            response.content.find('Incorrect, please try again.') > -1)
+        self.assertTrue(b'The URL field should be blank.' in response.content)
 
     # Registration Complete page (next step: activate from email)
 
