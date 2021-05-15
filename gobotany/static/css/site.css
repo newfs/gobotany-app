@@ -462,9 +462,11 @@ table.list th td:first-child { font-family: "Trebuchet MS", Helvetica, Arial, "L
 #home #banner h2 { color: #437829; font-family: Basetica, "Trebuchet MS", Helvetica, Arial, "Lucida Sans Unicode", sans-serif; font-size: 2rem; font-weight: 700; line-height: normal; margin: 1.6rem 0; }
 #home #banner p { margin: 12px 0 0 0; text-align: left; }
 
-#home #update p { line-height: 150%; text-align: center; }
+#home #update p { line-height: 150%; margin-bottom: 7px; margin-top: 0; text-align: center; }
 
-#home #update a { margin-left: 0.3rem; text-decoration: underline; }
+#home #update a { color: #122113; /* very dark green */ margin-left: 0.3rem; text-decoration: underline; }
+#home #update a:visited { color: #400c3f; /* very dark purple */ }
+#home #update a::after { content: " ➔"; }
 
 #home #update .badge { background-color: rgba(236, 243, 151, 0.9); letter-spacing: 0.05rem; margin-right: 0.3rem; padding: 0.1rem 0.3rem; text-transform: uppercase; }
 
@@ -503,13 +505,13 @@ a.subscribe:active { background-position: 0 -32px; }
 /* Begin media queries styles for Home page */
 /* Portrait-orientation styles */
 @media only screen and (max-width: 400px) { #home .content .container { width: 320px; }
-  #home #banner #overlay { top: 115px; width: 320px; }
+  #home #banner #overlay { top: 117px; width: 320px; }
   #home #banner > img { height: 115px; width: 320px; }
   #home #banner + .three-col { padding-top: 355px; } }
 /* Landscape-orientation styles */
-@media only screen and (min-width: 401px) and (max-width: 600px) { #home #banner #overlay { top: 172px; width: 480px; }
+@media only screen and (min-width: 401px) and (max-width: 600px) { #home #banner #overlay { top: 160px; width: 480px; }
   #home #banner > img { height: 172px; width: 480px; }
-  #home #banner + .three-col { padding-top: 400px; } }
+  #home #banner + .three-col { padding-top: 360px; } }
 /* These styles are common to both smartphone widths */
 @media only screen and (max-width: 600px) { #home .content { margin-top: 0; padding-top: 0; }
   #home .content .container { padding: 0; }
@@ -519,13 +521,14 @@ a.subscribe:active { background-position: 0 -32px; }
   #home header .tagline { bottom: 0.4em; font-size: 0.9em; left: 15em; margin: 0; padding-right: 2em; /* keep 'New England' one line when narrow */ }
   #home header nav { background: #21555c; height: 32px; padding-left: 0; }
   #home header nav > a:hover { text-decoration: none; }
+  #home #update p { margin-bottom: 16px; }
   #home #banner { margin: 0; position: relative; }
   #home #banner #overlay { background: #f7fbe9; height: auto; left: 0; padding: 0; text-align: center; }
   #home #banner #overlay h2 { font-size: 28px; margin: 6px 0 0; }
   #home #banner #overlay p { padding: 0 8px; }
   #home #banner #overlay img { width: 53%; }
   #home #banner #cta { margin: 6px; }
-  #home .three-col { background: none; float: none; height: inherit; margin: 14px 0; padding: 0; width: auto; }
+  #home .three-col { background: none; float: none; height: inherit; margin: 0 0 14px; padding: 0; width: auto; }
   #home .three-col h3, #home .three-col h4, #home .three-col p { margin-left: 8px; margin-right: 8px; }
   #home .three-col h3 { font-size: 18px; }
   #home .three-col h4 { font-size: 14px; }
@@ -1934,7 +1937,7 @@ header.partner-site nav li a { padding: 5px 32px 0; /* fewer sections, more hori
   header { height: 90px; }
   header nav { background: #21555c; border-radius: 0; clear: left; height: 32px; padding: 0; }
   header nav > a { background: #437829; border: 1px solid #437829; border-radius: 0.3em; display: inline-block; font-size: 1.2em; margin: 0 0.5em; padding: 0.2em 1em; }
-  header nav #search { margin-left: 0.5em; }
+  header nav #search { margin-left: 0.5em; margin-right: 0.5em; }
   header nav > ul { display: none; /* will use bottom navigation instead of top */ }
   header nav #search-suggest .menu { top: 83px; }
   header p.go-botany { margin: 0; padding: 0.7em 0 0.4em 8px; width: auto; }
