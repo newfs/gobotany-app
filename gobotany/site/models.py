@@ -31,9 +31,6 @@ class Document(models.Model):
     """A document file uploaded through the Admin that can be published
     on the site.
     """
-    #uuid = models.UUIDField(primary_key=True, default=uuid.uuid4,
-    #    editable=False)
-    #title = models.CharField(max_length=100)
     added_at = models.DateTimeField(auto_now_add=True) 
     upload = models.FileField(upload_to='docs/')
 
