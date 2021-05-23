@@ -1,4 +1,5 @@
 from django.db import models
+from django.dispatch import receiver
 
 import uuid
 
@@ -35,3 +36,7 @@ class Document(models.Model):
     #title = models.CharField(max_length=100)
     added_at = models.DateTimeField(auto_now_add=True) 
     upload = models.FileField(upload_to='docs/')
+
+@receiver(models.signals.post_delete, sender=Document)
+def remove_file_from_storage(sender, instance, using, **kwargs):
+    instance.upload.delete(save=False)
