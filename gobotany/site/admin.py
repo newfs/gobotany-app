@@ -7,7 +7,7 @@ class SearchSuggestionAdmin(GoBotanyModelAdmin):
     search_fields = ('term',)
     
 class DocumentAdmin(GoBotanyModelAdmin):
-    list_display = ('id', 'upload', 'added_at',)
+    list_display = ('id', 'title', 'upload', 'added_at',)
 
 admin.site.register(Document, DocumentAdmin)
 admin.site.register(SearchSuggestion, SearchSuggestionAdmin)

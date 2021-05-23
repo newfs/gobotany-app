@@ -31,8 +31,17 @@ class Document(models.Model):
     """A document file uploaded through the Admin that can be published
     on the site.
     """
+    title = models.CharField(max_length=100, null=True, blank=True)
     added_at = models.DateTimeField(auto_now_add=True) 
     upload = models.FileField(upload_to='docs/')
+    
+@receiver(models.signals.pre_save, sender=Document)
+def update_title(sender, instance, using, **kwargs):
+    # If there's no document title value, pull it from the document.
+    if instance.title is None:
+        title = instance.upload.name
+        if title:
+            instance.title = title
 
 @receiver(models.signals.post_delete, sender=Document)
 def remove_file_from_storage(sender, instance, using, **kwargs):
