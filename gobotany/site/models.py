@@ -1,5 +1,7 @@
 from django.db import models
 
+import uuid
+
 # Models for data that pertain to the overall Go Botany site, but not
 # specifically plant data (the Django app "core") nor solely for
 # individual site features (such as the Django apps "dkey", "simplekey",
@@ -23,3 +25,13 @@ class SearchSuggestion(models.Model):
         """Store all search suggestion terms in lower case."""
         self.term = self.term.lower()
         super(SearchSuggestion, self).save(*args, **kw)
+
+class Document(models.Model):
+    """A document file uploaded through the Admin that can be published
+    on the site.
+    """
+    #uuid = models.UUIDField(primary_key=True, default=uuid.uuid4,
+    #    editable=False)
+    #title = models.CharField(max_length=100)
+    added_at = models.DateTimeField(auto_now_add=True) 
+    upload = models.FileField(upload_to='docs/')
