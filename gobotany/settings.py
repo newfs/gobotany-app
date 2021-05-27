@@ -82,7 +82,12 @@ else:
 # to actually grab the port.)  Note that DEBUG itself can be turned on
 # with an explicit environment variable even if we are "in production"
 # on Heroku, in case we need Django tracebacks to solve a problem.
-
+#
+# May 2021: This might need some review now that IN_PRODUCTION puts
+# some things in place that rely on HTTPS being available. Currently
+# in order to test with IN_PRODUCTION locally, temporarily comment out
+# the lines that enable Django's Security Middleware.
+#
 IN_PRODUCTION = 'PORT' in os.environ
 
 USE_DEBUG_TOOLBAR = False
@@ -201,7 +206,7 @@ MIDDLEWARE = (
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'gobotany.middleware.SmartAppendSlashMiddleware',
 )
-# On Heroku, enable the Security Middleware for http to https redirects, etc.
+# On Heroku, enable the Security Middleware for HTTP to HTTPS redirects, etc.
 if IN_PRODUCTION:
     MIDDLEWARE = ('django.middleware.security.SecurityMiddleware',) + \
         MIDDLEWARE
@@ -362,14 +367,9 @@ AGREED_TO_TERMS_GROUP = 'Agreed to PlantShare Terms'
 ADMINS = (('Go Botany Dev', 'gobotanydev@newenglandwild.org',
     'gobotanydev@nativeplanttrust.org'), )
 
-# Force HTTPS (Django 1.8 and later)
-SECURE_SSL_REDIRECT = True
-#
-# For now, this setting evidently is not also needed to redirect to HTTPS.
-SECURE_PROXY_SSL_HEADER = None
-
 if IN_PRODUCTION:
-    # https://docs.djangoproject.com/en/1.5/topics/security/#ssl-https
+    SECURE_SSL_REDIRECT = True   # Force HTTPS
+    SECURE_PROXY_SSL_HEADER = None
     SESSION_COOKIE_SECURE = True
     CSRF_COOKIE_SECURE = True
 

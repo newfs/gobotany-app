@@ -1,7 +1,13 @@
 import datetime
+import os
+import urllib.parse
 
+from django.conf import settings
+from django.core.files.storage import FileSystemStorage, Storage
 from django.db import models
 from django.dispatch import receiver
+
+from storages.backends.s3boto import S3BotoStorage
 
 # Models for data that pertain to the overall Go Botany site, but not
 # specifically plant data (the Django app "core") nor solely for
@@ -27,13 +33,32 @@ class SearchSuggestion(models.Model):
         self.term = self.term.lower()
         super(SearchSuggestion, self).save(*args, **kw)
 
+
+# As with screened images elsewhere, storage location for documents
+# depends on environment: use file system for local development, but
+# S3 for Production and similar (Dev) environments.
+
+if not settings.IN_PRODUCTION:
+    # Local development environment upload
+    docs_upload_storage = FileSystemStorage(
+        location=os.path.join(settings.MEDIA_ROOT, 'docs'),
+        base_url=urllib.parse.urljoin(settings.MEDIA_URL, 'docs/'))
+elif settings.IS_AWS_AUTHENTICATED:
+    # Direct upload to S3
+    docs_upload_storage = S3BotoStorage(location='docs',
+        bucket=getattr(settings, 'AWS_STORAGE_BUCKET_NAME', 'newfs'))
+else:
+    # Direct upload to S3
+    docs_upload_storage = Storage()
+
+
 class Document(models.Model):
     """A document file uploaded through the Admin that can be published
     on the site.
     """
     title = models.CharField(max_length=100, null=True, blank=True)
     last_updated_at = models.DateTimeField(auto_now_add=True)
-    upload = models.FileField(upload_to='docs/')
+    upload = models.FileField(storage=docs_upload_storage)
     
 @receiver(models.signals.pre_save, sender=Document)
 def update_title_date(sender, instance, using, **kwargs):
