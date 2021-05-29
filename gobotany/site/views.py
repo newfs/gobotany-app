@@ -10,7 +10,7 @@ from django.conf import settings
 from django.core.exceptions import ObjectDoesNotExist
 from django.db.models import Q
 from django.http import HttpResponse
-from django.shortcuts import redirect, render
+from django.shortcuts import get_list_or_404, redirect, render
 from django.template import RequestContext
 from django.urls import reverse_lazy
 from django.views.decorators.vary import vary_on_headers
@@ -25,7 +25,8 @@ from gobotany.core.partner import (which_partner, partner_short_name,
                                    per_partner_template, render_per_partner)
 from gobotany.plantoftheday.models import PlantOfTheDay
 from gobotany.simplekey.groups_order import ordered_pilegroups, ordered_piles
-from gobotany.site.models import PlantNameSuggestion, SearchSuggestion
+from gobotany.site.models import (Document, PlantNameSuggestion,
+    SearchSuggestion)
 from gobotany.site.utils import query_regex
 
 # Home page
@@ -66,6 +67,19 @@ def home_view(request):
             'plant_of_the_day': plant_of_the_day_taxon,
             'plant_of_the_day_image': plant_of_the_day_image,
             }, request)
+
+
+# Documents
+
+# Redirect a URL to an uploaded document to the file at its storage location.
+# This way documents can have a stable URL regardless of the underlying
+# storage location (for local development vs. production-like environments).
+def document_view(request, file_name):
+    documents = get_list_or_404(Document, upload=file_name)
+    document = documents[0]
+    url = document.upload.url
+    return redirect(url, permanent=False)
+
 
 # Teaching page
 

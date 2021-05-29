@@ -11,6 +11,10 @@ urlpatterns = [
     path('sitemap.txt', views.sitemap_view, name='sitemap'),
     path('robots.txt', views.robots_view, name='robots'),
 
+    # Documents
+    re_path('^docs/(?P<file_name>[\w.-]{0,256})$',
+        views.document_view, name='site-document'),
+
     # Teaching page
     path('teaching/', views.teaching_view, name='site-teaching'),
 
