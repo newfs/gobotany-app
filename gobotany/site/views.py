@@ -74,6 +74,8 @@ def home_view(request):
 # Redirect a URL to an uploaded document to the file at its storage location.
 # This way documents can have a stable URL regardless of the underlying
 # storage location (for local development vs. production-like environments).
+# For example, a /docs/filename.pdf URL might redirect to:
+# bucket.s3.amazonaws.com/docs/filename.pdf
 def document_view(request, file_name):
     documents = get_list_or_404(Document, upload=file_name)
     document = documents[0]
