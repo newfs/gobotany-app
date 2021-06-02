@@ -737,7 +737,8 @@ class PlantPreviewCharacterAdmin(_Base):
     list_filter = ('pile',)
 
 class UpdateAdmin(_Base):
-    list_display = ('date', 'description', 'family')
+    list_display = ('date', 'description',)
+    fields = ('date', 'description',)
 
     def get_form(self, request, obj=None, **kwargs):
         form = super(UpdateAdmin, self).get_form(request, obj, **kwargs)

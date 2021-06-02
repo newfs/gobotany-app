@@ -13,9 +13,6 @@
 {% block main_content %}
     <h1>Updates</h1>
 
-    <nav>Ordered by Date ∙
-        <a href="{% url 'site-updates-family' %}">Ordered by Family</a></nav>
-
     {% regroup updates by date|date:"F Y" as updates_by_month %}
     {% for group in updates_by_month %}
         <h2 id="{{ group.grouper }}">{{ group.grouper }}</h2>

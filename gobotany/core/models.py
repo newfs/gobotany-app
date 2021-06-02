@@ -1111,6 +1111,8 @@ class Update(models.Model):
     """An entry for an Updates page regarding site (data) improvements."""
     date = models.DateField()
     description = models.TextField()
+    # The family field is currently not in use and may be removed in a
+    # future release.
     family = models.CharField(max_length=100, blank=True, null=True)
 
     class Meta:

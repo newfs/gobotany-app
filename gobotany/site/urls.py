@@ -21,8 +21,6 @@ urlpatterns = [
     # Help section
     path('help/', views.help_view, name='site-help'),
     path('help/dkey/', views.help_dkey_view, name='site-help-dkey'),
-    path('updates/family/', views.updates_family_view,
-        name='site-updates-family'),
     path('updates/', views.updates_date_view, name='site-updates-date'),
     path('start/', views.getting_started_view, name='site-getting-started'),
     path('video/', views.video_view, name='site-video'),
