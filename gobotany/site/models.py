@@ -74,3 +74,27 @@ def update_title_date(sender, instance, using, **kwargs):
 def remove_file_from_storage(sender, instance, using, **kwargs):
     # When the record is deleted, also delete the uploaded file.
     instance.upload.delete(save=False)
+
+
+class Highlight(models.Model):
+    """A home page highlight to tell about a recently added Update.
+
+    A single active Highlight record, the most recent, shows on the page.
+
+    Intended to be turned on only temporarily, when a home page notice
+    is needed, but not to be present all the time on the home page.
+    """
+    note = models.TextField()
+    active = models.BooleanField(default=False)
+
+
+class Update(models.Model):
+    """An entry for an Updates page regarding site (data) improvements."""
+    date = models.DateField()
+    description = models.TextField()
+    # The family field is currently not in use and may be removed in a
+    # future release.
+    family = models.CharField(max_length=100, blank=True, null=True)
+
+    class Meta:
+        ordering = ['-date']

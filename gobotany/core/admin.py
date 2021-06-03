@@ -736,20 +736,6 @@ class PlantPreviewCharacterAdmin(_Base):
     list_display = ('character', 'pile', 'order',)
     list_filter = ('pile',)
 
-class UpdateAdmin(_Base):
-    list_display = ('date', 'description',)
-    fields = ('date', 'description',)
-
-    def get_form(self, request, obj=None, **kwargs):
-        form = super(UpdateAdmin, self).get_form(request, obj, **kwargs)
-        # Make the 'Description' text field bigger for easier editing.
-        form.base_fields['description'].widget.attrs['style'] = \
-            'height: 24rem; width: 48rem'
-        return form
-
-class HighlightAdmin(_Base):
-    list_display = ('id', 'note', 'active',)
-
 
 # Registrations
 
@@ -757,8 +743,6 @@ admin.site.register(models.Parameter)
 admin.site.register(models.ImageType)
 admin.site.register(models.CharacterGroup)
 admin.site.register(models.SourceCitation)
-admin.site.register(models.Update, UpdateAdmin)
-admin.site.register(models.Highlight, HighlightAdmin)
 
 admin.site.register(models.HomePageImage, HomePageImageAdmin)
 admin.site.register(models.Lookalike, LookalikeAdmin)

@@ -14,6 +14,7 @@ from gobotany.core import models as core_models
 from gobotany.dkey import models as dkey_models
 from gobotany.plantshare import models as plantshare_models
 from gobotany.search import models as search_models
+from gobotany.site import models as site_models
 
 register = template.Library()
 
@@ -56,8 +57,8 @@ def url(obj):
         url = reverse('site-glossary', args=(obj.term[0].lower(),))
         return url + '#' + slugify(obj.term)
 
-    if isinstance(obj, core_models.Update):
-        url = reverse('site-updates-family', args=())
+    if isinstance(obj, site_models.Update):
+        url = reverse('site-updates-date', args=())
         return url + '#' + slugify(obj.id)
 
     if isinstance(obj, plantshare_models.Sighting):

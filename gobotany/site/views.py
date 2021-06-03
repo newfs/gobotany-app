@@ -18,15 +18,15 @@ from django.views.decorators.vary import vary_on_headers
 from gobotany.core import botany
 from gobotany.core.models import (
     CommonName, ContentImage, CopyrightHolder, Distribution,
-    Family, Genus, GlossaryTerm, Highlight, HomePageImage, PartnerSite,
-    PartnerSpecies, Pile, Taxon, Update, Video,
+    Family, Genus, GlossaryTerm, HomePageImage, PartnerSite,
+    PartnerSpecies, Pile, Taxon, Video,
     )
 from gobotany.core.partner import (which_partner, partner_short_name,
                                    per_partner_template, render_per_partner)
 from gobotany.plantoftheday.models import PlantOfTheDay
 from gobotany.simplekey.groups_order import ordered_pilegroups, ordered_piles
-from gobotany.site.models import (Document, PlantNameSuggestion,
-    SearchSuggestion)
+from gobotany.site.models import (Document, Highlight, PlantNameSuggestion,
+    SearchSuggestion, Update)
 from gobotany.site.utils import query_regex
 
 # Home page
