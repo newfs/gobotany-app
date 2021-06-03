@@ -11,6 +11,13 @@ class DocumentAdmin(GoBotanyModelAdmin):
 class HighlightAdmin(GoBotanyModelAdmin):
     list_display = ('id', 'note', 'active',)
 
+    def get_form(self, request, obj=None, **kwargs):
+        form = super(HighlightAdmin, self).get_form(request, obj, **kwargs)
+        # Make the 'Note' text field smaller to suggest length of entry.
+        form.base_fields['note'].widget.attrs['style'] = \
+            'height: 2rem; width: 48rem'
+        return form
+
 class SearchSuggestionAdmin(GoBotanyModelAdmin):
     search_fields = ('term',)
 
