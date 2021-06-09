@@ -11,7 +11,7 @@
     a.button {
         display: inline-block;
         margin: 0.8em 1em;
-        @extend .orange-button;
+        @extend .action-link;
         font-weight: normal;
         font-size: $base-font-size;
         text-transform: uppercase;
@@ -176,8 +176,8 @@
     display: inline-block;
     /* other styles inherited from a.what-lies-beneath rule above */
 }
-#dkey a.button {                  /* big orange button */
-    @extend .orange-button;
+#dkey a.button {
+    @extend .action-link;
     display: inline-block;
     font-size: $base-font-size;
     margin-top: 6px;
@@ -202,7 +202,7 @@
 }
 
 #dkey a.show-all-button {
-    @extend .orange-button;
+    @extend .action-link;
     display: inline-block;
     font-size:  $base-font-size;
     font-weight: normal;

@@ -25,7 +25,7 @@
                         take a photo, answer some questions, and narrow down to
                         the correct identification.</p>
                         <a href="{% url 'level1' 'simple' %}" id="cta"
-                            class="orange-button caps large">Simple Key</a>
+                            class="action-link caps large">Simple Key</a>
                     </div>
                 {% endblock %}
             </div>
@@ -38,7 +38,7 @@
                 share your plant sightings, get help with plant identification,
                 collaborate on field surveys, and develop checklists of plants
                 for particular sites you are exploring.</p>
-                <a class="orange-button caps"
+                <a class="action-link caps"
                     href="{% url 'ps-main' %}">PlantShare</a>
             </div>
             <div class="three-col">
@@ -48,7 +48,7 @@
                 multiple-access Full Key or our Dichotomous Key to families,
                 genera, and species. Also learn about subspecies and varieties
                 native to our region.</p>
-                <a class="orange-button caps"
+                <a class="action-link caps"
                     href="{% url 'advanced-id-tools' %}">Advanced ID</a>
             </div>
             <div class="three-col last">
@@ -58,7 +58,7 @@
                 botany for science students, and beginning and amateur
                 botanists. Professors, teachers, and environmental educators
                 can share curricula and teaching ideas.</p>
-                <a class="orange-button caps"
+                <a class="action-link caps"
                     href="{% url 'site-teaching' %}" >Teaching</a>
             </div>
             {% endblock %}
@@ -80,7 +80,7 @@
                         </h3>
                         <p>{{ plant_of_the_day.factoid|slice:":274"}}
                         {% if plant_of_the_day.factoid|length > 274 %}...{% endif %}</p>
-                        <a class="learn-more orange-button caps" 
+                        <a class="learn-more action-link caps"
                             href="/species/{{ plant_of_the_day.genus_name|lower }}/{{ plant_of_the_day.epithet }}/">Full Profile</a>
                     </div>
                 {% else %}
@@ -93,7 +93,7 @@
                 <div class="donate">
                     <p>Please contribute to our mission to conserve and promote
                     the region’s plants by donating to Native Plant Trust.
-                    <a class="orange-button caps"
+                    <a class="action-link caps"
                         href="http://www.nativeplanttrust.org/support/">Donate</a>
                     </p>
                 </div>

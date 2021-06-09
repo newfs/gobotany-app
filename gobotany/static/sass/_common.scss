@@ -116,6 +116,10 @@ $orange5: #f6be59;
 
 $npt-orange: #d87e54;
 $npt-orange-dark: #bb582a;
+$brighter-orange: #cc4b00;
+$duller-orange: #8e421f;
+$navbar-blue: #17555b;
+
 
 $list_popup_border: #acac90;
 
@@ -138,7 +142,7 @@ $disabled_orange_gradient: linear-gradient(
     border-radius: 14px;
     box-shadow: 0px 1px 2px 0 $shadow_color;
     color: #fff;
-    cursor: pointer;
+    cursor: default;
     display: inline-block;
     font-family: ScalaSans, $headings-font;
     font-size: 12px;
@@ -149,12 +153,6 @@ $disabled_orange_gradient: linear-gradient(
     padding: 4px 12px;
     text-align: center;
     text-decoration: none;
-    &:active {
-        background-color: $npt-orange-dark; /* TODO: active button style/color */
-    }
-    &:hover, &:visited, &:active {
-        color: #fff;
-    }
     &.caps {
         text-transform: uppercase;
     }
@@ -172,6 +170,79 @@ $disabled_orange_gradient: linear-gradient(
         letter-spacing: 1.5px;
         min-width: 150px;
         padding: 9px 30px;
+    }
+}
+
+.action-link {
+    background-color: $npt-orange-dark;
+    border-bottom: 0.15rem solid #fff !important; /* override some link
+                                                             underlines in text */
+    border-radius: 10px;
+    box-shadow: 0 0.15rem 0 0 $npt-orange-dark;
+    color: #fff;
+    cursor: pointer;
+    display: inline-block;
+    font-family: ScalaSans, $headings-font;
+    font-size: 12px;
+    font-weight: bold;
+    letter-spacing: 1px;
+    line-height: 18px;
+    min-width: 75px;
+    padding: 4px 12px;
+    text-align: center;
+    text-decoration: none;
+
+    /* Visited: duller; like the relationship between classic blue & purple */
+    &:visited {
+        background-color: $duller-orange;
+        box-shadow: 0 0.15rem 0 0 $duller-orange;
+        color: #fff;
+    }
+    /* Hover: higher contrast; use the current nav. bar color */
+    &:hover,
+    &:focus {
+        background-color: $navbar-blue;
+        box-shadow: 0 0.15rem 0 0 $navbar-blue;
+        color: #fff;
+    }
+    /* Active: orange; similar to default red, but higher contrast */
+    &:active {
+        background-color: $brighter-orange;
+        box-shadow: 0 0.15rem 0 0 $brighter-orange;
+        color: #fff;
+    }
+    &.caps {
+        letter-spacing: 1px;
+        text-transform: uppercase;
+    }
+    &.large {
+        border-bottom: 0.2rem solid #fff;
+        border-radius: 12px;
+        font-size: 16px;
+        line-height: 24px;
+        min-width: 120px;
+        padding: 6px 18px 3px;
+        &.caps {
+            letter-spacing: 1.5px;
+        }
+    }
+    &:focus {   /* Focus ring */
+        outline-color: -webkit-focus-ring-color;
+        outline-offset: 2px;
+        outline-style: auto;
+        outline-width: 4px;
+    }
+}
+
+/* Fix button and action-link text alignment in Firefox; evidently
+    the misalignment is due to how the browsers handle the Scala
+    Sans font. (Unfortunately this means that any fonts lower
+    in the font stack would show up misaligned in FF.) */
+@-moz-document url-prefix() {
+    .orange-button,
+    .action-link {
+        padding-bottom: 3px;
+        padding-top: 5px;
     }
 }
 
@@ -275,7 +346,7 @@ $disabled_orange_gradient: linear-gradient(
 
 @mixin dialog-close-button {
     background: transparent url(/static/images/icons/close.png) no-repeat;
-    cursor: pointer;
+    cursor: default;
     display: block;
     height: 16px;
     position: absolute;
@@ -363,7 +434,7 @@ div.popup a {
 #top-message button {
     border: 1px solid gray;
     border-radius: 6px;
-    cursor: pointer;
+    cursor: default;
     float: right;
     font-family: ScalaSans, $body-font;
     font-size: 1.2em;

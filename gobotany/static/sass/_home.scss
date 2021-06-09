@@ -103,7 +103,7 @@
 
 #home #cta {
     margin: 18px 2px 0;
-    width: 124px;
+    width: 174px;
 }
 #home #overlay {
     background: rgba(255, 255, 255, 0.85);
@@ -141,8 +141,8 @@
     p {
         margin: 0;
     }
-    a.orange-button {
-        margin: 13px 0 0 0;	
+    a {
+        margin: 13px 0 0 0;
     }
 }
 a {
@@ -222,7 +222,7 @@ a {
     }
 }
 #home .donate a {
-    cursor: pointer;
+    cursor: default;
     float: right;
     position: absolute;
     right: 0;

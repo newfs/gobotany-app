@@ -630,7 +630,7 @@ a.get-help-btn {
     margin: 8px 0 12px 0;
     text-align: center;
     a {
-        cursor: pointer;
+        cursor: default;
         display: inline-block;
         height: 32px;
         text-indent: -9000px;
@@ -926,6 +926,7 @@ input.suggest + div li {
     padding: 3px;
     &.selected {
         background-color: $pale-lime-green;
+        cursor: default;
     }
     span {
         font-weight: normal;

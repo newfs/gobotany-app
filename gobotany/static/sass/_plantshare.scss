@@ -733,7 +733,7 @@ body.plantshare .image-modal {
     a.button {
         @extend .orange-button;
         color: #000;
-        cursor: pointer;
+        cursor: default;
         display: inline-block;
         margin: 10px 6px 0 0;
         width: 100px;

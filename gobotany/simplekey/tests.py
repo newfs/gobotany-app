@@ -36,7 +36,7 @@ class SimpleKeyTests(FunctionalCase):
 
         # Do group links get constructed correctly?
 
-        e = self.css1('#main .orange-button')
+        e = self.css1('#main .action-link')
         self.assertEqual('My plant is in this group', e.text)
         self.assertEqual(e.get_attribute('href'), '/simple/woody-plants/')
 
@@ -47,7 +47,7 @@ class SimpleKeyTests(FunctionalCase):
         assert h[0].text.startswith('True ferns and moonworts')
         assert h[1].text.startswith('Clubmosses and relatives, plus quillworts')
         assert h[2].text.startswith('Horsetails and scouring-rushes')
-        e = self.css('#main .orange-button')
+        e = self.css('#main .action-link')
         self.assertTrue(
             e[0].get_attribute('href').endswith('/ferns/monilophytes/'))
         self.assertTrue(

@@ -4,7 +4,7 @@ body.skey.groups-subgroups {
     /* Styles for groups and subgroups (Levels 1 and 2) pages */
 
     .img-gallery .frame {
-        cursor: pointer;
+        cursor: default;
     }
 
     @include shadowbox-photo-titles-credits;
@@ -363,7 +363,7 @@ body.skey {
                     text-align: center;
                     a {
                         color: #fff;
-                        cursor: pointer;
+                        cursor: default;
                         display: block;
                         margin: 18px auto 10px;
                         width: 170px;
@@ -407,7 +407,7 @@ body.skey {
                     &.active, &:hover, &.active span.value,
                     &.answered.active {
                         background: #dce890;
-                        cursor: pointer;
+                        cursor: default;
                     }
                 }
                 .option {
@@ -446,7 +446,7 @@ body.skey {
 
         a.get-questions, a.add-questions {
             color: white;
-            cursor: pointer;
+            cursor: default;
             margin: 2px 0 0 10px;
             width: 171px;
         }
@@ -473,7 +473,7 @@ body.skey {
                 background-color: $npt-orange;
                 border-radius: 2em;
                 border: 2px solid #dc9402;
-                cursor: pointer;
+                cursor: default;
                 font-family: ScalaSans, $headings-font;
                 letter-spacing: 3px;
                 text-shadow: 1px 1px 2px #dc9402;
@@ -539,7 +539,7 @@ body.skey {
                 border-top-left-radius: 6px;
                 border-top-right-radius: 6px;
                 color: $dark-brown;
-                cursor: pointer;
+                cursor: default;
                 display: block;
                 float: left;
                 font-family: Basetica, $headings-font;
@@ -552,7 +552,7 @@ body.skey {
                     background: #e1f2cd;
                     background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#f0f8e7), color-stop(100%,#e1f2cd));
                     background: -moz-linear-gradient(center top, #f0f8e7, #e1f2cd);
-                    cursor: pointer;
+                    cursor: default;
                     text-decoration: none;
                 }
             }
@@ -637,7 +637,7 @@ body.skey {
                     height: 80px;
                 }
                 label {
-                    cursor: pointer;
+                    cursor: default;
                     display: block;
                     font-family: $narrower-body-font;
                     font-size: 12px;
@@ -739,7 +739,7 @@ body.skey {
             }
             .close {
                 color: #00e;
-                cursor: pointer;
+                cursor: default;
                 display: inline;
                 float: right;
             }
@@ -797,7 +797,7 @@ body.skey {
                 position: relative;
                 .bar {
                     box-sizing: border-box;
-                    cursor: pointer;
+                    cursor: default;
                     padding: 0 4px;
                     position: absolute;
                     top: 47px;
@@ -824,7 +824,7 @@ body.skey {
                     border: 1px solid $slider-background-bottom-color;
                     border-radius: $slider-thumb-radius;
                     box-shadow: $slider-thumb-shadow-lengths $slider-thumb-shadow-color;
-                    cursor: pointer;
+                    cursor: default;
                     height: 30px;
                     left: 3px;
                     position: absolute;
@@ -932,7 +932,7 @@ ul.get-more-questions-menu {
     white-space: nowrap;
 
     li {
-        cursor: pointer;
+        cursor: default;
         position: relative;
         display: block;
         margin: 0;
@@ -1225,7 +1225,7 @@ ul.get-more-questions-menu {
                 }
                 table {
                     tr {
-                        cursor: pointer;
+                        cursor: default;
                         height: 44px;
                         background: #fff;
                         /*background: -webkit-gradient(linear, left top,
@@ -1487,7 +1487,7 @@ ul.get-more-questions-menu {
                     border-radius: 0;
                     box-shadow: 0px 1px 4px 0 $shadow_color;
                     color: #000;
-                    cursor: pointer;
+                    cursor: default;
                     position: relative;
                 }
                 > .instructions h5::after {
@@ -1538,7 +1538,7 @@ ul.get-more-questions-menu {
                         background: $link-green;
                     }
                     .option {
-                        cursor: pointer;
+                        cursor: default;
                         display: block;
                         position: relative;
                         &::after {
