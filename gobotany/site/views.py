@@ -220,14 +220,15 @@ def terms_of_use_view(request):
 
 def clean_input_string(input_string):
     """Remove any special characters from a search-suggestion input string
-    that could cause an error.
+    that could cause an error. Limit the input string to a reasonable length.
     """
     ALLOWED_CHARACTERS = 'abcdefghijklmnopqrstuvwxyz01234567890 !%&-+\'",.'
+    MAX_CHARACTERS = 60
     input_characters = []
     for character in input_string.lower():
         if character in ALLOWED_CHARACTERS:
             input_characters.append(character)
-    return ''.join(input_characters)
+    return ''.join(input_characters)[:MAX_CHARACTERS]
 
 def search_suggestions_view(request):
     """Return some search suggestions for search."""
