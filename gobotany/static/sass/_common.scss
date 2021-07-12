@@ -409,7 +409,7 @@ div.popup a {
 /* For occasional, temporary donation campaigns: message at top of page */
 #top-message {
     align-items: center;
-    background-color: #d87e54;
+    background-color: #e8a38c;
     color: #000;
     display: flex;
     font-family: $body-font;
@@ -428,26 +428,14 @@ div.popup a {
     align-items: center;
     display: flex;
 }
-#top-message form {
-    margin: 0.4em 2em;
-}
-#top-message button {
-    border: 1px solid gray;
-    border-radius: 6px;
-    cursor: default;
-    float: right;
-    font-family: ScalaSans, $body-font;
-    font-size: 1.2em;
-    font-weight: bold;
-    letter-spacing: 1px;
-    padding: 0.6em 0.7em 0.4em;
-    text-transform: uppercase;
-}
-#top-message a {
+#top-message .close {
+    background-color: inherit;
+    border: 0;
     color: #000;
     font-size: 1.2em;
     font-weight: bold;
-    padding: 1em 0;
+    margin-left: 1.2em;
+    padding: 0;
     text-align: center;
     width: 2em;
 }
@@ -462,9 +450,7 @@ div.popup a {
     }
     #top-message .controls {
         justify-content: space-between;
+        margin-bottom: 0.5em;
         width: 100%;
-    }
-    #top-message form {
-        margin-left: 0;
     }
 }
