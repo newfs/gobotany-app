@@ -4,10 +4,10 @@ from setuptools import find_packages
 requirements = [
     'django==3.0.14',
 
-    'Pillow==8.1.2',
+    'Pillow==8.2.0',
     'bleach==3.3.0',
     'cssselect',
-    'django-debug-toolbar==3.2',
+    'django-debug-toolbar==3.2.1',
     'django-extensions==3.1.2',
 
     'django-haystack==3.0',
