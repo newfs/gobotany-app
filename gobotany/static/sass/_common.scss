@@ -226,12 +226,6 @@ $disabled_orange_gradient: linear-gradient(
             letter-spacing: 1.5px;
         }
     }
-    &:focus {   /* Focus ring */
-        outline-color: -webkit-focus-ring-color;
-        outline-offset: 2px;
-        outline-style: auto;
-        outline-width: 4px;
-    }
 }
 
 /* Fix button and action-link text alignment in Firefox; evidently
@@ -326,17 +320,24 @@ $disabled_orange_gradient: linear-gradient(
             font-size: 10px;
         }
     }
-    #sb-title-inner a {
-        border-bottom: 1px solid #ccc;
-        color: #fff;
-        &:hover {
-            text-decoration: none;
+    #sb-title-inner {
+        a {
+            border-bottom: 1px solid #ccc;
+            color: #fff;
+            &:hover {
+                text-decoration: none;
+            }
         }
-        &.contact {
+        .contact {
+            background-color: inherit;
+            border: 0;
+            color: #fff;
             cursor: pointer;
-            display: inline-block; /* prevent link from wrapping, which
-                                      makes tooltip position incorrect */
-            text-decoration: none;
+            display: inline-block; /* prevent text from wrapping, which
+                                        makes tooltip position incorrect */
+            margin: 0;
+            padding: 0;
+            text-decoration: underline;
         }
     }
     #sb-nav-close {

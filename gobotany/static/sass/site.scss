@@ -732,9 +732,15 @@ a.get-help-btn {
 
 /* Glossary-term links */
 .gloss {
+    background-color: inherit;
     border-bottom: 1px dashed $link-green;
+    border-left: 0;
+    border-right: 0;
+    border-top: 0;
     color: $link-green;
     cursor: pointer;
+    margin: 0;
+    padding: 0;
 }
 
 /* Tooltips for working area images and highlighted glossary terms */
