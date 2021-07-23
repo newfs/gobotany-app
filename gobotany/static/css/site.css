@@ -100,6 +100,8 @@ div.scrollableArea { position: relative; width: auto; height: 100%; }
 /* lighter version of #a7da7e green from NPT palette */
 /* darker version of #a7da7e green from NPT palette */
 /* dark version of #a7da7e green from NPT palette */
+*:focus { outline-color: -webkit-focus-ring-color; outline-offset: 2px; outline-style: auto; outline-width: 2px; }
+
 .orange-button, body.plantshare .image-modal a.button, body.plantshare#ask #main .submit, body.plantshare#plantshare #ask .submit { background-color: #bb582a; border: 1px solid #bb582a !important; border-radius: 14px; box-shadow: 0px 1px 2px 0 #a2a64d; color: #fff; cursor: default; display: inline-block; font-family: ScalaSans, "Trebuchet MS", Helvetica, Arial, "Lucida Sans Unicode", sans-serif; font-size: 12px; font-weight: bold !important; letter-spacing: 1px; line-height: 18px; min-width: 80px; padding: 4px 12px; text-align: center; text-decoration: none; }
 .orange-button.caps, body.plantshare .image-modal a.caps.button, body.plantshare#ask #main .caps.submit, body.plantshare#plantshare #ask .caps.submit { text-transform: uppercase; }
 .orange-button.disabled, body.plantshare .image-modal a.disabled.button, body.plantshare#ask #main .disabled.submit, body.plantshare#plantshare #ask .disabled.submit { background-color: #f0ccbc; border-color: #edc573 !important; color: #666 !important; cursor: default !important; text-shadow: none; }
@@ -112,7 +114,6 @@ div.scrollableArea { position: relative; width: auto; height: 100%; }
 .action-link.caps, #dkey a.caps.button, #dkey a.caps.show-all-button { letter-spacing: 1px; text-transform: uppercase; }
 .action-link.large, #dkey a.large.button, #dkey a.large.show-all-button { border-bottom: 0.2rem solid #fff; border-radius: 12px; font-size: 16px; line-height: 24px; min-width: 120px; padding: 6px 18px 3px; }
 .action-link.large.caps, #dkey a.large.caps.button, #dkey a.large.caps.show-all-button { letter-spacing: 1.5px; }
-.action-link:focus, #dkey a.button:focus, #dkey a.show-all-button:focus { /* Focus ring */ outline-color: -webkit-focus-ring-color; outline-offset: 2px; outline-style: auto; outline-width: 4px; }
 
 /* Fix button and action-link text alignment in Firefox; evidently the misalignment is due to how the browsers handle the Scala Sans font. (Unfortunately this means that any fonts lower in the font stack would show up misaligned in FF.) */
 @-moz-document url-prefix() { .orange-button, body.plantshare .image-modal a.button, body.plantshare#ask #main .submit, body.plantshare#plantshare #ask .submit, .action-link, #dkey .offer-help-aside a.button, #dkey a.button, #dkey a.show-all-button { padding-bottom: 3px; padding-top: 5px; } }
@@ -369,7 +370,7 @@ a.get-help-btn { margin: 10px 0 20px; }
 .plant-grid .missing-image:after { display: block; position: absolute; top: 50%; left: 50%; margin: -20px 0 0 -50px; width: 100px; height: 40px; font-size: 12px; line-height: 130%; text-align: center; content: 'Image not available yet'; }
 
 /* Glossary-term links */
-.gloss { border-bottom: 1px dashed #27610a; color: #27610a; cursor: pointer; }
+.gloss { background-color: inherit; border-bottom: 1px dashed #27610a; border-left: 0; border-right: 0; border-top: 0; color: #27610a; cursor: pointer; margin: 0; padding: 0; }
 
 /* Tooltips for working area images and highlighted glossary terms */
 .gb-tooltip { border: 1px solid #c3d941; border-radius: 2px; box-shadow: 0px 1px 4px 0 #333333; display: none; /* initially invisible, fades in */ padding: 8px; position: absolute; width: 300px; z-index: 1000; background: url('data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz4gPHN2ZyB2ZXJzaW9uPSIxLjEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGRlZnM+PGxpbmVhckdyYWRpZW50IGlkPSJncmFkIiBncmFkaWVudFVuaXRzPSJvYmplY3RCb3VuZGluZ0JveCIgeDE9IjAuNSIgeTE9IjAuMCIgeDI9IjAuNSIgeTI9IjEuMCI+PHN0b3Agb2Zmc2V0PSIwJSIgc3RvcC1jb2xvcj0iI2VhZjJlMiIvPjxzdG9wIG9mZnNldD0iMTAwJSIgc3RvcC1jb2xvcj0iI2Q2ZTZjNSIvPjwvbGluZWFyR3JhZGllbnQ+PC9kZWZzPjxyZWN0IHg9IjAiIHk9IjAiIHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiIGZpbGw9InVybCgjZ3JhZCkiIC8+PC9zdmc+IA=='); background: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #eaf2e2), color-stop(100%, #d6e6c5)); background: -moz-linear-gradient(top center, #eaf2e2, #d6e6c5); background: -webkit-linear-gradient(top center, #eaf2e2, #d6e6c5); background: linear-gradient(to bottom center, #eaf2e2, #d6e6c5); }
@@ -582,7 +583,7 @@ body.taxa #sb-title-inner h6 { color: #fff; font-size: 16px; font-style: normal;
 body.taxa #sb-title-inner span { font-family: "Trebuchet MS", Helvetica, Arial, "Lucida Sans Unicode", sans-serif; font-size: 10px; }
 body.taxa #sb-title-inner a { border-bottom: 1px solid #ccc; color: #fff; }
 body.taxa #sb-title-inner a:hover { text-decoration: none; }
-body.taxa #sb-title-inner a.contact { cursor: pointer; display: inline-block; /* prevent link from wrapping, which makes tooltip position incorrect */ text-decoration: none; }
+body.taxa #sb-title-inner .contact { background-color: inherit; border: 0; color: #fff; cursor: pointer; display: inline-block; /* prevent text from wrapping, which makes tooltip position incorrect */ margin: 0; padding: 0; text-decoration: underline; }
 body.taxa #sb-nav-close { top: 56px !important; }
 
 body.taxa #main ol, body.taxa #main ul { line-height: inherit; }
@@ -748,7 +749,7 @@ body.skey.groups-subgroups #sb-title-inner h6 { color: #fff; font-size: 16px; fo
 body.skey.groups-subgroups #sb-title-inner span { font-family: "Trebuchet MS", Helvetica, Arial, "Lucida Sans Unicode", sans-serif; font-size: 10px; }
 body.skey.groups-subgroups #sb-title-inner a { border-bottom: 1px solid #ccc; color: #fff; }
 body.skey.groups-subgroups #sb-title-inner a:hover { text-decoration: none; }
-body.skey.groups-subgroups #sb-title-inner a.contact { cursor: pointer; display: inline-block; /* prevent link from wrapping, which makes tooltip position incorrect */ text-decoration: none; }
+body.skey.groups-subgroups #sb-title-inner .contact { background-color: inherit; border: 0; color: #fff; cursor: pointer; display: inline-block; /* prevent text from wrapping, which makes tooltip position incorrect */ margin: 0; padding: 0; text-decoration: underline; }
 body.skey.groups-subgroups #sb-nav-close { top: 56px !important; }
 body.skey.groups-subgroups p.question, body.skey.groups-subgroups p.tip { color: #766b1e; font-family: Basetica, "Trebuchet MS", Helvetica, Arial, "Lucida Sans Unicode", sans-serif; font-size: 1.6rem; margin: 0.5rem 0; padding: 0; }
 body.skey.groups-subgroups p.tip { font-size: 1.1rem; }
