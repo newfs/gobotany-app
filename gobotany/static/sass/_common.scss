@@ -136,6 +136,13 @@ $disabled_orange_gradient: linear-gradient(
     top, mix($body_bg, $orange2, 50%) 0%, mix($body_bg, $orange5, 50%) 32%,
     mix($body_bg, $orange5, 50%) 50%, mix($body_bg, $orange3, 50%) 100%);
 
+*:focus {
+    outline-color: -webkit-focus-ring-color;
+    outline-offset: 2px;
+    outline-style: auto;
+    outline-width: 2px;
+}
+
 .orange-button {
     background-color: $npt-orange-dark;
     border: 1px solid $npt-orange-dark !important;
