@@ -1,5 +1,9 @@
 define([
-    'bridge/jquery'
+    'bridge/jquery',
+    'bridge/jquery-ui',
+    'bridge/jquery.easing',
+    'bridge/jquery.kinetic',
+    'bridge/jquery.mousewheel'
 ], function() {
     // end AMD header
 
