@@ -418,6 +418,9 @@ body.skey {
                         display: block;
                         font-weight: bold;
                         margin: 0 0 3px 0;
+                        button {
+                            font-weight: bold;
+                        }
                     }
                 }
                 .clear-filter {
