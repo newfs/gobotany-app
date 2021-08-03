@@ -401,6 +401,7 @@ a.get-help-btn { margin: 10px 0 20px; }
 .characteristics dl { border: 1px transparent; /* border forces new row in WebKit when char name, but not value, wraps */ margin: 6px 0 0; padding: 0; }
 
 .characteristics dt { clear: left; float: left; font-weight: bold; line-height: 18px; padding-top: 1px; text-align: left; width: 200px; }
+.characteristics dt button { font-weight: bold; }
 
 .characteristics dd { line-height: 18px; margin-left: 210px; }
 
@@ -831,6 +832,7 @@ body.skey.results #question-nav .option-list > li.answered { background: #ffd; }
 body.skey.results #question-nav .option-list > li.active, body.skey.results #question-nav .option-list > li:hover, body.skey.results #question-nav .option-list > li.active span.value, body.skey.results #question-nav .option-list > li.answered.active { background: #dce890; cursor: default; }
 body.skey.results #question-nav .option-list .option { color: #1a2e11; margin-left: 0; text-decoration: none; }
 body.skey.results #question-nav .option-list .option .name { display: block; font-weight: bold; margin: 0 0 3px 0; }
+body.skey.results #question-nav .option-list .option .name button { font-weight: bold; }
 body.skey.results #question-nav .option-list .clear-filter { color: #27610a; display: block; margin-left: 0; margin-top: 4px; width: 45px; }
 body.skey.results #question-nav .loading { background: url(/static/images/icons/preloaders-dot-net-sm.gif) no-repeat scroll 0 0 transparent; font-weight: bold; margin: 12px; padding: 0 0 0 20px; }
 body.skey.results #results-section { float: left; margin: -8px 0 28px 18px; width: 710px; }
