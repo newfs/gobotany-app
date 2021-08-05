@@ -122,7 +122,7 @@ div.scrollableArea { position: relative; width: auto; height: 100%; }
 /* image popups (used in D. Key, and in D. Key section of species page) */
 div.shadow { /* shadow that hides the whole page */ display: none; position: fixed; z-index: 1000; top: 0; left: 0; height: 100%; width: 100%; background-color: rgba(0, 0, 0, 0.45); text-align: center; }
 
-div.popup { /* for displaying quick lists of taxa */ border-radius: 1em; display: inline-block; margin: 5% auto; max-height: 90%; overflow-y: auto; overflow-x: hidden; /* otherwise scrolling can leak to page */ border: 0.5em solid #acac90; background-color: #fcf8ef; padding: 1em 2em; text-align: left; font-size: 12px; line-height: 1.25em; }
+div.popup { /* for displaying quick lists of taxa */ border-radius: 1em; display: inline-block; margin: 5% auto; max-height: 90%; overflow-y: auto; overflow-x: hidden; /* otherwise scrolling can leak to page */ border: 0.5em solid #acac90; background-color: #fcf8ef; padding: 1em 2em; text-align: left; font-size: 13px; line-height: 1.25em; }
 
 div.popup h2 { /* "See list of 14 species in 1b" */ border-bottom: 1px solid #519136; padding-bottom: 0.5em; color: #519136; font-family: "Trebuchet MS", Helvetica, Arial, "Lucida Sans Unicode", sans-serif; font-weight: normal; /* For tall lists a scrollbar appears, and tends to make the last word of the title wrap unattractively. */ white-space: nowrap; }
 
@@ -131,7 +131,7 @@ div.popup a:hover, div.popup a:focus { text-decoration: underline; }
 div.popup a:hover { color: #27610a; }
 
 /* For occasional, temporary donation campaigns: message at top of page */
-#top-message { align-items: center; background-color: #e8a38c; color: #000; display: flex; font-family: Verdana, Geneva, "Lucida Sans Unicode", sans-serif; font-size: 1.1em; justify-content: space-between; margin: 0; padding: 0.7em 1.8em; }
+#top-message { align-items: center; background-color: #e8a38c; color: #000; display: flex; font-family: Verdana, Geneva, "Lucida Sans Unicode", sans-serif; font-size: 1.02em; justify-content: space-between; margin: 0; padding: 0.7em 1.8em; }
 
 #top-message p { line-height: 150%; }
 
@@ -145,7 +145,7 @@ div.popup a:hover { color: #27610a; }
   #top-message p { margin-bottom: 0.5em; margin-top: 0; }
   #top-message .controls { justify-content: space-between; margin-bottom: 0.5em; width: 100%; } }
 /* Site-wide styles */
-body { background-color: #f8eeda; color: #000; font-family: Verdana, Geneva, "Lucida Sans Unicode", sans-serif; font-size: 12px; margin: 0; }
+body { background-color: #f8eeda; color: #000; font-family: Verdana, Geneva, "Lucida Sans Unicode", sans-serif; font-size: 13px; margin: 0; }
 
 html, button, input, select, textarea { font-family: Verdana, Geneva, "Lucida Sans Unicode", sans-serif; }
 
@@ -167,7 +167,7 @@ a:not([href]):hover { text-decoration: none; }
 
 #main td.scientific-name a { border-bottom: 0; }
 
-h1, h2, h3, h4, h5, h6 { font-family: Basetica, "Trebuchet MS", Helvetica, Arial, "Lucida Sans Unicode", sans-serif; font-weight: normal; line-height: 120%; margin: 0; padding: 0; -webkit-font-smoothing: antialiased; /* needed for some WebKit browsers: prevent too bold */ }
+h1, h2, h3, h4, h5, h6 { font-family: Basetica, "Trebuchet MS", Helvetica, Arial, "Lucida Sans Unicode", sans-serif; font-weight: normal; line-height: 120%; margin: 0; padding: 0; }
 
 h1 { color: #437829; font-size: 1.8rem; font-weight: 900; margin: 1.4rem 0; }
 
@@ -177,13 +177,13 @@ h3 { color: #766b1e; font-size: 1.1rem; font-weight: 900; margin: 1.1rem 0; }
 
 h4 { color: #413b11; font-size: 0.95rem; margin: 0.95rem 0; }
 
-h5, h6 { color: #554e16; font-size: 12px; }
+h5, h6 { color: #554e16; font-size: 13px; }
 
 h6 { font-style: italic; }
 
-p { line-height: 160%; margin: 1em 0; padding: 0; }
+p { line-height: 153%; margin: 1em 0; padding: 0; }
 
-ul { line-height: 160%; margin: 0; padding: 0; }
+ul { line-height: 153%; margin: 0; padding: 0; }
 
 ul li { margin: 0 0 5px 0; }
 
@@ -233,24 +233,25 @@ body.plantshare#sightings #sidebar .sightings a::before, body.plantshare#sightin
 header .container { margin: 0 auto; padding: 0 10px; width: 960px; }
 header p { margin: 0; }
 
-header .go-botany { align-items: baseline; display: flex; margin: 1.5em 0 0.8em; padding: 0; position: relative; z-index: 5; }
+header .go-botany { align-items: baseline; display: flex; margin: 1.4em 0 0.7em; padding: 0; position: relative; z-index: 5; }
 header .go-botany a { margin-right: 1.2em; width: 12.5em; }
-header .go-botany .tagline { bottom: 0; color: #467321; font-family: Basetica, sans-serif; font-size: 1.07em; position: absolute; left: 13em; }
+header .go-botany img { width: 150px; }
+header .go-botany .tagline { bottom: 0; color: #467321; font-family: Basetica, sans-serif; font-size: 1em; position: absolute; left: 12.8em; }
 
 header nav { align-items: center; background-color: #17555b; border-radius: 2em; display: flex; font-family: "Trebuchet MS", Helvetica, Arial, "Lucida Sans Unicode", sans-serif; justify-content: space-between; margin-bottom: 1em; padding-right: 0.3em; }
 header nav a { color: #fff; display: inline-block; padding: 5px 8px 4px; }
 header nav a:visited, header nav a:not([href]) { color: #fff; }
 header nav > a { display: none; /* Omit the 'sections' link by default */ }
 header nav > ul { font-family: Basetica, "Trebuchet MS", sans-serif; list-style-type: none; padding-left: 1rem; }
-header nav > ul li { display: block; float: left; font-size: 1.16667em; line-height: 1.25em; margin: 0 10px 0 0; /* px here to help save space on zoom */ padding: 0.05em 0 0; position: relative; white-space: nowrap; }
+header nav > ul li { display: block; float: left; font-size: 1.12em; line-height: 1.19em; margin: 0 10px 0 0; /* px here to help save space on zoom */ padding: 0.05em 0 0; position: relative; white-space: nowrap; }
 header nav > ul li:last-child { margin-right: 0; }
 header nav > ul li a:hover { text-decoration: none; }
-header nav .suggester-menu { font-size: 1.16667em; margin-top: 1.5em; margin-left: 0.3em; }
+header nav .suggester-menu { font-size: 1.12em; margin-top: 1.5em; margin-left: 0.3em; }
 header nav .suggester-menu ul { margin-top: 0; }
 
 header #search { margin: 0; padding: 0; }
 header #search form { display: flex; margin: 0; padding: 0; }
-header #search input { background: #fff; border: 0; border-radius: 1em; font-family: "Trebuchet MS", Helvetica, Arial, "Lucida Sans Unicode", sans-serif; font-size: 1.16667em; height: 1.4em; margin: 0; padding: 0 0.5em; width: 247px; /* keep search from becoming too wide on zoom */ }
+header #search input { background: #fff; border: 0; border-radius: 1em; font-family: "Trebuchet MS", Helvetica, Arial, "Lucida Sans Unicode", sans-serif; font-size: 1.12em; height: 1.4em; margin: 0; padding: 0 0.5em; width: 247px; /* keep search from becoming too wide on zoom */ }
 header #search button { background-color: #d2805f; border: 0; border-radius: 2em; margin: 0 0 0 -1.25em; padding: 0 0.75em; }
 header #search button img { height: 1.4em; vertical-align: middle; }
 
@@ -398,12 +399,12 @@ a.get-help-btn { margin: 10px 0 20px; }
 /* Character/value styles for plant preview popups, species pages, etc. */
 .characteristics { margin: 16px 0; }
 
-.characteristics dl { border: 1px transparent; /* border forces new row in WebKit when char name, but not value, wraps */ margin: 6px 0 0; padding: 0; }
+.characteristics dl { display: flex; margin: 10px 0 0; padding: 0; }
 
-.characteristics dt { clear: left; float: left; font-weight: bold; line-height: 18px; padding-top: 1px; text-align: left; width: 200px; }
+.characteristics dt { font-weight: bold; line-height: 18px; text-align: left; width: 200px; }
 .characteristics dt button { font-weight: bold; }
 
-.characteristics dd { line-height: 18px; margin-left: 210px; }
+.characteristics dd { line-height: 18px; max-width: 60%; }
 
 .characteristics dd ul { list-style-type: disc; margin: 0; padding: 0 0 0 1.3em; text-indent: -0.2em; }
 .characteristics dd ul.compact { margin: 0; padding: 0; text-indent: 0; }
@@ -412,9 +413,6 @@ a.get-help-btn { margin: 10px 0 20px; }
 .characteristics dd ul.compact li:last-child:after { content: none; }
 
 .characteristics dd li { margin: 0; padding: 0 0 0.1em; }
-
-.characteristics.full dt { width: 230px; }
-.characteristics.full dd { margin-left: 240px; }
 
 /* Form error messages */
 .errorlist { color: #f00; font-family: "Trebuchet MS", Helvetica, Arial, "Lucida Sans Unicode", sans-serif; font-size: 14px; line-height: 14px; list-style-type: none; }
@@ -447,12 +445,12 @@ table.list th td:first-child { font-family: "Trebuchet MS", Helvetica, Arial, "L
 /* Home */
 #home { background-color: #f8eeda; background-image: url(/static/images/layout/body-home.png); background-position: left 0px top; background-repeat: repeat-x; }
 
-#home .id { display: flex; padding: 1.5em 0 0; position: relative; }
+#home .id { display: flex; padding: 1.4em 0 0; position: relative; }
 
 #home h1 { font-weight: unset; margin: 0; }
 #home h1 img { width: 7.7em; }
 
-#home .tagline { bottom: 0.6em; color: #fff; font-family: Basetica, sans-serif; font-size: 1.15em; left: 17.2em; line-height: 120%; margin: 0; position: absolute; }
+#home .tagline { bottom: 0.6em; color: #fff; font-family: Basetica, sans-serif; font-size: 1.05em; left: 17.4em; line-height: 120%; margin: 0; position: absolute; }
 
 #home .newfs { padding-top: 13px; }
 
@@ -465,7 +463,7 @@ table.list th td:first-child { font-family: "Trebuchet MS", Helvetica, Arial, "L
 #home #banner { margin: 10px 0 0; position: absolute; }
 #home #banner > img { box-shadow: 0px 0px 4px 0 rgba(0, 0, 0, 0.6); display: none; height: 345px; left: 0; position: absolute; top: 0; width: 960px; }
 #home #banner img:first-child { display: block; }
-#home #banner h2 { color: #437829; font-family: Basetica, "Trebuchet MS", Helvetica, Arial, "Lucida Sans Unicode", sans-serif; font-size: 2rem; font-weight: 700; line-height: normal; margin: 1.6rem 0; }
+#home #banner h2 { color: #437829; font-family: Basetica, "Trebuchet MS", Helvetica, Arial, "Lucida Sans Unicode", sans-serif; font-size: 2rem; font-weight: 700; line-height: normal; margin: 1.6rem 0 1rem; }
 #home #banner p { margin: 12px 0 0 0; text-align: left; }
 
 #home #update p { line-height: 150%; margin-bottom: 7px; margin-top: 0; text-align: center; }
@@ -480,7 +478,7 @@ table.list th td:first-child { font-family: "Trebuchet MS", Helvetica, Arial, "L
 
 #home #overlay { background: rgba(255, 255, 255, 0.85); height: 323px; padding: 10px 30px 0; position: absolute; left: 676px; top: 6px; width: 218px; z-index: 50; }
 
-#home .three-col { float: left; height: 230px; margin: 354px 23px 5px 0; padding: 8px 23px 0 0; width: 289px; }
+#home .three-col { float: left; height: 220px; margin: 354px 23px 5px 0; padding: 8px 23px 0 0; width: 289px; }
 #home .three-col.last { background: 0; margin-right: 0; padding: 8px 0 0 0; }
 #home .three-col h3 { color: #413b11; font-family: Basetica; font-size: 1.4rem; font-weight: 400; margin: 0.6rem 0 0.4rem; }
 #home .three-col h4 { color: #7a6f1f; font-family: Basetica; margin: 0 0 3px 0; }
@@ -714,7 +712,7 @@ body#species #images-note { font-size: 11px; font-style: italic; margin-bottom: 
   body#family #main p.description, body#genus #main p.description { margin: 4px 0; }
   body#family #main h2, body#genus #main h2 { font-size: 15px; padding-top: 12px; }
   body#family ul.genera, body#genus ul.species { line-height: 24px; margin-bottom: 18px; }
-  .visit-dkey { font-size: 12px; }
+  .visit-dkey { font-size: 13px; }
   body#species #main { background: none; /* layout for smartphones: sections in document sequence */ }
   body#species #main #breadcrumb, body#species #main #name, body#species #main .img-gallery, body#species #main #partner, body#species #main #facts, body#species #main #habitat, body#species #main #chars, body#species #main #wetland, body#species #main #status, body#species #main #info-dkey { margin-left: 0; }
   body#species #main .img-gallery { margin-bottom: 20px; }
@@ -1589,8 +1587,8 @@ body.plantshare#screen-images div.form-control { margin: 0 30px; }
 /* End media queries styles for PlantShare */
 /* Dichotomous Key */
 #dkey .offer-help-aside { float: right; margin: 1em 1em 0.5em 1em; text-align: right; color: #606060; }
-#dkey .offer-help-aside span { font-size: 12px; }
-#dkey .offer-help-aside a.button { display: inline-block; margin: 0.8em 1em; font-weight: normal; font-size: 12px; text-transform: uppercase; }
+#dkey .offer-help-aside span { font-size: 13px; }
+#dkey .offer-help-aside a.button { display: inline-block; margin: 0.8em 1em; font-weight: normal; font-size: 13px; text-transform: uppercase; }
 #dkey .offer-help-aside select { margin: 0.25em 1.0em; font-size: 1.33333em; }
 
 #jump-nav { margin: 0 auto; max-width: 330px; }
@@ -1612,16 +1610,16 @@ body.plantshare#screen-images div.form-control { margin: 0 30px; }
 #dkey p.figure img { width: 16em; /* force thumbnails to a consistent width */ }
 #dkey p.figure .number { font-weight: bold; margin-right: 0.5em; }
 
-#dkey p.backlinks { margin-top: 0.57143em; margin-bottom: 0.64286em; font-size: 1.16667em; }
+#dkey p.backlinks { margin-top: 0.57143em; margin-bottom: 0.64286em; font-size: 1.12em; }
 #dkey p.backlinks a { text-decoration: none; margin-right: 0.5em; color: #519136; font-family: "Trebuchet MS", Helvetica, Arial, "Lucida Sans Unicode", sans-serif; }
 #dkey p.backlinks a:hover, #dkey p.backlinks a:focus { text-decoration: underline; }
 
-#dkey a.what-lies-beneath { /* "See list of 7 species in 1a" */ text-decoration: none; border-bottom: 0; color: #27610a; font-family: "Trebuchet MS", Helvetica, Arial, "Lucida Sans Unicode", sans-serif; font-size: 12px; text-decoration: underline; text-transform: uppercase; }
+#dkey a.what-lies-beneath { /* "See list of 7 species in 1a" */ text-decoration: none; border-bottom: 0; color: #27610a; font-family: "Trebuchet MS", Helvetica, Arial, "Lucida Sans Unicode", sans-serif; font-size: 13px; text-decoration: underline; text-transform: uppercase; }
 #dkey a.what-lies-beneath:hover, #dkey a.what-lies-beneath:focus { text-decoration: underline; }
 
 #dkey > a.what-lies-beneath { display: block; max-width: 47.5em; text-align: right; }
 
-#dkey ul.couplets { margin: 0em; max-width: 48em; padding: 1em 1em 0 0; font-size: 12px; line-height: 1.5em; }
+#dkey ul.couplets { margin: 0em; max-width: 48em; padding: 1em 1em 0 0; font-size: 13px; line-height: 1.5em; }
 
 #dkey ul.couplets ul { /* a couplet */ margin: 0em; padding-bottom: 0em; /* override browser default */ padding-left: 2%; /* indent of each level of couplet */ }
 
@@ -1640,7 +1638,7 @@ body.plantshare#screen-images div.form-control { margin: 0 30px; }
 
 #dkey a.what-lies-beneath { /* message that sits above the button */ display: inline-block; /* other styles inherited from a.what-lies-beneath rule above */ }
 
-#dkey a.button { display: inline-block; font-size: 12px; margin-top: 6px; }
+#dkey a.button { display: inline-block; font-size: 13px; margin-top: 6px; }
 
 #dkey a.figure-link { /* clickable figure numbers: [Fig. 3] */ color: #27610a; text-decoration: underline; font-weight: bold; }
 
@@ -1650,14 +1648,14 @@ body.plantshare#screen-images div.form-control { margin: 0 30px; }
 
 #dkey .couplets .gloss { color: #27610a; cursor: pointer; }
 
-#dkey a.show-all-button { display: inline-block; font-size: 12px; font-weight: normal; text-transform: uppercase; }
+#dkey a.show-all-button { display: inline-block; font-size: 13px; font-weight: normal; text-transform: uppercase; }
 
 #dkey .image-type-selector { display: none; /* once images are loaded, our JS will un-hide */ max-width: none; }
 
 #dkey div.taxon-images { margin-left: 0.75em; text-align: center; }
 #dkey div.taxon-images figure { display: inline-block; margin: 0 1em 1em 0; width: 160px; vertical-align: top; }
 #dkey div.taxon-images img { display: block; margin-bottom: 0.4em; border: 4px solid black; width: 160px; height: 149px; }
-#dkey div.taxon-images a { font-size: 12px; text-decoration: none; }
+#dkey div.taxon-images a { font-size: 13px; text-decoration: none; }
 #dkey div.taxon-images a:hover { text-decoration: underline; }
 
 /* Begin media queries styles for Dichotomous Key. */
@@ -1779,7 +1777,7 @@ body.search-results h1 + p { margin-top: 12px; }
 #advanced-id #main .dk-landing-section section p { margin: 10px 0; }
 #advanced-id #main .dk-landing-section section ul { line-height: 16px; list-style-type: disc; margin: 10px 0; padding: 0 0 0 15px; }
 #advanced-id #main .dk-landing-section section ul li { margin: 10px 0; }
-#advanced-id #main .dk-landing-section > a { bottom: 10px; margin: 0 0 0 20px; position: absolute; width: 235px; }
+#advanced-id #main .dk-landing-section > a { bottom: 0; margin: 0 0 0 20px; position: absolute; width: 235px; }
 
 /* System Requirements */
 #system-requirements #main .desktop { float: left; padding: 10px 25px 10px 0; width: 160px; }

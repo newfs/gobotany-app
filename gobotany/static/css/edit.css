@@ -34,7 +34,7 @@
 /* image popups (used in D. Key, and in D. Key section of species page) */
 div.shadow { /* shadow that hides the whole page */ display: none; position: fixed; z-index: 1000; top: 0; left: 0; height: 100%; width: 100%; background-color: rgba(0, 0, 0, 0.45); text-align: center; }
 
-div.popup { /* for displaying quick lists of taxa */ border-radius: 1em; display: inline-block; margin: 5% auto; max-height: 90%; overflow-y: auto; overflow-x: hidden; /* otherwise scrolling can leak to page */ border: 0.5em solid #acac90; background-color: #fcf8ef; padding: 1em 2em; text-align: left; font-size: 12px; line-height: 1.25em; }
+div.popup { /* for displaying quick lists of taxa */ border-radius: 1em; display: inline-block; margin: 5% auto; max-height: 90%; overflow-y: auto; overflow-x: hidden; /* otherwise scrolling can leak to page */ border: 0.5em solid #acac90; background-color: #fcf8ef; padding: 1em 2em; text-align: left; font-size: 13px; line-height: 1.25em; }
 
 div.popup h2 { /* "See list of 14 species in 1b" */ border-bottom: 1px solid #519136; padding-bottom: 0.5em; color: #519136; font-family: "Trebuchet MS", Helvetica, Arial, "Lucida Sans Unicode", sans-serif; font-weight: normal; /* For tall lists a scrollbar appears, and tends to make the last word of the title wrap unattractively. */ white-space: nowrap; }
 
@@ -43,7 +43,7 @@ div.popup a:hover, div.popup a:focus { text-decoration: underline; }
 div.popup a:hover { color: #27610a; }
 
 /* For occasional, temporary donation campaigns: message at top of page */
-#top-message { align-items: center; background-color: #e8a38c; color: #000; display: flex; font-family: Verdana, Geneva, "Lucida Sans Unicode", sans-serif; font-size: 1.1em; justify-content: space-between; margin: 0; padding: 0.7em 1.8em; }
+#top-message { align-items: center; background-color: #e8a38c; color: #000; display: flex; font-family: Verdana, Geneva, "Lucida Sans Unicode", sans-serif; font-size: 1.02em; justify-content: space-between; margin: 0; padding: 0.7em 1.8em; }
 
 #top-message p { line-height: 150%; }
 
