@@ -12,19 +12,29 @@
 /* lighter version of #a7da7e green from NPT palette */
 /* darker version of #a7da7e green from NPT palette */
 /* dark version of #a7da7e green from NPT palette */
-.orange-button, span.all-species-button, span.simple-key-button, .save-button, .length-save-button { background-color: #bb582a; border: 1px solid #bb582a !important; border-radius: 14px; box-shadow: 0px 1px 2px 0 #a2a64d; color: #fff; cursor: pointer; display: inline-block; font-family: ScalaSans, "Trebuchet MS", Helvetica, Arial, "Lucida Sans Unicode", sans-serif; font-size: 12px; font-weight: bold !important; letter-spacing: 1px; line-height: 18px; min-width: 80px; padding: 4px 12px; text-align: center; text-decoration: none; }
-.orange-button:active, span.all-species-button:active, span.simple-key-button:active, .save-button:active, .length-save-button:active { background-color: #bb582a; /* TODO: active button style/color */ }
-.orange-button:hover, span.all-species-button:hover, span.simple-key-button:hover, .save-button:hover, .length-save-button:hover, .orange-button:visited, span.all-species-button:visited, span.simple-key-button:visited, .save-button:visited, .length-save-button:visited, .orange-button:active, span.all-species-button:active, span.simple-key-button:active, .save-button:active, .length-save-button:active { color: #fff; }
+*:focus { outline-color: -webkit-focus-ring-color; outline-offset: 2px; outline-style: auto; outline-width: 2px; }
+
+.orange-button, span.all-species-button, span.simple-key-button, .save-button, .length-save-button { background-color: #bb582a; border: 1px solid #bb582a !important; border-radius: 14px; box-shadow: 0px 1px 2px 0 #a2a64d; color: #fff; cursor: default; display: inline-block; font-family: ScalaSans, "Trebuchet MS", Helvetica, Arial, "Lucida Sans Unicode", sans-serif; font-size: 12px; font-weight: bold !important; letter-spacing: 1px; line-height: 18px; min-width: 80px; padding: 4px 12px; text-align: center; text-decoration: none; }
 .orange-button.caps, span.caps.all-species-button, span.caps.simple-key-button, .caps.save-button, .caps.length-save-button { text-transform: uppercase; }
 .orange-button.disabled, span.disabled.all-species-button, span.disabled.simple-key-button, .disabled.save-button, .disabled.length-save-button { background-color: #f0ccbc; border-color: #edc573 !important; color: #666 !important; cursor: default !important; text-shadow: none; }
 .orange-button.large, span.large.all-species-button, span.large.simple-key-button, .large.save-button, .large.length-save-button { border-radius: 20px; color: #fff; font-size: 16px; letter-spacing: 1.5px; min-width: 150px; padding: 9px 30px; }
 
+.action-link { background-color: #bb582a; border-bottom: 0.15rem solid #fff !important; /* override some link underlines in text */ border-radius: 10px; box-shadow: 0 0.15rem 0 0 #bb582a; color: #fff; cursor: pointer; display: inline-block; font-family: ScalaSans, "Trebuchet MS", Helvetica, Arial, "Lucida Sans Unicode", sans-serif; font-size: 12px; font-weight: bold; letter-spacing: 1px; line-height: 18px; min-width: 75px; padding: 4px 12px; text-align: center; text-decoration: none; /* Visited: duller; like the relationship between classic blue & purple */ /* Hover: higher contrast; use the current nav. bar color */ /* Active: orange; similar to default red, but higher contrast */ }
+.action-link:visited { background-color: #8e421f; box-shadow: 0 0.15rem 0 0 #8e421f; color: #fff; }
+.action-link:hover, .action-link:focus { background-color: #17555b; box-shadow: 0 0.15rem 0 0 #17555b; color: #fff; }
+.action-link:active { background-color: #cc4b00; box-shadow: 0 0.15rem 0 0 #cc4b00; color: #fff; }
+.action-link.caps { letter-spacing: 1px; text-transform: uppercase; }
+.action-link.large { border-bottom: 0.2rem solid #fff; border-radius: 12px; font-size: 16px; line-height: 24px; min-width: 120px; padding: 6px 18px 3px; }
+.action-link.large.caps { letter-spacing: 1.5px; }
+
+/* Fix button and action-link text alignment in Firefox; evidently the misalignment is due to how the browsers handle the Scala Sans font. (Unfortunately this means that any fonts lower in the font stack would show up misaligned in FF.) */
+@-moz-document url-prefix() { .orange-button, span.all-species-button, span.simple-key-button, .save-button, .length-save-button, .action-link { padding-bottom: 3px; padding-top: 5px; } }
 .hidden { display: none !important; }
 
 /* image popups (used in D. Key, and in D. Key section of species page) */
 div.shadow { /* shadow that hides the whole page */ display: none; position: fixed; z-index: 1000; top: 0; left: 0; height: 100%; width: 100%; background-color: rgba(0, 0, 0, 0.45); text-align: center; }
 
-div.popup { /* for displaying quick lists of taxa */ border-radius: 1em; display: inline-block; margin: 5% auto; max-height: 90%; overflow-y: auto; overflow-x: hidden; /* otherwise scrolling can leak to page */ border: 0.5em solid #acac90; background-color: #fcf8ef; padding: 1em 2em; text-align: left; font-size: 12px; line-height: 1.25em; }
+div.popup { /* for displaying quick lists of taxa */ border-radius: 1em; display: inline-block; margin: 5% auto; max-height: 90%; overflow-y: auto; overflow-x: hidden; /* otherwise scrolling can leak to page */ border: 0.5em solid #acac90; background-color: #fcf8ef; padding: 1em 2em; text-align: left; font-size: 13px; line-height: 1.25em; }
 
 div.popup h2 { /* "See list of 14 species in 1b" */ border-bottom: 1px solid #519136; padding-bottom: 0.5em; color: #519136; font-family: "Trebuchet MS", Helvetica, Arial, "Lucida Sans Unicode", sans-serif; font-weight: normal; /* For tall lists a scrollbar appears, and tends to make the last word of the title wrap unattractively. */ white-space: nowrap; }
 
@@ -33,7 +43,7 @@ div.popup a:hover, div.popup a:focus { text-decoration: underline; }
 div.popup a:hover { color: #27610a; }
 
 /* For occasional, temporary donation campaigns: message at top of page */
-#top-message { align-items: center; background-color: #d87e54; color: #000; display: flex; font-family: Verdana, Geneva, "Lucida Sans Unicode", sans-serif; font-size: 1.1em; justify-content: space-between; margin: 0; padding: 0.7em 1.8em; }
+#top-message { align-items: center; background-color: #e8a38c; color: #000; display: flex; font-family: Verdana, Geneva, "Lucida Sans Unicode", sans-serif; font-size: 1.02em; justify-content: space-between; margin: 0; padding: 0.7em 1.8em; }
 
 #top-message p { line-height: 150%; }
 
@@ -41,21 +51,16 @@ div.popup a:hover { color: #27610a; }
 
 #top-message .controls { align-items: center; display: flex; }
 
-#top-message form { margin: 0.4em 2em; }
-
-#top-message button { border: 1px solid gray; border-radius: 6px; cursor: pointer; float: right; font-family: ScalaSans, Verdana, Geneva, "Lucida Sans Unicode", sans-serif; font-size: 1.2em; font-weight: bold; letter-spacing: 1px; padding: 0.6em 0.7em 0.4em; text-transform: uppercase; }
-
-#top-message a { color: #000; font-size: 1.2em; font-weight: bold; padding: 1em 0; text-align: center; width: 2em; }
+#top-message .close { background-color: inherit; border: 0; color: #000; font-size: 1.2em; font-weight: bold; margin-left: 1.2em; padding: 0; text-align: center; width: 2em; }
 
 @media only screen and (max-width: 600px) { #top-message { flex-direction: column; padding: 1em 1.5em 0.4em; }
   #top-message p { margin-bottom: 0.5em; margin-top: 0; }
-  #top-message .controls { justify-content: space-between; width: 100%; }
-  #top-message form { margin-left: 0; } }
+  #top-message .controls { justify-content: space-between; margin-bottom: 0.5em; width: 100%; } }
 .edit-page #all { margin: 2em; }
 
 .edit-character-definition { margin-top: 0; margin-left: 2em; margin-bottom: 0; }
 
-span.all-species-button, span.simple-key-button, .save-button, .length-save-button { cursor: pointer; display: inline-block; margin: 0.8em 1em; font-weight: normal; }
+span.all-species-button, span.simple-key-button, .save-button, .length-save-button { cursor: default; display: inline-block; margin: 0.8em 1em; font-weight: normal; }
 
 .pile-character-grid { position: relative; margin-top: 2em; /* Editing a single character for many taxa: */ /* For editing numeric values. */ /* http://stackoverflow.com/questions/8669413/ */ }
 .pile-character-grid .column { z-index: -1; position: absolute; background-color: white; }
@@ -67,8 +72,8 @@ span.all-species-button, span.simple-key-button, .save-button, .length-save-butt
 .pile-character-grid div:hover.expanded { background-color: transparent; }
 .pile-character-grid span { margin: 0px 2px; background-color: #dc9402; padding: 2px 8px 4px; vertical-align: 2px; color: white; font-size: 0.8em; }
 .pile-character-grid i { position: relative; display: inline-block; width: 20em; padding: 4px 0px; }
-.pile-character-grid i .expand-button { cursor: pointer; position: absolute; right: 2px; top: 2px; font-style: normal; }
-.pile-character-grid b { cursor: pointer; display: inline-block; padding: 4px 2px; font-weight: normal; }
+.pile-character-grid i .expand-button { cursor: default; position: absolute; right: 2px; top: 2px; font-style: normal; }
+.pile-character-grid b { cursor: default; display: inline-block; padding: 4px 2px; font-weight: normal; }
 .pile-character-grid b.x { background-color: #519136; color: white; }
 .pile-character-grid b.highlight { z-index: 2; background-color: white; }
 .pile-character-grid b.highlight.x { background-color: #3c6c28; }
@@ -83,7 +88,7 @@ span.all-species-button, span.simple-key-button, .save-button, .length-save-butt
 .taxon-character-grid .charactername { margin-top: 1em; border-top: 1px solid #dc9402; padding: 4px; background-color: #f4e4c5; }
 .taxon-character-grid .charactername:hover { background-color: #f4e4c5; }
 .taxon-character-grid input { margin: 4px 8px 4px 2px; }
-.taxon-character-grid label { cursor: pointer; display: block; padding: 4px 2px; white-space: normal; }
+.taxon-character-grid label { cursor: default; display: block; padding: 4px 2px; white-space: normal; }
 .taxon-character-grid :checked, .taxon-character-grid :checked + label { background-color: #519136; color: white; }
 
 .value-tips div { background-color: white; border: 2px solid #dc9402; border-radius: 1em; box-shadow: 0px 1px 4px 0 #e0b359; display: none; padding: 0.5em; position: absolute; }

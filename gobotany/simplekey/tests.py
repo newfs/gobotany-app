@@ -7,7 +7,8 @@ from gobotany.simplekey.templatetags.simplekey_extras import habitat_names
 from gobotany.libtest import FunctionalCase, TestCase
 
 
-@unittest.skip('Skipping tests that run against the real database')
+# Uncomment the line below to skip tests that run against the real database.
+#@unittest.skip('Skipping tests that run against the real database')
 class SimpleKeyTests(FunctionalCase):
 
     def test_simple_first_level_page_title(self):
@@ -35,7 +36,7 @@ class SimpleKeyTests(FunctionalCase):
 
         # Do group links get constructed correctly?
 
-        e = self.css1('#main .orange-button')
+        e = self.css1('#main .action-link')
         self.assertEqual('My plant is in this group', e.text)
         self.assertEqual(e.get_attribute('href'), '/simple/woody-plants/')
 
@@ -46,7 +47,7 @@ class SimpleKeyTests(FunctionalCase):
         assert h[0].text.startswith('True ferns and moonworts')
         assert h[1].text.startswith('Clubmosses and relatives, plus quillworts')
         assert h[2].text.startswith('Horsetails and scouring-rushes')
-        e = self.css('#main .orange-button')
+        e = self.css('#main .action-link')
         self.assertTrue(
             e[0].get_attribute('href').endswith('/ferns/monilophytes/'))
         self.assertTrue(
@@ -55,7 +56,8 @@ class SimpleKeyTests(FunctionalCase):
             e[2].get_attribute('href').endswith('/ferns/equisetaceae/'))
 
 
-@unittest.skip('Skipping tests that run against the real database')
+# Uncomment the line below to skip tests that run against the real database.
+#@unittest.skip('Skipping tests that run against the real database')
 class FullKeyTests(FunctionalCase):
 
     def test_full_first_level_page_title(self):

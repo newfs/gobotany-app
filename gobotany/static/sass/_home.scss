@@ -9,7 +9,7 @@
 
 #home .id {
     display: flex;
-    padding: 1.5em 0 0;
+    padding: 1.4em 0 0;
     position: relative;
 }
 #home h1 {
@@ -23,8 +23,8 @@
     bottom: 0.6em;
     color: #fff;
     font-family: Basetica, sans-serif;
-    font-size: 1.15em;
-    left: 17.2em;
+    font-size: 1.05em;
+    left: 17.4em;
     line-height: 120%;
     margin: 0;
     position: absolute;
@@ -68,7 +68,7 @@
         font-size: 2rem;
         font-weight: 700;
         line-height: normal;
-        margin: 1.6rem 0;
+        margin: 1.6rem 0 1rem;
     }
     p {
         margin: 12px 0 0 0;
@@ -78,11 +78,20 @@
 
 #home #update p {
     line-height: 150%;
+    margin-bottom: 7px;
+    margin-top: 0;
     text-align: center;
 }
 #home #update a {
+    color: #122113; /* very dark green */
     margin-left: 0.3rem;
     text-decoration: underline;
+    &:visited {
+        color: #400c3f; /* very dark purple */
+    }
+    &::after {
+        content: " ➔";
+    }
 }
 #home #update .badge {
     background-color: rgba(236, 243, 151, 0.9);
@@ -94,7 +103,7 @@
 
 #home #cta {
     margin: 18px 2px 0;
-    width: 124px;
+    width: 174px;
 }
 #home #overlay {
     background: rgba(255, 255, 255, 0.85);
@@ -108,7 +117,7 @@
 }
 #home .three-col {
     float: left;
-    height: 230px;
+    height: 220px;
     margin: 354px 23px 5px 0;
     padding: 8px 23px 0 0;
     width: 289px;
@@ -132,8 +141,8 @@
     p {
         margin: 0;
     }
-    a.orange-button {
-        margin: 13px 0 0 0;	
+    a {
+        margin: 13px 0 0 0;
     }
 }
 a {
@@ -213,7 +222,7 @@ a {
     }
 }
 #home .donate a {
-    cursor: pointer;
+    cursor: default;
     float: right;
     position: absolute;
     right: 0;
@@ -235,7 +244,7 @@ a {
     }
     #home #banner {
         #overlay {
-            top: 115px;
+            top: 117px;
             width: $smallscreen-portrait-width;
         }
         > img {
@@ -251,7 +260,7 @@ a {
 @media only screen and (min-width: 401px) and (max-width: 600px) {
     #home #banner {
         #overlay {
-            top: 172px;
+            top: 160px;
             width: $smallscreen-landscape-width;
         }
         > img {
@@ -259,7 +268,7 @@ a {
             width: $smallscreen-landscape-width;
         }
         + .three-col {
-            padding-top: 400px;
+            padding-top: 360px;
         }
     }
 }
@@ -299,6 +308,9 @@ a {
             }
         }
     }
+    #home #update p {
+        margin-bottom: 16px;
+    }
     #home #banner {
         margin: 0;
         position: relative;
@@ -327,7 +339,7 @@ a {
         background: none;
         float: none;
         height: inherit;
-        margin: 14px 0;
+        margin: 0 0 14px;
         padding: 0;
         width: auto;
         h3, h4, p {

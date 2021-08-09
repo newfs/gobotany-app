@@ -32,8 +32,7 @@ def per_partner_template(request, template_name):
     partner = which_partner(request)
     return '{0}/{1}'.format(partner.short_name, template_name)
 
-def render_per_partner(template_name, dictionary, request,
-    content_type=settings.DEFAULT_CONTENT_TYPE):
+def render_per_partner(template_name, dictionary, request, content_type=None):
 
     if request:
         context_instance = RequestContext(request)

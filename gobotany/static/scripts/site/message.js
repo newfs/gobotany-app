@@ -11,7 +11,7 @@ function hideMessageBanner() {
     // For species pages, make an adjustment to the maps positioning.
     var mapsElement = document.getElementById('maps');
     if (mapsElement) {
-        mapsElement.style.top = '120px';
+        mapsElement.style.top = '119px';
     }
 }
 
@@ -23,7 +23,7 @@ else {
     // For species pages, make an adjustment to the maps positioning.
     var mapsElement = document.getElementById('maps');
     if (mapsElement) {
-        mapsElement.style.top = '186px';
+        mapsElement.style.top = '182px';
     }
 }
 

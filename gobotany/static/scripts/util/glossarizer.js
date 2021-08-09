@@ -66,7 +66,7 @@ define([
 
     /* Call "markup" on a node - hopefully one with no elements beneath
        it, but just text - to have its text scanned for glossary terms.
-       Any terms found are replaced with a <span> to which a tooltip is
+       Any terms found are replaced with an element to which a tooltip is
        then attached. */
 
     exports.Glossarizer.prototype.markup = function(node, terms_section) {
@@ -80,7 +80,8 @@ define([
             if (_.contains(avoid_terms, term))
                 return match;
             else
-                return '<span class="gloss">' + match + '</span>';
+                return '<button role="tooltip" class="gloss">' + match +
+                    '</button>';
         };
 
         $(node).contents().each(function() {

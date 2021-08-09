@@ -1107,28 +1107,6 @@ class CopyrightHolder(models.Model):
         return unicode_string
 
 
-class Update(models.Model):
-    """An entry for an Updates page regarding site (data) improvements."""
-    date = models.DateField()
-    description = models.TextField()
-    family = models.CharField(max_length=100, blank=True, null=True)
-
-    class Meta:
-        ordering = ['-date']
-
-
-class Highlight(models.Model):
-    """A home page highlight to tell about a recently added Update.
-
-    A single active Highlight record, the most recent, shows on the page.
-
-    Intended to be turned on only temporarily, when a home page notice
-    is needed, but not to be present all the time on the home page.
-    """
-    note = models.TextField()
-    active = models.BooleanField(default=False)
-
-
 class Video(models.Model):
     """Information on YouTube videos used for help."""
     title = models.CharField(max_length=100)

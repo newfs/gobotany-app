@@ -4,8 +4,6 @@ import hashlib
 import os
 import urllib.parse
 
-from decimal import Decimal, getcontext
-
 from django.conf import settings
 from django.contrib.auth.models import User
 from django.contrib.sites.models import Site
@@ -334,20 +332,22 @@ class ExifGpsExtractor(object):
         return image
 
     def _get_dms(self, exif_data):
-        degrees = Decimal(exif_data[0][0] / exif_data[0][1])
-        minutes = Decimal(exif_data[1][0] / exif_data[1][1])
-        seconds = Decimal(exif_data[2][0] / exif_data[2][1])
+        degrees = float(exif_data[0])
+        minutes = float(exif_data[1])
+        seconds = float(exif_data[2])
         return (degrees, minutes, seconds)
 
     def _get_coordinate(self, degrees, minutes, seconds):
         fractional_degrees = ((minutes * 60) + seconds) / 3600
-        return degrees + fractional_degrees
+        coordinate = degrees + fractional_degrees
+        return coordinate
 
     def _extract_gps_data(self, img):
         # Extract any GPS coordinates in the image metadata and save them
         # in the database before the data are automatically erased due to
         # the ProcessedImageField image that gets resized and saved.
-        DECIMAL_PRECISION = 7
+        DECIMAL_PLACES = 7
+
         # These are tag ids defined by the EXIF Specification
         EXIF_GPSLATITUDE = 2
         EXIF_GPSLATITUDEREF = 1
@@ -368,7 +368,6 @@ class ExifGpsExtractor(object):
             required_tags = set((EXIF_GPSLATITUDE, EXIF_GPSLATITUDEREF,
                     EXIF_GPSLONGITUDE, EXIF_GPSLONGITUDEREF))
             if gps_info and required_tags <= available_tags:
-                getcontext().prec = DECIMAL_PRECISION
                 # Get latitude.
                 degrees, minutes, seconds = self._get_dms(
                     gps_info[EXIF_GPSLATITUDE])
@@ -376,6 +375,7 @@ class ExifGpsExtractor(object):
                 direction = gps_info[EXIF_GPSLATITUDEREF]
                 if direction.upper() == 'S':
                     latitude = latitude * -1
+                latitude = round(latitude, DECIMAL_PLACES)
                 ### debugging
                 print(('_extract_gps_data: latitude:', latitude))
                 print('_extract_gps_data: about to try to set lat./long.s')
@@ -396,6 +396,7 @@ class ExifGpsExtractor(object):
                     direction = gps_info[EXIF_GPSLONGITUDEREF]
                     if direction.upper() == 'W':
                         longitude = longitude * -1
+                    longitude = round(longitude, DECIMAL_PLACES)
                     print(('_extract_gps_data: longitude:', longitude))
                     try:
                         self.target_object.longitude = longitude

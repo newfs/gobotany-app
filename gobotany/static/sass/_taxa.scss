@@ -37,7 +37,7 @@ body.taxa #main {
     }
 }
 #body.taxa .frame {
-    cursor: pointer;
+    cursor: default;
 }
 
 body.taxa .visit-dkey {
@@ -259,7 +259,7 @@ body#species ul.full-description > li {
     }
     h5 {
         background: url(/static/images/icons/plus.png) left 50% no-repeat;
-        cursor: pointer;
+        cursor: default;
         padding-left: 28px;
         &.expanded {
             background: url(/static/images/icons/minus.png) left 50% no-repeat;

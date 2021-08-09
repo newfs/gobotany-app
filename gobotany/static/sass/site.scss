@@ -81,7 +81,6 @@ h1, h2, h3, h4, h5, h6 {
     line-height: 120%;
     margin: 0;
     padding: 0;
-    -webkit-font-smoothing: antialiased; /* needed for some WebKit browsers: prevent too bold */
 }
 h1 {
     color: $heading-green;
@@ -275,7 +274,7 @@ header {
 header .go-botany {
     align-items: baseline;
     display: flex;
-    margin: 1.5em 0 0.8em;
+    margin: 1.4em 0 0.7em;
     padding: 0;
     position: relative;
     z-index: 5;
@@ -283,13 +282,16 @@ header .go-botany {
         margin-right: 1.2em;
         width: 12.5em;
     }
+    img {
+        width: 150px;
+    }
     .tagline {
         bottom: 0;
         color: $dark-green;
         font-family: Basetica, sans-serif;
-        font-size: 1.07em;
+        font-size: 1em;
         position: absolute;
-        left: 13em;
+        left: 12.8em;
     }
 }
 header nav {
@@ -321,7 +323,7 @@ header nav {
         display: block;
         float: left;
         font-size: $nav-font-size;
-        line-height: 1.25em;
+        line-height: 1.19em;
         margin: 0 10px 0 0; /* px here to help save space on zoom */
         padding: 0.05em 0 0;
         position: relative;
@@ -630,7 +632,7 @@ a.get-help-btn {
     margin: 8px 0 12px 0;
     text-align: center;
     a {
-        cursor: pointer;
+        cursor: default;
         display: inline-block;
         height: 32px;
         text-indent: -9000px;
@@ -732,9 +734,15 @@ a.get-help-btn {
 
 /* Glossary-term links */
 .gloss {
+    background-color: inherit;
     border-bottom: 1px dashed $link-green;
+    border-left: 0;
+    border-right: 0;
+    border-top: 0;
     color: $link-green;
     cursor: pointer;
+    margin: 0;
+    padding: 0;
 }
 
 /* Tooltips for working area images and highlighted glossary terms */
@@ -837,23 +845,22 @@ a.get-help-btn {
     margin: 16px 0;
 }
 .characteristics dl {
-    border: 1px transparent; /* border forces new row in WebKit when
-                              * char name, but not value, wraps */
-    margin: 6px 0 0;
+    display: flex;
+    margin: 10px 0 0;
     padding: 0;
 }
 .characteristics dt {
-    clear: left;
-    float: left;
     font-weight: bold;
     line-height: 18px;
-    padding-top: 1px;
     text-align: left;
     width: 200px;
+    button {
+        font-weight: bold;
+    }
 }
 .characteristics dd {
     line-height: 18px;
-    margin-left: 210px;
+    max-width: 60%;
 }
 .characteristics dd ul {
     list-style-type: disc;
@@ -879,14 +886,7 @@ a.get-help-btn {
     margin: 0;
     padding: 0 0 0.1em;
 }
-.characteristics.full {
-    dt {
-        width: 230px;
-    }
-    dd {
-        margin-left: 240px;
-    }
-}
+
 
 /* Form error messages */
 
@@ -926,6 +926,7 @@ input.suggest + div li {
     padding: 3px;
     &.selected {
         background-color: $pale-lime-green;
+        cursor: default;
     }
     span {
         font-weight: normal;

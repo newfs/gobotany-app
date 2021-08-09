@@ -70,10 +70,10 @@ $navbar-color: #21555c;
 $footer-background-color: $bright-green;
 $login-box-background-color: #d3eaad;
 
-$base-font-size: 12px;
-$nav-font-size: 1.166666em;
+$base-font-size: 13px;
+$nav-font-size: 1.12em;
 
-$text-line-height: 160%;
+$text-line-height: 153%;
 
 $sidebar-box-vertical-padding: 16px;
 
@@ -116,6 +116,10 @@ $orange5: #f6be59;
 
 $npt-orange: #d87e54;
 $npt-orange-dark: #bb582a;
+$brighter-orange: #cc4b00;
+$duller-orange: #8e421f;
+$navbar-blue: #17555b;
+
 
 $list_popup_border: #acac90;
 
@@ -132,13 +136,20 @@ $disabled_orange_gradient: linear-gradient(
     top, mix($body_bg, $orange2, 50%) 0%, mix($body_bg, $orange5, 50%) 32%,
     mix($body_bg, $orange5, 50%) 50%, mix($body_bg, $orange3, 50%) 100%);
 
+*:focus {
+    outline-color: -webkit-focus-ring-color;
+    outline-offset: 2px;
+    outline-style: auto;
+    outline-width: 2px;
+}
+
 .orange-button {
     background-color: $npt-orange-dark;
     border: 1px solid $npt-orange-dark !important;
     border-radius: 14px;
     box-shadow: 0px 1px 2px 0 $shadow_color;
     color: #fff;
-    cursor: pointer;
+    cursor: default;
     display: inline-block;
     font-family: ScalaSans, $headings-font;
     font-size: 12px;
@@ -149,12 +160,6 @@ $disabled_orange_gradient: linear-gradient(
     padding: 4px 12px;
     text-align: center;
     text-decoration: none;
-    &:active {
-        background-color: $npt-orange-dark; /* TODO: active button style/color */
-    }
-    &:hover, &:visited, &:active {
-        color: #fff;
-    }
     &.caps {
         text-transform: uppercase;
     }
@@ -172,6 +177,73 @@ $disabled_orange_gradient: linear-gradient(
         letter-spacing: 1.5px;
         min-width: 150px;
         padding: 9px 30px;
+    }
+}
+
+.action-link {
+    background-color: $npt-orange-dark;
+    border-bottom: 0.15rem solid #fff !important; /* override some link
+                                                             underlines in text */
+    border-radius: 10px;
+    box-shadow: 0 0.15rem 0 0 $npt-orange-dark;
+    color: #fff;
+    cursor: pointer;
+    display: inline-block;
+    font-family: ScalaSans, $headings-font;
+    font-size: 12px;
+    font-weight: bold;
+    letter-spacing: 1px;
+    line-height: 18px;
+    min-width: 75px;
+    padding: 4px 12px;
+    text-align: center;
+    text-decoration: none;
+
+    /* Visited: duller; like the relationship between classic blue & purple */
+    &:visited {
+        background-color: $duller-orange;
+        box-shadow: 0 0.15rem 0 0 $duller-orange;
+        color: #fff;
+    }
+    /* Hover: higher contrast; use the current nav. bar color */
+    &:hover,
+    &:focus {
+        background-color: $navbar-blue;
+        box-shadow: 0 0.15rem 0 0 $navbar-blue;
+        color: #fff;
+    }
+    /* Active: orange; similar to default red, but higher contrast */
+    &:active {
+        background-color: $brighter-orange;
+        box-shadow: 0 0.15rem 0 0 $brighter-orange;
+        color: #fff;
+    }
+    &.caps {
+        letter-spacing: 1px;
+        text-transform: uppercase;
+    }
+    &.large {
+        border-bottom: 0.2rem solid #fff;
+        border-radius: 12px;
+        font-size: 16px;
+        line-height: 24px;
+        min-width: 120px;
+        padding: 6px 18px 3px;
+        &.caps {
+            letter-spacing: 1.5px;
+        }
+    }
+}
+
+/* Fix button and action-link text alignment in Firefox; evidently
+    the misalignment is due to how the browsers handle the Scala
+    Sans font. (Unfortunately this means that any fonts lower
+    in the font stack would show up misaligned in FF.) */
+@-moz-document url-prefix() {
+    .orange-button,
+    .action-link {
+        padding-bottom: 3px;
+        padding-top: 5px;
     }
 }
 
@@ -255,17 +327,24 @@ $disabled_orange_gradient: linear-gradient(
             font-size: 10px;
         }
     }
-    #sb-title-inner a {
-        border-bottom: 1px solid #ccc;
-        color: #fff;
-        &:hover {
-            text-decoration: none;
+    #sb-title-inner {
+        a {
+            border-bottom: 1px solid #ccc;
+            color: #fff;
+            &:hover {
+                text-decoration: none;
+            }
         }
-        &.contact {
+        .contact {
+            background-color: inherit;
+            border: 0;
+            color: #fff;
             cursor: pointer;
-            display: inline-block; /* prevent link from wrapping, which
-                                      makes tooltip position incorrect */
-            text-decoration: none;
+            display: inline-block; /* prevent text from wrapping, which
+                                        makes tooltip position incorrect */
+            margin: 0;
+            padding: 0;
+            text-decoration: underline;
         }
     }
     #sb-nav-close {
@@ -275,7 +354,7 @@ $disabled_orange_gradient: linear-gradient(
 
 @mixin dialog-close-button {
     background: transparent url(/static/images/icons/close.png) no-repeat;
-    cursor: pointer;
+    cursor: default;
     display: block;
     height: 16px;
     position: absolute;
@@ -338,11 +417,11 @@ div.popup a {
 /* For occasional, temporary donation campaigns: message at top of page */
 #top-message {
     align-items: center;
-    background-color: #d87e54;
+    background-color: #e8a38c;
     color: #000;
     display: flex;
     font-family: $body-font;
-    font-size: 1.1em;
+    font-size: 1.02em;
     justify-content: space-between;
     margin: 0;
     padding: 0.7em 1.8em;
@@ -357,26 +436,14 @@ div.popup a {
     align-items: center;
     display: flex;
 }
-#top-message form {
-    margin: 0.4em 2em;
-}
-#top-message button {
-    border: 1px solid gray;
-    border-radius: 6px;
-    cursor: pointer;
-    float: right;
-    font-family: ScalaSans, $body-font;
-    font-size: 1.2em;
-    font-weight: bold;
-    letter-spacing: 1px;
-    padding: 0.6em 0.7em 0.4em;
-    text-transform: uppercase;
-}
-#top-message a {
+#top-message .close {
+    background-color: inherit;
+    border: 0;
     color: #000;
     font-size: 1.2em;
     font-weight: bold;
-    padding: 1em 0;
+    margin-left: 1.2em;
+    padding: 0;
     text-align: center;
     width: 2em;
 }
@@ -391,9 +458,7 @@ div.popup a {
     }
     #top-message .controls {
         justify-content: space-between;
+        margin-bottom: 0.5em;
         width: 100%;
-    }
-    #top-message form {
-        margin-left: 0;
     }
 }

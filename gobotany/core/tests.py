@@ -652,26 +652,8 @@ def setup_integration(test):
         testdata('pile_non_orchid_monocots_2.csv'))
     im._import_taxon_character_values(
         testdata('pile_non_orchid_monocots_3.csv'))
-
-
-def test_class_iter():
-    m = __import__(__name__, {}, {}, __name__)
-    for x in dir(m):
-        i = getattr(m, x)
-        if type(i) == type and issubclass(i, TestCase):
-            yield i
-
-
-def suite():
-    suite = unittest.TestSuite()
-    suite.addTest(doctest.DocTestSuite(igdt))
-    for x in test_class_iter():
-        suite.addTest(unittest.TestLoader().loadTestsFromTestCase(x))
-
-    # integration stuff - turned off for the moment since the test
-    #   is both broken, and takes a long time to run
-    # suite.addTest(doctest.DocFileSuite('igdt.txt',
-    #                                    module_relative=True,
-    #                                    setUp=setup_integration))
-
-    return suite
+    
+    
+# Now disable logging to prevent it from affecting other tests when
+# multiple apps' tests are run together.
+logging.disable(logging.CRITICAL)

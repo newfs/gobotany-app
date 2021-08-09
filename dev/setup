@@ -10,7 +10,12 @@ cd $(dirname ${BASH_SOURCE[0]})
 
 rm -rf ./venv
 
-python3.8 -m venv --system-site-packages ./venv
+# This assumes the latest system Python version is the one to use.
+# (If another is needed, can change to something like python39, etc.)
+python -m venv --system-site-packages ./venv
+
+# Upgrade pip.
+./venv/bin/pip install --upgrade pip
 
 # Install a dependency for Haystack, setuptools_scm, because
 # setuptools_scm is not detected properly if installed along with

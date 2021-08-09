@@ -1,11 +1,12 @@
 from haystack import indexes
 from haystack.fields import NOT_PROVIDED
 
-from gobotany.core.models import Family, Genus, GlossaryTerm, Taxon, Update
+from gobotany.core.models import Family, Genus, GlossaryTerm, Taxon
 from gobotany.dkey.models import Page as DichotomousKeyPage
 from gobotany.plantshare.models import Question, Sighting
 from gobotany.search.models import (GroupsListPage, PlainPage,
     SubgroupsListPage, SubgroupResultsPage)
+from gobotany.site.models import Update
 
 
 class CharacterCharField(indexes.CharField):

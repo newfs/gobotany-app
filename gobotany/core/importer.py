@@ -21,9 +21,9 @@ from gobotany.core import rebuild
 from django.contrib.contenttypes.models import ContentType
 from django.core.exceptions import ObjectDoesNotExist
 from django.core.files.storage import default_storage
-from django.core.urlresolvers import reverse
 from django.db import connection, transaction
 from django.template.defaultfilters import slugify
+from django.urls import reverse
 
 import bulkup
 import gobotany.dkey.import_csv

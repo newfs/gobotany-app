@@ -322,6 +322,13 @@ class PlantOfTheDayManagerTestCase(TestCase):
                            UPDATED_NON_SIMPLEKEY_PLANTS)
         incorrect_plant = Taxon.objects.get(scientific_name='Acer ginala')
         self.assertTrue(incorrect_plant)
+
+        # Before deleting the incorrect plant, first get its partners
+        # and delete the plant from each partner's list of species.
+        partners = incorrect_plant.partners()
+        for partner in partners:
+            partner.species.remove(incorrect_plant)
+        
         incorrect_plant.delete()
 
         # Now that plant data have been imported again, rebuild the
@@ -359,13 +366,14 @@ class PlantOfTheDayManagerTestCase(TestCase):
         self.assertEqual(None, excluded_plant.last_seen)
 
 
-@unittest.skip('Skipping tests that run against the real database')
+# Uncomment the line below to skip tests that run against the real database.
+#@unittest.skip('Skipping tests that run against the real database')
 class FunctionalTests(FunctionalCase):
 
     def test_home_page_has_plant_of_the_day(self):
         self.get('/')
         potd_heading = self.css1('#potd .details h3')
-        self.assertTrue(potd_heading.text.startswith('Plant of the Day'))
+        self.assertTrue(potd_heading.text.startswith('Plant of the day'))
 
     def test_plant_of_the_day_has_linked_image(self):
         self.get('/')

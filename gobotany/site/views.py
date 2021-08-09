@@ -10,7 +10,7 @@ from django.conf import settings
 from django.core.exceptions import ObjectDoesNotExist
 from django.db.models import Q
 from django.http import HttpResponse
-from django.shortcuts import redirect, render
+from django.shortcuts import get_list_or_404, redirect, render
 from django.template import RequestContext
 from django.urls import reverse_lazy
 from django.views.decorators.vary import vary_on_headers
@@ -18,14 +18,15 @@ from django.views.decorators.vary import vary_on_headers
 from gobotany.core import botany
 from gobotany.core.models import (
     CommonName, ContentImage, CopyrightHolder, Distribution,
-    Family, Genus, GlossaryTerm, Highlight, HomePageImage, PartnerSite,
-    PartnerSpecies, Pile, Taxon, Update, Video,
+    Family, Genus, GlossaryTerm, HomePageImage, PartnerSite,
+    PartnerSpecies, Pile, Taxon, Video,
     )
 from gobotany.core.partner import (which_partner, partner_short_name,
                                    per_partner_template, render_per_partner)
 from gobotany.plantoftheday.models import PlantOfTheDay
 from gobotany.simplekey.groups_order import ordered_pilegroups, ordered_piles
-from gobotany.site.models import PlantNameSuggestion, SearchSuggestion
+from gobotany.site.models import (Document, Highlight, PlantNameSuggestion,
+    SearchSuggestion, Update)
 from gobotany.site.utils import query_regex
 
 # Home page
@@ -67,6 +68,21 @@ def home_view(request):
             'plant_of_the_day_image': plant_of_the_day_image,
             }, request)
 
+
+# Documents
+
+# Redirect a URL to an uploaded document to the file at its storage location.
+# This way documents can have a stable URL regardless of the underlying
+# storage location (for local development vs. production-like environments).
+# For example, a /docs/filename.pdf URL might redirect to:
+# bucket.s3.amazonaws.com/docs/filename.pdf
+def document_view(request, file_name):
+    documents = get_list_or_404(Document, upload=file_name)
+    document = documents[0]
+    url = document.upload.url
+    return redirect(url, permanent=False)
+
+
 # Teaching page
 
 @vary_on_headers('Host')
@@ -100,13 +116,6 @@ def about_view(request):
 def updates_date_view(request):
     updates = Update.objects.all()
     return render_per_partner('updates.html', {
-            'updates': updates,
-            }, request)
-
-@vary_on_headers('Host')
-def updates_family_view(request):
-    updates = Update.objects.all().order_by('family', '-date')
-    return render_per_partner('updates_family.html', {
             'updates': updates,
             }, request)
 
@@ -211,14 +220,15 @@ def terms_of_use_view(request):
 
 def clean_input_string(input_string):
     """Remove any special characters from a search-suggestion input string
-    that could cause an error.
+    that could cause an error. Limit the input string to a reasonable length.
     """
     ALLOWED_CHARACTERS = 'abcdefghijklmnopqrstuvwxyz01234567890 !%&-+\'",.'
+    MAX_CHARACTERS = 60
     input_characters = []
     for character in input_string.lower():
         if character in ALLOWED_CHARACTERS:
             input_characters.append(character)
-    return ''.join(input_characters)
+    return ''.join(input_characters)[:MAX_CHARACTERS]
 
 def search_suggestions_view(request):
     """Return some search suggestions for search."""

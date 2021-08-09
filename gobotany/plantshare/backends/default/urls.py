@@ -30,7 +30,8 @@ urlpatterns = [
     # [a-fA-F0-9]{40} because a bad activation key should still get to the
     # view; that way it can return a sensible "invalid key" message instead
     # of a confusing 404.
-    path('activate/<str:activation_key>/', ActivationView.as_view(),
+    path('activate/<str:activation_key>/', ActivationView.as_view(
+            template_name='registration/activation_failed.html'),
         name='django_registration_activate'),
     path('register/', RegistrationView.as_view(
             form_class=RegistrationFormWithHiddenField,

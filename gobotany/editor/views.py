@@ -196,8 +196,10 @@ def pile_taxa(request, pile_slug):
 
 @permission_required('core.botanist')
 def edit_pile_taxon(request, pile_slug, taxon_slug):
-
-    name = taxon_slug.capitalize().replace('-', ' ')
+    # Only replace the first hyphen, because some plants have a hyphen
+    # in their specific epithet.
+    MAX_REPLACE_HYPHEN = 1
+    name = taxon_slug.capitalize().replace('-', ' ', MAX_REPLACE_HYPHEN)
 
     pile = get_object_or_404(models.Pile, slug=pile_slug)
     taxon = get_object_or_404(models.Taxon, scientific_name=name)

@@ -11,14 +11,16 @@ urlpatterns = [
     path('sitemap.txt', views.sitemap_view, name='sitemap'),
     path('robots.txt', views.robots_view, name='robots'),
 
+    # Documents
+    re_path('^docs/(?P<file_name>[\w.-]{0,256})$',
+        views.document_view, name='site-document'),
+
     # Teaching page
     path('teaching/', views.teaching_view, name='site-teaching'),
 
     # Help section
     path('help/', views.help_view, name='site-help'),
     path('help/dkey/', views.help_dkey_view, name='site-help-dkey'),
-    path('updates/family/', views.updates_family_view,
-        name='site-updates-family'),
     path('updates/', views.updates_date_view, name='site-updates-date'),
     path('start/', views.getting_started_view, name='site-getting-started'),
     path('video/', views.video_view, name='site-video'),
