@@ -1,6 +1,7 @@
 """Basic PlantShare functional tests that do not require a browser."""
 
 import json
+import os
 import unittest
 
 from django.conf import settings
@@ -37,6 +38,10 @@ class PlantShareTests(FunctionalCase):
         # run as if the user already accepted the PlantShare Terms.
         self.group.user_set.add(self.user)
 
+    def _testdata_dir(self):
+        """Return the path to a test data directory relative to this one."""
+        return os.path.join(os.path.dirname(__file__), 'testdata')
+
     def _get_plantshare(self, url_path, log_in=False, username=TEST_USERNAME,
                         password=TEST_PASSWORD):
         """Get a PlantShare page."""
@@ -46,6 +51,7 @@ class PlantShareTests(FunctionalCase):
             client = Client()
             client.login(username=username, password=password)
         self.get(url, client=client)
+        return client
 
     # Test helpers
 
@@ -178,12 +184,12 @@ class PlantShareTests(FunctionalCase):
         self.assertEqual(len(navigation_items), 1)
 
     def test_login_page_has_message_requesting_login_to_continue(self):
-        self._get_plantshare(self.MY_PROFILE_URL)   # A page requiring login
+        self._get_plantshare(self.YOUR_PROFILE_URL)   # A page requiring login
         message = self.css1('h1 + p').text
         self.assertEqual(message, 'Please log in to continue.')
 
     def test_login_page_occurs_upon_bad_login(self):
-        self._get_plantshare(self.MY_PROFILE_URL, log_in=True,
+        self._get_plantshare(self.YOUR_PROFILE_URL, log_in=True,
                              username='nobody', password='nothing')
         heading = self.css1('h1').text
         self.assertEqual(heading, 'Log In')
@@ -355,38 +361,67 @@ class PlantShareTests(FunctionalCase):
 
     # Your Profile page
 
-    MY_PROFILE_URL = '/profile/'
+    YOUR_PROFILE_URL = '/profile/'
 
     def test_profile_page_requires_login(self):
-        self._get_plantshare(self.MY_PROFILE_URL, log_in=False)
+        self._get_plantshare(self.YOUR_PROFILE_URL, log_in=False)
         heading = self.css1('h1').text
         self.assertEqual(heading, 'Log In')
 
     def test_profile_page_title(self):
         self.assertEqual(self._page_title(
-            self.MY_PROFILE_URL, log_in=True),
+            self.YOUR_PROFILE_URL, log_in=True),
             'Your Profile: PlantShare: Go Botany')
 
     def test_profile_page_main_heading(self):
-        self.assertEqual(self._page_heading(self.MY_PROFILE_URL,
+        self.assertEqual(self._page_heading(self.YOUR_PROFILE_URL,
                                             log_in=True), 'Your Profile')
 
     def test_profile_page_has_plantshare_nav_item(self):
-        self._get_plantshare(self.MY_PROFILE_URL, log_in=True)
+        self._get_plantshare(self.YOUR_PROFILE_URL, log_in=True)
         self.assertIsNotNone(self.link_saying('PlantShare'))
 
     def test_profile_page_has_post_a_sighting_nav_item(self):
-        self._get_plantshare(self.MY_PROFILE_URL, log_in=True)
+        self._get_plantshare(self.YOUR_PROFILE_URL, log_in=True)
         self.assertIsNotNone(self.link_saying('Post a Sighting'))
 
     def test_profile_page_has_my_profile_nav_item(self):
-        self._get_plantshare(self.MY_PROFILE_URL, log_in=True)
+        self._get_plantshare(self.YOUR_PROFILE_URL, log_in=True)
         self.assertIsNotNone(self.link_saying('Your Profile'))
 
     def test_my_profile_page_has_full_navigation(self):
-        self._get_plantshare(self.MY_PROFILE_URL, log_in=True)
+        self._get_plantshare(self.YOUR_PROFILE_URL, log_in=True)
         navigation_items = self.css('#sidebar nav li')
         self.assertGreater(len(navigation_items), 1)
+
+    # Ask the Botanist page
+
+    ASK_THE_BOTANIST_URL = '/questions/'
+
+    def test_ask_the_botanist_page_main_heading(self):
+        self.assertEqual(self._page_heading(self.ASK_THE_BOTANIST_URL,
+            log_in=True), 'Ask the Botanist')
+
+    def test_ask_the_botanist_page_upload_image(self):
+        client = self._get_plantshare(self.ASK_THE_BOTANIST_URL,
+            log_in=True)
+        with open(self._testdata_dir() + '/los_straitjackets_sm.jpg',
+            'rb') as file:
+
+            response = client.post('/plantshare/api/image-upload', {
+                'image': file,
+                'image_type': 'QUESTION',
+            })
+        response_json = json.loads(response.content)
+        self.assertEqual(response_json['success'], True)
+        self.assertIsNotNone(response_json['id'])
+        self.assertIsNotNone(response_json['thumb'])
+        self.assertIsNotNone(response_json['url'])
+        # TODO: fix the known problem that now prevents the latitude and
+        # longitude values from being saved in the database, which causes
+        # them to also no longer appear here in the response.
+        self.assertEqual(response_json['latitude'], None) # 40.725875
+        self.assertEqual(response_json['longitude'], None) # -74.0063361
 
 
 class LocationModelTests(TestCase):

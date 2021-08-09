@@ -24,7 +24,8 @@ ALLOWED_HOSTS = ['.nativeplanttrust.org', # any subdomain of nativeplanttrust.or
     'gobotany-prod.herokuapp.com',
     'localhost',
     '127.0.0.1',
-    '0.0.0.0'
+    '0.0.0.0',
+    'testserver'
 ]
 
 TEMPLATES = [
