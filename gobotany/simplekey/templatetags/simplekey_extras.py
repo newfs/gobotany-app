@@ -185,3 +185,19 @@ def repeat(value, arg):
 def secure_url(value):
     """Take a URL string and make it start with HTTPS."""
     return utils_secure_url(value)
+
+
+@register.filter
+@stringfilter
+def shorten_group_title(value):
+    '''Shorten a plant group title for display in narrower places.'''
+    value = value.replace('All ', '')
+    value = value.replace('Other herbaceous, flowering plants', 'Others')
+    #value = value.replace(' plants ', ' ') # 'plants' in middle of title
+    value = value.replace(', and', ',')
+    value = value.replace(' and', ',')
+    value = value.replace(' or', ',')
+    value = value.replace(' with', ':')
+    value = value.replace(', plus', ' +')
+    value = value.replace('other Aster family plants', 'asters')
+    return value
