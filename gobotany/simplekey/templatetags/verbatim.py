@@ -27,23 +27,25 @@ class VerbatimNode(template.Node):
 
 # From https://gist.github.com/629508
 
-@register.tag
-def verbatim(parser, token):
-    text = []
-    while 1:
-        token = parser.tokens.pop(0)
-        if token.contents == 'endverbatim':
-            break
-        if token.token_type == template.TokenType.VAR:
-            text.append('{{')
-        elif token.token_type == template.TokenType.BLOCK:
-            text.append('{%')
-        text.append(token.contents)
-        if token.token_type == template.TokenType.VAR:
-            text.append('}}')
-        elif token.token_type == template.TokenType.BLOCK:
-            text.append('%}')
-    return VerbatimNode(''.join(text))
+# The verbatim tag was eventually built in to Django.
+
+#@register.tag
+#def verbatim(parser, token):
+#    text = []
+#    while 1:
+#        token = parser.tokens.pop(0)
+#        if token.contents == 'endverbatim':
+#            break
+#        if token.token_type == template.TokenType.VAR:
+#            text.append('{{')
+#        elif token.token_type == template.TokenType.BLOCK:
+#            text.append('{%')
+#        text.append(token.contents)
+#        if token.token_type == template.TokenType.VAR:
+#            text.append('}}')
+#        elif token.token_type == template.TokenType.BLOCK:
+#            text.append('%}')
+#    return VerbatimNode(''.join(text))
 
 # Our own variations.
 
@@ -59,7 +61,7 @@ def handlebars(parser, token):
         attr = ''
     text = ['<script type="text/x-handlebars"{}>'.format(attr)]
     while 1:
-        token = parser.tokens.pop(0)
+        token = parser.tokens.pop()
         if token.contents == 'endhandlebars':
             break
         if token.token_type == template.TokenType.VAR:
@@ -83,7 +85,7 @@ def handlebars_template(parser, token):
     id = args[1]
     text = ['<script id={} type="text/x-handlebars-template">'.format(id)]
     while 1:
-        token = parser.tokens.pop(0)
+        token = parser.tokens.pop()
         if token.contents == 'endhandlebars_template':
             break
         if token.token_type == template.TokenType.VAR:
