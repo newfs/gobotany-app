@@ -191,13 +191,15 @@ def secure_url(value):
 @stringfilter
 def shorten_group_title(value):
     '''Shorten a plant group title for display in narrower places.'''
+    value = value.replace('"', '')
     value = value.replace('All ', '')
     value = value.replace('Other herbaceous, flowering plants', 'Others')
-    #value = value.replace(' plants ', ' ') # 'plants' in middle of title
     value = value.replace(', and', ',')
     value = value.replace(' and', ',')
     value = value.replace(' or', ',')
     value = value.replace(' with', ':')
     value = value.replace(', plus', ' +')
-    value = value.replace('other Aster family plants', 'asters')
-    return value
+    print('value (before):', value)
+    value = value.replace('other aster family plants', 'asters')
+    print('value (after):', value)
+    return value.capitalize()

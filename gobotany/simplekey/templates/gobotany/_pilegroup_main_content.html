@@ -63,7 +63,8 @@
                 </p>
                 {% endif %}
                 <a class="action-link caps"
-                    href="{{ pile_url }}">{{ pile.friendly_title|shorten_group_title }}</a>
+                    href="{{ pile_url }}"
+                    >{{ pile.friendly_title|lower|capfirst|shorten_group_title }}</a>
             </div>
         </div>
         {% endif %}
