@@ -102,7 +102,7 @@ div.scrollableArea { position: relative; width: auto; height: 100%; }
 /* dark version of #a7da7e green from NPT palette */
 *:focus { outline-color: -webkit-focus-ring-color; outline-offset: 2px; outline-style: auto; outline-width: 2px; }
 
-.orange-button, body.plantshare .image-modal a.button, body.plantshare#ask #main .submit, body.plantshare#plantshare #ask .submit { background-color: #bb582a; border: 1px solid #bb582a !important; border-radius: 14px; box-shadow: 0px 1px 2px 0 #a2a64d; color: #fff; cursor: default; display: inline-block; font-family: ScalaSans, "Trebuchet MS", Helvetica, Arial, "Lucida Sans Unicode", sans-serif; font-size: 12px; font-weight: bold !important; letter-spacing: 1px; line-height: 18px; min-width: 80px; padding: 4px 12px; text-align: center; text-decoration: none; }
+.orange-button, body.plantshare .image-modal a.button, body.plantshare#ask #main .submit, body.plantshare#plantshare #ask .submit { background-color: #bb582a; border: 1px solid #bb582a !important; border-radius: 14px; box-shadow: 0px 1px 2px 0 #a2a64d; color: #fff; cursor: default; display: inline-block; font-family: ScalaSans, "Trebuchet MS", Helvetica, Arial, "Lucida Sans Unicode", sans-serif; font-size: 13px; font-weight: bold !important; letter-spacing: 1px; line-height: 18px; min-width: 80px; padding: 4px 12px; text-align: center; text-decoration: none; }
 .orange-button.caps, body.plantshare .image-modal a.caps.button, body.plantshare#ask #main .caps.submit, body.plantshare#plantshare #ask .caps.submit { text-transform: uppercase; }
 .orange-button.disabled, body.plantshare .image-modal a.disabled.button, body.plantshare#ask #main .disabled.submit, body.plantshare#plantshare #ask .disabled.submit { background-color: #f0ccbc; border-color: #edc573 !important; color: #666 !important; cursor: default !important; text-shadow: none; }
 .orange-button.large, body.plantshare .image-modal a.large.button, body.plantshare#ask #main .large.submit, body.plantshare#plantshare #ask .large.submit { border-radius: 20px; color: #fff; font-size: 16px; letter-spacing: 1.5px; min-width: 150px; padding: 9px 30px; }
@@ -122,7 +122,7 @@ div.scrollableArea { position: relative; width: auto; height: 100%; }
 /* image popups (used in D. Key, and in D. Key section of species page) */
 div.shadow { /* shadow that hides the whole page */ display: none; position: fixed; z-index: 1000; top: 0; left: 0; height: 100%; width: 100%; background-color: rgba(0, 0, 0, 0.45); text-align: center; }
 
-div.popup { /* for displaying quick lists of taxa */ border-radius: 1em; display: inline-block; margin: 5% auto; max-height: 90%; overflow-y: auto; overflow-x: hidden; /* otherwise scrolling can leak to page */ border: 0.5em solid #acac90; background-color: #fcf8ef; padding: 1em 2em; text-align: left; font-size: 13px; line-height: 1.25em; }
+div.popup { /* for displaying quick lists of taxa */ border-radius: 1em; display: inline-block; margin: 5% auto; max-height: 90%; overflow-y: auto; overflow-x: hidden; /* otherwise scrolling can leak to page */ border: 0.5em solid #acac90; background-color: #fcf8ef; padding: 1em 2em; text-align: left; line-height: 1.25em; }
 
 div.popup h2 { /* "See list of 14 species in 1b" */ border-bottom: 1px solid #519136; padding-bottom: 0.5em; color: #519136; font-family: "Trebuchet MS", Helvetica, Arial, "Lucida Sans Unicode", sans-serif; font-weight: normal; /* For tall lists a scrollbar appears, and tends to make the last word of the title wrap unattractively. */ white-space: nowrap; }
 
@@ -145,7 +145,7 @@ div.popup a:hover { color: #27610a; }
   #top-message p { margin-bottom: 0.5em; margin-top: 0; }
   #top-message .controls { justify-content: space-between; margin-bottom: 0.5em; width: 100%; } }
 /* Site-wide styles */
-body { background-color: #f8eeda; color: #000; font-family: Verdana, Geneva, "Lucida Sans Unicode", sans-serif; font-size: 13px; margin: 0; }
+body { background-color: #f8eeda; color: #000; font-family: Verdana, Geneva, "Lucida Sans Unicode", sans-serif; font-size: 81.25%; margin: 0; }
 
 html, button, input, select, textarea { font-family: Verdana, Geneva, "Lucida Sans Unicode", sans-serif; }
 
@@ -167,17 +167,22 @@ a:not([href]):hover { text-decoration: none; }
 
 #main td.scientific-name a { border-bottom: 0; }
 
-h1, h2, h3, h4, h5, h6 { font-family: Basetica, "Trebuchet MS", Helvetica, Arial, "Lucida Sans Unicode", sans-serif; font-weight: normal; line-height: 120%; margin: 0; padding: 0; }
+h1, h2, h3, h4, h5, h6 { font-family: "Trebuchet MS", Helvetica, Arial, "Lucida Sans Unicode", sans-serif; font-weight: normal; line-height: 120%; margin: 0; padding: 0; }
 
-h1 { color: #437829; font-size: 1.8rem; font-weight: 900; margin: 1.4rem 0; }
+h1 { color: #554e16; font-size: 1.9em; font-weight: bold; margin: 0.8em 0 0.6em; }
 
-h2 { color: #554e16; font-size: 1.4rem; margin: 1.3rem 0 0.7rem; }
+h2 { color: #554e16; font-size: 1.6em; font-weight: bold; margin: 1.6em 0 0.8em; }
 
-h3 { color: #766b1e; font-size: 1.1rem; font-weight: 900; margin: 1.1rem 0; }
+h3 { color: #554e16; font-size: 1.25em; font-weight: bold; margin: 1.6em 0 0.8em; }
 
-h4 { color: #413b11; font-size: 0.95rem; margin: 0.95rem 0; }
+h3.compact { margin: 1em 0 0.2em; }
 
-h5, h6 { color: #554e16; font-size: 13px; }
+/* Only h1-h3 used through most of site to avoid very deep structure */
+/* h4 is sometimes used in species page Conservation Status section */
+h4 { color: #554e16; font-size: 1.15em; font-weight: bold; margin: 1.6em 0 0.8em; }
+
+/* TODO: try to eliminate h5, h6 */
+h5, h6 { color: #554e16; font-size: 81.25%; }
 
 h6 { font-style: italic; }
 
@@ -186,6 +191,8 @@ p { line-height: 153%; margin: 1em 0; padding: 0; }
 ul { line-height: 153%; margin: 0; padding: 0; }
 
 ul li { margin: 0 0 5px 0; }
+
+.visually-hidden { border: 0; clip: rect(0 0 0 0); height: 1px; margin: -1px; overflow: hidden; padding: 0; position: absolute; width: 1px; }
 
 .clearit { border: none !important; clear: both; float: none !important; height: auto !important; margin: 0 !important; padding: 0 !important; width: auto !important; }
 
@@ -200,24 +207,22 @@ p.meta + p { margin-top: 2px; }
 
 /* Navigation highlighting */
 /* Global navigation (header) */
-body#home header nav li.home:after { /* For use on active nav item, with :after */ border: 10px solid transparent; border-bottom-color: #6c9956; content: ""; height: 0; left: calc(50% - 10px); position: absolute; top: 0.9em; width: 0; }
+body#home header nav li.home::after { /* For use on active nav item, with :after */ border: 10px solid transparent; border-bottom-color: #6c9956; content: ""; height: 0; left: calc(50% - 10px); position: absolute; top: 0.9em; width: 0; }
 
-body.simple header nav li.simple:after { /* For use on active nav item, with :after */ border: 10px solid transparent; border-bottom-color: #f8eeda; content: ""; height: 0; left: calc(50% - 10px); position: absolute; top: 0.9em; width: 0; }
+body.simple header nav li.simple::after { /* For use on active nav item, with :after */ border: 10px solid transparent; border-bottom-color: #f8eeda; content: ""; height: 0; left: calc(50% - 10px); position: absolute; top: 0.9em; width: 0; }
 
-body.plantshare header nav li.plantshare:after { /* For use on active nav item, with :after */ border: 10px solid transparent; border-bottom-color: #f8eeda; content: ""; height: 0; left: calc(50% - 10px); position: absolute; top: 0.9em; width: 0; }
+body.plantshare header nav li.plantshare::after { /* For use on active nav item, with :after */ border: 10px solid transparent; border-bottom-color: #f8eeda; content: ""; height: 0; left: calc(50% - 10px); position: absolute; top: 0.9em; width: 0; }
 
-body.full header nav li.full:after { /* For use on active nav item, with :after */ border: 10px solid transparent; border-bottom-color: #f8eeda; content: ""; height: 0; left: calc(50% - 10px); position: absolute; top: 0.9em; width: 0; }
+body.full header nav li.full::after { /* For use on active nav item, with :after */ border: 10px solid transparent; border-bottom-color: #f8eeda; content: ""; height: 0; left: calc(50% - 10px); position: absolute; top: 0.9em; width: 0; }
 
-body.dkey header nav li.dkey:after { /* For use on active nav item, with :after */ border: 10px solid transparent; border-bottom-color: #f8eeda; content: ""; height: 0; left: calc(50% - 10px); position: absolute; top: 0.9em; width: 0; }
+body.dkey header nav li.dkey::after { /* For use on active nav item, with :after */ border: 10px solid transparent; border-bottom-color: #f8eeda; content: ""; height: 0; left: calc(50% - 10px); position: absolute; top: 0.9em; width: 0; }
 
-body.teaching header nav li.teaching:after { /* For use on active nav item, with :after */ border: 10px solid transparent; border-bottom-color: #f8eeda; content: ""; height: 0; left: calc(50% - 10px); position: absolute; top: 0.9em; width: 0; }
+body.teaching header nav li.teaching::after { /* For use on active nav item, with :after */ border: 10px solid transparent; border-bottom-color: #f8eeda; content: ""; height: 0; left: calc(50% - 10px); position: absolute; top: 0.9em; width: 0; }
 
-body.help header nav li.help:after { /* For use on active nav item, with :after */ border: 10px solid transparent; border-bottom-color: #f8eeda; content: ""; height: 0; left: calc(50% - 10px); position: absolute; top: 0.9em; width: 0; }
+body.help header nav li.help::after { /* For use on active nav item, with :after */ border: 10px solid transparent; border-bottom-color: #f8eeda; content: ""; height: 0; left: calc(50% - 10px); position: absolute; top: 0.9em; width: 0; }
 
 /* Section navigation (sidebar, only in some sections) */
 body.help #sidebar nav, body.plantshare #sidebar nav { /* Place "you are here" marker next to a non-linked item. This is the top level of each sub-section. */ /* Show future nav. items that do not have a URL yet in gray. */ }
-body.help #sidebar nav li, body.plantshare #sidebar nav li { padding-left: 28px; }
-body.help #sidebar nav li:first-child, body.plantshare #sidebar nav li:first-child { padding-left: 15px; }
 body.help #sidebar nav li a:not([href])::before, body.plantshare #sidebar nav li a:not([href])::before { color: #000; content: "\25b8"; margin-left: -14px; padding-bottom: 5px; padding-right: 5px; }
 body.help #sidebar nav li > span, body.plantshare #sidebar nav li > span { color: #ccc; padding-left: 10px; }
 
@@ -239,19 +244,19 @@ header .go-botany img { width: 150px; }
 header .go-botany .tagline { bottom: 0; color: #467321; font-family: Basetica, sans-serif; font-size: 1em; position: absolute; left: 12.8em; }
 
 header nav { align-items: center; background-color: #17555b; border-radius: 2em; display: flex; font-family: "Trebuchet MS", Helvetica, Arial, "Lucida Sans Unicode", sans-serif; justify-content: space-between; margin-bottom: 1em; padding-right: 0.3em; }
-header nav a { color: #fff; display: inline-block; padding: 5px 8px 4px; }
+header nav a { color: #fff; display: inline-block; padding: 5px 8px; }
 header nav a:visited, header nav a:not([href]) { color: #fff; }
 header nav > a { display: none; /* Omit the 'sections' link by default */ }
-header nav > ul { font-family: Basetica, "Trebuchet MS", sans-serif; list-style-type: none; padding-left: 1rem; }
-header nav > ul li { display: block; float: left; font-size: 1.12em; line-height: 1.19em; margin: 0 10px 0 0; /* px here to help save space on zoom */ padding: 0.05em 0 0; position: relative; white-space: nowrap; }
+header nav > ul { font-family: Basetica, sans-serif; list-style-type: none; padding-left: 1rem; }
+header nav > ul li { display: block; float: left; font-size: 1.1em; line-height: 1.19em; margin: 0 0.9em 0 0; padding: 0.05em 0 0; position: relative; white-space: nowrap; }
 header nav > ul li:last-child { margin-right: 0; }
 header nav > ul li a:hover { text-decoration: none; }
-header nav .suggester-menu { font-size: 1.12em; margin-top: 1.5em; margin-left: 0.3em; }
+header nav .suggester-menu { font-size: 1.1em; margin-top: 1.5em; margin-left: 0.3em; }
 header nav .suggester-menu ul { margin-top: 0; }
 
 header #search { margin: 0; padding: 0; }
 header #search form { display: flex; margin: 0; padding: 0; }
-header #search input { background: #fff; border: 0; border-radius: 1em; font-family: "Trebuchet MS", Helvetica, Arial, "Lucida Sans Unicode", sans-serif; font-size: 1.12em; height: 1.4em; margin: 0; padding: 0 0.5em; width: 247px; /* keep search from becoming too wide on zoom */ }
+header #search input { background: #fff; border: 0; border-radius: 1em; font-family: "Trebuchet MS", Helvetica, Arial, "Lucida Sans Unicode", sans-serif; font-size: 1.1em; height: 1.4em; margin: 0; padding: 0 0.5em; width: 247px; /* keep search from becoming too wide on zoom */ }
 header #search button { background-color: #d2805f; border: 0; border-radius: 2em; margin: 0 0 0 -1.25em; padding: 0 0.75em; }
 header #search button img { height: 1.4em; vertical-align: middle; }
 
@@ -270,6 +275,7 @@ header #search button img { height: 1.4em; vertical-align: middle; }
 #sidebar { border-top: 1px solid #c3d941; float: left; height: 100%; margin-right: -230px; padding: 16px 0 0; width: 230px; }
 
 #sidebar .section { padding: 0 17px 16px; }
+#sidebar .section h3 { margin-top: 0.2em; }
 #sidebar .section h4 { margin: 0 0 5px 0; }
 #sidebar .section h4 + p { margin-top: 0; }
 #sidebar .section.separate { border-top: 1px solid #e2dfcb; padding-top: 16px; }
@@ -286,7 +292,7 @@ header #search button img { height: 1.4em; vertical-align: middle; }
 #sidebar .box { background: #fff; border: 1px solid #c3d941; margin-bottom: 16px; padding: 16px 0 0; }
 
 #sidebar nav { font-family: "Trebuchet MS", Helvetica, Arial, "Lucida Sans Unicode", sans-serif; font-size: 14px; }
-#sidebar nav h3 { margin-bottom: 16px; padding-left: 26px; }
+#sidebar nav p { /*margin-bottom: 16px;*/ padding-left: 26px; }
 #sidebar nav li { line-height: 150%; list-style-type: none; margin: 0 0 4px 0; padding: 0 15px 16px; }
 
 a.get-help-btn { margin: 10px 0 20px; }
@@ -336,7 +342,7 @@ a.get-help-btn { margin: 10px 0 20px; }
 .wait-spinner * { display: none; }
 
 /* Images (gallery with previous/next buttons, or single) */
-.img-gallery { float: left; margin: 0 10px 0 0; position: relative; width: 244px; -moz-user-select: -moz-none; -ms-user-select: none; -webkit-user-select: none; user-select: none; }
+.img-gallery { float: left; margin: 4px 14px 0 0; position: relative; width: 244px; -moz-user-select: -moz-none; -ms-user-select: none; -webkit-user-select: none; user-select: none; }
 
 .img-gallery .img-container { height: 239px; overflow: hidden; position: relative; width: 239px; }
 
@@ -397,11 +403,9 @@ a.get-help-btn { margin: 10px 0 20px; }
 #sb-nav-close { background-position: center; background-repeat: no-repeat; padding: 4px; /* Increase activation area a bit */ right: -28px !important; /* Place at top right, but not exactly at the corner so as to avoid Flash video z-index problem */ top: 6px !important; }
 
 /* Character/value styles for plant preview popups, species pages, etc. */
-.characteristics { margin: 16px 0; }
-
 .characteristics dl { display: flex; margin: 10px 0 0; padding: 0; }
 
-.characteristics dt { font-weight: bold; line-height: 18px; text-align: left; width: 200px; }
+.characteristics dt { color: #554e16; font-weight: bold; line-height: 18px; max-width: 200px; min-width: 200px; text-align: left; }
 .characteristics dt button { font-weight: bold; }
 
 .characteristics dd { line-height: 18px; max-width: 60%; }
@@ -445,10 +449,10 @@ table.list th td:first-child { font-family: "Trebuchet MS", Helvetica, Arial, "L
 /* Home */
 #home { background-color: #f8eeda; background-image: url(/static/images/layout/body-home.png); background-position: left 0px top; background-repeat: repeat-x; }
 
-#home .id { display: flex; padding: 1.4em 0 0; position: relative; }
+#home .id { display: flex; padding: 1.4em 0 0.3em; position: relative; }
 
 #home h1 { font-weight: unset; margin: 0; }
-#home h1 img { width: 7.7em; }
+#home h1 img { width: 9em; }
 
 #home .tagline { bottom: 0.6em; color: #fff; font-family: Basetica, sans-serif; font-size: 1.05em; left: 17.4em; line-height: 120%; margin: 0; position: absolute; }
 
@@ -463,8 +467,8 @@ table.list th td:first-child { font-family: "Trebuchet MS", Helvetica, Arial, "L
 #home #banner { margin: 10px 0 0; position: absolute; }
 #home #banner > img { box-shadow: 0px 0px 4px 0 rgba(0, 0, 0, 0.6); display: none; height: 345px; left: 0; position: absolute; top: 0; width: 960px; }
 #home #banner img:first-child { display: block; }
-#home #banner h2 { color: #437829; font-family: Basetica, "Trebuchet MS", Helvetica, Arial, "Lucida Sans Unicode", sans-serif; font-size: 2rem; font-weight: 700; line-height: normal; margin: 1.6rem 0 1rem; }
-#home #banner p { margin: 12px 0 0 0; text-align: left; }
+#home #banner h2 { color: #437829; font-family: "Trebuchet MS", Helvetica, Arial, "Lucida Sans Unicode", sans-serif; font-size: 2.1rem; font-weight: bold; line-height: normal; margin: 1.2rem 0; }
+#home #banner p { margin: 0.5em 0; text-align: left; }
 
 #home #update p { line-height: 150%; margin-bottom: 7px; margin-top: 0; text-align: center; }
 
@@ -474,14 +478,13 @@ table.list th td:first-child { font-family: "Trebuchet MS", Helvetica, Arial, "L
 
 #home #update .badge { background-color: rgba(236, 243, 151, 0.9); letter-spacing: 0.05rem; margin-right: 0.3rem; padding: 0.1rem 0.3rem; text-transform: uppercase; }
 
-#home #cta { margin: 18px 2px 0; width: 174px; }
+#home #cta { margin: 1em 2px 0; width: 174px; }
 
 #home #overlay { background: rgba(255, 255, 255, 0.85); height: 323px; padding: 10px 30px 0; position: absolute; left: 676px; top: 6px; width: 218px; z-index: 50; }
 
-#home .three-col { float: left; height: 220px; margin: 354px 23px 5px 0; padding: 8px 23px 0 0; width: 289px; }
+#home .three-col { float: left; margin: 354px 23px 5px 0; padding: 8px 23px 1.2em 0; width: 289px; }
 #home .three-col.last { background: 0; margin-right: 0; padding: 8px 0 0 0; }
-#home .three-col h3 { color: #413b11; font-family: Basetica; font-size: 1.4rem; font-weight: 400; margin: 0.6rem 0 0.4rem; }
-#home .three-col h4 { color: #7a6f1f; font-family: Basetica; margin: 0 0 3px 0; }
+#home .three-col h2 { margin: 0.6rem 0 0.4rem; }
 #home .three-col p { margin: 0; }
 #home .three-col a { margin: 13px 0 0 0; }
 
@@ -489,14 +492,13 @@ a.subscribe { background: url(/static/images/layout/subscribe.png) 0 0 no-repeat
 a.subscribe:hover { background-position: 0 -16px; }
 a.subscribe:active { background-position: 0 -32px; }
 
-#home #potd { /* Plant of the Day */ background: #bde29c; border: 3px solid #fff; box-shadow: 0px 0px 4px 0 rgba(0, 0, 0, 0.3); clear: left; height: 140px; margin: 15px 0; padding: 10px; }
-#home #potd > a { display: block; float: left; height: 131px; margin: 5px 5px; overflow: hidden; width: 270px; }
+#home #potd { /* Plant of the Day */ background: #bde29c; border: 3px solid #fff; box-shadow: 0px 0px 4px 0 rgba(0, 0, 0, 0.3); clear: left; height: 169px; margin: 15px 0; padding: 10px; }
+#home #potd > a { display: block; float: left; height: 160px; margin: 5px 5px; overflow: hidden; width: 270px; }
 #home #potd > a img { position: relative; top: -60px; width: 270px; }
 #home #potd .details { margin: 0 0 0 290px; position: absolute; width: 630px; }
-#home #potd .details h3 { color: #413b11; font-family: Basetica; font-size: 1.2rem; font-weight: 900; margin: 0.2rem 0; }
-#home #potd .details h3 span.latin { font-style: italic; }
-#home #potd .details h3 span.english { color: #554e16; font-size: 14px; font-weight: 400; }
-#home #potd .details p { height: 70px; margin: 0; overflow: hidden; }
+#home #potd .details h2 { margin: 0.2rem 0; }
+#home #potd .details h2 span.latin { font-style: italic; }
+#home #potd .details p { margin: 0 0 1em; overflow: hidden; }
 
 #home .donate, #home .intro { background: #f3dcaa; /* lightened version of #e7b952 orange from NPT palette */ border: 3px solid #fff; box-shadow: 0px 0px 4px 0 rgba(0, 0, 0, 0.3); clear: left; margin: 0 0 15px 0; padding: 0; }
 #home .donate p, #home .intro p { margin: 14px; position: relative; }
@@ -533,9 +535,8 @@ a.subscribe:active { background-position: 0 -32px; }
   #home #banner #overlay img { width: 53%; }
   #home #banner #cta { margin: 6px; }
   #home .three-col { background: none; float: none; height: inherit; margin: 0 0 14px; padding: 0; width: auto; }
-  #home .three-col h3, #home .three-col h4, #home .three-col p { margin-left: 8px; margin-right: 8px; }
+  #home .three-col h3, #home .three-col p { margin-left: 8px; margin-right: 8px; }
   #home .three-col h3 { font-size: 18px; }
-  #home .three-col h4 { font-size: 14px; }
   #home .three-col p { margin-top: 0; }
   #home .three-col a.orange-button, #home .three-col body.plantshare .image-modal a.button, body.plantshare .image-modal #home .three-col a.button, #home .three-col body.plantshare#ask #main a.submit, body.plantshare#ask #main #home .three-col a.submit, #home .three-col body.plantshare#plantshare #ask a.submit, body.plantshare#plantshare #ask #home .three-col a.submit, #home .three-col.last a.orange-button, #home .three-col.last body.plantshare .image-modal a.button, body.plantshare .image-modal #home .three-col.last a.button, #home .three-col.last body.plantshare#ask #main a.submit, body.plantshare#ask #main #home .three-col.last a.submit, #home .three-col.last body.plantshare#plantshare #ask a.submit, body.plantshare#plantshare #ask #home .three-col.last a.submit { margin-top: 6px; margin-left: 8px; margin-right: 8px; }
   #home #breadcrumb p { line-height: 160%; }
@@ -544,7 +545,6 @@ a.subscribe:active { background-position: 0 -32px; }
   #home #potd > a, #home #potd > a img { width: 297px; }
   #home #potd .details { margin: 0; position: inherit; width: inherit; }
   #home #potd .details h3 { line-height: 120%; }
-  #home #potd .details h4 { line-height: 140%; }
   #home #potd .details p { height: inherit; overflow: inherit; }
   #home #potd .details a { margin-top: 6px; position: inherit; top: 0; }
   #home .donate, #home .intro { margin: 0; }
@@ -578,7 +578,7 @@ a.subscribe:active { background-position: 0 -32px; }
 body.taxa { /* Override Shadowbox styles to allow multiple title lines for showing a photo title, photographer credit, and copyright. */ }
 body.taxa #sb-title, body.taxa #sb-title-inner { height: 76px; line-height: 70%; position: relative; }
 body.taxa #sb-title-inner div { bottom: 6px; position: absolute; }
-body.taxa #sb-title-inner h6 { color: #fff; font-size: 16px; font-style: normal; line-height: 110%; margin: 0 0 2px; padding: 0; }
+body.taxa #sb-title-inner .title { color: #fff; font-size: 16px; font-style: normal; line-height: 110%; margin: 0 0 2px; padding: 0; }
 body.taxa #sb-title-inner span { font-family: "Trebuchet MS", Helvetica, Arial, "Lucida Sans Unicode", sans-serif; font-size: 10px; }
 body.taxa #sb-title-inner a { border-bottom: 1px solid #ccc; color: #fff; }
 body.taxa #sb-title-inner a:hover { text-decoration: none; }
@@ -586,7 +586,6 @@ body.taxa #sb-title-inner .contact { background-color: inherit; border: 0; color
 body.taxa #sb-nav-close { top: 56px !important; }
 
 body.taxa #main ol, body.taxa #main ul { line-height: inherit; }
-body.taxa #main .common { color: #7a6f1f; font-family: Basetica, "Trebuchet MS", Helvetica, Arial, "Lucida Sans Unicode", sans-serif; font-size: 1.6rem; margin: 1.6rem 0; }
 
 #body.taxa .frame { cursor: default; }
 
@@ -600,18 +599,18 @@ body.taxa .pics p { display: inline-block; float: left; font-size: 14px; }
 
 body.taxa img.zoom { display: inline-block; float: right; }
 
-body#family h2 { clear: left; font-size: 18px; padding-top: 30px; }
+body#family h2 { clear: left; }
+body#family .pics + h2 { padding-top: 30px; }
 body#family ul.genera { font-size: 14px; list-style: none; }
 body#family ul.genera li { margin: 0 0 5px 0; }
 
-body#genus h2 { clear: left; font-size: 18px; padding-top: 30px; }
+body#genus h2 { clear: left; }
+body#genus .pics + h2 { padding-top: 30px; }
 body#genus ul.species { font-size: 14px; list-style: none; }
 body#genus ul.species li { margin: 0 0 5px 0; }
 body#genus p.family { font-size: 14px; margin: 0; }
 
 body#species #main { background: url(/static/images/layout/sidebar-bg.png) repeat-y; }
-
-body.taxa #main .common { font-family: Basetica, "Trebuchet MS", Helvetica, Arial, "Lucida Sans Unicode", sans-serif; font-size: 1.6rem; margin: 1.6rem 0; }
 
 body#species #main { /* layout: right-side content sections */ }
 body#species #main #breadcrumb, body#species #main #name, body#species #main .img-gallery, body#species #main #images-note, body#species #main #partner, body#species #main #facts, body#species #main #habitat, body#species #main #chars, body#species #main #wetland, body#species #main #status, body#species #main #info-dkey { clear: left; margin-left: 250px; }
@@ -622,11 +621,9 @@ body#species .section h4 { font-size: 14px; margin: 0; padding: 0; }
 body#species .section p { margin-bottom: 0; }
 
 body#species #maps, body#species #side { position: absolute; }
-body#species #maps h2, body#species #side h2 { font-size: 15px; margin: 0 0 4px 0; }
+body#species #maps h2, body#species #side h2 { font-size: 1.2em; margin: 0.2em 0 0.8em; }
 
 body#species #maps { background-color: #fff; border-left: 1px solid #c3d941; border-right: 1px solid #c3d941; border-top: 1px solid #c3d941; top: 128px; }
-
-body#species .namap { padding-top: 0; }
 
 body#species .definitions-link { background-image: url(/static/images/icons/icon-info.png); background-position: 0px 1px; background-repeat: no-repeat; background-size: auto 12px; clear: left; display: inline-block; font-size: 12px; margin: 4px 0 8px; padding: 0 0 0 15px; }
 
@@ -635,7 +632,7 @@ body#species .found-plant { background-color: #f8eeda; font-size: 12px; line-hei
 /* space maps enough away from text atop them */
 body#species #main .nemap h2 + p, body#species #main .namap h2 + p { margin: 0; padding-bottom: 8px; }
 
-body#species #side { top: 790px; /* remaining side content is positioned further down to leave room for maps in full-width layout */ }
+body#species #side { top: 800px; /* remaining side content is positioned further down to leave room for maps in full-width layout */ }
 
 body#species #side dt, body#species #side dd { display: inline-block; }
 
@@ -659,7 +656,7 @@ body#species #main p { margin: 0 0 15px; }
 body#species #sb-player.html { background: #fff; overflow: hidden; /* Get rid of vertical scrollbar in WebKit on enlarged N. America dist. map. */ padding: 0 5px 5px; }
 body#species #sb-player #na-dist-county-map { background: #fff; height: 100%; width: 100%; }
 
-body#species a.description-control { background: url(/static/images/icons/plus.png) left 50% no-repeat; display: block; margin: 10px 0 12px 0; padding: 3px 0 3px 25px; }
+body#species a.description-control { background: url(/static/images/icons/plus.png) left 50% no-repeat; display: block; margin: 28px 0 12px 0; padding: 3px 0 3px 25px; }
 body#species a.description-control.expanded { background: url(/static/images/icons/minus.png) left 50% no-repeat; }
 
 body#species ul.full-description { background: #fbfbf8; border: 1px solid #e1e1dc; display: none; margin: 0 0 15px 0; }
@@ -667,8 +664,8 @@ body#species ul.full-description { background: #fbfbf8; border: 1px solid #e1e1d
 body#species ul.full-description > li { border-bottom: 1px solid #e1e1dc; clear: left; display: block; padding: 18px; margin: 0 0 0 0; }
 body#species ul.full-description > li:last-child { border-bottom: none; }
 body#species ul.full-description > li:hover { background-color: #fff; }
-body#species ul.full-description > li h5 { background: url(/static/images/icons/plus.png) left 50% no-repeat; cursor: default; padding-left: 28px; }
-body#species ul.full-description > li h5.expanded { background: url(/static/images/icons/minus.png) left 50% no-repeat; }
+body#species ul.full-description > li h3 { background: url(/static/images/icons/plus.png) left 50% no-repeat; cursor: default; margin: 0; padding-left: 1.6em; }
+body#species ul.full-description > li h3.expanded { background: url(/static/images/icons/minus.png) left 50% no-repeat; }
 body#species ul.full-description > li div { display: none; padding-left: 28px; }
 
 body#species a.enlarge { display: block; margin: 0 0 8px 0; }
@@ -678,7 +675,7 @@ body#species a.more { cursor: pointer; }
 
 /* Larger gallery styles */
 body#species .img-gallery { float: none; margin: 0 0 0 0; width: 710px; }
-body#species .img-gallery .img-container { height: 257px; width: 710px; }
+body#species .img-gallery .img-container { height: 257px; margin: 2em 0 0; width: 710px; }
 body#species .img-gallery .frame { height: 239px; width: 700px; }
 body#species .img-gallery .images .single-img { float: left; position: relative; }
 body#species .img-gallery .images img { float: none; }
@@ -692,6 +689,8 @@ body#species #species-images { border: 5px solid rgba(255, 255, 255, 0.8); box-s
 body#species #species-images .scrollableArea a { border-right: 5px solid #fff; float: left; margin: 0; padding: 0; }
 
 body#species #images-note { font-size: 11px; font-style: italic; margin-bottom: 20px; margin-left: 250px; margin-right: 0; margin-top: 0; }
+
+body#species #info-dkey b { color: #554e16; }
 
 /* Begin media queries styles for taxa pages. */
 /* Portrait-orientation styles */
@@ -708,11 +707,10 @@ body#species #images-note { font-size: 11px; font-style: italic; margin-bottom: 
 /* These styles are common to both smartphone widths */
 @media only screen and (max-width: 600px) { body.taxa #main { padding-bottom: 8px; }
   body.taxa #main h1 { margin-bottom: 0; }
-  body.taxa #main .common { font-size: 16px; margin: 6px 0 12px; }
   body#family #main p.description, body#genus #main p.description { margin: 4px 0; }
   body#family #main h2, body#genus #main h2 { font-size: 15px; padding-top: 12px; }
   body#family ul.genera, body#genus ul.species { line-height: 24px; margin-bottom: 18px; }
-  .visit-dkey { font-size: 13px; }
+  .visit-dkey { font-size: 81.25%; }
   body#species #main { background: none; /* layout for smartphones: sections in document sequence */ }
   body#species #main #breadcrumb, body#species #main #name, body#species #main .img-gallery, body#species #main #partner, body#species #main #facts, body#species #main #habitat, body#species #main #chars, body#species #main #wetland, body#species #main #status, body#species #main #info-dkey { margin-left: 0; }
   body#species #main .img-gallery { margin-bottom: 20px; }
@@ -744,24 +742,25 @@ body.skey.groups-subgroups { /* Styles for groups and subgroups (Levels 1 and 2)
 body.skey.groups-subgroups .img-gallery .frame { cursor: default; }
 body.skey.groups-subgroups #sb-title, body.skey.groups-subgroups #sb-title-inner { height: 76px; line-height: 70%; position: relative; }
 body.skey.groups-subgroups #sb-title-inner div { bottom: 6px; position: absolute; }
-body.skey.groups-subgroups #sb-title-inner h6 { color: #fff; font-size: 16px; font-style: normal; line-height: 110%; margin: 0 0 2px; padding: 0; }
+body.skey.groups-subgroups #sb-title-inner .title { color: #fff; font-size: 16px; font-style: normal; line-height: 110%; margin: 0 0 2px; padding: 0; }
 body.skey.groups-subgroups #sb-title-inner span { font-family: "Trebuchet MS", Helvetica, Arial, "Lucida Sans Unicode", sans-serif; font-size: 10px; }
 body.skey.groups-subgroups #sb-title-inner a { border-bottom: 1px solid #ccc; color: #fff; }
 body.skey.groups-subgroups #sb-title-inner a:hover { text-decoration: none; }
 body.skey.groups-subgroups #sb-title-inner .contact { background-color: inherit; border: 0; color: #fff; cursor: pointer; display: inline-block; /* prevent text from wrapping, which makes tooltip position incorrect */ margin: 0; padding: 0; text-decoration: underline; }
 body.skey.groups-subgroups #sb-nav-close { top: 56px !important; }
-body.skey.groups-subgroups p.question, body.skey.groups-subgroups p.tip { color: #766b1e; font-family: Basetica, "Trebuchet MS", Helvetica, Arial, "Lucida Sans Unicode", sans-serif; font-size: 1.6rem; margin: 0.5rem 0; padding: 0; }
+body.skey.groups-subgroups p.question, body.skey.groups-subgroups p.tip { color: #766b1e; font-family: "Trebuchet MS", Helvetica, Arial, "Lucida Sans Unicode", sans-serif; font-size: 1.6rem; margin: 0.5rem 0; padding: 0; }
 body.skey.groups-subgroups p.tip { font-size: 1.1rem; }
 body.skey.groups-subgroups .list-item { clear: left; margin: 0; padding: 20px 0 0 0; }
 body.skey.groups-subgroups .list-item .details { float: left; width: 425px; }
 body.skey.groups-subgroups .list-item h2 { line-height: 110%; margin: 0 0 5px 0; }
-body.skey.groups-subgroups .list-item h2 + p { color: #766b1e; display: block; font-family: Basetica, "Trebuchet MS", Helvetica, Arial, "Lucida Sans Unicode", sans-serif; font-size: 0.9rem; line-height: 130%; margin: 7px 0 1px; padding-left: 0; }
-body.skey.groups-subgroups .list-item p { margin: 0; padding: 0 0 7px 25px; }
-body.skey.groups-subgroups .list-item p.key-char { background: url(/static/images/icons/icon1.png) 0 2px no-repeat; }
-body.skey.groups-subgroups .list-item p.exceptions { background: url(/static/images/icons/icon2.png) 0 2px no-repeat; }
-body.skey.groups-subgroups .list-item p.vid { background: url(/static/images/icons/icon3.png) 0 2px no-repeat; }
-body.skey.groups-subgroups .list-item .section-title { display: block; text-transform: uppercase; }
-body.skey.groups-subgroups .list-item .details a { margin: 10px 0 14px; }
+body.skey.groups-subgroups .list-item h2 + p { padding-left: 0; }
+body.skey.groups-subgroups .list-item h3 { padding-left: 1.7em; }
+body.skey.groups-subgroups .list-item h3.key-char { background: url(/static/images/icons/icon1.png) 0 2px no-repeat; }
+body.skey.groups-subgroups .list-item h3.exceptions { background: url(/static/images/icons/icon2.png) 0 2px no-repeat; }
+body.skey.groups-subgroups .list-item h3.vid { background: url(/static/images/icons/icon3.png) 0 2px no-repeat; }
+body.skey.groups-subgroups .list-item p { margin: 0; }
+body.skey.groups-subgroups .list-item .section-title { display: block; }
+body.skey.groups-subgroups .list-item .details a { margin: 1.6em 0; }
 body.skey.groups-subgroups .not-my-plant { clear: left; float: right; font-family: "Trebuchet MS", Helvetica, Arial, "Lucida Sans Unicode", sans-serif; padding: 20px 0 0; text-align: center; }
 body.skey.groups-subgroups .not-my-plant p { margin: 0; padding: 0; }
 body.skey.groups-subgroups .not-my-plant p + p { font-family: Verdana, Geneva, "Lucida Sans Unicode", sans-serif; }
@@ -800,12 +799,12 @@ body.skey.results .plant-list table { font-family: "Trebuchet MS", Helvetica, Ar
 body.skey.results .plant-list table tr { height: 20px; }
 body.skey.results .plant-list table tr.first-visible td { border-top: 0; }
 body.skey.results .plant-list table td { border-top: 1px solid #e1e1dc; padding: 10px 0; vertical-align: middle; }
-body.skey.results .plant-list table .genus { color: #1a2e11; font-size: 18px; font-weight: normal; line-height: 200%; padding: 3px 0 0 0; vertical-align: top; }
+body.skey.results .plant-list table .genus { color: #1a2e11; font-size: 18px; font-style: italic; font-weight: normal; line-height: 200%; padding: 3px 0 0 0; vertical-align: top; }
 body.skey.results .plant-list table .scientific-name { font-size: 15px; font-style: italic; font-weight: normal; line-height: 155%; padding: 10px 0 8px 0; }
 body.skey.results .plant-list table .scientific-name img { margin: 0 8px 0 0; padding-bottom: 2px; vertical-align: middle; }
 body.skey.results .missing-image { background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #eaf2e2), color-stop(100%, #d6e6c5)); background: -moz-linear-gradient(center top, #eaf2e2, #d6e6c5) repeat scroll 0 0 transparent; color: #354d1e; height: 149px; position: relative; width: 160px; }
 body.skey.results .missing-image p { font-size: 12px; height: 40px; left: 50%; line-height: 130%; margin: -20px 0 0 -50px; position: absolute; text-align: center; top: 50%; width: 100px; }
-body.skey.results #question-nav { background-color: #fcfdf5; border: 1px solid #c3d941; float: left; margin-top: -105px; padding: 0 0 16px 0; width: 230px; /* end .option-list */ }
+body.skey.results #question-nav { background-color: #fcfdf5; border: 1px solid #c3d941; float: left; margin-top: -90px; padding: 0 0 16px 0; width: 230px; /* end .option-list */ }
 body.skey.results #question-nav.tinted { background: #fcfdf5; }
 body.skey.results #question-nav .scroll { background: #fff; border-bottom: 1px solid #9cc86b; border-left: 1px solid #519136; border-top: 1px solid #519136; display: block; height: 335px; margin: 0 0 10px 0; overflow: auto; width: 229px; }
 body.skey.results #question-nav .scroll::-webkit-scrollbar { width: 14px; }
@@ -816,7 +815,7 @@ body.skey.results #question-nav .scroll::-webkit-scrollbar-track { background-co
 body.skey.results #question-nav .scroll::-webkit-scrollbar-thumb:vertical { background-color: #fff; border-left: 1px solid #c3d941; background-image: url(/static/images/layout/scroll-thumb-top.png), url(/static/images/layout/scroll-thumb-bottom.png), url(/static/images/layout/scroll-thumb.png); background-position: center top, center bottom, center; background-repeat: no-repeat, no-repeat, repeat-y; }
 body.skey.results #question-nav .section { padding: 0 17px 16px; }
 body.skey.results #question-nav .section.instructions { background: #9cc86b; color: #fff; padding: 16px; }
-body.skey.results #question-nav .section.instructions h5 { color: #413b11; font-size: 16px; line-height: 120%; margin: 0; }
+body.skey.results #question-nav .section.instructions h2 { color: #413b11; font-size: 16px; line-height: 120%; margin: 0; }
 body.skey.results #question-nav .section .left { float: left; }
 body.skey.results #question-nav .section p.get-more { position: relative; font-size: 11px; line-height: 16px; margin: 0 0 20px; text-align: center; }
 body.skey.results #question-nav .section p.get-more a { color: #fff; cursor: default; display: block; margin: 18px auto 10px; width: 170px; }
@@ -843,16 +842,17 @@ body.skey.results #intro-overlay h1 { font-size: 140%; }
 body.skey.results #intro-overlay .number-of-species:before, body.skey.results #intro-overlay .number-of-questions:before { border-style: solid; border-width: 0.9em 1.8em; bottom: 0.8em; content: ''; height: 0; position: absolute; width: 0; }
 body.skey.results #intro-overlay .number-of-species:before { border-color: transparent; right: -5em; }
 body.skey.results #intro-overlay .number-of-questions:before { border-color: transparent #508e31 transparent transparent; left: -3.9em; top: 0.4em; }
-body.skey.results h3.species-count-heading { /* Move "18 matching species" to the right of Photos/List tab */ font-size: 22px; margin: 0; padding: 0; position: relative; }
-body.skey.results h3.species-count-heading > span { left: 330px; position: absolute; top: 10px; }
+body.skey.results .species-count-heading { /* Move "18 matching species" to the right of Photos/List tab */ font-size: 22px; margin: 0; padding: 0; position: relative; }
+body.skey.results .species-count-heading > span { left: 330px; position: absolute; top: 10px; }
 body.skey.results h5.help { clear: left; font-size: 14px; margin: 0 0 0 0; padding: 3px 0 0 0; }
 body.skey.results h5.help.last { margin-top: 12px; }
-body.skey.results .view-tabs { border-bottom: 1px solid #c3d941; clear: left; font-family: "Trebuchet MS", Helvetica, Arial, "Lucida Sans Unicode", sans-serif; height: 28px; margin: 15px 0 0; }
-body.skey.results .view-tabs a { background: #d6e6c5; background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #eaf2e2), color-stop(100%, #d6e6c5)); background: -moz-linear-gradient(center top, #eaf2e2, #d6e6c5); border: 1px solid #c3d941 !important; border-top-left-radius: 6px; border-top-right-radius: 6px; color: #766b1e; cursor: default; display: block; float: left; font-family: Basetica, "Trebuchet MS", Helvetica, Arial, "Lucida Sans Unicode", sans-serif; font-size: 1.1rem; margin: 0; min-width: 100px; padding: 6px 10px 2px; text-align: center; }
+body.skey.results .view-tabs { border-bottom: 1px solid #c3d941; clear: left; font-family: "Trebuchet MS", Helvetica, Arial, "Lucida Sans Unicode", sans-serif; height: 2.2em; margin: 15px 0 0; }
+body.skey.results .view-tabs h3 { margin: 0; }
+body.skey.results .view-tabs a { background: #d6e6c5; background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #eaf2e2), color-stop(100%, #d6e6c5)); background: -moz-linear-gradient(center top, #eaf2e2, #d6e6c5); border: 1px solid #c3d941 !important; border-top-left-radius: 6px; border-top-right-radius: 6px; color: #554e16; cursor: default; display: block; float: left; font-family: "Trebuchet MS", Helvetica, Arial, "Lucida Sans Unicode", sans-serif; font-size: 1.1rem; margin: 0; min-width: 100px; padding: 0.3em 1em 0.2em; text-align: center; }
 body.skey.results .view-tabs a:hover { background: #e1f2cd; background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #f0f8e7), color-stop(100%, #e1f2cd)); background: -moz-linear-gradient(center top, #f0f8e7, #e1f2cd); cursor: default; text-decoration: none; }
 body.skey.results .view-tabs li { list-style-type: none; }
 body.skey.results .view-tabs li:first-child a { margin-left: 10px; }
-body.skey.results .view-tabs a.current, body.skey.results .view-tabs a.current:hover { background: #fff; background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #ffffff), color-stop(100%, #f0f0c0)) !important; background: -moz-linear-gradient(center top, #ffffff, #f0f0c0); border-bottom: 0 !important; color: #1a2e11; cursor: default; padding: 5px 10px; }
+body.skey.results .view-tabs a.current, body.skey.results .view-tabs a.current:hover { background: #fff; background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #ffffff), color-stop(100%, #f0f0c0)) !important; background: -moz-linear-gradient(center top, #ffffff, #f0f0c0); border-bottom: 0 !important; color: #1a2e11; cursor: default; padding: 0.3em 1em; }
 body.skey.results #notification-msg { background-color: #ff0; border-bottom-left-radius: 15px; border-bottom-right-radius: 15px; font-size: 1.2em; -moz-border-bottom-left-radius: 15px; -moz-border-bottom-right-radius: 15px; padding: 0.25em 0.75em; z-index: 200; }
 body.skey.results .working-area { background: #fff; border: 1px solid #c3d941; box-shadow: 1px 1px 5px 0 black; display: none; line-height: 100%; margin-left: 214px; padding: 10px 15px; position: absolute; width: 730px; z-index: 200; /* end .choice */ /* end ul */ /* Working Area slider styles */ /* end #slider */ }
 body.skey.results .working-area img.arrow { display: block; left: -15px; position: absolute; top: 16px; }
@@ -869,7 +869,7 @@ body.skey.results .working-area .choice img[id] { /* only border if image has id
 body.skey.results .working-area .choice label { cursor: default; display: block; font-family: Tahoma, "Trebuchet MS", "Lucida Sans Unicode", sans-serif; font-size: 12px; line-height: 14px; max-width: 250px; min-width: 70px; padding-top: 0; word-wrap: break-word; /* can break mid-word */ }
 body.skey.results .working-area .choice input { margin: 0 3px 0 -18px; }
 body.skey.results .working-area .close { background: url(/static/images/icons/close.png) no-repeat transparent; display: block; float: right; height: 16px; margin: 5px 0 0 0; padding: 12px 0 0 0; width: 16px; }
-body.skey.results .working-area h4 { color: #000; display: none; font-size: 18px; line-height: 130%; margin: 6px 0; width: 650px; }
+body.skey.results .working-area h3 { color: #000; display: none; font-size: 18px; line-height: 130%; margin: 6px 0; width: 650px; }
 body.skey.results .working-area .intro-message h4 { display: block; font-weight: bold; }
 body.skey.results .working-area .intro-message p { font-size: 14px; margin-bottom: 5px; }
 body.skey.results .working-area .info { display: none; float: left; font-family: Tahoma, "Trebuchet MS", "Lucida Sans Unicode", sans-serif; font-size: 14px; width: 100%; }
@@ -1156,7 +1156,7 @@ body.plantshare a.close-btn { background: transparent url(/static/images/icons/c
 
 body.plantshare #main .profile { clear: left; width: 471px; }
 body.plantshare #main .profile h2 { margin-bottom: 14px; width: 200px; }
-body.plantshare #main .profile a.edit { display: block; float: right; margin-top: 1rem; }
+body.plantshare #main .profile a.edit { display: block; float: right; }
 body.plantshare #main .profile h3 { font-size: 18px; margin: 0; }
 body.plantshare #main .profile div { clear: left; }
 body.plantshare #main .profile .avatar { background: #e1f0d1; display: block; float: left; height: 102px; margin-right: 16px; width: 112px; }
@@ -1176,9 +1176,9 @@ body.plantshare#terms-of-agreement #main form .agree-btn { margin-right: 14px; w
 
 body.plantshare#plantshare { /* styles for the PlantShare main page */ }
 body.plantshare#plantshare h1 { float: left; }
-body.plantshare#plantshare h2 { line-height: 100%; }
+body.plantshare#plantshare h2 { line-height: 100%; margin: 0.6em 0; }
 body.plantshare#plantshare #find-people-form { float: right; margin: 0 0 6px; width: 184px; }
-body.plantshare#plantshare #find-people-form h2 { font-size: 18px; margin-top: 0; }
+body.plantshare#plantshare #find-people-form h2 { font-size: 18px; margin-top: 1em; }
 body.plantshare#plantshare #find-people-form input[type='text'] { width: 130px; }
 body.plantshare#plantshare #recent-sightings-gallery { clear: both; float: right; margin: 0; width: 184px; -moz-user-select: -moz-none; -ms-user-select: none; -webkit-user-select: none; user-select: none; }
 body.plantshare#plantshare #recent-sightings-gallery h2 { font-size: 18px; margin-top: 0; -moz-user-select: text; -ms-user-select: text; -webkit-user-select: text; user-select: text; }
@@ -1193,7 +1193,7 @@ body.plantshare#plantshare #ask { margin-top: 20px; }
 
 body.plantshare#find-people { /* Hide the usual default Shadowbox close button. This is used for some dialogs that have their own interior close button, such as is seen on various PlantShare dialogs. */ }
 body.plantshare#find-people #main .box { padding: 10px; }
-body.plantshare#find-people #main .person { height: 74px; margin: 0; padding: 20px 0 0 0; }
+body.plantshare#find-people #main .person { height: 74px; margin: 0; padding: 20px 0 10px; }
 body.plantshare#find-people #main .person:nth-child(odd) { background-color: #e1f0d1; }
 body.plantshare#find-people #main .person img { background: #e1f0d1; float: left; height: 60px; margin: 0 18px; width: 66px; }
 body.plantshare#find-people #main .person ul { float: left; line-height: 140%; width: 400px; }
@@ -1217,7 +1217,7 @@ body.plantshare#find-people-profile div { background: #fff; border: 5px solid #a
 body.plantshare#find-people-profile div p { margin-top: 0; }
 body.plantshare#find-people-profile .close { background: transparent url(/static/images/icons/close.png) no-repeat; cursor: default; display: block; height: 16px; position: absolute; right: 15px; text-indent: -9999px; top: 15px; width: 16px; }
 body.plantshare#find-people-profile .avatar { background: #e1f0d1; float: left; height: 153px; margin: 16px; width: 169px; }
-body.plantshare#find-people-profile .map { float: right; height: 113px; width: 169px; }
+body.plantshare#find-people-profile .map { float: right; position: relative; top: -25px; width: 169px; }
 body.plantshare#find-people-profile .not-found { padding: 70px 0; text-align: center; }
 
 body.plantshare#sign-up #main form input { width: 350px; }
@@ -1230,7 +1230,7 @@ body.plantshare#log-in form.login { padding-left: 0; }
 body.plantshare#log-in form.login label { font-size: 12px; }
 body.plantshare#log-in form.login input { border-color: #c3d941; }
 
-body.plantshare #sightings-locator h3 { display: inline-block; float: left; font-size: 14px; font-weight: 400; line-height: 22px; margin: 0 7px 5px 0; }
+body.plantshare #sightings-locator .search-label { display: inline-block; float: left; font-size: 14px; font-weight: 400; line-height: 22px; margin: 0 7px 5px 0; }
 body.plantshare #sightings-locator input { border: 0 none; float: left; height: 22px; margin: 0 0 5px 0; padding: 0 2px 0 12px; }
 body.plantshare #sightings-locator input[type='text'] { background: transparent url(/static/images/layout/plantshare-btns.png) no-repeat 0px -334px; font-size: 11px; width: 160px; }
 body.plantshare #sightings-locator input[type='submit'] { background: transparent url(/static/images/layout/plantshare-btns.png) no-repeat -483px -334px; font-size: 0; text-indent: -9999px; width: 30px; }
@@ -1242,10 +1242,9 @@ body.plantshare #sightings-locator .suggester-menu { margin-left: 170px; margin-
 body.plantshare #sightings-locator.mini { clear: both; margin-top: 20px; }
 body.plantshare #sightings-locator.mini .box { font-size: 11px; height: 297px; padding: 0 0 0 10px; }
 body.plantshare #sightings-locator.mini .box form { float: left; padding: 0; width: 205px; }
-body.plantshare #sightings-locator.mini .box form h3 { padding-top: 5px; }
-body.plantshare #sightings-locator.mini .box form h4 { clear: left; font-family: Verdana, Geneva, "Lucida Sans Unicode", sans-serif; font-size: 12px; font-weight: bold; line-height: 14px; margin: 6px 0; padding-top: 8px; }
-body.plantshare #sightings-locator.mini .box form p { line-height: 14px; margin: 0; padding: 0; }
-body.plantshare #sightings-locator.mini .box form p#sightings-status { margin-left: -1000px; /* hide until JS shows it */ padding: 65px 0 0; }
+body.plantshare #sightings-locator.mini .box form .search-label { padding-bottom: 10px; padding-top: 10px; }
+body.plantshare #sightings-locator.mini .box form p { line-height: 14px; margin: 0; padding: 0.4em 0; }
+body.plantshare #sightings-locator.mini .box form p#sightings-status { margin-left: -1000px; /* hide until JS shows it */ padding: 65px 0 25px; }
 body.plantshare #sightings-locator.mini .box form p.full-link { margin-top: 10px; }
 body.plantshare #sightings-locator.mini .box .map { clear: none; border-bottom: 0; border-right: 0; border-top: 0; float: right; margin-top: 0; padding: 0; }
 body.plantshare #sightings-locator.mini .suggester-menu { margin-left: 8px; margin-top: 54px; }
@@ -1301,6 +1300,7 @@ body.plantshare#locator #main #species-images .scrollableArea a { border-right: 
 body.plantshare .modal-container { position: relative; }
 
 body.plantshare .image-modal { background-color: white; border: 5px solid #acac90; display: none; height: 160px; left: 0px; padding: 15px; position: absolute; top: 250px; width: 360px; z-index: 10; }
+body.plantshare .image-modal h2 { margin: 0.3em 0; padding-left: 4.25em; }
 body.plantshare .image-modal img { float: left; margin: 0 5px 10px 0; max-height: 84px; max-width: 84px; }
 body.plantshare .image-modal a.button { color: #000; cursor: default; display: inline-block; margin: 10px 6px 0 0; width: 100px; }
 body.plantshare .image-modal div.modal-footer { color: #888; display: block; float: left; position: relative; width: 100%; }
@@ -1322,7 +1322,7 @@ body.plantshare .thumb-frame .delete-link img { float: left; padding-right: 4px;
 
 body.plantshare .upload { display: inline-block; float: left; padding-bottom: 20px; }
 
-body.plantshare#sightings h2 { clear: both; font-size: 22px; }
+body.plantshare#sightings h2 { clear: both; }
 body.plantshare#sightings #main > ul { margin-top: 14px; }
 body.plantshare#sightings #main > ul > li { clear: both; font-family: "Trebuchet MS", Helvetica, Arial, "Lucida Sans Unicode", sans-serif; font-size: 18px; margin-bottom: 14px; margin-top: 22px; }
 body.plantshare#sightings #main > ul > li ul li { clear: both; font-size: 14px; margin: 22px 0; }
@@ -1350,7 +1350,6 @@ body.plantshare#ask #main #question-form, body.plantshare#plantshare #ask #quest
 body.plantshare#ask #main label, body.plantshare#plantshare #ask label { text-transform: none; width: auto; }
 body.plantshare#ask #main textarea, body.plantshare#plantshare #ask textarea { border: 1px solid #aaa; box-shadow: 2px 3px 5px 0px #ddd; height: 75px; margin: 4px 0 10px; padding: 8px; width: 571px; }
 body.plantshare#ask #main .submit, body.plantshare#plantshare #ask .submit { clear: both; display: block; margin: 42px 0 8px; text-transform: uppercase; }
-body.plantshare#ask #main h2, body.plantshare#ask #main h3, body.plantshare#plantshare #ask h2, body.plantshare#plantshare #ask h3 { clear: both; }
 body.plantshare#ask #main .more, body.plantshare#plantshare #ask .more { text-align: right; }
 
 body.plantshare#questions #main { /* Questions and Answers page */ }
@@ -1410,7 +1409,7 @@ body.plantshare#forgot-password #main form input[type='text'] { width: 250px; }
 body.plantshare#forgot-password #main form input[type='submit'] { margin-top: 8px; }
 
 body.plantshare #login.box { background-color: #d3eaad; border-color: #27610a; clear: left; max-width: 475px; padding: 0; }
-body.plantshare #login.box h4 { font-size: 20px; padding: 16px 16px 10px; }
+body.plantshare #login.box h2 { line-height: 100%; margin: 0.6em 0; padding: 16px 16px 10px; }
 body.plantshare #login.box div { border-top: 1px solid #27610a; padding: 16px; }
 body.plantshare #login.box div a { margin-left: 0; }
 body.plantshare #login.box input[type='text'], body.plantshare #login.box input[type='password'] { width: 95%; }
@@ -1484,6 +1483,7 @@ body.plantshare.checklists .checklists-section .form-actions a { margin: 7px 20p
 body.plantshare.checklists .checklists-section .form-actions #save-btn { margin: 0 20px 0 0; float: left; vertical-align: middle; }
 body.plantshare.checklists .checklists-section .form-actions::after { display: block; content: " "; clear: both; }
 
+body.plantshare#screen-images .box h2 { margin-top: 0.8em; }
 body.plantshare#screen-images table.unscreened { margin: 20px 0; padding: 0; table-layout: fixed; overflow: hidden; width: 100%; text-align: center; }
 body.plantshare#screen-images table.unscreened tr.header { height: 20px; }
 body.plantshare#screen-images table.unscreened tr.header th { padding-bottom: 10px; }
@@ -1587,8 +1587,7 @@ body.plantshare#screen-images div.form-control { margin: 0 30px; }
 /* End media queries styles for PlantShare */
 /* Dichotomous Key */
 #dkey .offer-help-aside { float: right; margin: 1em 1em 0.5em 1em; text-align: right; color: #606060; }
-#dkey .offer-help-aside span { font-size: 13px; }
-#dkey .offer-help-aside a.button { display: inline-block; margin: 0.8em 1em; font-weight: normal; font-size: 13px; text-transform: uppercase; }
+#dkey .offer-help-aside a.button { display: inline-block; margin: 0.8em 1em; font-weight: normal; text-transform: uppercase; }
 #dkey .offer-help-aside select { margin: 0.25em 1.0em; font-size: 1.33333em; }
 
 #jump-nav { margin: 0 auto; max-width: 330px; }
@@ -1601,8 +1600,6 @@ body.plantshare#screen-images div.form-control { margin: 0 30px; }
 #dkey .groupbox a:hover { background-color: #d3e7b4; text-decoration: none; }
 #dkey .groupbox b { display: block; }
 
-#dkey h1 { margin-bottom: 14px; }
-
 #dkey #main p { margin: 1em 0; max-width: 42em; }
 
 #dkey p.figure { clear: right; float: right; margin-left: 1em; margin-bottom: 1em; width: 16em; font-size: 75%; }
@@ -1610,16 +1607,16 @@ body.plantshare#screen-images div.form-control { margin: 0 30px; }
 #dkey p.figure img { width: 16em; /* force thumbnails to a consistent width */ }
 #dkey p.figure .number { font-weight: bold; margin-right: 0.5em; }
 
-#dkey p.backlinks { margin-top: 0.57143em; margin-bottom: 0.64286em; font-size: 1.12em; }
+#dkey p.backlinks { margin-top: 0.57143em; margin-bottom: 0.64286em; font-size: 1.1em; }
 #dkey p.backlinks a { text-decoration: none; margin-right: 0.5em; color: #519136; font-family: "Trebuchet MS", Helvetica, Arial, "Lucida Sans Unicode", sans-serif; }
 #dkey p.backlinks a:hover, #dkey p.backlinks a:focus { text-decoration: underline; }
 
-#dkey a.what-lies-beneath { /* "See list of 7 species in 1a" */ text-decoration: none; border-bottom: 0; color: #27610a; font-family: "Trebuchet MS", Helvetica, Arial, "Lucida Sans Unicode", sans-serif; font-size: 13px; text-decoration: underline; text-transform: uppercase; }
+#dkey a.what-lies-beneath { /* "See list of 7 species in 1a" */ text-decoration: none; border-bottom: 0; color: #27610a; font-family: "Trebuchet MS", Helvetica, Arial, "Lucida Sans Unicode", sans-serif; text-decoration: underline; text-transform: uppercase; }
 #dkey a.what-lies-beneath:hover, #dkey a.what-lies-beneath:focus { text-decoration: underline; }
 
 #dkey > a.what-lies-beneath { display: block; max-width: 47.5em; text-align: right; }
 
-#dkey ul.couplets { margin: 0em; max-width: 48em; padding: 1em 1em 0 0; font-size: 13px; line-height: 1.5em; }
+#dkey ul.couplets { margin: 0em; max-width: 48em; padding: 1em 1em 0 0; line-height: 1.5em; }
 
 #dkey ul.couplets ul { /* a couplet */ margin: 0em; padding-bottom: 0em; /* override browser default */ padding-left: 2%; /* indent of each level of couplet */ }
 
@@ -1638,7 +1635,7 @@ body.plantshare#screen-images div.form-control { margin: 0 30px; }
 
 #dkey a.what-lies-beneath { /* message that sits above the button */ display: inline-block; /* other styles inherited from a.what-lies-beneath rule above */ }
 
-#dkey a.button { display: inline-block; font-size: 13px; margin-top: 6px; }
+#dkey a.button { display: inline-block; margin-top: 6px; }
 
 #dkey a.figure-link { /* clickable figure numbers: [Fig. 3] */ color: #27610a; text-decoration: underline; font-weight: bold; }
 
@@ -1648,14 +1645,14 @@ body.plantshare#screen-images div.form-control { margin: 0 30px; }
 
 #dkey .couplets .gloss { color: #27610a; cursor: pointer; }
 
-#dkey a.show-all-button { display: inline-block; font-size: 13px; font-weight: normal; text-transform: uppercase; }
+#dkey a.show-all-button { display: inline-block; font-weight: normal; text-transform: uppercase; }
 
 #dkey .image-type-selector { display: none; /* once images are loaded, our JS will un-hide */ max-width: none; }
 
 #dkey div.taxon-images { margin-left: 0.75em; text-align: center; }
 #dkey div.taxon-images figure { display: inline-block; margin: 0 1em 1em 0; width: 160px; vertical-align: top; }
 #dkey div.taxon-images img { display: block; margin-bottom: 0.4em; border: 4px solid black; width: 160px; height: 149px; }
-#dkey div.taxon-images a { font-size: 13px; text-decoration: none; }
+#dkey div.taxon-images a { font-size: 81.25%; text-decoration: none; }
 #dkey div.taxon-images a:hover { text-decoration: underline; }
 
 /* Begin media queries styles for Dichotomous Key. */
@@ -1670,14 +1667,16 @@ body.plantshare#screen-images div.form-control { margin: 0 30px; }
 /* Search results */
 body.search-results h1 + p { margin-top: 12px; }
 
-#search-results-list { margin: 6px 0 13px; padding: 6px 0 0; }
+#search-results-list { margin: 1.6em 0; padding: 6px 0 0; }
 #search-results-list .highlighted { font-weight: bold; }
 
 #search-results-list li { list-style-type: none; margin: 0 0 2px; padding: 2px 0; }
 
-#search-results-list img { float: left; margin: -1px 10px 0 0; vertical-align: middle; }
+#search-results-list img { float: left; margin: 0 10px 0 0; vertical-align: middle; }
 
-#search-results-list a { font-family: "Trebuchet MS", Helvetica, Arial, "Lucida Sans Unicode", sans-serif; font-size: 15px; }
+#search-results-list a { font-family: "Trebuchet MS", Helvetica, Arial, "Lucida Sans Unicode", sans-serif; }
+
+#search-results-list h2 { display: inline-block; font-weight: normal; margin: -0.05em 0 0.2em; }
 
 #search-results-list p { line-height: 140%; margin-left: 34px; margin-top: 2px; }
 
@@ -1738,10 +1737,10 @@ body.search-results h1 + p { margin-top: 12px; }
 #advanced-map .plant-group { cursor: default; float: left; height: 185px; margin: 0 10px 10px 0; padding: 2px 0 0; position: relative; width: 110px; }
 #advanced-map .plant-group.last { margin: 0 0 10px 0; }
 #advanced-map .plant-group:hover .frame { border-color: #1a2e12; }
-#advanced-map .plant-group:hover h3 { background: #1a2e12; color: #fff; }
-#advanced-map .plant-group.active h3 { background: #1a2e12; color: #fff; }
+#advanced-map .plant-group:hover h2 { background: #1a2e12; color: #fff; }
+#advanced-map .plant-group.active h2 { background: #1a2e12; color: #fff; }
 #advanced-map .plant-group.active .frame { border-color: #1a2e12; }
-#advanced-map .plant-group h3 { bottom: 146px; color: #27610a; font-size: 12px; font-weight: 400; line-height: 120%; margin: 0 0 0 0; padding: 6px 0 6px 5px; position: absolute; width: 105px; }
+#advanced-map .plant-group h2 { bottom: 146px; color: #27610a; font-size: 12px; font-weight: 400; line-height: 120%; margin: 0 0 0 0; padding: 6px 0 6px 5px; position: absolute; width: 105px; }
 #advanced-map .plant-group .image { position: absolute; top: 40px; }
 #advanced-map .plant-group .frame { border: 5px solid rgba(255, 255, 255, 0.8); height: 91px; position: absolute; top: 0; width: 100px; z-index: 100; }
 #advanced-map .plant-group .img-container { box-shadow: 0 0 4px 0 rgba(0, 0, 0, 0.6); height: 101px; margin-bottom: 6px; overflow: hidden; width: 110px; }
@@ -1785,10 +1784,11 @@ body.search-results h1 + p { margin-top: 12px; }
 #system-requirements #main .smartphone { float: left; padding: 12px 40px 83px 15px; vertical-align: top; width: 30px; }
 
 /* Video Help Topics */
-#video .video-topic { float: left; height: 176px; margin: 10px 16px 10px 0; position: relative; width: 220px; }
+#video .video-topic { display: flex; flex-direction: column-reverse; float: left; height: 16em; margin: 10px 16px 10px 0; position: relative; width: 220px; }
+#video .video-topic h2 { height: 4em; margin: 0; }
 #video .video-topic img { height: 137px; width: 220px; }
-#video .video-topic > p { color: #413b11; font-family: Basetica, "Trebuchet MS", Helvetica, Arial, "Lucida Sans Unicode", sans-serif; font-size: 16px; line-height: 105%; margin-top: 8px; }
-#video .video-topic .missing-image { border: 1px solid #27610a; height: 135px; width: 218px; }
+#video .video-topic > p { color: #554e16; font-family: "Trebuchet MS", Helvetica, Arial, "Lucida Sans Unicode", sans-serif; font-size: 16px; line-height: 105%; margin-top: 8px; }
+#video .video-topic .missing-image { height: 137px; margin-bottom: 3px; width: 220px; }
 #video .video-topic .missing-image p { left: auto; margin: 55px 0; position: absolute; text-align: center; top: auto; white-space: nowrap; width: 100%; }
 
 /* Contributors */
@@ -1811,7 +1811,10 @@ body.search-results h1 + p { margin-top: 12px; }
 
 /* Legal notification pages */
 .legal #main p + p, .legal #main p + ul { margin-top: 8px; }
-.legal #main ol.terms { font-family: "Trebuchet MS", Helvetica, Arial, "Lucida Sans Unicode", sans-serif; font-size: 24px; list-style-type: upper-roman; margin-top: 0; }
+.legal #main ol.terms { font-family: "Trebuchet MS", Helvetica, Arial, "Lucida Sans Unicode", sans-serif; list-style-type: upper-roman; margin-top: 0; }
+.legal #main ol.terms > li { font-size: 1.6em; /* h2 font size, for roman numerals */ }
+.legal #main ol.terms > li > h2 { font-size: inherit; }
+.legal #main ol.terms > li > h3 { font-size: initial; }
 .legal #main ol.terms ul { list-style-type: disc; }
 .legal #main ol.terms li p, .legal #main ol.terms li li { font-family: Verdana, Geneva, "Lucida Sans Unicode", sans-serif; font-size: 12px; }
 .legal #main ol.terms li li { line-height: 20px; }
@@ -1852,16 +1855,15 @@ body.search-results h1 + p { margin-top: 12px; }
 /* These styles apply to smartphones and tablets */
 @media only screen and (max-width: 1024px) { /* Disable hover states on Advanced Map to Groups page. */
   #advanced-map .plant-group:hover .frame { border: 5px solid rgba(255, 255, 255, 0.8); }
-  #advanced-map .plant-group:hover h3 { background: inherit; color: #27610a; }
+  #advanced-map .plant-group:hover h2 { background: inherit; color: #27610a; }
   .legal #main ol.terms { font-size: 18px; padding-left: 32px; } }
 /* End media queries styles for the Help section */
 .modal-wrap { border: 5px solid rgba(255, 255, 255, 0.5); border-radius: 5px; }
 
 .modal-wrap .inner { background: #fff; padding: 0 0 20px 0; }
-.modal-wrap .inner h4.heading, .modal-wrap .inner h3.heading { margin: 0; padding: 24px 0 0 20px; }
+.modal-wrap .inner h4.heading, .modal-wrap .inner h3.heading { margin: 0; padding: 24px 0 0 1.5em; }
 .modal-wrap .inner h4.heading { font-size: 18px; }
-.modal-wrap .inner h3.heading { color: #437829; font-size: 24px; font-style: italic; margin-bottom: 0; margin-left: 305px; }
-.modal-wrap .inner h3.heading span { color: #7a6f1f; font-size: 16px; font-style: normal; font-weight: 400; margin-left: 10px; }
+.modal-wrap .inner h3.heading { margin-left: 305px; }
 .modal-wrap .inner p { font-size: 12px; margin: 0; padding: 4px 20px 0; }
 
 .modal-wrap #choices { padding: 10px 20px 0 20px; }
@@ -1875,9 +1877,9 @@ body.search-results h1 + p { margin-top: 12px; }
 .modal-wrap .list-item p { padding: 0 0 7px 0; }
 .modal-wrap .list-item .details { float: left; margin: 0 0 0 10px; width: 560px; }
 
-.modal-wrap .img-gallery { -moz-user-select: -moz-none; -ms-user-select: none; -webkit-user-select: none; user-select: none; }
+.modal-wrap .img-gallery { -moz-user-select: -moz-none; -ms-user-select: none; -webkit-user-select: none; user-select: none; margin-top: 14px; }
 
-.modal-wrap a.go-to-species-page { margin: 20px 0 0 0; width: 170px; }
+.modal-wrap a.go-to-species-page { margin: 2em 0 0; width: 170px; }
 
 /* Additional styles and overrides for partner sites */
 #home.partner-site header.partner-site .container { position: relative; }
