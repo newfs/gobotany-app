@@ -65,7 +65,8 @@ if __name__ == '__main__':
     (output, ignored) = p.communicate()
     
     end_time = 'END TIME: ' + time.strftime("%H:%M", time.gmtime()) + '\n'
-    output_log = start_time + end_time + output + start_time + end_time
+    output_log = start_time + end_time + output.decode('utf-8') + \
+        start_time + end_time
     
     fromaddr = 'no-reply@nativeplanttrust.org'
     toaddrs = mail_to.replace(',', ' ').split()
