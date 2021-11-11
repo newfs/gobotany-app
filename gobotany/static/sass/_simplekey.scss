@@ -12,7 +12,7 @@ body.skey.groups-subgroups {
     p {
         &.question, &.tip {
             color: $dark-brown;
-            font-family: Basetica, $headings-font;
+            font-family: $headings-font;
             font-size: 1.6rem;
             margin: 0.5rem 0;
             padding: 0;
@@ -32,20 +32,13 @@ body.skey.groups-subgroups {
         }
         h2 {
             line-height: 110%;
-            margin: 0 0 5px 0;	
+            margin: 0 0 5px 0;
             + p {
-                color: $dark-brown;
-                display: block;
-                font-family: Basetica, $headings-font;
-                font-size: 0.9rem;
-                line-height: 130%;
-                margin: 7px 0 1px;
                 padding-left: 0;
             }
         }
-        p {
-            margin: 0;
-            padding: 0 0 7px 25px;
+        h3 {
+            padding-left: 1.7em;
             &.key-char {
                 background: url(/static/images/icons/icon1.png) 0 2px no-repeat;
             }
@@ -56,12 +49,14 @@ body.skey.groups-subgroups {
                 background: url(/static/images/icons/icon3.png) 0 2px no-repeat;
             }
         }
+        p {
+            margin: 0;
+        }
         .section-title {
             display: block;
-            text-transform: uppercase;
         }
         .details a {
-            margin: 10px 0 14px;
+            margin: 1.6em 0;
         }
     }
     .not-my-plant {
@@ -253,6 +248,7 @@ body.skey {
             table .genus {
                 color: #1a2e11;
                 font-size: 18px;
+                font-style: italic;
                 font-weight: normal;
                 line-height: 200%;
                 padding: 3px 0 0 0;
@@ -296,7 +292,7 @@ body.skey {
             background-color: #fcfdf5;
             border: 1px solid $border-green;
             float: left;
-            margin-top: -105px;
+            margin-top: -90px;
             padding: 0 0 16px 0;
             width: 230px;
             &.tinted {
@@ -345,7 +341,7 @@ body.skey {
                     background: #9cc86b;
                     color: #fff;
                     padding: 16px;
-                    h5 {
+                    h2 {
                         color: $darkest-brown;
                         font-size: 16px;
                         line-height: 120%;
@@ -506,7 +502,7 @@ body.skey {
             }
         } /* end #intro-overlay */
 
-        h3.species-count-heading {
+        .species-count-heading {
             /* Move "18 matching species" to the right of Photos/List tab */
             font-size: 22px;
             margin: 0;
@@ -532,8 +528,11 @@ body.skey {
             border-bottom: 1px solid #c3d941;
             clear: left;
             font-family: $headings-font;
-            height: 28px;
+            height: 2.2em;
             margin: 15px 0 0;
+            h3 {
+                margin: 0;
+            }
             a {
                 background: #d6e6c5;
                 background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#eaf2e2), color-stop(100%,#d6e6c5));
@@ -541,15 +540,15 @@ body.skey {
                 border: 1px solid #c3d941 !important;
                 border-top-left-radius: 6px;
                 border-top-right-radius: 6px;
-                color: $dark-brown;
+                color: $darker-brown;
                 cursor: default;
                 display: block;
                 float: left;
-                font-family: Basetica, $headings-font;
+                font-family: $headings-font;
                 font-size: 1.1rem;
                 margin: 0;
                 min-width: 100px;
-                padding: 6px 10px 2px;
+                padding: 0.3em 1em 0.2em;
                 text-align: center;
                 &:hover {
                     background: #e1f2cd;
@@ -572,7 +571,7 @@ body.skey {
                 border-bottom: 0 !important;
                 color: #1a2e11;
                 cursor: default;
-                padding: 5px 10px;
+                padding: 0.3em 1em;
             }
         } /* end .view-tabs */
         
@@ -664,7 +663,7 @@ body.skey {
                 padding: 12px 0 0 0;
                 width: 16px;
             }
-            h4 {
+            h3 {
                 color: #000;
                 display: none;
                 font-size: 18px;

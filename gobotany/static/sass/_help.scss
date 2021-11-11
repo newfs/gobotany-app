@@ -179,13 +179,13 @@ $image-box-shadow-color: rgba(0, 0, 0, 0.6);
             .frame {
                 border-color: $advanced-map-active-color;
             }
-            h3 {
+            h2 {
                 background: $advanced-map-active-color;
                 color: #fff;
             }
         }
         &.active {
-            h3 {
+            h2 {
                 background: $advanced-map-active-color;
 	            color: #fff;
             }
@@ -193,7 +193,7 @@ $image-box-shadow-color: rgba(0, 0, 0, 0.6);
                 border-color: $advanced-map-active-color;
             }
         }
-        h3 {
+        h2 {
             bottom: 146px;
             color: $link-green;
             font-size: 12px;
@@ -405,26 +405,32 @@ $image-box-shadow-color: rgba(0, 0, 0, 0.6);
 /* Video Help Topics */
 
 #video .video-topic {
+    display: flex;
+    flex-direction: column-reverse;
     float: left;
-    height: 176px;
+    height: 16em;
     margin: 10px 16px 10px 0;
     position: relative;
     width: 220px;
+    h2 {
+        height: 4em;
+        margin: 0;
+    }
     img {
         height: 137px;
         width: 220px;
     }
     > p {
-        color: $darkest-brown;
-        font-family: Basetica, $headings-font;
+        color: $darker-brown;
+        font-family: $headings-font;
         font-size: 16px;
         line-height: 105%;
         margin-top: 8px;
     }
     .missing-image {
-        border: 1px solid $link-green;
-        height: 135px;
-        width: 218px;
+        height: 137px;
+        margin-bottom: 3px;
+        width: 220px;
         p {
             left: auto;
             margin: 55px 0;
@@ -498,9 +504,17 @@ $image-box-shadow-color: rgba(0, 0, 0, 0.6);
     }
     ol.terms {
         font-family: $headings-font;
-        font-size: 24px;
         list-style-type: upper-roman;
         margin-top: 0;
+    }
+    ol.terms > li {
+        font-size: 1.6em;   /* h2 font size, for roman numerals */
+        & > h2 {
+            font-size: inherit;
+        }
+        & > h3 {
+            font-size: initial;
+        }
     }
     ol.terms ul {
         list-style-type: disc;
@@ -659,7 +673,7 @@ $image-box-shadow-color: rgba(0, 0, 0, 0.6);
     #advanced-map .plant-group:hover .frame {
 	    border: $advanced-map-frame-border;
     }
-    #advanced-map .plant-group:hover h3 {
+    #advanced-map .plant-group:hover h2 {
 	    background: inherit;
 	    color: $link-green;
     }

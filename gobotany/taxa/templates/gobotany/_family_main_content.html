@@ -1,15 +1,14 @@
 {% load taxa_tags %}
 {% load simplekey_extras %}
 
-    <h1>Family: {{ family.name }}</h1>
+    <h1>Family: {{ family.name }}
     {% if common_name %}
-        <p class="common">{{ common_name|cut:"The "|lower }}</p>
+        — {{ common_name|cut:"The "|lower }}
     {% endif %}
+    </h1>
     <p class="description">
     {% if family.description %}
         {{ family.description }}
-    {% else %}
-        (Description coming soon)
     {% endif %}
     </p>
     
@@ -29,7 +28,7 @@
         {% endfor %}
     </div>
 
-    <h2>This Family&#8217;s Genera in New England:</h2>
+    <h2>This family&#8217;s genera in New England</h2>
     <ul class="genera">
     {% for genus in family.genera.all %}
         <li><i><a href="{% url 'taxa-genus' genus.slug %}"

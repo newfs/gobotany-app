@@ -7,24 +7,13 @@
     padding: 0 0 20px 0;
     h4.heading, h3.heading {
         margin: 0;
-        padding: 24px 0 0 20px;
+        padding: 24px 0 0 1.5em;
     }
     h4.heading {
         font-size: 18px;
     }
     h3.heading {
-        color: $heading-green;
-        font-size: 24px;
-        font-style: italic;
-        margin-bottom: 0;
         margin-left: 305px;
-        span {
-            color: $medium-brown;
-            font-size: 16px;
-            font-style: normal;
-            font-weight: 400;
-            margin-left: 10px;
-        }
     }
     p {
         font-size: 12px;
@@ -62,10 +51,11 @@
 }
 .modal-wrap .img-gallery {
     @include user-select(none);
+    margin-top: 14px;
 }
 .modal-wrap a {
     &.go-to-species-page {
-        margin: 20px 0 0 0;
+        margin: 2em 0 0;
         width: 170px;
     }
 }

@@ -9,10 +9,11 @@
         </ul>
     </div>
     
-    <h1>{{ pilegroup.friendly_title|lower|capfirst }}</h1>
+    <h1>{{ pilegroup.friendly_title|lower|capfirst }}:
+        {{ subgroups_list_page.main_heading }}</h1>
 
-    <p class="question">{{ subgroups_list_page.main_heading }}</p>
-    <p class="tip">Please go through the subgroups in order.</p>
+    <!--<p class="question">{{ subgroups_list_page.main_heading }}</p>-->
+    <!--p class="tip"--><p>Please go through the subgroups in order.</p>
 
     {% for pile, pile_images, pile_url in piles %}
         {% if pilegroup.slug == 'non-monocots' and piles|length == 4 and pile.slug == 'remaining-non-monocots' %}
@@ -44,19 +45,17 @@
                 </div>
             </div>
             <div class="details">
-                <h2>{{ pile.friendly_title|capfirst }}</h2>
+                <h2>{{ pile.friendly_title|lower|capfirst }}</h2>
                 <p>{{ pile.friendly_name|capfirst }}</p>
 
-                <p class="key-char">
-                    <span class="section-title">Key Characteristics</span>
-                    {{ pile.key_characteristics_text|safe|capfirst }}
-                </p>
-                <p class="exceptions">
-                    <span class="section-title">Exceptions</span>
-                    {{ pile.notable_exceptions_text|safe|capfirst }}
-                </p>
+                <h3 class="compact key-char">Key characteristics</h3>
+                <p>{{ pile.key_characteristics_text|safe|capfirst }}</p>
+                
+                <h3 class="compact exceptions">Exceptions</h3>
+                <p>{{ pile.notable_exceptions_text|safe|capfirst }}</p>
+
                 {% if pile.video %}
-                <p class="vid">
+                <p>
                     {% with pile.video.youtube_id as youtube_id %}
                     {% include "gobotany/_simplekey_video_link.html" with item_type="subgroup" %}
                     {% endwith %}

@@ -76,34 +76,45 @@ a:not([href]) {
 }
 
 h1, h2, h3, h4, h5, h6 {
-    font-family: Basetica, $headings-font;
+    font-family: $headings-font;
     font-weight: normal;
     line-height: 120%;
     margin: 0;
     padding: 0;
 }
 h1 {
-    color: $heading-green;
-    font-size: 1.8rem;
-    font-weight: 900;
-    margin: 1.4rem 0;
+    color: $darker-brown;
+    font-size: 1.9em;
+    font-weight: bold;
+    margin: 0.8em 0 0.6em;
 }
 h2 {
     color: $darker-brown;
-    font-size: 1.4rem;
-    margin: 1.3rem 0 0.7rem;
+    font-size: 1.6em;
+    font-weight: bold;
+    margin: 1.6em 0 0.8em;
 }
 h3 {
-    color: $dark-brown;
-    font-size: 1.1rem;
-    font-weight: 900;
-    margin: 1.1rem 0;
+    color: $darker-brown;
+    font-size: 1.25em;
+    font-weight: bold;
+    margin: 1.6em 0 0.8em;
 }
+h3.compact {
+    margin: 1em 0 0.2em;
+}
+
+/* Only h1-h3 used through most of site to avoid very deep structure */
+
+/* h4 is sometimes used in species page Conservation Status section */
 h4 {
-    color: $darkest-brown;
-    font-size: 0.95rem;
-    margin: 0.95rem 0;
+    color: $darker-brown;
+    font-size: 1.15em;
+    font-weight: bold;
+    margin: 1.6em 0 0.8em;
 }
+
+/* TODO: try to eliminate h5, h6 */
 h5, h6 {
     color: $darker-brown;
     font-size: $base-font-size;
@@ -111,6 +122,7 @@ h5, h6 {
 h6 {
     font-style: italic;
 }
+
 p {
     line-height: $text-line-height;
     margin: 1em 0;
@@ -124,6 +136,18 @@ ul {
 ul li {
     margin: 0 0 5px 0;
 }
+
+.visually-hidden {
+    border: 0;
+    clip: rect(0 0 0 0);
+    height: 1px;
+    margin: -1px;
+    overflow: hidden;
+    padding: 0;
+    position: absolute;
+    width: 1px;
+}
+
 .clearit {
     border: none !important;
     clear: both;
@@ -170,37 +194,37 @@ p.meta {
 
 /* Global navigation (header) */
 body#home {
-    header nav li.home:after {
+    header nav li.home::after {
         @include highlight-global-nav-home;
     }
 }
 body.simple {
-    header nav li.simple:after {
+    header nav li.simple::after {
         @include highlight-global-nav;
     }
 }
 body.plantshare {
-    header nav li.plantshare:after {
+    header nav li.plantshare::after {
         @include highlight-global-nav;
     }
 }
 body.full {
-    header nav li.full:after {
+    header nav li.full::after {
         @include highlight-global-nav;
     }
 }
 body.dkey {
-    header nav li.dkey:after {
+    header nav li.dkey::after {
         @include highlight-global-nav;
     }
 }
 body.teaching {
-    header nav li.teaching:after {
+    header nav li.teaching::after {
         @include highlight-global-nav;
     }
 }
 body.help {
-    header nav li.help:after {
+    header nav li.help::after {
         @include highlight-global-nav;
     }
 }
@@ -208,12 +232,6 @@ body.help {
 /* Section navigation (sidebar, only in some sections) */
 body.help, body.plantshare {
     #sidebar nav {
-        li {
-            padding-left: 28px;
-        }
-        li:first-child {
-            padding-left: 15px;
-        }
         /* Place "you are here" marker next to a non-linked item. This is
          * the top level of each sub-section. */
         li a:not([href])::before {
@@ -306,7 +324,7 @@ header nav {
     a {
         color: #fff;
         display: inline-block;
-        padding: 5px 8px 4px;
+        padding: 5px 8px;
         &:visited, &:not([href]) {
             color: #fff;
         }
@@ -324,7 +342,7 @@ header nav {
         float: left;
         font-size: $nav-font-size;
         line-height: 1.19em;
-        margin: 0 10px 0 0; /* px here to help save space on zoom */
+        margin: 0 0.9em 0 0;
         padding: 0.05em 0 0;
         position: relative;
         white-space: nowrap;
@@ -428,6 +446,9 @@ header #search {
 }
 #sidebar .section {
     padding: 0 17px 16px;
+    h3 {
+        margin-top: 0.2em;
+    }
     h4 {
         margin: 0 0 5px 0;
     }
@@ -473,8 +494,8 @@ header #search {
 #sidebar nav {
     font-family: $headings-font;
     font-size: 14px;
-    h3 {
-        margin-bottom: 16px;
+    p {
+        /*margin-bottom: 16px;*/
         padding-left: 26px;
     }
     li {
@@ -597,7 +618,7 @@ a.get-help-btn {
 /* Images (gallery with previous/next buttons, or single) */
 .img-gallery {
     float: left;
-	margin: 0 10px 0 0;	
+    margin: 4px 14px 0 0;
     position: relative;
     width: 244px;
     @include user-select(none);
@@ -841,19 +862,18 @@ a.get-help-btn {
 }
 
 /* Character/value styles for plant preview popups, species pages, etc. */
-.characteristics {
-    margin: 16px 0;
-}
 .characteristics dl {
     display: flex;
     margin: 10px 0 0;
     padding: 0;
 }
 .characteristics dt {
+    color: $darker-brown;
     font-weight: bold;
     line-height: 18px;
+    max-width: 200px;
+    min-width: 200px;
     text-align: left;
-    width: 200px;
     button {
         font-weight: bold;
     }

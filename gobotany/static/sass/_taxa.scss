@@ -12,8 +12,6 @@ $species-sidebar-margin: 250px;
 
 @mixin family-genus-subheading {
     clear: left;
-    font-size: 18px;
-    padding-top: 30px;
 }
 
 .text-dialog-content {
@@ -28,12 +26,6 @@ body.taxa {
 body.taxa #main {
     ol, ul {
         line-height: inherit;
-    }
-    .common {
-        color: $medium-brown;
-        font-family: Basetica, $headings-font;
-        font-size: 1.6rem;
-        margin: 1.6rem 0;
     }
 }
 #body.taxa .frame {
@@ -69,6 +61,9 @@ body#family {
     h2 {
         @include family-genus-subheading;
     }
+    .pics + h2 {
+        padding-top: 30px;
+    }
     ul.genera {
         @include taxa-list;
     }
@@ -76,6 +71,9 @@ body#family {
 body#genus {
     h2 {
         @include family-genus-subheading;
+    }
+    .pics + h2 {
+        padding-top: 30px;
     }
     ul.species {
         @include taxa-list;
@@ -88,11 +86,6 @@ body#genus {
 
 body#species #main {
     background: url(/static/images/layout/sidebar-bg.png) repeat-y;
-}
-body.taxa #main .common {
-    font-family: Basetica, $headings-font;
-    font-size: 1.6rem;
-    margin: 1.6rem 0;
 }
 body#species #main {
     /* layout: right-side content sections */
@@ -119,8 +112,8 @@ body#species .section {
 body#species #maps, body#species #side {
     position: absolute;
     h2 {
-        font-size: 15px;
-        margin: 0 0 4px 0;
+        font-size: 1.2em;
+        margin: 0.2em 0 0.8em;
     }
 }
 body#species #maps {
@@ -129,9 +122,6 @@ body#species #maps {
     border-right: 1px solid $border-green;
     border-top: 1px solid $border-green;
     top: 128px;
-}
-body#species .namap {
-    padding-top: 0;
 }
 body#species .definitions-link {
     background-image: url(/static/images/icons/icon-info.png);
@@ -157,7 +147,7 @@ body#species #main .nemap h2 + p, body#species #main .namap h2 + p {
 }
 
 body#species #side {
-    top: 790px;   /* remaining side content is positioned
+    top: 800px;   /* remaining side content is positioned
                      further down to leave room for maps
                      in full-width layout */
 }
@@ -232,7 +222,7 @@ body#species {
     a.description-control {
         background: url(/static/images/icons/plus.png) left 50% no-repeat;
         display: block;
-        margin: 10px 0 12px 0;
+        margin: 28px 0 12px 0;
         padding: 3px 0 3px 25px;
         &.expanded {
             background: url(/static/images/icons/minus.png) left 50% no-repeat;
@@ -257,10 +247,11 @@ body#species ul.full-description > li {
     &:hover {
         background-color: #fff;
     }
-    h5 {
+    h3 {
         background: url(/static/images/icons/plus.png) left 50% no-repeat;
         cursor: default;
-        padding-left: 28px;
+        margin: 0;
+        padding-left: 1.6em;
         &.expanded {
             background: url(/static/images/icons/minus.png) left 50% no-repeat;
         }
@@ -294,6 +285,7 @@ body#species .img-gallery {
     width: 710px;
     .img-container {
         height: 257px;
+        margin: 2em 0 0;
         width: 710px;
     }
     .frame {
@@ -350,6 +342,10 @@ body#species #images-note {
     margin-top: 0;
 }
 
+body#species #info-dkey b {
+    color: $darker-brown;
+}
+
 /* Begin media queries styles for taxa pages. */
 
 $mini-table-font-size: 10px;
@@ -400,10 +396,6 @@ $mini-table-font-size: 10px;
         padding-bottom: 8px;
         h1 {
             margin-bottom: 0;
-        }
-        .common {
-            font-size: 16px;
-            margin: 6px 0 12px;
         }
     }
     body#family, body#genus {

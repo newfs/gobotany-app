@@ -1,14 +1,14 @@
 {% load simplekey_extras %}
 
 <div>
-    <h1>Advanced Map to Groups</h1>
-    <h2>For a shortcut through the plant groups, you can start here.</h1>
+    <h1>Map to Plant Groups</h1>
+    <p>For a shortcut through the plant groups, you can start here.</p>
 
     <div id="plant-map-list">
         <div id="group-section">
         {% for group, subgroups in pilegroups %}
             <div class="plant-group{% if forloop.first %} first{% else %}{% if forloop.last %} last{% endif %}{% endif %}">
-                <h3>{{ group.friendly_title|lower|capfirst }}</h3>
+                <h2>{{ group.friendly_title|lower|capfirst }}</h2>
                 <div class="image">
                     <div class="frame"></div>
                     <div class="img-container">
@@ -76,7 +76,7 @@
         </div>
     </div>
 
-    <h2>About Plant Groups and Subgroups</h2>
+    <h2>About plant groups and subgroups</h2>
 
     <p>The boxes above show how we have grouped over 3,000 New
     England plants into six major categories, which we call

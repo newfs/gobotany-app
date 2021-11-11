@@ -102,8 +102,9 @@ var PhotoHelper = {
             title += ': ' + name;
         }
 
-        var html = '<div><h6>' + title + '</h6><span>' + copyright_holder +
-            ' ' + copyright + ' <button class="contact" role="tooltip"' +
+        var html = '<div><p class="title">' + title + '</p><span>' +
+            copyright_holder + ' ' + copyright +
+            ' <button class="contact" role="tooltip"' +
             '>For Reuse: Contact</button></span>';
         if (source !== '') {
             html += '<br><span>' + source + '</span>';

@@ -5,19 +5,19 @@
             {# it has been split in two new piles at import.  #}
         {% else %}
         <div class="video-topic">
+            <h2>{{ video.title|lower|capfirst }}</h2>
             {% if video.youtube_id %}
-                <a class="video"
+                <div><a class="video"
                     href="//www.youtube.com/embed/{{ video.youtube_id }}?autoplay=1&amp;rel=0&amp;hd=1&amp;modestbranding=1">
                     <img class="shadow"
                         src="//img.youtube.com/vi/{{ video.youtube_id }}/0.jpg"
                         alt="">
-                </a>
+                </a></div>
             {% else %}
                 <div class="missing-image">
                   <p>Video not available yet</p>
                 </div>
             {% endif %}
-            <p>{{ video.title }}</p>
         </div>
         {% endif %}
     {% endfor %}

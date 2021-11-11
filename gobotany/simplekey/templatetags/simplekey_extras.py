@@ -199,7 +199,5 @@ def shorten_group_title(value):
     value = value.replace(' or', ',')
     value = value.replace(' with', ':')
     value = value.replace(', plus', ' +')
-    print('value (before):', value)
     value = value.replace('other aster family plants', 'asters')
-    print('value (after):', value)
     return value.capitalize()

@@ -17,7 +17,7 @@
 {% block main_content %}
 <h1>Sightings Locator</h1>
 
-<p>Latest Sightings</p>
+<h2>Latest sightings</h2>
 <div id="species-images">
     {% for sighting in recent_sightings %}
         <a href="{% url 'ps-sighting' sighting.id %}"
@@ -32,7 +32,8 @@
 </div>
 
 <form id="sightings-locator">
-    <h3>Show recent sightings for</h3>
+    <h2>Sightings map</h2>
+    <p class="search-label">Show recent sightings for</p>
     
     {% csrf_token %}
     <input type="text" autocomplete="off"

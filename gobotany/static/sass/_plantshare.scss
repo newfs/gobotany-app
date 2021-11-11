@@ -154,7 +154,6 @@ body.plantshare #main .profile {
     a.edit {
         display: block;
         float: right;
-        margin-top: 1rem;
     }
     h3 {
         font-size: 18px;
@@ -233,6 +232,7 @@ body.plantshare#plantshare {   /* styles for the PlantShare main page */
     }
     h2 {
         line-height: 100%;
+        margin: 0.6em 0;
     }
     #find-people-form {
         float: right;
@@ -240,7 +240,7 @@ body.plantshare#plantshare {   /* styles for the PlantShare main page */
         width: 184px;
         h2 {
             font-size: 18px;
-            margin-top: 0;
+            margin-top: 1em;
         }
         input[type='text'] {
             width: 130px;
@@ -298,7 +298,7 @@ body.plantshare#find-people {
         .person {
             height: 74px;
             margin: 0;
-            padding: 20px 0 0 0;
+            padding: 20px 0 10px;
             &:nth-child(odd) {
                 background-color: $light-green;
             }
@@ -401,7 +401,8 @@ body.plantshare#find-people-profile {
     }
     .map {
         float: right;
-        height: 113px;
+        position: relative;
+        top: -25px;
         width: $avatar-image-width;
     }
     .not-found {
@@ -446,7 +447,7 @@ body.plantshare#log-in {
 }
 
 body.plantshare #sightings-locator {
-    h3 {
+    .search-label {
         display: inline-block;
         float: left;
         font-size: 14px;
@@ -498,25 +499,17 @@ body.plantshare #sightings-locator.mini {
             float: left;
             padding: 0;
             width: 205px;
-            h3 {
-                padding-top: 5px;
-            }
-            h4 {
-                clear: left;
-                font-family: $body-font;
-                font-size: 12px;
-                font-weight: bold;
-                line-height: 14px;
-                margin: 6px 0;
-                padding-top: 8px;
+            .search-label {
+                padding-bottom: 10px;
+                padding-top: 10px;
             }
             p {
                 line-height: 14px;
                 margin: 0;
-                padding: 0;
+                padding: 0.4em 0;
                 &#sightings-status {
                     margin-left: -1000px; /* hide until JS shows it */
-                    padding: 65px 0 0;
+                    padding: 65px 0 25px;
                 }
                 &.full-link {
                     margin-top: 10px;
@@ -724,6 +717,10 @@ body.plantshare .image-modal {
     top: 250px;
     width: 360px;
     z-index: 10;
+    h2 {
+        margin: 0.3em 0;
+        padding-left: 4.25em;
+    }
     img {
         float: left;
         margin: 0 5px 10px 0;
@@ -817,7 +814,6 @@ body.plantshare .upload {
 body.plantshare#sightings {
     h2 {
         clear: both;
-        font-size: 22px;
     }
     #main > ul {
         margin-top: 14px;
@@ -955,9 +951,6 @@ body.plantshare#plantshare #ask {
         display: block;
         margin: 42px 0 8px;
         text-transform: uppercase;
-    }
-    h2, h3 {
-        clear: both;
     }
     .more {
         text-align: right;
@@ -1176,8 +1169,9 @@ body.plantshare #login.box {
     clear: left;
     max-width: $plantshare-main-column-width;
     padding: 0;
-    h4 {
-        font-size: 20px;
+    h2 {
+        line-height: 100%;
+        margin: 0.6em 0;
         padding: $section-padding $section-padding 10px;
     }
     div {
@@ -1479,6 +1473,9 @@ body.plantshare.checklists .checklists-section {
 }
 
 body.plantshare#screen-images {
+    .box h2 {
+        margin-top: 0.8em;
+    }
     table.unscreened {
         margin: 20px 0;
         padding: 0;

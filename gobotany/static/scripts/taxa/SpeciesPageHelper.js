@@ -53,7 +53,7 @@ define([
 
         toggle_character_group: function () {
             // Set handlers for toggling a character group.
-            $('ul.full-description li h5').toggle(function () {
+            $('ul.full-description li h3').toggle(function () {
                 var $heading = $(this);
                 $heading.siblings('div').show();
                 $heading.addClass('expanded');
@@ -120,9 +120,9 @@ define([
                 // Open the North America distribution map in a lightbox.
                 var content_element =
                     $('.section.namap div').first();
-                var map_title = '<div><h6>' +
+                var map_title = '<div><p class="title">' +
                     $('.section.namap object').attr('title') +
-                    '</h6></div>';
+                    '</p></div>';
                 Shadowbox.open({
                     content: content_element.html(),
                     player: 'html',
