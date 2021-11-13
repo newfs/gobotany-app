@@ -43,6 +43,18 @@ EOF
     exit 1
 fi
 
+if [ "$(uname -s)" == "Darwin" ] && ! $PYTHON -c 'import magic' 2>/dev/null
+then
+    cat <<EOF
+
+Error: The "libmagic" library needs to be installed on your system.
+
+       Mac OS with MacPorts:  sudo port install libmagic
+
+EOF
+    exit 1
+fi
+
 if [ "$(uname -s)" == "Linux" ] &&
     ! echo '#include <postgresql/utils/errcodes.h>' |cc -E - >/dev/null 2>&1 &&
     ! echo '#include <postgresql/server/utils/errcodes.h>' |cc -E - >/dev/null 2>&1

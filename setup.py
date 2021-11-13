@@ -51,6 +51,7 @@ requirements = [
 
     'gunicorn==20.0.4',
     'newrelic',
+    'python-magic==0.4.24',
     's3cmd==2.2.0',
     ]
 
