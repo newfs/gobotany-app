@@ -51,7 +51,7 @@ requirements = [
 
     'gunicorn==20.0.4',
     'newrelic',
-    's3cmd',
+    's3cmd==2.2.0',
     ]
 
 dependency_links = [
