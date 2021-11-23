@@ -1054,6 +1054,9 @@ ul.get-more-questions-menu {
             }
             .list-item {
                 margin-top: 0;
+                h3 {
+                    line-height: 1.4;
+                }
                 .details {
                     float: none;
                     width: inherit;

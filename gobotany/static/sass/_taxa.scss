@@ -353,6 +353,9 @@ $mini-table-font-size: 10px;
 /* Portrait-orientation styles */
 @media only screen and (max-width: 400px) {
     body#species {
+        .img-gallery,
+        .img-gallery .frame,
+        .img-gallery .img-container,
         #species-images {
             width: 304px;
         }
@@ -368,6 +371,9 @@ $mini-table-font-size: 10px;
 /* Landscape-orientation styles */
 @media only screen and (min-width: 401px) and (max-width: 600px) {
     body#species #main {
+        .img-gallery,
+        .img-gallery .frame,
+        .img-gallery .img-container,
         #species-images {
             width: 462px;
         }
