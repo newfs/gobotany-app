@@ -21,7 +21,7 @@ $search-suggest-menu-top: 83px;
         padding-top: 110px;
     }
     header #search form {
-        width: 242px;
+        width: 220px;
     }
     header nav #search input {
         width: 192px;
@@ -36,7 +36,6 @@ $search-suggest-menu-top: 83px;
         }
         #sidebar {
             float: none;
-            width: $smallscreen-portrait-box-width;
         }
     }
     .footer__container {
@@ -57,9 +56,6 @@ $search-suggest-menu-top: 83px;
     .content #main {
         width: 464px;
     }
-    .content #sidebar {
-        width: $smallscreen-landscape-box-width;
-    }
     .footer__container {
         width: $smallscreen-landscape-width;
     }
@@ -71,13 +67,15 @@ $search-suggest-menu-top: 83px;
         padding: 0;
     }
     body#home {
+        .id img {
+            width: auto;
+        }
         header nav #search-suggest .menu {
             top: $search-suggest-menu-top;
         }
     }
     #breadcrumb {
-        font-size: 11px;
-        margin: 6px 0;
+        font-size: 0.87em;
         li {
             display: inline-block;
             height: 32px;
@@ -109,9 +107,6 @@ $search-suggest-menu-top: 83px;
     }
     h3 {
         font-size: 14px;
-    }
-    header {
-        height: 90px;
     }
     header nav {
         background: $navbar-color;
@@ -147,12 +142,15 @@ $search-suggest-menu-top: 83px;
             background-size: 100px 42px;
             width: 100px;
         }
+        img {
+            width: auto;
+        }
         .tagline {
-            bottom: 0.8em;
+            bottom: 0.5em;
             display: block;
-            font-size: 0.8em;
-            left: 12em;
-            line-height: 120%;
+            font-size: 0.9em;
+            left: 11em;
+            line-height: 1.3;
             margin: 0;
             padding: 0;
         }
@@ -199,7 +197,7 @@ $search-suggest-menu-top: 83px;
     .footer {
         box-shadow: none;
         height: auto;
-        margin: 14px 1em 0;
+        margin: 14px 0 0;
     }
     .footer__container {
         display: block;

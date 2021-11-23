@@ -499,15 +499,15 @@ $mini-table-font-size: 10px;
             margin-bottom: 0;
         }
         dl {
+            flex-direction: column;
             dt {
-                clear: none;
-                float: none;
+                max-width: none;
+                min-width: 0;
                 text-align: left;
                 width: auto;
             }
             dd {
-                margin-left: auto;
-                padding-left: 28px;
+                max-width: none;
             }
         }
     }

@@ -1108,15 +1108,6 @@ ul.get-more-questions-menu {
                 }
             }
 
-            #question-nav { /* TODO: resolve with #question-nav section below */
-                float: left;
-                margin: 0;
-                padding: 0;
-                width: 228px;
-                .scroll + .section {
-                    margin: 0 0 32px;
-                }
-            }
             .section + .section {
                 margin-bottom: 16px;
             }
@@ -1129,11 +1120,19 @@ ul.get-more-questions-menu {
                 margin: 0 $smallscreen-margin;
             }
             #question-nav {
+                float: left;
                 font-size: 10px;
-                margin-right: 3px;
-                margin-top: 0;
+                margin: 0 3px 0 0;
+                padding: 0;
                 min-height: 666px;
                 width: 149px;
+                .question {
+                    font-size: 13px;
+                    width: auto;
+                }
+                .scroll + .section {
+                    margin: 0 0 32px;
+                }
                 .section {
                     padding: 0 0 0 4px;
                     &.instructions {
@@ -1286,7 +1285,7 @@ ul.get-more-questions-menu {
                 font-size: 11px;
                 margin-left: -60px;
             }
-            h3.species-count-heading {
+            .species-count-heading {
                 font-size: 16px;
                 padding-bottom: 4px;
                 position: static;
@@ -1462,11 +1461,11 @@ ul.get-more-questions-menu {
                                     filters list is full width of screen */
             #intro-overlay {
                 .number-of-questions:before {
-                    display: none;            
+                    display: none;
                 }
             }
             #question-nav {
-                margin: 25px $smallscreen-margin 12px;
+                margin: 35px $smallscreen-margin 12px;
                 width: 95%;
                 &.closed {
                     background: none;
@@ -1476,24 +1475,27 @@ ul.get-more-questions-menu {
                         display: none;
                     }
                     > .instructions {
-                        border-radius: 18px;
+                        border-radius: 15px;
                     }
-                    > .instructions h5::after {
+                    > .instructions h2::after {
                         right: 12px;
                         top: 10px;
                         @include rotate(135deg);
                     }
                 }
                 > .instructions {
-                    background-color: $npt-orange;
+                    background-color: $npt-orange-dark;
                     border-radius: 0;
                     box-shadow: 0px 1px 4px 0 $shadow_color;
-                    color: #000;
+                    color: #fff;
                     cursor: default;
                     position: relative;
+                    h2 {
+                        color: #fff;
+                    }
                 }
-                > .instructions h5::after {
-                    border-color: #000;
+                > .instructions h2::after {
+                    border-color: #fff;
                     border-style: solid;
                     border-width: 3px 3px 0 0;
                     color: #000;
@@ -1501,8 +1503,8 @@ ul.get-more-questions-menu {
                     display: inline-block;
                     height: 9px;
                     position: absolute;
-                    right: 12px;
-                    top: 15px;
+                    right: 13px;
+                    top: 16px;
                     vertical-align: middle;
                     width: 9px;
                     @include rotate(-45deg);
@@ -1587,7 +1589,7 @@ ul.get-more-questions-menu {
             working-area .measurement {
                 margin: 18px 0;
                 input[type='text'] {
-                    margin-right: 10px;    
+                    margin-right: 10px;
                     width: 60px;
                 }
                 label {
@@ -1597,7 +1599,7 @@ ul.get-more-questions-menu {
             .species-count-heading {
                 position: relative;
                 text-align: center;
-                top: -2px;
+                top: 5px;
                 width: 80%;
             }
         } /* end &.results.mobile-wide */

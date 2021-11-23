@@ -164,6 +164,9 @@ ul li {
     position: relative;
     width: 160px;
 }
+.no-break {
+    white-space: nowrap;
+}
 p.new {
     background: $green-yellow;
     border-radius: 0.25em;
@@ -582,7 +585,7 @@ a.get-help-btn {
     color: #000;
     font-family: $headings-font;
     font-size: 0.9rem;
-    margin: 0 0 6px;
+    margin: 1em 0;
 }
 #breadcrumb ul {
     display: flex;
