@@ -24,7 +24,7 @@ then
 
 Error: The "psycopg" library needs to be installed in your system Python.
 
-       Mac OS with MacPorts:  sudo port install py38-psycopg2
+       Mac OS with MacPorts:  sudo port install py39-psycopg2
 
 EOF
     exit 1
