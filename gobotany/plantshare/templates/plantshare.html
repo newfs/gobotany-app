@@ -32,7 +32,7 @@
 {% endif %}
 
 <div id="recent-sightings-gallery">
-    <h2>Recent Sightings</h2>
+    <h2>Recent sightings</h2>
     <div class="img-gallery" data-gallery-type="link">
         <div class="frame"></div>
         <div class="img-container">
@@ -91,7 +91,7 @@
         </div>
 
         <div class="sign-up-call box">
-            <h2>Sign up for PlantShare!</h2>
+            <h2>Sign up for PlantShare</h2>
             <p>As a member of PlantShare, you will be able to:<p>
             <ul>
                 <li>Upload photos of plants to share with others</li>
@@ -109,7 +109,7 @@
     <h2>Sightings Locator</h2>
     <div class="box">
         <form>
-            <h3>Show recent sightings for</h3>
+            <p class="search-label">Show recent sightings for</p>
 
             {% csrf_token %}
             <input type="text" autocomplete="off"
@@ -124,11 +124,10 @@
 
             <p id="sightings-status"><span>0</span> sightings found</p>
 
-            <h4>How to Use</h4>
+            <p><b>How to Use</b></p>
             <p>Enter a plant name and we'll show where it's been
             seen recently.</p>
-            
-            <h4>Don't see a plant you think should be there?</h4>
+
             <p>You will see all recent sightings that others have marked for
             public view or for a PlantShare group that you belong
             to. Rare and endangered plants will not be displayed.</p>
@@ -147,12 +146,12 @@
     {% include "_ask_botanist_section.html" %}
 
     {% if questions|length > 0 %}
-        <h3>Recently Answered Questions</h3>
+        <h3>Recently answered questions</h3>
         {% include "_recent_questions.html" %}
             
         <p class="more"><a
             href="{% url 'ps-questions' %}#q{{ max_questions|add:'1' }}">More 
-            Recently Answered Questions »</a><p>
+            recently answered questions »</a><p>
     {% endif %}
 
 </div>

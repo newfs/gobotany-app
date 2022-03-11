@@ -7,13 +7,14 @@ from gobotany import core
 from gobotany import simplekey
 from gobotany.core.models import Character, CharacterValue, Pile, PileGroup
 
-from gobotany.simplekey.models import (GroupsListPage,
-                                       SearchSuggestion,
-                                       SubgroupResultsPage,
-                                       SubgroupsListPage)
+from gobotany.search.models import (GroupsListPage, SubgroupsListPage,
+    SubgroupResultsPage)
 from gobotany.simplekey.templatetags.simplekey_extras import italicize_plant
-from gobotany.simplekey.views import (_format_character_value,
-                                      ordered_pilegroups, ordered_piles)
+from gobotany.simplekey.views import (
+    #_format_character_value,
+    ordered_pilegroups,
+    ordered_piles)
+from gobotany.site.models import SearchSuggestion
 
 # Following are data for groups and subgroups in the order that they are
 # created in the database by the importer. This will be tested against
@@ -393,6 +394,7 @@ class SimpleKeyGroupsOrderTestCase(TestCase):
         self.assertEqual(pilelist[0].slug, 'carex')
         self.assertEqual(pilelist[1].slug, 'poaceae')
         self.assertEqual(pilelist[2].slug, 'remaining-graminoids')
+  
 
 class SearchSuggestionsTestCase(TestCase):
     """General tests for the search suggestions Web service API."""
@@ -592,44 +594,44 @@ class SimpleKeyPagesSearchSuggestionsTestCase(TestCase):
             sorted(EXPECTED_SUGGESTIONS))
 
 
-class FormatCharacterValueTestCase(TestCase):
-    """Tests for character value display formatting."""
-
-    def _assert_unicode_equal(self, expected_value, actual_value):
-        # Use repr() to avoid the error "unprintable AssertionError object"
-        # when the values are not equal.
-        self.assertEqual(repr(expected_value), repr(actual_value))
-
-    def test_character_value_displays_numeric_range(self):
-        character = Character(short_name='leaf_blade_length_ap',
-                              name='Leaf blade length',
-                              friendly_name='Leaf blade length',
-                              character_group_id=0,
-                              value_type='LENGTH',
-                              unit='cm')
-        character.save()
-        character_value = CharacterValue(character=character,
-                                         value_min=200.0,
-                                         value_max=2500.0)
-        character_value.save()
-
-        expected_value = '200\u20132500 cm'
-        actual_value = _format_character_value(character_value)
-        self._assert_unicode_equal(expected_value, actual_value)
-
-    def test_character_value_collapses_range_when_min_equals_max(self):
-        character = Character(short_name='sepal_number_ap',
-                              name='Sepal number',
-                              friendly_name='Sepal number',
-                              character_group_id=0,
-                              value_type='LENGTH',
-                              unit='NA')
-        character.save()
-        character_value = CharacterValue(character=character,
-                                         value_min=2.0,
-                                         value_max=2.0)
-        character_value.save()
-
-        expected_value = '2'
-        actual_value = _format_character_value(character_value)
-        self._assert_unicode_equal(expected_value, actual_value)
+#class FormatCharacterValueTestCase(TestCase):
+#    """Tests for character value display formatting."""
+#
+#    def _assert_unicode_equal(self, expected_value, actual_value):
+#        # Use repr() to avoid the error "unprintable AssertionError object"
+#        # when the values are not equal.
+#        self.assertEqual(repr(expected_value), repr(actual_value))
+#
+#    def test_character_value_displays_numeric_range(self):
+#        character = Character(short_name='leaf_blade_length_ap',
+#                              name='Leaf blade length',
+#                              friendly_name='Leaf blade length',
+#                              character_group_id=0,
+#                              value_type='LENGTH',
+#                              unit='cm')
+#        character.save()
+#        character_value = CharacterValue(character=character,
+#                                         value_min=200.0,
+#                                         value_max=2500.0)
+#        character_value.save()
+#
+#        expected_value = '200\u20132500 cm'
+#        actual_value = _format_character_value(character_value)
+#        self._assert_unicode_equal(expected_value, actual_value)
+#
+#    def test_character_value_collapses_range_when_min_equals_max(self):
+#        character = Character(short_name='sepal_number_ap',
+#                              name='Sepal number',
+#                              friendly_name='Sepal number',
+#                              character_group_id=0,
+#                              value_type='LENGTH',
+#                              unit='NA')
+#        character.save()
+#        character_value = CharacterValue(character=character,
+#                                         value_min=2.0,
+#                                         value_max=2.0)
+#        character_value.save()
+#
+#        expected_value = '2'
+#        actual_value = _format_character_value(character_value)
+#        self._assert_unicode_equal(expected_value, actual_value)

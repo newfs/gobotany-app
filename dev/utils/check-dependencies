@@ -24,7 +24,7 @@ then
 
 Error: The "psycopg" library needs to be installed in your system Python.
 
-       Mac OS with MacPorts:  sudo port install py38-psycopg2
+       Mac OS with MacPorts:  sudo port install py39-psycopg2
 
 EOF
     exit 1
@@ -39,6 +39,18 @@ Error: The "pylibmc" library needs to be installed in your system Python.
        Mac OS with MacPorts:  sudo port install py38-pylibmc
        (do port search pylibmc to see if a py39 version has become available)
         
+EOF
+    exit 1
+fi
+
+if [ "$(uname -s)" == "Darwin" ] && ! $PYTHON -c 'import magic' 2>/dev/null
+then
+    cat <<EOF
+
+Error: The "libmagic" library needs to be installed on your system.
+
+       Mac OS with MacPorts:  sudo port install libmagic
+
 EOF
     exit 1
 fi

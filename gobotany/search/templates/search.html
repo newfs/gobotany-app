@@ -117,7 +117,7 @@
                                     src="/static/images/icons/icon-info.png"
                                     alt="" title="Update">
                             {% endif %}
-                            {{ result.title|quick_highlight:query|safe }}
+                            <h2>{{ result.title|quick_highlight:query|safe }}</h2>
                             </a>
                             <p>
                             {% search_highlight result.text with query as result_excerpt ignore_between '\n--\n' %}{{ result_excerpt }}

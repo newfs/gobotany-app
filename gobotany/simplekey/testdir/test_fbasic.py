@@ -1415,7 +1415,7 @@ class ResultsPageStateFunctionalTests(FunctionalTestCase):
         self.css1('#intro-overlay .continue').click()
         time.sleep(0.5)   # Wait a bit before proceeding
         self.assertTrue(page.find_element_by_xpath(
-            '//li/a/span/span[text()="Habitat"]'))  # glossarized: extra span
+            '//li/a/span/*[text()="Habitat"]'))  # glossarized: extra el.
         self.assertTrue(page.find_element_by_xpath(
             '//li/a/span[text()="New England state"]'))
 
@@ -1438,8 +1438,8 @@ class ResultsPageStateFunctionalTests(FunctionalTestCase):
         # When setting up the page from the URL hash, there is no intro
         # overlay, so no need to wait for it as usual. But we do have to
         # wait on glossarization, so:
-        self.wait_on(10, page.find_element_by_xpath, # glossarized; extra span:
-                     '//li/a/span/span[text()="Habitat"]')
+        self.wait_on(10, page.find_element_by_xpath, # glossarized: extra el.
+                     '//li/a/span/*[text()="Habitat"]')
         # Then it is safe to:
         self.assertTrue(page.find_element_by_xpath(
             '//li/a/span[text()="New England state"]'))

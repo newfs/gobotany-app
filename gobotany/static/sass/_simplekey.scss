@@ -12,7 +12,7 @@ body.skey.groups-subgroups {
     p {
         &.question, &.tip {
             color: $dark-brown;
-            font-family: Basetica, $headings-font;
+            font-family: $headings-font;
             font-size: 1.6rem;
             margin: 0.5rem 0;
             padding: 0;
@@ -32,20 +32,13 @@ body.skey.groups-subgroups {
         }
         h2 {
             line-height: 110%;
-            margin: 0 0 5px 0;	
+            margin: 0 0 5px 0;
             + p {
-                color: $dark-brown;
-                display: block;
-                font-family: Basetica, $headings-font;
-                font-size: 0.9rem;
-                line-height: 130%;
-                margin: 7px 0 1px;
                 padding-left: 0;
             }
         }
-        p {
-            margin: 0;
-            padding: 0 0 7px 25px;
+        h3 {
+            padding-left: 1.7em;
             &.key-char {
                 background: url(/static/images/icons/icon1.png) 0 2px no-repeat;
             }
@@ -56,12 +49,14 @@ body.skey.groups-subgroups {
                 background: url(/static/images/icons/icon3.png) 0 2px no-repeat;
             }
         }
+        p {
+            margin: 0;
+        }
         .section-title {
             display: block;
-            text-transform: uppercase;
         }
         .details a {
-            margin: 10px 0 14px;
+            margin: 1.6em 0;
         }
     }
     .not-my-plant {
@@ -253,6 +248,7 @@ body.skey {
             table .genus {
                 color: #1a2e11;
                 font-size: 18px;
+                font-style: italic;
                 font-weight: normal;
                 line-height: 200%;
                 padding: 3px 0 0 0;
@@ -296,7 +292,7 @@ body.skey {
             background-color: #fcfdf5;
             border: 1px solid $border-green;
             float: left;
-            margin-top: -105px;
+            margin-top: -90px;
             padding: 0 0 16px 0;
             width: 230px;
             &.tinted {
@@ -345,7 +341,7 @@ body.skey {
                     background: #9cc86b;
                     color: #fff;
                     padding: 16px;
-                    h5 {
+                    h2 {
                         color: $darkest-brown;
                         font-size: 16px;
                         line-height: 120%;
@@ -506,7 +502,7 @@ body.skey {
             }
         } /* end #intro-overlay */
 
-        h3.species-count-heading {
+        .species-count-heading {
             /* Move "18 matching species" to the right of Photos/List tab */
             font-size: 22px;
             margin: 0;
@@ -532,8 +528,11 @@ body.skey {
             border-bottom: 1px solid #c3d941;
             clear: left;
             font-family: $headings-font;
-            height: 28px;
+            height: 2.2em;
             margin: 15px 0 0;
+            h3 {
+                margin: 0;
+            }
             a {
                 background: #d6e6c5;
                 background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#eaf2e2), color-stop(100%,#d6e6c5));
@@ -541,15 +540,15 @@ body.skey {
                 border: 1px solid #c3d941 !important;
                 border-top-left-radius: 6px;
                 border-top-right-radius: 6px;
-                color: $dark-brown;
+                color: $darker-brown;
                 cursor: default;
                 display: block;
                 float: left;
-                font-family: Basetica, $headings-font;
+                font-family: $headings-font;
                 font-size: 1.1rem;
                 margin: 0;
                 min-width: 100px;
-                padding: 6px 10px 2px;
+                padding: 0.3em 1em 0.2em;
                 text-align: center;
                 &:hover {
                     background: #e1f2cd;
@@ -572,7 +571,7 @@ body.skey {
                 border-bottom: 0 !important;
                 color: #1a2e11;
                 cursor: default;
-                padding: 5px 10px;
+                padding: 0.3em 1em;
             }
         } /* end .view-tabs */
         
@@ -664,7 +663,7 @@ body.skey {
                 padding: 12px 0 0 0;
                 width: 16px;
             }
-            h4 {
+            h3 {
                 color: #000;
                 display: none;
                 font-size: 18px;
@@ -1055,6 +1054,9 @@ ul.get-more-questions-menu {
             }
             .list-item {
                 margin-top: 0;
+                h3 {
+                    line-height: 1.4;
+                }
                 .details {
                     float: none;
                     width: inherit;
@@ -1109,15 +1111,6 @@ ul.get-more-questions-menu {
                 }
             }
 
-            #question-nav { /* TODO: resolve with #question-nav section below */
-                float: left;
-                margin: 0;
-                padding: 0;
-                width: 228px;
-                .scroll + .section {
-                    margin: 0 0 32px;
-                }
-            }
             .section + .section {
                 margin-bottom: 16px;
             }
@@ -1130,11 +1123,19 @@ ul.get-more-questions-menu {
                 margin: 0 $smallscreen-margin;
             }
             #question-nav {
+                float: left;
                 font-size: 10px;
-                margin-right: 3px;
-                margin-top: 0;
+                margin: 0 3px 0 0;
+                padding: 0;
                 min-height: 666px;
                 width: 149px;
+                .question {
+                    font-size: 13px;
+                    width: auto;
+                }
+                .scroll + .section {
+                    margin: 0 0 32px;
+                }
                 .section {
                     padding: 0 0 0 4px;
                     &.instructions {
@@ -1287,7 +1288,7 @@ ul.get-more-questions-menu {
                 font-size: 11px;
                 margin-left: -60px;
             }
-            h3.species-count-heading {
+            .species-count-heading {
                 font-size: 16px;
                 padding-bottom: 4px;
                 position: static;
@@ -1463,11 +1464,11 @@ ul.get-more-questions-menu {
                                     filters list is full width of screen */
             #intro-overlay {
                 .number-of-questions:before {
-                    display: none;            
+                    display: none;
                 }
             }
             #question-nav {
-                margin: 25px $smallscreen-margin 12px;
+                margin: 35px $smallscreen-margin 12px;
                 width: 95%;
                 &.closed {
                     background: none;
@@ -1477,24 +1478,27 @@ ul.get-more-questions-menu {
                         display: none;
                     }
                     > .instructions {
-                        border-radius: 18px;
+                        border-radius: 15px;
                     }
-                    > .instructions h5::after {
+                    > .instructions h2::after {
                         right: 12px;
                         top: 10px;
                         @include rotate(135deg);
                     }
                 }
                 > .instructions {
-                    background-color: $npt-orange;
+                    background-color: $npt-orange-dark;
                     border-radius: 0;
                     box-shadow: 0px 1px 4px 0 $shadow_color;
-                    color: #000;
+                    color: #fff;
                     cursor: default;
                     position: relative;
+                    h2 {
+                        color: #fff;
+                    }
                 }
-                > .instructions h5::after {
-                    border-color: #000;
+                > .instructions h2::after {
+                    border-color: #fff;
                     border-style: solid;
                     border-width: 3px 3px 0 0;
                     color: #000;
@@ -1502,8 +1506,8 @@ ul.get-more-questions-menu {
                     display: inline-block;
                     height: 9px;
                     position: absolute;
-                    right: 12px;
-                    top: 15px;
+                    right: 13px;
+                    top: 16px;
                     vertical-align: middle;
                     width: 9px;
                     @include rotate(-45deg);
@@ -1588,7 +1592,7 @@ ul.get-more-questions-menu {
             working-area .measurement {
                 margin: 18px 0;
                 input[type='text'] {
-                    margin-right: 10px;    
+                    margin-right: 10px;
                     width: 60px;
                 }
                 label {
@@ -1598,7 +1602,7 @@ ul.get-more-questions-menu {
             .species-count-heading {
                 position: relative;
                 text-align: center;
-                top: -2px;
+                top: 5px;
                 width: 80%;
             }
         } /* end &.results.mobile-wide */

@@ -7,7 +7,8 @@
                     <h1>{% block home_page_main_heading %}<img
                         src="/static/images/layout/npt-gb-logo-home.svg"
                         alt="Native Plant Trust: Go Botany">{% endblock %}</h1>
-                    <p class="tagline">Discover thousands of New England plants</p>
+                    <p class="tagline">Discover thousands of
+                        <span class="no-break">New England</span> plants</p>
                 </div>
                 {% block home_page_partner_site_name_tagline %}{% endblock %}
             {% else %}
@@ -15,9 +16,10 @@
                     <a href="/"><img
                         src="/static/images/layout/npt-gb-logo.svg"
                         alt="Native Plant Trust: Go Botany"></a>
-                    <span class="tagline">Discover thousands of New England
+                    <span class="tagline">Discover thousands of
+                        <span class="no-break">New England</span>
                         plants</span>
-                    </p>
+                </p>
                 {% block partner_site_name_tagline %}{% endblock %}
             {% endif %}
             <nav>

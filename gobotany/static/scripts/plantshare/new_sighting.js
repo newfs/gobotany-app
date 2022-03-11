@@ -151,6 +151,7 @@ define([
             var lat_lng = new google_maps.LatLng(latitude, longitude);
             map.place_marker(lat_lng, location);
         }
+        enable_disable_submit_button();
     }
 
     function update_latitude_longitude(location, geocoder, marker_map) {
@@ -184,7 +185,7 @@ define([
 
                 update_location_on_map(marker_map, offset_latitude,
                     offset_longitude);
-            });       
+            });
         }
     }
 
@@ -282,7 +283,7 @@ define([
 
         if (is_flagged) {
             // Set the hidden "flagged" field to mark for admin. review.
-            $('#id_flagged').val('True');            
+            $('#id_flagged').val('True');
         }
         else {
             $('#id_flagged').val('False');
@@ -354,7 +355,7 @@ define([
             state);
     }
 
-    $(window).load(function () {   
+    $(window).load(function () {
         // The map and geocoder must be created at page "onload."
 
         var map_div = $('#location-map');
@@ -496,7 +497,7 @@ define([
         $('#main form').submit(function (event) {
             event.preventDefault();
             var form = this;
-            var seconds = 1;                      
+            var seconds = 1;
             setTimeout(function () {
                 form.submit();
             }, seconds * 1000);

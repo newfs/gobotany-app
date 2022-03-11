@@ -9,14 +9,13 @@ allow themselves to be downloaded.  An attempt is made to fix images
 with bad permissions.
 
 """
+import io
 import mimetypes
 import re
 import socket
 import time
-from StringIO import StringIO
 
-import Image
-import ImageOps
+from PIL import Image, ImageOps
 import boto
 import requests
 
@@ -167,9 +166,9 @@ class Operator(object):
         (operator, arg) = THUMBNAIL_CALLS[thumbsize]
         data = image.read()
         image.close()
-        im = Image.open(StringIO(data))
+        im = Image.open(io.BytesIO(data))
         im = operator(im, arg)
-        output = StringIO()
+        output = io.BytesIO()
         im.save(output, 'JPEG')
         thumbname = '{}/{}'.format(thumbdir.rstrip('/'), name_of(image))
         thumb = image.bucket.new_key(thumbname)
@@ -182,19 +181,19 @@ class Operator(object):
     # Error reporting and statistics.
 
     def error(self, key, message):
-        print key.name
-        print ' ', message
+        print(key.name)
+        print(' ', message)
         self.error_count += 1
 
     def final_report(self):
         elapsed = time.time() - self.t0
         per_second = (self.directory_count + self.image_count) / elapsed
-        print
-        print 'Scan took {:.2f} seconds'.format(elapsed)
-        print 'Scanned {:.2f} resources per second'.format(per_second)
-        print 'Scanned {} directories'.format(self.directory_count)
-        print 'Scanned {} images'.format(self.image_count)
-        print 'Found {} errors'.format(self.error_count)
+        print()
+        print('Scan took {:.2f} seconds'.format(elapsed))
+        print('Scanned {:.2f} resources per second'.format(per_second))
+        print('Scanned {} directories'.format(self.directory_count))
+        print('Scanned {} images'.format(self.image_count))
+        print('Found {} errors'.format(self.error_count))
 
 def name_of(key):
     return key.name.rstrip('/').split('/')[-1]

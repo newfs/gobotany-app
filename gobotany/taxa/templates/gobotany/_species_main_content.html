@@ -22,11 +22,14 @@
     </div>
 
     <div id="name">
-        <h1><span class="scientific">{{ scientific_name|italicize_plant|safe }}</span>
-        <span class="origin">{{ taxon.taxonomic_authority }}</span></h1>
-        {% if common_names %}
-            <p class="common nogloss">{% for common_name in common_names %}{% if not forloop.first %}, {% endif %}{{ common_name }}{% endfor %}</p>
-        {% endif %}
+        <h1 class="nogloss">
+            <span class="scientific">{{ scientific_name|italicize_plant|safe }}</span>
+            {% if common_names %}
+                —
+                {% for common_name in common_names %}{% if not forloop.first %}, {% endif %}{{ common_name }}{% endfor %}
+            {% endif %}       
+        </h1>
+
     </div>
 
     <div class="img-gallery">
@@ -50,7 +53,7 @@
 
     <div id="maps">
         <div class="section map nemap">
-            <h2>New England Distribution</h2>
+            <h2>New England distribution</h2>
             {% include "gobotany/_map_attribution.html" %}
             {% with map_title='New England distribution: '|add:scientific_name|add:'.' %}
             <object
@@ -92,7 +95,7 @@
         </div>
 
         <div class="section map namap">
-            <h2>North America Distribution</h2>
+            <h2>North America distribution</h2>
             {% include "gobotany/_map_attribution.html" %}
             {% with map_title='North America distribution: <i>'|add:scientific_name|add:'.</i>' %}
             <div>
@@ -173,11 +176,11 @@
                 {% endif %}
             </div>
             <a class="description-control" href="#">Show 
-                All Characteristics</a>
+                all characteristics</a>
             <ul class="full-description">
                 {% for character_group in all_characteristics %}
                     <li>
-                        <h5>{{ character_group.name|capfirst }}</h5>
+                        <h3>{{ character_group.name|capfirst }}</h3>
                         <div class="characteristics full">
                             {% for character in character_group.characters %}
                             <dl>
@@ -202,7 +205,7 @@
     </div>
 
     <div id="wetland">
-        <h2>Wetland Status</h2>
+        <h2>Wetland status</h2>
         {% if taxon.wetland_indicator_code %}
             <p>
                 {{ taxon.get_wetland_indicator_text }}
@@ -215,7 +218,7 @@
     </div>
 
     <div id="status">
-        <h2>New England Distribution and Conservation Status</h2>
+        <h2>New England distribution and conservation status</h2>
         <div id="ne-status">
         <h3>Distribution</h3>
         {% with labels=taxon.get_state_distribution_labels %}
@@ -232,7 +235,7 @@
                 <p>No data</p>
             {% endif %}
         {% endwith %}
-        <h3>Conservation Status</h3>
+        <h3>Conservation status</h3>
         {% with statuses=conservation_statuses %}
         {% regroup statuses by variety_subspecies_hybrid as status_list %}
         {% if status_list %}
@@ -278,7 +281,7 @@
         {% with lookalikes=taxon.lookalikes.all %}
         {% if lookalikes|length > 0 %}
         <div class="section lookalikes">
-            <h2>Sometimes Confused With</h2>
+            <h2>Sometimes confused with</h2>
             <dl>
             {% for lookalike in lookalikes %}
                 <dt>{% lookalike_item lookalike.lookalike_scientific_name %}{% if lookalike.lookalike_characteristic %}:{% endif %}</dt>
@@ -316,7 +319,7 @@
 
         {% if taxon.variety_notes %}
         <div class="section">
-            <h2>Notes on Subspecies and Varieties in New England</h2>
+            <h2>Notes on subspecies and varieties in New England</h2>
             <p>{{ taxon.variety_notes|italicize_plant|safe }}</p>
         </div>
         {% endif %}

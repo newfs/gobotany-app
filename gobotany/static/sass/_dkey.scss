@@ -5,15 +5,11 @@
     margin: 1em 1em 0.5em 1em;
     text-align: right;
     color: $text_gray;
-    span {
-        font-size: $base-font-size;
-    }
     a.button {
         display: inline-block;
         margin: 0.8em 1em;
         @extend .action-link;
         font-weight: normal;
-        font-size: $base-font-size;
         text-transform: uppercase;
     }
     select {
@@ -62,10 +58,6 @@
     }
 }
 
-#dkey h1 {
-    margin-bottom: 14px;
-}
-
 #dkey #main p {
     margin: 1em 0;
     max-width: 48em * (14px / 16px);
@@ -109,7 +101,6 @@
     border-bottom: 0;
     color: $link_green;
     font-family: $headings-font;
-    font-size:  $base-font-size;
     text-decoration: underline;
     text-transform: uppercase;
 }
@@ -123,7 +114,6 @@
     margin: 0em;
     max-width: 48em;
     padding: 1em 1em 0 0;
-    font-size: $base-font-size;
     line-height: 1.5em;
 }
 #dkey ul.couplets ul {                        /* a couplet */
@@ -179,7 +169,6 @@
 #dkey a.button {
     @extend .action-link;
     display: inline-block;
-    font-size: $base-font-size;
     margin-top: 6px;
 }
 #dkey a.figure-link {             /* clickable figure numbers: [Fig. 3] */
@@ -204,7 +193,6 @@
 #dkey a.show-all-button {
     @extend .action-link;
     display: inline-block;
-    font-size:  $base-font-size;
     font-weight: normal;
     text-transform: uppercase;
 }

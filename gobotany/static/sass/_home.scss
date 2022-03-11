@@ -9,14 +9,14 @@
 
 #home .id {
     display: flex;
-    padding: 1.4em 0 0;
+    padding: 1.4em 0 0.3em;
     position: relative;
 }
 #home h1 {
     font-weight: unset;
     margin: 0;
     img {
-        width: 7.7em;
+        width: 9em;
     }
 }
 #home .tagline {
@@ -64,14 +64,14 @@
     }
     h2 {
         color: $heading-green;
-        font-family: Basetica, $headings-font;
-        font-size: 2rem;
-        font-weight: 700;
+        font-family: $headings-font;
+        font-size: 2.1rem;
+        font-weight: bold;
         line-height: normal;
-        margin: 1.6rem 0 1rem;
+        margin: 1.2rem 0;
     }
     p {
-        margin: 12px 0 0 0;
+        margin: 0.5em 0;
         text-align: left;
     }
 }
@@ -102,7 +102,7 @@
 }
 
 #home #cta {
-    margin: 18px 2px 0;
+    margin: 1em 2px 0;
     width: 174px;
 }
 #home #overlay {
@@ -117,26 +117,16 @@
 }
 #home .three-col {
     float: left;
-    height: 220px;
     margin: 354px 23px 5px 0;
-    padding: 8px 23px 0 0;
+    padding: 8px 23px 1.2em 0;
     width: 289px;
     &.last {
         background: 0;
         margin-right: 0;
         padding: 8px 0 0 0;
     }
-    h3 {
-        color: $darkest-brown;
-        font-family: Basetica;
-        font-size: 1.4rem;
-        font-weight: 400;
+    h2 {
         margin: 0.6rem 0 0.4rem;
-    }
-    h4 {
-        color: $medium-brown;
-        font-family: Basetica;
-        margin: 0 0 3px 0;
     }
     p {
         margin: 0;
@@ -165,13 +155,13 @@ a {
     border: 3px solid #fff;
     box-shadow: 0px 0px 4px 0 rgba(0, 0, 0, 0.3);
     clear: left;
-    height: 140px;
+    height: 169px;
     margin: 15px 0;
     padding: 10px;
     > a {
         display: block;
         float: left;
-        height: 131px;
+        height: 160px;
         margin: 5px 5px;
         overflow: hidden;
         width: 270px;
@@ -185,26 +175,16 @@ a {
         margin: 0 0 0 290px;
         position: absolute;
         width: 630px;
-        h3 {
-            color: $darkest-brown;
-            font-family: Basetica;
-            font-size: 1.2rem;
-            font-weight: 900;
+        h2 {
             margin: 0.2rem 0;
             span {
                 &.latin {
                     font-style: italic;
                 }
-                &.english {
-                    color: $darker-brown;
-                    font-size: 14px;
-                    font-weight: 400;
-                }
             }
         }
         p {
-            height: 70px;
-            margin: 0;
+            margin: 0 0 1em;
             overflow: hidden;
         }
     }
@@ -293,11 +273,10 @@ a {
             width: auto;
         }
         .tagline {
-            bottom: 0.4em;
+            bottom: 0.8em;
             font-size: 0.9em;
-            left: 15em;
+            left: 13em;
             margin: 0;
-            padding-right: 2em; /* keep 'New England' one line when narrow */
         }
         nav {
             background: #21555c;
@@ -342,14 +321,11 @@ a {
         margin: 0 0 14px;
         padding: 0;
         width: auto;
-        h3, h4, p {
+        h3, p {
             @include smallscreen-side-margins;
         }
         h3 {
             font-size: 18px;
-        }
-        h4 {
-            font-size: 14px;
         }
         p {
             margin-top: 0;
@@ -379,9 +355,6 @@ a {
             width: inherit;
             h3 {
                 line-height: 120%;
-            }
-            h4 {
-                line-height: 140%;
             }
             p {
                 height: inherit;

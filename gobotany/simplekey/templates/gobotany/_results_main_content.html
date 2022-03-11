@@ -22,7 +22,7 @@
     <div id="question-nav" class="closed">
 
         <div class="section instructions">
-            <h5>Questions <span></span></h5>
+            <h2>Questions <span></span></h2>
         </div>
         <div class="scroll">
           <div class="loading">Loading questions…</div>
@@ -68,7 +68,7 @@
             src="/static/images/layout/working-area-arrow.png">
         <a class="close"></a>
 
-        <h4 class="question"></h4>
+        <h3 class="question"></h3>
         <div class="interior">
             <div class="info">
                 <div class="character-drawing"></div>
@@ -89,7 +89,7 @@
     </div>
 
     <div id="results-section">
-        <h3 class="species-count-heading">
+        <h2 class="species-count-heading">
           <span>
             {% handlebars %}
               <span class="species-count"
@@ -97,16 +97,16 @@
               matching species
             {% endhandlebars %}
           </span>
-        </h3>
+        </h2>
 
         <div id="filters-preview"></div>
 
         <div class="view-tabs">
           {% handlebars 'species-view-tabs' %}
-            <li><a {{bindAttr class="App3.show_grid:current"}}
-                   {{action choose_grid_view}}>Photos</a></li>
-            <li><a {{bindAttr class="App3.show_list:current"}}
-                   {{action choose_list_view}}>List</a></li>
+            <li><h3><a {{bindAttr class="App3.show_grid:current"}}
+                   {{action choose_grid_view}}>Photos</a></h3></li>
+            <li><h3><a {{bindAttr class="App3.show_list:current"}}
+                   {{action choose_list_view}}>List</a></h3></li>
           {% endhandlebars %}
         </div>
 

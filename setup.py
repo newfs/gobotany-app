@@ -2,7 +2,7 @@ from distutils.core import setup
 from setuptools import find_packages
 
 requirements = [
-    'django==3.0.14',
+    'django==3.1.13',
 
     'Pillow==8.2.0',
     'bleach==3.3.0',
@@ -20,7 +20,7 @@ requirements = [
     'django-tinymce==2.6.0',
     'inflect',
     'lxml==4.6.3',
-    'psycopg2==2.8.5',
+    'psycopg2==2.9.2',
     'python-memcached',
     'pytz',
     'tablib==0.12.1',
@@ -51,7 +51,8 @@ requirements = [
 
     'gunicorn==20.0.4',
     'newrelic',
-    's3cmd',
+    'python-magic==0.4.24',
+    's3cmd==2.2.0',
     ]
 
 dependency_links = [

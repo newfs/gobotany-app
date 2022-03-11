@@ -2,10 +2,11 @@
 """Tests for the Simple and Full Keys."""
 
 import unittest
-from gobotany.core import models
-from gobotany.simplekey.templatetags.simplekey_extras import habitat_names
-from gobotany.libtest import FunctionalCase, TestCase
 
+from gobotany.core import models
+from gobotany.libtest import FunctionalCase, TestCase
+from gobotany.simplekey.templatetags.simplekey_extras import (
+    habitat_names, shorten_group_title)
 
 # Uncomment the line below to skip tests that run against the real database.
 #@unittest.skip('Skipping tests that run against the real database')
@@ -37,7 +38,7 @@ class SimpleKeyTests(FunctionalCase):
         # Do group links get constructed correctly?
 
         e = self.css1('#main .action-link')
-        self.assertEqual('My plant is in this group', e.text)
+        self.assertEqual('Woody plants', e.text)
         self.assertEqual(e.get_attribute('href'), '/simple/woody-plants/')
 
     def test_subgroups_page(self):
@@ -147,3 +148,88 @@ class UnitTests(TestCase):
             cvlist = [cv]
             namelist = habitat_names(cvlist)
             self.assertEqual(expected_name, namelist[0])
+
+
+class SimpleKeyShortenGroupTitleTestCase(TestCase):
+    """Test the shortened link labels of plant groups and subgroups."""
+
+    def test_shorten_group_title_woody_plants(self):
+        self.assertEqual(shorten_group_title('Woody plants'),
+            'Woody plants')
+
+    def test_shorten_group_title_aquatic_plants(self):
+        self.assertEqual(shorten_group_title('Aquatic plants'),
+            'Aquatic plants')
+
+    def test_shorten_group_title_grass_like_plants(self):
+        self.assertEqual(shorten_group_title('Grass-like plants'),
+            'Grass-like plants')
+
+    def test_shorten_group_title_orchids_and_related(self):
+        self.assertEqual(shorten_group_title('Orchids and related plants'),
+            'Orchids, related plants')
+
+    def test_shorten_group_title_other_flowering_non_woody(self):
+        self.assertEqual(shorten_group_title(
+            'All other flowering non-woody plants'),
+            'Other flowering non-woody plants')
+
+    def test_shorten_group_title_broad_leaved_woody_plants(self):
+        self.assertEqual(shorten_group_title('Broad-leaved woody plants'),
+            'Broad-leaved woody plants')
+
+    def test_shorten_group_title_needle_leaved_woody_plants(self):
+        self.assertEqual(shorten_group_title('Needle-leaved woody plants'),
+            'Needle-leaved woody plants')
+
+    def test_shorten_group_title_water_plants_leaves_stems(self):
+        self.assertEqual(shorten_group_title(
+            'Water plants with leaves and stems'),
+            'Water plants: leaves, stems')
+
+    def test_shorten_group_title_tiny_water_plants_no_true_stem(self):
+        self.assertEqual(shorten_group_title(
+            'Tiny water plants with no true stem'),
+            'Tiny water plants: no true stem')
+
+    def test_shorten_group_title_sedges(self):
+        self.assertEqual(shorten_group_title('Sedges'), 'Sedges')
+
+    def test_shorten_group_title_true_grasses(self):
+        self.assertEqual(shorten_group_title('True grasses'), 'True grasses')
+
+    def test_shorten_group_title_other_grass_like_plants(self):
+        self.assertEqual(shorten_group_title('All other grass-like plants'),
+            'Other grass-like plants')
+
+    def test_shorten_group_title_orchids(self):
+        self.assertEqual(shorten_group_title('Orchids'), 'Orchids')
+
+    def test_shorten_group_title_irises_lilies_monocots(self):
+        self.assertEqual(shorten_group_title(
+            'Irises, lilies, and other "monocots"'),
+            'Irises, lilies, other monocots')
+
+    def test_shorten_group_title_true_ferns_moonworts(self):
+        self.assertEqual(shorten_group_title('True ferns and moonworts'),
+            'True ferns, moonworts')
+
+    def test_shorten_group_title_clubmosses_relatives_quillworts(self):
+        self.assertEqual(shorten_group_title(
+            'Clubmosses and relatives, plus quillworts'),
+            'Clubmosses, relatives + quillworts')
+
+    def test_shorten_group_title_daisies_goldenrods_asters(self):
+        self.assertEqual(shorten_group_title(
+            'Daisies, goldenrods, and other Aster family plants'),
+            'Daisies, goldenrods, asters')
+
+    def test_shorten_group_title_horsetails_scouring_rushes(self):
+        self.assertEqual(shorten_group_title(
+            'Other herbaceous, flowering plants with alternate leaves'),
+            'Others: alternate leaves')
+
+    def test_shorten_group_title_horsetails_scouring_rushes(self):
+        self.assertEqual(shorten_group_title('Other herbaceous, flowering ' \
+            'plants with opposite, whorled or no leaves'),
+            'Others: opposite, whorled, no leaves')

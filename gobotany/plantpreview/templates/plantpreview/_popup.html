@@ -5,7 +5,7 @@
   <div class="modal-wrap">
     <div class="inner">
       <h3 class="heading">
-        {{plant.scientific_name}} <span>{{plant.common_name}}</span>
+        <i>{{plant.scientific_name}}</i> — {{plant.common_name}}
       </h3>
       <div id="plant-details">
 	<div class="list-item">
@@ -24,8 +24,7 @@
 	    </div>
 	  </div>
           <div class="details">
-            <p class="facts">{{{plant.factoid}}}</p>
-	    <div class="characteristics">
+    	    <div class="characteristics">
               {{#each characters}}
               <dl>
                 <dt>{{friendly_name}}</dt>

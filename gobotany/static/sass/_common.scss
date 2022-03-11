@@ -39,7 +39,7 @@
     src: url(//newfs.s3.amazonaws.com/fonts/ScalaSansWeb-Bold.woff) format("woff");
 }
 
-$navbar-font: Basetica, "Trebuchet MS", sans-serif;
+$navbar-font: Basetica, sans-serif;
 $headings-font: "Trebuchet MS", Helvetica, Arial, "Lucida Sans Unicode", sans-serif;
 $body-font: Verdana, Geneva, "Lucida Sans Unicode", sans-serif;
 $narrower-body-font: Tahoma, "Trebuchet MS", "Lucida Sans Unicode", sans-serif;
@@ -70,8 +70,8 @@ $navbar-color: #21555c;
 $footer-background-color: $bright-green;
 $login-box-background-color: #d3eaad;
 
-$base-font-size: 13px;
-$nav-font-size: 1.12em;
+$base-font-size: 81.25%;
+$nav-font-size: 1.1em;
 
 $text-line-height: 153%;
 
@@ -152,7 +152,7 @@ $disabled_orange_gradient: linear-gradient(
     cursor: default;
     display: inline-block;
     font-family: ScalaSans, $headings-font;
-    font-size: 12px;
+    font-size: 13px;
     font-weight: bold !important;
     letter-spacing: 1px;
     line-height: 18px;
@@ -190,7 +190,7 @@ $disabled_orange_gradient: linear-gradient(
     cursor: pointer;
     display: inline-block;
     font-family: ScalaSans, $headings-font;
-    font-size: 12px;
+    font-size: 13px;
     font-weight: bold;
     letter-spacing: 1px;
     line-height: 18px;
@@ -314,7 +314,7 @@ $disabled_orange_gradient: linear-gradient(
             bottom: 6px;
             position: absolute;
         }
-        h6 {
+        .title {
             color: #fff;
             font-size: 16px;
             font-style: normal;
@@ -392,7 +392,6 @@ div.popup {                     /* for displaying quick lists of taxa */
     background-color: lighten($body_bg, 5);
     padding: 1em 2em;
     text-align: left;
-    font-size: $base-font-size;
     line-height: 1.25em;
 }
 div.popup h2 {                        /* "See list of 14 species in 1b" */

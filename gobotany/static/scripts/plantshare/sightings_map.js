@@ -48,7 +48,7 @@ define([
     SightingsMap.prototype.build_info_window_html = function (plant_name,
                                                               sighting) {
         var title = this.get_sighting_title(plant_name, sighting, true);
-        var html = '<div class="info-window"><h5>' + title + '</h5>';
+        var html = '<div class="info-window"><p><b>' + title + '</b></p>';
         if (sighting.user !== undefined) {
             html += '<p>by ' + sighting.user;
             if (sighting.created !== undefined) {
