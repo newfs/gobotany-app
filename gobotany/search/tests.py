@@ -453,6 +453,18 @@ class SearchTests(FunctionalCase):
         page_links = self.css('.search-navigation li')
         self.assertTrue(len(page_links) > 10)   # more than 100 results
 
+    # Ensure that results for pages in the key have correct URLs
+    # (TODO: more tests here)
+
+    def test_orchid_subgroup_list_page_has_correct_url(self):   # Issue #788
+        self.get('/search/?q=orchids%20and%20related%20plants')
+        result_links = self.css('#search-results-list li a')
+        first_result = result_links[0]
+        self.assertTrue(
+            first_result.text == 'Orchids and related plants: Simple Key')
+        first_result_url = first_result.get_attribute('href')
+        self.assertTrue(first_result_url == '/simple/monocots/')
+
     #####
     # Dichotomous Key search results tests
     #####

@@ -83,7 +83,7 @@ def url(obj):
         return reverse('level3', args=('simple', slug1, slug2))
 
     if isinstance(obj, search_models.SubgroupsListPage):
-        slug = slugify(obj.title.split(':')[0])
+        slug = obj.group.slug
         return reverse('level2', args=('simple', slug))
 
     if isinstance(obj, dkey_models.Page):
