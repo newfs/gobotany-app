@@ -685,8 +685,8 @@ class Taxon(models.Model):
     factoid = models.CharField(max_length=1000, blank=True)
     wetland_indicator_code = models.CharField(max_length=15, blank=True,
                                               null=True)
-    north_american_native = models.NullBooleanField()
-    north_american_introduced = models.NullBooleanField()
+    north_american_native = models.BooleanField(null=True)
+    north_american_introduced = models.BooleanField(null=True)
     description = models.CharField(max_length=500, blank=True)
     variety_notes = models.CharField(max_length=1000, blank=True)
 
@@ -894,8 +894,8 @@ class InvasiveStatus(models.Model):
     taxon = models.ForeignKey(Taxon, related_name='invasive_statuses',
         on_delete=models.PROTECT)
     region = models.CharField(choices=STATE_NAMES, max_length=80)
-    invasive_in_region = models.NullBooleanField(default=None)
-    prohibited_from_sale = models.NullBooleanField(default=None)
+    invasive_in_region = models.BooleanField(null=True)
+    prohibited_from_sale = models.BooleanField(null=True)
 
     class Meta:
         ordering = ('taxon', 'region')
