@@ -172,11 +172,13 @@ class NavigationTests(FunctionalCase):
 
     def test_main_heading_simple_key(self):
         self.get('/simple/')
-        self.assertEqual(self.css1('h1').text, 'Simple Key')
+        self.assertEqual(self.css1('h1').text,
+            'Simple Key: Which group best describes your plant?')
 
     def test_main_heading_simple_key_subgroups_list(self):
         self.get('/simple/woody-plants/')
-        self.assertEqual(self.css1('h1').text, 'Woody plants')
+        self.assertEqual(self.css1('h1').text,
+            'Woody plants: Is your plant in one of these subgroups?')
 
     def test_main_heading_plantshare(self):
         self.get('/plantshare/')
@@ -184,11 +186,13 @@ class NavigationTests(FunctionalCase):
 
     def test_main_heading_full_key(self):
         self.get('/full/')
-        self.assertEqual(self.css1('h1').text, 'Full Key')
+        self.assertEqual(self.css1('h1').text,
+            'Full Key: Which group best describes your plant?')
 
     def test_main_heading_full_key_subgroups_list(self):
         self.get('/full/ferns/')
-        self.assertEqual(self.css1('h1').text, 'Ferns')
+        self.assertEqual(self.css1('h1').text,
+            'Ferns: Is your plant in one of these subgroups?')
 
     def test_main_heading_dichotomous_key(self):
         self.get('/dkey/')
@@ -367,11 +371,11 @@ class TeachingTests(FunctionalCase):
 
     def test_teaching_page_has_share_section(self):
         self.get(self.TEACHING_URL_PATH)
-        self.assertTrue('Share Your Ideas' in self._h2_headings())
+        self.assertTrue('Share your ideas' in self._h2_headings())
 
     def test_teaching_page_has_teaching_tools_section(self):
         self.get(self.TEACHING_URL_PATH)
-        self.assertTrue('Teaching Tools' in self._h2_headings())
+        self.assertTrue('Teaching tools' in self._h2_headings())
 
 
 # Uncomment the line below to skip tests that run against the real database.
@@ -442,11 +446,11 @@ class HelpTests(FunctionalCase):
     def test_advanced_map_to_groups_page_title(self):
         self.get(self.PATHS['MAP'])
         self.assertEqual(self.css1('title').text,
-                         'Advanced Map to Groups: Help: Go Botany')
+            'Map to Plant Groups: Help: Go Botany')
 
     def test_advanced_map_to_groups_page_main_heading(self):
         self.get(self.PATHS['MAP'])
-        self.assertEqual(self.css1('h1').text, 'Advanced Map to Groups')
+        self.assertEqual(self.css1('h1').text, 'Map to Plant Groups')
 
     # Glossary first ("A") page. More glossary tests in GlossaryTests class
 

@@ -21,13 +21,14 @@ class SimpleKeyTests(FunctionalCase):
     def test_simple_first_level_page_main_heading(self):
         self.get('/simple/')
         heading = self.css1('h1').text
-        self.assertEqual(heading, 'Simple Key')
+        self.assertEqual(heading,
+            'Simple Key: Which group best describes your plant?')
 
     def test_groups_page(self):
         self.get('/simple/')
 
         h = self.css('h2')
-        self.assertEqual(len(h), 6)
+        self.assertEqual(len(h), 7)   # seven h2 headings, including Help
         assert h[0].text.startswith('Woody plants')
         assert h[1].text.startswith('Aquatic plants')
         assert h[2].text.startswith('Grass-like plants')
@@ -44,7 +45,7 @@ class SimpleKeyTests(FunctionalCase):
     def test_subgroups_page(self):
         self.get('/simple/ferns/')
         h = self.css('h2')
-        self.assertEqual(len(h), 3)
+        self.assertEqual(len(h), 4)   # four h2 headings, including Help
         assert h[0].text.startswith('True ferns and moonworts')
         assert h[1].text.startswith('Clubmosses and relatives, plus quillworts')
         assert h[2].text.startswith('Horsetails and scouring-rushes')
@@ -70,7 +71,8 @@ class FullKeyTests(FunctionalCase):
     def test_full_first_level_page_main_heading(self):
         self.get('/full/')
         heading = self.css1('h1').text
-        self.assertEqual(heading, 'Full Key')
+        self.assertEqual(heading,
+            'Full Key: Which group best describes your plant?')
 
 
 habitat_data = [
@@ -221,7 +223,7 @@ class SimpleKeyShortenGroupTitleTestCase(TestCase):
 
     def test_shorten_group_title_daisies_goldenrods_asters(self):
         self.assertEqual(shorten_group_title(
-            'Daisies, goldenrods, and other Aster family plants'),
+            'Daisies, goldenrods, and other aster family plants'),
             'Daisies, goldenrods, asters')
 
     def test_shorten_group_title_horsetails_scouring_rushes(self):
