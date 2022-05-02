@@ -3,10 +3,10 @@ Running Functional Tests With Selenium
 
 Install the latest release of ChromeDriver, from:
 
-https://sites.google.com/a/chromium.org/chromedriver/home
+https://sites.google.com/chromium.org/driver/
 
-This involves unzipping the archive, then installing the file `chromedriver`
-in the proper location for the platform. (For Mac: /usr/local/bin/)
+This involves unzipping the archive, then copying the file `chromedriver`
+to the proper location for the platform. (For Mac: /usr/local/bin/)
 
 Note that for the most part, the Go Botany browser tests assume a fully
 populated database for the site including all plant data.
