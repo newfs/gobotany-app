@@ -7,6 +7,6 @@ require([
 ], function(activate_image_gallery, Shadowbox, shadowbox_init,
             activate_video_links, glossarizer) {
     $(document).ready(function () {
-        glossarizer.glossarize($('.key-char, .exceptions'));
+        glossarizer.glossarize($('.key-char + p, .exceptions + p'));
     });
 });
