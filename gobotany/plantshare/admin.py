@@ -24,7 +24,7 @@ class QuestionAdmin(GoBotanyModelAdmin):
     fields = ('question', 'image_links', 'asked_by', 'answer', 'approved')
     form = QuestionAdminForm
     list_display = ('question', 'answer', 'asked_by', 'asked_date',
-        'approved', 'id')
+        'approved')
     list_filter = ('approved', 'answered', 'asked')
     ordering = ['-answered']
     readonly_fields = ['image_links', 'asked_by']
