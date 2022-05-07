@@ -14,9 +14,10 @@ textarea {
 }
 
 
-/* List view links: allow wrapping long labels (see Question model) */
+/* List views: allow wrapping long labels (see Question model) */
 
-#result_list th a {
+#result_list th a,
+#result_list td.field-answer {
     word-break: break-all;
 }
 
