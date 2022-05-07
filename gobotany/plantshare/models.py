@@ -506,6 +506,10 @@ class Question(models.Model):
     def __str__(self):
         return '%d: %s' % (self.id, self.question)
 
+    def asked_date(self):
+        """Return a version of the 'asked' field that just has the date."""
+        return self.asked.strftime('%Y-%m-%d')
+
     def notify_user(self):
         """Notify the user that the question has been answered on the site."""
         user_name = self.asked_by.username
