@@ -40,7 +40,8 @@
                 {% for sighting in recent_sightings %}
                     <a href="{% url 'ps-sighting' sighting.id %}"
                         title="{{ sighting.identification }}"
-                        data-is-scientific-name="{{ sighting.identification|is_scientific_name }}">
+                        data-is-scientific-name="{{ sighting.identification|is_scientific_name }}"
+                        tabindex="-1">
                         {% if sighting.photos %}
                             <img src="{{ sighting.photos.all.0.thumb_cropped.url|secure_url }}"
                             alt="Sighting photo: {{ sighting.identification }}">
@@ -51,8 +52,8 @@
         </div>
         <p class="plant-name">{{ recent_sightings.0.identification|italicize_if_scientific|safe }}</p>
         <div class="controls">
-            <a class="prev disabled">Prev</a>
-            <a class="next">Next</a>
+            <button class="prev disabled">Prev</button>
+            <button class="next">Next</button>
         </div>
     </div>
 </div>
