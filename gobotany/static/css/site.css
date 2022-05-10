@@ -354,10 +354,10 @@ a.get-help-btn { margin: 10px 0 20px; }
 .img-gallery .images > * { display: block; /* For example, might be <a> instead of <img>. */ float: left; /* This is what makes scrolling actually work. */ }
 
 .img-gallery .controls { margin: 8px 0 12px 0; text-align: center; }
-.img-gallery .controls a { cursor: default; display: inline-block; height: 32px; text-indent: -9000px; width: 32px; }
-.img-gallery .controls a.next { background: url(/static/images/icons/next-larger.png) 0 0 no-repeat transparent; }
-.img-gallery .controls a.prev { background: url(/static/images/icons/prev-larger.png) 0 0 no-repeat transparent; }
-.img-gallery .controls a.disabled { cursor: default; opacity: 0.4; }
+.img-gallery .controls button { border: 0; cursor: default; display: inline-block; height: 32px; text-indent: -9000px; /* text is visually hidden */ width: 32px; }
+.img-gallery .controls button.next { background: url(/static/images/icons/next-larger.png) 0 0 no-repeat transparent; }
+.img-gallery .controls button.prev { background: url(/static/images/icons/prev-larger.png) 0 0 no-repeat transparent; }
+.img-gallery .controls button.disabled { cursor: default; opacity: 0.4; }
 
 /* Plant image grids. Currently used on the dkey. May someday be used on the Level 3 page if it is moved over to site.scss too. Copied from the relevant part of styles.scss and included here, instead of in the _dkey.scss file, because image grids are a site-wide pattern. */
 .plant-grid .plant { display: inline-block; vertical-align: top; position: relative; border: 1px solid #c3d941; width: 160px; /* prevent long names from ruining layout */ height: 210px; background: #fff; padding: 8px 6px; text-align: center; }
