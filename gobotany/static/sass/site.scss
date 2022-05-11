@@ -627,6 +627,8 @@ a.get-help-btn {
     @include user-select(none);
 }
 .img-gallery .img-container {
+    border: 0;
+    display: inline-flex;
     height: 239px;
     overflow: hidden;
     position: relative;

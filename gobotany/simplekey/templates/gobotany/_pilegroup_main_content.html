@@ -23,7 +23,7 @@
         <div class="list-item{% if forloop.last %} last{% endif %}">
             <div class="img-gallery">
                 <div class="frame"></div>
-                <div class="img-container">
+                <div class="img-container" tabindex="0" role="button">
                     <div class="images">
                         {% for content_image in pile_images %}
                             {% with content_image as i %}
