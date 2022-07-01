@@ -655,17 +655,20 @@ a.get-help-btn {
 .img-gallery .controls {
     margin: 8px 0 12px 0;
     text-align: center;
-    a {
+    button {
+        border: 0;
         cursor: default;
         display: inline-block;
         height: 32px;
-        text-indent: -9000px;
+        text-indent: -9000px;   /* text is visually hidden */
         width: 32px;
         &.next {
-            background: url(/static/images/icons/next-larger.png) 0 0 no-repeat transparent;	
+            background: url(/static/images/icons/next-larger.png) 0 0
+                no-repeat transparent;
         }
         &.prev {
-            background: url(/static/images/icons/prev-larger.png) 0 0 no-repeat transparent;	
+            background: url(/static/images/icons/prev-larger.png) 0 0
+                no-repeat transparent;
         }
         &.disabled {
             cursor: default;

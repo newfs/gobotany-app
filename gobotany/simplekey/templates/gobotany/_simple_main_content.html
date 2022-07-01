@@ -9,7 +9,8 @@
     {% for pilegroup, pilegroup_images, pilegroup_url in pilegroups %}
         <div class="list-item{% if forloop.last %} last{% endif %}">
             <div class="img-gallery">
-                <div class="frame"></div>
+                <div class="frame" tabindex="0" role="button"
+                    aria-label="image gallery popup"></div>
                 <div class="img-container">
                     <div class="images">
                         {% for content_image in pilegroup_images %}
@@ -17,7 +18,8 @@
                                 {% with i.creator as photographer %}
                                 <a href="{{ i.image_medium|secure_url }}"
                                     rel="shadowbox[{{ pilegroup.slug }}]"
-                                    title="{% photo_credit i i.scientific_name %}">
+                                    title="{% photo_credit i i.scientific_name %}"
+                                    tabindex="-1">
                                     <img src="{{ i.thumb_large|secure_url }}"
                                         alt="{% photo_credit i i.scientific_name %}">
                                 </a>
@@ -27,8 +29,8 @@
                     </div>
                 </div>
                 <div class="controls">
-                    <a class="prev">Prev</a>
-                    <a class="next">Next</a>
+                    <button class="prev">Prev</button>
+                    <button class="next">Next</button>
                 </div>
             </div>
             <div class="details">
@@ -42,11 +44,9 @@
                 <p>{{ pilegroup.notable_exceptions_text|safe|capfirst }}</p>
 
                 {% if pilegroup.video %}
-                <p>
                     {% with pilegroup.video.youtube_id as youtube_id %}
                     {% include "gobotany/_simplekey_video_link.html" with item_type="group" %}
                     {% endwith %}
-                </p>
                 {% endif %}
                 <a class="action-link caps"
                     href="{{ pilegroup_url }}"

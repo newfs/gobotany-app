@@ -23,7 +23,8 @@ class QuestionAdmin(GoBotanyModelAdmin):
     date_hierarchy = 'asked'
     fields = ('question', 'image_links', 'asked_by', 'answer', 'approved')
     form = QuestionAdminForm
-    list_display = ('question', 'answer', 'asked', 'approved', 'id')
+    list_display = ('question', 'answer', 'asked_by', 'asked_date',
+        'approved')
     list_filter = ('approved', 'answered', 'asked')
     ordering = ['-answered']
     readonly_fields = ['image_links', 'asked_by']

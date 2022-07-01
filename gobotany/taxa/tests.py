@@ -18,9 +18,8 @@ class FamilyTests(FunctionalCase):
         self.get('/family/lycopodiaceae/')
         heading = self.css('#main h1')
         self.assertTrue(len(heading))
-        self.assertTrue(heading[0].text == 'Family: Lycopodiaceae')
-        common_name = self.css('#main p.common')
-        self.assertTrue(len(common_name))
+        self.assertTrue(
+            heading[0].text == 'Family: Lycopodiaceae — club moss family')
 
     @unittest.skip('This test fails when run with the api or core tests.')
     def test_family_page_has_example_images(self):
@@ -43,10 +42,8 @@ class GenusTests(FunctionalCase):
         self.get('/genus/dendrolycopodium/')
         heading = self.css('#main h1')
         self.assertTrue(len(heading))
-        self.assertTrue(heading[0].text == 'Genus: Dendrolycopodium')
-        common_name = self.css('#main p.common')
-        self.assertTrue(len(common_name))
-        self.assertTrue(common_name[0].text == 'tree-clubmoss')
+        self.assertTrue(
+            heading[0].text == 'Genus: Dendrolycopodium — tree-clubmoss')
 
     @unittest.skip('This test fails when run with the api or core tests.')
     def test_genus_page_has_example_images(self):

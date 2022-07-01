@@ -8,11 +8,16 @@ from datetime import datetime
 from django.test import TestCase
 from django.test.client import Client
 
+from gobotany.core import models as core_models
+from gobotany.dkey import models as dkey_models
 from gobotany.libtest import FunctionalCase
+from gobotany.plantshare import models as plantshare_models
+from gobotany.search import models as search_models
 from gobotany.site import models as site_models
+from gobotany.site.templatetags import gobotany_tags
 
 def _setup_sample_data():
-    names = [   ('Abies balsamea', 'balsam fir'),
+    names = [ ('Abies balsamea', 'balsam fir'),
                 ('Abutilon theophrasti', 'velvetleaf Indian-mallow'),
                 ('Acalypha rhomboidea', 'common three-seeded-Mercury'),
                 ('Acer negundo', 'ash-leaved maple'),
@@ -167,11 +172,13 @@ class NavigationTests(FunctionalCase):
 
     def test_main_heading_simple_key(self):
         self.get('/simple/')
-        self.assertEqual(self.css1('h1').text, 'Simple Key')
+        self.assertEqual(self.css1('h1').text,
+            'Simple Key: Which group best describes your plant?')
 
     def test_main_heading_simple_key_subgroups_list(self):
         self.get('/simple/woody-plants/')
-        self.assertEqual(self.css1('h1').text, 'Woody plants')
+        self.assertEqual(self.css1('h1').text,
+            'Woody plants: Is your plant in one of these subgroups?')
 
     def test_main_heading_plantshare(self):
         self.get('/plantshare/')
@@ -179,11 +186,13 @@ class NavigationTests(FunctionalCase):
 
     def test_main_heading_full_key(self):
         self.get('/full/')
-        self.assertEqual(self.css1('h1').text, 'Full Key')
+        self.assertEqual(self.css1('h1').text,
+            'Full Key: Which group best describes your plant?')
 
     def test_main_heading_full_key_subgroups_list(self):
         self.get('/full/ferns/')
-        self.assertEqual(self.css1('h1').text, 'Ferns')
+        self.assertEqual(self.css1('h1').text,
+            'Ferns: Is your plant in one of these subgroups?')
 
     def test_main_heading_dichotomous_key(self):
         self.get('/dkey/')
@@ -362,11 +371,11 @@ class TeachingTests(FunctionalCase):
 
     def test_teaching_page_has_share_section(self):
         self.get(self.TEACHING_URL_PATH)
-        self.assertTrue('Share Your Ideas' in self._h2_headings())
+        self.assertTrue('Share your ideas' in self._h2_headings())
 
     def test_teaching_page_has_teaching_tools_section(self):
         self.get(self.TEACHING_URL_PATH)
-        self.assertTrue('Teaching Tools' in self._h2_headings())
+        self.assertTrue('Teaching tools' in self._h2_headings())
 
 
 # Uncomment the line below to skip tests that run against the real database.
@@ -437,11 +446,11 @@ class HelpTests(FunctionalCase):
     def test_advanced_map_to_groups_page_title(self):
         self.get(self.PATHS['MAP'])
         self.assertEqual(self.css1('title').text,
-                         'Advanced Map to Groups: Help: Go Botany')
+            'Map to Plant Groups: Help: Go Botany')
 
     def test_advanced_map_to_groups_page_main_heading(self):
         self.get(self.PATHS['MAP'])
-        self.assertEqual(self.css1('h1').text, 'Advanced Map to Groups')
+        self.assertEqual(self.css1('h1').text, 'Map to Plant Groups')
 
     # Glossary first ("A") page. More glossary tests in GlossaryTests class
 
@@ -589,3 +598,77 @@ class SpeciesListTests(FunctionalCase):
     def test_species_list_returns_ok(self):
         self.get('/list/')
         self.assertEqual(200, self.response.status_code)
+
+
+# Uncomment the line below to skip tests that run against the real database.
+#@unittest.skip('Skipping tests that run against the real database')
+class UrlFilterTests(FunctionalCase):
+
+    def test_url_filter_taxon(self):
+        obj = core_models.Taxon.objects.get(scientific_name='Acer rubrum')
+        url = gobotany_tags.url(obj)
+        self.assertEqual(url, '/species/acer/rubrum/')
+
+    def test_url_filter_family(self):
+        obj = core_models.Family.objects.get(name='Sapindaceae')
+        url = gobotany_tags.url(obj)
+        self.assertEqual(url, '/family/sapindaceae/')
+
+    def test_url_filter_genus(self):
+        obj = core_models.Genus.objects.get(name='Acer')
+        url = gobotany_tags.url(obj)
+        self.assertEqual(url, '/genus/acer/')
+
+    def test_url_filter_glossary_term(self):
+        obj = core_models.GlossaryTerm.objects.get(term='aerial')
+        url = gobotany_tags.url(obj)
+        self.assertEqual(url, '/glossary/a/#aerial')
+
+    def test_url_filter_update(self):
+        obj = site_models.Update.objects.first()
+        url = gobotany_tags.url(obj)
+        self.assertEqual(url, '/updates/#' + str(obj.id))
+
+    def test_url_filter_sighting(self):
+        obj = plantshare_models.Sighting.objects.first()
+        url = gobotany_tags.url(obj)
+        self.assertEqual(url, '/plantshare/sightings/' + str(obj.id) + '/')
+
+    def test_url_filter_question(self):
+        obj = plantshare_models.Question.objects.first()
+        url = gobotany_tags.url(obj)
+        self.assertEqual(url, '/plantshare/questions/all/' + \
+            str(obj.asked.year) + '/#q' + str(obj.id))
+
+    def test_url_filter_plain_page(self):
+        obj = search_models.PlainPage.objects.first()
+        url = gobotany_tags.url(obj)
+        self.assertEqual(url, '/help/')
+
+    def test_url_filter_groups_list_page(self):
+        obj = search_models.GroupsListPage.objects.first()
+        url = gobotany_tags.url(obj)
+        self.assertEqual(url, '/simple/')
+
+    def test_url_filter_subgroups_list_page(self):
+        obj = search_models.SubgroupsListPage.objects.get(
+            group__friendly_title='Orchids and related plants')
+        url = gobotany_tags.url(obj)
+        self.assertEqual(url, '/simple/monocots/')
+
+    def test_url_filter_subgroups_list_page_2(self):
+        obj = search_models.SubgroupsListPage.objects.get(
+            group__friendly_title='Grass-like plants')
+        url = gobotany_tags.url(obj)
+        self.assertEqual(url, '/simple/graminoids/')
+
+    def test_url_filter_subgroup_results_page(self):
+        obj = search_models.SubgroupResultsPage.objects.get(
+            main_heading='Orchids')
+        url = gobotany_tags.url(obj)
+        self.assertEqual(url, '/simple/monocots/orchid-monocots/')
+
+    def test_dkey_page(self):
+        obj = dkey_models.Page.objects.get(title='Group 1')
+        url = gobotany_tags.url(obj)
+        self.assertEqual(url, '/dkey/group-1/')

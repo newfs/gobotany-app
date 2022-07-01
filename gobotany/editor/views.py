@@ -661,11 +661,13 @@ def dkey(request, slug='key-to-the-families'):
         elif command == 'delete':
             # Delete a couplet.
             leads_to_delete = dkey_models.Lead.objects.filter(parent=lead_id)
-            # Be careful about deleting lead records:
-            # verify that there are two, and delete no more than two.
-            if leads_to_delete.count() == 2:
+            # Be careful about deleting lead records: delete no more than two.
+            # (Allow for just one in case the user deleted one elsewhere.)
+            if leads_to_delete.count() <= 2:
+                # Keep track of the deleted leads for debugging.
                 deleted_leads.append(leads_to_delete[0].id)
-                deleted_leads.append(leads_to_delete[1].id)
+                if leads_to_delete.count() == 2:
+                    deleted_leads.append(leads_to_delete[1].id)
                 leads_to_delete.delete()
         elif command == 'promote':
             # Determine the new parent of the leads that will be promoted.

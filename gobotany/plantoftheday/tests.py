@@ -372,7 +372,7 @@ class FunctionalTests(FunctionalCase):
 
     def test_home_page_has_plant_of_the_day(self):
         self.get('/')
-        potd_heading = self.css1('#potd .details h3')
+        potd_heading = self.css1('#potd .details h2')
         self.assertTrue(potd_heading.text.startswith('Plant of the day'))
 
     def test_plant_of_the_day_has_linked_image(self):

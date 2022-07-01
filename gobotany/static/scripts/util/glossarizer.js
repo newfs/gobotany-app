@@ -80,8 +80,8 @@ define([
             if (_.contains(avoid_terms, term))
                 return match;
             else
-                return '<button role="tooltip" class="gloss">' + match +
-                    '</button>';
+                return '<span class="gloss" role="tooltip" tabindex="0">' +
+                    match + '</span>';
         };
 
         $(node).contents().each(function() {

@@ -2,9 +2,9 @@ from distutils.core import setup
 from setuptools import find_packages
 
 requirements = [
-    'django==3.1.13',
+    'django==3.1.14',
 
-    'Pillow==8.2.0',
+    'Pillow==9.1.0',
     'bleach==3.3.0',
     'cssselect',
     'django-debug-toolbar==3.2.1',
@@ -17,9 +17,9 @@ requirements = [
     # no longer shows the Haystack queries, so it was removed.
 
     'django-imagekit==4.0.2',
-    'django-tinymce==2.6.0',
+    'django-tinymce==3.4.0',
     'inflect',
-    'lxml==4.6.3',
+    'lxml==4.8.0',
     'psycopg2==2.9.2',
     'python-memcached',
     'pytz',

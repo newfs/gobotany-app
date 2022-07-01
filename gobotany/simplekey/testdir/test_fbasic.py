@@ -219,7 +219,7 @@ class FilterFunctionalTests(FunctionalTestCase):
 
         # Split "9 species matched" into ["9", "species", "matched"].
 
-        count_words = self.css1('h3 .species-count').text.split()
+        count_words = self.css1('.species-count-heading').text.split()
         count = int(count_words[0])
         self.assertEqual(count, expected_count)
 
@@ -580,8 +580,9 @@ class FilterFunctionalTests(FunctionalTestCase):
         POPUP_HEADING_CSS = '#sb-player .modal-wrap .inner h3'
         self.wait_on(5, self.css1, POPUP_HEADING_CSS)
         heading = self.css1(POPUP_HEADING_CSS).text
-        self.assertEqual('Dendrolycopodium dendroideum prickly tree-clubmoss',
-                         heading)
+        self.assertEqual(
+            'Dendrolycopodium dendroideum — prickly tree-clubmoss',
+            heading)
 
     def test_plant_preview_popup_shows_same_image_as_page(self):
 
@@ -978,11 +979,11 @@ class GlossarizerFunctionalTests(FunctionalTestCase):
     def test_glossarized_groups_page(self):
         self.get('/simple/')
         # Wait a bit for the glossarizer to finish.
-        self.wait_on(5, self.css1, '.key-char .gloss')
-        glossarized_key_characteristics = self.css('.key-char .gloss')
+        self.wait_on(5, self.css1, '.key-char + p .gloss')
+        glossarized_key_characteristics = self.css('.key-char + p .gloss')
         self.assertTrue(len(glossarized_key_characteristics))
-        self.wait_on(5, self.css1, '.exceptions .gloss')
-        glossarized_exceptions = self.css('.exceptions .gloss')
+        self.wait_on(5, self.css1, '.exceptions + p .gloss')
+        glossarized_exceptions = self.css('.exceptions + p .gloss')
         self.assertTrue(len(glossarized_exceptions))
 
     def test_glossarized_subgroups_pages(self):
@@ -991,12 +992,12 @@ class GlossarizerFunctionalTests(FunctionalTestCase):
         for slug in subgroup_slugs:
             self.get('/%s/' % slug)
             # Wait a bit for the glossarizer to finish.
-            self.wait_on(5, self.css1, '.key-char .gloss')
-            glossarized_key_characteristics = self.css('.key-char .gloss')
+            self.wait_on(5, self.css1, '.key-char + p .gloss')
+            glossarized_key_characteristics = self.css('.key-char + p .gloss')
             self.assertTrue(len(glossarized_key_characteristics))
             if slug != 'ferns':  # Ferns: no words glossarized in Exceptions
-                self.wait_on(5, self.css1, '.exceptions .gloss')
-                glossarized_exceptions = self.css('.exceptions .gloss')
+                self.wait_on(5, self.css1, '.exceptions + p .gloss')
+                glossarized_exceptions = self.css('.exceptions + p .gloss')
                 self.assertTrue(len(glossarized_exceptions))
 
     def test_glossarized_species_page(self):
