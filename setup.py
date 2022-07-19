@@ -4,7 +4,7 @@ from setuptools import find_packages
 requirements = [
     'django==3.1.14',
 
-    'Pillow==9.1.0',
+    'Pillow==9.1.1',
     'bleach==3.3.0',
     'cssselect',
     'django-debug-toolbar==3.2.1',
@@ -19,7 +19,7 @@ requirements = [
     'django-imagekit==4.0.2',
     'django-tinymce==3.4.0',
     'inflect',
-    'lxml==4.8.0',
+    'lxml==4.9.1',
     'psycopg2==2.9.2',
     'python-memcached',
     'pytz',
