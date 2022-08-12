@@ -19,17 +19,13 @@ def _get_plants_of_the_day(max_number_plants, partner_name):
         day = date.today() - timedelta(days=i)
         plant_of_the_day = PlantOfTheDay.objects.filter(
             last_seen=day, partner_short_name=partner_name, include=True)
-        if len(plant_of_the_day) > 0:
-            # Found the latest recent Plant of the Day record within
-            # the date range used for the feed, so no more records
-            # need to be generated.
-            break
-        else:
+        if len(plant_of_the_day) == 0:
             # No Plant of the Day exists for that day, so generate one.
             plant_of_the_day = PlantOfTheDay.get_by_date.for_day(
                 day, partner_name)
 
     # Now that any new records that were needed have been generated,
+    # build the list of plants to pass to the template.
     plants = []
     plant_records = (PlantOfTheDay.objects.filter(
         include=True,
@@ -47,9 +43,13 @@ def _get_plants_of_the_day(max_number_plants, partner_name):
         # query above must use last_seen to get the correct plant records.
         post_datetime = datetime.combine(plant_record.last_seen,
                                          plant_record.last_updated.time())
-        time_zone_offset = '-00:00'   # unknown local time zone offset
-        plant['post_datetime'] = ''.join([post_datetime.isoformat(),
-                                          time_zone_offset])
+        date_time = post_datetime.isoformat()
+        # Use a set time for each post in order to help keep posts
+        # happening consistently once per calendar day, rather than
+        # random times which can end up crossing days with time zones.
+        date_time = date_time.split('T')[0] + 'T05:02:00'
+        time_zone_offset = '-04:00'
+        plant['post_datetime'] = ''.join([date_time, time_zone_offset])
 
         # Get the Taxon record for this Plant of the Day and collect
         # information to be used by the template.
