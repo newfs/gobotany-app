@@ -2,13 +2,13 @@ from distutils.core import setup
 from setuptools import find_packages
 
 requirements = [
-    'django==3.1.14',
+    'django==3.2.15',
 
     'Pillow==9.1.1',
-    'bleach==3.3.0',
-    'cssselect',
-    'django-debug-toolbar==3.2.1',
-    'django-extensions==3.1.2',
+    'bleach==5.0.1',
+    'cssselect==1.1.0',
+    'django-debug-toolbar==3.6.0',
+    'django-extensions==3.2.0',
 
     'django-haystack==3.0',
     # There is now a debug toolbar panel included with Haystack, but
@@ -38,8 +38,8 @@ requirements = [
 
     # Login and registration
 
-    'django-registration==3.1.2',
-    'django-user-accounts==3.0.2', # for changing email addresses
+    'django-registration==3.3',
+    'django-user-accounts==3.2.0', # for changing email addresses
 
     # For storing images on S3.
 
