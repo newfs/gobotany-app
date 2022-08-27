@@ -374,6 +374,9 @@ if IN_PRODUCTION:
     SESSION_COOKIE_SECURE = True
     CSRF_COOKIE_SECURE = True
 
+# New with Django 3.2: must explicitly define a primary key type
+DEFAULT_AUTO_FIELD = 'django.db.models.AutoField'
+
 # Uncomment the following logging configuration in order to
 # log all SQL queries to the console, for debugging purposes.
 #LOGGING = {
