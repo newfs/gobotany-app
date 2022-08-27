@@ -102,7 +102,7 @@ exception, because the database tables that it needs have not yet been
 created.  To set up the database, run these commands:
 
     heroku config:add DJANGO_SETTINGS_MODULE=gobotany.settings
-    heroku run django-admin.py syncdb --noinput
+    heroku run django-admin syncdb --noinput
     heroku run python -m gobotany.core.importer zipimport
     heroku run bin/import-images.sh
     heroku run bin/import-dkey.sh
@@ -123,7 +123,7 @@ minutes to make sure the change has the chance to propagate to WebSolr's
 servers), you can build the Solr index and thereby activate the Go
 Botany site's search field:
 
-    heroku run django-admin.py rebuild_index --noinput
+    heroku run django-admin rebuild_index --noinput
 
 
 ## Deploying to the Development server
