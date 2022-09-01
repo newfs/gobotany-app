@@ -24,7 +24,10 @@ from selenium import webdriver
 from selenium.common.exceptions import (
     NoSuchElementException, StaleElementReferenceException
     )
+from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
+from selenium.webdriver.support import expected_conditions as EC
+from selenium.webdriver.support.ui import WebDriverWait
 
 class FunctionalTestCase(TestCase):
 
@@ -57,12 +60,14 @@ class FunctionalTestCase(TestCase):
 
     def setUp(self):
         self.driver.implicitly_wait(0)  # reset to zero wait time
-        self.css1 = self.driver.find_element_by_css_selector
 
     # Helpers
+    def css1(self, *args, **kw):
+        element = self.driver.find_element(By.CSS_SELECTOR, *args, **kw)
+        return element
 
     def css(self, *args, **kw):
-        elements = self.driver.find_elements_by_css_selector(*args, **kw)
+        elements = self.driver.find_elements(By.CSS_SELECTOR, *args, **kw)
         return [ e for e in elements if self.is_displayed(e) ]
 
     def url(self, path):
@@ -1216,7 +1221,7 @@ class PlantPreviewCharactersFunctionalTests(FunctionalTestCase):
         self.hide_django_debug_toolbar()
         species = self.SPECIES[subgroup]
         for s in species:
-            species_link = page.find_element_by_partial_link_text(s)
+            species_link = page.find_element(By.PARTIAL_LINK_TEXT, s)
             time.sleep(1)   # Wait a bit for animation to finish
             species_link.click()
             self.wait_on(13, self.css1, self.PLANT_PREVIEW_LIST_ITEMS_CSS)
@@ -1231,7 +1236,7 @@ class PlantPreviewCharactersFunctionalTests(FunctionalTestCase):
         page = self._get_subgroup_page(subgroup)
         time.sleep(0.5)   # Wait a bit for results finish loading
         self.hide_django_debug_toolbar()
-        species_link = page.find_element_by_partial_link_text(species)
+        species_link = page.find_element(By.PARTIAL_LINK_TEXT, species)
         time.sleep(1)   # Wait a bit for animation to finish
         species_link.click()
         self.wait_on(13, self.css1, self.PLANT_PREVIEW_LIST_ITEMS_CSS)
@@ -1245,7 +1250,7 @@ class PlantPreviewCharactersFunctionalTests(FunctionalTestCase):
             char_name = char_names[index]
             char_value = char_values[index]
             actual_values = []
-            ul_items = char_value.find_elements_by_css_selector('li')
+            ul_items = char_value.find_elements(By.CSS_SELECTOR, 'li')
             if len(ul_items) == 0:
                 # Single character value.
                 actual_values.append(char_value.text)
@@ -1412,12 +1417,14 @@ class ResultsPageStateFunctionalTests(FunctionalTestCase):
 
     def test_filters_load_with_no_hash(self):
         page = self.get('/ferns/lycophytes/')
-        self.wait_on(10, self.css1, 'div.plant.in-results')
+        wait = WebDriverWait(self.driver, 10)
+        element = wait.until(EC.presence_of_element_located(
+            (By.CSS_SELECTOR, 'div.plant.in-results')))
         self.css1('#intro-overlay .continue').click()
         time.sleep(0.5)   # Wait a bit before proceeding
-        self.assertTrue(page.find_element_by_xpath(
+        self.assertTrue(page.find_element(By.XPATH,
             '//li/a/span/*[text()="Habitat"]'))  # glossarized: extra el.
-        self.assertTrue(page.find_element_by_xpath(
+        self.assertTrue(page.find_element(By.XPATH,
             '//li/a/span[text()="New England state"]'))
 
     def test_filters_load_from_url_hash(self):
@@ -1435,37 +1442,43 @@ class ResultsPageStateFunctionalTests(FunctionalTestCase):
         url = ('/ferns/lycophytes/#_filters=habitat_general,'
                'state_distribution,family,genus')
         page = self.get(url)
-        self.wait_on(10, self.css1, 'div.plant.in-results')
+        wait = WebDriverWait(self.driver, 10)
+        element = wait.until(EC.presence_of_element_located(
+            (By.CSS_SELECTOR, 'div.plant.in-results')))
         # When setting up the page from the URL hash, there is no intro
         # overlay, so no need to wait for it as usual. But we do have to
         # wait on glossarization, so:
-        self.wait_on(10, page.find_element_by_xpath, # glossarized: extra el.
-                     '//li/a/span/*[text()="Habitat"]')
+        element = wait.until(EC.presence_of_element_located((By.XPATH,
+            '//li/a/span/*[text()="Habitat"]'))) # glossarized: extra el.
         # Then it is safe to:
-        self.assertTrue(page.find_element_by_xpath(
+        self.assertTrue(page.find_element(By.XPATH,
             '//li/a/span[text()="New England state"]'))
 
     def test_set_family_from_url_hash(self):
         url = ('/ferns/lycophytes/#_filters=habitat_general,'
                'state_distribution&family=Isoetaceae')
         page = self.get(url)
-        self.wait_on(10, self.css1, 'div.plant.in-results')
+        wait = WebDriverWait(self.driver, 10)
+        element = wait.until(EC.presence_of_element_located(
+            (By.CSS_SELECTOR, 'div.plant.in-results')))
         # Verify the species are filtered after waiting a bit.
         x1 = '//span[@class="species-count" and text()="3"]'
         x2 = '//select/option[@selected="selected" and @value="Isoetaceae"]'
-        self.wait_on(10, page.find_element_by_xpath, x1)
-        self.wait_on(10, page.find_element_by_xpath, x2)
+        element = wait.until(EC.presence_of_element_located((By.XPATH, x1)))
+        element = wait.until(EC.presence_of_element_located((By.XPATH, x2)))
 
     def test_set_genus_from_url_hash(self):
         url = ('/ferns/lycophytes/#_filters=habitat_general,'
                'state_distribution&genus=Selaginella')
         page = self.get(url)
-        self.wait_on(10, self.css1, 'div.plant.in-results')
+        wait = WebDriverWait(self.driver, 10)
+        element = wait.until(EC.presence_of_element_located(
+            (By.CSS_SELECTOR, 'div.plant.in-results')))
         # Verify the species are filtered after waiting a bit.
         x1 = '//span[@class="species-count" and text()="2"]'
         x2 = '//select/option[@selected="selected" and @value="Selaginella"]'
-        self.wait_on(10, page.find_element_by_xpath, x1)
-        self.wait_on(10, page.find_element_by_xpath, x2)
+        element = wait.until(EC.presence_of_element_located((By.XPATH, x1)))
+        element = wait.until(EC.presence_of_element_located((By.XPATH, x2)))
 
 
 class SearchFunctionalTests(FunctionalTestCase):
