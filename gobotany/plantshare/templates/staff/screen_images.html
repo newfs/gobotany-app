@@ -34,7 +34,7 @@
         <td class="approval">{{ form.is_approved }}</td>
         <td class="thumb"><img src="{{ form.instance.thumb.url|secure_url }}"></td>
         <td>{{ form.instance.get_image_type_display }}</td>
-        <td>{{ form.instance.uploaded_by.get_full_name }}</td>
+        <td>{{ form.instance.uploaded_by }}</td>
         <td>{{ form.instance.uploaded|date:"m/d/Y" }}</td>
       </tr>
     {% empty %}
