@@ -13,7 +13,9 @@
             <div id="banner">
                 {% block images %}
                     {% for image in home_page_images %}
+                        {% if forloop.counter == show_image %}
                         <img src="{{ image.image.url|secure_url }}" alt="">
+                        {% endif %}
                     {% endfor %}
                 {% endblock %}
                 {% block images_overlay %}

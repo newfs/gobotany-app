@@ -140,10 +140,7 @@ class BasicFunctionalTests(FunctionalTestCase):
     def test_home_page_shows_one_banner_image(self):
         self.get('/')
         images = self.css('#banner > img')
-        # All but one or two (if a fade transition is ongoing) of the
-        # front-page images should be hidden; the css() function we just
-        # called returns only visible elements.
-        self.assertIn(len(images), (1, 2))
+        self.assertEqual(len(images), 1)
 
 
 class NavigationFunctionalTests(FunctionalTestCase):
