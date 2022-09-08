@@ -474,9 +474,11 @@ table.list th td:first-child { font-family: "Trebuchet MS", Helvetica, Arial, "L
 
 #home #update p { line-height: 150%; margin-bottom: 7px; margin-top: 0; text-align: center; }
 
-#home #update a { color: #122113; /* very dark green */ margin-left: 0.3rem; text-decoration: underline; }
+#home #update a { color: #122113; /* very dark green */ text-decoration: underline; }
 #home #update a:visited { color: #400c3f; /* very dark purple */ }
-#home #update a::after { content: " ➔"; }
+
+#home #update a.updates { margin-left: 0.3rem; }
+#home #update a.updates::after { content: " ➔"; }
 
 #home #update .badge { background-color: rgba(236, 243, 151, 0.9); letter-spacing: 0.05rem; margin-right: 0.3rem; padding: 0.1rem 0.3rem; text-transform: uppercase; }
 
