@@ -84,11 +84,13 @@
 }
 #home #update a {
     color: #122113; /* very dark green */
-    margin-left: 0.3rem;
     text-decoration: underline;
     &:visited {
         color: #400c3f; /* very dark purple */
     }
+}
+#home #update a.updates {
+    margin-left: 0.3rem;
     &::after {
         content: " ➔";
     }
