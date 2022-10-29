@@ -1,4 +1,8 @@
 require([
-], function () {
-    // Nothing at the moment
+    "site/news"
+], function (News) {
+    $(document).ready(function () {
+        var news = new News();
+        news.showDialog();
+    });
 });
