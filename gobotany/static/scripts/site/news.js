@@ -42,24 +42,25 @@ define([
     }
 
     News.prototype.initEvents = function () {
-        $(".dialog__ok").on("click", () => {
+        var that = this;
+        $(".dialog__ok").on("click", function () {
             // If the user agrees to sign up for newsletters, assume
             // they will indeed sign up, so don't show the dialog again.
-            this.dontShowAgain();
+            that.dontShowAgain();
             $(".dialog").hide();
-            window.location = this.subscribeUrl;
+            window.location = that.subscribeUrl;
             return false;
         });
-        $(".dialog__cancel, .dialog__close").on("click", () => {
+        $(".dialog__cancel, .dialog__close").on("click", function () {
             if ($("#dont-show-checkbox").prop("checked")) {
                 // If the user checked the checkbox to not show again, honor
                 // this whether they use either the cancel or close button.
-                this.dontShowAgain();
+                that.dontShowAgain();
             }
             else {
                 // The cancel or close buttons (without the checkbox),
                 // dismiss the dialog and suppress it for a period of time.
-                this.signupShown();
+                that.signupShown();
             }
             $(".dialog").hide();
             return false;
@@ -69,27 +70,24 @@ define([
     News.prototype.showDialog = function () {
         var shouldShow = this.shouldShowDialog();
         if (shouldShow) {
-            $("body").append(`<div class='dialog'>
-                <form method="GET" action="">
-                    <h2>News from Native Plant Trust</h2>
-                    <p>Sign up for email newsletters
-                        from Native Plant Trust about
-                        conservation, horticulture, programs, and more.</p>
-                    <p>
-                        <button class="dialog__ok">Sign Up</button>
-                        <button class="dialog__cancel">Not Now</button>
-                        <label class="dialog__check">
-                            <input id="dont-show-checkbox"
-                                type="checkbox">Don't show again</input>
-                        </label>
-                    </p>
-                </form>
-                <button class="dialog__close" aria-label="Close">×</button>
-                </div>`);
+            $("body").append("<div class='dialog'>" +
+                "<form method='GET' action=''>" +
+                    "<h2>News from Native Plant Trust</h2>" +
+                    "<p>Sign up for email newsletters from Native Plant " +
+                        "Trust about conservation, horticulture, " +
+                        "programs, and more.</p>" +
+                    "<p><button class='dialog__ok'>Sign Up</button>" +
+                        "<button class='dialog__cancel'>Not Now</button>" +
+                        "<label class='dialog__check'>" +
+                            "<input id='dont-show-checkbox' " +
+                                "type='checkbox'>Don't show again</input>" +
+                        "</label></p></form>" +
+                "<button class='dialog__close' " +
+                    "aria-label='Close'>×</button></div>");
 
             this.initEvents();
         }
-    };
+    }
 
     return News;
 });
