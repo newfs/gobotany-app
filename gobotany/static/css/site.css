@@ -144,6 +144,25 @@ div.popup a:hover { color: #27610a; }
 @media only screen and (max-width: 600px) { #top-message { flex-direction: column; padding: 1em 1.5em 0.4em; }
   #top-message p { margin-bottom: 0.5em; margin-top: 0; }
   #top-message .controls { justify-content: space-between; margin-bottom: 0.5em; width: 100%; } }
+/* For newsletter sign-up dialog */
+.dialog { background-color: #feffef; box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px 0px; bottom: 0.5rem; color: #000; display: flex; font-family: "Trebuchet MS", sans-serif; font-size: 16px; max-width: 26rem; padding: 1rem 2rem; position: fixed; right: 0.5rem; z-index: 50; }
+
+.dialog h2 { color: #000; font-size: 24px; margin: 20px 0; padding: 0; }
+
+.dialog p { line-height: 1.4; }
+
+.dialog__ok { background: #333; border: 1px solid #333; color: #fff; display: inline-block; font-family: inherit; font-size: 1rem; margin-bottom: 0.5rem; margin-right: 0.5rem; min-width: 100px; padding: 0.5rem 1rem; text-align: center; text-decoration: none; white-space: nowrap; }
+
+.dialog__cancel { background-color: transparent; border: 1px solid gray; font-family: inherit; font-size: 1rem; margin-bottom: 0.5rem; margin-right: 2rem; min-width: 100px; padding: 0.5rem 1rem; white-space: nowrap; }
+
+.dialog__ok:focus, .dialog__ok:hover, .dialog__cancel:focus, .dialog__cancel:hover { outline: 3px solid #666; outline-offset: 3px; }
+
+.dialog__check { display: inline-block; font-size: 0.8rem; margin-top: 1.5rem; white-space: nowrap; }
+
+.dialog__check input { margin-right: 0.25rem; }
+
+.dialog__close { background-color: transparent; border: 0; color: #000; font-size: 1.5rem; height: 24px; margin-right: -14px; padding: 0; width: 24px; }
+
 /* Site-wide styles */
 body { background-color: #f8eeda; color: #000; font-family: Verdana, Geneva, "Lucida Sans Unicode", sans-serif; font-size: 81.25%; margin: 0; }
 
@@ -474,9 +493,11 @@ table.list th td:first-child { font-family: "Trebuchet MS", Helvetica, Arial, "L
 
 #home #update p { line-height: 150%; margin-bottom: 7px; margin-top: 0; text-align: center; }
 
-#home #update a { color: #122113; /* very dark green */ margin-left: 0.3rem; text-decoration: underline; }
+#home #update a { color: #122113; /* very dark green */ text-decoration: underline; }
 #home #update a:visited { color: #400c3f; /* very dark purple */ }
-#home #update a::after { content: " ➔"; }
+
+#home #update a.updates { margin-left: 0.3rem; }
+#home #update a.updates::after { content: " ➔"; }
 
 #home #update .badge { background-color: rgba(236, 243, 151, 0.9); letter-spacing: 0.05rem; margin-right: 0.3rem; padding: 0.1rem 0.3rem; text-transform: uppercase; }
 

@@ -18,7 +18,6 @@
         <entry>
             <title>{{ plant.scientific_name }} ({% for common_name in plant.common_names.all %}{% if not forloop.first %}, {% endif %}{{ common_name }}{% endfor %})</title>
             <id>https://{{ request.META.HTTP_HOST }}{{ plant.url }}</id>
-            <published>{{ plant.post_datetime }}</published>
             <updated>{{ plant.post_datetime }}</updated>
             <content type="xhtml">
                 <div xmlns="http://www.w3.org/1999/xhtml">
@@ -28,7 +27,7 @@
                             style="float: left; margin-right: 10px" />
                     {% endif %}
                     <p>{{ plant.facts }}</p>
-                    <p><a href="https://{{ request.META.HTTP_HOST }}{{ plant.url }}">Learn more about this plant</a></p>
+                    <p><a href="https://{{ request.META.HTTP_HOST }}{{ plant.url }}">Full profile for this plant</a></p>
                 </div>
             </content>
         </entry>    

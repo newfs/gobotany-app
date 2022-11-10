@@ -78,7 +78,7 @@ ACTIONS = schema, csv, images, dkey, solr
 # Helpers.
 
 def admin(cmd):
-    run('django-admin.py {} --settings gobotany.settings'.format(cmd))
+    run('django-admin {} --settings gobotany.settings'.format(cmd))
 
 def run(cmdline):
     print

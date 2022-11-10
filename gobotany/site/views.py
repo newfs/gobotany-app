@@ -5,6 +5,7 @@ import re
 import string
 
 from datetime import date
+from random import randint
 
 from django.conf import settings
 from django.core.exceptions import ObjectDoesNotExist
@@ -43,6 +44,9 @@ def home_view(request):
     # Get home page images for the partner
     home_page_images = HomePageImage.objects.filter(partner_site=partner)
 
+    # Select one of the images to show at random
+    show_image = randint(1, len(home_page_images))
+
     # Get or generate today's Plant of the Day, if appropriate.
     plant_of_the_day = PlantOfTheDay.get_by_date.for_day(
         date.today(), partner.short_name)
@@ -64,6 +68,7 @@ def home_view(request):
     return render_per_partner('home.html', {
             'highlight': highlight,
             'home_page_images': home_page_images,
+            'show_image': show_image,
             'plant_of_the_day': plant_of_the_day_taxon,
             'plant_of_the_day_image': plant_of_the_day_image,
             }, request)

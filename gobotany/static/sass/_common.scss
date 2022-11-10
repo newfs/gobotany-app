@@ -461,3 +461,81 @@ div.popup a {
         width: 100%;
     }
 }
+
+/* For newsletter sign-up dialog */
+.dialog {
+    background-color: #feffef;
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px 0px;
+    bottom: 0.5rem;
+    color: #000;
+    display: flex;
+    font-family: "Trebuchet MS", sans-serif;
+    font-size: 16px;
+    max-width: 26rem;
+    padding: 1rem 2rem;
+    position: fixed;
+    right: 0.5rem;
+    z-index: 50;
+}
+.dialog h2 {
+    color: #000;
+    font-size: 24px;
+    margin: 20px 0;
+    padding: 0;
+}
+.dialog p {
+
+    line-height: 1.4;
+}
+.dialog__ok {
+    background: #333;
+    border: 1px solid #333;
+    color: #fff;
+    display: inline-block;
+    font-family: inherit;
+    font-size: 1rem;
+    margin-bottom: 0.5rem;
+    margin-right: 0.5rem;
+    min-width: 100px;
+    padding: 0.5rem 1rem;
+    text-align: center;
+    text-decoration: none;
+    white-space: nowrap;
+}
+.dialog__cancel {
+    background-color: transparent;
+    border: 1px solid gray;
+    font-family: inherit;
+    font-size: 1rem;
+    margin-bottom: 0.5rem;
+    margin-right: 2rem;
+    min-width: 100px;
+    padding: 0.5rem 1rem;
+    white-space: nowrap;
+}
+.dialog__ok:focus,
+.dialog__ok:hover,
+.dialog__cancel:focus,
+.dialog__cancel:hover {
+    outline: 3px solid #666;
+    outline-offset: 3px;
+}
+.dialog__check {
+    display: inline-block;
+    font-size: 0.8rem;
+    margin-top: 1.5rem;
+    white-space: nowrap;
+}
+.dialog__check input {
+    margin-right: 0.25rem;
+}
+.dialog__close {
+    background-color: transparent;
+    border: 0;
+    color: #000;
+    font-size: 1.5rem;
+    height: 24px;
+    margin-right: -14px;
+    padding: 0;
+    width: 24px;
+}

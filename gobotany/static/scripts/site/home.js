@@ -1,6 +1,10 @@
 require([
-    'util/fade'
-], function (fade_next_banner_image) {
-    var FADE_INTERVAL = 15 * 1000; // Includes the fade itself
-    setInterval(fade_next_banner_image, FADE_INTERVAL);
+    "util/news"
+], function (News) {
+    $(document).ready(function () {
+        if ($("body.home").length > 0) {   // Only show on home page for now
+            var news = new News();
+            news.showDialog();
+        }
+    });
 });

@@ -37,8 +37,12 @@ then
 Error: The "pylibmc" library needs to be installed in your system Python.
 
        Mac OS with MacPorts:  sudo port install py38-pylibmc
-       (do port search pylibmc to see if a py39 version has become available)
-        
+       (do port search pylibmc to see if a py39 or py310 version is available)
+
+       or:
+
+       pip install pylibmc==1.6.2
+
 EOF
     exit 1
 fi
@@ -49,7 +53,7 @@ then
 
 Error: The "libmagic" library needs to be installed on your system.
 
-       Mac OS with MacPorts:  sudo port install libmagic
+       Mac OS with MacPorts:  sudo port install py-magic
 
 EOF
     exit 1

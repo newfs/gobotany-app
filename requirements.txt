@@ -10,4 +10,4 @@
 # file, then it will fail to provide the library that this dependency
 # needs in order to compile.
 
-pylibmc==1.5.2
+pylibmc==1.6.2
