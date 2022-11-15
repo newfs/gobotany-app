@@ -270,7 +270,7 @@ DEFAULT_FROM_EMAIL = 'no-reply@nativeplanttrust.org'
 EMAIL_HOST_USER = os.environ.get('SENDGRID_USERNAME', '')
 EMAIL_HOST_PASSWORD = os.environ.get('SENDGRID_PASSWORD', '')
 if EMAIL_HOST_USER:
-    USE_TLS = True
+    USE_SSL = True
 
 # For django-user-accounts
 ACCOUNT_EMAIL_CONFIRMATION_EXPIRE_DAYS = 3
