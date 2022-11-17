@@ -365,9 +365,9 @@ if IN_PRODUCTION:
 # agreed to the PlantShare Terms of Agreement.
 AGREED_TO_TERMS_GROUP = 'Agreed to PlantShare Terms'
 
-ADMINS = [
-    ('Go Botany Dev', 'gobotanydev@nativeplanttrust.org')
-]
+ADMINS = (
+    ('Go Botany Dev', 'gobotanydev@nativeplanttrust.org'),
+)
 
 if IN_PRODUCTION:
     SECURE_SSL_REDIRECT = True   # Force HTTPS
