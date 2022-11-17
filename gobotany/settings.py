@@ -366,7 +366,7 @@ if IN_PRODUCTION:
 AGREED_TO_TERMS_GROUP = 'Agreed to PlantShare Terms'
 
 ADMINS = (
-    ('Go Botany Dev', 'gobotanydev@nativeplanttrust.org'),
+    #('Go Botany Dev', 'gobotanydev@nativeplanttrust.org'),
 )
 
 if IN_PRODUCTION:
