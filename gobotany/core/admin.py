@@ -705,8 +705,8 @@ class DistributionAdmin(_Base):
 
         if not form:
             form = self.RenameRecordsForm(
-                initial={'_selected_action': request.POST.getlist(
-                    admin.ACTION_CHECKBOX_NAME)}
+                initial={'_selected_action': queryset.values_list('id',
+                    flat=True)}
                 )
 
         return render(request,
