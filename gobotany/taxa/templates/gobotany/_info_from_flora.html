@@ -1,9 +1,9 @@
 {% load dkey_filters %}
     {% if dkey_page %}
         <div id="info-dkey">
-            <h2 id="dkey">From the dichotomous key of
-                <a href="http://www.nativeplanttrust.org/for-your-garden/books/"
-                    >Flora Novae Angliae</a></h2>
+            <h2 id="dkey">From
+                <i><a href="http://www.nativeplanttrust.org/for-your-garden/books/"
+                    >Flora Novae Angliae</a></i> dichotomous key</h2>
             <div>
                 {{ dkey_page.text|discard_floating_figures|render_figure_links|safe }}
                 {% for hybrid in dkey_hybrids %}

@@ -178,7 +178,7 @@ def _format_character_value(character_value):
 
 
 @vary_on_headers('Host')
-def species_view(request, genus_slug, epithet):
+def species_view(request, genus_slug, epithet, template_name="species1.html"):
 
     COMPACT_MULTIVALUE_CHARACTERS = ['Habitat', 'New England state',
                                      'Specific Habitat']
@@ -313,7 +313,7 @@ def species_view(request, genus_slug, epithet):
     conservation_statuses = sorted(statuses_state_names,
         key=lambda k: (k['variety_subspecies_hybrid'], k['state']))
 
-    return render_per_partner('species.html', {
+    return render_per_partner(template_name, {
            'pilegroup': pilegroup,
            'pile': pile,
            'scientific_name': scientific_name,
@@ -337,6 +337,8 @@ def species_view(request, genus_slug, epithet):
            'conservation_statuses': conservation_statuses,
            'prior_signup_detected': prior_signup_detected(request),
            }, request)
+
+
 
 
 # Redirect some URL variants with an uppercase family or genus name. (#495)

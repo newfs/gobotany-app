@@ -84,6 +84,65 @@ body#genus {
     }
 }
 
+
+/* New species page layout */
+
+body.species2 #main {
+    background: none !important;
+}
+
+body.species2 #main #breadcrumb,
+body.species2 #main #name,
+body.species2 #main .img-gallery,
+body.species2 #main #images-note,
+body.species2 #main #partner,
+body.species2 #main #facts,
+body.species2 #main #habitat,
+body.species2 #main #chars,
+body.species2 #main #wetland,
+body.species2 #main #status,
+body.species2 #main #info-dkey {
+    clear: reset !important;
+    margin-left: 0 !important;
+}
+body.species2 #main #habitat p {
+    margin-bottom: 0;
+}
+body.species2 .maps {
+    padding: 8px 0 4px;
+}
+body.species2 #maps {
+    position: unset !important;
+}
+body.species2 .section {
+    padding-top: 0 !important;
+}
+/* large screens */
+@media only screen and (min-width: 601px) {
+    body.species2 .info {
+        display: grid;
+        gap: 0 20px;
+        grid-template-columns: 3fr 1fr;
+    }
+    body.species2 #breadcrumb {
+        margin-top: 0 !important;
+    }
+    body.species2 .maps {
+        padding: 0;
+    }
+    body.species2 #maps {
+        border: 1px solid #c3d941 !important;
+        padding-bottom: 12px;
+        padding-top: 12px;
+    }
+    body.species2 .section h2 {
+        font-size: 1.2em;
+    }
+}
+
+/* End new species page layout */
+
+
 body#species #main {
     background: url(/static/images/layout/sidebar-bg.png) repeat-y;
 }
@@ -154,7 +213,7 @@ body#species #side {
 body#species #side dt, body#species #side dd {
     display: inline-block;
 }
-body#species #side .lookalikes {
+body#species .lookalikes {
     dl {
         line-height: 20px;
         margin: 0;
@@ -176,7 +235,8 @@ body#species #side .help {
 body#species #side .get-help-btn {
     margin: 0 0 0 90px;
 }
-body#species #side li {
+body#species #side li,
+body.species .synonyms {
     line-height: 16px;
     list-style-type: none;
 }
@@ -462,6 +522,7 @@ $mini-table-font-size: 10px;
             border: 1px solid $border-green;
             padding-left: 16px;
             padding-right: 16px;
+            padding-top: 6px;
             z-index: 10;
         }
         .definitions-link, .found-plant {

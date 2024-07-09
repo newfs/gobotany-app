@@ -8,8 +8,14 @@ urlpatterns = [
         name='taxa-family'),
     path('genus/<slug:genus_slug>/', views.genus_view,
         name='taxa-genus'),
+
+    # Old species page layout, can be removed soon
+    path('species1/<slug:genus_slug>/<slug:epithet>/', views.species_view,
+        name='taxa-species1'),
+        
+    # New species page layout
     path('species/<slug:genus_slug>/<slug:epithet>/', views.species_view,
-        name='taxa-species'),
+        {"template_name": "species.html"}, name='taxa-species'),
 
     # Support "hackable" URL
     path('species/<slug:genus_slug>/', RedirectView.as_view(

@@ -633,6 +633,26 @@ body#genus ul.species { font-size: 14px; list-style: none; }
 body#genus ul.species li { margin: 0 0 5px 0; }
 body#genus p.family { font-size: 14px; margin: 0; }
 
+/* New species page layout */
+body.species2 #main { background: none !important; }
+
+body.species2 #main #breadcrumb, body.species2 #main #name, body.species2 #main .img-gallery, body.species2 #main #images-note, body.species2 #main #partner, body.species2 #main #facts, body.species2 #main #habitat, body.species2 #main #chars, body.species2 #main #wetland, body.species2 #main #status, body.species2 #main #info-dkey { clear: reset !important; margin-left: 0 !important; }
+
+body.species2 #main #habitat p { margin-bottom: 0; }
+
+body.species2 .maps { padding: 8px 0 4px; }
+
+body.species2 #maps { position: unset !important; }
+
+body.species2 .section { padding-top: 0 !important; }
+
+/* large screens */
+@media only screen and (min-width: 601px) { body.species2 .info { display: grid; gap: 0 20px; grid-template-columns: 3fr 1fr; }
+  body.species2 #breadcrumb { margin-top: 0 !important; }
+  body.species2 .maps { padding: 0; }
+  body.species2 #maps { border: 1px solid #c3d941 !important; padding-bottom: 12px; padding-top: 12px; }
+  body.species2 .section h2 { font-size: 1.2em; } }
+/* End new species page layout */
 body#species #main { background: url(/static/images/layout/sidebar-bg.png) repeat-y; }
 
 body#species #main { /* layout: right-side content sections */ }
@@ -659,15 +679,15 @@ body#species #side { top: 800px; /* remaining side content is positioned further
 
 body#species #side dt, body#species #side dd { display: inline-block; }
 
-body#species #side .lookalikes dl { line-height: 20px; margin: 0; }
-body#species #side .lookalikes dt { font-weight: bold; margin: 2px 0; display: block; }
-body#species #side .lookalikes dd { margin: 0 0 6px 0; }
+body#species .lookalikes dl { line-height: 20px; margin: 0; }
+body#species .lookalikes dt { font-weight: bold; margin: 2px 0; display: block; }
+body#species .lookalikes dd { margin: 0 0 6px 0; }
 
 body#species #side .help { float: left; line-height: 28px; margin-right: 12px; }
 
 body#species #side .get-help-btn { margin: 0 0 0 90px; }
 
-body#species #side li { line-height: 16px; list-style-type: none; }
+body#species #side li, body.species .synonyms { line-height: 16px; list-style-type: none; }
 
 body#species #side a { margin-left: 0; }
 
@@ -744,7 +764,7 @@ body#species #info-dkey b { color: #554e16; }
   body#species #main .section.help { display: none; }
   body#species #main #maps, body#species #main #side { position: static; }
   body#species #main #maps h2, body#species #main #side h2 { margin: 8px 0; }
-  body#species #main #maps { background: #fff; border: 1px solid #c3d941; padding-left: 16px; padding-right: 16px; z-index: 10; }
+  body#species #main #maps { background: #fff; border: 1px solid #c3d941; padding-left: 16px; padding-right: 16px; padding-top: 6px; z-index: 10; }
   body#species #main .definitions-link, body#species #main .found-plant { font-size: 10px; line-height: 14px; }
   body#species #main #side h2 { font-size: 16px; margin-top: 14px; }
   body#species #main #species-images .scrollableArea a { border-right: 20px solid #f8eeda; }
