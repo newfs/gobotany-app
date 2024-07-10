@@ -640,7 +640,7 @@ body.species2 #main #breadcrumb, body.species2 #main #name, body.species2 #main 
 
 body.species2 #main #habitat p { margin-bottom: 0; }
 
-body.species2 .maps { padding: 8px 0 4px; }
+body.species2 .maps { padding: 16px 0 4px; }
 
 body.species2 #maps { position: unset !important; }
 
@@ -1986,7 +1986,7 @@ header.partner-site nav li a { padding: 5px 32px 0; /* fewer sections, more hori
   #breadcrumb a:active { background: #27610a; color: #fff; }
   h1 { font-size: 18px; margin: 6px 0; }
   h2 { font-size: 16px; }
-  h3 { font-size: 14px; }
+  h3 { font-size: 15px; }
   header nav { background: #21555c; border-radius: 0; clear: left; height: 32px; padding: 0; }
   header nav > a { background: #437829; border: 1px solid #437829; border-radius: 0.3em; display: inline-block; font-size: 1.2em; margin: 0 0.5em; padding: 0.2em 1em; }
   header nav #search { margin-left: 0.5em; margin-right: 0.5em; }
