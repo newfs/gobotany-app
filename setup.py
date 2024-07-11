@@ -2,9 +2,9 @@ from distutils.core import setup
 from setuptools import find_packages
 
 requirements = [
-    'django==3.2.15',
+    'django==3.2.25',
 
-    'Pillow==9.1.1',
+    'Pillow==10.3.0',
     'bleach==5.0.1',
     'cssselect==1.1.0',
     'django-debug-toolbar==3.6.0',
@@ -17,7 +17,7 @@ requirements = [
     # no longer shows the Haystack queries, so it was removed.
 
     'django-imagekit==4.0.2',
-    'django-tinymce==3.4.0',
+    'django-tinymce==4.1.0',
     'inflect',
     'lxml==4.9.1',
     'psycopg2==2.9.2',
@@ -49,7 +49,7 @@ requirements = [
 
     # Heroku and deployment
 
-    'gunicorn==20.0.4',
+    'gunicorn==22.0.0',
     'newrelic',
     'python-magic==0.4.24',
     's3cmd==2.2.0',
