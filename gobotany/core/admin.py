@@ -1,5 +1,7 @@
 # -*- encoding: utf-8 -*-
 
+from operator import attrgetter
+
 from django import forms
 from django.conf import settings
 from django.contrib import admin, messages
@@ -477,9 +479,17 @@ class ContentImageAdmin(_Base):
     search_fields = ('image', 'alt', 'creator')
     list_display = ('alt', 'image', 'creator')
     list_display_links = ('alt', 'image', 'creator')
-    fields = ('alt', 'rank', 'image_type', 'content_type',
-        'object_id', 'creator', 'copyright', 'image')
-    readonly_fields = ('copyright',)
+    fields = ('alt', 'rank', 'image_type', 'content_type', 'object_id',
+        'taxon_lookup', 'creator', 'copyright', 'image')
+    readonly_fields = ('copyright', 'taxon_lookup')
+
+    def get_form(self, request, obj=None, **kwargs):
+        help_texts = {
+            'content_type': 'Usually set to: core | taxon',
+            'taxon_lookup': 'Use this to set the Object Id for a taxon',
+        }
+        kwargs.update({'help_texts': help_texts})
+        return super(ContentImageAdmin, self).get_form(request, obj, **kwargs)
 
     def copyright(self, obj):
         copyright_obj = models.CopyrightHolder.objects.get(coded_name=obj.creator)
@@ -489,6 +499,23 @@ class ContentImageAdmin(_Base):
             'Copyright Info for {0}'.format(obj.creator)
         )
         return mark_safe(markup)
+
+    def taxon_lookup(self, obj):
+        # Show a list of taxon ids as a lookup for object_id.
+        # Object_id doesn't have to refer to taxon (it can be a pile, etc.),
+        # but often does.
+        select_pairs = []
+        taxa = sorted(models.Taxon.objects.all(),
+            key=attrgetter('scientific_name'))
+        for taxon in taxa:
+            select_pairs.append((taxon.id, taxon.scientific_name))
+        options = ['<option value="{0}">{1} (id {0})</option>'.format(*pair)
+            for pair in select_pairs]
+        markup = '<select class="taxon-lookup">' + \
+            '<option value="">Select a taxon</option>\n' + \
+            '{}</select>'.format('\n'.join(options))
+        return mark_safe(markup)
+
 
 class CopyrightHolderAdmin(_Base):
     search_fields = ('coded_name', 'expanded_name', 'copyright')

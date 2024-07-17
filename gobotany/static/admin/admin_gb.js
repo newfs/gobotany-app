@@ -40,4 +40,23 @@ document.addEventListener("DOMContentLoaded", function (event) {
             django.jQuery('#id_state').focus();
         }
     }
+
+    // ContentImage change screen: customize to allow picking
+    // a taxon from a read-only select to populate object_id.
+
+    if (document.querySelector("body.model-contentimage.change-form")) {
+        let taxonLookup = document.querySelector(".taxon-lookup");
+        if (taxonLookup) {
+            taxonLookup.addEventListener("change", (event) => {
+                let taxonId = event.target.value;
+                if (taxonId > -1) {
+                    let objectIdField = document.querySelector(
+                        "input#id_object_id");
+                    if (objectIdField) {
+                        objectIdField.value = taxonId;
+                    }
+                }
+            });
+        }
+    }
 });

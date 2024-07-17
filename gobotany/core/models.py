@@ -483,7 +483,8 @@ class ContentImage(models.Model):
     image_type = models.ForeignKey(ImageType, verbose_name='image type',
         on_delete=models.PROTECT)
     content_type = models.ForeignKey(ContentType, on_delete=models.PROTECT)
-    object_id = models.PositiveIntegerField()
+    object_id = models.PositiveIntegerField(
+        help_text='Usually a Taxon id; refers to Content Type')
     content_object = GenericForeignKey('content_type', 'object_id')
 
     def thumb_small(self):
