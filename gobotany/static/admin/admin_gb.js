@@ -59,4 +59,33 @@ document.addEventListener("DOMContentLoaded", function (event) {
             });
         }
     }
+
+    // Lead change screen: customize to remove taxon label after
+    // changing the Goto Page value. This is because the pop-up dialog
+    // does not update the taxon label to the value just chosen, leading
+    // to confusion.
+    if (document.querySelector("body.model-lead.change-form")) {
+        let gotoPageInput = document.querySelector("#id_goto_page");
+
+        if (gotoPageInput) {
+            // Periodically check to see if the value has changed, because
+            // choosing a value from the pop-up dialog does not trigger
+            // a change event in the input box despite the value change.
+            let gotoPageValue = gotoPageInput.value;
+            let intervalId = setInterval(() => {
+                let currentValue = gotoPageInput.value;
+                if (currentValue !== gotoPageValue) {
+                    gotoPageValue = currentValue;
+
+                    // Remove the taxon label. It is two element nodes away
+                    // wrapped in a <strong> element.
+                    let relatedLookupLink = gotoPageInput.nextElementSibling;
+                    let taxonLabelElement = relatedLookupLink.nextElementSibling;
+                    taxonLabelElement.innerHTML = "";
+
+                    clearInterval(intervalId);
+                }
+            }, 500);
+        }
+    }
 });
