@@ -60,10 +60,22 @@ class LeadAdmin(GoBotanyModelAdmin):
         return super(LeadAdmin, self).formfield_for_dbfield(db_field,**kwargs)
 
     def response_change(self, request, obj):
-        # TODO: fix: using 'next' in URL bypasses 'Save and Continue Editing'
+        # If the response has a 'next' parameter, go to that page
+        # after saving. This is for being able to return to the D. Key Editor
+        # upon changing and saving a Lead.
         response = super(LeadAdmin, self).response_change(request, obj)
+        save_and_continue_pressed = '_continue' in request.POST
         if 'next' in request.GET:
-            return HttpResponseRedirect(request.GET['next'])
+            if save_and_continue_pressed:
+                # Add the 'next' parameter to the response URL so that
+                # when one eventually presses Save, it will still go back
+                # to the D. Key Editor.
+                return HttpResponseRedirect(
+                    response.url + '?next=' + request.GET['next'])
+            else:
+                # Redirect to the 'next' parameter URL, which will be to
+                # the D. Key Editor.
+                return HttpResponseRedirect(request.GET['next'])
         else:
             return response
 
