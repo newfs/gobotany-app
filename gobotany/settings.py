@@ -9,6 +9,14 @@ except:
 else:
     DEBUG_TOOLBAR_AVAILABLE = True
 
+# Temporarily handle 'force_text' having been removed in Django 4.0
+# (This can likely be removed after we can upgrade boto to boto3
+# and upgrade django-storages to >= 1.9
+import django
+from django.utils.encoding import force_str
+django.utils.encoding.force_text = force_str
+
+
 THIS_DIRECTORY = os.path.dirname(__file__)
 PROJECT_ROOT = os.path.abspath(THIS_DIRECTORY)
 gettext = lambda s: s

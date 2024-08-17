@@ -2,7 +2,7 @@ from distutils.core import setup
 from setuptools import find_packages
 
 requirements = [
-    'django==3.2.25',
+    'django==4.0',
 
     'Pillow==10.3.0',
     'bleach==5.0.1',
@@ -10,13 +10,13 @@ requirements = [
     'django-debug-toolbar==3.6.0',
     'django-extensions==3.2.0',
 
-    'django-haystack==3.0',
+    'django-haystack==3.2.1',
     # There is now a debug toolbar panel included with Haystack, but
     # unfortunately as of version 3.0 it needs fixes to work. The old
     # panel we used, django-haystack-panel, is a retired project and
     # no longer shows the Haystack queries, so it was removed.
 
-    'django-imagekit==4.0.2',
+    'django-imagekit==4.1.0',
     'django-tinymce==4.1.0',
     'inflect',
     'lxml==4.9.1',
@@ -44,7 +44,7 @@ requirements = [
     # For storing images on S3.
 
     'boto==2.49.0',
-    'django-storages==1.7.2',
+    'django-storages==1.8',
     'requests',
 
     # Heroku and deployment

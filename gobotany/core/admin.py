@@ -12,7 +12,7 @@ from django.template import Context, RequestContext, Template
 from django.template.defaultfilters import slugify
 from django.urls import reverse
 from django.utils.safestring import mark_safe
-from django.utils.translation import ugettext_lazy as _
+from django.utils.translation import gettext_lazy as _
 
 from gobotany.admin import GoBotanyModelAdmin
 from gobotany.core import models
