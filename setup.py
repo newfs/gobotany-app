@@ -16,7 +16,7 @@ requirements = [
     # panel we used, django-haystack-panel, is a retired project and
     # no longer shows the Haystack queries, so it was removed.
 
-    'django-imagekit==4.1.0',
+    'django-imagekit==5.0.0',
     'django-tinymce==4.1.0',
     'inflect',
     'lxml==4.9.1',
@@ -43,8 +43,9 @@ requirements = [
 
     # For storing images on S3.
 
-    'boto==2.49.0',
-    'django-storages==1.8',
+    'boto==2.49.0',   # for bin/s3imagecheck.py
+    'boto3==1.35.0',   # has replaced boto in the Django app
+    'django-storages==1.13.1',
     'requests',
 
     # Heroku and deployment

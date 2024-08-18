@@ -9,13 +9,6 @@ except:
 else:
     DEBUG_TOOLBAR_AVAILABLE = True
 
-# Temporarily handle 'force_text' having been removed in Django 4.0
-# (This can likely be removed after we can upgrade boto to boto3
-# and upgrade django-storages to >= 1.9
-import django
-from django.utils.encoding import force_str
-django.utils.encoding.force_text = force_str
-
 
 THIS_DIRECTORY = os.path.dirname(__file__)
 PROJECT_ROOT = os.path.abspath(THIS_DIRECTORY)
@@ -314,12 +307,13 @@ if 'MEMCACHIER_SERVERS' in os.environ:
 if 'test' in sys.argv:
     pass
 else:
-    DEFAULT_FILE_STORAGE = 'storages.backends.s3boto.S3BotoStorage'
+    DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
     AWS_ACCESS_KEY_ID = os.environ.get('AWS_ACCESS_KEY_ID', 'readonly')
     AWS_SECRET_ACCESS_KEY = os.environ.get('AWS_SECRET_ACCESS_KEY', 'readonly')
     AWS_STORAGE_BUCKET_NAME = os.environ.get('AWS_STORAGE_BUCKET_NAME', 'newfs')
     AWS_QUERYSTRING_AUTH = False
     AWS_S3_SECURE_URLS = True
+    AWS_DEFAULT_ACL = 'public-read'
 
 IS_AWS_AUTHENTICATED = 'test' not in sys.argv and (
     AWS_ACCESS_KEY_ID != 'readonly' and

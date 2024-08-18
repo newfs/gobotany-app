@@ -21,7 +21,7 @@ from imagekit.utils import get_field_info
 from imagekit.processors.resize import ResizeToFit, SmartResize
 from PIL import Image
 from PIL.ExifTags import TAGS
-from storages.backends.s3boto import S3BotoStorage
+from storages.backends.s3boto3 import S3Boto3Storage
 
 from gobotany.plantshare.utils import restrictions
 
@@ -296,7 +296,7 @@ if not settings.IN_PRODUCTION:
             base_url=urllib.parse.urljoin(settings.MEDIA_URL, 'upload_images/'))
 elif settings.IS_AWS_AUTHENTICATED:
     # Direct upload to S3
-    upload_storage = S3BotoStorage(location='upload_images',
+    upload_storage = S3Boto3Storage(location='upload_images',
             bucket=getattr(settings, 'AWS_STORAGE_BUCKET_NAME', 'newfs'))
 else:
     # Direct upload to S3

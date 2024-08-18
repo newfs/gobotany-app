@@ -7,7 +7,7 @@ from django.core.files.storage import FileSystemStorage, Storage
 from django.db import models
 from django.dispatch import receiver
 
-from storages.backends.s3boto import S3BotoStorage
+from storages.backends.s3boto3 import S3Boto3Storage
 
 # Models for data that pertain to the overall Go Botany site, but not
 # specifically plant data (the Django app "core") nor solely for
@@ -45,7 +45,7 @@ if not settings.IN_PRODUCTION:
         base_url=urllib.parse.urljoin(settings.MEDIA_URL, 'docs/'))
 elif settings.IS_AWS_AUTHENTICATED:
     # Direct upload to S3
-    docs_upload_storage = S3BotoStorage(location='docs',
+    docs_upload_storage = S3Boto3Storage(location='docs',
         bucket=getattr(settings, 'AWS_STORAGE_BUCKET_NAME', 'newfs'))
 else:
     # Direct upload to S3
