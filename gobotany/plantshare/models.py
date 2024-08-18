@@ -296,8 +296,7 @@ if not settings.IN_PRODUCTION:
             base_url=urllib.parse.urljoin(settings.MEDIA_URL, 'upload_images/'))
 elif settings.IS_AWS_AUTHENTICATED:
     # Direct upload to S3
-    upload_storage = S3Boto3Storage(location='upload_images',
-            bucket=getattr(settings, 'AWS_STORAGE_BUCKET_NAME', 'newfs'))
+    upload_storage = S3Boto3Storage(location='upload_images')
 else:
     # Direct upload to S3
     upload_storage = Storage()
