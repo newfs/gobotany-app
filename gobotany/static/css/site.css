@@ -1541,6 +1541,8 @@ body.plantshare#screen-images table.unscreened th.approval li label, body.plants
 body.plantshare#screen-images table.unscreened th.thumb, body.plantshare#screen-images table.unscreened td.thumb { width: 138px; }
 body.plantshare#screen-images div.form-control { margin: 0 30px; }
 
+body.plantshare.screen-images form label { width: auto; }
+
 /* Begin media queries styles for PlantShare. */
 /* Portrait-orientation styles */
 @media only screen and (max-width: 400px) { body.plantshare .box, body.plantshare .profile { width: 302px; }
