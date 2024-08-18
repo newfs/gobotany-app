@@ -47,7 +47,7 @@
                   <td class="checklistview-name"><a
                       href="{% url 'ps-checklist' checklist.pk %}">{{ checklist.name }}</a>
                   </td>
-                  {% ifequal user.username checklist.owner.name %}
+                  {% if user.username == checklist.owner.name %}
                   <!--td class="owner">Me</td-->
                   <td class="last">
                       <a href="{% url 'ps-checklist-edit' checklist.pk %}">Edit</a>
@@ -59,7 +59,7 @@
                   {% else %}
                   <td class="owner">{{ checklist.owner.name }}</td>
                   <td class="last"><a href="{% url 'ps-checklist' checklist.pk %}">View List</a></td>
-                  {% endifequal %}
+                  {% endif %}
               </tr>
               {% endfor %}
           </tbody>
