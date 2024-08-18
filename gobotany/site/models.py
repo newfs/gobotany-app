@@ -45,8 +45,7 @@ if not settings.IN_PRODUCTION:
         base_url=urllib.parse.urljoin(settings.MEDIA_URL, 'docs/'))
 elif settings.IS_AWS_AUTHENTICATED:
     # Direct upload to S3
-    docs_upload_storage = S3Boto3Storage(location='docs',
-        bucket=getattr(settings, 'AWS_STORAGE_BUCKET_NAME', 'newfs'))
+    docs_upload_storage = S3Boto3Storage(location='docs')
 else:
     # Direct upload to S3
     docs_upload_storage = Storage()
