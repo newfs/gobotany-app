@@ -266,7 +266,7 @@ LOGIN_URL = '/plantshare/accounts/login/'
 # python -m smtpd -n -c DebuggingServer localhost:1025
 EMAIL_HOST = os.environ.get('EMAIL_HOST', '')
 EMAIL_PORT = os.environ.get('EMAIL_PORT', '')
-DEFAULT_FROM_EMAIL = 'no-reply@nativeplanttrust.org'
+DEFAULT_FROM_EMAIL = 'gobotany@nativeplanttrust.org'
 # SendGrid Heroku add-on configuration
 EMAIL_HOST_USER = os.environ.get('SENDGRID_USERNAME', '')
 EMAIL_HOST_PASSWORD = os.environ.get('SENDGRID_PASSWORD', '')
