@@ -1521,6 +1521,13 @@ body.plantshare#screen-images {
     }
 }
 
+body.plantshare.screen-images {
+    form label {
+        width: auto;
+    }
+}
+
+
 /* Begin media queries styles for PlantShare. */
 
 /* Portrait-orientation styles */

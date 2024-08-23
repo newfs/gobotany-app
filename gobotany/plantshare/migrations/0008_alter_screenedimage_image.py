@@ -3,7 +3,7 @@
 from django.db import migrations
 import gobotany.plantshare.models
 import imagekit.models.fields
-import storages.backends.s3boto
+import storages.backends.s3boto3
 
 
 class Migration(migrations.Migration):
@@ -16,6 +16,6 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='screenedimage',
             name='image',
-            field=imagekit.models.fields.ProcessedImageField(storage=storages.backends.s3boto.S3BotoStorage(bucket='newfs', location='upload_images'), upload_to=gobotany.plantshare.models.rename_image_by_type),
+            field=imagekit.models.fields.ProcessedImageField(storage=storages.backends.s3boto3.S3Boto3Storage(bucket='newfs', location='upload_images'), upload_to=gobotany.plantshare.models.rename_image_by_type),
         ),
     ]

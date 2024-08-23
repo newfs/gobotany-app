@@ -694,8 +694,9 @@ def all_questions_by_year_view(request, year=None):
     """View for a list of all Questions and Answers for a year."""
 
     years = [str(dt.year) for dt in
-        Question.objects.datetimes('asked', 'year', order='DESC')]
-    # If this view was not called with a year, use the latest year.
+        Question.objects.answered().datetimes('asked', 'year', order='DESC')]
+    # If this view was not called with a year, use the most recent year that
+    # has an answered question.
     if not year:
         year = years[0]
 

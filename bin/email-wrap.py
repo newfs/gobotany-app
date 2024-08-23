@@ -68,7 +68,7 @@ if __name__ == '__main__':
     output_log = start_time + end_time + output.decode('utf-8') + \
         start_time + end_time
     
-    fromaddr = 'no-reply@nativeplanttrust.org'
+    fromaddr = 'gobotany@nativeplanttrust.org'
     toaddrs = mail_to.replace(',', ' ').split()
     message = '\r\n'.join((
             'To: {}'.format(', '.join(toaddrs)),

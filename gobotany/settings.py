@@ -9,6 +9,7 @@ except:
 else:
     DEBUG_TOOLBAR_AVAILABLE = True
 
+
 THIS_DIRECTORY = os.path.dirname(__file__)
 PROJECT_ROOT = os.path.abspath(THIS_DIRECTORY)
 gettext = lambda s: s
@@ -265,7 +266,7 @@ LOGIN_URL = '/plantshare/accounts/login/'
 # python -m smtpd -n -c DebuggingServer localhost:1025
 EMAIL_HOST = os.environ.get('EMAIL_HOST', '')
 EMAIL_PORT = os.environ.get('EMAIL_PORT', '')
-DEFAULT_FROM_EMAIL = 'no-reply@nativeplanttrust.org'
+DEFAULT_FROM_EMAIL = 'gobotany@nativeplanttrust.org'
 # SendGrid Heroku add-on configuration
 EMAIL_HOST_USER = os.environ.get('SENDGRID_USERNAME', '')
 EMAIL_HOST_PASSWORD = os.environ.get('SENDGRID_PASSWORD', '')
@@ -306,12 +307,13 @@ if 'MEMCACHIER_SERVERS' in os.environ:
 if 'test' in sys.argv:
     pass
 else:
-    DEFAULT_FILE_STORAGE = 'storages.backends.s3boto.S3BotoStorage'
+    DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
     AWS_ACCESS_KEY_ID = os.environ.get('AWS_ACCESS_KEY_ID', 'readonly')
     AWS_SECRET_ACCESS_KEY = os.environ.get('AWS_SECRET_ACCESS_KEY', 'readonly')
     AWS_STORAGE_BUCKET_NAME = os.environ.get('AWS_STORAGE_BUCKET_NAME', 'newfs')
     AWS_QUERYSTRING_AUTH = False
     AWS_S3_SECURE_URLS = True
+    AWS_DEFAULT_ACL = 'public-read'
 
 IS_AWS_AUTHENTICATED = 'test' not in sys.argv and (
     AWS_ACCESS_KEY_ID != 'readonly' and
