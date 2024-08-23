@@ -14,6 +14,6 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='document',
             name='upload',
-            field=models.FileField(storage=storages.backends.s3boto3.S3Boto3Storage(bucket='newfs', location='docs'), upload_to=''),
+            field=models.FileField(storage=storages.backends.s3boto3.S3Boto3Storage(location='docs'), upload_to=''),
         ),
     ]
