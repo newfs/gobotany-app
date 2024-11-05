@@ -55,6 +55,10 @@ requirements = [
     'newrelic',
     'python-magic==0.4.24',
     's3cmd==2.2.0',
+
+    # Local email testing
+
+    'aiosmtpd',   # has replaced Python's now-removed smtpd module
     ]
 
 dependency_links = [
