@@ -2,29 +2,46 @@
 
 import unittest
 
+from django.test import TestCase
 from django.test.client import Client
 
-from gobotany.libtest import FunctionalCase
+from gobotany.dkey import models
 
-# Uncomment the line below to skip tests that run against the real database.
-#@unittest.skip('Skipping tests that run against the real database')
-class HomeTests(FunctionalCase):
+class HomeTests(TestCase):
+    @classmethod
+    def setUpTestData(cls):
+        top_page = models.Page(chapter='', title='Key to the Families',
+            rank='top')
+        top_page.save()
+        group1 = models.Page(chapter='Key to the Families', title='Group 1',
+            rank='group')
+        group1.save()
+        family = models.Page(chapter='Monilophytes', title='Equisetaceae',
+            rank='family')
+        family.save()
+        genus = models.Page(chapter='Monilophytes', title='Equisetum',
+            rank='genus')
+        genus.save()
+        cls.client = Client()
 
     def test_home_page(self):
-        self.get('/dkey/')
+        response = self.client.get('/dkey/')
+        self.assertEqual(response.status_code, 200)
 
     def test_group_1(self):
-        self.get('/dkey/group-1/')
+        response = self.client.get('/dkey/group-1/')
+        self.assertEqual(response.status_code, 200)
 
     def test_family(self):
-        self.get('/dkey/equisetaceae/')
+        response = self.client.get('/dkey/equisetaceae/')
+        self.assertEqual(response.status_code, 200)
 
     def test_genus(self):
-        self.get('/dkey/equisetum/')
+        response = self.client.get('/dkey/equisetum/')
+        self.assertEqual(response.status_code, 200)
 
     def test_species(self):
         # No species-level pages in the D. Key itself. Links to site-wide
         # species pages.
-        client = Client()
-        response = client.get('/dkey/equisetum-hyemale/')
+        response = self.client.get('/dkey/equisetum-hyemale/')
         self.assertEqual(response.status_code, 404)
