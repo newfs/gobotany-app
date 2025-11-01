@@ -2219,7 +2219,7 @@ class PlainFile(object):
     def __str__(self):
         return self.path
 
-    def open(self, mode='rU'):
+    def open(self, mode='r'):
         try:
             f = open(self.path, mode, newline='', encoding='Windows-1252')
         except IOError:

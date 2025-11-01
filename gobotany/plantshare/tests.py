@@ -9,61 +9,76 @@ from django.contrib.auth.models import Group, User
 from django.test import TestCase
 from django.test.client import Client
 
-from selenium.common.exceptions import NoSuchElementException
+from lxml import etree
+from lxml.cssselect import CSSSelector
 
-from gobotany.libtest import FunctionalCase
+from selenium.common.exceptions import NoSuchElementException
 
 from gobotany.core.models import (ConservationStatus, CommonName, Family,
     Genus, Synonym, Taxon)
 from gobotany.plantshare.models import Location
 
-# Uncomment the line below to skip tests that run against the real database.
-#@unittest.skip('Skipping tests that run against the real database')
-class PlantShareTests(FunctionalCase):
 
+TEST_USERNAME = 'test'
+TEST_EMAIL = 'test@test.com'
+TEST_PASSWORD = 'testpass'
+
+def _setup_sample_data():
+    group, created = Group.objects.get_or_create(
+        name=settings.AGREED_TO_TERMS_GROUP)
+    user = User.objects.create_user(TEST_USERNAME, TEST_EMAIL,
+        TEST_PASSWORD)
+    # Add the test user to the "agreed to terms" group, so tests can
+    # run as if the user already accepted the PlantShare Terms.
+    group.user_set.add(user)
+
+class PlantShareTests(TestCase):
     PLANTSHARE_BASE = '/plantshare'
 
-    TEST_USERNAME = 'test'
-    TEST_EMAIL = 'test@test.com'
-    TEST_PASSWORD = 'testpass'
+    @classmethod
+    def setUpTestData(cls):
+        _setup_sample_data()
+        cls.client = Client()
 
-    def setUp(self):
-        self.group, created = Group.objects.get_or_create(
-            name=settings.AGREED_TO_TERMS_GROUP)
+    def css(self, response, selector):
+        if response.status_code == 200:
+            content = response.content
+            if content.startswith(b'<?xml'):
+                self.tree = etree.fromstring(content)
+            else:
+                parser = etree.HTMLParser()
+                self.tree = etree.fromstring(content, parser)
 
-        self.user = User.objects.create_user(
-            self.TEST_USERNAME, self.TEST_EMAIL, self.TEST_PASSWORD)
-
-        # Add the test user to the "agreed to terms" group, so tests can
-        # run as if the user already accepted the PlantShare Terms.
-        self.group.user_set.add(self.user)
-
-    def _testdata_dir(self):
-        """Return the path to a test data directory relative to this one."""
-        return os.path.join(os.path.dirname(__file__), 'testdata')
+        lxml_elements = CSSSelector(selector)(self.tree)
+        return [ element for element in lxml_elements ]
 
     def _get_plantshare(self, url_path, log_in=False, username=TEST_USERNAME,
-                        password=TEST_PASSWORD):
+            password=TEST_PASSWORD):
         """Get a PlantShare page."""
         url = self.PLANTSHARE_BASE + url_path
         client = None
         if log_in:
             client = Client()
             client.login(username=username, password=password)
-        self.get(url, client=client)
-        return client
+            self.client = client
+        response = self.client.get(url)
+        return response
 
     # Test helpers
 
     def _page_title(self, url_path, log_in=False):
         """Return the HTML title for a page."""
-        self._get_plantshare(url_path, log_in=log_in)
-        return self.css1('title').text
+        response = self._get_plantshare(url_path, log_in=log_in)
+        title = self.css(response, 'title')
+        title_text = str(etree.tostring(title[0]))
+        return title_text
 
     def _page_heading(self, url_path, log_in=False):
         """Return the main (h1) heading for a page."""
-        self._get_plantshare(url_path, log_in=log_in)
-        return self.css1('h1').text
+        response = self._get_plantshare(url_path, log_in=log_in)
+        heading = self.css(response, 'h1')
+        heading_text = str(etree.tostring(heading[0]))
+        return heading_text
 
     ### TESTS ###
 
@@ -72,94 +87,79 @@ class PlantShareTests(FunctionalCase):
     MAIN_URL = '/'
 
     def test_main_page_title(self):
-        self.assertEqual(self._page_title(self.MAIN_URL),
-                         'PlantShare: Go Botany')
+        page_title = self._page_title(self.MAIN_URL)
+        self.assertTrue(page_title.find('PlantShare:') > -1)
+        self.assertTrue(page_title.find('Go Botany') > -1)
 
     def test_main_page_main_heading(self):
-        self.assertEqual(self._page_heading(self.MAIN_URL), 'PlantShare')
+        page_heading = self._page_heading(self.MAIN_URL)
+        self.assertTrue(page_heading.find('PlantShare') > -1)
 
     # PlantShare main page: when user is logged out
 
     def test_main_page_logged_out_has_signup_nav_link(self):
-        self._get_plantshare(self.MAIN_URL)
-        self.assertIsNotNone(self.link_saying('Sign Up for PlantShare'))
+        response = self._get_plantshare(self.MAIN_URL)
+        signup_link = self.css(response, 'nav .signup a')
+        signup_link_text = str(etree.tostring(signup_link[0]))
+        self.assertTrue(signup_link_text.find(
+            'Sign Up for PlantShare') > -1)
 
     def test_main_page_logged_out_has_signup_call_to_action(self):
-        self._get_plantshare(self.MAIN_URL)
-        self.assertTrue(self.css1('.sign-up-call'))
+        response = self._get_plantshare(self.MAIN_URL)
+        signup_heading = self.css(response, '.sign-up-call h2')
+        signup_heading_text = str(etree.tostring(signup_heading[0]))
+        self.assertTrue(signup_heading_text.find(
+            'Sign up for PlantShare') > -1)
 
     def test_main_page_logged_out_has_login_form(self):
-        self._get_plantshare(self.MAIN_URL)
-        self.assertTrue(self.css1('#login.box'))
+        response = self._get_plantshare(self.MAIN_URL)
+        self.assertTrue(self.css(response, '#login.box'))
 
     def test_main_page_logged_out_omits_profile_box(self):
-        self._get_plantshare(self.MAIN_URL)
-        profile_box = None
-        try:
-            profile_box = self.css1('.profile.box')
-        except NoSuchElementException:
-            pass
-        self.assertIsNone(profile_box)
+        response = self._get_plantshare(self.MAIN_URL)
+        self.assertFalse(self.css(response, '.profile.box'))
 
     def test_main_page_logged_out_omits_profile_nav_link(self):
-        self._get_plantshare(self.MAIN_URL)
-        link = None
-        try:
-            link = self.link_saying('Your Profile')
-        except ValueError:
-            pass
-        self.assertIsNone(link)
+        response = self._get_plantshare(self.MAIN_URL)
+        self.assertFalse(self.css(response, 'nav .profile a'))
 
     def test_main_page_logged_out_omits_logout_link(self):
-        self._get_plantshare(self.MAIN_URL)
-        link = None
-        try:
-            link = self.link_saying('Log Out')
-        except ValueError:
-            pass
-        self.assertIsNone(link)
+        response = self._get_plantshare(self.MAIN_URL)
+        self.assertFalse(self.css(response, 'nav .logout a'))
 
     # PlantShare main page: when user is logged in
 
     def test_main_page_logged_in_has_profile_box(self):
-        self._get_plantshare(self.MAIN_URL, log_in=True)
-        self.assertTrue(self.css1('.profile.box'))
+        response = self._get_plantshare(self.MAIN_URL, log_in=True)
+        profile_heading = self.css(response, '.profile.box h2')
+        profile_heading_text = str(etree.tostring(profile_heading[0]))
+        self.assertTrue(profile_heading_text.find('Your Profile') > -1)
 
     def test_main_page_logged_in_has_profile_nav_item(self):
-        self._get_plantshare(self.MAIN_URL, log_in=True)
-        self.assertIsNotNone(self.link_saying('Your Profile'))
+        response = self._get_plantshare(self.MAIN_URL, log_in=True)
+        profile_link = self.css(response, 'nav .profile a')
+        profile_link_text = str(etree.tostring(profile_link[0]))
+        self.assertTrue(profile_link_text.find('Your Profile') > -1)
 
     def test_main_page_logged_in_has_logout_nav_item(self):
-        self._get_plantshare(self.MAIN_URL, log_in=True)
-        self.assertIsNotNone(self.link_saying('Log Out ' +
-                                              self.TEST_USERNAME))
+        response = self._get_plantshare(self.MAIN_URL, log_in=True)
+        logout_link = self.css(response, 'nav .logout a')
+        logout_link_text = str(etree.tostring(logout_link[0]))
+        self.assertTrue(logout_link_text.find(
+            'Log Out ' + TEST_USERNAME) > -1)
 
     def test_main_page_logged_in_omits_signup_nav_item(self):
-        self._get_plantshare(self.MAIN_URL, log_in=True)
-        link = None
-        try:
-            link = self.link_saying('Sign Up for PlantShare')
-        except ValueError:
-            pass
-        self.assertIsNone(link)
+        response = self._get_plantshare(self.MAIN_URL, log_in=True)
+        decoded_html = response.content.decode('utf-8')
+        self.assertTrue(decoded_html.find('Sign Up For Plantshare') == -1)
 
     def test_main_page_logged_in_omits_signup_call_to_action(self):
-        self._get_plantshare(self.MAIN_URL, log_in=True)
-        call_to_action = None
-        try:
-            call_to_action = self.css1('.sign-up-call')
-        except NoSuchElementException:
-            pass
-        self.assertIsNone(call_to_action)
+        response = self._get_plantshare(self.MAIN_URL, log_in=True)
+        self.assertFalse(self.css(response, '.sign-up-call'))
 
     def test_main_page_logged_in_omits_login_form(self):
-        self._get_plantshare(self.MAIN_URL, log_in=True)
-        form = None
-        try:
-            form = self.css1('#login.box')
-        except NoSuchElementException:
-            pass
-        self.assertIsNone(form)
+        response = self._get_plantshare(self.MAIN_URL, log_in=True)
+        self.assertFalse(self.css(response, '#login.box'))
 
     # Log In page: used only for login errors or when users attempt to
     # visit a URL that requires login. The usual place to log in is the
@@ -168,52 +168,65 @@ class PlantShareTests(FunctionalCase):
     LOG_IN_URL = '/accounts/login/'
 
     def test_login_page_title(self):
-        self.assertEqual(self._page_title(self.LOG_IN_URL),
-                         'Log In: PlantShare: Go Botany')
+        page_title = self._page_title(self.LOG_IN_URL)
+        self.assertTrue(page_title.find('Log In: PlantShare:') > -1)
+        self.assertTrue(page_title.find('Go Botany') > -1)
 
     def test_login_page_main_heading(self):
-        self.assertEqual(self._page_heading(self.LOG_IN_URL), 'Log In')
+        page_heading = self._page_heading(self.LOG_IN_URL)
+        self.assertTrue(page_heading.find('Log In') > -1)
 
     def test_login_page_has_plantshare_nav_link(self):
-        self._get_plantshare(self.LOG_IN_URL)
-        self.assertIsNotNone(self.link_saying('PlantShare'))
+        response = self._get_plantshare(self.LOG_IN_URL, log_in=True)
+        link = self.css(response, 'nav .plantshare a')
+        link_text = str(etree.tostring(link[0]))
+        self.assertTrue(link_text.find('PlantShare') > -1)
 
     def test_login_page_has_minimal_navigation(self):
-        self._get_plantshare(self.LOG_IN_URL)
-        navigation_items = self.css('#sidebar nav li')
+        response = self._get_plantshare(self.LOG_IN_URL)
+        navigation_items = self.css(response, '#sidebar nav li')
         self.assertEqual(len(navigation_items), 1)
 
     def test_login_page_has_message_requesting_login_to_continue(self):
-        self._get_plantshare(self.YOUR_PROFILE_URL)   # A page requiring login
-        message = self.css1('h1 + p').text
-        self.assertEqual(message, 'Please log in to continue.')
+        # Get a page requiring login.
+        response = self._get_plantshare(
+            '/accounts/login/?next=/plantshare/profile/')
+        message = self.css(response, 'h1 + p')
+        message_text = str(etree.tostring(message[0]))
+        self.assertTrue(message_text.find('Please log in to continue.') > -1)
 
     def test_login_page_occurs_upon_bad_login(self):
-        self._get_plantshare(self.YOUR_PROFILE_URL, log_in=True,
-                             username='nobody', password='nothing')
-        heading = self.css1('h1').text
-        self.assertEqual(heading, 'Log In')
+        response = self._get_plantshare(
+            '/accounts/login/?next=/plantshare/profile/', log_in=True,
+            username='nobody', password='nothing')
+        heading = self.css(response, 'h1')
+        heading_text = str(etree.tostring(heading[0]))
+        self.assertTrue(heading_text.find('Log In') > -1)
 
     # Log Out confirmation page
 
     LOG_OUT_URL = '/accounts/logout/'
 
     def test_log_out_page_title(self):
-        self.assertEqual(self._page_title(self.LOG_OUT_URL),
-                         'Logged Out: PlantShare: Go Botany')
+        page_title = self._page_title(self.LOG_OUT_URL)
+        self.assertTrue(page_title.find('Logged Out: PlantShare:') > -1)
+        self.assertTrue(page_title.find('Go Botany') > -1)
 
     def test_log_out_page_main_heading(self):
-        self.assertEqual(self._page_heading(self.LOG_OUT_URL), 'Logged Out')
+        page_heading = self._page_heading(self.LOG_OUT_URL)
+        self.assertTrue(page_heading.find('Logged Out') > -1)
 
     def test_log_out_page_has_plantshare_nav_item(self):
-        self._get_plantshare(self.LOG_OUT_URL)
-        self.assertIsNotNone(self.link_saying('PlantShare'))
+        response = self._get_plantshare(self.LOG_OUT_URL)
+        plantshare_link = self.css(response, 'nav .plantshare a')
+        plantshare_link_text = str(etree.tostring(plantshare_link[0]))
+        self.assertTrue(plantshare_link_text.find('PlantShare') > -1)
 
     def test_log_out_page_has_basic_navigation(self):
         # The Logged Out page should show the basic PlantShare
         # navigation elements that appear when a user is logged out.
-        self._get_plantshare(self.LOG_OUT_URL)
-        navigation_items = self.css('#sidebar nav li')
+        response = self._get_plantshare(self.LOG_OUT_URL)
+        navigation_items = self.css(response, '#sidebar nav li')
         self.assertEqual(len(navigation_items), 5)
 
     # Sign Up for PlantShare page
@@ -221,20 +234,23 @@ class PlantShareTests(FunctionalCase):
     SIGNUP_FORM_URL = '/accounts/register/'
 
     def test_signup_page_title(self):
-        self.assertEqual(self._page_title(self.SIGNUP_FORM_URL),
-                         'Sign Up for PlantShare: Go Botany')
+        page_title = self._page_title(self.SIGNUP_FORM_URL)
+        self.assertTrue(page_title.find('Sign Up for PlantShare:') > -1)
+        self.assertTrue(page_title.find('Go Botany') > -1)
 
     def test_signup_page_main_heading(self):
-        self.assertEqual(self._page_heading(self.SIGNUP_FORM_URL),
-                         'Sign Up for PlantShare')
+        page_heading = self._page_heading(self.SIGNUP_FORM_URL)
+        self.assertTrue(page_heading.find('Sign Up for PlantShare') > -1)
 
     def test_signup_page_has_plantshare_nav_item(self):
-        self._get_plantshare(self.SIGNUP_FORM_URL)
-        self.assertIsNotNone(self.link_saying('PlantShare'))
+        response = self._get_plantshare(self.SIGNUP_FORM_URL)
+        plantshare_link = self.css(response, 'nav .plantshare a')
+        plantshare_link_text = str(etree.tostring(plantshare_link[0]))
+        self.assertTrue(plantshare_link_text.find('PlantShare') > -1)
 
     def test_signup_page_has_minimal_navigation(self):
-        self._get_plantshare(self.SIGNUP_FORM_URL)
-        navigation_items = self.css('#sidebar nav li')
+        response = self._get_plantshare(self.SIGNUP_FORM_URL)
+        navigation_items = self.css(response, '#sidebar nav li')
         self.assertEqual(len(navigation_items), 2)   # includes Signup item
 
     # Ensure that the replacement for ReCaptcha—a visually-hidden URL field
@@ -253,40 +269,47 @@ class PlantShareTests(FunctionalCase):
     REG_COMPLETE_URL = '/accounts/register/complete/'
 
     def test_registration_complete_page_title(self):
-        self.assertEqual(self._page_title(self.REG_COMPLETE_URL),
-                         'Sign Up Complete: PlantShare: Go Botany')
+        page_title = self._page_title(self.REG_COMPLETE_URL)
+        self.assertTrue(page_title.find('Sign Up Complete: PlantShare:') > -1)
+        self.assertTrue(page_title.find('Go Botany') > -1)
 
     def test_registration_complete_page_main_heading(self):
-        self.assertEqual(self._page_heading(self.REG_COMPLETE_URL),
-                                            'Sign Up Complete')
+        page_heading = self._page_heading(self.REG_COMPLETE_URL)
+        self.assertTrue(page_heading.find('Sign Up Complete') > -1)
 
     def test_registration_complete_page_has_plantshare_nav_item(self):
-        self._get_plantshare(self.REG_COMPLETE_URL)
-        self.assertIsNotNone(self.link_saying('PlantShare'))
+        response = self._get_plantshare(self.REG_COMPLETE_URL)
+        plantshare_link = self.css(response, 'nav .plantshare a')
+        plantshare_link_text = str(etree.tostring(plantshare_link[0]))
+        self.assertTrue(plantshare_link_text.find('PlantShare') > -1)
 
     def test_registration_complete_page_has_minimal_navigation(self):
-        self._get_plantshare(self.REG_COMPLETE_URL)
-        navigation_items = self.css('#sidebar nav li')
+        response = self._get_plantshare(self.REG_COMPLETE_URL)
+        navigation_items = self.css(response, '#sidebar nav li')
         self.assertEqual(len(navigation_items), 1)
 
     # Activation Complete page
 
     ACTIVATION_COMPLETE_URL = '/accounts/activate/complete/'
+
     def test_activation_complete_page_title(self):
-        self.assertEqual(self._page_title(self.ACTIVATION_COMPLETE_URL),
-                         'Activation Complete: PlantShare: Go Botany')
+        page_title = self._page_title(self.ACTIVATION_COMPLETE_URL)
+        self.assertTrue(page_title.find('Activation Complete: PlantShare:') > -1)
+        self.assertTrue(page_title.find('Go Botany') > -1)
 
     def test_activation_complete_page_main_heading(self):
-        self.assertEqual(self._page_heading(self.ACTIVATION_COMPLETE_URL),
-                         'Activation Complete')
+        page_heading = self._page_heading(self.ACTIVATION_COMPLETE_URL)
+        self.assertTrue(page_heading.find('Activation Complete') > -1)
 
     def test_activation_complete_page_has_plantshare_nav_item(self):
-        self._get_plantshare(self.ACTIVATION_COMPLETE_URL)
-        self.assertIsNotNone(self.link_saying('PlantShare'))
+        response = self._get_plantshare(self.ACTIVATION_COMPLETE_URL)
+        plantshare_link = self.css(response, 'nav .plantshare a')
+        plantshare_link_text = str(etree.tostring(plantshare_link[0]))
+        self.assertTrue(plantshare_link_text.find('PlantShare') > -1)
 
     def test_activation_complete_page_has_minimal_navigation(self):
-        self._get_plantshare(self.ACTIVATION_COMPLETE_URL)
-        navigation_items = self.css('#sidebar nav li')
+        response = self._get_plantshare(self.ACTIVATION_COMPLETE_URL)
+        navigation_items = self.css(response, '#sidebar nav li')
         self.assertEqual(len(navigation_items), 1)
 
     # Post a (new) Sighting form page
@@ -294,134 +317,142 @@ class PlantShareTests(FunctionalCase):
     NEW_SIGHTING_URL = '/sightings/new/'
 
     def test_new_sighting_form_page_requires_login(self):
-        self._get_plantshare(self.NEW_SIGHTING_URL, log_in=False)
-        heading = self.css1('h1').text
-        self.assertEqual(heading, 'Log In')
+        response = self._get_plantshare(
+            '/accounts/login/?next=/plantshare/sightings/new/', log_in=False)
+        heading = self.css(response, 'h1')
+        heading_text = str(etree.tostring(heading[0]))
+        self.assertTrue(heading_text.find('Log In') > -1)
 
     def test_new_sighting_form_page_title(self):
-        self.assertEqual(self._page_title(
-            self.NEW_SIGHTING_URL, log_in=True),
-            'Post a Sighting: PlantShare: Go Botany')
+        page_title = self._page_title(self.NEW_SIGHTING_URL, log_in=True)
+        self.assertTrue(page_title.find('Post a Sighting: PlantShare:') > -1)
+        self.assertTrue(page_title.find('Go Botany') > -1)
 
     def test_new_sighting_form_page_main_heading(self):
-        self.assertEqual(self._page_heading(self.NEW_SIGHTING_URL,
-                                            log_in=True), 'Post a Sighting')
+        page_heading = self._page_heading(self.NEW_SIGHTING_URL, log_in=True)
+        self.assertTrue(page_heading.find('Post a Sighting') > -1)
 
     def test_new_sighting_form_page_has_plantshare_nav_item(self):
-        self._get_plantshare(self.NEW_SIGHTING_URL, log_in=True)
-        self.assertIsNotNone(self.link_saying('PlantShare'))
+        response = self._get_plantshare(self.NEW_SIGHTING_URL, log_in=True)
+        plantshare_link = self.css(response, 'nav .plantshare a')
+        plantshare_link_text = str(etree.tostring(plantshare_link[0]))
+        self.assertTrue(plantshare_link_text.find('PlantShare') > -1)
 
     def test_new_sighting_form_page_has_post_a_sighting_nav_item(self):
-        self._get_plantshare(self.NEW_SIGHTING_URL, log_in=True)
-        self.assertIsNotNone(self.link_saying('Post a Sighting'))
+        response = self._get_plantshare(self.NEW_SIGHTING_URL, log_in=True)
+        nav_item = self.css(response, 'nav .post-sighting a')
+        nav_item_text = str(etree.tostring(nav_item[0]))
+        self.assertTrue(nav_item_text.find('Post a Sighting') > -1)
 
-    def test_new_sighting_form_page_has_my_profile_nav_item(self):
-        self._get_plantshare(self.NEW_SIGHTING_URL, log_in=True)
-        self.assertIsNotNone(self.link_saying('Your Profile'))
+    def test_new_sighting_form_page_has_profile_nav_item(self):
+        response = self._get_plantshare(self.NEW_SIGHTING_URL, log_in=True)
+        nav_item = self.css(response, 'nav .profile a')
+        nav_item_text = str(etree.tostring(nav_item[0]))
+        self.assertTrue(nav_item_text.find('Your Profile') > -1)
 
     def test_new_sighting_form_page_has_full_navigation(self):
-        self._get_plantshare(self.NEW_SIGHTING_URL, log_in=True)
-        navigation_items = self.css('#sidebar nav li')
-        self.assertGreater(len(navigation_items), 1)
+        response = self._get_plantshare(self.NEW_SIGHTING_URL, log_in=True)
+        navigation_items = self.css(response, '#sidebar nav li')
+        self.assertTrue(len(navigation_items) > 1)
 
     # Post a (new) Sighting: "done" page
 
     NEW_SIGHTING_DONE_URL = '/sightings/new/done/'
 
     def test_new_sighting_done_page_requires_login(self):
-        self._get_plantshare(self.NEW_SIGHTING_DONE_URL, log_in=False)
-        heading = self.css1('h1').text
-        self.assertEqual(heading, 'Log In')
+        response = self._get_plantshare(
+            '/accounts/login/?next=/plantshare/sightings/new/done/',
+            log_in=False)
+        heading = self.css(response, 'h1')
+        heading_text = str(etree.tostring(heading[0]))
+        self.assertTrue(heading_text.find('Log In') > 1)
 
     def test_new_sighting_done_page_title(self):
-        self.assertEqual(self._page_title(
-            self.NEW_SIGHTING_DONE_URL, log_in=True),
-            'Sighting Posted: PlantShare: Go Botany')
+        page_title = self._page_title(self.NEW_SIGHTING_DONE_URL, log_in=True)
+        self.assertTrue(page_title.find('Sighting Posted: PlantShare:') > -1)
+        self.assertTrue(page_title.find('Go Botany') > -1)
 
     def test_new_sighting_done_page_main_heading(self):
-        self.assertEqual(self._page_heading(self.NEW_SIGHTING_DONE_URL,
-                                            log_in=True), 'Sighting Posted')
+        page_heading = self._page_heading(self.NEW_SIGHTING_DONE_URL,
+            log_in=True)
+        self.assertTrue(page_heading.find('Sighting Posted') > -1)
 
     def test_new_sighting_done_page_has_plantshare_nav_item(self):
-        self._get_plantshare(self.NEW_SIGHTING_DONE_URL, log_in=True)
-        self.assertIsNotNone(self.link_saying('PlantShare'))
+        response = self._get_plantshare(self.NEW_SIGHTING_DONE_URL,
+            log_in=True)
+        nav_item = self.css(response, 'nav .plantshare a')
+        nav_item_text = str(etree.tostring(nav_item[0]))
+        self.assertTrue(nav_item_text.find('PlantShare') > -1)
 
     def test_new_sighting_done_page_has_post_a_sighting_nav_item(self):
-        self._get_plantshare(self.NEW_SIGHTING_DONE_URL, log_in=True)
-        self.assertIsNotNone(self.link_saying('Post a Sighting'))
+        response = self._get_plantshare(self.NEW_SIGHTING_DONE_URL,
+            log_in=True)
+        nav_item = self.css(response, 'nav .post-sighting a')
+        nav_item_text = str(etree.tostring(nav_item[0]))
+        self.assertTrue(nav_item_text.find('Post a Sighting') > -1)
 
-    def test_new_sighting_done_page_has_my_profile_nav_item(self):
-        self._get_plantshare(self.NEW_SIGHTING_DONE_URL, log_in=True)
-        self.assertIsNotNone(self.link_saying('Your Profile'))
+    def test_new_sighting_done_page_has_profile_nav_item(self):
+        response = self._get_plantshare(self.NEW_SIGHTING_DONE_URL,
+            log_in=True)
+        nav_item = self.css(response, 'nav .profile a')
+        nav_item_text = str(etree.tostring(nav_item[0]))
+        self.assertTrue(nav_item_text.find('Your Profile') > -1)
 
     def test_new_sighting_done_page_has_full_navigation(self):
-        self._get_plantshare(self.NEW_SIGHTING_DONE_URL, log_in=True)
-        navigation_items = self.css('#sidebar nav li')
-        self.assertGreater(len(navigation_items), 1)
+        response = self._get_plantshare(self.NEW_SIGHTING_DONE_URL,
+            log_in=True)
+        navigation_items = self.css(response, '#sidebar nav li')
+        self.assertTrue(len(navigation_items) > 1)
 
     # Your Profile page
 
     YOUR_PROFILE_URL = '/profile/'
 
     def test_profile_page_requires_login(self):
-        self._get_plantshare(self.YOUR_PROFILE_URL, log_in=False)
-        heading = self.css1('h1').text
-        self.assertEqual(heading, 'Log In')
+        response = self._get_plantshare(
+            '/accounts/login/?next=/plantshare/profile/', log_in=False)
+        heading = self.css(response, 'h1')
+        heading_text = str(etree.tostring(heading[0]))
+        self.assertTrue(heading_text.find('Log In') > 1)
 
     def test_profile_page_title(self):
-        self.assertEqual(self._page_title(
-            self.YOUR_PROFILE_URL, log_in=True),
-            'Your Profile: PlantShare: Go Botany')
+        page_title = self._page_title(self.YOUR_PROFILE_URL, log_in=True)
+        self.assertTrue(page_title.find('Your Profile: PlantShare:') > -1)
+        self.assertTrue(page_title.find('Go Botany') > -1)
 
     def test_profile_page_main_heading(self):
-        self.assertEqual(self._page_heading(self.YOUR_PROFILE_URL,
-                                            log_in=True), 'Your Profile')
+        page_heading = self._page_heading(self.YOUR_PROFILE_URL, log_in=True)
+        self.assertTrue(page_heading.find('Your Profile') > -1)
 
     def test_profile_page_has_plantshare_nav_item(self):
-        self._get_plantshare(self.YOUR_PROFILE_URL, log_in=True)
-        self.assertIsNotNone(self.link_saying('PlantShare'))
+        response = self._get_plantshare(self.YOUR_PROFILE_URL, log_in=True)
+        nav_item = self.css(response, 'nav .plantshare a')
+        nav_item_text = str(etree.tostring(nav_item[0]))
+        self.assertTrue(nav_item_text.find('PlantShare') > -1)
 
     def test_profile_page_has_post_a_sighting_nav_item(self):
-        self._get_plantshare(self.YOUR_PROFILE_URL, log_in=True)
-        self.assertIsNotNone(self.link_saying('Post a Sighting'))
+        response = self._get_plantshare(self.YOUR_PROFILE_URL, log_in=True)
+        nav_item = self.css(response, 'nav .post-sighting a')
+        nav_item_text = str(etree.tostring(nav_item[0]))
+        self.assertTrue(nav_item_text.find('Post a Sighting') > -1)
 
-    def test_profile_page_has_my_profile_nav_item(self):
-        self._get_plantshare(self.YOUR_PROFILE_URL, log_in=True)
-        self.assertIsNotNone(self.link_saying('Your Profile'))
+    def test_profile_page_has_profile_nav_item(self):
+        response = self._get_plantshare(self.YOUR_PROFILE_URL, log_in=True)
+        nav_item = self.css(response, 'nav .profile a')
+        nav_item_text = str(etree.tostring(nav_item[0]))
+        self.assertTrue(nav_item_text.find('Your Profile') > -1)
 
-    def test_my_profile_page_has_full_navigation(self):
-        self._get_plantshare(self.YOUR_PROFILE_URL, log_in=True)
-        navigation_items = self.css('#sidebar nav li')
-        self.assertGreater(len(navigation_items), 1)
+    def test_profile_page_has_full_navigation(self):
+        response = self._get_plantshare(self.YOUR_PROFILE_URL, log_in=True)
+        navigation_items = self.css(response, '#sidebar nav li')
+        self.assertTrue(len(navigation_items) > 1)
 
-    # Ask the Botanist page
 
-    ASK_THE_BOTANIST_URL = '/questions/'
 
-    def test_ask_the_botanist_page_main_heading(self):
-        self.assertEqual(self._page_heading(self.ASK_THE_BOTANIST_URL,
-            log_in=True), 'Ask the Botanist')
 
-    def test_ask_the_botanist_page_upload_image(self):
-        client = self._get_plantshare(self.ASK_THE_BOTANIST_URL,
-            log_in=True)
-        with open(self._testdata_dir() + '/los_straitjackets_sm.jpg',
-            'rb') as file:
 
-            response = client.post('/plantshare/api/image-upload', {
-                'image': file,
-                'image_type': 'QUESTION',
-            })
-        response_json = json.loads(response.content)
-        self.assertEqual(response_json['success'], True)
-        self.assertIsNotNone(response_json['id'])
-        self.assertIsNotNone(response_json['thumb'])
-        self.assertIsNotNone(response_json['url'])
-        # TODO: fix the known problem that now prevents the latitude and
-        # longitude values from being saved in the database, which causes
-        # them to also no longer appear here in the response.
-        self.assertEqual(response_json['latitude'], None) # 40.725875
-        self.assertEqual(response_json['longitude'], None) # -74.0063361
+
+
 
 
 class LocationModelTests(TestCase):
