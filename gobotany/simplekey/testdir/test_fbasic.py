@@ -16,9 +16,11 @@ Two environmental variables control the behavior of these tests.
 """
 import os
 import re
+import requests
 import time
 import unittest
 from contextlib import contextmanager
+from datetime import datetime
 from django.test.testcases import TestCase
 from selenium import webdriver
 from selenium.common.exceptions import (
@@ -133,6 +135,7 @@ class FunctionalTestCase(TestCase):
             if self.is_displayed(toolbar):
                 self.css1('#djHideToolBarButton').click()
 
+
 class BasicFunctionalTests(FunctionalTestCase):
 
     # Tests
@@ -203,7 +206,6 @@ class NavigationFunctionalTests(FunctionalTestCase):
     def test_header_about_item_highlighted_within_section(self):
         self.assertTrue(
             self._is_nav_item_highlighted('/start/', 'header li.help::after'))
-
 
 
 class FilterFunctionalTests(FunctionalTestCase):
@@ -1480,6 +1482,11 @@ class ResultsPageStateFunctionalTests(FunctionalTestCase):
 
 class SearchFunctionalTests(FunctionalTestCase):
 
+    def test_results(self):
+        page = self.get('/search/?q=acer')
+        results = self.css('#search-results-list li')
+        self.assertEqual(len(results), 10)
+
     def test_maximum_paging_links(self):
         MAX_PAGES = 10
         expected_num_items = MAX_PAGES + 1   # add for Next link
@@ -1487,15 +1494,1301 @@ class SearchFunctionalTests(FunctionalTestCase):
         paging_list_items = self.css('.search-navigation ul li')
         self.assertEqual(len(paging_list_items), expected_num_items)
 
-    def test_empty_search_returns_no_results_page(self):
+    def test_empty_search_returns_no_results(self):
         page = self.get('/search/?q=')
         heading = self.css1('h1').text
         self.assertEqual('No results for', heading)
 
-    def test_missing_query_string_returns_no_results_page(self):
+    def test_missing_query_string_returns_no_results(self):
         page = self.get('/search/')
         heading = self.css1('h1').text
         self.assertEqual('No results for', heading)
+
+    def test_search_results_page_has_navigation_links(self):
+        d = self.get('/search/?q=carex&page=2')
+        nav_links = self.css('.search-navigation a')
+        self.assertTrue(len(nav_links) >= 5)
+        self.assertEqual('← Previous', nav_links[0].text)
+        self.assertEqual('Next →', nav_links[-1].text)
+
+    def _result_links(self):
+        return self.css('#search-results-list li a')
+
+    def test_search_results_page_common_name_finds_correct_plant(self):
+        self.get('/search/?q=christmas+fern')
+        result_links = self._result_links()
+        self.assertTrue(len(result_links))
+        plant_found = False
+        for result_link in result_links:
+            url_parts = result_link.get_attribute('href').split('/')
+            species = ' '.join(url_parts[-3:-1]).capitalize()
+            if species == 'Polystichum acrostichoides':
+                plant_found = True
+                break
+        self.assertTrue(plant_found)
+
+    def _has_icon(self, url_substring):
+        has_icon = False
+        result_icons = self.css('#search-results-list li img')
+        self.assertTrue(len(result_icons))
+        for result_icon in result_icons:
+            if result_icon.get_attribute('src').find(url_substring) > -1:
+                has_icon = True
+                break
+        return has_icon
+
+    def test_search_results_page_has_family_results(self):
+        self.get('/search/?q=sapindaceae')
+        self.assertTrue(self._has_icon('family'))
+
+    def test_search_results_page_has_genus_results(self):
+        self.get('/search/?q=sapindaceae')
+        self.assertTrue(self._has_icon('genus'))
+
+    def test_search_results_page_has_help_results(self):
+        self.get('/search/?q=start')
+        self.assertTrue(self._has_icon('help'))
+
+    def test_search_results_page_has_glossary_results(self):
+        self.get('/search/?q=abaxial')
+        self.assertTrue(self._has_icon('glossary'))
+
+    def test_search_results_page_returns_no_results(self):
+        self.get('/search/?q=abcd')
+        heading = self.css('h1')
+        self.assertTrue(len(heading))
+        self.assertEqual('No results for abcd', heading[0].text)
+        message = self.css('#main p')
+        self.assertTrue(len(message))
+        self.assertEqual('Please adjust your search and try again.',
+            message[0].text)
+
+    def test_search_results_page_previously_failing_have_results(self):
+        # Check a number of queries for which searches have failed in the
+        # past, evidently due to out-of-date indexes. (To fix those, run
+        # Haystack's update_index command with the --remove switch.)
+        queries = ['physocarpus', 'ninebark', 'viburnum lantanoides',
+            'nyssa', 'nyssa sylvatica', 'carex plantaginea',
+            'cynoglossum virginianum']
+        for query in queries:
+            self.get('/search/?q=%s' % 'nyssa')
+            result_links = self._result_links()
+            self.assertTrue(len(result_links))
+
+    def test_search_results_page_has_singular_heading(self):
+        query = '%22simple+key+for+plant+identification%22'   # in quotes
+        self.get('/search/?q=%s' % query)   # query that returns 1 result
+        heading = self.css('h1')
+        self.assertTrue(len(heading))
+        self.assertTrue(heading[0].text.startswith('1 result for'))
+
+    def test_search_results_page_heading_starts_with_page_number(self):
+        self.get('/search/?q=monocot&page=2')
+        heading = self.css('h1')
+        self.assertTrue(len(heading))
+        self.assertTrue(heading[0].text.startswith('Page 2: '))
+
+    def test_search_results_page_previous_link_is_present(self):
+        d = self.get('/search/?q=monocot&page=2')
+        nav_links = self.css('.search-navigation a')
+        self.assertEqual('← Previous', nav_links[0].text)
+
+    def test_search_results_page_next_link_is_present(self):
+        d = self.get('/search/?q=monocot&page=2')
+        nav_links = self.css('.search-navigation a')
+        self.assertEqual('Next →', nav_links[-1].text)
+
+    def test_search_results_page_heading_number_has_thousands_comma(self):
+        self.get('/search/?q=monocot')  # query that returns > 1,000 results
+        heading = self.css('h1')
+        self.assertTrue(len(heading))
+        results_count = heading[0].text.split(' ')[0]
+        self.assertTrue(results_count.find(',') > -1)
+        self.assertTrue(int(results_count.replace(',', '')) > 1000)
+
+    def test_search_results_page_omits_navigation_links_above_limit(self):
+        MAX_PAGE_LINKS = 10
+        self.get('/search/?q=monocot')  # query that returns > 1,000 results
+        nav_links = self.css('.search-navigation li a')
+        self.assertTrue(len(nav_links))
+        # The number of links should equal the maximum page links: all
+        # the page links minus one (the current unlinked page) plus one
+        # for the Next link.
+        self.assertTrue(len(nav_links) == MAX_PAGE_LINKS)
+
+    def test_search_results_page_query_is_in_search_box(self):
+        self.get('/search/?q=acer')
+        search_box = self.css('#search input[type="text"]')
+        self.assertTrue(len(search_box))
+        self.assertTrue(search_box[0].get_attribute('value') == 'acer')
+
+    def test_search_results_page_result_titles_are_not_excerpted(self):
+        self.get('/search/?q=virginica')
+        result_links = self._result_links()
+        self.assertTrue(len(result_links))
+        for link in result_links:
+            self.assertTrue(link.text.find('...') == -1)
+
+    def test_search_results_page_document_excerpts_ignore_marked_text(self):
+        # Verify that search result document excerpts for species pages
+        # no longer show text that is marked to be ignored, in this case
+        # a series of repeating scientific names.
+        self.get('/search/?q=rhexia+virginica')
+        result_document_excerpts = self.css('#search-results-list li p')
+        self.assertTrue(len(result_document_excerpts))
+        species_page_excerpt = result_document_excerpts[0].text
+        text_to_be_ignored = ('Rhexia virginica Rhexia virginica Rhexia '
+            'virginica Rhexia virginica Rhexia virginica Rhexia virginica')
+        self.assertEqual(species_page_excerpt.find(text_to_be_ignored), -1)
+
+    def test_search_results_page_shows_some_text_to_left_of_excerpt(self):
+        self.get('/search/?q=rhexia+virginica')
+        result_document_excerpts = self.css('#search-results-list li p')
+        self.assertTrue(len(result_document_excerpts))
+        for excerpt in result_document_excerpts:
+            # Rhexia should not appear right at the beginning after an
+            # ellipsis, i.e., the excerpt should start with something
+            # like '...Genus: Rhexia' rather than '...Rhexia'. This
+            # means that our custom highlighter is adding some context
+            # before the highlighted word as expected.
+            if excerpt.text.startswith('...'):
+                self.assertTrue(excerpt.text.find('...Rhexia') == -1)
+
+    # Tests for search ranking.
+
+    def test_search_results_page_scientific_name_returns_first_result(self):
+        plants = [
+            ('Acer rubrum', 'red maple'),
+            ('Calycanthus floridus', 'eastern sweetshrub'),
+            ('Halesia carolina', 'Carolina silverbell'),
+            ('Magnolia virginiana', 'sweet-bay'),
+            ('Vaccinium corymbosum', 'highbush blueberry')
+        ]
+        for scientific_name, common_names in plants:
+            self.get('/search/?q=%s' % scientific_name.lower().replace(' ',
+                                                                       '+'))
+            result_links = self._result_links()
+            self.assertTrue(len(result_links))
+            self.assertEqual('%s (%s)' % (scientific_name, common_names),
+                result_links[0].text)
+
+    def test_search_results_page_common_name_returns_first_result(self):
+        plants = [
+            ('Ligustrum obtusifolium', 'border privet'),
+            ('Matteuccia struthiopteris', 'fiddlehead fern, ostrich fern'),
+            ('Nardus stricta', 'doormat grass'),
+            ('Quercus bicolor', 'swamp white oak'),
+            ('Rhus copallinum', 'winged sumac')
+        ]
+        for scientific_name, common_names in plants:
+            common_name = common_names.split(',')[0]
+            self.get('/search/?q=%s' % common_name.lower().replace(' ', '+'))
+            result_links = self._result_links()
+            self.assertTrue(len(result_links))
+            self.assertEqual('%s (%s)' % (scientific_name, common_names),
+                result_links[0].text)
+
+    def test_search_results_page_family_returns_first_result(self):
+        families = [
+            'Azollaceae (mosquito fern family)',
+            'Equisetaceae (horsetail family)',
+            'Isoetaceae (quillwort family)',
+            'Marsileaceae (pepperwort family)',
+            'Salviniaceae (watermoss family)'
+        ]
+        for family in families:
+            self.get('/search/?q=%s' % family.split(' ')[0].lower())
+            result_links = self._result_links()
+            self.assertTrue(len(result_links))
+            self.assertEqual('Family: %s' % family, result_links[0].text)
+
+    def test_search_results_page_genus_returns_first_result(self):
+        genera = [
+            'Claytonia (spring-beauty)',
+            'Echinochloa (barnyard grass)',
+            'Koeleria (Koeler\'s grass)',
+            'Panicum (panicgrass)',
+            'Saponaria (soapwort)',
+            'Verbascum (mullein)'
+        ]
+        for genus in genera:
+            self.get('/search/?q=%s' % genus.split(' ')[0].lower())
+            result_links = self._result_links()
+            self.assertTrue(len(result_links))
+            self.assertEqual('Genus: %s' % genus, result_links[0].text)
+
+    def test_search_results_page_glossary_term_returns_first_result(self):
+        terms = ['acuminate', 'dichasial cyme', 'joint', 'perigynium',
+            'terminal', 'woody']
+        for term in terms:
+            self.get('/search/?q=%s' % term.lower())
+            result_links = self._result_links()
+            self.assertTrue(len(result_links))
+            self.assertEqual('Glossary: %s: %s' % (term[0].upper(), term),
+                             result_links[0].text)
+
+    # TODO: Add tests for plant groups and subgroups once they are
+    # properly added (with any relevant friendly-title processing) to the
+    # search indexes. (There is an upcoming user story for this.)
+
+    # TODO: explore searching species names enclosed in quotes.
+    # Maybe want to try and detect and search this way behind the
+    # scenes if we can't reliably rank them first without quotes?
+
+    # TODO: Test searching on synonyms.
+    # Example:
+    # q=saxifraga+pensylvanica
+    # Returns:
+    #Micranthes pensylvanica (swamp small-flowered-saxifrage)
+    #Micranthes virginiensis (early small-flowered-saxifrage)
+
+    #####
+    # Tests to confirm that various searches return Simple Key pages:
+    # - Group page (aka Level 1 page: the list of plant groups)
+    # - Subgroup page (aka Level 2 page: a list of plant subgroups for
+    #   a group)
+    # - Results page (aka Level 3 page: the questions/results page for
+    #   a plant subgroup)
+    #####
+
+    def _is_page_found(self, result_links, page_title_text):
+        is_page_found = False
+        for link in result_links:
+            if link.text.find(page_title_text) > -1:
+                is_page_found = True
+                break
+        return is_page_found
+
+    def _is_group_page_found(self, result_links):
+        return self._is_page_found(result_links,
+                                   'Simple Key for Plant Identification')
+
+    def _is_subgroup_page_found(self, result_links, group_name):
+        return self._is_page_found(result_links,
+                                   '%s: Simple Key' % group_name)
+
+    def _is_results_page_found(self, result_links, group_name, subgroup_name):
+        return self._is_page_found(
+            result_links, '%s: %s: Simple Key' % (subgroup_name, group_name))
+
+    # Search on the word key
+
+    def test_search_results_has_simple_key_main_page(self):
+        self.get('/search/?q=key')
+        result_links = self._result_links()
+        self.assertTrue(len(result_links))
+        self.assertTrue(self._is_page_found(result_links,
+            'Simple Key for Plant Identification'))
+
+    # TODO: enable when Full Key is added to the search feature
+    #def test_search_results_has_full_key_main_page(self):
+    #    self.get('/search/?q=key')
+    #    result_links = self._result_links()
+    #    self.assertTrue(len(result_links))
+    #    self.assertTrue(self._is_page_found(result_links,
+    #        'Full Key for Plant Identification'))
+
+    def test_search_results_has_dichotomous_key_main_page(self):
+        self.get('/search/?q=key')
+        result_links = self._result_links()
+        self.assertTrue(len(result_links))
+        self.assertTrue(self._is_page_found(result_links,
+            'Dichotomous Key to Families'))
+
+    # Search on site feature name "Simple Key"
+
+    def test_search_results_have_simple_key_pages(self):
+        self.get('/search/?q=simple%20key')
+        result_links = self._result_links()
+        self.assertTrue(len(result_links) > 2)
+        results_with_simple_key_in_title = []
+        for link in result_links:
+            if link.text.find('Simple Key') > -1:
+                results_with_simple_key_in_title.append(link)
+        # There should be at least two pages with Simple Key in the
+        # title: any of the initial groups list page, the subgroups list
+        # pages, and the subgroup results pages.
+        self.assertTrue(len(results_with_simple_key_in_title) > 1)
+
+    # Search on main heading of plant group or subgroup pages
+
+    def test_search_results_group_page_main_heading(self):
+        self.get('/search/?q=which%20group')
+        result_links = self._result_links()
+        self.assertTrue(len(result_links) > 0)
+        self.assertTrue(self._is_group_page_found(result_links))
+
+    def test_search_results_subgroup_page_main_heading(self):
+        self.get('/search/?q=these%20subgroups')
+        result_links = self._result_links()
+        self.assertTrue(len(result_links) > 5)
+        self.assertTrue(self._is_subgroup_page_found(result_links,
+                                                     'Woody Plants'))
+
+    # Search on plant group or subgroup "friendly title"
+
+    def test_search_results_have_group_page_for_friendly_title(self):
+        self.get('/search/?q=woody%20plants')
+        result_links = self._result_links()
+        self.assertTrue(len(result_links) > 0)
+        self.assertTrue(self._is_group_page_found(result_links))
+
+    def test_search_results_have_subgroup_page_for_friendly_title(self):
+        self.get('/search/?q=woody%20broad-leaved%20plants')
+        result_links = self._result_links()
+        self.assertTrue(len(result_links) > 0)
+        self.assertTrue(self._is_subgroup_page_found(result_links,
+                                                     'Woody Plants'))
+
+    # Search on portion of plant group or subgroup "friendly name"
+
+    def test_search_results_have_group_page_for_friendly_name(self):
+        self.get('/search/?q=lianas')
+        result_links = self._result_links()
+        self.assertTrue(len(result_links) > 0)
+        self.assertTrue(self._is_group_page_found(result_links))
+
+    def test_search_results_have_subgroup_page_for_friendly_name(self):
+        self.get('/search/?q=aroids')
+        result_links = self._result_links()
+        self.assertTrue(len(result_links) > 0)
+        self.assertTrue(self._is_subgroup_page_found(
+            result_links, 'Orchids and related plants'))
+
+    # Search on portion of plant group or subgroup key characteristics
+    # or exceptions text
+
+    def test_search_results_have_group_page_for_key_characteristics(self):
+        self.get('/search/?q=submersed')
+        result_links = self._result_links()
+        self.assertTrue(len(result_links) > 0)
+        self.assertTrue(self._is_group_page_found(result_links))
+
+    def test_search_results_have_subgroup_page_for_key_characteristics(self):
+        self.get('/search/?q=%22sedges%20have%20edges%22')   # quoted query
+        result_links = self._result_links()
+        self.assertTrue(len(result_links) > 0)
+        self.assertTrue(self._is_subgroup_page_found(result_links,
+                                                     'Grass-like plants'))
+
+    def test_search_results_have_group_page_for_exceptions(self):
+        self.get('/search/?q=amphibious')
+        result_links = self._result_links()
+        self.assertTrue(len(result_links) > 0)
+        self.assertTrue(self._is_group_page_found(result_links))
+
+    def test_search_results_have_subgroup_page_for_exceptions(self):
+        self.get('/search/?q=curly%20stems')   # Horsetails
+        result_links = self._result_links()
+        self.assertTrue(len(result_links) > 0)
+        self.assertTrue(self._is_subgroup_page_found(result_links, 'Ferns'))
+
+    # Search on plant scientific name
+
+    def test_search_results_contain_results_page_for_scientific_name(self):
+        self.get('/search/?q=dendrolycopodium%20dendroideum')
+        result_links = self._result_links()
+        self.assertTrue(len(result_links) > 0)
+        self.assertTrue(self._is_results_page_found(
+            result_links, 'Ferns',
+            'Clubmosses and relatives, plus quillworts'))
+
+    # Search on plant common name
+
+    def test_search_results_contain_results_page_for_common_name(self):
+        self.get('/search/?q=prickly%20tree-clubmoss')
+        result_links = self._result_links()
+        self.assertTrue(len(result_links) > 0)
+        self.assertTrue(self._is_results_page_found(
+            result_links, 'Ferns',
+            'Clubmosses and relatives, plus quillworts'))
+
+    # Search on plant genus name
+
+    def test_search_results_contain_results_page_for_genus_name(self):
+        self.get('/search/?q=dendrolycopodium')
+        result_links = self._result_links()
+        self.assertTrue(len(result_links) > 0)
+        self.assertTrue(self._is_results_page_found(
+            result_links, 'Ferns',
+            'Clubmosses and relatives, plus quillworts'))
+
+    # Search on lookalike name
+
+    def test_lookalikes_are_in_search_indexes_for_many_pages(self):
+        self.get('/search/?q=sometimes+confused+with')
+        page_links = self.css('.search-navigation li')
+        self.assertTrue(len(page_links) > 10)   # more than 100 results
+
+    # Ensure that results for pages in the key have correct URLs
+    # (TODO: more tests here)
+
+    def test_orchid_subgroup_list_page_has_correct_url(self):   # Issue #788
+        self.get('/search/?q=orchids%20and%20related%20plants')
+        result_links = self.css('#search-results-list li a')
+        # One of the results links should be for the Orchids Simple Key page.
+        orchids_link = None
+        for result_link in result_links:
+            if result_link.text.find('Orchids') > -1:
+                orchids_link = result_link
+                break
+        self.assertTrue(
+            orchids_link.text == 'Orchids and related plants: Simple Key')
+        orchids_link_url = orchids_link.get_attribute('href')
+        self.assertTrue(orchids_link_url.endswith('/simple/monocots/'))
+
+    #####
+    # Dichotomous Key search results tests
+    #####
+
+    def test_search_results_contain_dichotomous_key_main_page(self):
+        self.get('/search/?q=dichotomous%20key')
+        result_links = self._result_links()
+        self.assertTrue(len(result_links) > 0)
+        self.assertTrue(self._is_page_found(
+            result_links, 'Dichotomous Key to Families'))
+
+    def test_search_results_contain_dichotomous_key_group_pages(self):
+        self.get('/search/?q=group%201')
+        result_links = self._result_links()
+        self.assertTrue(len(result_links) > 0)
+        self.assertTrue(self._is_page_found(result_links,
+                                            'Group 1: Dichotomous Key'))
+
+    def test_search_results_contain_dichotomous_key_family_pages(self):
+        self.get('/search/?q=cornaceae')
+        result_links = self._result_links()
+        self.assertTrue(len(result_links) > 0)
+        self.assertTrue(self._is_page_found(
+            result_links, 'Cornaceae: Dichotomous Key'))
+
+    def test_search_results_contain_dichotomous_key_genus_pages(self):
+        self.get('/search/?q=pseudolycopodiella')
+        result_links = self._result_links()
+        self.assertTrue(len(result_links) > 0)
+        self.assertTrue(self._is_page_found(
+            result_links, 'Pseudolycopodiella: Dichotomous Key'))
+
+    def test_search_results_contain_dichotomous_key_breadcrumbs(self):
+        self.get('/search/?q=liliaceae%20dichotomous')
+        result_links = self._result_links()
+        self.assertTrue(len(result_links) > 0)
+        self.assertEqual(result_links[0].text, 'Liliaceae: Dichotomous Key')
+        result_excerpts = self.css('#search-results-list li p')
+        self.assertTrue(result_excerpts[0].text.find(
+            'You are here: Dichotomous Key > Liliaceae') > -1);
+
+    def test_search_results_contain_dichotomous_key_page_text(self):
+        self.get('/search/?q=cystopteris%20difficult%20stunted')
+        result_links = self._result_links()
+        self.assertTrue(len(result_links) > 0)
+        self.assertEqual(result_links[0].text, 'Cystopteris: Dichotomous Key')
+        result_excerpts = self.css('#search-results-list li p')
+        self.assertTrue(result_excerpts[0].text.find(
+            'Cystopteris is a difficult genus due to hybridization') > -1);
+
+    def test_search_results_contain_dichotomous_key_leads_text(self):
+        self.get('/search/?q=rachises%20costae%20indusia')
+        result_links = self._result_links()
+        self.assertTrue(len(result_links) > 0)
+        self.assertEqual(result_links[0].text, 'Cystopteris: Dichotomous Key')
+        result_excerpts = self.css('#search-results-list li p')
+        self.assertTrue(result_excerpts[0].text.find(
+            '1b. Rachises, costae, and') > -1);
+
+    def test_search_results_contain_dichotomous_key_single_lead_text(self):
+        self.get('/search/?q=genus%20exactly%20one%20species')
+        result_links = self._result_links()
+        self.assertTrue(len(result_links) > 0)
+        result_excerpts = self.css('#search-results-list li p')
+        self.assertTrue(result_excerpts[0].text.find(
+            'This genus contains exactly one species.') > -1);
+
+    def test_search_results_contain_species_page_info_from_flora(self):
+        self.get('/search/?q=understories%20cool%20woods')
+        result_links = self._result_links()
+        self.assertTrue(len(result_links) > 0)
+        result_excerpts = self.css('#search-results-list li p')
+        expected_excerpt_text = '...the understories of cool woods.'
+        self.assertTrue(
+            result_excerpts[0].text.find(expected_excerpt_text) > -1 or
+            result_excerpts[1].text.find(expected_excerpt_text) > -1);
+
+    # Test searching miscellaneous pages around the site (about, etc.)
+
+    def test_search_results_contain_about_page(self):
+        self.get('/search/?q=national%20science%20foundation')
+        result_links = self._result_links()
+        self.assertTrue(len(result_links))
+        self.assertTrue(self._is_page_found(result_links, 'About Go Botany'))
+
+    def test_search_results_contain_getting_started_page(self):
+        self.get('/search/?q=get%20started')
+        result_links = self._result_links()
+        self.assertTrue(len(result_links) > 0)
+        self.assertTrue(self._is_page_found(result_links,
+            'Getting Started with the Simple Key'))
+
+    def test_search_results_contain_advanced_map_page(self):
+        self.get('/search/?q=advanced%20map')
+        result_links = self._result_links()
+        self.assertTrue(len(result_links) > 0)
+        self.assertTrue(self._is_page_found(result_links,
+            'Advanced Map to Groups'))
+
+    def test_search_results_contain_video_help_topics_page(self):
+        self.get('/search/?q=video%20help')
+        result_links = self._result_links()
+        self.assertTrue(len(result_links) > 0)
+        self.assertTrue(self._is_page_found(result_links,
+            'Video Help Topics'))
+
+    def test_search_results_contain_dichotomous_key_help_page(self):
+        self.get('/search/?q=dichotomous%20key%20help')
+        result_links = self._result_links()
+        self.assertTrue(len(result_links) > 0)
+        self.assertTrue(self._is_page_found(result_links,
+            "What's a Dichotomous Key?"))
+
+    def test_search_results_contain_privacy_policy_page(self):
+        self.get('/search/?q=privacy')
+        result_links = self._result_links()
+        self.assertTrue(len(result_links) > 0)
+        self.assertTrue(self._is_page_found(result_links, 'Privacy Policy'))
+
+    def test_search_results_contain_terms_of_use_page(self):
+        self.get('/search/?q=terms')
+        result_links = self._result_links()
+        self.assertTrue(len(result_links) > 0)
+        self.assertTrue(self._is_page_found(result_links, 'Terms of Use'))
+
+    def test_search_results_contain_teaching_page(self):
+        self.get('/search/?q=teaching')
+        result_links = self._result_links()
+        self.assertTrue(len(result_links) > 0)
+        self.assertTrue(self._is_page_found(result_links, 'Teaching'))
+
+    # Search on terms containing various special characters.
+
+    def test_search_results_found_hyphenated_words(self):
+        self.get('/search/?q=meadow-rue')
+        self.assertTrue(len(self._result_links()) > 0)
+
+    def test_search_results_found_hyphenated_words_first_possessive(self):
+        self.get('/search/?q=wild+goat%27s-rue')
+        self.assertTrue(len(self._result_links()) > 0)
+
+
+class PlantOfTheDayFunctionalTests(FunctionalTestCase):
+
+    def test_home_page_has_plant_of_the_day(self):
+        self.get('/')
+        potd_heading = self.css1('#potd .details h2')
+        self.assertTrue(potd_heading.text.startswith('Plant of the day'))
+
+    def test_plant_of_the_day_has_linked_image(self):
+        self.get('/')
+        self.css('#potd a img')
+
+    def test_plant_of_the_day_has_description_excerpt(self):
+        self.get('/')
+        self.css('#potd .details p')
+
+    def test_plant_of_the_day_has_learn_more_button(self):
+        self.get('/')
+        self.css('#potd .details a.learn-more')
+
+    def test_plant_of_the_day_feed_exists(self):
+        self.get('/plantoftheday/')
+        feed1 = self.driver.page_source
+        self.get('/plantoftheday/atom.xml')
+        feed2 = self.driver.page_source
+        self.assertEqual(feed1, feed2)
+
+
+class SimpleKeyFunctionalTests(FunctionalTestCase):
+
+    def test_simple_first_level_page_title(self):
+        self.get('/simple/')
+        title = self.driver.title
+        self.assertEqual(title,
+            'Simple Key for Plant Identification: Go Botany')
+
+    def test_simple_first_level_page_main_heading(self):
+        self.get('/simple/')
+        heading = self.css1('h1').text
+        self.assertEqual(heading,
+            'Simple Key: Which group best describes your plant?')
+
+    def test_groups_page(self):
+        self.get('/simple/')
+
+        h = self.css('h2')
+        self.assertEqual(len(h), 7)   # seven h2 headings, including Help
+        assert h[0].text.startswith('Woody plants')
+        assert h[1].text.startswith('Aquatic plants')
+        assert h[2].text.startswith('Grass-like plants')
+        assert h[3].text.startswith('Orchids and related plants')
+        assert h[4].text.startswith('Ferns')
+        assert h[5].text.startswith('All other flowering non-woody plants')
+
+        # Do group links get constructed correctly?
+
+        e = self.css1('#main .action-link')
+        self.assertEqual('WOODY PLANTS', e.text)   # uppercased by CSS
+        self.assertTrue(e.get_attribute('href').endswith(
+            '/simple/woody-plants/'))
+
+    def test_subgroups_page(self):
+        self.get('/simple/ferns/')
+        h = self.css('h2')
+        self.assertEqual(len(h), 4)   # four h2 headings, including Help
+        assert h[0].text.startswith('True ferns and moonworts')
+        assert h[1].text.startswith('Clubmosses and relatives, plus quillworts')
+        assert h[2].text.startswith('Horsetails and scouring-rushes')
+        e = self.css('#main .action-link')
+        self.assertTrue(
+            e[0].get_attribute('href').endswith('/ferns/monilophytes/'))
+        self.assertTrue(
+            e[1].get_attribute('href').endswith('/ferns/lycophytes/'))
+        self.assertTrue(
+            e[2].get_attribute('href').endswith('/ferns/equisetaceae/'))
+
+
+class FullKeyFunctionalTests(FunctionalTestCase):
+
+    def test_full_first_level_page_title(self):
+        self.get('/full/')
+        title = self.driver.title
+        self.assertEqual(title,
+            'Full Key for Plant Identification: Go Botany')
+
+    def test_full_first_level_page_main_heading(self):
+        self.get('/full/')
+        heading = self.css1('h1').text
+        self.assertEqual(heading,
+            'Full Key: Which group best describes your plant?')
+
+
+class FamilyPageFunctionalTests(FunctionalTestCase):
+
+    def test_family_page(self):
+        self.get('/family/lycopodiaceae/')
+        heading = self.css('#main h1')
+        self.assertTrue(len(heading))
+        self.assertTrue(
+            heading[0].text == 'Family: Lycopodiaceae — club moss family')
+
+    def test_family_page_has_example_images(self):
+        response = self.get('/family/lycopodiaceae/')
+        example_images = self.css('#main .pics a img')
+        self.assertTrue(len(example_images))
+
+    def test_family_page_has_list_of_genera(self):
+        self.get('/family/lycopodiaceae/')
+        genera = self.css('#main .genera li')
+        self.assertTrue(len(genera))
+
+
+class GenusPageFunctionalTests(FunctionalTestCase):
+
+    def test_genus_page(self):
+        self.get('/genus/dendrolycopodium/')
+        heading = self.css('#main h1')
+        self.assertTrue(len(heading))
+        self.assertTrue(
+            heading[0].text == 'Genus: Dendrolycopodium — tree-clubmoss')
+
+    def test_genus_page_has_example_images(self):
+        self.get('/genus/dendrolycopodium/')
+        example_images = self.css('#main .pics a img')
+        self.assertTrue(len(example_images))
+
+    def test_genus_page_has_family_link(self):
+        self.get('/genus/dendrolycopodium/')
+        family_link = self.css('#main p.family a')
+        self.assertTrue(len(family_link))
+
+    def test_genus_page_has_list_of_species(self):
+        self.get('/genus/dendrolycopodium/')
+        species = self.css('#main .species li')
+        self.assertTrue(len(species))
+
+
+class SpeciesPageFunctionalTests(FunctionalTestCase):
+
+    def crumb(self, n):
+        return self.css('#breadcrumb a')[n].text
+
+    def test_simple_key_species_page_has_breadcrumb(self):
+        self.get('/species/adiantum/pedatum/')
+        self.assertTrue(self.css1('#breadcrumb'))
+
+    # Test breadcrumb trails for a species included in the Simple Key, and
+    # a species not included in the Simple Key. These should have
+    # breadcrumbs for the Simple and Full Keys, respectively.
+
+    def test_simplekey_species_breadcrumbs(self):
+        self.get('/species/dendrolycopodium/dendroideum/?pile=lycophytes')
+        self.assertEqual(self.crumb(0), 'Simple Key')
+        self.assertEqual(self.crumb(1), 'Ferns')
+        self.assertEqual(self.crumb(2),
+            'Clubmosses and relatives, plus quillworts')
+
+    def test_fullkey_species_breadcrumbs(self):
+        self.get('/species/diphasiastrum/complanatum/?pile=lycophytes')
+        self.assertEqual(self.crumb(0), 'Full Key')
+        self.assertEqual(self.crumb(1), 'Ferns')
+        self.assertEqual(self.crumb(2),
+            'Clubmosses and relatives, plus quillworts')
+
+    # Test breadcrumb trails for the same species, but coming from the
+    # Dichotomous Key. Both should have Dichotomous Key breadcrumbs.
+
+    def test_simplekey_species_dichotomous_breadcrumbs(self):
+        self.get('/species/dendrolycopodium/dendroideum/?key=dichotomous')
+        self.assertEqual(self.crumb(0), 'Dichotomous Key')
+        self.assertEqual(self.crumb(1), 'Lycopodiaceae')
+        self.assertEqual(self.crumb(2), 'Dendrolycopodium')
+
+    def test_fullkey_species_dichotomous_breadcrumbs(self):
+        self.get('/species/diphasiastrum/complanatum/?key=dichotomous')
+        self.assertEqual(self.crumb(0), 'Dichotomous Key')
+        self.assertEqual(self.crumb(1), 'Lycopodiaceae')
+        self.assertEqual(self.crumb(2), 'Diphasiastrum')
+
+    # Test photo titles and credits.
+
+    def _photos_have_expected_caption_format(self, species_page_url):
+        # For a species page, make sure the plant photos have the expected
+        # format for title/alt text that gets formatted on the fly atop
+        # each photo when it is viewed large. The text should contain a
+        # title, image type, contributor, copyright holder. It can also
+        # optionally have a "source" note at the end.
+        REGEX_PATTERN = '.*: .*\. ~ By .*\. ~ Copyright .*\s+.( ~ .\s+)?'
+        self.get(species_page_url)
+        links = self.css('#species-images a')
+        self.assertTrue(len(links))
+        for link in links:
+            title = link.get_attribute('title')
+            self.assertTrue(re.match(REGEX_PATTERN, title))
+        images = self.css('#species-images a img')
+        self.assertTrue(len(images))
+        for image in images:
+            alt_text = image.get_attribute('alt')
+            self.assertTrue(re.match(REGEX_PATTERN, alt_text))
+
+    def test_species_page_photos_have_title_credit_copyright(self):
+        species_page_url = '/species/dendrolycopodium/dendroideum/'
+        self._photos_have_expected_caption_format(species_page_url)
+
+    def test_species_page_photos_have_title_credit_copyright_source(self):
+        # Some images on this page have "sources" specified for them.
+        species_page_url = ('/species/gymnocarpium/dryopteris/')
+        self._photos_have_expected_caption_format(species_page_url)
+
+
+class LookalikesFunctionalTests(FunctionalTestCase):
+
+    def test_species_pages_have_lookalikes(self):
+        # Verify a sampling of the species expected to have lookalikes.
+        SPECIES = ['Huperzia appressa', 'Lonicera dioica', 'Actaea rubra',
+            'Digitalis purpurea', 'Brachyelytrum aristosum']
+        for s in SPECIES:
+            url = '/species/%s/' % s.replace(' ', '/').lower()
+            self.get(url)
+            heading = self.css('.additional-info .lookalikes h2')
+            self.assertTrue(heading)
+            lookalikes = self.css('.additional-info .lookalikes dt')
+            self.assertTrue(len(lookalikes) > 0)
+            for lookalike in lookalikes:
+                self.assertTrue(len(lookalike.text) > 0)
+            notes = self.css('.additional-info .lookalikes dd')
+            self.assertTrue(len(notes) > 0)
+            for note in notes:
+                self.assertTrue(len(note.text) > 0)
+
+    def test_lookalikes_with_notes(self):
+        self.get('/species/abies/balsamea/')
+        lookalike = self.css('.additional-info .lookalikes dt')[0].text
+        notes = self.css('.additional-info .lookalikes dd')[0].text
+        self.assertTrue(lookalike.find(':') > -1);
+        self.assertTrue(len(notes) > 0)
+        self.assertTrue(notes.find('winter buds not resinous,') > -1)
+
+    def test_lookalikes_without_notes(self):
+        self.get('/species/abies/concolor/')
+        lookalike = self.css('.additional-info .lookalikes dt')[0].text
+        notes = self.css('.additional-info .lookalikes dd')
+        self.assertTrue(lookalike.find(':') == -1);
+        self.assertTrue(len(notes) == 0)
+
+
+class HomeFunctionalTests(FunctionalTestCase):
+
+    def test_home_page(self):
+        self.get('/')
+
+        title = self.driver.title
+        self.assertEqual(title, 'Go Botany: Native Plant Trust')
+
+        get_started = self.css1('#cta')
+        page_url = get_started.get_attribute('href')
+        self.assertTrue(page_url.endswith('/simple/'))
+        self.assertEqual(get_started.text, 'SIMPLE KEY') # styled uppercase
+
+    def test_copyright_contains_current_year(self):
+        self.get('/')
+        copyright = self.css1('.footer__copyright')
+        current_year = str(datetime.now().year)
+        self.assertIn(current_year, copyright.text)
+
+
+class NavigationFunctionalTests(FunctionalTestCase):
+
+    def _get_anchor(self, on_page='', anchor_label='', within=''):
+        self.get(on_page)
+        e = self.css1(within)
+        a = self.link_saying(anchor_label, e)
+        return a
+
+    # Header navigation items: linked, unlinked
+
+    def test_header_home_item_is_linked(self):
+        self.get('/help/')   # should be linked on any page except home
+        item = self.css1('nav li.home a')
+        self.assertTrue(item.get_attribute('href'))
+
+    def test_header_home_item_is_unlinked(self):
+        self.get('/')   # should not be linked on home page
+        item = self.css1('nav li.home a')
+        self.assertFalse(item.get_attribute('href'))
+
+    def test_header_simple_key_item_is_linked(self):
+        self.get('/help/')
+        item = self.css1('nav li.simple a')
+        self.assertTrue(item.get_attribute('href'))
+
+    def test_header_simple_key_item_is_unlinked(self):
+        self.get('/simple/')
+        item = self.css1('nav li.simple a')
+        self.assertFalse(item.get_attribute('href'))
+
+    def test_header_plantshare_item_is_linked(self):
+        self.get('/help/')
+        item = self.css1('nav li.plantshare a')
+        self.assertTrue(item.get_attribute('href'))
+
+    def test_header_plantshare_item_is_unlinked(self):
+        self.get('/plantshare/')
+        item = self.css1('nav li.plantshare a')
+        self.assertFalse(item.get_attribute('href'))
+
+    def test_header_full_key_item_is_linked(self):
+        self.get('/help/')
+        item = self.css1('nav li.full a')
+        self.assertTrue(item.get_attribute('href'))
+
+    def test_header_full_key_item_is_unlinked(self):
+        self.get('/full/')
+        item = self.css1('nav li.full a')
+        self.assertFalse(item.get_attribute('href'))
+
+    def test_header_dichotomous_key_item_is_linked(self):
+        self.get('/help/')
+        item = self.css1('nav li.dkey a')
+        self.assertTrue(item.get_attribute('href'))
+
+    def test_header_dichotomous_key_item_is_unlinked(self):
+        self.get('/dkey/')
+        item = self.css1('nav li.dkey a')
+        self.assertFalse(item.get_attribute('href'))
+
+    def test_header_teaching_item_is_linked(self):
+        self.get('/help/')
+        item = self.css1('nav li.teaching a')
+        self.assertTrue(item.get_attribute('href'))
+
+    def test_header_teaching_item_is_unlinked(self):
+        self.get('/teaching/')
+        item = self.css1('nav li.teaching a')
+        self.assertFalse(item.get_attribute('href'))
+
+    def test_header_help_item_is_linked(self):
+        self.get('/')
+        item = self.css1('nav li.help a')
+        self.assertTrue(item.get_attribute('href'))
+
+    def test_header_help_item_is_unlinked(self):
+        self.get('/help/')
+        item = self.css1('nav li.help a')
+        self.assertFalse(item.get_attribute('href'))
+
+    # Main headings of top pages in each section and a few within
+    # (Style: these should match their navigation item labels closely.)
+
+    def test_main_heading_simple_key(self):
+        self.get('/simple/')
+        self.assertEqual(self.css1('h1').text,
+            'Simple Key: Which group best describes your plant?')
+
+    def test_main_heading_simple_key_subgroups_list(self):
+        self.get('/simple/woody-plants/')
+        self.assertEqual(self.css1('h1').text,
+            'Woody plants: Is your plant in one of these subgroups?')
+
+    def test_main_heading_plantshare(self):
+        self.get('/plantshare/')
+        self.assertEqual(self.css1('h1').text, 'PlantShare')
+
+    def test_main_heading_full_key(self):
+        self.get('/full/')
+        self.assertEqual(self.css1('h1').text,
+            'Full Key: Which group best describes your plant?')
+
+    def test_main_heading_full_key_subgroups_list(self):
+        self.get('/full/ferns/')
+        self.assertEqual(self.css1('h1').text,
+            'Ferns: Is your plant in one of these subgroups?')
+
+    def test_main_heading_dichotomous_key(self):
+        self.get('/dkey/')
+        self.assertEqual(self.css1('h1').text, 'Dichotomous Key to Families')
+
+    def test_main_heading_teaching(self):
+        self.get('/teaching/')
+        self.assertEqual(self.css1('h1').text, 'Teaching')
+
+    def test_main_heading_help(self):
+        self.get('/help/')
+        self.assertEqual(self.css1('h1').text, 'Help')
+
+    # Footer navigation items: linked, unlinked
+
+    def test_footer_home_item_is_linked(self):
+        self.get('/help/')   # should be linked on any page except home
+        item = self.css1('footer li.home a')
+        self.assertTrue(item.get_attribute('href'))
+
+    def test_footer_home_item_is_unlinked(self):
+        self.get('/')   # should not be linked on home page
+        item = self.css1('footer li.home a')
+        self.assertFalse(item.get_attribute('href'))
+
+    def test_footer_simple_key_item_is_linked(self):
+        self.get('/help/')
+        item = self.css1('footer li.simple a')
+        self.assertTrue(item.get_attribute('href'))
+
+    def test_footer_simple_key_item_is_unlinked(self):
+        self.get('/simple/')
+        item = self.css1('footer li.simple a')
+        self.assertFalse(item.get_attribute('href'))
+
+    def test_footer_plantshare_item_is_linked(self):
+        self.get('/help/')
+        item = self.css1('footer li.plantshare a')
+        self.assertTrue(item.get_attribute('href'))
+
+    def test_footer_plantshare_item_is_unlinked(self):
+        self.get('/plantshare/')
+        item = self.css1('footer li.plantshare a')
+        self.assertFalse(item.get_attribute('href'))
+
+    def test_footer_full_key_item_is_linked(self):
+        self.get('/help/')
+        item = self.css1('footer li.full a')
+        self.assertTrue(item.get_attribute('href'))
+
+    def test_footer_full_key_item_is_unlinked(self):
+        self.get('/full/')
+        item = self.css1('footer li.full a')
+        self.assertFalse(item.get_attribute('href'))
+
+    def test_footer_dichotomous_key_item_is_linked(self):
+        self.get('/help/')
+        item = self.css1('footer li.dkey a')
+        self.assertTrue(item.get_attribute('href'))
+
+    def test_footer_dichotomous_key_item_is_unlinked(self):
+        self.get('/dkey/')
+        item = self.css1('footer li.dkey a')
+        self.assertFalse(item.get_attribute('href'))
+
+    def test_footer_teaching_item_is_linked(self):
+        self.get('/help/')
+        item = self.css1('footer li.teaching a')
+        self.assertTrue(item.get_attribute('href'))
+
+    def test_footer_teaching_item_is_unlinked(self):
+        self.get('/teaching/')
+        item = self.css1('footer li.teaching a')
+        self.assertFalse(item.get_attribute('href'))
+
+    def test_footer_help_item_is_linked(self):
+        self.get('/')
+        item = self.css1('footer li.help a')
+        self.assertTrue(item.get_attribute('href'))
+
+    def test_footer_help_item_is_unlinked(self):
+        self.get('/help/')
+        item = self.css1('footer li.help a')
+        self.assertFalse(item.get_attribute('href'))
+
+    def test_footer_privacy_policy_item_is_linked(self):
+        self.get('/help/')
+        item = self.css1('footer li.privacy a')
+        self.assertTrue(item.get_attribute('href'))
+
+    def test_footer_privacy_policy_item_is_unlinked(self):
+        self.get('/privacy/')
+        item = self.css1('footer li.privacy a')
+        self.assertFalse(item.get_attribute('href'))
+
+    def test_footer_terms_of_use_item_is_linked(self):
+        self.get('/help/')
+        item = self.css1('footer li.terms a')
+        self.assertTrue(item.get_attribute('href'))
+
+    def test_footer_terms_of_use_item_is_unlinked(self):
+        self.get('/terms-of-use/')
+        item = self.css1('footer li.terms a')
+        self.assertFalse(item.get_attribute('href'))
+
+    def test_footer_contact_item_is_linked(self):
+        self.get('/help/')
+        item = self.css1('footer li.contact a')
+        self.assertTrue(item.get_attribute('href'))
+
+    def test_footer_contact_item_is_unlinked(self):
+        self.get('/contact/')
+        item = self.css1('footer li.contact a')
+        self.assertFalse(item.get_attribute('href'))
+
+
+class GlossaryFunctionalTests(FunctionalTestCase):
+
+    def test_getting_started_has_link_to_glossary(self):
+        self.get('/start/')
+        link = self.css1('nav li.glossary a')
+        self.assertEqual('Glossary', link.text)
+        self.assertTrue(link.get_attribute('href').endswith('/glossary/a/'))
+
+    def test_glossary_a_page_contains_a_terms(self):
+        self.get('/glossary/a/')
+        xterms = self.css('#terms dt')
+        first_term = xterms[0].text
+        last_term = xterms[-1].text
+        self.assertTrue(first_term.startswith('a'))
+        self.assertTrue(last_term.startswith('a'))
+
+    def test_glossary_g_page_contains_g_terms(self):
+        self.get('/glossary/g/')
+        xterms = self.css('#terms dt')
+        first_term = xterms[0].text
+        last_term = xterms[-1].text
+        self.assertTrue(first_term.startswith('g'))
+        self.assertTrue(last_term.startswith('g'))
+
+    def test_glossary_z_page_contains_z_terms(self):
+        self.get('/glossary/z/')
+        xterms = self.css('#terms dt')
+        first_term = xterms[0].text
+        last_term = xterms[-1].text
+        self.assertTrue(first_term.startswith('z'))
+        self.assertTrue(last_term.startswith('z'))
+
+    def test_glossary_g_page_does_not_link_to_itself(self):
+         self.get('/glossary/g/')
+         g_anchor = self.css('#alphabet li:nth-child(7) a')[0]
+         self.assertFalse(g_anchor.get_attribute('href'))
+
+    def test_glossary_g_page_link_to_other_letters(self):
+        self.get('/glossary/g/')
+        a_link = self.css('#alphabet li:nth-child(1) a')[0]
+        self.assertEqual('A', a_link.text)
+        b_link = self.css('#alphabet li:nth-child(2) a')[0]
+        self.assertEqual('B', b_link.text)
+        c_link = self.css('#alphabet li:nth-child(3) a')[0]
+        self.assertEqual('C', c_link.text)
+
+    def test_glossary_g_page_link_is_correct(self):
+        self.get('/glossary/a/')
+        letter_links = self.css('#alphabet li')
+        g_link = self.css('#alphabet li:nth-child(7) a')[0]
+        self.assertTrue(g_link.get_attribute('href').endswith('/glossary/g/'))
+
+
+class TeachingFunctionalTests(FunctionalTestCase):
+    TEACHING_URL_PATH = '/teaching/'
+
+    def _h2_headings(self):
+        return [heading.text for heading in self.css('h2')]
+
+    def _sidebar_headings(self):
+        return [heading.text for heading in self.css('#sidebar h4')]
+
+    def test_teaching_page_returns_ok(self):
+        response = requests.get('http://localhost:8000' + \
+            self.TEACHING_URL_PATH)
+        self.assertEqual(200, response.status_code)
+
+    def test_teaching_page_title(self):
+        teaching_page = self.get(self.TEACHING_URL_PATH)
+        self.assertEqual('Teaching: Go Botany', teaching_page.title)
+
+    def test_teaching_page_main_heading(self):
+        self.get(self.TEACHING_URL_PATH)
+        heading = self.css1('h1').text
+        self.assertEqual('Teaching', heading)
+
+    def test_teaching_page_has_share_section(self):
+        self.get(self.TEACHING_URL_PATH)
+        self.assertTrue('Share your ideas' in self._h2_headings())
+
+    def test_teaching_page_has_teaching_tools_section(self):
+        self.get(self.TEACHING_URL_PATH)
+        self.assertTrue('Teaching tools' in self._h2_headings())
+
+
+class HelpFunctionalTests(FunctionalTestCase):
+
+    PATHS = {
+        'HELP': '/help/',
+        'START': '/start/',
+        'VIDEO': '/video/',
+        'MAP': '/map/',
+        'GLOSSARY': '/glossary/',
+        'ABOUT': '/about/',
+        'CONTRIBUTORS': '/contributors/'
+    }
+
+    # Help page
+
+    def test_help_page_returns_ok(self):
+        response = requests.get('http://localhost:8000' + \
+            self.PATHS['HELP'])
+        self.assertEqual(200, response.status_code)
+
+    def test_help_page_title(self):
+        help_page = self.get(self.PATHS['HELP'])
+        self.assertEqual(help_page.title, 'Help: Go Botany')
+
+    def test_help_page_main_heading(self):
+        self.get(self.PATHS['HELP'])
+        self.assertEqual(self.css1('h1').text, 'Help')
+
+    # Getting Started with the Simple Key page
+
+    def test_getting_started_simple_key_page_returns_ok(self):
+        response = requests.get('http://localhost:8000' + \
+            self.PATHS['START'])
+        self.assertEqual(200, response.status_code)
+
+    def test_getting_started_simple_key_page_title(self):
+        getting_started_page = self.get(self.PATHS['START'])
+        self.assertEqual(getting_started_page.title,
+            'Getting Started: Simple Key: Help: Go Botany')
+
+    def test_getting_started_simple_key_page_main_heading(self):
+        self.get(self.PATHS['START'])
+        self.assertEqual(self.css1('h1').text, 'Getting Started: Simple Key')
+
+    # Video Help Topics page
+
+    def test_video_help_topics_page_returns_ok(self):
+        response = requests.get('http://localhost:8000' + \
+            self.PATHS['VIDEO'])
+        self.assertEqual(200, response.status_code)
+
+    def test_video_help_topics_page_title(self):
+        video_help_topics_page = self.get(self.PATHS['VIDEO'])
+        self.assertEqual(video_help_topics_page.title,
+            'Video Help Topics: Help: Go Botany')
+
+    def test_video_help_topics_page_main_heading(self):
+        self.get(self.PATHS['VIDEO'])
+        self.assertEqual(self.css1('h1').text, 'Video Help Topics')
+
+    # Advanced Map to Groups page
+
+    def test_advanced_map_to_groups_page_returns_ok(self):
+        response = requests.get('http://localhost:8000' + \
+            self.PATHS['MAP'])
+        self.assertEqual(200, response.status_code)
+
+    def test_advanced_map_to_groups_page_title(self):
+        advanced_map_page = self.get(self.PATHS['MAP'])
+        self.assertEqual(advanced_map_page.title,
+            'Map to Plant Groups: Help: Go Botany')
+
+    def test_advanced_map_to_groups_page_main_heading(self):
+        self.get(self.PATHS['MAP'])
+        self.assertEqual(self.css1('h1').text, 'Map to Plant Groups')
+
+    # Glossary first ("A") page. More glossary tests in GlossaryTests class
+
+    def test_glossary_redirects_to_first_page(self):
+        response = requests.get('http://localhost:8000' + \
+            self.PATHS['GLOSSARY'])
+        self.assertTrue(response.url.endswith(self.PATHS['GLOSSARY'] + 'a/'))
+
+    def test_glossary_first_page_title(self):
+        glossary_page = self.get(self.PATHS['GLOSSARY'])
+        self.assertEqual(glossary_page.title,
+            'Glossary: A: Help: Go Botany')
+
+    def test_glossary_first_page_main_heading(self):
+        self.get(self.PATHS['GLOSSARY'])
+        self.assertEqual(self.css1('h1').text, 'Glossary: A')
+
+    # About Go Botany page
+
+    def test_about_go_botany_page_returns_ok(self):
+        response = requests.get('http://localhost:8000' + \
+            self.PATHS['ABOUT'])
+        self.assertEqual(200, response.status_code)
+
+    def test_about_go_botany_page_title(self):
+        about_page = self.get(self.PATHS['ABOUT'])
+        self.assertEqual(about_page.title,
+            'About Go Botany: Help: Go Botany')
+
+    def test_about_go_botany_page_main_heading(self):
+        self.get(self.PATHS['ABOUT'])
+        self.assertEqual(self.css1('h1').text, 'About Go Botany')
+
+    # Contributors page
+
+    def test_contributors_page_returns_ok(self):
+        response = requests.get('http://localhost:8000' + \
+            self.PATHS['CONTRIBUTORS'])
+        self.assertEqual(200, response.status_code)
+
+    def test_contributors_page_title(self):
+        contributors_page = self.get(self.PATHS['CONTRIBUTORS'])
+        self.assertEqual(contributors_page.title,
+            'Contributors: Help: Go Botany')
+
+    def test_about_go_botany_page_main_heading(self):
+        self.get(self.PATHS['CONTRIBUTORS'])
+        self.assertEqual(self.css1('h1').text, 'Contributors')
+
+
+class SitemapFunctionalTests(FunctionalTestCase):
+
+    def test_sitemap_returns_ok(self):
+        response = requests.get('http://localhost:8000' + \
+            '/sitemap.txt')
+        self.assertEqual(200, response.status_code)
+
+
+class SpeciesListFunctionalTests(FunctionalTestCase):
+
+    def test_species_list_returns_ok(self):
+        response = requests.get('http://localhost:8000' + \
+            '/list/')
+        self.assertEqual(200, response.status_code)
 
 
 class PlantShareFunctionalTests(FunctionalTestCase):

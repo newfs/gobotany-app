@@ -151,11 +151,11 @@ def _get_recent_sightings(request, profile):
         sightings_with_photos = Sighting.objects.filter(
             Q(photos__isnull=False, photos__is_approved=True) |
             Q(photos__isnull=False, user=profile.user)).order_by(
-            '-created').distinct('created')
+            '-created').distinct()
     else:
         sightings_with_photos = Sighting.objects.filter(
             photos__isnull=False, photos__is_approved=True).order_by(
-            '-created').distinct('created')
+            '-created').distinct()
 
     for sighting in sightings_with_photos:
         may_show_sighting = _may_show_sighting(sighting, request.user)
@@ -715,8 +715,9 @@ def all_questions_by_year_view(request, year=None):
             else:
                 raise Http404
 
+    # Get the questions, prefetching images for acceptable performance.
     questions = Question.objects.answered().filter(
-        asked__year=year).order_by('-answered')
+        asked__year=year).order_by('-answered').prefetch_related('images')
 
     if questions:
         return render(request, 'all_questions.html', {

@@ -2,7 +2,7 @@ from distutils.core import setup
 from setuptools import find_packages
 
 requirements = [
-    'django==4.0.10',
+    'django==4.1.13',
 
     'Pillow==10.3.0',
     'bleach==5.0.1',
@@ -19,7 +19,7 @@ requirements = [
     'django-imagekit==5.0.0',
     'django-tinymce==4.1.0',
     'inflect',
-    'lxml==4.9.1',
+    'lxml==5.3.0',
     'psycopg2==2.9.2',
     'python-memcached',
     'pytz',
@@ -55,6 +55,10 @@ requirements = [
     'newrelic',
     'python-magic==0.4.24',
     's3cmd==2.2.0',
+
+    # Local email testing
+
+    'aiosmtpd',   # has replaced Python's now-removed smtpd module
     ]
 
 dependency_links = [

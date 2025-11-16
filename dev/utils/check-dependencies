@@ -1,6 +1,6 @@
 #!/bin/bash
 
-PYTHON=${1:-python3.9}
+PYTHON=${1:-python3.11}
 
 # Make sure that the system has provided requirements that we would
 # rather not have to build for ourselves.
@@ -12,7 +12,7 @@ then
 Error: The "lxml" library needs to be installed in your system Python.
 
        Ubuntu Linux:        sudo apt-get install python-lxml
-       Mac OS with MacPorts:  sudo port install py39-lxml
+       Mac OS with MacPorts:  sudo port install py311-lxml
 
 EOF
     exit 1
@@ -24,7 +24,10 @@ then
 
 Error: The "psycopg" library needs to be installed in your system Python.
 
-       Mac OS with MacPorts:  sudo port install py39-psycopg2
+       Mac OS with MacPorts:  sudo port install py311-psycopg2
+
+       Note: if errors importing psycopg2 in Python shell, may have
+       to install port postgresq13 (see import error output)
 
 EOF
     exit 1
@@ -37,11 +40,17 @@ then
 Error: The "pylibmc" library needs to be installed in your system Python.
 
        Mac OS with MacPorts:  sudo port install py38-pylibmc
-       (do port search pylibmc to see if a py39 or py310 version is available)
+       (port search pylibmc showed no later py*- version available)
 
        or:
 
        pip install pylibmc==1.6.2
+
+       Doing the latter gets a newer version of pylibmc (MacPorts
+       has 1.6.1)
+
+       Note: if errors importing pylibmc in Python shell, may have
+       to install port libmemcached (see import error output)
 
 EOF
     exit 1
