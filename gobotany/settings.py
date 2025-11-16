@@ -90,12 +90,13 @@ else:
 # in order to test with IN_PRODUCTION locally, temporarily comment out
 # the lines that enable Django's Security Middleware.
 #
-IN_PRODUCTION = 'PORT' in os.environ
+#IN_PRODUCTION = 'PORT' in os.environ
+IN_PRODUCTION = False   # try to allow DjDT to work in Dev
 
-USE_DEBUG_TOOLBAR = True   # False
+USE_DEBUG_TOOLBAR = False
 # Django Debug Toolbar is turned off by default. Uncomment the
 # following line to turn it on.
-#USE_DEBUG_TOOLBAR = not IN_PRODUCTION and DEBUG_TOOLBAR_AVAILABLE
+USE_DEBUG_TOOLBAR = not IN_PRODUCTION and DEBUG_TOOLBAR_AVAILABLE
 
 DEBUG_TOOLBAR_PATCH_SETTINGS = False
 
