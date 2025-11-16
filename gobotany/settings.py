@@ -92,10 +92,10 @@ else:
 #
 IN_PRODUCTION = 'PORT' in os.environ
 
-USE_DEBUG_TOOLBAR = False
+USE_DEBUG_TOOLBAR = True   # False
 # Django Debug Toolbar is turned off by default. Uncomment the
 # following line to turn it on.
-USE_DEBUG_TOOLBAR = not IN_PRODUCTION and DEBUG_TOOLBAR_AVAILABLE
+#USE_DEBUG_TOOLBAR = not IN_PRODUCTION and DEBUG_TOOLBAR_AVAILABLE
 
 DEBUG_TOOLBAR_PATCH_SETTINGS = False
 
