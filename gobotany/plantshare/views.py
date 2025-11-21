@@ -721,8 +721,11 @@ def all_questions_by_year_view(request, year=None):
                 raise Http404
 
     # Get the questions, prefetching images for acceptable performance.
+    #questions = Question.objects.answered().filter(
+    #    asked__year=year).order_by('-answered').prefetch_related('images')
+    # Get just the questions.
     questions = Question.objects.answered().filter(
-        asked__year=year).order_by('-answered').prefetch_related('images')
+        asked__year=year).order_by('-answered').values('question')
 
     if questions:
         return render(request, 'all_questions.html', {
