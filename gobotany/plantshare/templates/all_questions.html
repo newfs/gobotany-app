@@ -32,16 +32,18 @@
 <ul class="questions">
 	{% for question in questions %}
 		<li id="q{{ question.id }}">
-			{% include "_question_images.html" %}
+			<!--{% include "_question_images.html" %}-->
 			<dl>
 				<dt>Question</dt>
 				<dd>{{ question.question }}</dd>
+
+				{% comment %}
 				<dt>Answer</dt>
 				<dd>{{ question.answer }}</dd>
-				{% comment %}
+				{% endcomment %}			
+
 				<br><a class="action-link caps"
 				    href="./q{{question.id}}/">Answer</a>
-				{% endcomment %}
 			</dl>
 		</li>
 	{% endfor %}
