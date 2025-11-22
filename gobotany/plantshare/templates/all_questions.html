@@ -32,7 +32,7 @@
 <ul class="questions">
 	{% for question in questions %}
 		<li id="q{{ question.id }}">
-			<!--{% include "_question_images.html" %}-->
+			{% include "_question_images.html" %}
 			<dl>
 				<dt>Question</dt>
 				<dd>{{ question.question }}</dd>
