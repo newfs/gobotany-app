@@ -36,9 +36,11 @@
 			<dl>
 				<dt>Question</dt>
 				<dd>{{ question.question }}</dd>
-				{% comment %}
 				<dt>Answer</dt>
 				<dd>{{ question.answer }}</dd>
+				{% comment %}
+				<br><a class="action-link caps"
+				    href="./q{{question.id}}/">Answer</a>
 				{% endcomment %}
 			</dl>
 		</li>
