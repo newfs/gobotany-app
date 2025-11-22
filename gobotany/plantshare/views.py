@@ -693,13 +693,13 @@ def questions_view(request):
 def all_questions_by_year_view(request, year=None):
     """View for a list of all Questions and Answers for a year."""
 
-    #years = [str(dt.year) for dt in
-    #    Question.objects.answered().datetimes('asked', 'year', order='DESC')]
+    years = [str(dt.year) for dt in
+        Question.objects.answered().datetimes('asked', 'year', order='DESC')]
     # Try a version of this that doesn't query the database for years.
     # Make a static list, which we can refine by adding a routine that
     # gets the current date's year and works back to a start year.
-    years = ['2025', '2024', '2023', '2022', '2021', '2020', '2019',
-        '2018', '2017', '2016', '2015', '2014', '2013']
+    #years = ['2025', '2024', '2023', '2022', '2021', '2020', '2019',
+    #    '2018', '2017', '2016', '2015', '2014', '2013']
     # If this view was not called with a year, use the most recent year that
     # has an answered question.
     if not year:
