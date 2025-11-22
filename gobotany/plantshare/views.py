@@ -725,8 +725,8 @@ def all_questions_by_year_view(request, year=None):
     #    asked__year=year).order_by('-answered').prefetch_related('images')
     # Get the questions.
     questions = Question.objects.answered().filter(
-        asked__year=year).order_by('-answered').values('id', 'question',
-            'images', 'answer')
+        asked__year=year).order_by('-answered').only('id', 'question',
+            'answer').prefetch_related('images')
 
     if questions:
         return render(request, 'all_questions.html', {
