@@ -2,7 +2,7 @@
 
 {% load simplekey_extras %}
 
-{% block title %}Questions and Answers: PlantShare{% endblock %}
+{% block title %}Questions and Answers: {{ year }}: PlantShare{% endblock %}
 
 {% block js_require %}
     require([
@@ -43,7 +43,8 @@
 				{% endcomment %}			
 
 				<br><a class="action-link caps"
-				    href="./q{{question.id}}/">Answer</a>
+				    href="{% url 'ps-all-questions-by-year' year %}q{{question.id}}/"
+				    >Read Answer</a>
 			</dl>
 		</li>
 	{% endfor %}

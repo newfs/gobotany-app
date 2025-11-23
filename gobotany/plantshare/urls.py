@@ -45,6 +45,8 @@ urlpatterns = [
     path('questions/', views.questions_view, name='ps-questions'),
     path('questions/new/done/', views.new_question_done_view,
         name='ps-new-question-done'),
+    re_path(r'^questions/all/(?P<year>[0-9]{4})/q(?P<question_id>[0-9]{1,})/$',
+        views.question_answer_view, name='ps-question-answer'),
     re_path(r'^questions/all/(?P<year>[0-9]{4})/$',
         views.all_questions_by_year_view,
         name='ps-all-questions-by-year'),

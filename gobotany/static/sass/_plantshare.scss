@@ -982,7 +982,8 @@ body.plantshare .questions {   /* styles common to Ask the Botanist, questions p
         overflow: auto;
         padding: 10px 12px;
     }
-    img {
+    a.image {
+        border-bottom: 0 !important;
         float: right;
         margin: 5px 0 5px 12px;
     }
