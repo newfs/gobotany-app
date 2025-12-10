@@ -695,8 +695,6 @@ def all_questions_by_year_view(request, year=None):
 
     years = [str(dt.year) for dt in
         Question.objects.answered().datetimes('asked', 'year', order='DESC')]
-    # If this view was not called with a year, use the most recent year that
-    # has an answered question.
     if not year:
         year = years[0]
 
@@ -715,9 +713,9 @@ def all_questions_by_year_view(request, year=None):
             else:
                 raise Http404
 
-    # Get the questions, prefetching images for acceptable performance.
+    # Get just the questions.
     questions = Question.objects.answered().filter(
-        asked__year=year).order_by('-answered').prefetch_related('images')
+        asked__year=year).order_by('-answered').values('id', 'question')
 
     if questions:
         return render(request, 'all_questions.html', {
@@ -725,6 +723,23 @@ def all_questions_by_year_view(request, year=None):
                 'year': year,
                 'years': years
             })
+    else:
+        raise Http404
+
+
+@terms_agreed_on_login
+def question_answer_view(request, year, question_id):
+    years = [str(dt.year) for dt in
+        Question.objects.answered().datetimes('asked', 'year', order='DESC')]
+
+    question = Question.objects.answered().filter(pk=question_id,
+        asked__year=year).first()
+    if question:
+        return render(request, 'question_and_answer.html', {
+            'question': question,
+            'year': year,
+            'years': years
+        })
     else:
         raise Http404
 

@@ -1,0 +1,49 @@
+{% extends "gobotany/_page_free_sidebar.html" %}
+
+{% load simplekey_extras %}
+
+{% block title %}Questions and Answers: {{ year }}: PlantShare{% endblock %}
+
+{% block js_require %}
+    require([
+        'plantshare/ask_the_botanist',
+    ]);
+{% endblock %}
+
+{% block body_attributes %}id="questions" class="plantshare ask questions"{% endblock %}
+
+{% block main_content %}
+<p class="nav-links">
+{% for y in years %}
+    <a href="{% url 'ps-all-questions-by-year' y %}">{{ y }}</a>
+    {% if not forloop.last %} | {% endif %}
+{% endfor %}
+</p>
+
+<p>
+    <a href="{% url 'ps-all-questions-by-year' year %}"
+        >Questions and Answers: {{ year }}</a>
+</p>
+
+<h1>Question:
+<span style="font-weight: normal;"
+    >{{ question.question|truncatewords:20 }}</span></h1>
+
+<ul class="questions">
+    <li>      
+        <h2 style="margin-top: 10px;">Question</h2>
+
+        {% include "_question_images.html" %}
+        <p>{{ question.question }}</p>
+        
+        <h2 style="clear: both;">Answer</h2>
+        
+        <p>{{ question.answer }}</p>
+    </li>
+</ul>
+
+{% endblock %}
+
+{% block sidebar_content %}
+    {% include "_plantshare_navigation.html" %}
+{% endblock %}

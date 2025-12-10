@@ -1,7 +1,8 @@
 {% load simplekey_extras %}
 
         {% for image in question.images.all %}
-            <a href="{{ image.image.url|secure_url }}" rel="shadowbox"
+            <a class="image"
+                href="{{ image.image.url|secure_url }}" rel="shadowbox"
                 title="Copyright (c) PlantShare user, used by permission
                 by Native Plant Trust. All rights reserved.">
                 <img src="{{ image.thumb.url|secure_url }}" alt="">

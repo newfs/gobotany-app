@@ -2,7 +2,7 @@
 
 {% load simplekey_extras %}
 
-{% block title %}Questions and Answers: PlantShare{% endblock %}
+{% block title %}Questions and Answers: {{ year }}: PlantShare{% endblock %}
 
 {% block js_require %}
     require([
@@ -32,12 +32,19 @@
 <ul class="questions">
 	{% for question in questions %}
 		<li id="q{{ question.id }}">
-			{% include "_question_images.html" %}
+			<!--{% include "_question_images.html" %}-->
 			<dl>
 				<dt>Question</dt>
 				<dd>{{ question.question }}</dd>
+
+				{% comment %}
 				<dt>Answer</dt>
 				<dd>{{ question.answer }}</dd>
+				{% endcomment %}			
+
+				<br><a class="action-link caps"
+				    href="{% url 'ps-all-questions-by-year' year %}q{{question.id}}/"
+				    >Read Answer</a>
 			</dl>
 		</li>
 	{% endfor %}
