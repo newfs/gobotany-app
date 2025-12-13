@@ -118,3 +118,8 @@ def endangerment_code_label(code):
 @register.inclusion_tag('gobotany/_photo_credit.html')
 def photo_credit(image, image_name):
     return {'image': image, 'image_name': image_name}
+
+# Inclusion tag for formatting just the title of a photo.
+@register.inclusion_tag('gobotany/_photo_title.html')
+def photo_title(image, image_name):
+    return {'image': image, 'image_name': image_name}
