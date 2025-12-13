@@ -79,9 +79,22 @@ define([
         var replacer = function(match, term) {
             if (_.contains(avoid_terms, term))
                 return match;
-            else
-                return '<span class="gloss" role="tooltip" tabindex="0">' +
-                    match + '</span>';
+            else {
+                // Check if a span with this match already exists. If so, skip
+                // making a tooltip; only one tooltip per term per page.
+                // This is to limit repetition, mainly to avoid excessive tab
+                // stops for accessibility.
+                let existingMatch = document.querySelector(
+                    ".gloss[data-match='" + match.toLowerCase() + "']");
+                console.log("existingMatch:", existingMatch);
+                if (existingMatch) {
+                    return '<span>' + match + '</span>';
+                }
+
+                return '<span class="gloss" role="tooltip" tabindex="0" ' +
+                    'data-match="' + match.toLowerCase() + '">' + match +
+                    '</span>';
+            }
         };
 
         $(node).contents().each(function() {
