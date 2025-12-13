@@ -107,6 +107,18 @@ define([
                     }
                 });
             });
+
+            // Add keyboard support.
+            let definitionsLink = document.querySelector(".definitions-link");
+            if (definitionsLink) {
+                definitionsLink.addEventListener("keydown", (event) => {
+                    let key = event.key;
+                    if (key === "Enter" || key === " ") {
+                        event.preventDefault();
+                        event.target.click();
+                    }
+                });
+            }
         },
 
         enable_us_map_link: function () {
@@ -131,6 +143,19 @@ define([
                     width: 1000
                 });
             }, this));
+
+            // Add keyboard support.
+            let transparentDiv = document.querySelector(
+                ".section.namap div.trans");
+            if (transparentDiv) {
+                transparentDiv.addEventListener("keydown", (event) => {
+                    let key = event.key;
+                    if (key === "Enter" || key === " ") {
+                        event.preventDefault();
+                        event.target.click();
+                    }
+                });
+            }
         },
 
         activate_image_gallery: function () {
@@ -152,6 +177,20 @@ define([
 
             // Set the handlers for toggling the character sections.
             this.toggle_characters_full_list();
+
+            // Set keyboard handling for toggling the characters.
+            let groupHeadings = document.querySelectorAll(
+                "ul.full-description li h3");
+            groupHeadings.forEach((groupHeading) => {
+                groupHeading.addEventListener("keydown", (event) => {
+                    let key = event.key;
+                    if (key === "Enter" || key === " ") {
+                        event.preventDefault();
+                        // Trigger a click to use the existing toggle event.
+                        event.target.click();
+                    }
+                });
+            });
 
             // Link glossary terms.
             var selectors = '#sidebar dd, #main p:not(.nogloss), ' +

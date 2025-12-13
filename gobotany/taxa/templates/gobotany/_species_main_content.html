@@ -140,7 +140,7 @@
                 {% include "gobotany/_map_attribution.html" %}
                 {% with map_title='North America distribution: <i>'|add:scientific_name|add:'.</i>' %}
                 <div>
-                    <object
+                    <object tabindex="-1"
                         data="{% url 'na-distribution-map' taxon.genus|lower epithet %}"
                         type="image/svg+xml"
                         title="{{ map_title }}"
@@ -148,8 +148,9 @@
                     </object>
                 </div>
                 {% endwith %}
-                <div class="trans"></div>
-                <a class="enlarge" href="#">
+                <div class="trans" tabindex="0"
+                    aria-label="Enlarge U.S. map"></div>
+                <a class="enlarge" href="#" tabindex="-1">
                     <img src="/static/images/icons/zoom.png" alt="">
                     enlarge</a>
             </div>
@@ -189,7 +190,8 @@
             <ul class="full-description">
                 {% for character_group in all_characteristics %}
                     <li>
-                        <h3>{{ character_group.name|capfirst }}</h3>
+                        <h3 tabindex="0"
+                            >{{ character_group.name|capfirst }}</h3>
                         <div class="characteristics full">
                             {% for character in character_group.characters %}
                             <dl>
