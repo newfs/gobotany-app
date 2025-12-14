@@ -7,15 +7,11 @@
         view or create a context processor for it.
         {% endcomment %}
         <label for="id_username">Username</label>
-        <input id="id_username" type="text" name="username" maxlength="30"
-            tabindex="1">
+        <input id="id_username" type="text" name="username" maxlength="30">
         <label for="id_password">Password</label>
-        <input type="password" name="password" id="id_password"
-            tabindex="2">
-        <a href="{% url 'password_reset' %}"
-                tabindex="4">Forgot password</a>
-        <input type="submit" class="button orange-button caps"
-            value="Log In" tabindex="3">
+        <input type="password" name="password" id="id_password">
+        <a href="{% url 'password_reset' %}">Forgot password</a>
+        <input type="submit" class="button orange-button caps" value="Log In">
         <input type="hidden" name="next"
         value="{% if next %}{{ next }}{% else %}{% url 'ps-main' %}{% endif %}">
     </form>
