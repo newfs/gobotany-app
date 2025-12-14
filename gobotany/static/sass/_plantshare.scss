@@ -727,13 +727,14 @@ body.plantshare .image-modal {
         max-height: 84px;
         max-width: 84px;
     }
-    a.button {
+    .button {
         @extend .orange-button;
         color: #000;
         cursor: default;
         display: inline-block;
         margin: 10px 6px 0 0;
-        width: 100px;
+        min-width: 100px;
+        text-transform: uppercase;
     }
 
     div.modal-footer {

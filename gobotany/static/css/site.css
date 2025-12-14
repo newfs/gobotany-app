@@ -102,10 +102,10 @@ div.scrollableArea { position: relative; width: auto; height: 100%; }
 /* dark version of #a7da7e green from NPT palette */
 *:focus { outline-color: -webkit-focus-ring-color; outline-offset: 2px; outline-style: auto; outline-width: 2px; }
 
-.orange-button, body.plantshare .image-modal a.button, body.plantshare#ask #main .submit, body.plantshare#plantshare #ask .submit { background-color: #bb582a; border: 1px solid #bb582a !important; border-radius: 14px; box-shadow: 0px 1px 2px 0 #a2a64d; color: #fff; cursor: default; display: inline-block; font-family: ScalaSans, "Trebuchet MS", Helvetica, Arial, "Lucida Sans Unicode", sans-serif; font-size: 13px; font-weight: bold !important; letter-spacing: 1px; line-height: 18px; min-width: 80px; padding: 4px 12px; text-align: center; text-decoration: none; }
-.orange-button.caps, body.plantshare .image-modal a.caps.button, body.plantshare#ask #main .caps.submit, body.plantshare#plantshare #ask .caps.submit { text-transform: uppercase; }
-.orange-button.disabled, body.plantshare .image-modal a.disabled.button, body.plantshare#ask #main .disabled.submit, body.plantshare#plantshare #ask .disabled.submit { background-color: #f0ccbc; border-color: #edc573 !important; color: #666 !important; cursor: default !important; text-shadow: none; }
-.orange-button.large, body.plantshare .image-modal a.large.button, body.plantshare#ask #main .large.submit, body.plantshare#plantshare #ask .large.submit { border-radius: 20px; color: #fff; font-size: 16px; letter-spacing: 1.5px; min-width: 150px; padding: 9px 30px; }
+.orange-button, body.plantshare .image-modal .button, body.plantshare#ask #main .submit, body.plantshare#plantshare #ask .submit { background-color: #bb582a; border: 1px solid #bb582a !important; border-radius: 14px; box-shadow: 0px 1px 2px 0 #a2a64d; color: #fff; cursor: default; display: inline-block; font-family: ScalaSans, "Trebuchet MS", Helvetica, Arial, "Lucida Sans Unicode", sans-serif; font-size: 13px; font-weight: bold !important; letter-spacing: 1px; line-height: 18px; min-width: 80px; padding: 4px 12px; text-align: center; text-decoration: none; }
+.orange-button.caps, body.plantshare .image-modal .caps.button, body.plantshare#ask #main .caps.submit, body.plantshare#plantshare #ask .caps.submit { text-transform: uppercase; }
+.orange-button.disabled, body.plantshare .image-modal .disabled.button, body.plantshare#ask #main .disabled.submit, body.plantshare#plantshare #ask .disabled.submit { background-color: #f0ccbc; border-color: #edc573 !important; color: #666 !important; cursor: default !important; text-shadow: none; }
+.orange-button.large, body.plantshare .image-modal .large.button, body.plantshare#ask #main .large.submit, body.plantshare#plantshare #ask .large.submit { border-radius: 20px; color: #fff; font-size: 16px; letter-spacing: 1.5px; min-width: 150px; padding: 9px 30px; }
 
 .action-link, #dkey .offer-help-aside a.button, #dkey a.button, #dkey a.show-all-button { background-color: #bb582a; border-bottom: 0.15rem solid #fff !important; /* override some link underlines in text */ border-radius: 10px; box-shadow: 0 0.15rem 0 0 #bb582a; color: #fff; cursor: pointer; display: inline-block; font-family: ScalaSans, "Trebuchet MS", Helvetica, Arial, "Lucida Sans Unicode", sans-serif; font-size: 13px; font-weight: bold; letter-spacing: 1px; line-height: 18px; min-width: 75px; padding: 4px 12px; text-align: center; text-decoration: none; /* Visited: duller; like the relationship between classic blue & purple */ /* Hover: higher contrast; use the current nav. bar color */ /* Active: orange; similar to default red, but higher contrast */ }
 .action-link:visited, #dkey a.button:visited, #dkey a.show-all-button:visited { background-color: #8e421f; box-shadow: 0 0.15rem 0 0 #8e421f; color: #fff; }
@@ -116,7 +116,7 @@ div.scrollableArea { position: relative; width: auto; height: 100%; }
 .action-link.large.caps, #dkey a.large.caps.button, #dkey a.large.caps.show-all-button { letter-spacing: 1.5px; }
 
 /* Fix button and action-link text alignment in Firefox; evidently the misalignment is due to how the browsers handle the Scala Sans font. (Unfortunately this means that any fonts lower in the font stack would show up misaligned in FF.) */
-@-moz-document url-prefix() { .orange-button, body.plantshare .image-modal a.button, body.plantshare#ask #main .submit, body.plantshare#plantshare #ask .submit, .action-link, #dkey .offer-help-aside a.button, #dkey a.button, #dkey a.show-all-button { padding-bottom: 3px; padding-top: 5px; } }
+@-moz-document url-prefix() { .orange-button, body.plantshare .image-modal .button, body.plantshare#ask #main .submit, body.plantshare#plantshare #ask .submit, .action-link, #dkey .offer-help-aside a.button, #dkey a.button, #dkey a.show-all-button { padding-bottom: 3px; padding-top: 5px; } }
 .hidden { display: none !important; }
 
 /* image popups (used in D. Key, and in D. Key section of species page) */
@@ -1348,7 +1348,7 @@ body.plantshare .modal-container { position: relative; }
 body.plantshare .image-modal { background-color: white; border: 5px solid #acac90; display: none; height: 160px; left: 0px; padding: 15px; position: absolute; top: 250px; width: 360px; z-index: 10; }
 body.plantshare .image-modal h2 { margin: 0.3em 0; padding-left: 4.25em; }
 body.plantshare .image-modal img { float: left; margin: 0 5px 10px 0; max-height: 84px; max-width: 84px; }
-body.plantshare .image-modal a.button { color: #000; cursor: default; display: inline-block; margin: 10px 6px 0 0; width: 100px; }
+body.plantshare .image-modal .button { color: #000; cursor: default; display: inline-block; margin: 10px 6px 0 0; min-width: 100px; text-transform: uppercase; }
 body.plantshare .image-modal div.modal-footer { color: #888; display: block; float: left; position: relative; width: 100%; }
 body.plantshare .image-modal div.modal-footer div.file-path { border: 1px solid #888; color: #888; margin: 2px 0 auto; padding: 2px; }
 body.plantshare .image-modal a.close { background: transparent url(/static/images/icons/close.png) no-repeat; cursor: default; display: block; height: 16px; position: absolute; right: 15px; text-indent: -9999px; top: 15px; width: 16px; }
