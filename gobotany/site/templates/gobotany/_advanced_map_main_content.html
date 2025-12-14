@@ -7,7 +7,8 @@
     <div id="plant-map-list">
         <div id="group-section">
         {% for group, subgroups in pilegroups %}
-            <div class="plant-group{% if forloop.first %} first{% else %}{% if forloop.last %} last{% endif %}{% endif %}">
+            <div tabindex="0"
+                class="plant-group{% if forloop.first %} first{% else %}{% if forloop.last %} last{% endif %}{% endif %}">
                 <h2>{{ group.friendly_title|lower|capfirst }}</h2>
                 <div class="image">
                     <div class="frame"></div>

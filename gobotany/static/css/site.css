@@ -1782,15 +1782,16 @@ body.search-results h1 + p { margin-top: 12px; }
 #advanced-map #plant-map-list { margin: 10px 0; }
 #advanced-map #plant-map-list + h2 { padding-top: 48px; }
 #advanced-map #group-section { height: 200px; }
-#advanced-map .plant-group { cursor: default; float: left; height: 185px; margin: 0 10px 10px 0; padding: 2px 0 0; position: relative; width: 110px; }
+#advanced-map .plant-group { cursor: default; float: left; height: 144px; margin: 0 10px 10px 0; padding: 2px 0 0; position: relative; width: 110px; }
 #advanced-map .plant-group.last { margin: 0 0 10px 0; }
+#advanced-map .plant-group:focus:not(:focus-visible) { outline: none; }
 #advanced-map .plant-group:hover .frame { border-color: #1a2e12; }
 #advanced-map .plant-group:hover h2 { background: #1a2e12; color: #fff; }
 #advanced-map .plant-group.active h2 { background: #1a2e12; color: #fff; }
 #advanced-map .plant-group.active .frame { border-color: #1a2e12; }
-#advanced-map .plant-group h2 { bottom: 146px; color: #27610a; font-size: 12px; font-weight: 400; line-height: 120%; margin: 0 0 0 0; padding: 6px 0 6px 5px; position: absolute; width: 105px; }
-#advanced-map .plant-group .image { position: absolute; top: 40px; }
-#advanced-map .plant-group .frame { border: 5px solid rgba(255, 255, 255, 0.8); height: 91px; position: absolute; top: 0; width: 100px; z-index: 100; }
+#advanced-map .plant-group h2 { color: #27610a; font-size: 12px; font-weight: 400; height: 26px; line-height: 120%; margin: 0 0 0 0; padding: 6px 0 6px 5px; position: absolute; width: 105px; }
+#advanced-map .plant-group .image { margin-top: 40px; }
+#advanced-map .plant-group .frame { border: 5px solid rgba(255, 255, 255, 0.8); height: 93px; position: absolute; top: 40px; width: 100px; z-index: 100; }
 #advanced-map .plant-group .img-container { box-shadow: 0 0 4px 0 rgba(0, 0, 0, 0.6); height: 101px; margin-bottom: 6px; overflow: hidden; width: 110px; }
 #advanced-map .plant-subgroup { cursor: default; float: left; height: 264px; margin: 0 11px 11px 0; padding: 17px 0 0 0; width: 160px; }
 #advanced-map .plant-subgroup.last { margin-right: 0; }

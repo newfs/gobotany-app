@@ -167,13 +167,16 @@ $image-box-shadow-color: rgba(0, 0, 0, 0.6);
     .plant-group {
         cursor: default;
         float: left;
-        height: 185px;
+        height: 144px;
         margin: 0 10px 10px 0;
         padding: 2px 0 0;
         position: relative;
         width: 110px;
         &.last {
 	        margin: 0 0 10px 0;	
+        }
+        &:focus:not(:focus-visible) {
+            outline: none;   // focus ring only when using keyboard
         }
         &:hover {
             .frame {
@@ -194,10 +197,10 @@ $image-box-shadow-color: rgba(0, 0, 0, 0.6);
             }
         }
         h2 {
-            bottom: 146px;
             color: $link-green;
             font-size: 12px;
             font-weight: 400;
+            height: 26px;
             line-height: 120%;
             margin: 0 0 0 0;
             padding: 6px 0 6px 5px;
@@ -205,14 +208,13 @@ $image-box-shadow-color: rgba(0, 0, 0, 0.6);
             width: 105px;
         }
         .image {
-            position: absolute;
-            top: 40px;
+            margin-top: 40px;
         }
         .frame {
             border: $advanced-map-frame-border;
-            height: 91px;	
+            height: 93px;	
             position: absolute;
-            top: 0;
+            top: 40px;
             width: 100px;
             z-index: 100;
         }
