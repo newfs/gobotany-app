@@ -364,9 +364,6 @@ body.plantshare #find-people-form {
             text-indent: -9999px;
             width: 40px;
         }
-        &:focus {
-           outline: 0 none;
-        }
     }
     & + p {
         clear: left;
@@ -471,9 +468,6 @@ body.plantshare #sightings-locator {
             font-size: 0;
             text-indent: -9999px;
             width: 30px;
-        }
-        &:focus {
-            outline: 0 none;
         }
         & + div {
             font-size: $mini-input-font-size;

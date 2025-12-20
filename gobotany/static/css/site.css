@@ -1254,7 +1254,6 @@ body.plantshare#find-people #sb-nav-close { display: none; }
 body.plantshare #find-people-form { margin: 14px 0 0; }
 body.plantshare #find-people-form input[type='text'] { background: transparent url(../images/layout/plantshare-btns.png) no-repeat -1px -334px; border: 0 none; display: block; float: left; font-size: 11px; height: 22px; padding: 0 2px 0 12px; width: 309px; }
 body.plantshare #find-people-form input[type='submit'] { background: transparent url(../images/layout/plantshare-btns.png) no-repeat -380px -4px; border: 0 none; display: block; float: left; height: 22px; padding: 0; text-indent: -9999px; width: 40px; }
-body.plantshare #find-people-form input:focus { outline: 0 none; }
 body.plantshare #find-people-form + p { clear: left; padding-top: 14px; }
 body.plantshare #find-people-form .suggester-menu { margin-left: 10px; margin-top: 22px; }
 
@@ -1280,7 +1279,6 @@ body.plantshare #sightings-locator .search-label { display: inline-block; float:
 body.plantshare #sightings-locator input { border: 0 none; float: left; height: 22px; margin: 0 0 5px 0; padding: 0 2px 0 12px; }
 body.plantshare #sightings-locator input[type='text'] { background: transparent url(/static/images/layout/plantshare-btns.png) no-repeat 0px -334px; font-size: 11px; width: 160px; }
 body.plantshare #sightings-locator input[type='submit'] { background: transparent url(/static/images/layout/plantshare-btns.png) no-repeat -483px -334px; font-size: 0; text-indent: -9999px; width: 30px; }
-body.plantshare #sightings-locator input:focus { outline: 0 none; }
 body.plantshare #sightings-locator input + div { font-size: 11px; }
 body.plantshare #sightings-locator .map { clear: left; margin-top: 36px; }
 body.plantshare #sightings-locator .suggester-menu { margin-left: 170px; margin-top: 21px; }
