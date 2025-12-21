@@ -19,9 +19,22 @@ define([
             var link = eventObj.target;
             var display_field = $('div.display').has(link);
             var edit_field = display_field.siblings('div.edit');
-            display_field.hide();
             edit_field.show();
 
+            // Set focus on the first interactive item shown.
+            let detail_item = link.closest('.detail-item');
+            if (detail_item) {
+                let edit_area = detail_item.querySelector('.edit');
+                if (edit_area) {
+                    let first_interactive = edit_area.querySelector(
+                        'select, input');
+                    if (first_interactive) {
+                        first_interactive.focus();
+                    }
+                }
+            }
+
+            display_field.hide();
             return false;
         });
 
