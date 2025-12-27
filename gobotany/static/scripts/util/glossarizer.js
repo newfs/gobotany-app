@@ -86,7 +86,6 @@ define([
                 // stops for accessibility.
                 let existingMatch = document.querySelector(
                     ".gloss[data-match='" + match.toLowerCase() + "']");
-                console.log("existingMatch:", existingMatch);
                 if (existingMatch) {
                     return '<span>' + match + '</span>';
                 }
