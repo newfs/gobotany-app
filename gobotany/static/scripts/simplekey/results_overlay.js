@@ -49,6 +49,21 @@ define([
              */
             $('#exposeMask').css('position', 'fixed');
 
+            // Set initial focus on the Continue 'button'.
+            let continueButton = document.querySelector(
+                '#intro-overlay .continue');
+            if (continueButton) {
+                continueButton.focus();
+
+                // Listen for keyboard events on Continue.
+                continueButton.addEventListener("keydown", (event) => {
+                    let key = event.key;
+                    if (key === "Enter" || key === " " || key === "Escape") {
+                        event.preventDefault();
+                        event.target.click();
+                    }
+                });
+            }
         }});
     };
 
