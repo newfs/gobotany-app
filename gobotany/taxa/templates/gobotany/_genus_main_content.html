@@ -16,8 +16,11 @@
         {% for drawing in genus_drawings %}
             <div class="img-gallery">
                 <div class="plant">
-                    <div class="frame"></div>
-                    <a href="{{ drawing.image_medium|secure_url }}"
+                    <div class="frame" tabindex="0" role="button"
+                        aria-label="{% photo_title drawing drawing.content_object.scientific_name %}"
+                        >></div>
+                    <a tabindex="-1"
+                        href="{{ drawing.image_medium|secure_url }}"
                         title="{% photo_credit drawing drawing.content_object.scientific_name %}">
                         <img class="map"
                             src="{{ drawing.thumb_large|secure_url }}"

@@ -102,10 +102,10 @@ div.scrollableArea { position: relative; width: auto; height: 100%; }
 /* dark version of #a7da7e green from NPT palette */
 *:focus { outline-color: -webkit-focus-ring-color; outline-offset: 2px; outline-style: auto; outline-width: 2px; }
 
-.orange-button, body.plantshare .image-modal a.button, body.plantshare#ask #main .submit, body.plantshare#plantshare #ask .submit { background-color: #bb582a; border: 1px solid #bb582a !important; border-radius: 14px; box-shadow: 0px 1px 2px 0 #a2a64d; color: #fff; cursor: default; display: inline-block; font-family: ScalaSans, "Trebuchet MS", Helvetica, Arial, "Lucida Sans Unicode", sans-serif; font-size: 13px; font-weight: bold !important; letter-spacing: 1px; line-height: 18px; min-width: 80px; padding: 4px 12px; text-align: center; text-decoration: none; }
-.orange-button.caps, body.plantshare .image-modal a.caps.button, body.plantshare#ask #main .caps.submit, body.plantshare#plantshare #ask .caps.submit { text-transform: uppercase; }
-.orange-button.disabled, body.plantshare .image-modal a.disabled.button, body.plantshare#ask #main .disabled.submit, body.plantshare#plantshare #ask .disabled.submit { background-color: #f0ccbc; border-color: #edc573 !important; color: #666 !important; cursor: default !important; text-shadow: none; }
-.orange-button.large, body.plantshare .image-modal a.large.button, body.plantshare#ask #main .large.submit, body.plantshare#plantshare #ask .large.submit { border-radius: 20px; color: #fff; font-size: 16px; letter-spacing: 1.5px; min-width: 150px; padding: 9px 30px; }
+.orange-button, body.plantshare .image-modal .button, body.plantshare#ask #main .submit, body.plantshare#plantshare #ask .submit { background-color: #bb582a; border: 1px solid #bb582a !important; border-radius: 14px; box-shadow: 0px 1px 2px 0 #a2a64d; color: #fff; cursor: default; display: inline-block; font-family: ScalaSans, "Trebuchet MS", Helvetica, Arial, "Lucida Sans Unicode", sans-serif; font-size: 13px; font-weight: bold !important; letter-spacing: 1px; line-height: 18px; min-width: 80px; padding: 4px 12px; text-align: center; text-decoration: none; }
+.orange-button.caps, body.plantshare .image-modal .caps.button, body.plantshare#ask #main .caps.submit, body.plantshare#plantshare #ask .caps.submit { text-transform: uppercase; }
+.orange-button.disabled, body.plantshare .image-modal .disabled.button, body.plantshare#ask #main .disabled.submit, body.plantshare#plantshare #ask .disabled.submit { background-color: #f0ccbc; border-color: #edc573 !important; color: #666 !important; cursor: default !important; text-shadow: none; }
+.orange-button.large, body.plantshare .image-modal .large.button, body.plantshare#ask #main .large.submit, body.plantshare#plantshare #ask .large.submit { border-radius: 20px; color: #fff; font-size: 16px; letter-spacing: 1.5px; min-width: 150px; padding: 9px 30px; }
 
 .action-link, #dkey .offer-help-aside a.button, #dkey a.button, #dkey a.show-all-button { background-color: #bb582a; border-bottom: 0.15rem solid #fff !important; /* override some link underlines in text */ border-radius: 10px; box-shadow: 0 0.15rem 0 0 #bb582a; color: #fff; cursor: pointer; display: inline-block; font-family: ScalaSans, "Trebuchet MS", Helvetica, Arial, "Lucida Sans Unicode", sans-serif; font-size: 13px; font-weight: bold; letter-spacing: 1px; line-height: 18px; min-width: 75px; padding: 4px 12px; text-align: center; text-decoration: none; /* Visited: duller; like the relationship between classic blue & purple */ /* Hover: higher contrast; use the current nav. bar color */ /* Active: orange; similar to default red, but higher contrast */ }
 .action-link:visited, #dkey a.button:visited, #dkey a.show-all-button:visited { background-color: #8e421f; box-shadow: 0 0.15rem 0 0 #8e421f; color: #fff; }
@@ -116,7 +116,7 @@ div.scrollableArea { position: relative; width: auto; height: 100%; }
 .action-link.large.caps, #dkey a.large.caps.button, #dkey a.large.caps.show-all-button { letter-spacing: 1.5px; }
 
 /* Fix button and action-link text alignment in Firefox; evidently the misalignment is due to how the browsers handle the Scala Sans font. (Unfortunately this means that any fonts lower in the font stack would show up misaligned in FF.) */
-@-moz-document url-prefix() { .orange-button, body.plantshare .image-modal a.button, body.plantshare#ask #main .submit, body.plantshare#plantshare #ask .submit, .action-link, #dkey .offer-help-aside a.button, #dkey a.button, #dkey a.show-all-button { padding-bottom: 3px; padding-top: 5px; } }
+@-moz-document url-prefix() { .orange-button, body.plantshare .image-modal .button, body.plantshare#ask #main .submit, body.plantshare#plantshare #ask .submit, .action-link, #dkey .offer-help-aside a.button, #dkey a.button, #dkey a.show-all-button { padding-bottom: 3px; padding-top: 5px; } }
 .hidden { display: none !important; }
 
 /* image popups (used in D. Key, and in D. Key section of species page) */
@@ -1254,7 +1254,6 @@ body.plantshare#find-people #sb-nav-close { display: none; }
 body.plantshare #find-people-form { margin: 14px 0 0; }
 body.plantshare #find-people-form input[type='text'] { background: transparent url(../images/layout/plantshare-btns.png) no-repeat -1px -334px; border: 0 none; display: block; float: left; font-size: 11px; height: 22px; padding: 0 2px 0 12px; width: 309px; }
 body.plantshare #find-people-form input[type='submit'] { background: transparent url(../images/layout/plantshare-btns.png) no-repeat -380px -4px; border: 0 none; display: block; float: left; height: 22px; padding: 0; text-indent: -9999px; width: 40px; }
-body.plantshare #find-people-form input:focus { outline: 0 none; }
 body.plantshare #find-people-form + p { clear: left; padding-top: 14px; }
 body.plantshare #find-people-form .suggester-menu { margin-left: 10px; margin-top: 22px; }
 
@@ -1280,7 +1279,6 @@ body.plantshare #sightings-locator .search-label { display: inline-block; float:
 body.plantshare #sightings-locator input { border: 0 none; float: left; height: 22px; margin: 0 0 5px 0; padding: 0 2px 0 12px; }
 body.plantshare #sightings-locator input[type='text'] { background: transparent url(/static/images/layout/plantshare-btns.png) no-repeat 0px -334px; font-size: 11px; width: 160px; }
 body.plantshare #sightings-locator input[type='submit'] { background: transparent url(/static/images/layout/plantshare-btns.png) no-repeat -483px -334px; font-size: 0; text-indent: -9999px; width: 30px; }
-body.plantshare #sightings-locator input:focus { outline: 0 none; }
 body.plantshare #sightings-locator input + div { font-size: 11px; }
 body.plantshare #sightings-locator .map { clear: left; margin-top: 36px; }
 body.plantshare #sightings-locator .suggester-menu { margin-left: 170px; margin-top: 21px; }
@@ -1348,7 +1346,7 @@ body.plantshare .modal-container { position: relative; }
 body.plantshare .image-modal { background-color: white; border: 5px solid #acac90; display: none; height: 160px; left: 0px; padding: 15px; position: absolute; top: 250px; width: 360px; z-index: 10; }
 body.plantshare .image-modal h2 { margin: 0.3em 0; padding-left: 4.25em; }
 body.plantshare .image-modal img { float: left; margin: 0 5px 10px 0; max-height: 84px; max-width: 84px; }
-body.plantshare .image-modal a.button { color: #000; cursor: default; display: inline-block; margin: 10px 6px 0 0; width: 100px; }
+body.plantshare .image-modal .button { color: #000; cursor: default; display: inline-block; margin: 10px 6px 0 0; min-width: 100px; text-transform: uppercase; }
 body.plantshare .image-modal div.modal-footer { color: #888; display: block; float: left; position: relative; width: 100%; }
 body.plantshare .image-modal div.modal-footer div.file-path { border: 1px solid #888; color: #888; margin: 2px 0 auto; padding: 2px; }
 body.plantshare .image-modal a.close { background: transparent url(/static/images/icons/close.png) no-repeat; cursor: default; display: block; height: 16px; position: absolute; right: 15px; text-indent: -9999px; top: 15px; width: 16px; }
@@ -1782,15 +1780,16 @@ body.search-results h1 + p { margin-top: 12px; }
 #advanced-map #plant-map-list { margin: 10px 0; }
 #advanced-map #plant-map-list + h2 { padding-top: 48px; }
 #advanced-map #group-section { height: 200px; }
-#advanced-map .plant-group { cursor: default; float: left; height: 185px; margin: 0 10px 10px 0; padding: 2px 0 0; position: relative; width: 110px; }
+#advanced-map .plant-group { cursor: default; float: left; height: 144px; margin: 0 10px 10px 0; padding: 2px 0 0; position: relative; width: 110px; }
 #advanced-map .plant-group.last { margin: 0 0 10px 0; }
+#advanced-map .plant-group:focus:not(:focus-visible) { outline: none; }
 #advanced-map .plant-group:hover .frame { border-color: #1a2e12; }
 #advanced-map .plant-group:hover h2 { background: #1a2e12; color: #fff; }
 #advanced-map .plant-group.active h2 { background: #1a2e12; color: #fff; }
 #advanced-map .plant-group.active .frame { border-color: #1a2e12; }
-#advanced-map .plant-group h2 { bottom: 146px; color: #27610a; font-size: 12px; font-weight: 400; line-height: 120%; margin: 0 0 0 0; padding: 6px 0 6px 5px; position: absolute; width: 105px; }
-#advanced-map .plant-group .image { position: absolute; top: 40px; }
-#advanced-map .plant-group .frame { border: 5px solid rgba(255, 255, 255, 0.8); height: 91px; position: absolute; top: 0; width: 100px; z-index: 100; }
+#advanced-map .plant-group h2 { color: #27610a; font-size: 12px; font-weight: 400; height: 26px; line-height: 120%; margin: 0 0 0 0; padding: 6px 0 6px 5px; position: absolute; width: 105px; }
+#advanced-map .plant-group .image { margin-top: 40px; }
+#advanced-map .plant-group .frame { border: 5px solid rgba(255, 255, 255, 0.8); height: 93px; position: absolute; top: 40px; width: 100px; z-index: 100; }
 #advanced-map .plant-group .img-container { box-shadow: 0 0 4px 0 rgba(0, 0, 0, 0.6); height: 101px; margin-bottom: 6px; overflow: hidden; width: 110px; }
 #advanced-map .plant-subgroup { cursor: default; float: left; height: 264px; margin: 0 11px 11px 0; padding: 17px 0 0 0; width: 160px; }
 #advanced-map .plant-subgroup.last { margin-right: 0; }

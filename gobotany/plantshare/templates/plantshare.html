@@ -35,7 +35,7 @@
     <h2>Recent sightings</h2>
     <div class="img-gallery" data-gallery-type="link">
         <div class="frame"></div>
-        <div class="img-container">
+        <div class="img-container" tabindex="0">
             <div class="images">
                 {% for sighting in recent_sightings %}
                     <a href="{% url 'ps-sighting' sighting.id %}"

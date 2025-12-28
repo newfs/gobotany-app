@@ -50,6 +50,9 @@ define([
         $modal.find('.file-select').removeClass('disabled');
         $modal.find('#upload-image-submit').addClass('disabled');
         $modal.find('.file-path').text(EMPTY_FILE_PATH);
+
+        // Set initial focus.
+        $modal.find('.file-select').focus();
     }
 
     function setup(modalSelector, linkSelector, options) {

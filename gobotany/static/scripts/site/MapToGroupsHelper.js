@@ -126,7 +126,18 @@ define([
                                 var subgroups = $('#subgroup-section').get(0);
                                 subgroups.scrollIntoView();
                             }
-                        }, this));
+                        }, this)
+                    );
+
+                    // Add keyboard support.
+                    let groupEl = $(group).get(0);
+                    groupEl.addEventListener("keydown", function (event) {
+                        let key = event.key;
+                        if (key === "Enter" || key === " ") {
+                            event.preventDefault();
+                            event.target.click();
+                        }
+                    });
                 }
 
                 // Initially activate the first group and its subgroup set.

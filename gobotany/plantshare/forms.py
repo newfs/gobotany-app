@@ -54,7 +54,6 @@ class SightingForm(forms.Form):
         # order to work around an error regarding a 'reverse' URL.
         self.fields['identification'].widget=forms.TextInput({
             'autocomplete': 'off',
-            'autofocus': 'autofocus',
             'class': 'suggest',
             'data-suggest-url': plant_name_suggestions_url(),
             'placeholder': 'scientific or common name',
