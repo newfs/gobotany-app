@@ -34,7 +34,7 @@ define([
 
             // Add keyboard support.
             let frameEl = $(frame).get(0);
-            frameEl.addEventListener("keydown", (event) => {
+            frameEl.addEventListener("keydown", function (event) {
                 let key = event.key;
                 if (key === "Enter" || key === " ") {
                     event.preventDefault();

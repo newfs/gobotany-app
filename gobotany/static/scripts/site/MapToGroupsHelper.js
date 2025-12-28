@@ -131,7 +131,7 @@ define([
 
                     // Add keyboard support.
                     let groupEl = $(group).get(0);
-                    groupEl.addEventListener("keydown", (event) => {
+                    groupEl.addEventListener("keydown", function (event) {
                         let key = event.key;
                         if (key === "Enter" || key === " ") {
                             event.preventDefault();

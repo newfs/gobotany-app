@@ -15,7 +15,7 @@ define([
         let sightingsImageContainer = document.querySelector(
             "#recent-sightings-gallery .img-container");
         if (sightingsImageContainer) {
-            sightingsImageContainer.addEventListener("keydown", (event) => {
+            sightingsImageContainer.addEventListener("keydown", function (event) {
                 let key = event.key;
                 // Only support the Enter key because the image in the
                 // Recent Sightings gallery is a link to a sighting page,

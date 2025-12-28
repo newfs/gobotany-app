@@ -111,7 +111,7 @@ define([
             // Add keyboard support.
             let definitionsLink = document.querySelector(".definitions-link");
             if (definitionsLink) {
-                definitionsLink.addEventListener("keydown", (event) => {
+                definitionsLink.addEventListener("keydown", function (event) {
                     let key = event.key;
                     if (key === "Enter" || key === " ") {
                         event.preventDefault();
@@ -148,7 +148,7 @@ define([
             let transparentDiv = document.querySelector(
                 ".section.namap div.trans");
             if (transparentDiv) {
-                transparentDiv.addEventListener("keydown", (event) => {
+                transparentDiv.addEventListener("keydown", function (event) {
                     let key = event.key;
                     if (key === "Enter" || key === " ") {
                         event.preventDefault();
@@ -181,8 +181,8 @@ define([
             // Set keyboard handling for toggling the characters.
             let groupHeadings = document.querySelectorAll(
                 "ul.full-description li h3");
-            groupHeadings.forEach((groupHeading) => {
-                groupHeading.addEventListener("keydown", (event) => {
+            groupHeadings.forEach(function (groupHeading) {
+                groupHeading.addEventListener("keydown", function (event) {
                     let key = event.key;
                     if (key === "Enter" || key === " ") {
                         event.preventDefault();

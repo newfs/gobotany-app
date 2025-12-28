@@ -56,7 +56,7 @@ define([
                 continueButton.focus();
 
                 // Listen for keyboard events on Continue.
-                continueButton.addEventListener("keydown", (event) => {
+                continueButton.addEventListener("keydown", function (event) {
                     let key = event.key;
                     if (key === "Enter" || key === " " || key === "Escape") {
                         event.preventDefault();
