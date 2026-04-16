@@ -213,10 +213,10 @@ def content_type_for(key):
     return content_type
 
 def cropped_thumbnail(image, size):
-    return ImageOps.fit(image, size, Image.ANTIALIAS)
+    return ImageOps.fit(image, size, Image.LANCZOS)
 
 def scaled_thumbnail(image, size):
-    image.thumbnail(size, Image.ANTIALIAS)
+    image.thumbnail(size, Image.LANCZOS)
     return image
 
 THUMBNAIL_CALLS = {
