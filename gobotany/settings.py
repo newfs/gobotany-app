@@ -380,8 +380,24 @@ if IN_PRODUCTION:
 # New with Django 3.2: must explicitly define a primary key type
 DEFAULT_AUTO_FIELD = 'django.db.models.AutoField'
 
+# Logging added especially for renaming ContentImage records.
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'handlers': {
+        'console': {
+            'class': 'logging.StreamHandler',
+        },
+    },
+    'root': {
+        'handlers': ['console'],
+        'level': 'INFO',
+    },
+}
+
 # Uncomment the following logging configuration in order to
 # log all SQL queries to the console, for debugging purposes.
+# (Or, incorporate into the existing logging configuration.)
 #LOGGING = {
 #    'disable_existing_loggers': False,
 #    'version': 1,
