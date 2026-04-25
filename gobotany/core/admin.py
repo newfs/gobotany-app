@@ -524,8 +524,54 @@ class ContentImageAdmin(_Base):
             '{}</select>'.format('\n'.join(options))
         return mark_safe(markup)
 
+
     class RenameImagesForm(forms.Form):
         _selected_action = forms.CharField(widget=forms.MultipleHiddenInput)
+
+
+    def _copy_s3_image(self, current_image_name, new_image_name):
+        # Copy an image in the S3 bucket. Return True if the image was copied,
+        # and False if it was not copied.
+        s3 = boto3.client('s3')
+        bucket_name = 'newfs'
+        copy_source = {
+            'Bucket': bucket_name,
+            'Key': current_image_name
+        }
+        try:
+            s3.copy_object(CopySource=copy_source,
+                Bucket=bucket_name, Key=new_image_name,
+                ACL='public-read')
+            log.info('(_copy_s3_image) Image copied to %s',
+                new_image_name)
+            return True
+        except botocore.exceptions.ClientError as e:
+            log.warn('(_copy_s3_image) ClientError: %s', e);
+            return False
+            # Note that trying to copy over an existing image in S3 does not
+            # succeed; the existing image is kept, which is fine.
+
+
+    def _copy_thumbnails(self, current_image_name, new_image_name):
+        # Copy the various sizes of thumbnails to a new image name.
+        log.info('(_copy_thumbnails) Passed in: current_image_name: %s, '
+            ' new_image_name: %s', current_image_name, new_image_name)
+        main_folder = 'taxon-images'
+        thumbnail_folders = ['taxon-images-160x149', 'taxon-images-239x239',
+            'taxon-images-1000s1000']
+        for thumbnail_folder in thumbnail_folders:
+            log.info('(_copy_thumbnails) Thumbnail_folder: %s',
+                thumbnail_folder)
+            # Replace the main folder in the passed-in current and new names
+            # with that of the thumbnail folder, and then copy.
+            current_thumbnail_name = current_image_name.replace(
+                main_folder, thumbnail_folder)
+            new_thumbnail_name = new_image_name.replace(
+                main_folder, thumbnail_folder)
+            log.info('(_copy_thumbnails) About to copy %s to %s',
+                current_thumbnail_name, new_thumbnail_name)
+            self._copy_s3_image(current_thumbnail_name, new_thumbnail_name)
+
 
     def rename_images(self, request, queryset):
         form = None
@@ -567,8 +613,6 @@ class ContentImageAdmin(_Base):
                         log.info('(rename_images) New record.alt = %s',
                             record.alt)
 
-                        s3 = boto3.client('s3')
-
                         # Make a copy of the image on S3 from the old
                         # name to the new name. Leave the old-named image
                         # in place for now because local or Dev environments
@@ -588,27 +632,21 @@ class ContentImageAdmin(_Base):
                         log.info('(rename_images) New image name: %s',
                             new_image_name)
 
-                        bucket_name = 'newfs'
-                        copy_source = {
-                            'Bucket': bucket_name,
-                            'Key': current_image_name
-                        }
-                        try:
-                            s3.copy_object(CopySource=copy_source,
-                                Bucket=bucket_name, Key=new_image_name,
-                                ACL='public-read')
-                            log.info('(rename_images) Image copied to %s',
-                                new_image_name)
+                        image_copied = self._copy_s3_image(current_image_name,
+                            new_image_name)
+                        if (image_copied):
                             number_of_images_copied += 1
-                        except botocore.exceptions.ClientError as e:
-                            log.warn('(rename_images) ClientError: %s', e);
+                        else:
                             number_of_images_not_copied += 1
-                            # Note that trying to copy over an existing image in
-                            # S3 does not happen; the existing image is kept.
 
-                        # After sucessfully copying the image, attach the new
-                        # image to the record.
+                        # Attach the new image file name to the record.
                         record.image = new_image_name
+
+                        # Rather than waiting for the nightly image-check
+                        # script to automatically generate thumbnails for the
+                        # new image, copy the thumbnails too.
+                        self._copy_thumbnails(current_image_name,
+                            new_image_name)
 
                         # Finally, save the record.
                         record.save()
