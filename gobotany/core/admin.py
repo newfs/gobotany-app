@@ -615,7 +615,7 @@ class ContentImageAdmin(_Base):
 
                     message = ('%d records successfully renamed to %s.' % (
                         number_of_records, new_name))
-                    message += (' %d images successfully renamed.' % (
+                    message += (' %d images renamed.' % (
                         number_of_images_copied))
                     if number_of_images_not_copied > 0:
                         message += (
