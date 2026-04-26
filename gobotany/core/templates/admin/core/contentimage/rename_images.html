@@ -6,9 +6,6 @@
 <div id="content">
     <h1>Rename selected ContentImage records</h1>
 
-    <p>Name in title (alt text):
-    {{ records.0.name_in_title|safe }}</p>
-
     <form action="" method="post">
 
         {% csrf_token %}
@@ -17,13 +14,9 @@
 
         <input type="hidden" name="action" value="rename_images">
 
-        <p>Old name: {{ old_name }}</p>
-
-        <p>New name: {{ current_taxon_name }}</p>
-
-        <p>This will rename the images to the current name of the
-            associated Taxon, which is {{ current_taxon_name }}
-            (Taxon id {{ records.0.object_id }}).</p>
+        <p>This will rename image records and files to the current name of
+            the associated Taxon:
+            {{ current_taxon_name|italicize_plant|safe }}.</p>
 
         <p><input type="submit" name="rename" value="Rename"></p>
 
