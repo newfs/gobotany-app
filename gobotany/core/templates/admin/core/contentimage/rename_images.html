@@ -14,9 +14,27 @@
 
         <input type="hidden" name="action" value="rename_images">
 
-        <p>This will rename image records and files to the current name of
-            the associated Taxon:
+        <p>This will rename the selected image records and files to the
+            current name of the associated Taxon:
             {{ current_taxon_name|italicize_plant|safe }}.</p>
+
+        <p>Or, you can rename and reassign them to a different Taxon
+            instead.</p>
+
+        <p>
+            <label>
+                Taxon:<br>
+                <select name="taxon">
+                    {% for taxon in taxa %}
+                        <option value="{{ taxon.id }}"
+                            {% if taxon.scientific_name == current_taxon_name %}
+                                selected
+                            {% endif %}
+                            ><i>{{ taxon.scientific_name }}</i></option>
+                    {% endfor %}
+                </select>
+            </label>
+        </p>
 
         <p><input type="submit" name="rename" value="Rename"></p>
 

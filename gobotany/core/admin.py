@@ -555,7 +555,7 @@ class ContentImageAdmin(_Base):
     def _copy_thumbnails(self, current_image_name, new_image_name):
         # Copy the various sizes of thumbnails to a new image name.
         log.info('(_copy_thumbnails) Passed in: current_image_name: %s, '
-            ' new_image_name: %s', current_image_name, new_image_name)
+            'new_image_name: %s', current_image_name, new_image_name)
         main_folder = 'taxon-images'
         thumbnail_folders = ['taxon-images-160x149', 'taxon-images-239x239',
             'taxon-images-1000s1000']
@@ -601,12 +601,33 @@ class ContentImageAdmin(_Base):
                         old_name)
                     first_record = queryset.first()
                     taxon = models.Taxon.objects.get(pk=first_record.object_id)
+                    initial_taxon_id = taxon.id
+                    log.info('(rename_images) Current taxon id = %s',
+                        initial_taxon_id)
+
+                    selected_taxon_id = request.POST['taxon']
+                    log.info('(rename_images) Selected taxon id = %s',
+                        selected_taxon_id)
+                    if (initial_taxon_id != selected_taxon_id):
+                        log.info('(rename_images) Initial current taxon and ' \
+                            'selected taxon differ; get the selected one')
+                        # The user selected a different taxon than the initial
+                        # current one. Get that taxon instead.
+                        taxon = models.Taxon.objects.get(pk=selected_taxon_id)
+                        log.info('(rename_images) New taxon id = %s',
+                            taxon.id)
+
                     new_name = taxon.scientific_name
                     log.info('(rename_images) New name = %s', new_name)
 
                     number_of_images_copied = 0
                     number_of_images_not_copied = 0
                     for record in queryset:
+                        if (taxon.id != initial_taxon_id):
+                            # If changing the record's object (taxon) id is
+                            # needed, do so.
+                            record.object_id = taxon.id
+
                         new_alt_text = new_name + ":" + \
                             record.alt.split(':')[1]
                         record.alt = new_alt_text
@@ -624,9 +645,6 @@ class ContentImageAdmin(_Base):
                         log.info('(rename_images) Current image name: %s',
                             current_image_name)
 
-                        # The new image name is known because we assume that
-                        # the Taxon record's has already been renamed, and
-                        # ContentImage has a reference to it.
                         new_image_name = models._content_image_path(record,
                             record.image.name)
                         log.info('(rename_images) New image name: %s',
@@ -684,6 +702,7 @@ class ContentImageAdmin(_Base):
             first_record = queryset.first()
             taxon = models.Taxon.objects.get(pk=first_record.object_id)
             current_taxon_name = taxon.scientific_name
+            current_taxon_id = taxon.id
 
             form = self.RenameImagesForm(
                 initial = {
@@ -691,11 +710,14 @@ class ContentImageAdmin(_Base):
                         admin.helpers.ACTION_CHECKBOX_NAME)
                 }
             )
+            taxa = models.Taxon.objects.all()
             return render(request,
                 'admin/core/contentimage/rename_images.html', {
                     'old_name': old_name,
                     'current_taxon_name': current_taxon_name,
+                    'current_taxon_id': current_taxon_id,
                     'records': queryset,
+                    'taxa': taxa,
                     'rename_images_form': form,
                 })
 
