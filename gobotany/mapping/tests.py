@@ -333,7 +333,7 @@ class PlantDistributionMapTestCase(TestCase):
         for path in paths:
             style = path.get_style()
             status = None
-            if style.find('fill:#78bf47') > -1:
+            if style.find('fill:#008837') > -1:
                 status = 'native'
             elif style.find('fill:#fff') > -1:
                 status = 'absent'
