@@ -95,7 +95,7 @@ class LegendTestCase(TestCase):
         self.assertEqual('county documented', labels[0])
 
         paths = self._get_paths()
-        self.assertTrue(paths[0].get_style().find('fill:#35880c') > -1)
+        self.assertTrue(paths[0].get_style().find('fill:#008837') > -1)
         self.assertTrue(paths[1].get_style().find('fill:#fff') > -1)
         [self.assertTrue(path.get_style().find('fill:#fff') > -1)
          for path in paths[2:]]
