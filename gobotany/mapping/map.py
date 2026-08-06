@@ -53,12 +53,12 @@ class Legend(object):
     # Some items' labels are suffixed with 'nn' for non-native; this is
     # so the COLORS dictionary can have unique keys. This suffix is
     # removed upon display in the legend.
-    ITEMS = [('county documented na', '#35880c'), # dark green, county native
-        ('state documented na', '#98f25a'),  # light green, state native
-        ('native', '#98f25a'),     # light green (for U.S. map)
-        ('county documented nn', '#8e54d6'), # dark purple, county non-native
-        ('state documented nn', '#c091fa'), # lt. purple, state non-native
-        ('non-native', '#c091fa'), # light purple (for U.S. map)
+    ITEMS = [('county documented na', '#008837'), # dark green, county native
+        ('state documented na', '#a6dba0'),  # light green, state native
+        ('native', '#a6dba0'),     # light green (for U.S. map)
+        ('county documented nn', '#7b3294'), # dark purple, county non-native
+        ('state documented nn', '#c2a5cf'), # lt. purple, state non-native
+        ('non-native', '#c2a5cf'), # light purple (for U.S. map)
         ('absent', '#fff'),   # absent no longer shown in legend
     ]
     COLORS = dict(ITEMS)  # Color lookup for labels, ex.: COLORS['rare'].
