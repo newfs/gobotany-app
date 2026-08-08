@@ -501,6 +501,7 @@ class FilterFunctionalTests(FunctionalTestCase):
         self.assertEqual(sidebar_value_span.text, '10000 mm')
 
         self.css1(FILTER_LINK_CSS).click()
+        time.sleep(0.5)   # Wait a bit before proceeding
         measure_input = self.css1(INPUT_METRIC_CSS)
         measure_input.send_keys(Keys.BACK_SPACE)  # '1000'
         instructions = self.css1(INSTRUCTIONS_CSS)
@@ -512,6 +513,7 @@ class FilterFunctionalTests(FunctionalTestCase):
         # Switch to cm and then m.
 
         self.css1(FILTER_LINK_CSS).click()
+        time.sleep(0.5)   # Wait a bit before proceeding
         measure_input = self.css1(INPUT_METRIC_CSS)
         self.css1('input[value="cm"]').click()
         range_div = self.css1(RANGE_DIV_CSS)
@@ -523,6 +525,7 @@ class FilterFunctionalTests(FunctionalTestCase):
         self.assertEqual(sidebar_value_span.text, '1000 cm')
 
         self.css1(FILTER_LINK_CSS).click()
+        time.sleep(0.5)   # Wait a bit before proceeding
         measure_input = self.css1(INPUT_METRIC_CSS)
         self.css1('input[value="m"]').click()
         range_div = self.css1(RANGE_DIV_CSS)
@@ -536,6 +539,7 @@ class FilterFunctionalTests(FunctionalTestCase):
         # the acceptable value of '1' meter.
 
         measure_input = self.css1(INPUT_METRIC_CSS)
+        time.sleep(0.5)   # Wait a bit before proceeding
         measure_input.send_keys(Keys.BACK_SPACE)  # '100'
         instructions = self.css1(INSTRUCTIONS_CSS)
         self.assertIn('', instructions.text)
@@ -574,6 +578,7 @@ class FilterFunctionalTests(FunctionalTestCase):
     def test_plant_preview_popup_appears(self):
         d = self.get('/simple/ferns/lycophytes')
         self.wait_on_species(18)
+        time.sleep(0.5)   # Wait a bit before proceeding
         self.css1('#intro-overlay .continue').click()
         plant_links = self.css('.plant-list .plant a')
         self.assertTrue(len(plant_links) > 0)
@@ -596,6 +601,7 @@ class FilterFunctionalTests(FunctionalTestCase):
 
         d = self.get('/simple/ferns/lycophytes')
         self.wait_on_species(18)
+        time.sleep(0.5)   # Wait a bit before proceeding
         self.css1('#intro-overlay .continue').click()
         plant_links = self.css('.plant-list .plant a')
         self.assertTrue(len(plant_links) > 0)
@@ -608,6 +614,7 @@ class FilterFunctionalTests(FunctionalTestCase):
         clicked_image = linked_images[0].get_attribute('src').split('/')[-1]
         POPUP_HEADING_CSS = '#sb-player div.modal-wrap div.inner h3'
         self.wait_on(5, self.css1, POPUP_HEADING_CSS)
+        time.sleep(0.5)   # Wait a bit before proceeding
         popup_images = self.css('#sb-player .img-gallery .images img')
         self.assertTrue(len(popup_images) > 0)
         popup_image = popup_images[0].get_attribute('src').split('/')[-1]
@@ -649,7 +656,7 @@ class SearchSuggestionsFunctionalTests(FunctionalTestCase):
             keys_to_send = query[:-1]
         search_input.send_keys(keys_to_send)
 
-        time.sleep(2.0)
+        time.sleep(2.5)
 
         menu = None
         try:

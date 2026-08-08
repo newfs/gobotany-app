@@ -401,7 +401,7 @@ class ImageType(models.Model):
 # See http://stackoverflow.com/questions/2063425/python-elegant-inverse-function-of-intstring-base
 # and linked thread.
 def _to_image_suffix(num):
-    digits = string.lowercase
+    digits = string.ascii_lowercase
     base = len(digits)
     if num == 0:
         return ''
@@ -525,6 +525,12 @@ class ContentImage(models.Model):
         else:
             name += '%s: %s' % (self.content_type.name, self.object_id)
         name += ' %s: %s' % (self.rank, self.image.name)
+        return name
+
+    def name_in_title(self):
+        name = self.alt
+        if ':' in name:
+            name = name.split(':')[0]
         return name
 
 

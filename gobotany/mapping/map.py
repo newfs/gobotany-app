@@ -53,12 +53,12 @@ class Legend(object):
     # Some items' labels are suffixed with 'nn' for non-native; this is
     # so the COLORS dictionary can have unique keys. This suffix is
     # removed upon display in the legend.
-    ITEMS = [('county documented na', '#35880c'), # dark green, county native
-        ('state documented na', '#98f25a'),  # light green, state native
-        ('native', '#98f25a'),     # light green (for U.S. map)
-        ('county documented nn', '#8e54d6'), # dark purple, county non-native
-        ('state documented nn', '#c091fa'), # lt. purple, state non-native
-        ('non-native', '#c091fa'), # light purple (for U.S. map)
+    ITEMS = [('county documented na', '#008837'), # dark green, county native
+        ('state documented na', '#a6dba0'),  # light green, state native
+        ('native', '#a6dba0'),     # light green (for U.S. map)
+        ('county documented nn', '#7b3294'), # dark purple, county non-native
+        ('state documented nn', '#c2a5cf'), # lt. purple, state non-native
+        ('non-native', '#c2a5cf'), # light purple (for U.S. map)
         ('absent', '#fff'),   # absent no longer shown in legend
     ]
     COLORS = dict(ITEMS)  # Color lookup for labels, ex.: COLORS['rare'].
@@ -328,6 +328,26 @@ class PlantDistributionMap(ChloroplethMap):
             # than selecting a node via XPath. Iterating is around twice
             # as fast as XPath, at least when breaking after finding a node
             # as is done for the county-level records.
+
+            # Take a pass through the nodes and shade any
+            # state-/province-/territory-level records.
+            state_records = self.distribution_records.filter(county='')
+            for record in state_records:
+                state_id_piece = '%s_' % record.state.lower()
+                for node in path_nodes:
+                    node_id = node.get('id').lower()
+                    if node_id.startswith(state_id_piece):
+                        label = self._get_label(record.present, record.native,
+                            level='state')
+                        if label not in legend_labels_found:
+                            legend_labels_found.append(label)
+                        box = Path(node)
+                        if self._should_shade(box, record.present,
+                                record.native):
+                            box.color(Legend.COLORS[label])
+                        # Keep going rather than break, because for each
+                        # state-level record there will be multiple
+                        # counties to shade.
 
             # Take a pass through the nodes and shade any county-level
             # records.

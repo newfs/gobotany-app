@@ -252,7 +252,7 @@ class UrlFilterTests(TestCase):
         obj = plantshare_models.Question.objects.first()
         url = gobotany_tags.url(obj)
         self.assertEqual(url, '/plantshare/questions/all/' + \
-            str(obj.asked.year) + '/#q' + str(obj.id))
+            str(obj.asked.year) + '/q' + str(obj.id) + '/')
 
     def test_url_filter_plain_page(self):
         obj = search_models.PlainPage.objects.first()

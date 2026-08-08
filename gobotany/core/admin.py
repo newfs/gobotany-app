@@ -1,6 +1,7 @@
 # -*- encoding: utf-8 -*-
 
-from operator import attrgetter
+import botocore
+import boto3
 
 from django import forms
 from django.conf import settings
@@ -17,6 +18,13 @@ from django.utils.translation import gettext_lazy as _
 from gobotany.admin import GoBotanyModelAdmin
 from gobotany.core import models
 from gobotany.core.distribution_places import DISTRIBUTION_PLACES
+
+from logging import getLogger
+
+from operator import attrgetter
+
+
+log = getLogger(__name__)
 
 # View classes
 
@@ -462,12 +470,11 @@ class PartnerSpeciesAdmin(_Base):
 
 class ContentImageAdmin(_Base):
     """
-
     <p>
     Content Images are stored on S3 Storage, which is scanned every
     night to check for new images. Creator names are cross-referenced
     with the Copyright Holder information pulled from the source spreadsheet.
-    Content images are separately managed from user-uploaded, ScreenImages.
+    Content images are separately managed from user-uploaded ScreenedImages.
     </p>
     <p>
     NOTE: Uploaded images will be named based on the other fields entered,
@@ -481,6 +488,7 @@ class ContentImageAdmin(_Base):
     list_display_links = ('alt', 'image', 'creator')
     fields = ('alt', 'rank', 'image_type', 'content_type', 'object_id',
         'taxon_lookup', 'creator', 'copyright', 'image')
+    actions = ['rename_images']
     readonly_fields = ('copyright', 'taxon_lookup')
 
     def get_form(self, request, obj=None, **kwargs):
@@ -515,6 +523,205 @@ class ContentImageAdmin(_Base):
             '<option value="">Select a taxon</option>\n' + \
             '{}</select>'.format('\n'.join(options))
         return mark_safe(markup)
+
+
+    class RenameImagesForm(forms.Form):
+        _selected_action = forms.CharField(widget=forms.MultipleHiddenInput)
+
+
+    def _copy_s3_image(self, current_image_name, new_image_name):
+        # Copy an image in the S3 bucket. Return True if the image was copied,
+        # and False if it was not copied.
+        s3 = boto3.client('s3')
+        bucket_name = 'newfs'
+        copy_source = {
+            'Bucket': bucket_name,
+            'Key': current_image_name
+        }
+        try:
+            s3.copy_object(CopySource=copy_source,
+                Bucket=bucket_name, Key=new_image_name,
+                ACL='public-read')
+            log.info('(_copy_s3_image) Image copied to %s',
+                new_image_name)
+            return True
+        except botocore.exceptions.ClientError as e:
+            log.warn('(_copy_s3_image) ClientError: %s', e);
+            return False
+            # Note that trying to copy over an existing image in S3 does not
+            # succeed; the existing image is kept, which is fine.
+
+
+    def _copy_thumbnails(self, current_image_name, new_image_name):
+        # Copy the various sizes of thumbnails to a new image name.
+        log.info('(_copy_thumbnails) Passed in: current_image_name: %s, '
+            'new_image_name: %s', current_image_name, new_image_name)
+        main_folder = 'taxon-images'
+        thumbnail_folders = ['taxon-images-160x149', 'taxon-images-239x239',
+            'taxon-images-1000s1000']
+        for thumbnail_folder in thumbnail_folders:
+            log.info('(_copy_thumbnails) Thumbnail_folder: %s',
+                thumbnail_folder)
+            # Replace the main folder in the passed-in current and new names
+            # with that of the thumbnail folder, and then copy.
+            current_thumbnail_name = current_image_name.replace(
+                main_folder, thumbnail_folder)
+            new_thumbnail_name = new_image_name.replace(
+                main_folder, thumbnail_folder)
+            log.info('(_copy_thumbnails) About to copy %s to %s',
+                current_thumbnail_name, new_thumbnail_name)
+            self._copy_s3_image(current_thumbnail_name, new_thumbnail_name)
+
+
+    def rename_images(self, request, queryset):
+        form = None
+
+        if 'rename' in request.POST:
+            form = self.RenameImagesForm(request.POST)
+
+            if form.is_valid():
+                number_of_records = queryset.count()
+                plant_names = set()
+                for record in queryset:
+                    plant_name = record.alt.split(':')[0]
+                    plant_names.add(plant_name)
+                log.info('(rename_images) plant_names: %s' , plant_names)
+                if len(plant_names) > 1:
+                    # Having more than one plant name should not be able to
+                    # occur at this point, which is after the form was
+                    # submitted, but check here too for extra safety.
+                    #
+                    # Return to the list page with an error message to display.
+                    message = 'More than one plant name selected; ' + \
+                        messages.error(request, message)
+                else:
+                    # Rename the records.
+                    old_name = plant_names.pop()
+                    log.info('(rename_images) About to rename: old_name = %s',
+                        old_name)
+                    first_record = queryset.first()
+                    taxon = models.Taxon.objects.get(pk=first_record.object_id)
+                    initial_taxon_id = taxon.id
+                    log.info('(rename_images) Current taxon id = %s',
+                        initial_taxon_id)
+
+                    selected_taxon_id = request.POST['taxon']
+                    log.info('(rename_images) Selected taxon id = %s',
+                        selected_taxon_id)
+                    if (initial_taxon_id != selected_taxon_id):
+                        log.info('(rename_images) Initial current taxon and ' \
+                            'selected taxon differ; get the selected one')
+                        # The user selected a different taxon than the initial
+                        # current one. Get that taxon instead.
+                        taxon = models.Taxon.objects.get(pk=selected_taxon_id)
+                        log.info('(rename_images) New taxon id = %s',
+                            taxon.id)
+
+                    new_name = taxon.scientific_name
+                    log.info('(rename_images) New name = %s', new_name)
+
+                    number_of_images_copied = 0
+                    number_of_images_not_copied = 0
+                    for record in queryset:
+                        if (taxon.id != initial_taxon_id):
+                            # If changing the record's object (taxon) id is
+                            # needed, do so.
+                            record.object_id = taxon.id
+
+                        new_alt_text = new_name + ":" + \
+                            record.alt.split(':')[1]
+                        record.alt = new_alt_text
+                        log.info('(rename_images) New record.alt = %s',
+                            record.alt)
+
+                        # Make a copy of the image on S3 from the old
+                        # name to the new name. Leave the old-named image
+                        # in place for now because local or Dev environments
+                        # may be pointing at the same S3 bucket.
+                        log.info('(rename_images) Rename image: %s to %s',
+                            old_name, new_name)
+
+                        current_image_name = record.image.name
+                        log.info('(rename_images) Current image name: %s',
+                            current_image_name)
+
+                        new_image_name = models._content_image_path(record,
+                            record.image.name)
+                        log.info('(rename_images) New image name: %s',
+                            new_image_name)
+
+                        image_copied = self._copy_s3_image(current_image_name,
+                            new_image_name)
+                        if (image_copied):
+                            number_of_images_copied += 1
+                        else:
+                            number_of_images_not_copied += 1
+
+                        # Attach the new image file name to the record.
+                        record.image = new_image_name
+
+                        # Rather than waiting for the nightly image-check
+                        # script to automatically generate thumbnails for the
+                        # new image, copy the thumbnails too.
+                        self._copy_thumbnails(current_image_name,
+                            new_image_name)
+
+                        # Finally, save the record.
+                        record.save()
+
+                    message = ('%d records successfully renamed to %s.' % (
+                        number_of_records, new_name))
+                    if number_of_images_copied > 0:
+                        message += (' %d images renamed.' % (
+                            number_of_images_copied))
+                    if number_of_images_not_copied > 0:
+                        message += (
+                            ' %d images not renamed (may already exist).' % (
+                            number_of_images_not_copied))
+                    log.info('(rename_images) ' + message)
+                    self.message_user(request, message)
+                    return HttpResponseRedirect(request.get_full_path())
+
+        if not form:
+            # Request was not from the form, so this is the beginning of
+            # the action; show the form.
+            plant_names = set()
+            for record in queryset:
+                plant_name = record.alt.split(':')[0]
+                plant_names.add(plant_name)
+            if len(plant_names) > 1:
+                # Return to the list page with an error message to display.
+                message = 'More than one plant name selected; ' + \
+                    ' no changes made. ' + str(plant_names)
+                messages.error(request, message)
+                return
+            old_name = plant_names.pop()
+
+            # Get the current name of the Taxon currently associated
+            # with one of the selected records.
+            first_record = queryset.first()
+            taxon = models.Taxon.objects.get(pk=first_record.object_id)
+            current_taxon_name = taxon.scientific_name
+            current_taxon_id = taxon.id
+
+            form = self.RenameImagesForm(
+                initial = {
+                    '_selected_action': request.POST.getlist(
+                        admin.helpers.ACTION_CHECKBOX_NAME)
+                }
+            )
+            taxa = models.Taxon.objects.all()
+            return render(request,
+                'admin/core/contentimage/rename_images.html', {
+                    'old_name': old_name,
+                    'current_taxon_name': current_taxon_name,
+                    'current_taxon_id': current_taxon_id,
+                    'records': queryset,
+                    'taxa': taxa,
+                    'rename_images_form': form,
+                })
+
+    rename_images.short_description = 'Rename selected content images'
 
 
 class CopyrightHolderAdmin(_Base):
