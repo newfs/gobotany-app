@@ -2,7 +2,7 @@ from distutils.core import setup
 from setuptools import find_packages
 
 requirements = [
-    'django==4.1.13',
+    'django==4.2.30',
 
     'Pillow==12.3.0',
     'bleach==6.4.0',
@@ -46,7 +46,7 @@ requirements = [
 
     'boto==2.49.0',   # for bin/s3imagecheck.py
     'boto3==1.35.0',   # has replaced boto in the Django app
-    'django-storages==1.13.1',
+    'django-storages==1.14.6',
     'requests',
 
     # Heroku and deployment
