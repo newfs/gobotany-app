@@ -74,6 +74,10 @@ $search-suggest-menu-top: 83px;
             top: $search-suggest-menu-top;
         }
     }
+    .skip-link:focus-visible {
+        font-size: 9px;
+        left: calc(50vw - 38px);   /* center on small screens */
+    }
     #breadcrumb {
         font-size: 0.87em;
         li {

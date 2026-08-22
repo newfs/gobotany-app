@@ -224,6 +224,10 @@ p.new { background: #ccdf53; border-radius: 0.25em; color: #000; display: inline
 p.meta { font-size: 10px; font-style: italic; margin: 4px 0; }
 p.meta + p { margin-top: 2px; }
 
+.skip-link { background-color: #fff; font-size: 10px; left: -9999px; padding: 2px 4px; position: absolute; top: -9999px; }
+
+.skip-link:focus-visible { left: 0; outline-offset: -1px; top: 0; }
+
 #main .distribution-character { /* species code: box, as in printed book */ margin: 0 0.25em; border: 1px solid black; padding: 0 0.25em; font-size: 0.875em; }
 
 /* Navigation highlighting */
@@ -1979,6 +1983,7 @@ header.partner-site nav li a { padding: 5px 32px 0; /* fewer sections, more hori
 @media only screen and (max-width: 600px) { body { margin: 0 auto; padding: 0; }
   body#home .id img { width: auto; }
   body#home header nav #search-suggest .menu { top: 83px; }
+  .skip-link:focus-visible { font-size: 9px; left: calc(50vw - 38px); /* center on small screens */ }
   #breadcrumb { font-size: 0.87em; }
   #breadcrumb li { display: inline-block; height: 32px; list-style-type: none; margin: 0 2px 0 0; }
   #breadcrumb .label, #breadcrumb .this-page { display: none; /* Hide 'You are Here' and current page title */ }
