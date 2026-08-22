@@ -221,7 +221,7 @@ define([
                             }
                         });
                         $(element).bind({
-                            'keyup': function (event) {
+                            'keydown': function (event) {                            
                                 if (event.key === 'Tab') {
                                     // Hide any tooltip that may be showing.
                                     self.hide_tooltip(false);   // no fade
@@ -240,6 +240,11 @@ define([
                                     var offset = $(element).offset();
                                     self.toggle_tooltip(element, offset.left,
                                         offset.top);
+
+                                    // Prevent Space key from scrolling the page.
+                                    if (event.key === ' ') {
+                                        event.preventDefault();
+                                    }
                                 }
                                 else if (event.key === 'Escape') {
                                     self.hide_tooltip();
