@@ -73,6 +73,19 @@ body.skey.groups-subgroups {
             font-family: $body-font;
         }
     }
+
+    .details .video {
+        background: unset;
+        border: 0;
+        border-bottom: 1px solid #50570a;
+        color: #27610a;
+        cursor: pointer;
+        font-family: "Trebuchet MS", Helvetica, Arial, "Lucida Sans Unicode",
+            sans-serif;
+        font-size: 16px;
+        font-weight: bold;
+        padding: 0;
+    }
 } /* end &.groups-subgroups */
 
 

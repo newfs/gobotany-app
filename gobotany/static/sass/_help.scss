@@ -148,6 +148,12 @@ $image-box-shadow-color: rgba(0, 0, 0, 0.6);
     }
 }
 
+.getting-started .video-topic .video {
+    background: 0;
+    border: 0;
+    padding: 0;
+}
+
 /* Advanced Map to Groups */
 
 #advanced-map {
@@ -272,6 +278,14 @@ $image-box-shadow-color: rgba(0, 0, 0, 0.6);
 	    margin: 2px 0 0;
 	    padding: 3px 0 0 22px;
     }
+}
+
+.advanced-map button.video {
+    background: 0;
+    border: 0;
+    border-bottom: 1px solid #27610a;
+    color: #27610a;
+    padding: 0;
 }
 
 /* Glossary */
@@ -443,6 +457,12 @@ $image-box-shadow-color: rgba(0, 0, 0, 0.6);
             width: 100%;
         }
     }
+}
+
+body.video button.video {
+    background: 0;
+    border: 0;
+    padding: 0;
 }
 
 /* Contributors */

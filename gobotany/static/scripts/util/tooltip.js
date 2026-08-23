@@ -221,7 +221,7 @@ define([
                             }
                         });
                         $(element).bind({
-                            'keydown': function (event) {                            
+                            'keydown': function (event) {
                                 if (event.key === 'Tab') {
                                     // Hide any tooltip that may be showing.
                                     self.hide_tooltip(false);   // no fade
