@@ -14959,7 +14959,7 @@ define('util/tooltip',[
                             }
                         });
                         $(element).bind({
-                            'keyup': function (event) {
+                            'keydown': function (event) {
                                 if (event.key === 'Tab') {
                                     // Hide any tooltip that may be showing.
                                     self.hide_tooltip(false);   // no fade
@@ -14978,6 +14978,11 @@ define('util/tooltip',[
                                     var offset = $(element).offset();
                                     self.toggle_tooltip(element, offset.left,
                                         offset.top);
+
+                                    // Prevent Space key from scrolling the page.
+                                    if (event.key === ' ') {
+                                        event.preventDefault();
+                                    }
                                 }
                                 else if (event.key === 'Escape') {
                                     self.hide_tooltip();
@@ -23198,30 +23203,20 @@ require([
     'bridge/jquery',
     'bridge/shadowbox',
     'util/shadowbox_init'
-], function($, Shadowbox, shadowbox_init) {
-    $(document).ready(function() {
-        $('a.video').each(function() {
-            // On iOS, instead of trying to use the lightbox for videos
-            // (due to buggy behavior that requires scrolling to the top),
-            // use a link that will open in the device's YouTube app.
-            if (navigator.userAgent.match(/(iPad|iPod|iPhone)/)) {
-                var start = this.href.lastIndexOf('/') + 1;
-                var end = this.href.indexOf('?');
-                var video_id = this.href.substring(start, end);
-                var youtube_app_url = '//www.youtube.com/v/' + video_id;
-                this.href = youtube_app_url;
-            }
-            else {
-                // Open the video in a lightbox.
-                var link = this;
-                $(this).click(function() {
+], function ($, Shadowbox, shadowbox_init) {
+    $(document).ready(function () {
+        $('button.video').each(function () {
+            // Open the video in a lightbox.
+            var link = this;
+            $(this).click(function () {
+                let href = link.dataset.href;
+                if (href) {
                     Shadowbox.open({
-                        content: link.href,
+                        content: href,
                         player: "iframe"
                     });
-                    return false;
-                });
-            }
+                }
+            });
         });
     });
 });

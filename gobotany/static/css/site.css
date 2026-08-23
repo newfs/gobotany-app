@@ -812,6 +812,7 @@ body.skey.groups-subgroups .list-item .details a { margin: 1.6em 0; }
 body.skey.groups-subgroups .not-my-plant { clear: left; float: right; font-family: "Trebuchet MS", Helvetica, Arial, "Lucida Sans Unicode", sans-serif; padding: 20px 0 0; text-align: center; }
 body.skey.groups-subgroups .not-my-plant p { margin: 0; padding: 0; }
 body.skey.groups-subgroups .not-my-plant p + p { font-family: Verdana, Geneva, "Lucida Sans Unicode", sans-serif; }
+body.skey.groups-subgroups .details .video { background: unset; border: 0; border-bottom: 1px solid #50570a; color: #27610a; cursor: pointer; font-family: "Trebuchet MS", Helvetica, Arial, "Lucida Sans Unicode", sans-serif; font-size: 16px; font-weight: bold; padding: 0; }
 
 /* end &.groups-subgroups */
 body.skey { /* Styles for results (Level 3) page */ /* end &.results */ }
@@ -1779,6 +1780,8 @@ body.search-results h1 + p { margin-top: 12px; }
 #getting-started .video-topic img { height: 147px; width: 196px; }
 #getting-started .video-topic a { cursor: pointer; }
 
+.getting-started .video-topic .video { background: 0; border: 0; padding: 0; }
+
 /* Advanced Map to Groups */
 #advanced-map h2 { clear: left; padding-top: 8px; }
 #advanced-map #plant-map-list { margin: 10px 0; }
@@ -1803,6 +1806,8 @@ body.search-results h1 + p { margin-top: 12px; }
 #advanced-map .plant-subgroup .img-container { height: 139px; overflow: hidden; width: 160px; }
 #advanced-map p.video { background: url(/static/images/icons/icon3.png) left 4px no-repeat transparent; margin: 2px 0; padding: 3px 0 0 22px; }
 #advanced-map p.list { background: url(/static/images/icons/icon1.png) left 4px no-repeat transparent; margin: 2px 0 0; padding: 3px 0 0 22px; }
+
+.advanced-map button.video { background: 0; border: 0; border-bottom: 1px solid #27610a; color: #27610a; padding: 0; }
 
 /* Glossary */
 #glossary #alphabet { font-family: Verdana, sans-serif; height: 33px; list-style-type: none; margin: 7px 0; padding: 0; width: 712px; /* 2px wider than its parent box so no wrap in Moz */ }
@@ -1841,6 +1846,8 @@ body.search-results h1 + p { margin-top: 12px; }
 #video .video-topic > p { color: #554e16; font-family: "Trebuchet MS", Helvetica, Arial, "Lucida Sans Unicode", sans-serif; font-size: 16px; line-height: 105%; margin-top: 8px; }
 #video .video-topic .missing-image { height: 137px; margin-bottom: 3px; width: 220px; }
 #video .video-topic .missing-image p { left: auto; margin: 55px 0; position: absolute; text-align: center; top: auto; white-space: nowrap; width: 100%; }
+
+body.video button.video { background: 0; border: 0; padding: 0; }
 
 /* Contributors */
 #contributors #main ul { list-style-type: none; padding-left: 0; }
