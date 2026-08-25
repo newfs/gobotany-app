@@ -35,7 +35,17 @@ define([
                     top: 0
                 },
                 closeOnClick: true,
-                load: true
+                load: true,
+                onClose: function (event) {
+                    // Wait a short time and then select the first plant.
+                    setTimeout(function () {
+                        let firstPlant = document.querySelector(
+                            '.plant-list .plant a');
+                        if (firstPlant) {
+                            firstPlant.focus();
+                        }
+                    }, 500);
+                }
             }).click(function(event) {
                 $('#intro-overlay').data('overlay').close();
             });
