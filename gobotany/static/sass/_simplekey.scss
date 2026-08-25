@@ -192,13 +192,17 @@ body.skey {
                     border-right: none;
                     padding-right: 12px;
                 }
-                a {
+                button {
+                    background: none;
+                    border: 0;
                     color: #1a2e11;
+                    cursor: pointer;
                     display: block;
+                    &:focus,
                     &:hover {
                         color: #508e31;
                         text-decoration: none;
-                        p.plant-name {
+                        .plant-name {
                             text-decoration: underline;
                         }
                     }
@@ -211,7 +215,7 @@ body.skey {
                     width: 150px;
                     z-index: 100;
                 }
-                p.plant-name {
+                .plant-name {
                     font-family: $narrower-body-font; /* Tahoma or Trebuchet because it's
                                                          narrower than Verdana: less wrapping
                                                          and fewer names on 4 lines */

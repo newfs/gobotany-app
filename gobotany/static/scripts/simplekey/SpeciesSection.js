@@ -155,7 +155,8 @@ define([
             var $plant = $('<div>', {'class': 'plant'}
                           ).appendTo(this.plant_list);
 
-            var plant_link = $('<a>', {'href': species.url}).appendTo($plant);
+            var plant_link = $(
+                '<button>', {'data-href': species.url}).appendTo($plant);
             $('<div>', {'class': 'frame'}).appendTo(plant_link);
 
             var image_container = $('<div>', {'class': 'plant-img-container'}
@@ -171,7 +172,7 @@ define([
             if (species.common_name) {
                 name_html += ' ' + species.common_name;
             }
-            $('<p>', {'class': 'plant-name', 'html': name_html})
+            $('<div>', {'class': 'plant-name', 'html': name_html})
                 .appendTo(plant_link);
 
             plantpreview_popup.connect(
