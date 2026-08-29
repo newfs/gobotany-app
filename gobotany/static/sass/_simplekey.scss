@@ -550,7 +550,7 @@ body.skey {
             h3 {
                 margin: 0;
             }
-            a {
+            button {
                 background: #d6e6c5;
                 background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#eaf2e2), color-stop(100%,#d6e6c5));
                 background: -moz-linear-gradient(center top, #eaf2e2, #d6e6c5);
@@ -563,9 +563,11 @@ body.skey {
                 float: left;
                 font-family: $headings-font;
                 font-size: 1.1rem;
-                margin: 0;
-                min-width: 100px;
-                padding: 0.3em 1em 0.2em;
+                font-weight: bold;
+                margin: 0 0 0 2px;
+                min-width: 137px;
+                outline-offset: -1px;
+                padding: 0.22em 1em 0.2em;
                 text-align: center;
                 &:hover {
                     background: #e1f2cd;
@@ -577,18 +579,18 @@ body.skey {
             }
             li {
                 list-style-type: none;
-                &:first-child a {
+                &:first-child button {
                     margin-left: 10px;
                 }
             }
-            a.current, a.current:hover {
+            button.current, button.current:hover {
                 background: #fff;
                 background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#ffffff), color-stop(100%,#f0f0c0)) !important;
                 background: -moz-linear-gradient(center top, #ffffff, #f0f0c0);
                 border-bottom: 0 !important;
                 color: #1a2e11;
                 cursor: default;
-                padding: 0.3em 1em;
+                padding: 0.25em 1em;
             }
         } /* end .view-tabs */
         
@@ -891,7 +893,10 @@ body.skey {
         padding: 0 !important;
         text-align: center;
     }
-    .view-tabs a {
+    .view-tabs {
+        height: 1.7em !important;
+    }
+    .view-tabs button {
         font-size: 13px !important;
     }
     #choices {
@@ -1004,7 +1009,7 @@ ul.get-more-questions-menu {
         }
 
         &.results.mobile-wide {  /* Styles for testing: mobile variant where
-                                    filters list is full width of screen */
+                                        filters list is full width of screen */
             #question-nav {
                 .section {
                     a.clear-all-btn, a.get-help-btn {
@@ -1016,9 +1021,12 @@ ul.get-more-questions-menu {
                 left: -235px;
             }
             .view-tabs {
-                li:first-child a {
-                    margin-left: 32px;  /* for the Results tabs */
+                li:first-child button {
+                    margin-left: 20px;  /* for the Results tabs */
                 }
+            }
+            .more-questions-dialog .view-tabs li:first-child button {
+                margin-left: 10px;
             }
         } /* end &.results.mobile-wide */
     }
@@ -1045,9 +1053,12 @@ ul.get-more-questions-menu {
                 left: -310px;
             }
             .view-tabs {
-                li:first-child a {
-                    margin-left: 112px;  /* for the Results tabs */
+                li:first-child button {
+                    margin-left: 96px;  /* for the Results tabs */
                 }
+            }
+            .more-questions-dialog .view-tabs li:first-child button {
+                margin-left: 10px;
             }
             .more-questions-dialog .questions {
                 max-height: 160px;
@@ -1205,14 +1216,14 @@ ul.get-more-questions-menu {
                 margin: 0 0 28px;
                 width: 100%;
                 .view-tabs {
-                    li + li a.current, li + li a.current:hover {
+                    li + li button.current, li + li button.current:hover {
                         background: #fff !important;
                     }
                 }
             }
             .view-tabs {
-                height: 26px;
-                a {
+                height: 24px;
+                button {
                     font-size: 16px;
                     line-height: 16px;
                 }

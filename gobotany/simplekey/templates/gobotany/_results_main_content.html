@@ -103,10 +103,10 @@
 
         <div class="view-tabs">
           {% handlebars 'species-view-tabs' %}
-            <li><h3><a {{bindAttr class="App3.show_grid:current"}}
-                   {{action choose_grid_view}}>Photos</a></h3></li>
-            <li><h3><a {{bindAttr class="App3.show_list:current"}}
-                   {{action choose_list_view}}>List</a></h3></li>
+            <li><h3><button {{bindAttr class="App3.show_grid:current"}}
+                   {{action choose_grid_view}}>Photos</button></h3></li>
+            <li><h3><button {{bindAttr class="App3.show_list:current"}}
+                   {{action choose_list_view}}>List</button></h3></li>
           {% endhandlebars %}
         </div>
 

@@ -726,8 +726,8 @@ results_page_init: function(args) {
 
             // Set default tab before opening the dialog, so there is no
             // flash of tabs switching when the dialog first appears.
-            $('.more-questions-dialog a.auto').addClass('current');
-            $('.more-questions-dialog a.pick').removeClass('current');
+            $('.more-questions-dialog .auto').addClass('current');
+            $('.more-questions-dialog .pick').removeClass('current');
             $('.more-questions-dialog #choices .auto').show();
             $('.more-questions-dialog #choices .pick').hide();
 
@@ -739,20 +739,27 @@ results_page_init: function(args) {
                     fadeDuration: 0.1,
                     onFinish: function () {
                         // Set up tabs.
-                        $('.more-questions-dialog a.pick').click(function () {
+                        $('.more-questions-dialog .pick').click(function () {
                             $('.more-questions-dialog #choices .auto').hide();
                             $('.more-questions-dialog #choices .pick').show();
-                            $(this).toggleClass('current');
-                            $('.more-questions-dialog a.auto').toggleClass(
+                            $(this).addClass('current');
+                            $('.more-questions-dialog .auto').removeClass(
                                 'current');
                         });
-                        $('.more-questions-dialog a.auto').click(function () {
+                        $('.more-questions-dialog .auto').click(function () {
                             $('.more-questions-dialog #choices .pick').hide();
                             $('.more-questions-dialog #choices .auto').show();
-                            $(this).toggleClass('current');
-                            $('.more-questions-dialog a.pick').toggleClass(
+                            $(this).addClass('current');
+                            $('.more-questions-dialog .pick').removeClass(
                                 'current');
                         });
+                        $('.more-questions-dialog .view-tabs button').on(
+                            'keydown', function (event) {
+                                if (event.key === ' ' || event.key === 'Enter') {
+                                    event.target.click();
+                                }
+                            }
+                        );
 
                         // Set any Automatic check boxes that were set last time.
                         $container = $('#sb-container');
