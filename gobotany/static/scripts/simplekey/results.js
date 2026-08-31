@@ -263,11 +263,13 @@ results_page_init: function(args) {
         }.property('genus_filter.value')
     });
 
-    $('#family_clear').live('click', function(event) {
-        App3.set('family_value', '');
+    $('#family_apply').live('click', function (event) {
+        let selectedValue = $('#families').val();
+        App3.set('family_value', selectedValue);
     });
-    $('#genus_clear').live('click', function(event) {
-        App3.set('genus_value', '');
+    $('#genus_apply').live('click', function (event) {
+        let selectedValue = $('#genera').val();
+        App3.set('genus_value', selectedValue);
     });
 
     /* Other filters appear in the filters list, with each filter's
@@ -489,7 +491,9 @@ results_page_init: function(args) {
                 filter.set('value', null);
             });
             App3.set('family_value', '');
+            $('#families').val('').change();
             App3.set('genus_value', '');
+            $('#genera').val('').change();
         });
     });
 

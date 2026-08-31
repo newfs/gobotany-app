@@ -139,7 +139,7 @@ body.skey {
                 border: 1px solid #9cc86b;
                 font: -webkit-control;
                 padding: 2px 6px;
-                -webkit-appearance: button;
+                width: 50px;
             }
         } /* end .already-know */
 
@@ -1013,7 +1013,7 @@ ul.get-more-questions-menu {
             #question-nav {
                 .section {
                     .clear-all-btn, .get-help-btn {
-                        margin: 0 0 0 95px;
+                        margin: 0 0 0 40px;
                     }
                 }
             }
@@ -1045,7 +1045,7 @@ ul.get-more-questions-menu {
             #question-nav {
                 .section {
                     .clear-all-btn, .get-help-btn {
-                        margin: 0 170px;
+                        margin: 0 65px;
                     }
                 }
             }
@@ -1142,7 +1142,7 @@ ul.get-more-questions-menu {
             .section + .section {
                 margin-bottom: 16px;
             }
-            #question-nav .section button, #question-nav .section.clear h5,
+            #question-nav .section.clear h5,
             #question-nav .section.help h5 {
                 display: none;
             }

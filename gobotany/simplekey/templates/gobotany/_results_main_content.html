@@ -41,17 +41,15 @@
                 {% handlebars %}
                   {{view Ember.Select viewName="select"
                     elementId="families"
-                    contentBinding="App3.family_choices"
-                    selectionBinding="App3.family_value"}}
-                  <button id="family_clear">Clear</button>
+                    contentBinding="App3.family_choices"}}
+                  <button id="family_apply">Apply</button>
                 {% endhandlebars %}
                 <label>Genus:</label>
                 {% handlebars %}
                   {{view Ember.Select viewName="select"
                     elementId="genera"
-                    contentBinding="App3.genus_choices"
-                    selectionBinding="App3.genus_value"}}
-                  <button id="genus_clear">Clear</button>
+                    contentBinding="App3.genus_choices"}}
+                  <button id="genus_apply">Apply</button>
                 {% endhandlebars %}
             </div>
         </div>

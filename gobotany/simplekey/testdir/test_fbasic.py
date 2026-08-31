@@ -320,7 +320,7 @@ class FilterFunctionalTests(FunctionalTestCase):
 
         # Clear the family.
 
-        self.css1('#family_clear').click()
+        self.css1('select#families option[value=""]').click()
         self.assertEqual(self.list_family_choices(), all_families)
         self.assertEqual(self.list_genus_choices(), all_genera)
 
