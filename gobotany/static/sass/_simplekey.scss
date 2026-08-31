@@ -385,12 +385,12 @@ body.skey {
                         }
                     }
                 }
-                a.clear-all-btn {
+                .clear-all-btn {
                     color: #fff;
                     margin: 0 10px 0 0;
                     min-width: 60px;
                 }
-                a.get-help-btn {
+                .get-help-btn {
                     color: #fff;
                     margin: 0 0 0 15px;
                     min-width: 50px;
@@ -1012,7 +1012,7 @@ ul.get-more-questions-menu {
                                         filters list is full width of screen */
             #question-nav {
                 .section {
-                    a.clear-all-btn, a.get-help-btn {
+                    .clear-all-btn, .get-help-btn {
                         margin: 0 0 0 95px;
                     }
                 }
@@ -1044,7 +1044,7 @@ ul.get-more-questions-menu {
                                     filters list is full width of screen */
             #question-nav {
                 .section {
-                    a.clear-all-btn, a.get-help-btn {
+                    .clear-all-btn, .get-help-btn {
                         margin: 0 170px;
                     }
                 }
@@ -1184,7 +1184,7 @@ ul.get-more-questions-menu {
                     p.get-more {
                         margin-bottom: 50px;
                     }
-                    a.clear-all-btn, a.get-help-btn {
+                    .clear-all-btn, .get-help-btn {
                         margin: 6px 0 6px 16px;
                     }
                 }

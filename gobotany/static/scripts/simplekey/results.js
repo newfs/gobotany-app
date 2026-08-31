@@ -482,7 +482,7 @@ results_page_init: function(args) {
 
     /* All filters can be cleared with a single button click. */
     $.when(filter_controller_is_built, document_is_ready).done(function() {
-        $('a.clear-all-btn').click(function() {
+        $('.clear-all-btn').click(function() {
             dismiss_any_working_area();
             var plains = App3.filter_controller.get('plain_filters');
             _.each(plains, function(filter) {
