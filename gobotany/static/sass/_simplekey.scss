@@ -424,8 +424,11 @@ body.skey {
                     }
                 }
                 .option {
+                    background: none;
+                    border: 0;
                     color: #1a2e11;
                     margin-left: 0;
+                    text-align: left;
                     text-decoration: none;
                     .name {
                         display: block;
@@ -437,10 +440,13 @@ body.skey {
                     }
                 }
                 .clear-filter {
+                    background: none;
+                    border: 0;
                     color: $link-green;
                     display: block;
                     margin-left: 0;
                     margin-top: 4px;
+                    text-align: left;
                     width: 45px;
                 }
             } /* end .option-list */
