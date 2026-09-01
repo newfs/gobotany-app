@@ -422,6 +422,9 @@ body.skey {
                         background: #dce890;
                         cursor: default;
                     }
+                    &:has(button:focus-visible) {
+                        background: #dce890;
+                    }
                 }
                 .option {
                     background: none;
