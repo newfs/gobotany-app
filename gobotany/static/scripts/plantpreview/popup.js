@@ -29,7 +29,7 @@ define([
         });
     };
 
-    var _open_popup = function($anchor, scientific_name, pile_slug) {
+    var _open_popup = function($button, scientific_name, pile_slug) {
 
         /* Call the API to get more information about the plant. */
 
@@ -69,25 +69,25 @@ define([
             plant_info_ready,
             characters_ready
         ).done(function(plant, characters) {
-            _finally_open_popup($anchor, plant, characters);
+            _finally_open_popup($button, plant, characters);
         });
     };
 
-    var _finally_open_popup = function($anchor, plant, characters) {
+    var _finally_open_popup = function($button, plant, characters) {
 
         characters = _.chain(characters)
             .filter(_filter_character, {plant: plant})
             .first(MAX_CHARACTERS)
             .value();
 
-        _put_clicked_image_first(plant, $anchor);
+        _put_clicked_image_first(plant, $button);
 
         var source = $('#plantpreview-popup-template').html().trim();
         var template = Handlebars.compile(source);
         var popup_html = template({
             characters: characters,
             plant: plant,
-            plant_url: $anchor.attr('href')
+            plant_url: $button.data('href')
         });
 
         Shadowbox.open({
@@ -165,8 +165,8 @@ define([
         return true;
     };
 
-    var _put_clicked_image_first = function(plant, $anchor) {
-        var clicked_image_url = $anchor.find('img').attr('src');
+    var _put_clicked_image_first = function(plant, $button) {
+        var clicked_image_url = $button.find('img').attr('src');
         if (typeof clicked_image_url === 'undefined')
             return;
         var basename = function(url) {
