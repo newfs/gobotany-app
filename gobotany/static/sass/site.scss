@@ -872,13 +872,15 @@ a.get-help-btn {
     font-family: $headings-font;
 }
 #sb-nav-close {
+    background-color: transparent;
     background-position: center;
     background-repeat: no-repeat;
-    padding: 4px; /* Increase activation area a bit */
-    right: -28px !important; /* Place at top right, but not exactly at the
-                                corner so as to avoid Flash video z-index
-                                problem */
-    top: 6px !important;
+    border: 0;
+    border-radius: 10px;   /* for focus outline */
+    height: 20px;
+    right: -26px !important;
+    top: 14px !important;
+    width: 20px;
 }
 
 /* Character/value styles for plant preview popups, species pages, etc. */
