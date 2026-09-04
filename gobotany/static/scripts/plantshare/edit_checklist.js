@@ -54,7 +54,7 @@ define([
                 width: 550,
                 height: 240,
                 options: {
-                    enableKeys: false,
+                    enableKeys: true,
                     onFinish: function(item) {
                         var $textarea = $('#container').find('textarea');
                         var $field = $this.parents('td.note').find('textarea');

@@ -5,35 +5,42 @@ define([
     'bridge/shadowbox'
 ], function ($, Shadowbox) {
 
-    // Animate and position the close button.
+    // Animate and position the close button, and set up keyboard handlers.
     shadowbox_move_close_button = function () {
         var cb = document.getElementById('sb-nav-close');
         var tb = document.getElementById('sb-wrapper');
         let interactiveElements;
         let firstInteractiveElement;
-        if (tb) {
-            // Get the interactive elements in the dialog.
-            interactiveElements = tb.querySelectorAll(
-                'span.gloss, button.next, button.prev, ' +
-                'a.go-to-species-page', 'a.close');
-            if (interactiveElements.length) {
-                firstInteractiveElement = interactiveElements[0];
-            }
-        }
-        if (firstInteractiveElement) {
-            firstInteractiveElement.addEventListener('keydown', function (event) {
-                if (event.shiftKey && event.key === 'Tab') {
-                    // Set focus to last element, the close button.
-                    if (cb) {
-                        cb.focus();
-
-                        // Prevent this Shift-Tab event from moving one prior.
-                        event.preventDefault();
-                    }
-                }
-            });
-        }
+        let lastInteractiveElement;
         if (cb) {
+            if (tb) {
+                // Move the close box node to the end, the last node.
+                tb.appendChild(cb);
+
+                // Get the interactive elements in the dialog.
+                interactiveElements = tb.querySelectorAll('span.gloss, button, a');
+                if (interactiveElements.length) {
+                    firstInteractiveElement = interactiveElements[0];
+                    lastInteractiveElement = interactiveElements[
+                        interactiveElements.length - 1];
+                }
+            }
+            if (firstInteractiveElement) {
+                firstInteractiveElement.addEventListener('keydown', function (event) {
+                    if (event.shiftKey && event.key === 'Tab') { // Shift-Tab
+                        // Set focus to last interactive element.
+                        if (lastInteractiveElement) {
+                            lastInteractiveElement.focus();
+
+                            // Prevent this Shift-Tab event from moving one prior.
+                            event.preventDefault();
+                        }
+                    }
+                });
+            }
+
+            // If the modal dialog's included close button is shown, it should
+            // be the last element.
             cb.setAttribute('role', 'button');
             cb.setAttribute('href', 'javascript:void(0);');
             cb.addEventListener('keydown', function (event) {
@@ -41,7 +48,7 @@ define([
                     event.preventDefault();
                     event.target.click();
                 }
-                else if (event.key === 'Tab' && !event.shiftKey) {
+                else if (event.key === 'Tab' && !event.shiftKey) { // Tab
                     if (tb) {
                         if (firstInteractiveElement) {
                             firstInteractiveElement.focus();
@@ -52,11 +59,9 @@ define([
                     }
                 }
             });
-            if (tb) {
-                tb.appendChild(cb);
-                // Set initial focus on close button.
-                cb.focus();
-            }
+
+            // Set initial focus on the close button.
+            cb.focus();
         }
     };
 
