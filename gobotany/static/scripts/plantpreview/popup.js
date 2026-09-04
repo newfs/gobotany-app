@@ -97,11 +97,13 @@ define([
             width: 935,
             options: {
                 handleOversize: 'resize',
-                onFinish: function() {
+                onFinish: function () {
                     var $sb = $('#sb-container');
                     var $children = $sb.find('p, dt, dd, li');
                     $sb.find('.img-container').scrollable();
                     glossarize($children);
+
+                    _prev_next_add_space_key();
                 }
             }
         });
@@ -176,6 +178,21 @@ define([
         plant.images.sort(function(image) {
             return basename(image.url) == name ? 0 : 1;
         });
+    };
+
+    var _prev_next_add_space_key = function () {
+        // Add Space key support to the image gallery buttons.
+        let dialog = document.getElementById('plant-detail-modal');
+        if (dialog) {
+            let buttons = dialog.querySelectorAll('button.prev, button.next');
+            buttons.forEach(function (button) {
+                button.addEventListener('keydown', function (event) {
+                    if (event.key === ' ') {
+                        event.target.click();
+                    }
+                });
+            });
+        }
     };
 
     return exports;
