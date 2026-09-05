@@ -374,12 +374,12 @@ body.skey {
                     line-height: 16px;
                     margin: 0 0 20px;
                     text-align: center;
-                    a {
+                    button {
                         color: #fff;
                         cursor: default;
                         display: block;
                         margin: 18px auto 10px;
-                        width: 170px;
+                        width: 190px;
                         &.get-questions {
                             margin: 0 auto 4px;
                         }
@@ -469,7 +469,7 @@ body.skey {
             width: 710px;
         }
 
-        a.get-questions, a.add-questions {
+        button.get-questions, button.add-questions {
             color: white;
             cursor: default;
             margin: 2px 0 0 10px;
