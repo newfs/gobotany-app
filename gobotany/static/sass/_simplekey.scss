@@ -128,6 +128,11 @@ body.skey {
                 margin: 5px 0 3px;
                 vertical-align: middle;
             }
+            label span {
+                /* Visually hide labels regarding immedate updates */
+                position: absolute;
+                top: -9999px;
+            }
             select {
                 font-size: 13px;
                 height: 21px;
@@ -1152,6 +1157,7 @@ ul.get-more-questions-menu {
             .section + .section {
                 margin-bottom: 16px;
             }
+            #question-nav .section.family-genus button,
             #question-nav .section.clear h5,
             #question-nav .section.help h5 {
                 display: none;
@@ -1586,6 +1592,7 @@ ul.get-more-questions-menu {
                         cursor: default;
                         display: block;
                         position: relative;
+                        width: 100%;
                         &::after {
                             border-color: #000;
                             border-style: solid;

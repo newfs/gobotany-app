@@ -186,10 +186,16 @@ results_page_init: function(args) {
         App3.set('family_filter', fc.filtermap.family);
         App3.set('genus_filter', fc.filtermap.genus);
 
+        console.log("* about to set family/genus values: family_name=" +
+            filters_config.family_name + " genus_name=" + filters_config.genus_name);
+
         fc.filtermap.family.set('value', filters_config.family_name);
         fc.filtermap.genus.set('value', filters_config.genus_name);
 
-        _.each(filters_config.other_filters, $.proxy(fc.add, fc));
+        setTimeout(function () {
+            console.log("* setting after delay");
+            _.each(filters_config.other_filters, $.proxy(fc.add, fc));
+        }, 500);
 
         App3.set('filter_controller', fc);
 
@@ -265,13 +271,11 @@ results_page_init: function(args) {
         }.property('genus_filter.value')
     });
 
-    $('#family_apply').live('click', function (event) {
-        let selectedValue = $('#families').val();
-        App3.set('family_value', selectedValue);
+    $('#family_clear').live('click', function(event) {
+        App3.set('family_value', '');
     });
-    $('#genus_apply').live('click', function (event) {
-        let selectedValue = $('#genera').val();
-        App3.set('genus_value', selectedValue);
+    $('#genus_clear').live('click', function(event) {
+        App3.set('genus_value', '');
     });
 
     /* Other filters appear in the filters list, with each filter's

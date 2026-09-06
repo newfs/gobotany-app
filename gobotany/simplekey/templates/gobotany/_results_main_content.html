@@ -37,19 +37,25 @@
 
         <div class="section family-genus">
             <div class="already-know">
-                <label>Family:</label>
+                <label>Family:
+                    <span aria-describedby="families"
+                        >(results update on select)</span></label>
                 {% handlebars %}
                   {{view Ember.Select viewName="select"
                     elementId="families"
-                    contentBinding="App3.family_choices"}}
-                  <button id="family_apply">Apply</button>
+                    contentBinding="App3.family_choices"
+                    selectionBinding="App3.family_value"}}
+                  <button id="family_clear">Clear</button>
                 {% endhandlebars %}
-                <label>Genus:</label>
+                <label>Genus:
+                    <span aria-describedby="genera"
+                        >(results update on select)</span></label>
                 {% handlebars %}
                   {{view Ember.Select viewName="select"
                     elementId="genera"
-                    contentBinding="App3.genus_choices"}}
-                  <button id="genus_apply">Apply</button>
+                    contentBinding="App3.genus_choices"
+                    selectionBinding="App3.genus_value"}}
+                  <button id="genus_clear">Clear</button>
                 {% endhandlebars %}
             </div>
         </div>

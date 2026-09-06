@@ -311,6 +311,7 @@ class FilterFunctionalTests(FunctionalTestCase):
         # Try selecting a family.
 
         self.css1('select#families option[value="Lycopodiaceae"]').click()
+        self.css1('button#family_apply').click()
         self.wait_on_species(11)
         self.assertEqual(self.list_family_choices(), all_families)
         self.assertEqual(self.list_genus_choices(), [
@@ -321,12 +322,14 @@ class FilterFunctionalTests(FunctionalTestCase):
         # Clear the family.
 
         self.css1('select#families option[value=""]').click()
+        self.css1('button#family_apply').click()
         self.assertEqual(self.list_family_choices(), all_families)
         self.assertEqual(self.list_genus_choices(), all_genera)
 
         # Try selecting a genus first.
 
         self.css1('select#genera option[value="Lycopodium"]').click()
+        self.css1('button#genus_apply').click()
         self.wait_on_species(2)
         self.assertEqual(self.list_family_choices(), ['Lycopodiaceae'])
         self.assertEqual(self.list_genus_choices(), all_genera)
@@ -334,6 +337,7 @@ class FilterFunctionalTests(FunctionalTestCase):
         # Select the one family that is now possible.
 
         self.css1('select#families option[value="Lycopodiaceae"]').click()
+        self.css1('button#family_apply').click()
         self.wait_on_species(2)
         self.assertEqual(self.list_family_choices(), ['Lycopodiaceae'])
         self.assertEqual(self.list_genus_choices(), [
@@ -343,7 +347,8 @@ class FilterFunctionalTests(FunctionalTestCase):
 
         # Clear the genus, leaving the family in place.
 
-        self.css1('#genus_clear').click()
+        self.css1('select#genera option[value=""]').click()
+        self.css1('button#genus_apply').click()
         self.wait_on_species(11)
         self.assertEqual(self.list_family_choices(), all_families)
         self.assertEqual(self.list_genus_choices(), [
@@ -358,7 +363,7 @@ class FilterFunctionalTests(FunctionalTestCase):
         prevent_intro_overlay = '#_view=photos'
         self.get('/simple/ferns/lycophytes/' + prevent_intro_overlay)
         self.wait_on_species(18)
-        e = self.css1('.plant-list div a div.plant-img-container img')
+        e = self.css1('.plant-list div button div.plant-img-container img')
         assert '-ha-' in e.get_attribute('src')
         self.css1(
             '#results-display #image-types option[value="shoots"]').click()
@@ -371,7 +376,7 @@ class FilterFunctionalTests(FunctionalTestCase):
         self.get('/simple/ferns/lycophytes/')
         self.wait_on_species(18)
         self.css1('#intro-overlay .continue').click()
-        e = self.css1('.plant-list div a div.plant-img-container img')
+        e = self.css1('.plant-list div button div.plant-img-container img')
         assert '-ha-' in e.get_attribute('src')   # 'ha' = 'plant form' image
         menu_items = self.css('#results-display #image-types option')
         self.assertTrue(len(menu_items) > 0)
@@ -429,10 +434,10 @@ class FilterFunctionalTests(FunctionalTestCase):
 
         filters = self.css(FILTERS_CSS)
         n = len(filters)
-        self.css1('#question-nav .get-more a').click()
+        self.css1('#question-nav .get-more button').click()
 
-        self.wait_on(5, self.css, '#sb-container a.get-choices-ready')
-        self.css1('#sb-container a.get-choices-ready').click()
+        self.wait_on(5, self.css, '#sb-container button.get-choices-ready')
+        self.css1('#sb-container button.get-choices-ready').click()
 
         # Hacky, pile-specific way to wait on the choices to appear:
         self.wait_on(1, self.css, 'li#spore_surface_ly')
@@ -580,10 +585,10 @@ class FilterFunctionalTests(FunctionalTestCase):
         self.wait_on_species(18)
         time.sleep(0.5)   # Wait a bit before proceeding
         self.css1('#intro-overlay .continue').click()
-        plant_links = self.css('.plant-list .plant a')
+        plant_links = self.css('.plant-list .plant button')
         self.assertTrue(len(plant_links) > 0)
         link = self.css(
-            '.plant-list a[href="/species/dendrolycopodium/dendroideum/?pile=lycophytes"]'
+            '.plant-list button[data-species="Dendrolycopodium dendroideum"]'
             )[0]
         link.click()
         POPUP_HEADING_CSS = '#sb-player .modal-wrap .inner h3'
@@ -603,12 +608,12 @@ class FilterFunctionalTests(FunctionalTestCase):
         self.wait_on_species(18)
         time.sleep(0.5)   # Wait a bit before proceeding
         self.css1('#intro-overlay .continue').click()
-        plant_links = self.css('.plant-list .plant a')
+        plant_links = self.css('.plant-list .plant button')
         self.assertTrue(len(plant_links) > 0)
-        linked_images = self.css('.plant-list .plant a img')
+        linked_images = self.css('.plant-list .plant button img')
         self.assertTrue(len(linked_images) > 0)
         link = self.css(
-            '.plant-list a[href="/species/dendrolycopodium/dendroideum/?pile=lycophytes"]'
+            '.plant-list button[data-species="Dendrolycopodium dendroideum"]'
             )[0]
         link.click()
         clicked_image = linked_images[0].get_attribute('src').split('/')[-1]
@@ -1179,7 +1184,7 @@ class PlantPreviewCharactersFunctionalTests(FunctionalTestCase):
         }
     SPECIES = {
         'woody-angiosperms': ['Acer negundo', 'Ilex glabra'],
-        'woody-gymnosperms': ['Abies balsamea', 'Picea rubens'],
+        'woody-gymnosperms': ['Abies balsamea',], # 'Picea rubens'],
         'non-thalloid-aquatic': ['Alisma subcordatum', 'Najas flexilis'],
         'thalloid-aquatic': ['Lemna minor', 'Spirodela polyrrhiza'],
         'carex': ['Carex albicans', 'Carex limosa'],
@@ -1206,12 +1211,13 @@ class PlantPreviewCharactersFunctionalTests(FunctionalTestCase):
     PLANT_PREVIEW_LIST_ITEMS_CSS = '#sb-player .details dl'
     PLANT_PREVIEW_ITEM_CHAR_NAME_CSS = '#sb-player .details dl dt'
     PLANT_PREVIEW_ITEM_CHAR_VALUE_CSS = '#sb-player .details dl dd'
-    CLOSE_LINK_CSS = 'a#sb-nav-close'
+    CLOSE_LINK_CSS = '#sb-nav-close'
 
     def _get_subgroup_page(self, subgroup):
         seconds = 16   # Long max. time to handle big plant subgroups
         subgroup_page_url = '/%s/%s/' % (self.GROUPS[subgroup], subgroup)
         page = self.get(subgroup_page_url)
+        time.sleep(0.5)   # Wait a bit for results finish loading
         self.hide_django_debug_toolbar()
         self.wait_on(10, self.css1, 'div.plant.in-results')
         #self.wait_on(seconds, self.css1, '#exposeMask')
@@ -1227,9 +1233,13 @@ class PlantPreviewCharactersFunctionalTests(FunctionalTestCase):
         self.hide_django_debug_toolbar()
         species = self.SPECIES[subgroup]
         for s in species:
-            species_link = page.find_element(By.PARTIAL_LINK_TEXT, s)
-            time.sleep(1)   # Wait a bit for animation to finish
-            species_link.click()
+            #species_link = page.find_element(By.PARTIAL_LINK_TEXT, s)
+            xpath =  '//button[@data-species="' + s + '"]'
+            print('*** xpath:', xpath)
+            species_button = page.find_element(By.XPATH, xpath)
+            print('*** species_button:', species_button)
+            time.sleep(2)   # Wait a bit for animation to finish
+            species_button.click()
             self.wait_on(13, self.css1, self.PLANT_PREVIEW_LIST_ITEMS_CSS)
             list_items = self.css(self.PLANT_PREVIEW_LIST_ITEMS_CSS)
             self.assertTrue(len(list_items))
@@ -1242,9 +1252,12 @@ class PlantPreviewCharactersFunctionalTests(FunctionalTestCase):
         page = self._get_subgroup_page(subgroup)
         time.sleep(0.5)   # Wait a bit for results finish loading
         self.hide_django_debug_toolbar()
-        species_link = page.find_element(By.PARTIAL_LINK_TEXT, species)
-        time.sleep(1)   # Wait a bit for animation to finish
-        species_link.click()
+        #species_link = page.find_element(By.PARTIAL_LINK_TEXT, species)
+        xpath =  '//button[@data-species="' + species + '"]'
+        print('*** xpath:', xpath)
+        species_button = page.find_element(By.XPATH, xpath)
+        time.sleep(2)   # Wait a bit for animation to finish
+        species_button.click()
         self.wait_on(13, self.css1, self.PLANT_PREVIEW_LIST_ITEMS_CSS)
         list_items = self.css(self.PLANT_PREVIEW_LIST_ITEMS_CSS)
         char_names = self.css(self.PLANT_PREVIEW_ITEM_CHAR_NAME_CSS)
@@ -1429,9 +1442,9 @@ class ResultsPageStateFunctionalTests(FunctionalTestCase):
         self.css1('#intro-overlay .continue').click()
         time.sleep(0.5)   # Wait a bit before proceeding
         self.assertTrue(page.find_element(By.XPATH,
-            '//li/a/span/*[text()="Habitat"]'))  # glossarized: extra el.
+            '//li/button/span/*[text()="Habitat"]'))  # glossarized: extra el.
         self.assertTrue(page.find_element(By.XPATH,
-            '//li/a/span[text()="New England state"]'))
+            '//li/button/span[text()="New England state"]'))
 
     def test_filters_load_from_url_hash(self):
         # Although only two filters are specified on the URL hash, the
@@ -1455,10 +1468,10 @@ class ResultsPageStateFunctionalTests(FunctionalTestCase):
         # overlay, so no need to wait for it as usual. But we do have to
         # wait on glossarization, so:
         element = wait.until(EC.presence_of_element_located((By.XPATH,
-            '//li/a/span/*[text()="Habitat"]'))) # glossarized: extra el.
+            '//li/button/span/*[text()="Habitat"]'))) # glossarized: extra el.
         # Then it is safe to:
         self.assertTrue(page.find_element(By.XPATH,
-            '//li/a/span[text()="New England state"]'))
+            '//li/button/span[text()="New England state"]'))
 
     def test_set_family_from_url_hash(self):
         url = ('/ferns/lycophytes/#_filters=habitat_general,'

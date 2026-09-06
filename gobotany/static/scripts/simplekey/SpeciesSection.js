@@ -155,12 +155,14 @@ define([
             var $plant = $('<div>', {'class': 'plant'}
                           ).appendTo(this.plant_list);
 
-            var plant_link = $(
-                '<button>', {'data-href': species.url}).appendTo($plant);
-            $('<div>', {'class': 'frame'}).appendTo(plant_link);
+            // The data-species attribute is used by tests.
+            var plant_button = $(
+                '<button>', {'data-href': species.url,
+                'data-species': species.scientific_name}).appendTo($plant);
+            $('<div>', {'class': 'frame'}).appendTo(plant_button);
 
             var image_container = $('<div>', {'class': 'plant-img-container'}
-                                   ).appendTo(plant_link);
+                ).appendTo(plant_button);
             var $image = $('<img>', {'alt': ''}).appendTo(image_container);
             $image.attr('x-plant-id', species.scientific_name);
             var thumb_url = this.default_image(species).thumb_url;
@@ -173,10 +175,10 @@ define([
                 name_html += ' ' + species.common_name;
             }
             $('<div>', {'class': 'plant-name', 'html': name_html})
-                .appendTo(plant_link);
+                .appendTo(plant_button);
 
             plantpreview_popup.connect(
-                plant_link, species.scientific_name, this.pile_slug);
+                plant_button, species.scientific_name, this.pile_slug);
 
             this.plant_data.push(species);
             this.plant_divs.push($plant);
