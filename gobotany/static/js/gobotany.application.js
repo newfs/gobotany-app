@@ -15314,29 +15314,81 @@ define('util/shadowbox_init',[
     'bridge/shadowbox'
 ], function ($, Shadowbox) {
 
-    // Animate and position the close button.
+    // Animate and position the close button, and set up keyboard handlers.
     shadowbox_move_close_button = function () {
         var cb = document.getElementById('sb-nav-close');
         var tb = document.getElementById('sb-wrapper');
-        if (tb) {
-            tb.appendChild(cb);
+        let interactiveElements;
+        let firstInteractiveElement;
+        let lastInteractiveElement;
+        if (cb) {
+            if (tb) {
+                // Move the close box node to the end, the last node.
+                tb.appendChild(cb);
+
+                // Get the interactive elements in the dialog.
+                interactiveElements = tb.querySelectorAll('span.gloss, button, a');
+                if (interactiveElements.length) {
+                    firstInteractiveElement = interactiveElements[0];
+                    lastInteractiveElement = interactiveElements[
+                        interactiveElements.length - 1];
+                }
+            }
+            if (firstInteractiveElement) {
+                firstInteractiveElement.addEventListener('keydown', function (event) {
+                    if (event.shiftKey && event.key === 'Tab') { // Shift-Tab
+                        // Set focus to last interactive element.
+                        if (lastInteractiveElement) {
+                            lastInteractiveElement.focus();
+
+                            // Prevent this Shift-Tab event from moving one prior.
+                            event.preventDefault();
+                        }
+                    }
+                });
+            }
+
+            // If the modal dialog's included close button is shown, it should
+            // be the last element.
+            cb.setAttribute('role', 'button');
+            cb.setAttribute('href', 'javascript:void(0);');
+            cb.addEventListener('keydown', function (event) {
+                if (event.key === ' ') {   // Space key
+                    event.preventDefault();
+                    event.target.click();
+                }
+                else if (event.key === 'Tab' && !event.shiftKey) { // Tab
+                    if (tb) {
+                        if (firstInteractiveElement) {
+                            firstInteractiveElement.focus();
+
+                            // Prevent this Tab event from moving one after.
+                            event.preventDefault();
+                        }
+                    }
+                }
+            });
+
+            // Set initial focus on the close button.
+            cb.focus();
         }
     };
 
     shadowbox_on_open = function () {
-        // Work around a bug when using lightboxes on iOS:
-        // On iOS versions older than 5, lightboxes can appear off the
-        // screen if the page is scrolled down, so scroll to the top.
-        if (navigator.userAgent.match(/(iPad|iPod|iPhone)/)) {
-            if (navigator.userAgent.match(/(OS 3_|OS 4_)/)) {
-                window.scrollTo(0, 0);
-            }
-        }
+        // Prevent the page background from scrolling.
+        document.body.style.overflow = 'hidden';
 
-        shadowbox_move_close_button();
+        // Move the close button and set up keyboard handlers after a delay
+        // to let the contents load.
+        setTimeout(function () {
+            shadowbox_move_close_button();
+        }, 1500);
     };
 
     shadowbox_on_close = function () {
+        // Allow the page background to scroll again.
+        document.body.style.overflow = 'unset';
+
         // Hide any tooltips activated from the lightbox.
         $('.gb-tooltip.dark').hide();
     };
@@ -15373,16 +15425,21 @@ define('plantpreview/popup',[
     var glossarize = glossarizer.glossarize;
     var exports = {};
 
-    exports.connect = function($anchor, scientific_name, pile_slug) {
-        $anchor.click(function(event) {
-            if ($(window).width() <= 600)
-                return;  // follow the link directly to the species page
-            _open_popup($anchor, scientific_name, pile_slug);
+    exports.connect = function($button, scientific_name, pile_slug) {
+        $button.click(function(event) {
+            if ($(window).width() <= 600) {
+                // Go directly to the species page.
+                let url = $button.data("href");
+                if (url) {
+                    window.location.href = url;
+                }
+            }
+            _open_popup($button, scientific_name, pile_slug);
             return false;
         });
     };
 
-    var _open_popup = function($anchor, scientific_name, pile_slug) {
+    var _open_popup = function($button, scientific_name, pile_slug) {
 
         /* Call the API to get more information about the plant. */
 
@@ -15422,25 +15479,25 @@ define('plantpreview/popup',[
             plant_info_ready,
             characters_ready
         ).done(function(plant, characters) {
-            _finally_open_popup($anchor, plant, characters);
+            _finally_open_popup($button, plant, characters);
         });
     };
 
-    var _finally_open_popup = function($anchor, plant, characters) {
+    var _finally_open_popup = function($button, plant, characters) {
 
         characters = _.chain(characters)
             .filter(_filter_character, {plant: plant})
             .first(MAX_CHARACTERS)
             .value();
 
-        _put_clicked_image_first(plant, $anchor);
+        _put_clicked_image_first(plant, $button);
 
         var source = $('#plantpreview-popup-template').html().trim();
         var template = Handlebars.compile(source);
         var popup_html = template({
             characters: characters,
             plant: plant,
-            plant_url: $anchor.attr('href')
+            plant_url: $button.data('href')
         });
 
         Shadowbox.open({
@@ -15450,11 +15507,13 @@ define('plantpreview/popup',[
             width: 935,
             options: {
                 handleOversize: 'resize',
-                onFinish: function() {
+                onFinish: function () {
                     var $sb = $('#sb-container');
                     var $children = $sb.find('p, dt, dd, li');
                     $sb.find('.img-container').scrollable();
                     glossarize($children);
+
+                    _prev_next_add_space_key();
                 }
             }
         });
@@ -15518,8 +15577,8 @@ define('plantpreview/popup',[
         return true;
     };
 
-    var _put_clicked_image_first = function(plant, $anchor) {
-        var clicked_image_url = $anchor.find('img').attr('src');
+    var _put_clicked_image_first = function(plant, $button) {
+        var clicked_image_url = $button.find('img').attr('src');
         if (typeof clicked_image_url === 'undefined')
             return;
         var basename = function(url) {
@@ -15529,6 +15588,21 @@ define('plantpreview/popup',[
         plant.images.sort(function(image) {
             return basename(image.url) == name ? 0 : 1;
         });
+    };
+
+    var _prev_next_add_space_key = function () {
+        // Add Space key support to the image gallery buttons.
+        let dialog = document.getElementById('plant-detail-modal');
+        if (dialog) {
+            let buttons = dialog.querySelectorAll('button.prev, button.next');
+            buttons.forEach(function (button) {
+                button.addEventListener('keydown', function (event) {
+                    if (event.key === ' ') {
+                        event.target.click();
+                    }
+                });
+            });
+        }
     };
 
     return exports;
@@ -23126,7 +23200,7 @@ define('plantshare/edit_checklist',[
                 width: 550,
                 height: 240,
                 options: {
-                    enableKeys: false,
+                    enableKeys: true,
                     onFinish: function(item) {
                         var $textarea = $('#container').find('textarea');
                         var $field = $this.parents('td.note').find('textarea');
@@ -44471,7 +44545,17 @@ define('simplekey/results_overlay',[
                     top: 0
                 },
                 closeOnClick: true,
-                load: true
+                load: true,
+                onClose: function (event) {
+                    // Wait a short time and then select the first plant.
+                    setTimeout(function () {
+                        let firstPlant = document.querySelector(
+                            '.plant-list .plant a');
+                        if (firstPlant) {
+                            firstPlant.focus();
+                        }
+                    }, 500);
+                }
             }).click(function(event) {
                 $('#intro-overlay').data('overlay').close();
             });
@@ -44749,11 +44833,14 @@ define('simplekey/SpeciesSection',[
             var $plant = $('<div>', {'class': 'plant'}
                           ).appendTo(this.plant_list);
 
-            var plant_link = $('<a>', {'href': species.url}).appendTo($plant);
-            $('<div>', {'class': 'frame'}).appendTo(plant_link);
+            // The data-species attribute is used by tests.
+            var plant_button = $(
+                '<button>', {'data-href': species.url,
+                'data-species': species.scientific_name}).appendTo($plant);
+            $('<div>', {'class': 'frame'}).appendTo(plant_button);
 
             var image_container = $('<div>', {'class': 'plant-img-container'}
-                                   ).appendTo(plant_link);
+                ).appendTo(plant_button);
             var $image = $('<img>', {'alt': ''}).appendTo(image_container);
             $image.attr('x-plant-id', species.scientific_name);
             var thumb_url = this.default_image(species).thumb_url;
@@ -44765,11 +44852,11 @@ define('simplekey/SpeciesSection',[
             if (species.common_name) {
                 name_html += ' ' + species.common_name;
             }
-            $('<p>', {'class': 'plant-name', 'html': name_html})
-                .appendTo(plant_link);
+            $('<div>', {'class': 'plant-name', 'html': name_html})
+                .appendTo(plant_button);
 
             plantpreview_popup.connect(
-                plant_link, species.scientific_name, this.pile_slug);
+                plant_button, species.scientific_name, this.pile_slug);
 
             this.plant_data.push(species);
             this.plant_divs.push($plant);
@@ -46088,6 +46175,8 @@ results_page_init: function(args) {
     var species_section = new SpeciesSection();
     var species_section_ready = $.Deferred();
 
+    var button_handlers_added = false;
+
     $.when(
         document_is_ready,
         filtered_sorted_taxadata_ready,
@@ -46235,10 +46324,16 @@ results_page_init: function(args) {
         App3.set('family_filter', fc.filtermap.family);
         App3.set('genus_filter', fc.filtermap.genus);
 
+        console.log("* about to set family/genus values: family_name=" +
+            filters_config.family_name + " genus_name=" + filters_config.genus_name);
+
         fc.filtermap.family.set('value', filters_config.family_name);
         fc.filtermap.genus.set('value', filters_config.genus_name);
 
-        _.each(filters_config.other_filters, $.proxy(fc.add, fc));
+        setTimeout(function () {
+            console.log("* setting after delay");
+            _.each(filters_config.other_filters, $.proxy(fc.add, fc));
+        }, 500);
 
         App3.set('filter_controller', fc);
 
@@ -46372,7 +46467,7 @@ results_page_init: function(args) {
 
         didInsertElement: function() {
             var id = this.get('elementId');
-            
+
             // Skip glossarizing filter "short" questions on small screens.
             if ($(window).width() > MAX_SMALLSCREEN_WIDTH) {
                 glossarizer.glossarize($('#' + id + ' span.name'));
@@ -46411,7 +46506,7 @@ results_page_init: function(args) {
         },
 
         click: function(event) {
-            
+
             /* Cancel this click event if either the filter clear button
                was pressed, or the event happened in the filter working
                area (for small screens with "inline" choices). */
@@ -46533,14 +46628,16 @@ results_page_init: function(args) {
 
     /* All filters can be cleared with a single button click. */
     $.when(filter_controller_is_built, document_is_ready).done(function() {
-        $('a.clear-all-btn').click(function() {
+        $('.clear-all-btn').click(function() {
             dismiss_any_working_area();
             var plains = App3.filter_controller.get('plain_filters');
             _.each(plains, function(filter) {
                 filter.set('value', null);
             });
             App3.set('family_value', '');
+            $('#families').val('').change();
             App3.set('genus_value', '');
+            $('#genera').val('').change();
         });
     });
 
@@ -46777,8 +46874,8 @@ results_page_init: function(args) {
 
             // Set default tab before opening the dialog, so there is no
             // flash of tabs switching when the dialog first appears.
-            $('.more-questions-dialog a.auto').addClass('current');
-            $('.more-questions-dialog a.pick').removeClass('current');
+            $('.more-questions-dialog .auto').addClass('current');
+            $('.more-questions-dialog .pick').removeClass('current');
             $('.more-questions-dialog #choices .auto').show();
             $('.more-questions-dialog #choices .pick').hide();
 
@@ -46787,23 +46884,38 @@ results_page_init: function(args) {
                 height: 660,
                 player: 'html',
                 options: {
+                    enableKeys: true,
                     fadeDuration: 0.1,
                     onFinish: function () {
                         // Set up tabs.
-                        $('.more-questions-dialog a.pick').click(function () {
+                        $('.more-questions-dialog .pick').click(function () {
                             $('.more-questions-dialog #choices .auto').hide();
                             $('.more-questions-dialog #choices .pick').show();
-                            $(this).toggleClass('current');
-                            $('.more-questions-dialog a.auto').toggleClass(
+                            $(this).addClass('current');
+                            $('.more-questions-dialog .auto').removeClass(
                                 'current');
                         });
-                        $('.more-questions-dialog a.auto').click(function () {
+                        $('.more-questions-dialog .auto').click(function () {
                             $('.more-questions-dialog #choices .pick').hide();
                             $('.more-questions-dialog #choices .auto').show();
-                            $(this).toggleClass('current');
-                            $('.more-questions-dialog a.pick').toggleClass(
+                            $(this).addClass('current');
+                            $('.more-questions-dialog .pick').removeClass(
                                 'current');
                         });
+                        $('.more-questions-dialog .view-tabs button').on(
+                            'keydown', function (event) {
+                                if (event.key === ' ' || event.key === 'Enter') {
+                                    event.target.click();
+                                }
+                            }
+                        );
+
+                        // If opening the dialog for the first time, add handlers
+                        // for the buttons on each tab.
+                        if (!button_handlers_added) {
+                            add_dialog_button_handlers();
+                            button_handlers_added = true;
+                        }
 
                         // Set any Automatic check boxes that were set last time.
                         $container = $('#sb-container');
@@ -46814,13 +46926,13 @@ results_page_init: function(args) {
                             $(input).prop('checked', check);
                         });
                         _disable_exhausted_groups($inputs);
-                        $container.find('a.get-questions')
+                        $container.find('button.get-questions')
                             .addClass('get-choices-ready');  // for tests
 
                         // List the questions for the Pick Your Own tab.
-                        $container.find('a.add-questions').addClass('disabled');
+                        $container.find('button.add-questions').addClass('disabled');
                         filter_controller_is_built.done(function (filter_controller) {
-                            
+
                             var not_already_displayed = function (character) {
                                 return ! _.has(filter_controller.filtermap,
                                     character.slug);
@@ -46843,7 +46955,7 @@ results_page_init: function(args) {
                                     .sortBy('ease')
                                     .sortBy('group_name')
                                     .value();
-                                
+
                                 // Display questions.
                                 var $questions = $('.pick .questions');
                                 $questions.empty();
@@ -46871,9 +46983,12 @@ results_page_init: function(args) {
                                     $('.pick .add-questions').toggleClass(
                                         'disabled', (num_checked === 0));
                                 });
-
                             });
 
+                            // Add handlers to checkboxes so the Space key
+                            // works for them as usual. Evidently this needs
+                            // to be done each time the dialog opens.
+                            add_checkbox_keyboard_support();
                         });
                     }
                 }
@@ -46902,48 +47017,76 @@ results_page_init: function(args) {
         });
     };
 
-    // Get More Questions: button handler for Automatic tab
-    $('#sb-container a.get-questions').live('click', function () {
-        checked_groups = [];  // reset array in enclosing scope
-        $('#sb-container input').each(function(i, input) {
-            if ($(input).prop('checked'))
-                checked_groups.push($(input).val());
+    var add_dialog_button_handlers = function () {
+        let getMoreQuestions = document.querySelector('button.get-choices');
+
+        // Get More Questions: button handler for Automatic tab
+        $('#sb-container').on('click', '.get-questions', function () {
+            checked_groups = [];  // reset array in enclosing scope
+            $('#sb-container input').each(function(i, input) {
+                if ($(input).prop('checked'))
+                    checked_groups.push($(input).val());
+            });
+
+            var existing = [];
+            _.each(App3.filter_controller.content, function(filter) {
+                existing.push(filter.slug);
+            });
+            simplekey_resources.more_questions({
+                pile_slug: pile_slug,
+                species_ids: App3.filter_controller.taxa,
+                character_group_ids: checked_groups,
+                exclude_characters: existing
+            }).done(receive_new_filters);
+
+            Shadowbox.close();
+
+            // Set focus back to originating button.
+            if (getMoreQuestions) {
+                getMoreQuestions.focus();
+            }
         });
 
-        var existing = [];
-        _.each(App3.filter_controller.content, function(filter) {
-            existing.push(filter.slug);
+        // Get More Questions: button handler for Pick Your Own tab
+        $('#sb-container').on('click', '.add-questions', function () {
+            if ($(this).hasClass('disabled')) {
+                return;
+            }
+
+            var checked_questions = [];
+            $('.questions input').each(function () {
+                if ($(this).prop('checked'))
+                    checked_questions.push($(this).val());
+            });
+
+            simplekey_resources.add_questions({
+                pile_slug: pile_slug,
+                include: checked_questions
+            }).done(receive_new_filters);
+
+            Shadowbox.close();
+
+            // Set focus back to originating button.
+            if (getMoreQuestions) {
+                getMoreQuestions.focus();
+            }
         });
-        simplekey_resources.more_questions({
-            pile_slug: pile_slug,
-            species_ids: App3.filter_controller.taxa,
-            character_group_ids: checked_groups,
-            exclude_characters: existing
-        }).done(receive_new_filters);
+    };
 
-        Shadowbox.close();
-    });
-
-
-    // Get More Questions: button handler for Pick Your Own tab
-    $('#sb-container a.add-questions').live('click', function () {
-        if ($(this).hasClass('disabled')) {
-            return;
+    var add_checkbox_keyboard_support = function () {
+        // On Get More Choices dialog, add keyboard support to the checkboxes.
+        let dialog = document.getElementById('sb-wrapper');
+        if (dialog) {
+            let checkboxes = dialog.querySelectorAll('input[type="checkbox"]');
+            checkboxes.forEach(function (checkbox) {
+                checkbox.addEventListener('keydown', function (event) {
+                    if (event.key === ' ') {
+                        event.target.click();
+                    }
+                });
+            });
         }
-
-        var checked_questions = [];
-        $('.questions input').each(function () {
-            if ($(this).prop('checked'))
-                checked_questions.push($(this).val());
-        });
-
-        simplekey_resources.add_questions({
-            pile_slug: pile_slug,
-            include: checked_questions
-        }).done(receive_new_filters);
-
-        Shadowbox.close();
-    });
+    }
 
     var receive_new_filters = function(items) {
         if (items.length === 0) {
