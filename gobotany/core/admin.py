@@ -634,6 +634,22 @@ class ContentImageAdmin(_Base):
                         log.info('(rename_images) New record.alt = %s',
                             record.alt)
 
+                        # Because there can only be a single record with rank=1
+                        # for each image type, check to see if one already exists,
+                        # and adjust accordingly if needed.
+                        if record.rank == 1:
+                            existing = models.ContentImage.objects.filter(
+                                rank=1,
+                                image_type=record.image_type,
+                                content_type=record.content_type_id,
+                                object_id=record.object_id).exclude(id=record.id)
+                            if existing:
+                                log.info('(rename_images) Record already ' +
+                                'exists with rank=1 for this image type; ' +
+                                'adjust rank of new record to 2')
+                                record.rank = 2
+                                record.alt = record.alt.replace(' 1', ' 2')
+
                         # Make a copy of the image on S3 from the old
                         # name to the new name. Leave the old-named image
                         # in place for now because local or Dev environments

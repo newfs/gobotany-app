@@ -122,12 +122,9 @@ define([
         },
 
         enable_us_map_link: function () {
-            // Because the map is in an <object> element, a transparent div
-            // is needed to make it clickable. Make this div cover the link
-            // that appears below the map, too, for one large clickable area.
-            var transparent_div =
-                $('.section.namap div.trans').first();
-            transparent_div.click($.proxy(function (event) {
+            var enlarge =
+                $('.section.namap .enlarge').first();
+            enlarge.click($.proxy(function (event) {
                 event.preventDefault();
                 // Open the North America distribution map in a lightbox.
                 var content_element =
@@ -143,19 +140,6 @@ define([
                     width: 1000
                 });
             }, this));
-
-            // Add keyboard support.
-            let transparentDiv = document.querySelector(
-                ".section.namap div.trans");
-            if (transparentDiv) {
-                transparentDiv.addEventListener("keydown", function (event) {
-                    let key = event.key;
-                    if (key === "Enter" || key === " ") {
-                        event.preventDefault();
-                        event.target.click();
-                    }
-                });
-            }
         },
 
         activate_image_gallery: function () {

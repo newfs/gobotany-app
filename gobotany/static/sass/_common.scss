@@ -40,9 +40,8 @@
 }
 
 $navbar-font: Basetica, sans-serif;
-$headings-font: "Trebuchet MS", Helvetica, Arial, "Lucida Sans Unicode", sans-serif;
-$body-font: Verdana, Geneva, "Lucida Sans Unicode", sans-serif;
-$narrower-body-font: Tahoma, "Trebuchet MS", "Lucida Sans Unicode", sans-serif;
+$headings-font: system-ui, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+$body-font: system-ui, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
 
 $link-green: #27610a;
 $heading-green: #437829;
@@ -70,8 +69,8 @@ $navbar-color: #21555c;
 $footer-background-color: $bright-green;
 $login-box-background-color: #d3eaad;
 
-$base-font-size: 81.25%;
-$nav-font-size: 1.1em;
+$base-font-size: 85%;
+$nav-font-size: 1.05em;
 
 $text-line-height: 153%;
 
@@ -469,7 +468,7 @@ div.popup a {
     bottom: 0.5rem;
     color: #000;
     display: flex;
-    font-family: "Trebuchet MS", sans-serif;
+    font-family: $body-font;
     font-size: 16px;
     max-width: 26rem;
     padding: 1rem 2rem;

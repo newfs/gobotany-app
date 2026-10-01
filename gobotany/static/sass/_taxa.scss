@@ -136,7 +136,7 @@ body.species2 .section {
         padding-top: 12px;
     }
     body.species2 .section h2 {
-        font-size: 1.2em;
+        font-size: 1.1em;
     }
 }
 
@@ -153,6 +153,16 @@ body#species #main {
         clear: left;
         margin-left: $species-sidebar-margin;
     }
+}
+body#species h1 {
+    font-weight: normal;
+}
+body#species .scientific {
+    font-weight: bold;
+}
+body#species .taxonomic-authority {
+    font-size: 0.6em;
+    padding-left: 0.5em;
 }
 
 /* left-side content sections */
@@ -171,7 +181,7 @@ body#species .section {
 body#species #maps, body#species #side {
     position: absolute;
     h2 {
-        font-size: 1.2em;
+        font-size: 1.1em;
         margin: 0.2em 0 0.8em;
     }
 }
@@ -203,6 +213,15 @@ body#species .found-plant {
 body#species #main .nemap h2 + p, body#species #main .namap h2 + p {
     margin: 0;
     padding-bottom: 8px;
+}
+body#species .enlarge {
+    align-items: flex-end;
+    background: none;
+    border: 0;
+    color: #27610a;
+    cursor: pointer;
+    display: flex;
+    gap: 5px;
 }
 
 body#species #side {
