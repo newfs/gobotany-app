@@ -298,6 +298,7 @@ define([
             var $anchor =
                 $('<a>', {
                     'class': 'plant',
+                    'data-href': taxon_url(item.scientific_name),
                     'href': taxon_url(item.scientific_name)
                 }).append(
                     $('<div>', {'class': 'plant-img-container'}),

@@ -292,7 +292,7 @@ $image-box-shadow-color: rgba(0, 0, 0, 0.6);
 
 #glossary {
     #alphabet {
-        font-family: Verdana, sans-serif;
+        font-family: $body-font;
         height: 33px;
         list-style-type: none;
         margin: 7px 0;

@@ -80,8 +80,7 @@ body.skey.groups-subgroups {
         border-bottom: 1px solid #50570a;
         color: #27610a;
         cursor: pointer;
-        font-family: "Trebuchet MS", Helvetica, Arial, "Lucida Sans Unicode",
-            sans-serif;
+        font-family: $body-font;
         font-size: 16px;
         font-weight: bold;
         padding: 0;
@@ -221,15 +220,12 @@ body.skey {
                     z-index: 100;
                 }
                 .plant-name {
-                    font-family: $narrower-body-font; /* Tahoma or Trebuchet because it's
-                                                         narrower than Verdana: less wrapping
-                                                         and fewer names on 4 lines */
+                    font-family: $body-font;
                     line-height: 14px;
                     margin: 7px 0 0 0;
                     span.latin {
                         display: block;
-                        font-family: $body-font; /* Verdana because it's wider than Trebuchet:
-                                                    easier to read in italics */
+                        font-family: $body-font;
                         font-style: italic;
                         padding-bottom: 4px;
                     }
@@ -674,7 +670,7 @@ body.skey {
                 label {
                     cursor: default;
                     display: block;
-                    font-family: $narrower-body-font;
+                    font-family: $body-font;
                     font-size: 12px;
                     line-height: 14px;
                     max-width: 250px;
@@ -683,7 +679,7 @@ body.skey {
                     word-wrap: break-word; /* can break mid-word */
                 }
                 input {
-                    margin: 0 3px 0 -18px;
+                    margin: 0 4px 0 -22px;
                 }
             } /* end .choice */
             
@@ -717,7 +713,7 @@ body.skey {
             .info {
                 display: none;
                 float: left;
-                font-family: $narrower-body-font;
+                font-family: $body-font;
                 font-size: 14px;
                 width: 100%;
                 .hint {
@@ -1276,9 +1272,6 @@ ul.get-more-questions-menu {
                         cursor: default;
                         height: 44px;
                         background: #fff;
-                        /*background: -webkit-gradient(linear, left top,
-                            left bottom, color-stop(0%, white),
-                            color-stop(100%, #f0f0c0));*/
                         -webkit-tap-highlight-color: rgba(0,0,0,0);
                         &:last-of-type {
                             border-bottom: 1px solid #e1e1dc;
@@ -1450,14 +1443,10 @@ ul.get-more-questions-menu {
                     }
                     label {
                         display: table;
-                        font-family: Verdana, sans-serif; /* No Tahoma on iOS */
+                        font-family: $body-font;
                         font-size: 11px;
                         height: 44px;
                         margin: 0;
-                        /*
-                        max-width: 0;
-                        min-width: 0;
-                        */
                         padding-left: 4px;
                         padding-right: 12px;
                         width: 96%;

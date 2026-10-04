@@ -314,8 +314,7 @@ header .go-botany {
     position: relative;
     z-index: 5;
     a {
-        margin-right: 1.2em;
-        width: 12.5em;
+        width: 11.5em;
     }
     img {
         width: 150px;
@@ -326,7 +325,7 @@ header .go-botany {
         font-family: Basetica, sans-serif;
         font-size: 1em;
         position: absolute;
-        left: 12.8em;
+        left: 12.5em;
     }
 }
 header nav {
@@ -534,7 +533,7 @@ a.get-help-btn {
     /* Make footer color continue to bottom on short pages. */
     box-shadow: 0 50vh 0 50vh $footer-background-color;
     clear: both;
-    font-size: 10px;
+    font-size: 0.8em;
     min-height: 140px;
     position: relative;
     width: 100%;
@@ -555,7 +554,7 @@ a.get-help-btn {
 }
 .footer__site-name {
     font-family: $body-font;
-    font-size: 12px;
+    font-size: 0.8rem;
     margin: 0 0 0.5rem;
 }
 .footer__publisher,
@@ -740,16 +739,13 @@ a.get-help-btn {
 }
 .plant-grid p {
     margin: 7px 0 0 0;
-    font-family: $narrower-body-font;
-    /* Tahoma or Trebuchet because it's narrower than Verdana:
-       less wrapping and fewer names on 4 lines */
+    font-family: $body-font;
     line-height: 14px;
 }
 .plant-grid i {
     display: block;
     padding-bottom: 4px;
     font-family: $body-font;
-    /* Verdana, wider than Trebuchet: easier to read in italics */
     font-style: italic;
 }
 .plant-grid .missing-image {
