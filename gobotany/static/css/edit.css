@@ -4,24 +4,23 @@
 /* Web fonts: style-linked groups */
 @font-face { font-family: Basetica; font-weight: 400; src: url(/static/fonts/Basetica-Medium-205TF.woff2) format("woff2"), url(/static/fonts/Basetica-Medium-205TF.woff) format("woff"); }
 @font-face { font-family: Basetica; font-style: italic; font-weight: 400; src: url(/static/fonts/Basetica-Medium-Italic-205TF.woff2) format("woff2"), url(/static/fonts/Basetica-Medium-Italic-205TF.woff) format("woff"); }
-@font-face { font-family: Basetica; font-weight: 900; src: url(/static/fonts/Basetica-Black-205TF.woff2) format("woff2"), url(/static/fonts/Basetica-Black-205TF.woff) format("woff"); }
-@font-face { font-family: Basetica; font-style: italic; font-weight: 900; src: url(/static/fonts/Basetica-Black-Italic-205TF.woff2) format("woff2"), url(/static/fonts/Basetica-Black-Italic-205TF.woff) format("woff"); }
-@font-face { font-family: ScalaSans; font-weight: 900; src: url(//newfs.s3.amazonaws.com/fonts/ScalaSansWeb-Bold.woff) format("woff"); }
 /* was #807121, darkened for WCAG AA */
 /* from NPT palette */
 /* lighter version of #a7da7e green from NPT palette */
 /* darker version of #a7da7e green from NPT palette */
 /* dark version of #a7da7e green from NPT palette */
+/* NPT logo color on home page, a bit darker */
+/* from new NPT palette */
 *:focus { outline-color: -webkit-focus-ring-color; outline-offset: 2px; outline-style: auto; outline-width: 2px; }
 
-.orange-button, span.all-species-button, span.simple-key-button, .save-button, .length-save-button { background-color: #bb582a; border: 1px solid #bb582a !important; border-radius: 14px; box-shadow: 0px 1px 2px 0 #a2a64d; color: #fff; cursor: default; display: inline-block; font-family: ScalaSans, system-ui, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol"; font-size: 13px; font-weight: bold !important; letter-spacing: 1px; line-height: 18px; min-width: 80px; padding: 4px 12px; text-align: center; text-decoration: none; }
+.orange-button, span.all-species-button, span.simple-key-button, .save-button, .length-save-button { background-color: #bb582a; border: 1px solid #bb582a !important; border-radius: 14px; box-shadow: 0px 1px 2px 0 #a2a64d; color: #fff; cursor: default; display: inline-block; font-family: Basetica, system-ui, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol"; font-size: 13px; font-weight: bold !important; letter-spacing: 1px; line-height: 18px; min-width: 80px; padding: 4px 12px; text-align: center; text-decoration: none; }
 .orange-button.caps, span.caps.all-species-button, span.caps.simple-key-button, .caps.save-button, .caps.length-save-button { text-transform: uppercase; }
-.orange-button.disabled, span.disabled.all-species-button, span.disabled.simple-key-button, .disabled.save-button, .disabled.length-save-button { background-color: #f0ccbc; border-color: #edc573 !important; color: #666 !important; cursor: default !important; text-shadow: none; }
-.orange-button.large, span.large.all-species-button, span.large.simple-key-button, .large.save-button, .large.length-save-button { border-radius: 20px; color: #fff; font-size: 16px; letter-spacing: 1.5px; min-width: 150px; padding: 9px 30px; }
+.orange-button.disabled, span.disabled.all-species-button, span.disabled.simple-key-button, .disabled.save-button, .disabled.length-save-button { background-color: #f0ccbc; border-color: #efcd7f !important; color: #666 !important; cursor: default !important; text-shadow: none; }
+.orange-button.large, span.large.all-species-button, span.large.simple-key-button, .large.save-button, .large.length-save-button { border-radius: 20px; color: #fff; font-size: 16px; letter-spacing: 1.5px; min-width: 150px; padding: 9px 30px 7px; }
 
-.action-link { background-color: #bb582a; border-bottom: 0.15rem solid #fff !important; /* override some link underlines in text */ border-radius: 10px; box-shadow: 0 0.15rem 0 0 #bb582a; color: #fff; cursor: pointer; display: inline-block; font-family: ScalaSans, system-ui, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol"; font-size: 13px; font-weight: bold; letter-spacing: 1px; line-height: 18px; min-width: 75px; padding: 4px 12px; text-align: center; text-decoration: none; /* Visited: duller; like the relationship between classic blue & purple */ /* Hover: higher contrast; use the current nav. bar color */ /* Active: orange; similar to default red, but higher contrast */ }
+.action-link { background-color: #bb582a; border-bottom: 0.15rem solid #fff !important; /* override some link underlines in text */ border-radius: 10px; box-shadow: 0 0.15rem 0 0 #bb582a; color: #fff; cursor: pointer; display: inline-block; font-family: Basetica, system-ui, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol"; font-size: 13px; font-weight: bold; letter-spacing: 1px; line-height: 18px; min-width: 75px; padding: 4px 12px; text-align: center; text-decoration: none; /* Visited: duller; like the relationship between classic blue & purple */ /* Hover: higher contrast; use the current nav. bar color */ /* Active: orange; similar to default red, but higher contrast */ }
 .action-link:visited { background-color: #8e421f; box-shadow: 0 0.15rem 0 0 #8e421f; color: #fff; }
-.action-link:hover, .action-link:focus { background-color: #17555b; box-shadow: 0 0.15rem 0 0 #17555b; color: #fff; }
+.action-link:hover, .action-link:focus { background-color: #016f5f; box-shadow: 0 0.15rem 0 0 #016f5f; color: #fff; }
 .action-link:active { background-color: #cc4b00; box-shadow: 0 0.15rem 0 0 #cc4b00; color: #fff; }
 .action-link.caps { letter-spacing: 1px; text-transform: uppercase; }
 .action-link.large { border-bottom: 0.2rem solid #fff; border-radius: 12px; font-size: 16px; line-height: 24px; min-width: 120px; padding: 6px 18px 3px; }
@@ -34,7 +33,7 @@
 /* image popups (used in D. Key, and in D. Key section of species page) */
 div.shadow { /* shadow that hides the whole page */ display: none; position: fixed; z-index: 1000; top: 0; left: 0; height: 100%; width: 100%; background-color: rgba(0, 0, 0, 0.45); text-align: center; }
 
-div.popup { /* for displaying quick lists of taxa */ border-radius: 1em; display: inline-block; margin: 5% auto; max-height: 90%; overflow-y: auto; overflow-x: hidden; /* otherwise scrolling can leak to page */ border: 0.5em solid #acac90; background-color: #fcf8ef; padding: 1em 2em; text-align: left; line-height: 1.25em; }
+div.popup { /* for displaying quick lists of taxa */ border-radius: 1em; display: inline-block; margin: 5% auto; max-height: 90%; overflow-y: auto; overflow-x: hidden; /* otherwise scrolling can leak to page */ border: 0.5em solid #acac90; background-color: white; padding: 1em 2em; text-align: left; line-height: 1.25em; }
 
 div.popup h2 { /* "See list of 14 species in 1b" */ border-bottom: 1px solid #519136; padding-bottom: 0.5em; color: #519136; font-family: system-ui, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol"; font-weight: normal; /* For tall lists a scrollbar appears, and tends to make the last word of the title wrap unattractively. */ white-space: nowrap; }
 
@@ -43,7 +42,7 @@ div.popup a:hover, div.popup a:focus { text-decoration: underline; }
 div.popup a:hover { color: #27610a; }
 
 /* For occasional, temporary donation campaigns: message at top of page */
-#top-message { align-items: center; background-color: #e8a38c; color: #000; display: flex; font-family: system-ui, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol"; font-size: 1.02em; justify-content: space-between; margin: 0; padding: 0.7em 1.8em; }
+#top-message { align-items: center; background-color: #ff936e; color: #000; display: flex; font-family: system-ui, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol"; font-size: 1.02em; justify-content: space-between; margin: 0; padding: 0.7em 1.8em; }
 
 #top-message p { line-height: 150%; }
 
@@ -57,17 +56,17 @@ div.popup a:hover { color: #27610a; }
   #top-message p { margin-bottom: 0.5em; margin-top: 0; }
   #top-message .controls { justify-content: space-between; margin-bottom: 0.5em; width: 100%; } }
 /* For newsletter sign-up dialog */
-.dialog { background-color: #feffef; box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px 0px; bottom: 0.5rem; color: #000; display: flex; font-family: system-ui, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol"; font-size: 16px; max-width: 26rem; padding: 1rem 2rem; position: fixed; right: 0.5rem; z-index: 50; }
+.dialog { background-color: #d2f167; box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px 0px; bottom: 0.5rem; color: #000; display: flex; font-family: system-ui, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol"; font-size: 16px; max-width: 26rem; padding: 1rem 2rem; position: fixed; right: 0.5rem; z-index: 50; }
 
-.dialog h2 { color: #000; font-size: 24px; margin: 20px 0; padding: 0; }
+.dialog h2 { color: #05484b; font-family: Basetica, system-ui, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol"; font-size: 24px; font-weight: normal; margin: 20px 0; padding: 0; }
 
 .dialog p { line-height: 1.4; }
 
-.dialog__ok { background: #333; border: 1px solid #333; color: #fff; display: inline-block; font-family: inherit; font-size: 1rem; margin-bottom: 0.5rem; margin-right: 0.5rem; min-width: 100px; padding: 0.5rem 1rem; text-align: center; text-decoration: none; white-space: nowrap; }
+.dialog__ok { background: #05484b; border: 1px solid #05484b; color: #d2f167; display: inline-block; font-family: inherit; font-size: 1rem; font-weight: bold; margin-bottom: 0.5rem; margin-right: 0.5rem; min-width: 100px; padding: 0.5rem 1rem; text-align: center; text-decoration: none; white-space: nowrap; }
 
-.dialog__cancel { background-color: transparent; border: 1px solid gray; font-family: inherit; font-size: 1rem; margin-bottom: 0.5rem; margin-right: 2rem; min-width: 100px; padding: 0.5rem 1rem; white-space: nowrap; }
+.dialog__cancel { background-color: transparent; border: 1px solid #05484b; color: #05484b; font-family: inherit; font-size: 1rem; margin-bottom: 0.5rem; margin-right: 2rem; min-width: 100px; padding: 0.5rem 1rem; white-space: nowrap; }
 
-.dialog__ok:focus, .dialog__ok:hover, .dialog__cancel:focus, .dialog__cancel:hover { outline: 3px solid #666; outline-offset: 3px; }
+.dialog__ok:focus, .dialog__ok:hover, .dialog__cancel:focus, .dialog__cancel:hover { outline: 3px solid #05484b; outline-offset: 3px; }
 
 .dialog__check { display: inline-block; font-size: 0.8rem; margin-top: 1.5rem; white-space: nowrap; }
 
@@ -83,7 +82,7 @@ span.all-species-button, span.simple-key-button, .save-button, .length-save-butt
 
 .pile-character-grid { position: relative; margin-top: 2em; /* Editing a single character for many taxa: */ /* For editing numeric values. */ /* http://stackoverflow.com/questions/8669413/ */ }
 .pile-character-grid .column { z-index: -1; position: absolute; background-color: white; }
-.pile-character-grid h3 { background-color: #f7d18c; }
+.pile-character-grid h3 { background-color: #f9d896; }
 .pile-character-grid select { width: 25em; }
 .pile-character-grid div { white-space: nowrap; }
 .pile-character-grid div.expanded { border-top: 1px solid #519136; border-bottom: 1px solid #519136; }
@@ -98,16 +97,16 @@ span.all-species-button, span.simple-key-button, .save-button, .length-save-butt
 .pile-character-grid b.highlight.x { background-color: #3c6c28; }
 .pile-character-grid b.changed { border-style: solid; border-color: #dc9402; border-width: 4px 2px; padding: 0; }
 .pile-character-grid input { margin: 4px 2px; }
-.pile-character-grid input.empty { background-color: #f0daaf; }
+.pile-character-grid input.empty { background-color: #f0ffbf; }
 .pile-character-grid input.illegal { background-color: #fdb014; }
 
 /* Styles specific to editing all characters of a single taxon, kept separate here in the hopes of not slowing down the browser when it is trying to render the full-out .pile-character-grid given above. */
 .taxon-character-grid div { clear: both; }
 .taxon-character-grid i { font-weight: bold; font-style: normal; }
-.taxon-character-grid .charactername { margin-top: 1em; border-top: 1px solid #dc9402; padding: 4px; background-color: #f4e4c5; }
-.taxon-character-grid .charactername:hover { background-color: #f4e4c5; }
+.taxon-character-grid .charactername { margin-top: 1em; border-top: 1px solid #dc9402; padding: 4px; background-color: #f6ffd9; }
+.taxon-character-grid .charactername:hover { background-color: #f6ffd9; }
 .taxon-character-grid input { margin: 4px 8px 4px 2px; }
 .taxon-character-grid label { cursor: default; display: block; padding: 4px 2px; white-space: normal; }
 .taxon-character-grid :checked, .taxon-character-grid :checked + label { background-color: #519136; color: white; }
 
-.value-tips div { background-color: white; border: 2px solid #dc9402; border-radius: 1em; box-shadow: 0px 1px 4px 0 #e0b359; display: none; padding: 0.5em; position: absolute; }
+.value-tips div { background-color: white; border: 2px solid #dc9402; border-radius: 1em; box-shadow: 0px 1px 4px 0 #d9ff59; display: none; padding: 0.5em; position: absolute; }

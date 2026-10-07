@@ -92,24 +92,23 @@ div.scrollableArea { position: relative; width: auto; height: 100%; }
 /* Web fonts: style-linked groups */
 @font-face { font-family: Basetica; font-weight: 400; src: url(/static/fonts/Basetica-Medium-205TF.woff2) format("woff2"), url(/static/fonts/Basetica-Medium-205TF.woff) format("woff"); }
 @font-face { font-family: Basetica; font-style: italic; font-weight: 400; src: url(/static/fonts/Basetica-Medium-Italic-205TF.woff2) format("woff2"), url(/static/fonts/Basetica-Medium-Italic-205TF.woff) format("woff"); }
-@font-face { font-family: Basetica; font-weight: 900; src: url(/static/fonts/Basetica-Black-205TF.woff2) format("woff2"), url(/static/fonts/Basetica-Black-205TF.woff) format("woff"); }
-@font-face { font-family: Basetica; font-style: italic; font-weight: 900; src: url(/static/fonts/Basetica-Black-Italic-205TF.woff2) format("woff2"), url(/static/fonts/Basetica-Black-Italic-205TF.woff) format("woff"); }
-@font-face { font-family: ScalaSans; font-weight: 900; src: url(//newfs.s3.amazonaws.com/fonts/ScalaSansWeb-Bold.woff) format("woff"); }
 /* was #807121, darkened for WCAG AA */
 /* from NPT palette */
 /* lighter version of #a7da7e green from NPT palette */
 /* darker version of #a7da7e green from NPT palette */
 /* dark version of #a7da7e green from NPT palette */
+/* NPT logo color on home page, a bit darker */
+/* from new NPT palette */
 *:focus { outline-color: -webkit-focus-ring-color; outline-offset: 2px; outline-style: auto; outline-width: 2px; }
 
-.orange-button, body.plantshare .image-modal .button, body.plantshare#ask #main .submit, body.plantshare#plantshare #ask .submit { background-color: #bb582a; border: 1px solid #bb582a !important; border-radius: 14px; box-shadow: 0px 1px 2px 0 #a2a64d; color: #fff; cursor: default; display: inline-block; font-family: ScalaSans, system-ui, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol"; font-size: 13px; font-weight: bold !important; letter-spacing: 1px; line-height: 18px; min-width: 80px; padding: 4px 12px; text-align: center; text-decoration: none; }
+.orange-button, body.plantshare .image-modal .button, body.plantshare#ask #main .submit, body.plantshare#plantshare #ask .submit { background-color: #bb582a; border: 1px solid #bb582a !important; border-radius: 14px; box-shadow: 0px 1px 2px 0 #a2a64d; color: #fff; cursor: default; display: inline-block; font-family: Basetica, system-ui, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol"; font-size: 13px; font-weight: bold !important; letter-spacing: 1px; line-height: 18px; min-width: 80px; padding: 4px 12px; text-align: center; text-decoration: none; }
 .orange-button.caps, body.plantshare .image-modal .caps.button, body.plantshare#ask #main .caps.submit, body.plantshare#plantshare #ask .caps.submit { text-transform: uppercase; }
-.orange-button.disabled, body.plantshare .image-modal .disabled.button, body.plantshare#ask #main .disabled.submit, body.plantshare#plantshare #ask .disabled.submit { background-color: #f0ccbc; border-color: #edc573 !important; color: #666 !important; cursor: default !important; text-shadow: none; }
-.orange-button.large, body.plantshare .image-modal .large.button, body.plantshare#ask #main .large.submit, body.plantshare#plantshare #ask .large.submit { border-radius: 20px; color: #fff; font-size: 16px; letter-spacing: 1.5px; min-width: 150px; padding: 9px 30px; }
+.orange-button.disabled, body.plantshare .image-modal .disabled.button, body.plantshare#ask #main .disabled.submit, body.plantshare#plantshare #ask .disabled.submit { background-color: #f0ccbc; border-color: #efcd7f !important; color: #666 !important; cursor: default !important; text-shadow: none; }
+.orange-button.large, body.plantshare .image-modal .large.button, body.plantshare#ask #main .large.submit, body.plantshare#plantshare #ask .large.submit { border-radius: 20px; color: #fff; font-size: 16px; letter-spacing: 1.5px; min-width: 150px; padding: 9px 30px 7px; }
 
-.action-link, #dkey .offer-help-aside a.button, #dkey a.button, #dkey a.show-all-button { background-color: #bb582a; border-bottom: 0.15rem solid #fff !important; /* override some link underlines in text */ border-radius: 10px; box-shadow: 0 0.15rem 0 0 #bb582a; color: #fff; cursor: pointer; display: inline-block; font-family: ScalaSans, system-ui, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol"; font-size: 13px; font-weight: bold; letter-spacing: 1px; line-height: 18px; min-width: 75px; padding: 4px 12px; text-align: center; text-decoration: none; /* Visited: duller; like the relationship between classic blue & purple */ /* Hover: higher contrast; use the current nav. bar color */ /* Active: orange; similar to default red, but higher contrast */ }
+.action-link, #dkey .offer-help-aside a.button, #dkey a.button, #dkey a.show-all-button { background-color: #bb582a; border-bottom: 0.15rem solid #fff !important; /* override some link underlines in text */ border-radius: 10px; box-shadow: 0 0.15rem 0 0 #bb582a; color: #fff; cursor: pointer; display: inline-block; font-family: Basetica, system-ui, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol"; font-size: 13px; font-weight: bold; letter-spacing: 1px; line-height: 18px; min-width: 75px; padding: 4px 12px; text-align: center; text-decoration: none; /* Visited: duller; like the relationship between classic blue & purple */ /* Hover: higher contrast; use the current nav. bar color */ /* Active: orange; similar to default red, but higher contrast */ }
 .action-link:visited, #dkey a.button:visited, #dkey a.show-all-button:visited { background-color: #8e421f; box-shadow: 0 0.15rem 0 0 #8e421f; color: #fff; }
-.action-link:hover, #dkey a.button:hover, #dkey a.show-all-button:hover, .action-link:focus, #dkey a.button:focus, #dkey a.show-all-button:focus { background-color: #17555b; box-shadow: 0 0.15rem 0 0 #17555b; color: #fff; }
+.action-link:hover, #dkey a.button:hover, #dkey a.show-all-button:hover, .action-link:focus, #dkey a.button:focus, #dkey a.show-all-button:focus { background-color: #016f5f; box-shadow: 0 0.15rem 0 0 #016f5f; color: #fff; }
 .action-link:active, #dkey a.button:active, #dkey a.show-all-button:active { background-color: #cc4b00; box-shadow: 0 0.15rem 0 0 #cc4b00; color: #fff; }
 .action-link.caps, #dkey a.caps.button, #dkey a.caps.show-all-button { letter-spacing: 1px; text-transform: uppercase; }
 .action-link.large, #dkey a.large.button, #dkey a.large.show-all-button { border-bottom: 0.2rem solid #fff; border-radius: 12px; font-size: 16px; line-height: 24px; min-width: 120px; padding: 6px 18px 3px; }
@@ -122,7 +121,7 @@ div.scrollableArea { position: relative; width: auto; height: 100%; }
 /* image popups (used in D. Key, and in D. Key section of species page) */
 div.shadow { /* shadow that hides the whole page */ display: none; position: fixed; z-index: 1000; top: 0; left: 0; height: 100%; width: 100%; background-color: rgba(0, 0, 0, 0.45); text-align: center; }
 
-div.popup { /* for displaying quick lists of taxa */ border-radius: 1em; display: inline-block; margin: 5% auto; max-height: 90%; overflow-y: auto; overflow-x: hidden; /* otherwise scrolling can leak to page */ border: 0.5em solid #acac90; background-color: #fcf8ef; padding: 1em 2em; text-align: left; line-height: 1.25em; }
+div.popup { /* for displaying quick lists of taxa */ border-radius: 1em; display: inline-block; margin: 5% auto; max-height: 90%; overflow-y: auto; overflow-x: hidden; /* otherwise scrolling can leak to page */ border: 0.5em solid #acac90; background-color: white; padding: 1em 2em; text-align: left; line-height: 1.25em; }
 
 div.popup h2 { /* "See list of 14 species in 1b" */ border-bottom: 1px solid #519136; padding-bottom: 0.5em; color: #519136; font-family: system-ui, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol"; font-weight: normal; /* For tall lists a scrollbar appears, and tends to make the last word of the title wrap unattractively. */ white-space: nowrap; }
 
@@ -131,7 +130,7 @@ div.popup a:hover, div.popup a:focus { text-decoration: underline; }
 div.popup a:hover { color: #27610a; }
 
 /* For occasional, temporary donation campaigns: message at top of page */
-#top-message { align-items: center; background-color: #e8a38c; color: #000; display: flex; font-family: system-ui, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol"; font-size: 1.02em; justify-content: space-between; margin: 0; padding: 0.7em 1.8em; }
+#top-message { align-items: center; background-color: #ff936e; color: #000; display: flex; font-family: system-ui, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol"; font-size: 1.02em; justify-content: space-between; margin: 0; padding: 0.7em 1.8em; }
 
 #top-message p { line-height: 150%; }
 
@@ -145,17 +144,17 @@ div.popup a:hover { color: #27610a; }
   #top-message p { margin-bottom: 0.5em; margin-top: 0; }
   #top-message .controls { justify-content: space-between; margin-bottom: 0.5em; width: 100%; } }
 /* For newsletter sign-up dialog */
-.dialog { background-color: #feffef; box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px 0px; bottom: 0.5rem; color: #000; display: flex; font-family: system-ui, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol"; font-size: 16px; max-width: 26rem; padding: 1rem 2rem; position: fixed; right: 0.5rem; z-index: 50; }
+.dialog { background-color: #d2f167; box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px 0px; bottom: 0.5rem; color: #000; display: flex; font-family: system-ui, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol"; font-size: 16px; max-width: 26rem; padding: 1rem 2rem; position: fixed; right: 0.5rem; z-index: 50; }
 
-.dialog h2 { color: #000; font-size: 24px; margin: 20px 0; padding: 0; }
+.dialog h2 { color: #05484b; font-family: Basetica, system-ui, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol"; font-size: 24px; font-weight: normal; margin: 20px 0; padding: 0; }
 
 .dialog p { line-height: 1.4; }
 
-.dialog__ok { background: #333; border: 1px solid #333; color: #fff; display: inline-block; font-family: inherit; font-size: 1rem; margin-bottom: 0.5rem; margin-right: 0.5rem; min-width: 100px; padding: 0.5rem 1rem; text-align: center; text-decoration: none; white-space: nowrap; }
+.dialog__ok { background: #05484b; border: 1px solid #05484b; color: #d2f167; display: inline-block; font-family: inherit; font-size: 1rem; font-weight: bold; margin-bottom: 0.5rem; margin-right: 0.5rem; min-width: 100px; padding: 0.5rem 1rem; text-align: center; text-decoration: none; white-space: nowrap; }
 
-.dialog__cancel { background-color: transparent; border: 1px solid gray; font-family: inherit; font-size: 1rem; margin-bottom: 0.5rem; margin-right: 2rem; min-width: 100px; padding: 0.5rem 1rem; white-space: nowrap; }
+.dialog__cancel { background-color: transparent; border: 1px solid #05484b; color: #05484b; font-family: inherit; font-size: 1rem; margin-bottom: 0.5rem; margin-right: 2rem; min-width: 100px; padding: 0.5rem 1rem; white-space: nowrap; }
 
-.dialog__ok:focus, .dialog__ok:hover, .dialog__cancel:focus, .dialog__cancel:hover { outline: 3px solid #666; outline-offset: 3px; }
+.dialog__ok:focus, .dialog__ok:hover, .dialog__cancel:focus, .dialog__cancel:hover { outline: 3px solid #05484b; outline-offset: 3px; }
 
 .dialog__check { display: inline-block; font-size: 0.8rem; margin-top: 1.5rem; white-space: nowrap; }
 
@@ -164,7 +163,7 @@ div.popup a:hover { color: #27610a; }
 .dialog__close { background-color: transparent; border: 0; color: #000; font-size: 1.5rem; height: 24px; margin-right: -14px; padding: 0; width: 24px; }
 
 /* Site-wide styles */
-body { background-color: #f8eeda; color: #000; font-family: system-ui, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol"; font-size: 85%; margin: 0; }
+body { background-color: #fcfff2; color: #000; font-family: system-ui, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol"; font-size: 85%; margin: 0; }
 
 html, button, input, select, textarea { font-family: system-ui, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol"; }
 
@@ -188,20 +187,20 @@ a:not([href]):hover { text-decoration: none; }
 
 h1, h2, h3, h4, h5, h6 { font-family: system-ui, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol"; font-weight: normal; line-height: 120%; margin: 0; padding: 0; }
 
-h1 { color: #554e16; font-size: 1.9em; font-weight: bold; margin: 0.8em 0 0.6em; }
+h1 { color: #05484b; font-family: Basetica, system-ui, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol"; font-size: 2.1em; font-weight: normal; margin: 0.8em 0 0.6em; }
 
-h2 { color: #554e16; font-size: 1.6em; font-weight: bold; margin: 1.6em 0 0.8em; }
+h2 { color: #05484b; font-size: 1.6em; font-weight: bold; margin: 1.6em 0 0.8em; }
 
-h3 { color: #554e16; font-size: 1.25em; font-weight: bold; margin: 1.6em 0 0.8em; }
+h3 { color: #05484b; font-size: 1.25em; font-weight: bold; margin: 1.6em 0 0.8em; }
 
 h3.compact { margin: 1em 0 0.2em; }
 
 /* Only h1-h3 used through most of site to avoid very deep structure */
 /* h4 is sometimes used in species page Conservation Status section */
-h4 { color: #554e16; font-size: 1.15em; font-weight: bold; margin: 1.6em 0 0.8em; }
+h4 { color: #05484b; font-size: 1.15em; font-weight: bold; margin: 1.6em 0 0.8em; }
 
 /* TODO: try to eliminate h5, h6 */
-h5, h6 { color: #554e16; font-size: 85%; }
+h5, h6 { color: #05484b; font-size: 85%; }
 
 h6 { font-style: italic; }
 
@@ -234,17 +233,17 @@ p.meta + p { margin-top: 2px; }
 /* Global navigation (header) */
 body#home header nav li.home::after { /* For use on active nav item, with :after */ border: 10px solid transparent; border-bottom-color: #6c9956; content: ""; height: 0; left: calc(50% - 10px); position: absolute; top: 0.9em; width: 0; }
 
-body.simple header nav li.simple::after { /* For use on active nav item, with :after */ border: 10px solid transparent; border-bottom-color: #f8eeda; content: ""; height: 0; left: calc(50% - 10px); position: absolute; top: 0.9em; width: 0; }
+body.simple header nav li.simple::after { /* For use on active nav item, with :after */ border: 10px solid transparent; border-bottom-color: #fcfff2; content: ""; height: 0; left: calc(50% - 10px); position: absolute; top: 0.9em; width: 0; }
 
-body.plantshare header nav li.plantshare::after { /* For use on active nav item, with :after */ border: 10px solid transparent; border-bottom-color: #f8eeda; content: ""; height: 0; left: calc(50% - 10px); position: absolute; top: 0.9em; width: 0; }
+body.plantshare header nav li.plantshare::after { /* For use on active nav item, with :after */ border: 10px solid transparent; border-bottom-color: #fcfff2; content: ""; height: 0; left: calc(50% - 10px); position: absolute; top: 0.9em; width: 0; }
 
-body.full header nav li.full::after { /* For use on active nav item, with :after */ border: 10px solid transparent; border-bottom-color: #f8eeda; content: ""; height: 0; left: calc(50% - 10px); position: absolute; top: 0.9em; width: 0; }
+body.full header nav li.full::after { /* For use on active nav item, with :after */ border: 10px solid transparent; border-bottom-color: #fcfff2; content: ""; height: 0; left: calc(50% - 10px); position: absolute; top: 0.9em; width: 0; }
 
-body.dkey header nav li.dkey::after { /* For use on active nav item, with :after */ border: 10px solid transparent; border-bottom-color: #f8eeda; content: ""; height: 0; left: calc(50% - 10px); position: absolute; top: 0.9em; width: 0; }
+body.dkey header nav li.dkey::after { /* For use on active nav item, with :after */ border: 10px solid transparent; border-bottom-color: #fcfff2; content: ""; height: 0; left: calc(50% - 10px); position: absolute; top: 0.9em; width: 0; }
 
-body.teaching header nav li.teaching::after { /* For use on active nav item, with :after */ border: 10px solid transparent; border-bottom-color: #f8eeda; content: ""; height: 0; left: calc(50% - 10px); position: absolute; top: 0.9em; width: 0; }
+body.teaching header nav li.teaching::after { /* For use on active nav item, with :after */ border: 10px solid transparent; border-bottom-color: #fcfff2; content: ""; height: 0; left: calc(50% - 10px); position: absolute; top: 0.9em; width: 0; }
 
-body.help header nav li.help::after { /* For use on active nav item, with :after */ border: 10px solid transparent; border-bottom-color: #f8eeda; content: ""; height: 0; left: calc(50% - 10px); position: absolute; top: 0.9em; width: 0; }
+body.help header nav li.help::after { /* For use on active nav item, with :after */ border: 10px solid transparent; border-bottom-color: #fcfff2; content: ""; height: 0; left: calc(50% - 10px); position: absolute; top: 0.9em; width: 0; }
 
 /* Section navigation (sidebar, only in some sections) */
 body.help #sidebar nav, body.plantshare #sidebar nav { /* Place "you are here" marker next to a non-linked item. This is the top level of each sub-section. */ /* Show future nav. items that do not have a URL yet in gray. */ }
@@ -266,13 +265,13 @@ header p { margin: 0; }
 header .go-botany { align-items: baseline; display: flex; margin: 1.4em 0 0.7em; padding: 0; position: relative; z-index: 5; }
 header .go-botany a { width: 11.5em; }
 header .go-botany img { width: 150px; }
-header .go-botany .tagline { bottom: 0; color: #467321; font-family: Basetica, sans-serif; font-size: 1em; position: absolute; left: 12.5em; }
+header .go-botany .tagline { bottom: 0; color: #05484b; font-family: Basetica, system-ui, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol"; font-size: 1em; position: absolute; left: 12.5em; }
 
-header nav { align-items: center; background-color: #17555b; border-radius: 2em; display: flex; font-family: system-ui, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol"; justify-content: space-between; margin-bottom: 1em; padding-right: 0.3em; }
+header nav { align-items: center; background-color: #016f5f; border-radius: 2em; display: flex; font-family: system-ui, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol"; justify-content: space-between; margin-bottom: 1em; padding-right: 0.3em; }
 header nav a { color: #fff; display: inline-block; padding: 5px 8px; }
 header nav a:visited, header nav a:not([href]) { color: #fff; }
 header nav > a { display: none; /* Omit the 'sections' link by default */ }
-header nav > ul { font-family: Basetica, sans-serif; list-style-type: none; padding-left: 1rem; }
+header nav > ul { font-family: Basetica, system-ui, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol"; list-style-type: none; padding-left: 1rem; }
 header nav > ul li { display: block; float: left; font-size: 1.05em; line-height: 1.19em; margin: 0 0.9em 0 0; padding: 0.05em 0 0; position: relative; white-space: nowrap; }
 header nav > ul li:last-child { margin-right: 0; }
 header nav > ul li a:hover { text-decoration: none; }
@@ -323,7 +322,7 @@ header #search button img { height: 1.4em; vertical-align: middle; }
 a.get-help-btn { margin: 10px 0 20px; }
 
 /* Footer */
-.footer { background: #a7da7e; /* Make footer color continue to bottom on short pages. */ box-shadow: 0 50vh 0 50vh #a7da7e; clear: both; font-size: 0.8em; min-height: 140px; position: relative; width: 100%; }
+.footer { background: #edf5db; /* Make footer color continue to bottom on short pages. */ box-shadow: 0 50vh 0 50vh #edf5db; clear: both; font-size: 0.8em; min-height: 140px; position: relative; width: 100%; }
 
 .footer__container { margin: 0 auto; padding: 0 10px; width: 960px; display: flex; }
 
@@ -430,7 +429,7 @@ a.get-help-btn { margin: 10px 0 20px; }
 /* Character/value styles for plant preview popups, species pages, etc. */
 .characteristics dl { display: flex; margin: 10px 0 0; padding: 0; }
 
-.characteristics dt { color: #554e16; font-weight: bold; line-height: 18px; max-width: 200px; min-width: 200px; text-align: left; }
+.characteristics dt { color: #05484b; font-weight: bold; line-height: 18px; max-width: 200px; min-width: 200px; text-align: left; }
 .characteristics dt button { font-weight: bold; }
 
 .characteristics dd { line-height: 18px; max-width: 60%; }
@@ -472,14 +471,14 @@ table.list th td:first-child { font-family: system-ui, "Segoe UI", Roboto, Helve
 
 /* Imports for various pages, sections, features, etc. Each of these can contain their own media queries. */
 /* Home */
-#home { background-color: #f8eeda; background-image: url(/static/images/layout/body-home.png); background-position: left 0px top; background-repeat: repeat-x; }
+#home { background-color: #fcfff2; background-image: url(/static/images/layout/body-home.png); background-position: left 0px top; background-repeat: repeat-x; }
 
 #home .id { display: flex; padding: 1.4em 0 0.3em; position: relative; }
 
 #home h1 { font-weight: unset; margin: 0; }
 #home h1 img { width: 9em; }
 
-#home .tagline { bottom: 0.6em; color: #fff; font-family: Basetica, sans-serif; font-size: 1.05em; left: 17.4em; line-height: 120%; margin: 0; position: absolute; }
+#home .tagline { bottom: 0.6em; color: #1d272a; font-family: Basetica, system-ui, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol"; font-size: 1.05em; left: 19em; line-height: 120%; margin: 0; position: absolute; }
 
 #home .newfs { padding-top: 13px; }
 
@@ -492,7 +491,7 @@ table.list th td:first-child { font-family: system-ui, "Segoe UI", Roboto, Helve
 #home #banner { margin: 10px 0 0; position: absolute; }
 #home #banner > img { box-shadow: 0px 0px 4px 0 rgba(0, 0, 0, 0.6); display: none; height: 345px; left: 0; position: absolute; top: 0; width: 960px; }
 #home #banner img:first-child { display: block; }
-#home #banner h2 { color: #437829; font-family: system-ui, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol"; font-size: 2.1rem; font-weight: bold; line-height: normal; margin: 1.2rem 0; }
+#home #banner h2 { color: #05484b; font-family: Basetica, system-ui, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol"; font-size: 2.1rem; font-weight: normal; line-height: normal; margin: 1.2rem 0; }
 #home #banner p { margin: 0.5em 0; text-align: left; }
 
 #home #update p { line-height: 150%; margin-bottom: 7px; margin-top: 0; text-align: center; }
@@ -503,7 +502,7 @@ table.list th td:first-child { font-family: system-ui, "Segoe UI", Roboto, Helve
 #home #update a.updates { margin-left: 0.3rem; }
 #home #update a.updates::after { content: " ➔"; }
 
-#home #update .badge { background-color: rgba(236, 243, 151, 0.9); letter-spacing: 0.05rem; margin-right: 0.3rem; padding: 0.1rem 0.3rem; text-transform: uppercase; }
+#home #update .badge { background-color: #d2f167; letter-spacing: 0.05rem; margin-right: 0.3rem; padding: 0.1rem 0.3rem; text-transform: uppercase; }
 
 #home #cta { margin: 1em 2px 0; width: 174px; }
 
@@ -519,7 +518,7 @@ a.subscribe { background: url(/static/images/layout/subscribe.png) 0 0 no-repeat
 a.subscribe:hover { background-position: 0 -16px; }
 a.subscribe:active { background-position: 0 -32px; }
 
-#home #potd { /* Plant of the Day */ background: #bde29c; border: 3px solid #fff; box-shadow: 0px 0px 4px 0 rgba(0, 0, 0, 0.3); clear: left; height: 169px; margin: 15px 0; padding: 10px; }
+#home #potd { /* Plant of the Day */ background: #edf5db; border: 3px solid #fff; box-shadow: 0px 0px 4px 0 rgba(0, 0, 0, 0.3); clear: left; height: 169px; margin: 15px 0; padding: 10px; }
 #home #potd > a { display: block; float: left; height: 160px; margin: 5px 5px; overflow: hidden; width: 270px; }
 #home #potd > a img { position: relative; top: -60px; width: 270px; }
 #home #potd .details { margin: 0 0 0 290px; position: absolute; width: 630px; }
@@ -527,7 +526,7 @@ a.subscribe:active { background-position: 0 -32px; }
 #home #potd .details h2 span.latin { font-style: italic; }
 #home #potd .details p { margin: 0 0 1em; overflow: hidden; }
 
-#home .donate, #home .intro { background: #f3dcaa; /* lightened version of #e7b952 orange from NPT palette */ border: 3px solid #fff; box-shadow: 0px 0px 4px 0 rgba(0, 0, 0, 0.3); clear: left; margin: 0 0 15px 0; padding: 0; }
+#home .donate, #home .intro { background: #f4ca3d; /*#f3dcaa;*/ /* lightened version of #e7b952 orange from NPT palette */ border: 3px solid #fff; box-shadow: 0px 0px 4px 0 rgba(0, 0, 0, 0.3); clear: left; margin: 0 0 15px 0; padding: 0; }
 #home .donate p, #home .intro p { margin: 14px; position: relative; }
 
 #home .donate a { cursor: default; float: right; position: absolute; right: 0; top: -4px; }
@@ -662,9 +661,9 @@ body#species #main { background: url(/static/images/layout/sidebar-bg.png) repea
 body#species #main { /* layout: right-side content sections */ }
 body#species #main #breadcrumb, body#species #main #name, body#species #main .img-gallery, body#species #main #images-note, body#species #main #partner, body#species #main #facts, body#species #main #habitat, body#species #main #chars, body#species #main #wetland, body#species #main #status, body#species #main #info-dkey { clear: left; margin-left: 250px; }
 
-body#species h1 { font-weight: normal; }
+body#species h1 { font-family: system-ui, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol"; /* system font for common name */ font-weight: normal; }
 
-body#species .scientific { font-weight: bold; }
+body#species .scientific { font-family: Basetica, system-ui, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol"; font-style: italic; font-weight: normal; }
 
 body#species .taxonomic-authority { font-size: 0.6em; padding-left: 0.5em; }
 
@@ -680,7 +679,7 @@ body#species #maps { background-color: #fff; border-left: 1px solid #c3d941; bor
 
 body#species .definitions-link { background-image: url(/static/images/icons/icon-info.png); background-position: 0px 1px; background-repeat: no-repeat; background-size: auto 12px; clear: left; display: inline-block; font-size: 12px; margin: 4px 0 8px; padding: 0 0 0 15px; }
 
-body#species .found-plant { background-color: #f8eeda; font-size: 12px; line-height: 16px; padding: 4px 12px; }
+body#species .found-plant { background-color: #fcfff2; font-size: 12px; line-height: 16px; padding: 4px 12px; }
 
 /* space maps enough away from text atop them */
 body#species #main .nemap h2 + p, body#species #main .namap h2 + p { margin: 0; padding-bottom: 8px; }
@@ -745,7 +744,7 @@ body#species #species-images .scrollableArea a { border-right: 5px solid #fff; f
 
 body#species #images-note { font-size: 11px; font-style: italic; margin-bottom: 20px; margin-left: 250px; margin-right: 0; margin-top: 0; }
 
-body#species #info-dkey b { color: #554e16; }
+body#species #info-dkey b { color: #05484b; }
 
 /* Begin media queries styles for taxa pages. */
 /* Portrait-orientation styles */
@@ -779,7 +778,7 @@ body#species #info-dkey b { color: #554e16; }
   body#species #main #maps { background: #fff; border: 1px solid #c3d941; padding-left: 16px; padding-right: 16px; padding-top: 6px; z-index: 10; }
   body#species #main .definitions-link, body#species #main .found-plant { font-size: 10px; line-height: 14px; }
   body#species #main #side h2 { font-size: 16px; margin-top: 14px; }
-  body#species #main #species-images .scrollableArea a { border-right: 20px solid #f8eeda; }
+  body#species #main #species-images .scrollableArea a { border-right: 20px solid #fcfff2; }
   body#species #main #species-images .scrollableArea a img { height: 120px; width: 120px; }
   body#species #main #species-images, body#species #main .img-gallery .frame { border: 0; box-shadow: none; }
   body#species #main #species-images, body#species #main .img-gallery .frame, body#species #main .img-gallery .img-container { height: 120px; }
@@ -804,7 +803,7 @@ body.skey.groups-subgroups #sb-title-inner a { border-bottom: 1px solid #ccc; co
 body.skey.groups-subgroups #sb-title-inner a:hover { text-decoration: none; }
 body.skey.groups-subgroups #sb-title-inner .contact { background-color: inherit; border: 0; color: #fff; cursor: pointer; display: inline-block; /* prevent text from wrapping, which makes tooltip position incorrect */ margin: 0; padding: 0; text-decoration: underline; }
 body.skey.groups-subgroups #sb-nav-close { top: 56px !important; }
-body.skey.groups-subgroups p.question, body.skey.groups-subgroups p.tip { color: #766b1e; font-family: system-ui, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol"; font-size: 1.6rem; margin: 0.5rem 0; padding: 0; }
+body.skey.groups-subgroups p.question, body.skey.groups-subgroups p.tip { color: #05484b; font-family: system-ui, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol"; font-size: 1.6rem; margin: 0.5rem 0; padding: 0; }
 body.skey.groups-subgroups p.tip { font-size: 1.1rem; }
 body.skey.groups-subgroups .list-item { clear: left; margin: 0; padding: 20px 0 0 0; }
 body.skey.groups-subgroups .list-item .details { float: left; width: 425px; }
@@ -873,12 +872,12 @@ body.skey.results #question-nav .scroll::-webkit-scrollbar-track { background-co
 body.skey.results #question-nav .scroll::-webkit-scrollbar-thumb:vertical { background-color: #fff; border-left: 1px solid #c3d941; background-image: url(/static/images/layout/scroll-thumb-top.png), url(/static/images/layout/scroll-thumb-bottom.png), url(/static/images/layout/scroll-thumb.png); background-position: center top, center bottom, center; background-repeat: no-repeat, no-repeat, repeat-y; }
 body.skey.results #question-nav .section { padding: 0 17px 16px; }
 body.skey.results #question-nav .section.instructions { background: #9cc86b; color: #fff; padding: 16px; }
-body.skey.results #question-nav .section.instructions h2 { color: #413b11; font-size: 16px; line-height: 120%; margin: 0; }
+body.skey.results #question-nav .section.instructions h2 { color: #05484b; font-size: 16px; line-height: 120%; margin: 0; }
 body.skey.results #question-nav .section .left { float: left; }
 body.skey.results #question-nav .section p.get-more { position: relative; font-size: 11px; line-height: 16px; margin: 0 0 20px; text-align: center; }
-body.skey.results #question-nav .section p.get-more button { color: #fff; cursor: default; display: block; margin: 18px auto 10px; width: 190px; }
+body.skey.results #question-nav .section p.get-more button { color: #fff; cursor: default; display: block; margin: 18px auto 10px; width: 193px; }
 body.skey.results #question-nav .section p.get-more button.get-questions { margin: 0 auto 4px; }
-body.skey.results #question-nav .section .clear-all-btn { color: #fff; margin: 0 10px 0 0; min-width: 60px; }
+body.skey.results #question-nav .section .clear-all-btn { color: #fff; margin: 0; min-width: 60px; }
 body.skey.results #question-nav .section .get-help-btn { color: #fff; margin: 0 0 0 15px; min-width: 50px; }
 body.skey.results #question-nav h6 { color: #7a6f1f; font-weight: bold; margin: 0 0 8px 0; }
 body.skey.results #question-nav .option-list > li { background: #fff; border-top: 1px solid #c3d941; cursor: pointer; display: block; height: auto; line-height: normal; margin: 0; padding: 12px; }
@@ -893,10 +892,10 @@ body.skey.results #question-nav .option-list .clear-filter { background: none; b
 body.skey.results #question-nav .loading { background: url(/static/images/icons/preloaders-dot-net-sm.gif) no-repeat scroll 0 0 transparent; font-weight: bold; margin: 12px; padding: 0 0 0 20px; }
 body.skey.results #results-section { float: left; margin: -8px 0 28px 18px; width: 710px; }
 body.skey.results button.get-questions, body.skey.results button.add-questions { color: white; cursor: default; margin: 2px 0 0 10px; width: 171px; }
-body.skey.results #intro-overlay { /* for introductory overlay */ display: none; font-family: system-ui, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol"; font-size: 40px; text-align: center; z-index: 1000; /* Arrows */ }
-body.skey.results #intro-overlay div { background-color: #f8eeda; border-radius: 0.25em; box-shadow: 0px 5px 20px black; color: #fff; margin-bottom: 10%; padding: 0.6em 0.8em; position: relative; }
+body.skey.results #intro-overlay { /* for introductory overlay */ display: none; font-family: Basetica, system-ui, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol"; font-size: 40px; text-align: center; z-index: 1000; /* Arrows */ }
+body.skey.results #intro-overlay div { background-color: #fcfff2; border-radius: 0.25em; box-shadow: 0px 5px 20px black; color: #fff; margin-bottom: 10%; padding: 0.6em 0.8em 0.45em; position: relative; }
 body.skey.results #intro-overlay .number-of-species, body.skey.results #intro-overlay .number-of-questions { background-color: #508e31; }
-body.skey.results #intro-overlay .continue { background-color: #d87e54; border-radius: 2em; border: 2px solid #dc9402; cursor: default; font-family: ScalaSans, system-ui, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol"; letter-spacing: 3px; text-shadow: 1px 1px 2px #dc9402; text-transform: uppercase; }
+body.skey.results #intro-overlay .continue { background-color: #d87e54; border-radius: 2em; border: 2px solid #dc9402; cursor: default; font-family: Basetica, system-ui, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol"; letter-spacing: 3px; text-shadow: 1px 1px 2px #dc9402; text-transform: uppercase; }
 body.skey.results #intro-overlay h1 { font-size: 140%; }
 body.skey.results #intro-overlay .number-of-species:before, body.skey.results #intro-overlay .number-of-questions:before { border-style: solid; border-width: 0.9em 1.8em; bottom: 0.8em; content: ''; height: 0; position: absolute; width: 0; }
 body.skey.results #intro-overlay .number-of-species:before { border-color: transparent; right: -5em; }
@@ -907,7 +906,7 @@ body.skey.results h5.help { clear: left; font-size: 14px; margin: 0 0 0 0; paddi
 body.skey.results h5.help.last { margin-top: 12px; }
 body.skey.results .view-tabs { border-bottom: 1px solid #c3d941; clear: left; font-family: system-ui, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol"; height: 2.2em; margin: 15px 0 0; }
 body.skey.results .view-tabs h3 { margin: 0; }
-body.skey.results .view-tabs button { background: #d6e6c5; background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #eaf2e2), color-stop(100%, #d6e6c5)); background: -moz-linear-gradient(center top, #eaf2e2, #d6e6c5); border: 1px solid #c3d941 !important; border-top-left-radius: 6px; border-top-right-radius: 6px; color: #554e16; cursor: default; display: block; float: left; font-family: system-ui, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol"; font-size: 1.1rem; font-weight: bold; margin: 0 0 0 2px; min-width: 137px; outline-offset: -1px; padding: 0.22em 1em 0.2em; text-align: center; }
+body.skey.results .view-tabs button { background: #d6e6c5; background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #eaf2e2), color-stop(100%, #d6e6c5)); background: -moz-linear-gradient(center top, #eaf2e2, #d6e6c5); border: 1px solid #c3d941 !important; border-top-left-radius: 6px; border-top-right-radius: 6px; color: #05484b; cursor: default; display: block; float: left; font-family: system-ui, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol"; font-size: 1.1rem; font-weight: bold; margin: 0 0 0 2px; min-width: 137px; outline-offset: -1px; padding: 0.22em 1em 0.2em; text-align: center; }
 body.skey.results .view-tabs button:hover { background: #e1f2cd; background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #f0f8e7), color-stop(100%, #e1f2cd)); background: -moz-linear-gradient(center top, #f0f8e7, #e1f2cd); cursor: default; text-decoration: none; }
 body.skey.results .view-tabs li { list-style-type: none; }
 body.skey.results .view-tabs li:first-child button { margin-left: 10px; }
@@ -962,8 +961,8 @@ body.skey.results img.char-value-larger { height: 160px !important; /* Consisten
 body.skey .toplink { display: none; }
 body.skey #filters-preview { display: none; }
 
-.modal-wrap.more-questions-dialog { background-color: #f8eeda; }
-.modal-wrap.more-questions-dialog .inner { background-color: #f8eeda; padding-bottom: 10px; }
+.modal-wrap.more-questions-dialog { background-color: #fcfff2; }
+.modal-wrap.more-questions-dialog .inner { background-color: #fcfff2; padding-bottom: 10px; }
 .modal-wrap.more-questions-dialog .inner p { clear: left; padding: 10px 0; }
 .modal-wrap.more-questions-dialog .title { font-family: system-ui, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol"; padding: 0 !important; text-align: center; }
 .modal-wrap.more-questions-dialog .view-tabs { height: 1.7em !important; }
@@ -1647,9 +1646,9 @@ body.plantshare.screen-images form label { width: auto; }
   #checklist div#main div.ps-section table#checklist-detail td.note div.note-text { display: block; } }
 /* End media queries styles for PlantShare */
 /* Dichotomous Key */
-#dkey .offer-help-aside { float: right; margin: 1em 1em 0.5em 1em; text-align: right; color: #606060; }
+#dkey .offer-help-aside { float: right; margin: 3em 0 0.5em 1em; text-align: right; color: #606060; }
 #dkey .offer-help-aside a.button { display: inline-block; margin: 0.8em 1em; font-weight: normal; text-transform: uppercase; }
-#dkey .offer-help-aside select { margin: 0.25em 1.0em; font-size: 1.33333em; }
+#dkey .offer-help-aside select { margin: 0.25em 1.0em; font-size: 1em; }
 
 #jump-nav { margin: 0 auto; max-width: 330px; }
 
@@ -1835,7 +1834,7 @@ body.search-results h1 + p { margin-top: 12px; }
 #glossary #terms img { padding-left: 4px; padding-top: 1px; }
 
 /* "Advanced ID Tools" page */
-#advanced-id #main .dk-landing-section { float: left; font-family: system-ui, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol"; height: 410px; padding-left: 20px; position: relative; width: 328px; }
+#advanced-id #main .dk-landing-section { float: left; font-family: system-ui, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol"; height: 430px; padding-left: 20px; position: relative; width: 328px; }
 #advanced-id #main .dk-landing-section:first-of-type { border-right: 1px solid #b4d57f; padding-left: 0; padding-right: 10px; }
 #advanced-id #main .dk-landing-section h2 { font-size: 18px; line-height: 20px; }
 #advanced-id #main .dk-landing-section section { margin: 10px 0 0; }
@@ -1853,7 +1852,7 @@ body.search-results h1 + p { margin-top: 12px; }
 #video .video-topic { display: flex; flex-direction: column-reverse; float: left; height: 16em; margin: 10px 16px 10px 0; position: relative; width: 220px; }
 #video .video-topic h2 { height: 4em; margin: 0; }
 #video .video-topic img { height: 137px; width: 220px; }
-#video .video-topic > p { color: #554e16; font-family: system-ui, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol"; font-size: 16px; line-height: 105%; margin-top: 8px; }
+#video .video-topic > p { color: #05484b; font-family: system-ui, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol"; font-size: 16px; line-height: 105%; margin-top: 8px; }
 #video .video-topic .missing-image { height: 137px; margin-bottom: 3px; width: 220px; }
 #video .video-topic .missing-image p { left: auto; margin: 55px 0; position: absolute; text-align: center; top: auto; white-space: nowrap; width: 100%; }
 
@@ -1884,7 +1883,7 @@ body.video button.video { background: 0; border: 0; padding: 0; }
 .legal #main ol.terms > li > h2 { font-size: inherit; }
 .legal #main ol.terms > li > h3 { font-size: initial; }
 .legal #main ol.terms ul { list-style-type: disc; }
-.legal #main ol.terms li p, .legal #main ol.terms li li { font-family: system-ui, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol"; font-size: 12px; }
+.legal #main ol.terms li p, .legal #main ol.terms li li { font-family: system-ui, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol"; font-size: 14px; }
 .legal #main ol.terms li li { line-height: 20px; }
 .legal #main ol.terms li li li { margin-left: 26px; }
 
@@ -2010,7 +2009,7 @@ header.partner-site nav li a { padding: 5px 32px 0; /* fewer sections, more hori
   h1 { font-size: 18px; margin: 6px 0; }
   h2 { font-size: 16px; }
   h3 { font-size: 15px; }
-  header nav { background: #21555c; border-radius: 0; clear: left; height: 32px; padding: 0; }
+  header nav { background: #016f5f; border-radius: 0; clear: left; height: 32px; padding: 0; }
   header nav > a { background: #437829; border: 1px solid #437829; border-radius: 0.3em; display: inline-block; font-size: 1.2em; margin: 0 0.5em; padding: 0.2em 1em; }
   header nav #search { margin-left: -0.75em; margin-right: 0.75em; }
   header nav > ul { display: none; /* will use bottom navigation instead of top */ }
@@ -2034,7 +2033,7 @@ header.partner-site nav li a { padding: 5px 32px 0; /* fewer sections, more hori
   .footer__publisher { margin: 14px 0 0 6px; padding: 12px 8px 10px; }
   .footer__navigation { padding-left: 0; }
   .footer__navigation-list-item { display: block; margin: 0 0 1px 0; }
-  .footer__navigation-list--primary .footer__navigation-list-item a { background: #21555c; color: #fff; display: block; font-family: system-ui, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol"; font-size: 14px; padding: 14px 14px; position: relative; text-decoration: none; }
+  .footer__navigation-list--primary .footer__navigation-list-item a { background: #016f5f; color: #fff; display: block; font-family: system-ui, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol"; font-size: 14px; padding: 14px 14px; position: relative; text-decoration: none; }
   .footer__navigation-list--primary .footer__navigation-list-item a[href] { color: #fff; }
   .footer__navigation-list--primary .footer__navigation-list-item a[href]:after { border-color: #ccc; border-style: solid; border-width: 3px 3px 0 0; content: " \a0"; display: inline-block; height: 6px; position: absolute; right: 14px; top: 16px; vertical-align: middle; width: 6px; -moz-transform: rotate(45deg); -ms-transform: rotate(45deg); -webkit-transform: rotate(45deg); transform: rotate(45deg); }
   .footer__navigation-list-item::after { content: none; }
