@@ -192,7 +192,7 @@ a {
     }
 }
 #home .donate, #home .intro {
-    background: $goldenrod; /*#f3dcaa;*/ /* lightened version of #e7b952 orange from NPT palette */
+    background: $spring; /*#f3dcaa;*/ /* lightened version of #e7b952 orange from NPT palette */
     border: 3px solid #fff;
     box-shadow: 0px 0px 4px 0 rgba(0, 0, 0, 0.3);
     clear: left;
@@ -281,7 +281,7 @@ a {
             margin: 0;
         }
         nav {
-            background: #21555c;
+            /*background: #21555c;*/
             height: 32px;
             padding-left: 0;
             > a:hover {

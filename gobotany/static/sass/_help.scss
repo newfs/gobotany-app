@@ -109,12 +109,12 @@ $image-box-shadow-color: rgba(0, 0, 0, 0.6);
         background-image: url(/static/images/icons/6.png);	
     }
     a.screenshot {
-        float: right;	
+        float: right;
         margin: 0 0 0 15px;
         color: #1a2e11;
         text-align: center;
         &:hover {
-            text-decoration: none;	
+            text-decoration: none;
         }
         img {
             margin: 10px 0;
@@ -122,7 +122,7 @@ $image-box-shadow-color: rgba(0, 0, 0, 0.6);
             &.screenshot-thumb {
                 border: 5px solid #fff;
                 box-shadow: 0px 1px 4px 0 rgba(0, 0, 0, 0.3);
-                display: block;	
+                display: block;
                 margin: 0;
             }
         }

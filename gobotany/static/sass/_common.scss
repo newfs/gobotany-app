@@ -65,6 +65,8 @@ $navbar-color: $pine;
 $footer-background-color: $lichen;
 $login-box-background-color: #d3eaad;
 
+$top-home-page-background-color: #6c9956;
+
 $base-font-size: 85%;
 $nav-font-size: 1.05em;
 
@@ -81,7 +83,7 @@ $tooltip-arrow-rotation: 225deg;
 $smallscreen-portrait-width: 320px;
 $smallscreen-landscape-width: 480px;
 
-$nav-button-color: #437829;
+$nav-button-color: $dark-pine;   /* for small screens */
 $error-icon-offset: -20px;
 
 $smallscreen-margin: 8px;
@@ -146,11 +148,11 @@ $disabled_orange_gradient: linear-gradient(
     display: inline-block;
     font-family: $brand-font;
     font-size: 13px;
-    font-weight: bold !important;
+    font-weight: normal;
     letter-spacing: 1px;
     line-height: 18px;
     min-width: 80px;
-    padding: 4px 12px;
+    padding: 5px 12px 3px;
     text-align: center;
     text-decoration: none;
     &.caps {
@@ -184,11 +186,11 @@ $disabled_orange_gradient: linear-gradient(
     display: inline-block;
     font-family: $brand-font;
     font-size: 13px;
-    font-weight: bold;
+    font-weight: normal;
     letter-spacing: 1px;
     line-height: 18px;
     min-width: 75px;
-    padding: 4px 12px;
+    padding: 6px 12px 2px;
     text-align: center;
     text-decoration: none;
 
@@ -228,19 +230,6 @@ $disabled_orange_gradient: linear-gradient(
     }
 }
 
-/* Fix button and action-link text alignment in Firefox; evidently
-    the misalignment is due to how the browsers handle the Scala
-    Sans font. (Unfortunately this means that any fonts lower
-    in the font stack would show up misaligned in FF.) */
-@-moz-document url-prefix() {
-    .orange-button,
-    .action-link {
-        padding-bottom: 3px;
-        padding-top: 5px;
-    }
-}
-
-
 @mixin offscreen {
     display: block;
     text-indent: -9000px;
@@ -277,7 +266,7 @@ $disabled_orange_gradient: linear-gradient(
 @mixin highlight-global-nav-home {
     /* For use on active nav item, with :after */
     border: 10px solid transparent;
-    border-bottom-color: #6c9956;
+    border-bottom-color: $top-home-page-background-color;
     content: "";
     height: 0;
     left: calc(50% - 10px);
@@ -409,7 +398,7 @@ div.popup a {
 /* For occasional, temporary donation campaigns: message at top of page */
 #top-message {
     align-items: center;
-    background-color: $coral;
+    background-color: $lichen;
     color: $text-color;
     display: flex;
     font-family: $body-font;
@@ -431,7 +420,7 @@ div.popup a {
 #top-message .close {
     background-color: inherit;
     border: 0;
-    color: #000;
+    color: $text-color;
     font-size: 1.2em;
     font-weight: bold;
     margin-left: 1.2em;
@@ -457,7 +446,7 @@ div.popup a {
 
 /* For newsletter sign-up dialog */
 .dialog {
-    background-color: $spring;
+    background-color: $lichen;
     box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px 0px;
     bottom: 0.5rem;
     color: $text-color;
@@ -485,7 +474,7 @@ div.popup a {
 .dialog__ok {
     background: $dark-pine;
     border: 1px solid $dark-pine;
-    color: $spring;
+    color: $lichen;
     display: inline-block;
     font-family: inherit;
     font-size: 1rem;
