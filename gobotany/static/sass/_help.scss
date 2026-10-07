@@ -358,12 +358,12 @@ $image-box-shadow-color: rgba(0, 0, 0, 0.6);
 
 #advanced-id #main {
     .dk-landing-section {
-	    float: left;
-	    font-family: $body-font;
-        height: 410px;
+        float: left;
+        font-family: $body-font;
+        height: 430px;
         padding-left: 20px;
         position: relative;
-	    width: 328px;
+        width: 328px;
         &:first-of-type {
             border-right: 1px solid #b4d57f;
             padding-left: 0;
@@ -437,7 +437,7 @@ $image-box-shadow-color: rgba(0, 0, 0, 0.6);
         width: 220px;
     }
     > p {
-        color: $darker-brown;
+        color: $dark-pine;
         font-family: $headings-font;
         font-size: 16px;
         line-height: 105%;
@@ -544,7 +544,7 @@ body.video button.video {
     ol.terms li {
         p, li {
             font-family: $body-font;
-            font-size: 12px;
+            font-size: 14px;
         }
         li {
             line-height: 20px;

@@ -1,7 +1,7 @@
 /* Home */
 
 #home {
-    background-color: #f8eeda;
+    background-color: $birch;
     background-image: url(/static/images/layout/body-home.png);
     background-position: left 0px top;
     background-repeat: repeat-x;
@@ -21,10 +21,10 @@
 }
 #home .tagline {
     bottom: 0.6em;
-    color: #fff;
-    font-family: Basetica, sans-serif;
+    color: $home-logo-darker;
+    font-family: $brand-font;
     font-size: 1.05em;
-    left: 17.4em;
+    left: 19em;
     line-height: 120%;
     margin: 0;
     position: absolute;
@@ -63,10 +63,10 @@
         display: block;
     }
     h2 {
-        color: $heading-green;
-        font-family: $headings-font;
+        color: $dark-pine;
+        font-family: $main-heading-font;
         font-size: 2.1rem;
-        font-weight: bold;
+        font-weight: normal;
         line-height: normal;
         margin: 1.2rem 0;
     }
@@ -96,7 +96,7 @@
     }
 }
 #home #update .badge {
-    background-color: rgba(236, 243, 151, 0.9);
+    background-color: $spring;
     letter-spacing: 0.05rem;
     margin-right: 0.3rem;
     padding: 0.1rem 0.3rem;
@@ -153,7 +153,7 @@ a {
     }
 }
 #home #potd {   /* Plant of the Day */
-    background: $lighter-green;
+    background: $lichen;
     border: 3px solid #fff;
     box-shadow: 0px 0px 4px 0 rgba(0, 0, 0, 0.3);
     clear: left;
@@ -192,7 +192,7 @@ a {
     }
 }
 #home .donate, #home .intro {
-    background: #f3dcaa; /* lightened version of #e7b952 orange from NPT palette */
+    background: $goldenrod; /*#f3dcaa;*/ /* lightened version of #e7b952 orange from NPT palette */
     border: 3px solid #fff;
     box-shadow: 0px 0px 4px 0 rgba(0, 0, 0, 0.3);
     clear: left;

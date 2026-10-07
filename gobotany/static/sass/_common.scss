@@ -19,29 +19,14 @@
     src: url(/static/fonts/Basetica-Medium-Italic-205TF.woff2) format('woff2'),
         url(/static/fonts/Basetica-Medium-Italic-205TF.woff) format('woff');
 }
-@font-face {
-    font-family: Basetica;
-    font-weight: 900;
-    src: url(/static/fonts/Basetica-Black-205TF.woff2) format('woff2'),
-        url(/static/fonts/Basetica-Black-205TF.woff) format('woff');
-}
-@font-face {
-    font-family: Basetica;
-    font-style: italic;
-    font-weight: 900;
-    src: url(/static/fonts/Basetica-Black-Italic-205TF.woff2) format('woff2'),
-        url(/static/fonts/Basetica-Black-Italic-205TF.woff) format('woff');
-}
 
-@font-face {
-    font-family: ScalaSans;
-    font-weight: 900;
-    src: url(//newfs.s3.amazonaws.com/fonts/ScalaSansWeb-Bold.woff) format("woff");
-}
+$system-font: system-ui, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+$brand-font: Basetica, $system-font;
 
-$navbar-font: Basetica, sans-serif;
-$headings-font: system-ui, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
-$body-font: system-ui, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+$navbar-font: $brand-font;
+$main-heading-font: $brand-font;
+$headings-font: $system-font;
+$body-font: $system-font;
 
 $link-green: #27610a;
 $heading-green: #437829;
@@ -64,9 +49,20 @@ $lighter-green: #bde29c; /* lighter version of #a7da7e green from NPT palette */
 $darker-green: #508226; /* darker version of #a7da7e green from NPT palette */
 $dark-green: #467321; /* dark version of #a7da7e green from NPT palette */
 
+$home-logo-darker: #1d272a; /* NPT logo color on home page, a bit darker */
+
+/* from new NPT palette */
+$dark-pine: #05484b;
+$pine: #016f5f;
+$birch: #fcfff2;
+$lichen: #edf5db;
+$spring: #d2f167;
+$goldenrod: #f4ca3d;
+$coral: #ff936e;
+
 $text-color: #000;
-$navbar-color: #21555c;
-$footer-background-color: $bright-green;
+$navbar-color: $pine;
+$footer-background-color: $lichen;
 $login-box-background-color: #d3eaad;
 
 $base-font-size: 85%;
@@ -98,7 +94,7 @@ $smallscreen-choices-border-radius: 8px;
 
 $logo_width: 450px;
 
-$body_bg: #f8eeda;
+$body_bg: $birch;
 $text_gray: #606060;
 $text_green: #519136;
 $text_dark_green: #35661c;
@@ -117,8 +113,6 @@ $npt-orange: #d87e54;
 $npt-orange-dark: #bb582a;
 $brighter-orange: #cc4b00;
 $duller-orange: #8e421f;
-$navbar-blue: #17555b;
-
 
 $list_popup_border: #acac90;
 
@@ -150,7 +144,7 @@ $disabled_orange_gradient: linear-gradient(
     color: #fff;
     cursor: default;
     display: inline-block;
-    font-family: ScalaSans, $headings-font;
+    font-family: $brand-font;
     font-size: 13px;
     font-weight: bold !important;
     letter-spacing: 1px;
@@ -175,7 +169,7 @@ $disabled_orange_gradient: linear-gradient(
         font-size: 16px;
         letter-spacing: 1.5px;
         min-width: 150px;
-        padding: 9px 30px;
+        padding: 9px 30px 7px;
     }
 }
 
@@ -188,7 +182,7 @@ $disabled_orange_gradient: linear-gradient(
     color: #fff;
     cursor: pointer;
     display: inline-block;
-    font-family: ScalaSans, $headings-font;
+    font-family: $brand-font;
     font-size: 13px;
     font-weight: bold;
     letter-spacing: 1px;
@@ -207,8 +201,8 @@ $disabled_orange_gradient: linear-gradient(
     /* Hover: higher contrast; use the current nav. bar color */
     &:hover,
     &:focus {
-        background-color: $navbar-blue;
-        box-shadow: 0 0.15rem 0 0 $navbar-blue;
+        background-color: $navbar-color;
+        box-shadow: 0 0.15rem 0 0 $navbar-color;
         color: #fff;
     }
     /* Active: orange; similar to default red, but higher contrast */
@@ -415,8 +409,8 @@ div.popup a {
 /* For occasional, temporary donation campaigns: message at top of page */
 #top-message {
     align-items: center;
-    background-color: #e8a38c;
-    color: #000;
+    background-color: $coral;
+    color: $text-color;
     display: flex;
     font-family: $body-font;
     font-size: 1.02em;
@@ -463,10 +457,10 @@ div.popup a {
 
 /* For newsletter sign-up dialog */
 .dialog {
-    background-color: #feffef;
+    background-color: $spring;
     box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px 0px;
     bottom: 0.5rem;
-    color: #000;
+    color: $text-color;
     display: flex;
     font-family: $body-font;
     font-size: 16px;
@@ -477,8 +471,10 @@ div.popup a {
     z-index: 50;
 }
 .dialog h2 {
-    color: #000;
+    color: $dark-pine;
+    font-family: $brand-font;
     font-size: 24px;
+    font-weight: normal;
     margin: 20px 0;
     padding: 0;
 }
@@ -487,12 +483,13 @@ div.popup a {
     line-height: 1.4;
 }
 .dialog__ok {
-    background: #333;
-    border: 1px solid #333;
-    color: #fff;
+    background: $dark-pine;
+    border: 1px solid $dark-pine;
+    color: $spring;
     display: inline-block;
     font-family: inherit;
     font-size: 1rem;
+    font-weight: bold;
     margin-bottom: 0.5rem;
     margin-right: 0.5rem;
     min-width: 100px;
@@ -503,7 +500,8 @@ div.popup a {
 }
 .dialog__cancel {
     background-color: transparent;
-    border: 1px solid gray;
+    border: 1px solid $dark-pine;
+    color: $dark-pine;
     font-family: inherit;
     font-size: 1rem;
     margin-bottom: 0.5rem;
@@ -516,7 +514,7 @@ div.popup a {
 .dialog__ok:hover,
 .dialog__cancel:focus,
 .dialog__cancel:hover {
-    outline: 3px solid #666;
+    outline: 3px solid $dark-pine;
     outline-offset: 3px;
 }
 .dialog__check {

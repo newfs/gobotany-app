@@ -155,10 +155,13 @@ body#species #main {
     }
 }
 body#species h1 {
+    font-family: $headings-font;   /* system font for common name */
     font-weight: normal;
 }
 body#species .scientific {
-    font-weight: bold;
+    font-family: $main-heading-font;
+    font-style: italic;
+    font-weight: normal;
 }
 body#species .taxonomic-authority {
     font-size: 0.6em;
@@ -422,7 +425,7 @@ body#species #images-note {
 }
 
 body#species #info-dkey b {
-    color: $darker-brown;
+    color: $dark-pine;
 }
 
 /* Begin media queries styles for taxa pages. */

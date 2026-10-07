@@ -11,7 +11,7 @@ body.skey.groups-subgroups {
 
     p {
         &.question, &.tip {
-            color: $dark-brown;
+            color: $dark-pine;
             font-family: $headings-font;
             font-size: 1.6rem;
             margin: 0.5rem 0;
@@ -360,7 +360,7 @@ body.skey {
                     color: #fff;
                     padding: 16px;
                     h2 {
-                        color: $darkest-brown;
+                        color: $dark-pine;
                         font-size: 16px;
                         line-height: 120%;
                         margin: 0;
@@ -380,7 +380,7 @@ body.skey {
                         cursor: default;
                         display: block;
                         margin: 18px auto 10px;
-                        width: 190px;
+                        width: 193px;
                         &.get-questions {
                             margin: 0 auto 4px;
                         }
@@ -388,7 +388,7 @@ body.skey {
                 }
                 .clear-all-btn {
                     color: #fff;
-                    margin: 0 10px 0 0;
+                    margin: 0;
                     min-width: 60px;
                 }
                 .get-help-btn {
@@ -479,7 +479,7 @@ body.skey {
 
         #intro-overlay {   /* for introductory overlay */
             display: none;
-            font-family: $headings-font;
+            font-family: $brand-font;
             font-size: 40px;
             text-align: center;
             z-index: 1000;
@@ -489,7 +489,7 @@ body.skey {
                 box-shadow: 0px 5px 20px rgba(0, 0, 0, 1);
                 color: #fff;
                 margin-bottom: 10%;
-                padding: 0.6em 0.8em;
+                padding: 0.6em 0.8em 0.45em;
                 position: relative;
             }
             .number-of-species, .number-of-questions {
@@ -500,7 +500,7 @@ body.skey {
                 border-radius: 2em;
                 border: 2px solid #dc9402;
                 cursor: default;
-                font-family: ScalaSans, $headings-font;
+                font-family: $brand-font;
                 letter-spacing: 3px;
                 text-shadow: 1px 1px 2px #dc9402;
                 text-transform: uppercase;
@@ -567,7 +567,7 @@ body.skey {
                 border: 1px solid #c3d941 !important;
                 border-top-left-radius: 6px;
                 border-top-right-radius: 6px;
-                color: $darker-brown;
+                color: $dark-pine;
                 cursor: default;
                 display: block;
                 float: left;

@@ -83,19 +83,20 @@ h1, h2, h3, h4, h5, h6 {
     padding: 0;
 }
 h1 {
-    color: $darker-brown;
-    font-size: 1.9em;
-    font-weight: bold;
+    color: $dark-pine;
+    font-family: $main-heading-font;
+    font-size: 2.1em;
+    font-weight: normal;
     margin: 0.8em 0 0.6em;
 }
 h2 {
-    color: $darker-brown;
+    color: $dark-pine;
     font-size: 1.6em;
     font-weight: bold;
     margin: 1.6em 0 0.8em;
 }
 h3 {
-    color: $darker-brown;
+    color: $dark-pine;
     font-size: 1.25em;
     font-weight: bold;
     margin: 1.6em 0 0.8em;
@@ -108,7 +109,7 @@ h3.compact {
 
 /* h4 is sometimes used in species page Conservation Status section */
 h4 {
-    color: $darker-brown;
+    color: $dark-pine;
     font-size: 1.15em;
     font-weight: bold;
     margin: 1.6em 0 0.8em;
@@ -116,7 +117,7 @@ h4 {
 
 /* TODO: try to eliminate h5, h6 */
 h5, h6 {
-    color: $darker-brown;
+    color: $dark-pine;
     font-size: $base-font-size;
 }
 h6 {
@@ -321,8 +322,8 @@ header .go-botany {
     }
     .tagline {
         bottom: 0;
-        color: $dark-green;
-        font-family: Basetica, sans-serif;
+        color: $dark-pine;
+        font-family: $brand-font;
         font-size: 1em;
         position: absolute;
         left: 12.5em;
@@ -330,7 +331,7 @@ header .go-botany {
 }
 header nav {
     align-items: center;
-    background-color: #17555b;
+    background-color: $navbar-color;
     border-radius: 2em;
     display: flex;
     font-family: $headings-font;
@@ -886,7 +887,7 @@ a.get-help-btn {
     padding: 0;
 }
 .characteristics dt {
-    color: $darker-brown;
+    color: $dark-pine;
     font-weight: bold;
     line-height: 18px;
     max-width: 200px;
