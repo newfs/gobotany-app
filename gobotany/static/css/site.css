@@ -709,8 +709,8 @@ body#species #main p { margin: 0 0 15px; }
 body#species #sb-player.html { background: #fff; overflow: hidden; /* Get rid of vertical scrollbar in WebKit on enlarged N. America dist. map. */ padding: 0 5px 5px; }
 body#species #sb-player #na-dist-county-map { background: #fff; height: 100%; width: 100%; }
 
-body#species a.description-control { background: url(/static/images/icons/plus.png) left 50% no-repeat; display: block; margin: 28px 0 12px 0; padding: 3px 0 3px 25px; }
-body#species a.description-control.expanded { background: url(/static/images/icons/minus.png) left 50% no-repeat; }
+body#species .description-control { background: url(/static/images/icons/plus.png) left 50% no-repeat; border: 0; color: #27610a; display: block; margin: 28px 0 12px 0; padding: 3px 0 3px 25px; }
+body#species .description-control.expanded { background: url(/static/images/icons/minus.png) left 50% no-repeat; }
 
 body#species ul.full-description { background: #fbfbf8; border: 1px solid #e1e1dc; display: none; margin: 0 0 15px 0; }
 
