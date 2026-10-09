@@ -69,7 +69,7 @@ define([
         toggle_characters_full_list: function () {
             // Set handlers for toggling the full characteristics list.
             var that = this;
-            $('a.description-control').toggle(function () {
+            $('.description-control').toggle(function () {
                 $('ul.full-description').show();
                 $(this).text('Hide ' +
                     $(this).text().substr($(this).text().indexOf(' ')));

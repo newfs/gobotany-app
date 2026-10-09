@@ -301,8 +301,10 @@ body#species {
     }
 }
 body#species {
-    a.description-control {
+    .description-control {
         background: url(/static/images/icons/plus.png) left 50% no-repeat;
+        border: 0;
+        color: $link-green;
         display: block;
         margin: 28px 0 12px 0;
         padding: 3px 0 3px 25px;
