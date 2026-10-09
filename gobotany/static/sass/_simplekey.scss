@@ -92,11 +92,9 @@ body.skey {
     /* Styles for results (Level 3) page */
 
     @mixin results-select {
-        background: #ebf6df;
-        border: 1px solid #9cc86b;
+        background: $lichen;
+        border: 1px solid $border-green;
         font-family: $headings-font;
-        padding: 0;
-        -webkit-appearance: menulist;
     }
 
     &.results {
@@ -134,7 +132,7 @@ body.skey {
             }
             select {
                 font-size: 13px;
-                height: 21px;
+                height: 22px;
                 width: 140px;
                 @include results-select;
             }
@@ -199,13 +197,13 @@ body.skey {
                 button {
                     background: none;
                     border: 0;
-                    color: #1a2e11;
+                    color: $key-plant-name;
                     cursor: pointer;
                     display: block;
                     padding: 0;
                     &:focus,
                     &:hover {
-                        color: #508e31;
+                        color: $link-green;
                         text-decoration: none;
                         .plant-name {
                             text-decoration: underline;
@@ -265,7 +263,7 @@ body.skey {
                 }
             }
             table .genus {
-                color: #1a2e11;
+                color: $key-plant-name;
                 font-size: 18px;
                 font-style: italic;
                 font-weight: normal;
@@ -357,7 +355,7 @@ body.skey {
             .section {
                 padding: 0 17px 16px;
                 &.instructions {
-                    background: #9cc86b;
+                    background: $lichen;
                     color: #fff;
                     padding: 16px;
                     h2 {
@@ -421,17 +419,17 @@ body.skey {
                     }
                     &.active, &:hover, &.active span.value,
                     &.answered.active {
-                        background: #dce890;
+                        background: $spring;
                         cursor: default;
                     }
                     &:has(button:focus-visible) {
-                        background: #dce890;
+                        background: $spring;
                     }
                 }
                 .option {
                     background: none;
                     border: 0;
-                    color: #1a2e11;
+                    color: $key-plant-name;
                     margin-left: 0;
                     text-align: left;
                     text-decoration: none;
@@ -596,12 +594,12 @@ body.skey {
             }
             button.current, button.current:hover {
                 background: #fff;
-                background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#ffffff), color-stop(100%,#f0f0c0)) !important;
-                background: -moz-linear-gradient(center top, #ffffff, #f0f0c0);
+                background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #ffffff), color-stop(100%, $lichen)) !important;
+                background: -moz-linear-gradient(center top, #ffffff, $lichen);
                 border-bottom: 0 !important;
-                color: #1a2e11;
+                color: $key-plant-name;
                 cursor: default;
-                padding: 0.25em 1em;
+                padding: 0.3em 1em;
             }
         } /* end .view-tabs */
         
@@ -972,7 +970,7 @@ ul.get-more-questions-menu {
         position: relative;
         display: block;
         margin: 0;
-        background-color: $inactive_bg; /*#dce890;*/
+        background-color: $inactive_bg;
         padding: 0 1em;
         line-height: 2em;
         text-align: left;
@@ -1870,7 +1868,7 @@ ul.get-more-questions-menu {
     body.skey.results {
         #question-nav {
             .option-list > li.active:hover {
-                background: #dce890;
+                background: $spring;
             }
         }
     }

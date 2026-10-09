@@ -340,6 +340,7 @@ body#species ul.full-description > li {
     }
     div {
         display: none;
+        margin-top: 20px;
         padding-left: 28px;
     }
 }
@@ -422,10 +423,6 @@ body#species #images-note {
     margin-left: 250px;
     margin-right: 0;
     margin-top: 0;
-}
-
-body#species #info-dkey b {
-    color: $dark-pine;
 }
 
 /* Begin media queries styles for taxa pages. */

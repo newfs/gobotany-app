@@ -85,7 +85,7 @@ h1, h2, h3, h4, h5, h6 {
 h1 {
     color: $dark-pine;
     font-family: $main-heading-font;
-    font-size: 2.1em;
+    font-size: 2em;
     font-weight: normal;
     margin: 0.8em 0 0.6em;
 }
@@ -713,9 +713,11 @@ a.get-help-btn {
 }
 .plant-grid a {
     display: block;
-    color: #1a2e11;
+    color: $key-plant-name;
+    &:focus,
     &:hover {
-        color: #508e31;
+        color: $link-green;
+        text-decoration: underline;
     }
 }
 .plant-grid .plant:before {
@@ -898,14 +900,13 @@ a.get-help-btn {
     }
 }
 .characteristics dd {
-    line-height: 18px;
+    line-height: 20px;
     max-width: 60%;
 }
 .characteristics dd ul {
     list-style-type: disc;
     margin: 0;
     padding: 0 0 0 1.3em;
-    text-indent: -0.2em;
     &.compact {
         margin: 0;
         padding: 0;
@@ -922,6 +923,7 @@ a.get-help-btn {
     }
 }
 .characteristics dd li {
+    line-height: 20px;
     margin: 0;
     padding: 0 0 0.1em;
 }
