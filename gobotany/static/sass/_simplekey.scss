@@ -11,7 +11,7 @@ body.skey.groups-subgroups {
 
     p {
         &.question, &.tip {
-            color: $dark-brown;
+            color: $dark-pine;
             font-family: $headings-font;
             font-size: 1.6rem;
             margin: 0.5rem 0;
@@ -73,6 +73,18 @@ body.skey.groups-subgroups {
             font-family: $body-font;
         }
     }
+
+    .details .video {
+        background: unset;
+        border: 0;
+        border-bottom: 1px solid #50570a;
+        color: #27610a;
+        cursor: pointer;
+        font-family: $body-font;
+        font-size: 16px;
+        font-weight: bold;
+        padding: 0;
+    }
 } /* end &.groups-subgroups */
 
 
@@ -80,11 +92,9 @@ body.skey {
     /* Styles for results (Level 3) page */
 
     @mixin results-select {
-        background: #ebf6df;
-        border: 1px solid #9cc86b;
+        background: $lichen;
+        border: 1px solid $border-green;
         font-family: $headings-font;
-        padding: 0;
-        -webkit-appearance: menulist;
     }
 
     &.results {
@@ -115,9 +125,14 @@ body.skey {
                 margin: 5px 0 3px;
                 vertical-align: middle;
             }
+            label span {
+                /* Visually hide labels regarding immedate updates */
+                position: absolute;
+                top: -9999px;
+            }
             select {
                 font-size: 13px;
-                height: 21px;
+                height: 22px;
                 width: 140px;
                 @include results-select;
             }
@@ -126,7 +141,7 @@ body.skey {
                 border: 1px solid #9cc86b;
                 font: -webkit-control;
                 padding: 2px 6px;
-                -webkit-appearance: button;
+                width: 50px;
             }
         } /* end .already-know */
 
@@ -179,13 +194,18 @@ body.skey {
                     border-right: none;
                     padding-right: 12px;
                 }
-                a {
-                    color: #1a2e11;
+                button {
+                    background: none;
+                    border: 0;
+                    color: $key-plant-name;
+                    cursor: pointer;
                     display: block;
+                    padding: 0;
+                    &:focus,
                     &:hover {
-                        color: #508e31;
+                        color: $link-green;
                         text-decoration: none;
-                        p.plant-name {
+                        .plant-name {
                             text-decoration: underline;
                         }
                     }
@@ -198,16 +218,13 @@ body.skey {
                     width: 150px;
                     z-index: 100;
                 }
-                p.plant-name {
-                    font-family: $narrower-body-font; /* Tahoma or Trebuchet because it's
-                                                         narrower than Verdana: less wrapping
-                                                         and fewer names on 4 lines */
+                .plant-name {
+                    font-family: $body-font;
                     line-height: 14px;
                     margin: 7px 0 0 0;
                     span.latin {
                         display: block;
-                        font-family: $body-font; /* Verdana because it's wider than Trebuchet:
-                                                    easier to read in italics */
+                        font-family: $body-font;
                         font-style: italic;
                         padding-bottom: 4px;
                     }
@@ -246,7 +263,7 @@ body.skey {
                 }
             }
             table .genus {
-                color: #1a2e11;
+                color: $key-plant-name;
                 font-size: 18px;
                 font-style: italic;
                 font-weight: normal;
@@ -338,11 +355,11 @@ body.skey {
             .section {
                 padding: 0 17px 16px;
                 &.instructions {
-                    background: #9cc86b;
+                    background: $lichen;
                     color: #fff;
                     padding: 16px;
                     h2 {
-                        color: $darkest-brown;
+                        color: $dark-pine;
                         font-size: 16px;
                         line-height: 120%;
                         margin: 0;
@@ -357,23 +374,23 @@ body.skey {
                     line-height: 16px;
                     margin: 0 0 20px;
                     text-align: center;
-                    a {
+                    button {
                         color: #fff;
                         cursor: default;
                         display: block;
                         margin: 18px auto 10px;
-                        width: 170px;
+                        width: 193px;
                         &.get-questions {
                             margin: 0 auto 4px;
                         }
                     }
                 }
-                a.clear-all-btn {
+                .clear-all-btn {
                     color: #fff;
-                    margin: 0 10px 0 0;
+                    margin: 0;
                     min-width: 60px;
                 }
-                a.get-help-btn {
+                .get-help-btn {
                     color: #fff;
                     margin: 0 0 0 15px;
                     min-width: 50px;
@@ -402,13 +419,19 @@ body.skey {
                     }
                     &.active, &:hover, &.active span.value,
                     &.answered.active {
-                        background: #dce890;
+                        background: $spring;
                         cursor: default;
+                    }
+                    &:has(button:focus-visible) {
+                        background: $spring;
                     }
                 }
                 .option {
-                    color: #1a2e11;
+                    background: none;
+                    border: 0;
+                    color: $key-plant-name;
                     margin-left: 0;
+                    text-align: left;
                     text-decoration: none;
                     .name {
                         display: block;
@@ -420,10 +443,13 @@ body.skey {
                     }
                 }
                 .clear-filter {
+                    background: none;
+                    border: 0;
                     color: $link-green;
                     display: block;
                     margin-left: 0;
                     margin-top: 4px;
+                    text-align: left;
                     width: 45px;
                 }
             } /* end .option-list */
@@ -443,7 +469,7 @@ body.skey {
             width: 710px;
         }
 
-        a.get-questions, a.add-questions {
+        button.get-questions, button.add-questions {
             color: white;
             cursor: default;
             margin: 2px 0 0 10px;
@@ -452,7 +478,7 @@ body.skey {
 
         #intro-overlay {   /* for introductory overlay */
             display: none;
-            font-family: $headings-font;
+            font-family: $brand-font;
             font-size: 40px;
             text-align: center;
             z-index: 1000;
@@ -462,7 +488,7 @@ body.skey {
                 box-shadow: 0px 5px 20px rgba(0, 0, 0, 1);
                 color: #fff;
                 margin-bottom: 10%;
-                padding: 0.6em 0.8em;
+                padding: 0.6em 0.8em 0.45em;
                 position: relative;
             }
             .number-of-species, .number-of-questions {
@@ -473,7 +499,7 @@ body.skey {
                 border-radius: 2em;
                 border: 2px solid #dc9402;
                 cursor: default;
-                font-family: ScalaSans, $headings-font;
+                font-family: $brand-font;
                 letter-spacing: 3px;
                 text-shadow: 1px 1px 2px #dc9402;
                 text-transform: uppercase;
@@ -533,22 +559,24 @@ body.skey {
             h3 {
                 margin: 0;
             }
-            a {
+            button {
                 background: #d6e6c5;
                 background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#eaf2e2), color-stop(100%,#d6e6c5));
                 background: -moz-linear-gradient(center top, #eaf2e2, #d6e6c5);
                 border: 1px solid #c3d941 !important;
                 border-top-left-radius: 6px;
                 border-top-right-radius: 6px;
-                color: $darker-brown;
+                color: $dark-pine;
                 cursor: default;
                 display: block;
                 float: left;
                 font-family: $headings-font;
                 font-size: 1.1rem;
-                margin: 0;
-                min-width: 100px;
-                padding: 0.3em 1em 0.2em;
+                font-weight: bold;
+                margin: 0 0 0 2px;
+                min-width: 137px;
+                outline-offset: -1px;
+                padding: 0.22em 1em 0.2em;
                 text-align: center;
                 &:hover {
                     background: #e1f2cd;
@@ -560,16 +588,16 @@ body.skey {
             }
             li {
                 list-style-type: none;
-                &:first-child a {
+                &:first-child button {
                     margin-left: 10px;
                 }
             }
-            a.current, a.current:hover {
+            button.current, button.current:hover {
                 background: #fff;
-                background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#ffffff), color-stop(100%,#f0f0c0)) !important;
-                background: -moz-linear-gradient(center top, #ffffff, #f0f0c0);
+                background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #ffffff), color-stop(100%, $lichen)) !important;
+                background: -moz-linear-gradient(center top, #ffffff, $lichen);
                 border-bottom: 0 !important;
-                color: #1a2e11;
+                color: $key-plant-name;
                 cursor: default;
                 padding: 0.3em 1em;
             }
@@ -641,7 +669,7 @@ body.skey {
                 label {
                     cursor: default;
                     display: block;
-                    font-family: $narrower-body-font;
+                    font-family: $body-font;
                     font-size: 12px;
                     line-height: 14px;
                     max-width: 250px;
@@ -650,7 +678,7 @@ body.skey {
                     word-wrap: break-word; /* can break mid-word */
                 }
                 input {
-                    margin: 0 3px 0 -18px;
+                    margin: 0 4px 0 -22px;
                 }
             } /* end .choice */
             
@@ -684,7 +712,7 @@ body.skey {
             .info {
                 display: none;
                 float: left;
-                font-family: $narrower-body-font;
+                font-family: $body-font;
                 font-size: 14px;
                 width: 100%;
                 .hint {
@@ -731,7 +759,7 @@ body.skey {
 
             .apply-btn {
                 color: #fff;
-                width: 180px;
+                width: 240px;
             }
             .choose_length label {   /* Length input */
                 margin: 0 10px 0 0;
@@ -740,6 +768,7 @@ body.skey {
                 }
             }
             .close {
+                border: 0;
                 color: #00e;
                 cursor: default;
                 display: inline;
@@ -874,7 +903,10 @@ body.skey {
         padding: 0 !important;
         text-align: center;
     }
-    .view-tabs a {
+    .view-tabs {
+        height: 1.7em !important;
+    }
+    .view-tabs button {
         font-size: 13px !important;
     }
     #choices {
@@ -938,7 +970,7 @@ ul.get-more-questions-menu {
         position: relative;
         display: block;
         margin: 0;
-        background-color: $inactive_bg; /*#dce890;*/
+        background-color: $inactive_bg;
         padding: 0 1em;
         line-height: 2em;
         text-align: left;
@@ -987,11 +1019,11 @@ ul.get-more-questions-menu {
         }
 
         &.results.mobile-wide {  /* Styles for testing: mobile variant where
-                                    filters list is full width of screen */
+                                        filters list is full width of screen */
             #question-nav {
                 .section {
-                    a.clear-all-btn, a.get-help-btn {
-                        margin: 0 0 0 95px;
+                    .clear-all-btn, .get-help-btn {
+                        margin: 0 0 0 40px;
                     }
                 }
             }
@@ -999,9 +1031,12 @@ ul.get-more-questions-menu {
                 left: -235px;
             }
             .view-tabs {
-                li:first-child a {
-                    margin-left: 32px;  /* for the Results tabs */
+                li:first-child button {
+                    margin-left: 20px;  /* for the Results tabs */
                 }
+            }
+            .more-questions-dialog .view-tabs li:first-child button {
+                margin-left: 10px;
             }
         } /* end &.results.mobile-wide */
     }
@@ -1019,8 +1054,8 @@ ul.get-more-questions-menu {
                                     filters list is full width of screen */
             #question-nav {
                 .section {
-                    a.clear-all-btn, a.get-help-btn {
-                        margin: 0 170px;
+                    .clear-all-btn, .get-help-btn {
+                        margin: 0 65px;
                     }
                 }
             }
@@ -1028,9 +1063,12 @@ ul.get-more-questions-menu {
                 left: -310px;
             }
             .view-tabs {
-                li:first-child a {
-                    margin-left: 112px;  /* for the Results tabs */
+                li:first-child button {
+                    margin-left: 96px;  /* for the Results tabs */
                 }
+            }
+            .more-questions-dialog .view-tabs li:first-child button {
+                margin-left: 10px;
             }
             .more-questions-dialog .questions {
                 max-height: 160px;
@@ -1114,7 +1152,8 @@ ul.get-more-questions-menu {
             .section + .section {
                 margin-bottom: 16px;
             }
-            #question-nav .section button, #question-nav .section.clear h5,
+            #question-nav .section.family-genus button,
+            #question-nav .section.clear h5,
             #question-nav .section.help h5 {
                 display: none;
             }
@@ -1156,7 +1195,7 @@ ul.get-more-questions-menu {
                     p.get-more {
                         margin-bottom: 50px;
                     }
-                    a.clear-all-btn, a.get-help-btn {
+                    .clear-all-btn, .get-help-btn {
                         margin: 6px 0 6px 16px;
                     }
                 }
@@ -1188,14 +1227,14 @@ ul.get-more-questions-menu {
                 margin: 0 0 28px;
                 width: 100%;
                 .view-tabs {
-                    li + li a.current, li + li a.current:hover {
+                    li + li button.current, li + li button.current:hover {
                         background: #fff !important;
                     }
                 }
             }
             .view-tabs {
-                height: 26px;
-                a {
+                height: 24px;
+                button {
                     font-size: 16px;
                     line-height: 16px;
                 }
@@ -1232,9 +1271,6 @@ ul.get-more-questions-menu {
                         cursor: default;
                         height: 44px;
                         background: #fff;
-                        /*background: -webkit-gradient(linear, left top,
-                            left bottom, color-stop(0%, white),
-                            color-stop(100%, #f0f0c0));*/
                         -webkit-tap-highlight-color: rgba(0,0,0,0);
                         &:last-of-type {
                             border-bottom: 1px solid #e1e1dc;
@@ -1406,14 +1442,10 @@ ul.get-more-questions-menu {
                     }
                     label {
                         display: table;
-                        font-family: Verdana, sans-serif; /* No Tahoma on iOS */
+                        font-family: $body-font;
                         font-size: 11px;
                         height: 44px;
                         margin: 0;
-                        /*
-                        max-width: 0;
-                        min-width: 0;
-                        */
                         padding-left: 4px;
                         padding-right: 12px;
                         width: 96%;
@@ -1548,6 +1580,7 @@ ul.get-more-questions-menu {
                         cursor: default;
                         display: block;
                         position: relative;
+                        width: 100%;
                         &::after {
                             border-color: #000;
                             border-style: solid;
@@ -1835,7 +1868,7 @@ ul.get-more-questions-menu {
     body.skey.results {
         #question-nav {
             .option-list > li.active:hover {
-                background: #dce890;
+                background: $spring;
             }
         }
     }

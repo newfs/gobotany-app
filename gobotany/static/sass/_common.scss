@@ -19,30 +19,14 @@
     src: url(/static/fonts/Basetica-Medium-Italic-205TF.woff2) format('woff2'),
         url(/static/fonts/Basetica-Medium-Italic-205TF.woff) format('woff');
 }
-@font-face {
-    font-family: Basetica;
-    font-weight: 900;
-    src: url(/static/fonts/Basetica-Black-205TF.woff2) format('woff2'),
-        url(/static/fonts/Basetica-Black-205TF.woff) format('woff');
-}
-@font-face {
-    font-family: Basetica;
-    font-style: italic;
-    font-weight: 900;
-    src: url(/static/fonts/Basetica-Black-Italic-205TF.woff2) format('woff2'),
-        url(/static/fonts/Basetica-Black-Italic-205TF.woff) format('woff');
-}
 
-@font-face {
-    font-family: ScalaSans;
-    font-weight: 900;
-    src: url(//newfs.s3.amazonaws.com/fonts/ScalaSansWeb-Bold.woff) format("woff");
-}
+$system-font: system-ui, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+$brand-font: Basetica, $system-font;
 
-$navbar-font: Basetica, sans-serif;
-$headings-font: "Trebuchet MS", Helvetica, Arial, "Lucida Sans Unicode", sans-serif;
-$body-font: Verdana, Geneva, "Lucida Sans Unicode", sans-serif;
-$narrower-body-font: Tahoma, "Trebuchet MS", "Lucida Sans Unicode", sans-serif;
+$navbar-font: $brand-font;
+$main-heading-font: $brand-font;
+$headings-font: $system-font;
+$body-font: $system-font;
 
 $link-green: #27610a;
 $heading-green: #437829;
@@ -65,13 +49,26 @@ $lighter-green: #bde29c; /* lighter version of #a7da7e green from NPT palette */
 $darker-green: #508226; /* darker version of #a7da7e green from NPT palette */
 $dark-green: #467321; /* dark version of #a7da7e green from NPT palette */
 
+$home-logo-darker: #1d272a; /* NPT logo color on home page, a bit darker */
+
+/* from new NPT palette */
+$dark-pine: #05484b;
+$pine: #016f5f;
+$birch: #fcfff2;
+$lichen: #edf5db;
+$spring: #d2f167;
+$goldenrod: #f4ca3d;
+$coral: #ff936e;
+
 $text-color: #000;
-$navbar-color: #21555c;
-$footer-background-color: $bright-green;
+$navbar-color: $pine;
+$footer-background-color: $lichen;
 $login-box-background-color: #d3eaad;
 
-$base-font-size: 81.25%;
-$nav-font-size: 1.1em;
+$top-home-page-background-color: #6c9956;
+
+$base-font-size: 85%;
+$nav-font-size: 1.05em;
 
 $text-line-height: 153%;
 
@@ -86,7 +83,7 @@ $tooltip-arrow-rotation: 225deg;
 $smallscreen-portrait-width: 320px;
 $smallscreen-landscape-width: 480px;
 
-$nav-button-color: #437829;
+$nav-button-color: $dark-pine;   /* for small screens */
 $error-icon-offset: -20px;
 
 $smallscreen-margin: 8px;
@@ -99,7 +96,7 @@ $smallscreen-choices-border-radius: 8px;
 
 $logo_width: 450px;
 
-$body_bg: #f8eeda;
+$body_bg: $birch;
 $text_gray: #606060;
 $text_green: #519136;
 $text_dark_green: #35661c;
@@ -118,8 +115,8 @@ $npt-orange: #d87e54;
 $npt-orange-dark: #bb582a;
 $brighter-orange: #cc4b00;
 $duller-orange: #8e421f;
-$navbar-blue: #17555b;
 
+$key-plant-name: #1a2e11;
 
 $list_popup_border: #acac90;
 
@@ -136,7 +133,7 @@ $disabled_orange_gradient: linear-gradient(
     top, mix($body_bg, $orange2, 50%) 0%, mix($body_bg, $orange5, 50%) 32%,
     mix($body_bg, $orange5, 50%) 50%, mix($body_bg, $orange3, 50%) 100%);
 
-*:focus {
+*:focus-visible {
     outline-color: -webkit-focus-ring-color;
     outline-offset: 2px;
     outline-style: auto;
@@ -151,13 +148,13 @@ $disabled_orange_gradient: linear-gradient(
     color: #fff;
     cursor: default;
     display: inline-block;
-    font-family: ScalaSans, $headings-font;
+    font-family: $brand-font;
     font-size: 13px;
-    font-weight: bold !important;
+    font-weight: normal;
     letter-spacing: 1px;
     line-height: 18px;
     min-width: 80px;
-    padding: 4px 12px;
+    padding: 5px 12px 3px;
     text-align: center;
     text-decoration: none;
     &.caps {
@@ -176,7 +173,7 @@ $disabled_orange_gradient: linear-gradient(
         font-size: 16px;
         letter-spacing: 1.5px;
         min-width: 150px;
-        padding: 9px 30px;
+        padding: 9px 30px 7px;
     }
 }
 
@@ -189,13 +186,13 @@ $disabled_orange_gradient: linear-gradient(
     color: #fff;
     cursor: pointer;
     display: inline-block;
-    font-family: ScalaSans, $headings-font;
+    font-family: $brand-font;
     font-size: 13px;
-    font-weight: bold;
+    font-weight: normal;
     letter-spacing: 1px;
     line-height: 18px;
     min-width: 75px;
-    padding: 4px 12px;
+    padding: 6px 12px 2px;
     text-align: center;
     text-decoration: none;
 
@@ -208,8 +205,8 @@ $disabled_orange_gradient: linear-gradient(
     /* Hover: higher contrast; use the current nav. bar color */
     &:hover,
     &:focus {
-        background-color: $navbar-blue;
-        box-shadow: 0 0.15rem 0 0 $navbar-blue;
+        background-color: $navbar-color;
+        box-shadow: 0 0.15rem 0 0 $navbar-color;
         color: #fff;
     }
     /* Active: orange; similar to default red, but higher contrast */
@@ -234,19 +231,6 @@ $disabled_orange_gradient: linear-gradient(
         }
     }
 }
-
-/* Fix button and action-link text alignment in Firefox; evidently
-    the misalignment is due to how the browsers handle the Scala
-    Sans font. (Unfortunately this means that any fonts lower
-    in the font stack would show up misaligned in FF.) */
-@-moz-document url-prefix() {
-    .orange-button,
-    .action-link {
-        padding-bottom: 3px;
-        padding-top: 5px;
-    }
-}
-
 
 @mixin offscreen {
     display: block;
@@ -284,7 +268,7 @@ $disabled_orange_gradient: linear-gradient(
 @mixin highlight-global-nav-home {
     /* For use on active nav item, with :after */
     border: 10px solid transparent;
-    border-bottom-color: #6c9956;
+    border-bottom-color: $top-home-page-background-color;
     content: "";
     height: 0;
     left: calc(50% - 10px);
@@ -416,8 +400,8 @@ div.popup a {
 /* For occasional, temporary donation campaigns: message at top of page */
 #top-message {
     align-items: center;
-    background-color: #e8a38c;
-    color: #000;
+    background-color: $lichen;
+    color: $text-color;
     display: flex;
     font-family: $body-font;
     font-size: 1.02em;
@@ -438,7 +422,7 @@ div.popup a {
 #top-message .close {
     background-color: inherit;
     border: 0;
-    color: #000;
+    color: $text-color;
     font-size: 1.2em;
     font-weight: bold;
     margin-left: 1.2em;
@@ -464,12 +448,12 @@ div.popup a {
 
 /* For newsletter sign-up dialog */
 .dialog {
-    background-color: #feffef;
+    background-color: $lichen;
     box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px 0px;
     bottom: 0.5rem;
-    color: #000;
+    color: $text-color;
     display: flex;
-    font-family: "Trebuchet MS", sans-serif;
+    font-family: $body-font;
     font-size: 16px;
     max-width: 26rem;
     padding: 1rem 2rem;
@@ -478,8 +462,10 @@ div.popup a {
     z-index: 50;
 }
 .dialog h2 {
-    color: #000;
+    color: $dark-pine;
+    font-family: $brand-font;
     font-size: 24px;
+    font-weight: normal;
     margin: 20px 0;
     padding: 0;
 }
@@ -488,12 +474,13 @@ div.popup a {
     line-height: 1.4;
 }
 .dialog__ok {
-    background: #333;
-    border: 1px solid #333;
-    color: #fff;
+    background: $dark-pine;
+    border: 1px solid $dark-pine;
+    color: $lichen;
     display: inline-block;
     font-family: inherit;
     font-size: 1rem;
+    font-weight: bold;
     margin-bottom: 0.5rem;
     margin-right: 0.5rem;
     min-width: 100px;
@@ -504,7 +491,8 @@ div.popup a {
 }
 .dialog__cancel {
     background-color: transparent;
-    border: 1px solid gray;
+    border: 1px solid $dark-pine;
+    color: $dark-pine;
     font-family: inherit;
     font-size: 1rem;
     margin-bottom: 0.5rem;
@@ -517,7 +505,7 @@ div.popup a {
 .dialog__ok:hover,
 .dialog__cancel:focus,
 .dialog__cancel:hover {
-    outline: 3px solid #666;
+    outline: 3px solid $dark-pine;
     outline-offset: 3px;
 }
 .dialog__check {

@@ -26,8 +26,8 @@
                     </p>
                     {% if group.video.youtube_id %}
                     <p class="video">
-                        <a class="video"
-                            href="http://www.youtube.com/embed/{{ group.video.youtube_id }}?autoplay=1&amp;rel=0&amp;hd=1&amp;modestbranding=1">Video</a>
+                        <button class="video"
+                            data-href="https://www.youtube.com/embed/{{ group.video.youtube_id }}?autoplay=1&amp;rel=0&amp;hd=1&amp;modestbranding=1">Video</button>
                     </p>
                     {% endif %}
                 </div>
@@ -65,8 +65,8 @@
                             </p>
                             {% if subgroup.video.youtube_id %}
                             <p class="video">
-                                <a class="video"
-                                    href="http://www.youtube.com/embed/{{ subgroup.video.youtube_id }}?autoplay=1&amp;rel=0&amp;hd=1&amp;modestbranding=1">Video</a>
+                                <button class="video"
+                                    data-href="https://www.youtube.com/embed/{{ subgroup.video.youtube_id }}?autoplay=1&amp;rel=0&amp;hd=1&amp;modestbranding=1">Video</button>
                             </p>
                             {% endif %}
                         </div>

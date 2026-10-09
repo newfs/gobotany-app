@@ -28,8 +28,9 @@
         <div id="name">
             <h1 class="nogloss">
                 <span class="scientific">{{ scientific_name|italicize_plant|safe }}</span>
+                <span class="taxonomic-authority">{{ taxonomic_authority }}</span>
                 {% if common_names %}
-                    —
+                    <br>
                     {% for common_name in common_names %}{% if not forloop.first %}, {% endif %}{{ common_name }}{% endfor %}
                 {% endif %}       
             </h1>
@@ -148,9 +149,8 @@
                     </object>
                 </div>
                 {% endwith %}
-                <div class="trans" tabindex="0"
-                    aria-label="Enlarge U.S. map"></div>
-                <a class="enlarge" href="#" tabindex="-1">
+                <button class="trans enlarge"
+                    aria-label="Enlage North America map">
                     <img src="/static/images/icons/zoom.png" alt="">
                     enlarge</a>
             </div>
@@ -185,8 +185,8 @@
                       pile.</p>
                 {% endif %}
             </div>
-            <a class="description-control" href="#"
-                >Show all characteristics</a>
+            <button class="description-control"
+                >Show all characteristics</button>
             <ul class="full-description">
                 {% for character_group in all_characteristics %}
                     <li>

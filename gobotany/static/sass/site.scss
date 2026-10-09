@@ -83,19 +83,20 @@ h1, h2, h3, h4, h5, h6 {
     padding: 0;
 }
 h1 {
-    color: $darker-brown;
-    font-size: 1.9em;
-    font-weight: bold;
+    color: $dark-pine;
+    font-family: $main-heading-font;
+    font-size: 2em;
+    font-weight: normal;
     margin: 0.8em 0 0.6em;
 }
 h2 {
-    color: $darker-brown;
+    color: $dark-pine;
     font-size: 1.6em;
     font-weight: bold;
     margin: 1.6em 0 0.8em;
 }
 h3 {
-    color: $darker-brown;
+    color: $dark-pine;
     font-size: 1.25em;
     font-weight: bold;
     margin: 1.6em 0 0.8em;
@@ -108,7 +109,7 @@ h3.compact {
 
 /* h4 is sometimes used in species page Conservation Status section */
 h4 {
-    color: $darker-brown;
+    color: $dark-pine;
     font-size: 1.15em;
     font-weight: bold;
     margin: 1.6em 0 0.8em;
@@ -116,7 +117,7 @@ h4 {
 
 /* TODO: try to eliminate h5, h6 */
 h5, h6 {
-    color: $darker-brown;
+    color: $dark-pine;
     font-size: $base-font-size;
 }
 h6 {
@@ -184,6 +185,20 @@ p.meta {
     + p {
         margin-top: 2px;
     }
+}
+
+.skip-link {
+    background-color: #fff;
+    font-size: 10px;
+    left: -9999px;
+    padding: 2px 4px;
+    position: absolute;
+    top: -9999px;
+}
+.skip-link:focus-visible {
+    left: 0;
+    outline-offset: -1px;
+    top: 0;
 }
 
 #main .distribution-character {   /* species code: box, as in printed book */
@@ -300,24 +315,23 @@ header .go-botany {
     position: relative;
     z-index: 5;
     a {
-        margin-right: 1.2em;
-        width: 12.5em;
+        width: 11.5em;
     }
     img {
         width: 150px;
     }
     .tagline {
         bottom: 0;
-        color: $dark-green;
-        font-family: Basetica, sans-serif;
+        color: $dark-pine;
+        font-family: $brand-font;
         font-size: 1em;
         position: absolute;
-        left: 12.8em;
+        left: 12.5em;
     }
 }
 header nav {
     align-items: center;
-    background-color: #17555b;
+    background-color: $navbar-color;
     border-radius: 2em;
     display: flex;
     font-family: $headings-font;
@@ -327,7 +341,7 @@ header nav {
     a {
         color: #fff;
         display: inline-block;
-        padding: 5px 8px;
+        padding: 6px 8px 4px;
         &:visited, &:not([href]) {
             color: #fff;
         }
@@ -520,7 +534,7 @@ a.get-help-btn {
     /* Make footer color continue to bottom on short pages. */
     box-shadow: 0 50vh 0 50vh $footer-background-color;
     clear: both;
-    font-size: 10px;
+    font-size: 0.8em;
     min-height: 140px;
     position: relative;
     width: 100%;
@@ -541,7 +555,7 @@ a.get-help-btn {
 }
 .footer__site-name {
     font-family: $body-font;
-    font-size: 12px;
+    font-size: 0.8rem;
     margin: 0 0 0.5rem;
 }
 .footer__publisher,
@@ -699,9 +713,11 @@ a.get-help-btn {
 }
 .plant-grid a {
     display: block;
-    color: #1a2e11;
+    color: $key-plant-name;
+    &:focus,
     &:hover {
-        color: #508e31;
+        color: $link-green;
+        text-decoration: underline;
     }
 }
 .plant-grid .plant:before {
@@ -726,16 +742,13 @@ a.get-help-btn {
 }
 .plant-grid p {
     margin: 7px 0 0 0;
-    font-family: $narrower-body-font;
-    /* Tahoma or Trebuchet because it's narrower than Verdana:
-       less wrapping and fewer names on 4 lines */
+    font-family: $body-font;
     line-height: 14px;
 }
 .plant-grid i {
     display: block;
     padding-bottom: 4px;
     font-family: $body-font;
-    /* Verdana, wider than Trebuchet: easier to read in italics */
     font-style: italic;
 }
 .plant-grid .missing-image {
@@ -858,13 +871,15 @@ a.get-help-btn {
     font-family: $headings-font;
 }
 #sb-nav-close {
+    background-color: transparent;
     background-position: center;
     background-repeat: no-repeat;
-    padding: 4px; /* Increase activation area a bit */
-    right: -28px !important; /* Place at top right, but not exactly at the
-                                corner so as to avoid Flash video z-index
-                                problem */
-    top: 6px !important;
+    border: 0;
+    border-radius: 10px;   /* for focus outline */
+    height: 20px;
+    right: -26px !important;
+    top: 14px !important;
+    width: 20px;
 }
 
 /* Character/value styles for plant preview popups, species pages, etc. */
@@ -874,7 +889,7 @@ a.get-help-btn {
     padding: 0;
 }
 .characteristics dt {
-    color: $darker-brown;
+    color: $dark-pine;
     font-weight: bold;
     line-height: 18px;
     max-width: 200px;
@@ -885,14 +900,13 @@ a.get-help-btn {
     }
 }
 .characteristics dd {
-    line-height: 18px;
+    line-height: 20px;
     max-width: 60%;
 }
 .characteristics dd ul {
     list-style-type: disc;
     margin: 0;
     padding: 0 0 0 1.3em;
-    text-indent: -0.2em;
     &.compact {
         margin: 0;
         padding: 0;
@@ -909,6 +923,7 @@ a.get-help-btn {
     }
 }
 .characteristics dd li {
+    line-height: 20px;
     margin: 0;
     padding: 0 0 0.1em;
 }

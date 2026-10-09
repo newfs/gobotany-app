@@ -318,6 +318,7 @@ def species_view(request, genus_slug, epithet, template_name="species1.html"):
            'pile': pile,
            'scientific_name': scientific_name,
            'scientific_name_short': scientific_name_short,
+           'taxonomic_authority': taxon.taxonomic_authority,
            'taxon': taxon,
            'key': key,
            'species_in_simple_key': species_in_simple_key,

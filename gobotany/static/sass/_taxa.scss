@@ -136,7 +136,7 @@ body.species2 .section {
         padding-top: 12px;
     }
     body.species2 .section h2 {
-        font-size: 1.2em;
+        font-size: 1.1em;
     }
 }
 
@@ -153,6 +153,19 @@ body#species #main {
         clear: left;
         margin-left: $species-sidebar-margin;
     }
+}
+body#species h1 {
+    font-family: $headings-font;   /* system font for common name */
+    font-weight: normal;
+}
+body#species .scientific {
+    font-family: $main-heading-font;
+    font-style: italic;
+    font-weight: normal;
+}
+body#species .taxonomic-authority {
+    font-size: 0.6em;
+    padding-left: 0.5em;
 }
 
 /* left-side content sections */
@@ -171,7 +184,7 @@ body#species .section {
 body#species #maps, body#species #side {
     position: absolute;
     h2 {
-        font-size: 1.2em;
+        font-size: 1.1em;
         margin: 0.2em 0 0.8em;
     }
 }
@@ -203,6 +216,15 @@ body#species .found-plant {
 body#species #main .nemap h2 + p, body#species #main .namap h2 + p {
     margin: 0;
     padding-bottom: 8px;
+}
+body#species .enlarge {
+    align-items: flex-end;
+    background: none;
+    border: 0;
+    color: #27610a;
+    cursor: pointer;
+    display: flex;
+    gap: 5px;
 }
 
 body#species #side {
@@ -279,8 +301,10 @@ body#species {
     }
 }
 body#species {
-    a.description-control {
+    .description-control {
         background: url(/static/images/icons/plus.png) left 50% no-repeat;
+        border: 0;
+        color: $link-green;
         display: block;
         margin: 28px 0 12px 0;
         padding: 3px 0 3px 25px;
@@ -318,6 +342,7 @@ body#species ul.full-description > li {
     }
     div {
         display: none;
+        margin-top: 20px;
         padding-left: 28px;
     }
 }
@@ -400,10 +425,6 @@ body#species #images-note {
     margin-left: 250px;
     margin-right: 0;
     margin-top: 0;
-}
-
-body#species #info-dkey b {
-    color: $darker-brown;
 }
 
 /* Begin media queries styles for taxa pages. */

@@ -37,6 +37,8 @@ results_page_init: function(args) {
     var species_section = new SpeciesSection();
     var species_section_ready = $.Deferred();
 
+    var button_handlers_added = false;
+
     $.when(
         document_is_ready,
         filtered_sorted_taxadata_ready,
@@ -184,10 +186,16 @@ results_page_init: function(args) {
         App3.set('family_filter', fc.filtermap.family);
         App3.set('genus_filter', fc.filtermap.genus);
 
+        console.log("* about to set family/genus values: family_name=" +
+            filters_config.family_name + " genus_name=" + filters_config.genus_name);
+
         fc.filtermap.family.set('value', filters_config.family_name);
         fc.filtermap.genus.set('value', filters_config.genus_name);
 
-        _.each(filters_config.other_filters, $.proxy(fc.add, fc));
+        setTimeout(function () {
+            console.log("* setting after delay");
+            _.each(filters_config.other_filters, $.proxy(fc.add, fc));
+        }, 500);
 
         App3.set('filter_controller', fc);
 
@@ -321,7 +329,7 @@ results_page_init: function(args) {
 
         didInsertElement: function() {
             var id = this.get('elementId');
-            
+
             // Skip glossarizing filter "short" questions on small screens.
             if ($(window).width() > MAX_SMALLSCREEN_WIDTH) {
                 glossarizer.glossarize($('#' + id + ' span.name'));
@@ -360,7 +368,7 @@ results_page_init: function(args) {
         },
 
         click: function(event) {
-            
+
             /* Cancel this click event if either the filter clear button
                was pressed, or the event happened in the filter working
                area (for small screens with "inline" choices). */
@@ -482,14 +490,16 @@ results_page_init: function(args) {
 
     /* All filters can be cleared with a single button click. */
     $.when(filter_controller_is_built, document_is_ready).done(function() {
-        $('a.clear-all-btn').click(function() {
+        $('.clear-all-btn').click(function() {
             dismiss_any_working_area();
             var plains = App3.filter_controller.get('plain_filters');
             _.each(plains, function(filter) {
                 filter.set('value', null);
             });
             App3.set('family_value', '');
+            $('#families').val('').change();
             App3.set('genus_value', '');
+            $('#genera').val('').change();
         });
     });
 
@@ -726,8 +736,8 @@ results_page_init: function(args) {
 
             // Set default tab before opening the dialog, so there is no
             // flash of tabs switching when the dialog first appears.
-            $('.more-questions-dialog a.auto').addClass('current');
-            $('.more-questions-dialog a.pick').removeClass('current');
+            $('.more-questions-dialog .auto').addClass('current');
+            $('.more-questions-dialog .pick').removeClass('current');
             $('.more-questions-dialog #choices .auto').show();
             $('.more-questions-dialog #choices .pick').hide();
 
@@ -736,23 +746,38 @@ results_page_init: function(args) {
                 height: 660,
                 player: 'html',
                 options: {
+                    enableKeys: true,
                     fadeDuration: 0.1,
                     onFinish: function () {
                         // Set up tabs.
-                        $('.more-questions-dialog a.pick').click(function () {
+                        $('.more-questions-dialog .pick').click(function () {
                             $('.more-questions-dialog #choices .auto').hide();
                             $('.more-questions-dialog #choices .pick').show();
-                            $(this).toggleClass('current');
-                            $('.more-questions-dialog a.auto').toggleClass(
+                            $(this).addClass('current');
+                            $('.more-questions-dialog .auto').removeClass(
                                 'current');
                         });
-                        $('.more-questions-dialog a.auto').click(function () {
+                        $('.more-questions-dialog .auto').click(function () {
                             $('.more-questions-dialog #choices .pick').hide();
                             $('.more-questions-dialog #choices .auto').show();
-                            $(this).toggleClass('current');
-                            $('.more-questions-dialog a.pick').toggleClass(
+                            $(this).addClass('current');
+                            $('.more-questions-dialog .pick').removeClass(
                                 'current');
                         });
+                        $('.more-questions-dialog .view-tabs button').on(
+                            'keydown', function (event) {
+                                if (event.key === ' ' || event.key === 'Enter') {
+                                    event.target.click();
+                                }
+                            }
+                        );
+
+                        // If opening the dialog for the first time, add handlers
+                        // for the buttons on each tab.
+                        if (!button_handlers_added) {
+                            add_dialog_button_handlers();
+                            button_handlers_added = true;
+                        }
 
                         // Set any Automatic check boxes that were set last time.
                         $container = $('#sb-container');
@@ -763,13 +788,13 @@ results_page_init: function(args) {
                             $(input).prop('checked', check);
                         });
                         _disable_exhausted_groups($inputs);
-                        $container.find('a.get-questions')
+                        $container.find('button.get-questions')
                             .addClass('get-choices-ready');  // for tests
 
                         // List the questions for the Pick Your Own tab.
-                        $container.find('a.add-questions').addClass('disabled');
+                        $container.find('button.add-questions').addClass('disabled');
                         filter_controller_is_built.done(function (filter_controller) {
-                            
+
                             var not_already_displayed = function (character) {
                                 return ! _.has(filter_controller.filtermap,
                                     character.slug);
@@ -792,7 +817,7 @@ results_page_init: function(args) {
                                     .sortBy('ease')
                                     .sortBy('group_name')
                                     .value();
-                                
+
                                 // Display questions.
                                 var $questions = $('.pick .questions');
                                 $questions.empty();
@@ -820,9 +845,12 @@ results_page_init: function(args) {
                                     $('.pick .add-questions').toggleClass(
                                         'disabled', (num_checked === 0));
                                 });
-
                             });
 
+                            // Add handlers to checkboxes so the Space key
+                            // works for them as usual. Evidently this needs
+                            // to be done each time the dialog opens.
+                            add_checkbox_keyboard_support();
                         });
                     }
                 }
@@ -851,48 +879,76 @@ results_page_init: function(args) {
         });
     };
 
-    // Get More Questions: button handler for Automatic tab
-    $('#sb-container a.get-questions').live('click', function () {
-        checked_groups = [];  // reset array in enclosing scope
-        $('#sb-container input').each(function(i, input) {
-            if ($(input).prop('checked'))
-                checked_groups.push($(input).val());
+    var add_dialog_button_handlers = function () {
+        let getMoreQuestions = document.querySelector('button.get-choices');
+
+        // Get More Questions: button handler for Automatic tab
+        $('#sb-container').on('click', '.get-questions', function () {
+            checked_groups = [];  // reset array in enclosing scope
+            $('#sb-container input').each(function(i, input) {
+                if ($(input).prop('checked'))
+                    checked_groups.push($(input).val());
+            });
+
+            var existing = [];
+            _.each(App3.filter_controller.content, function(filter) {
+                existing.push(filter.slug);
+            });
+            simplekey_resources.more_questions({
+                pile_slug: pile_slug,
+                species_ids: App3.filter_controller.taxa,
+                character_group_ids: checked_groups,
+                exclude_characters: existing
+            }).done(receive_new_filters);
+
+            Shadowbox.close();
+
+            // Set focus back to originating button.
+            if (getMoreQuestions) {
+                getMoreQuestions.focus();
+            }
         });
 
-        var existing = [];
-        _.each(App3.filter_controller.content, function(filter) {
-            existing.push(filter.slug);
+        // Get More Questions: button handler for Pick Your Own tab
+        $('#sb-container').on('click', '.add-questions', function () {
+            if ($(this).hasClass('disabled')) {
+                return;
+            }
+
+            var checked_questions = [];
+            $('.questions input').each(function () {
+                if ($(this).prop('checked'))
+                    checked_questions.push($(this).val());
+            });
+
+            simplekey_resources.add_questions({
+                pile_slug: pile_slug,
+                include: checked_questions
+            }).done(receive_new_filters);
+
+            Shadowbox.close();
+
+            // Set focus back to originating button.
+            if (getMoreQuestions) {
+                getMoreQuestions.focus();
+            }
         });
-        simplekey_resources.more_questions({
-            pile_slug: pile_slug,
-            species_ids: App3.filter_controller.taxa,
-            character_group_ids: checked_groups,
-            exclude_characters: existing
-        }).done(receive_new_filters);
+    };
 
-        Shadowbox.close();
-    });
-
-
-    // Get More Questions: button handler for Pick Your Own tab
-    $('#sb-container a.add-questions').live('click', function () {
-        if ($(this).hasClass('disabled')) {
-            return;
+    var add_checkbox_keyboard_support = function () {
+        // On Get More Choices dialog, add keyboard support to the checkboxes.
+        let dialog = document.getElementById('sb-wrapper');
+        if (dialog) {
+            let checkboxes = dialog.querySelectorAll('input[type="checkbox"]');
+            checkboxes.forEach(function (checkbox) {
+                checkbox.addEventListener('keydown', function (event) {
+                    if (event.key === ' ') {
+                        event.target.click();
+                    }
+                });
+            });
         }
-
-        var checked_questions = [];
-        $('.questions input').each(function () {
-            if ($(this).prop('checked'))
-                checked_questions.push($(this).val());
-        });
-
-        simplekey_resources.add_questions({
-            pile_slug: pile_slug,
-            include: checked_questions
-        }).done(receive_new_filters);
-
-        Shadowbox.close();
-    });
+    }
 
     var receive_new_filters = function(items) {
         if (items.length === 0) {

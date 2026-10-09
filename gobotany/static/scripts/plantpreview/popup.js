@@ -15,16 +15,21 @@ define([
     var glossarize = glossarizer.glossarize;
     var exports = {};
 
-    exports.connect = function($anchor, scientific_name, pile_slug) {
-        $anchor.click(function(event) {
-            if ($(window).width() <= 600)
-                return;  // follow the link directly to the species page
-            _open_popup($anchor, scientific_name, pile_slug);
+    exports.connect = function($button, scientific_name, pile_slug) {
+        $button.click(function(event) {
+            if ($(window).width() <= 600) {
+                // Go directly to the species page.
+                let url = $button.data("href");
+                if (url) {
+                    window.location.href = url;
+                }
+            }
+            _open_popup($button, scientific_name, pile_slug);
             return false;
         });
     };
 
-    var _open_popup = function($anchor, scientific_name, pile_slug) {
+    var _open_popup = function($button, scientific_name, pile_slug) {
 
         /* Call the API to get more information about the plant. */
 
@@ -64,25 +69,25 @@ define([
             plant_info_ready,
             characters_ready
         ).done(function(plant, characters) {
-            _finally_open_popup($anchor, plant, characters);
+            _finally_open_popup($button, plant, characters);
         });
     };
 
-    var _finally_open_popup = function($anchor, plant, characters) {
+    var _finally_open_popup = function($button, plant, characters) {
 
         characters = _.chain(characters)
             .filter(_filter_character, {plant: plant})
             .first(MAX_CHARACTERS)
             .value();
 
-        _put_clicked_image_first(plant, $anchor);
+        _put_clicked_image_first(plant, $button);
 
         var source = $('#plantpreview-popup-template').html().trim();
         var template = Handlebars.compile(source);
         var popup_html = template({
             characters: characters,
             plant: plant,
-            plant_url: $anchor.attr('href')
+            plant_url: $button.data('href')
         });
 
         Shadowbox.open({
@@ -92,11 +97,13 @@ define([
             width: 935,
             options: {
                 handleOversize: 'resize',
-                onFinish: function() {
+                onFinish: function () {
                     var $sb = $('#sb-container');
                     var $children = $sb.find('p, dt, dd, li');
                     $sb.find('.img-container').scrollable();
                     glossarize($children);
+
+                    _prev_next_add_space_key();
                 }
             }
         });
@@ -160,8 +167,8 @@ define([
         return true;
     };
 
-    var _put_clicked_image_first = function(plant, $anchor) {
-        var clicked_image_url = $anchor.find('img').attr('src');
+    var _put_clicked_image_first = function(plant, $button) {
+        var clicked_image_url = $button.find('img').attr('src');
         if (typeof clicked_image_url === 'undefined')
             return;
         var basename = function(url) {
@@ -171,6 +178,21 @@ define([
         plant.images.sort(function(image) {
             return basename(image.url) == name ? 0 : 1;
         });
+    };
+
+    var _prev_next_add_space_key = function () {
+        // Add Space key support to the image gallery buttons.
+        let dialog = document.getElementById('plant-detail-modal');
+        if (dialog) {
+            let buttons = dialog.querySelectorAll('button.prev, button.next');
+            buttons.forEach(function (button) {
+                button.addEventListener('keydown', function (event) {
+                    if (event.key === ' ') {
+                        event.target.click();
+                    }
+                });
+            });
+        }
     };
 
     return exports;
