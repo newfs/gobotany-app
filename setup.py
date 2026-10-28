@@ -4,7 +4,7 @@ from setuptools import find_packages
 requirements = [
     'django==4.2.30',
 
-    'Pillow==12.3.0',
+    'Pillow==13.0.0',
     'bleach==6.4.0',
     'cssselect==1.1.0',
     'django-debug-toolbar==3.6.0',
